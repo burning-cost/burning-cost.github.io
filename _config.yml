@@ -1,0 +1,39 @@
+title: "Burning Cost"
+description: "Open-source tools and techniques for UK insurance pricing."
+baseurl: ""
+url: "https://burningcost.github.io"
+
+author:
+  name: "Burning Cost"
+  email: "pricing.frontier@gmail.com"
+
+theme: minima
+
+minima:
+  skin: classic
+
+header_pages:
+  - about.md
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+show_excerpts: true
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: /:year/:month/:day/:title/
+
+github:
+  - repo: "https://github.com/burningcost/shap-relativities"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
