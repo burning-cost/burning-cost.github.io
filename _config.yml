@@ -13,6 +13,7 @@ minima:
   skin: classic
 
 header_pages:
+  - course.md
   - about.md
 
 plugins:
