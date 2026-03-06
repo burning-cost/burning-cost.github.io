@@ -393,7 +393,7 @@ This is the argument for Databricks that most teams never hear when the platform
 
 ---
 
-## 9. What This Unlocks - and What It Does Not
+## 9. What This Changes - and What It Does Not
 
 When a team runs this workflow for the first time, three things change. The model retrain cycle drops from a two-week manual process to an overnight job. The audit trail for every factor table is automatic and does not depend on anyone remembering to save a version. The team can run experiments by forking the Job, changing hyperparameters, and comparing out-of-time performance in MLflow without touching the production pipeline.
 

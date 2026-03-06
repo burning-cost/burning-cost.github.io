@@ -11,7 +11,7 @@ The focus is on the gap between what a GBM can do and what a pricing team can ac
 ## Tools
 
 **[shap-relativities](https://github.com/burningcost/shap-relativities)**
-Extract multiplicative rating relativities from CatBoost (and LightGBM/XGBoost) models using SHAP values. Same format as `exp(beta)` from a GLM - factor tables, confidence intervals, exposure weighting, reconstruction validation.
+Extract multiplicative rating relativities from CatBoost models using SHAP values. Same format as `exp(beta)` from a GLM - factor tables, confidence intervals, exposure weighting, reconstruction validation.
 
 ```bash
 uv pip install "shap-relativities[ml]"

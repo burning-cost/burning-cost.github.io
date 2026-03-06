@@ -257,7 +257,7 @@ The connection to penalised regression is exact. Ridge regression on dummy varia
 
 ### How it complements GBM approaches
 
-A GBM trained on thin data will overfit. Regularisation parameters (min_data_in_leaf, num_leaves, L2) limit this, but they are tuned globally - they don't adapt to which particular segments are thin and which are well-populated.
+A GBM trained on thin data will overfit. Regularisation parameters (`min_data_in_leaf`, `depth`, L2 leaf regularisation) limit this, but they are tuned globally - they don't adapt to which particular segments are thin and which are well-populated.
 
 Credibility weighting offers a different intervention. Train your GBM on the full book. Extract segment-level loss rates from its predictions. Then credibility-blend those segment estimates with the book average, using `BuhlmannStraub` to set K from the data. The result respects the segment's own experience where it has enough data, and falls back to book experience where it doesn't.
 

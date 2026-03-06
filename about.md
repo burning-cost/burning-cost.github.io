@@ -16,7 +16,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 **The problem we are solving:**
 
-UK pricing teams have adopted GBMs (mostly LightGBM) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap.
+UK pricing teams have adopted GBMs (mostly CatBoost) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap.
 
 **Contact:** [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com)
 
