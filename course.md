@@ -35,15 +35,15 @@ This is not an introductory course to either Python or insurance pricing. If you
 
 ## What you will need
 
-- A Databricks workspace. The free [Community Edition](https://community.cloud.databricks.com/) works for all exercises — no company approval needed to start
-- Python basics: DataFrames (pandas or PySpark), functions, loops
+- A Databricks workspace. The [Free Edition](https://www.databricks.com/product/pricing/databricks-free-edition) works for all exercises — no company approval needed to start
+- Python basics: Polars or PySpark DataFrames, functions, loops
 - GLM knowledge: you should understand what a link function is and have built at least one frequency or severity model, even in another tool
 
 ---
 
 ## The course
 
-Eight modules. Each module is a written tutorial plus a Databricks notebook you can run directly. The notebooks use synthetic data that mirrors real personal lines structure — motor policies with realistic exposure, claim counts, and development patterns.
+Eight modules. Each module is a written tutorial plus a Databricks notebook you can run directly. The notebooks use synthetic data that mirrors real personal lines structure — motor policies with realistic exposure, claim counts, and development patterns. All code uses Polars for data wrangling and CatBoost for gradient boosting — the best tools for the job in 2026.
 
 ### Module 1: Databricks for Pricing Teams
 
@@ -55,11 +55,11 @@ How to replicate what Emblem does in Python, transparently. `statsmodels` GLMs w
 
 ### Module 3: GBMs for Insurance Pricing
 
-LightGBM and XGBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, tweedie for pure premium. Hyperparameter tuning that is actually calibrated to insurance data — why the defaults from sklearn docs are wrong for insurance and what to use instead. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
+CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data — why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding — a genuine advantage over LightGBM for pricing data. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
 
 ### Module 4: SHAP Relativities
 
-SHAP values as a replacement for GLM relativities. How to extract them, how to aggregate them into a format that looks like a traditional relativities table, and how to explain them to someone who has spent twenty years using Emblem. We cover the cases where SHAP relativities are honest and the cases where they are misleading — interaction effects, correlated features, and what to do when the SHAP waterfall plot does not match the underwriter's intuition. Uses our open-source [`shap-relativities`](https://github.com/burningcost/shap-relativities) library.
+SHAP values as a replacement for GLM relativities. How to extract them, how to aggregate them into a format that looks like a traditional relativities table, and how to explain them to someone who has spent twenty years using Emblem. We cover the cases where SHAP relativities are honest and the cases where they are misleading — interaction effects, correlated features, and what to do when the SHAP waterfall plot does not match the underwriter's intuition. Includes coverage of protected characteristics and proxy discrimination detection using SHAP — essential for FCA Consumer Duty compliance. Uses our open-source [`shap-relativities`](https://github.com/burningcost/shap-relativities) library.
 
 ### Module 5: Conformal Prediction Intervals
 
@@ -67,7 +67,7 @@ Prediction intervals for insurance models that are statistically honest — not 
 
 ### Module 6: Credibility and Bayesian Pricing
 
-Classical credibility (Bühlmann-Straub) in Python, and its relationship to mixed models and partial pooling. When to use credibility weighting versus a hierarchical GLM. Practical applications: capping thin segments, stabilising NCD factors, blending a new model with an incumbent rate. Uses our open-source [`credibility`](https://github.com/burningcost/credibility) library. We also cover the cases where credibility gives you false comfort — specifically, what it does not protect you from when the underlying exposure mix is shifting.
+Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed models and partial pooling. When to use credibility weighting versus a hierarchical GLM. Practical applications: capping thin segments, stabilising NCD factors, blending a new model with an incumbent rate. Uses our open-source [`credibility`](https://github.com/burningcost/credibility) library. We also cover the cases where credibility gives you false comfort — specifically, what it does not protect you from when the underlying exposure mix is shifting.
 
 ### Module 7: Constrained Rate Optimisation
 
@@ -75,7 +75,7 @@ Building a rate change that meets a target loss ratio, respects a maximum moveme
 
 ### Module 8: End-to-End Pipeline (Capstone)
 
-A complete motor frequency and severity pipeline: data ingestion from Delta, feature engineering with a reproducible transform layer, walk-forward CV, GBM training with MLflow tracking, SHAP relativities, conformal intervals, rate optimisation, and a final output table that feeds a rating engine. The notebook is designed to be a working template for a real project, not a demo.
+A complete motor frequency and severity pipeline: data ingestion from Delta, feature engineering with a reproducible transform layer, walk-forward CV, CatBoost training with MLflow tracking, SHAP relativities, conformal intervals, rate optimisation, and a final output table that feeds a rating engine. The notebook is designed to be a working template for a real project, not a demo.
 
 ---
 
@@ -97,11 +97,12 @@ These are one-time prices. You get the notebook files and the written tutorials.
 
 We have written open-source tools for every topic this course covers.
 
-- [`insurance-cv`](https://github.com/burningcost/insurance-cv) — temporally-correct cross-validation for insurance pricing models, with IBNR buffer support and sklearn compatibility. Used by pricing teams at several UK insurers.
+- [`insurance-cv`](https://github.com/burningcost/insurance-cv) — temporally-correct cross-validation for insurance pricing models, with IBNR buffer support and sklearn compatibility.
 - [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) — distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025).
 - [`shap-relativities`](https://github.com/burningcost/shap-relativities) — SHAP values aggregated into multiplicative relativities tables in the format actuarial reviewers expect.
-- [`credibility`](https://github.com/burningcost/credibility) — Bühlmann-Straub credibility in Python, with mixed-model equivalence checks.
+- [`credibility`](https://github.com/burningcost/credibility) — Buhlmann-Straub credibility in Python, with mixed-model equivalence checks.
 - [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) — constrained rate change optimisation for UK personal lines.
+- [`bayesian-pricing`](https://github.com/burningcost/bayesian-pricing) — hierarchical Bayesian models for thin-data segments, with Buhlmann-Straub credibility factor output.
 
 We have also written at length about [why standard k-fold cross-validation is wrong for insurance data](/2026/03/06/why-your-cross-validation-is-lying-to-you.html) — the kind of detail that only comes from having had to fix it in production.
 
@@ -119,7 +120,7 @@ To join the waitlist, email [pricing.frontier@gmail.com](mailto:pricing.frontier
 
 **[Join the waitlist](mailto:pricing.frontier@gmail.com?subject=Waitlist%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks)**
 
-<!-- TODO: Replace mailto link with Google Form or Gumroad pre-launch page when payment processing is set up -->
+<!-- TODO: Replace mailto link with Gumroad pre-launch page when payment processing is set up -->
 
 ---
 
