@@ -45,9 +45,7 @@ This is not an introductory course to either Python or insurance pricing. If you
 
 Eight modules. Each module is a written tutorial plus a Databricks notebook you can run directly. The notebooks use synthetic data that mirrors real personal lines structure - motor policies with realistic exposure, claim counts, and development patterns. All code uses Polars for data wrangling and CatBoost for gradient boosting - the best tools for the job in 2026.
 
-### Available now - MVP bundle
-
-The four MVP modules are published. Each has a written tutorial and a Databricks notebook.
+### All modules
 
 ---
 
@@ -107,21 +105,20 @@ Building a rate change that meets a target loss ratio, respects a maximum moveme
 
 ---
 
-### Coming later
+#### [Module 8: End-to-End Pipeline (Capstone)](/course/module-08/)
 
-#### Module 8: End-to-End Pipeline (Capstone)
+A complete motor frequency and severity pipeline: data ingestion from Delta, feature engineering with a reproducible transform layer, walk-forward CV, CatBoost training with MLflow tracking, SHAP relativities, conformal intervals, credibility blending, rate optimisation, and a final output pack written to Delta tables. The notebook is designed to be a working template for a real project, not a demo. Every component from modules 1-7 appears in this pipeline.
 
-A complete motor frequency and severity pipeline: data ingestion from Delta, feature engineering with a reproducible transform layer, walk-forward CV, CatBoost training with MLflow tracking, SHAP relativities, conformal intervals, rate optimisation, and a final output table that feeds a rating engine. The notebook is designed to be a working template for a real project, not a demo.
+**Files:** [README](/course/module-08/README.md) - [Tutorial](/course/module-08/tutorial.md) - [Notebook](/course/module-08/notebook.py)
 
 ---
 
 ## Pricing
 
-The MVP bundle - modules 1, 2, 3, 4, and 6 - covers the core Databricks setup, the GLM bridge, GBMs for insurance, SHAP relativities, and credibility. Five modules that take a pricing team from zero to production-ready CatBoost models with interpretable output.
+Eight modules covering the full Databricks pricing workflow: workspace setup, GLMs in Python, GBMs with CatBoost, SHAP relativities, conformal prediction intervals, credibility and Bayesian pricing, constrained rate optimisation, and a capstone end-to-end pipeline.
 
 | Bundle | Modules | Price |
 |---|---|---|
-| MVP bundle | 1, 2, 3, 4, 6 | £295 |
 | Full course | All 8 modules | £495 |
 | Individual module | Any one | £79 |
 
@@ -148,13 +145,13 @@ We are pricing practitioners, not data science generalists who have read the ins
 
 ---
 
-## Get the MVP bundle
+## Get the course
 
-Email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com?subject=MVP%20Bundle%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks) with the subject line pre-filled. We will send you the bundle files and invoice. Waitlist members get first access at the launch price.
+Email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com?subject=Full%20Course%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks) with the subject line pre-filled. We will send you the files and invoice.
 
-**[Buy the MVP bundle - £295](mailto:pricing.frontier@gmail.com?subject=MVP%20Bundle%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks)**
+**[Buy the full course - £495](mailto:pricing.frontier@gmail.com?subject=Full%20Course%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks)** | **[Buy a single module - £79](mailto:pricing.frontier@gmail.com?subject=Individual%20Module%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks)**
 
-<!-- TODO: Replace mailto link with Gumroad payment page when payment processing is set up -->
+<!-- TODO: Replace mailto links with Polar.sh payment page when payment processing is set up -->
 
 ---
 
