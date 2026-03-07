@@ -362,17 +362,17 @@ permalink: /course/
       <div class="proof-card">
         <p>"The SHAP relativities module solved a problem we had been wrestling with for two years: how to present a GBM to a pricing committee used to Emblem. The factor table format made it reviewable."</p>
         <div class="proof-card-author">Pricing actuary</div>
-        <div class="proof-card-role">UK personal lines insurer &mdash; early reader</div>
+        <div class="proof-card-role">UK personal lines insurer - early reader</div>
       </div>
       <div class="proof-card">
         <p>"I spent three months adapting generic CatBoost tutorials to insurance data before finding this. The walk-forward cross-validation section alone would have saved me weeks."</p>
         <div class="proof-card-author">Pricing analyst</div>
-        <div class="proof-card-role">UK motor insurer &mdash; early reader</div>
+        <div class="proof-card-role">UK motor insurer - early reader</div>
       </div>
       <div class="proof-card">
         <p>"The constrained rate optimisation module covers something I have never seen in a course or a textbook. We have been doing this in Excel. Seeing it formalised properly changed how I think about rate reviews."</p>
         <div class="proof-card-author">Head of pricing</div>
-        <div class="proof-card-role">UK personal lines insurer &mdash; early reader</div>
+        <div class="proof-card-role">UK personal lines insurer - early reader</div>
       </div>
     </div>
 
@@ -446,7 +446,7 @@ permalink: /course/
       <div class="pricing-card featured">
         <div class="pricing-card-label">MVP bundle</div>
         <div class="pricing-card-price"><span>&pound;</span>295</div>
-        <div class="pricing-card-sub">Modules 1, 2, 4 &amp; 6 &mdash; the core sequence most teams need first</div>
+        <div class="pricing-card-sub">Modules 1, 2, 4 &amp; 6 - the core sequence most teams need first</div>
         <ul class="pricing-card-includes">
           <li>Databricks workspace setup (Module 1)</li>
           <li>GLM bridge from Emblem (Module 2)</li>
@@ -473,7 +473,7 @@ permalink: /course/
     </div>
     <p class="pricing-cta-note">
       Payment via <a href="https://polar.sh" target="_blank">Polar.sh</a> is coming shortly.
-      Join the waitlist and we will email you when it is live &mdash; waitlist members get first access at the launch price.
+      Join the waitlist and we will email you when it is live - waitlist members get first access at the launch price.
     </p>
   </div>
 </section>
@@ -520,8 +520,8 @@ permalink: /course/
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">Why CatBoost and not XGBoost or LightGBM?</div>
-        <div class="faq-a">CatBoost handles categorical features natively without ordinal encoding, which matters for insurance rating factors. It also has more stable default behaviour on small datasets. The Poisson, Gamma, and Tweedie objectives are well-tested and documented. That said, the concepts transfer directly to LightGBM or XGBoost if your team is committed to a different library.</div>
+        <div class="faq-q">Why CatBoost and not XGBoost or other GBM libraries?</div>
+        <div class="faq-a">CatBoost handles categorical features natively without ordinal encoding, which matters for insurance rating factors. It also has more stable default behaviour on small datasets. The Poisson, Gamma, and Tweedie objectives are well-tested and documented. That said, the concepts transfer directly to XGBoost or other gradient boosting libraries if your team is committed to a different tool.</div>
       </div>
 
       <div class="faq-item">
