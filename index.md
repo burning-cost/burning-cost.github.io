@@ -23,7 +23,7 @@ layout: home
     <span class="bc-stat-label">Actuarial tests</span>
   </div>
   <div class="bc-stat">
-    <span class="bc-stat-number">13</span>
+    <span class="bc-stat-number">14</span>
     <span class="bc-stat-label">Technical posts</span>
   </div>
   <div class="bc-stat">
