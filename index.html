@@ -6,12 +6,14 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-label">Open source &middot; UK insurance pricing</div>
-  <h1>Bridge the gap between your <em>GBMs</em> and production</h1>
-  <p class="hero-sub">14 Python libraries covering the full pricing workflow. Built by practitioners, for teams that already know what a GLM is.</p>
-  <div class="hero-cta">
-    <a href="/course/" class="btn btn-primary">Training course</a>
-    <a href="https://github.com/burningcost" target="_blank" class="btn btn-outline">GitHub &rarr;</a>
+  <div class="hero-inner">
+    <div class="hero-label">Open source &middot; UK insurance pricing</div>
+    <h1>Your <em>GBM</em> outperforms the production model.<br>Your <em>GLM</em> is still live.</h1>
+    <p class="hero-sub">14 Python libraries that bridge the gap - from walk-forward cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is.</p>
+    <div class="hero-cta">
+      <a href="/course/" class="btn btn-primary">Training course &rarr;</a>
+      <a href="https://github.com/burningcost" target="_blank" class="btn btn-outline">Browse on GitHub</a>
+    </div>
   </div>
 </section>
 
@@ -41,9 +43,9 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
 <section class="problem">
   <div class="problem-inner">
     <div class="section-label">The problem we solve</div>
-    <h2>Your GBM outperforms the production model. So why is the GLM still live?</h2>
-    <p>Most UK pricing teams have adopted GBMs but are still taking GLM outputs to production. The GBM sits on a server outperforming the production model, but the outputs are not in a form that a rating engine, regulator, or pricing committee can work with.</p>
-    <p>The missing piece is not technical skill - it is the tooling that bridges the two. Each library here solves one specific problem in the pricing workflow, ships with actuarial tests, and produces outputs in formats that pricing teams already recognise.</p>
+    <h2>The missing piece is not technical skill. It is the tooling that bridges the two.</h2>
+    <p>Most UK pricing teams have adopted GBMs but are still taking GLM outputs to production. The GBM sits on a server outperforming the production model - but the outputs are not in a form that a rating engine, regulator, or pricing committee can work with. The model never makes it to rates.</p>
+    <p>Each library here solves one specific problem in the pricing workflow. Actuarial tests are included. Outputs use the formats pricing teams already recognise: factor tables, Lorenz curves, A/E ratios, movement capped rate changes. sklearn-compatible where it matters.</p>
   </div>
 </section>
 
@@ -57,17 +59,23 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Model interpretation</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#128269;</span>
+      <span class="lib-group-label">Model interpretation</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/shap-relativities" target="_blank" class="lib-card">
         <span class="lib-card-name">shap-relativities</span>
-        <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(beta) from a GLM - factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
+        <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(&beta;) from a GLM - factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
       </a>
     </div>
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Validation</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#10003;</span>
+      <span class="lib-group-label">Validation</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/insurance-cv" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-cv</span>
@@ -81,7 +89,10 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Techniques</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#9881;</span>
+      <span class="lib-group-label">Techniques</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/credibility" target="_blank" class="lib-card">
         <span class="lib-card-name">credibility</span>
@@ -107,7 +118,10 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Commercial</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#128200;</span>
+      <span class="lib-group-label">Commercial</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/rate-optimiser" target="_blank" class="lib-card">
         <span class="lib-card-name">rate-optimiser</span>
@@ -121,7 +135,10 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Compliance</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#9878;</span>
+      <span class="lib-group-label">Compliance</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/insurance-fairness" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-fairness</span>
@@ -131,14 +148,14 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
   </div>
 
   <div class="lib-group">
-    <div class="lib-group-label">Monitoring</div>
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#128268;</span>
+      <span class="lib-group-label">Monitoring</span>
+    </div>
     <div class="lib-grid">
       <a href="https://github.com/burningcost/insurance-monitoring" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-monitoring</span>
-
-
         <span class="lib-card-desc">Three-layer model monitoring for deployed pricing models. Exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, and a formal Gini z-test to distinguish recalibration from refit signals.</span>
-
       </a>
     </div>
   </div>
@@ -149,12 +166,17 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
 <section class="course">
   <div class="course-inner">
     <div class="course-left">
-      <div class="section-label">Training course</div>
+      <div class="course-badge">Training course</div>
       <h2>Modern Insurance Pricing with Python and Databricks</h2>
-      <p>Eight modules written for pricing actuaries and analysts at UK personal lines insurers. Every module covers a real pricing problem - not a generic data science tutorial adapted to insurance.</p>
+      <p>Eight modules written for pricing actuaries and analysts at UK personal lines insurers. Every module covers a real pricing problem - not a generic data science tutorial adapted to insurance. You work through real Databricks notebooks, on synthetic data that behaves like the real thing.</p>
 
       <div class="price-cards">
         <div class="price-card">
+          <div class="price-card-label">Per module</div>
+          <div class="price-card-price">&pound;79</div>
+          <div class="price-card-desc">Any single module</div>
+        </div>
+        <div class="price-card price-card--featured">
           <div class="price-card-label">MVP bundle</div>
           <div class="price-card-price">&pound;295</div>
           <div class="price-card-desc">Modules 1, 2, 3, 4, 6</div>
@@ -163,11 +185,6 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
           <div class="price-card-label">Full course</div>
           <div class="price-card-price">&pound;495</div>
           <div class="price-card-desc">All 8 modules</div>
-        </div>
-        <div class="price-card">
-          <div class="price-card-label">Per module</div>
-          <div class="price-card-price">&pound;79</div>
-          <div class="price-card-desc">Any single module</div>
         </div>
       </div>
 
@@ -216,20 +233,28 @@ description: "14 Python libraries covering the full pricing workflow. From walk-
 <!-- Blog posts -->
 <section class="posts">
   <div class="posts-inner">
-    <div class="section-label">From the blog</div>
-    <h2 style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;color:#1a1d2e;margin-top:0.5rem;">Practitioner articles on insurance pricing</h2>
+    <div class="posts-header">
+      <div class="section-label">From the blog</div>
+      <h2>Practitioner articles on insurance pricing</h2>
+    </div>
 
     <div class="post-grid">
       {% for post in site.posts limit:9 %}
       <div class="post-card">
         <div class="post-date">{{ post.date | date: "%d %b %Y" }}</div>
         <div class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></div>
+        {% if post.description %}
+        <div class="post-excerpt">{{ post.description }}</div>
+        {% elsif post.excerpt %}
+        <div class="post-excerpt">{{ post.excerpt | strip_html | truncate: 140 }}</div>
+        {% endif %}
+        <a href="{{ post.url }}" class="post-read-more">Read article &rarr;</a>
       </div>
       {% endfor %}
     </div>
 
     <div class="post-more">
-      <a href="/blog/" class="btn btn-outline" style="border-color:#d0d5e2;color:#3d4463;">All articles &rarr;</a>
+      <a href="/blog/" class="btn btn-outline-light">All articles &rarr;</a>
     </div>
   </div>
 </section>
