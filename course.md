@@ -360,19 +360,19 @@ permalink: /course/
 
     <div class="proof-grid">
       <div class="proof-card">
-        <p>"The SHAP relativities module solved a problem we had been wrestling with for two years: how to present a GBM to a pricing committee used to Emblem. The factor table format made it reviewable."</p>
-        <div class="proof-card-author">Pricing actuary</div>
-        <div class="proof-card-role">UK personal lines insurer - early reader</div>
+        <p>13 open-source libraries, each solving one well-defined pricing problem. Over 600 tests. Every library used in the course was built by us.</p>
+        <div class="proof-card-author">Open source</div>
+        <div class="proof-card-role">github.com/burningcost</div>
       </div>
       <div class="proof-card">
-        <p>"I spent three months adapting generic CatBoost tutorials to insurance data before finding this. The walk-forward cross-validation section alone would have saved me weeks."</p>
-        <div class="proof-card-author">Pricing analyst</div>
-        <div class="proof-card-role">UK motor insurer - early reader</div>
+        <p>Written for people who already know what a GLM is. No generic data science padding. Every module covers a real pricing workflow problem.</p>
+        <div class="proof-card-author">Practitioner focus</div>
+        <div class="proof-card-role">UK personal lines</div>
       </div>
       <div class="proof-card">
-        <p>"The constrained rate optimisation module covers something I have never seen in a course or a textbook. We have been doing this in Excel. Seeing it formalised properly changed how I think about rate reviews."</p>
-        <div class="proof-card-author">Head of pricing</div>
-        <div class="proof-card-role">UK personal lines insurer - early reader</div>
+        <p>Executable Databricks notebooks with synthetic data that behaves like the real thing. Run the code, see the outputs, adapt to your own book.</p>
+        <div class="proof-card-author">Hands-on</div>
+        <div class="proof-card-role">Databricks notebooks</div>
       </div>
     </div>
 
