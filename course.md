@@ -83,19 +83,31 @@ Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed
 
 ---
 
-### Coming later
-
-#### Module 3: GBMs for Insurance Pricing
+#### [Module 3: GBMs for Insurance Pricing](/course/module-03/)
 
 CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data - why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding - a genuine advantage for pricing data with high-cardinality categoricals. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
 
-#### Module 5: Conformal Prediction Intervals
+**Files:** [README](/course/module-03/README.md) - [Tutorial](/course/module-03/tutorial.md) - [Notebook](/course/module-03/notebook.py)
+
+---
+
+#### [Module 5: Conformal Prediction Intervals](/course/module-05/)
 
 Prediction intervals for insurance models that are statistically honest - not confidence intervals for the mean, but intervals for individual risk predictions. Conformal prediction on top of a trained GBM, calibrated to your own holdout data. How to use these intervals to flag uncertain risks and to set minimum premium floors. Uses our [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) library, which implements the variance-weighted non-conformity score from Manna et al. (2025) - producing intervals roughly 30% narrower than the naive approach with identical coverage guarantees.
 
-#### Module 7: Constrained Rate Optimisation
+**Files:** [README](/course/module-05/README.md) - [Tutorial](/course/module-05/tutorial.md) - [Notebook](/course/module-05/notebook.py)
+
+---
+
+#### [Module 7: Constrained Rate Optimisation](/course/module-07/)
 
 Building a rate change that meets a target loss ratio, respects a maximum movement cap per cell, and minimises cross-subsidy across rating factors simultaneously. Linear programming formulation, `scipy.optimize` and `PuLP` in Databricks, and how to structure the constraints so that the optimiser produces something a pricing actuary and a commercial director will both accept. Uses our open-source [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) library. This is the module most courses do not have.
+
+**Files:** [README](/course/module-07/README.md) - [Tutorial](/course/module-07/tutorial.md) - [Notebook](/course/module-07/notebook.py)
+
+---
+
+### Coming later
 
 #### Module 8: End-to-End Pipeline (Capstone)
 
@@ -105,11 +117,11 @@ A complete motor frequency and severity pipeline: data ingestion from Delta, fea
 
 ## Pricing
 
-The MVP bundle - modules 1, 2, 4, and 6 - covers the core Databricks setup, the GLM bridge, SHAP relativities, and credibility. It is the sequence most teams need first.
+The MVP bundle - modules 1, 2, 3, 4, and 6 - covers the core Databricks setup, the GLM bridge, GBMs for insurance, SHAP relativities, and credibility. Five modules that take a pricing team from zero to production-ready CatBoost models with interpretable output.
 
 | Bundle | Modules | Price |
 |---|---|---|
-| MVP bundle | 1, 2, 4, 6 | £295 |
+| MVP bundle | 1, 2, 3, 4, 6 | £295 |
 | Full course | All 8 modules | £495 |
 | Individual module | Any one | £79 |
 
