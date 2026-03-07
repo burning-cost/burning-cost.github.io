@@ -305,7 +305,7 @@ glm = smf.glm(
 glm_rels = np.exp(glm.params).rename("glm_relativity")
 ```
 
-The GLM uses a proper `offset` - log exposure enters the linear predictor correctly, not as a weight. This is one of the genuine model-form differences between the GLM benchmark and the CatBoost model, and it contributes a small but systematic difference in relativities that should be understood rather than glossed over.
+Note that the GLM uses a proper `offset` - log exposure enters the linear predictor correctly, not as a weight. This is one of the genuine model-form differences between the GLM benchmark and the CatBoost model, and it contributes a small but systematic difference in relativities that should be understood rather than glossed over.
 
 The honest observation about what this comparison typically shows: on a mature, well-maintained UK motor book with a GLM that has been tuned over several years, the SHAP relativities agree with the GLM relativities to within 5-10% on most categorical factors. The GBM's advantage is concentrated in the continuous features - driver age curves, mileage curves - and in interactions the GLM never modelled. The area-NCD-age combination that the GLM treated as additive is often genuinely interactive, and the GBM will find it where data supports it.
 
@@ -326,9 +326,9 @@ Radar (Willis Towers Watson) expects a factor table as `FactorName`, `Level`, `R
 **Versioning.** Every export should carry `model_version`, `export_date`, and `job_run_id`. Write to both a versioned DBFS path and a Delta table in Unity Catalog. The requirement is simple: given a Radar factor table that was live on a given date, you must be able to identify the model run that produced it, the training data it used, and the CV results that justified its deployment.
 
 ```python
-import datetime
+import pandas as pd
 
-# rating_table is a Polars DataFrame from shap-relativities
+# Build the export as a pandas DataFrame for Spark compatibility
 radar_export = (
     rating_table
     .select(["feature", "level", "relativity"])
@@ -396,7 +396,7 @@ This is the argument for Databricks that most teams never hear when the platform
 
 ---
 
-## 9. What This Changes - and What It Does Not
+## 9. What This Unlocks - and What It Does Not
 
 When a team runs this workflow for the first time, three things change. The model retrain cycle drops from a two-week manual process to an overnight job. The audit trail for every factor table is automatic and does not depend on anyone remembering to save a version. The team can run experiments by forking the Job, changing hyperparameters, and comparing out-of-time performance in MLflow without touching the production pipeline.
 
@@ -414,10 +414,10 @@ Now the honest caveats, because they matter and they do not disappear by running
 
 | Library | Purpose | Install |
 |---------|---------|---------|
-| [`shap-relativities`](https://github.com/burningcost/shap-relativities) | SHAP extraction from CatBoost | `uv add git+https://github.com/burningcost/shap-relativities` |
-| [`insurance-cv`](https://github.com/burningcost/insurance-cv) | Temporal cross-validation splits | `uv add git+https://github.com/burningcost/insurance-cv` |
-| `catboost` | Model training | `uv add catboost` |
-| `statsmodels` | GLM benchmark | `uv add statsmodels` |
+| [`shap-relativities`](https://github.com/burningcost/shap-relativities) | SHAP extraction from CatBoost | `uv pip install git+https://github.com/burningcost/shap-relativities` |
+| [`insurance-cv`](https://github.com/burningcost/insurance-cv) | Temporal cross-validation splits | `uv pip install git+https://github.com/burningcost/insurance-cv` |
+| `catboost` | Model training | `uv pip install catboost` |
+| `statsmodels` | GLM benchmark | `uv pip install statsmodels` |
 | `mlflow` | Experiment tracking | Pre-installed on Databricks Runtime 14+ |
 
 The full notebook set - `01_data_prep`, `02_train_extract`, `03_export` - and the Job JSON definition are available as a downloadable archive. The notebooks map 1:1 to the sections above and can be imported directly into a Databricks workspace.

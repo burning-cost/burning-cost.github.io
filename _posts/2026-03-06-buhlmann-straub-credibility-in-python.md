@@ -67,7 +67,7 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 
 where X̄_i is the exposure-weighted mean loss rate for group i, and μ̂ is the grand portfolio mean.
 
-This is the Best Linear Unbiased Predictor (BLUP) of μ(θ_i) under the model. It minimises E[(P_i − μ(θ_i))²] over all linear estimators of the group mean. No distributional assumption is required beyond finite second moments - you don't need to assume Poisson counts or Normal loss ratios.
+This is the Best Linear Unbiased Predictor (BLUP) of μ(θ_i) under the model. It minimises E[(P_i - μ(θ_i))²] over all linear estimators of the group mean. No distributional assumption is required beyond finite second moments - you don't need to assume Poisson counts or Normal loss ratios.
 
 When w_i is small relative to K, Z_i → 0 and P_i → μ̂. The group is thin; lean on the portfolio. When w_i is large, Z_i → 1 and P_i → X̄_i. The group has enough exposure to stand on its own.
 
@@ -97,7 +97,7 @@ s²   =  Σ_i [ w_i · (X̄_i − μ̂)² ]
 
 The term c is a normalising constant that corrects for the fact that groups with different exposures contribute unequally to the between-group sum of squares. It is analogous to the denominator in an ANOVA between-group variance estimate.
 
-â can be negative. This happens when the observed between-group variation is no larger than what pure noise would produce - the portfolio is homogeneous. Convention is to truncate â at zero, which sends K → ∞ and all Z_i → 0. Every group gets the portfolio mean. This is the right answer: if you cannot distinguish groups beyond random noise, don't try.
+Note that â can be negative. This happens when the observed between-group variation is no larger than what pure noise would produce - the portfolio is homogeneous. Convention is to truncate â at zero, which sends K → ∞ and all Z_i → 0. Every group gets the portfolio mean. This is the right answer: if you cannot distinguish groups beyond random noise, don't try.
 
 With v̂ and â in hand:
 
@@ -114,10 +114,10 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 The `credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
 
 ```bash
-uv add credibility
+uv pip install credibility
 ```
 
-The core class is `BuhlmannStraub`. It expects a long-format DataFrame: one row per group-period, with columns for the group identifier, time period, loss rate, and exposure. The library uses Polars natively; examples below use Polars throughout.
+The core class is `BuhlmannStraub`. It expects a long-format DataFrame: one row per group-period, with columns for the group identifier, time period, loss rate, and exposure. The library is mid-migration from pandas to Polars; examples below use Polars throughout.
 
 ```python
 import polars as pl
@@ -257,7 +257,7 @@ The connection to penalised regression is exact. Ridge regression on dummy varia
 
 ### How it complements GBM approaches
 
-A GBM trained on thin data will overfit. Regularisation parameters (`min_data_in_leaf`, `depth`, L2 leaf regularisation) limit this, but they are tuned globally - they don't adapt to which particular segments are thin and which are well-populated.
+A GBM trained on thin data will overfit. Regularisation parameters (min_data_in_leaf, num_leaves, L2) limit this, but they are tuned globally - they don't adapt to which particular segments are thin and which are well-populated.
 
 Credibility weighting offers a different intervention. Train your GBM on the full book. Extract segment-level loss rates from its predictions. Then credibility-blend those segment estimates with the book average, using `BuhlmannStraub` to set K from the data. The result respects the segment's own experience where it has enough data, and falls back to book experience where it doesn't.
 
@@ -291,7 +291,7 @@ This connection also appears in recent deep learning work. Richman, Scognamiglio
 
 **You have one or two groups.** With a single scheme and no portfolio comparison point, Bühlmann-Straub collapses. You cannot estimate a. Use actuarial judgment, an industry benchmark, or the full Bayesian model.
 
-**The data-generating process is non-stationary.** The standard model assumes v and a are constant across periods. Post-FCA pricing reform (PS21/5, effective January 2022) broke this assumption for UK personal lines renewal pricing: pre-2022 data is a materially different regime. You can partially address this with exponentially discounted weights - giving more recent periods higher weight by scaling w_{ij} by a decay factor λ^(current_year − year_j) before fitting - but if the structural break is severe, the older data may do more harm than good. A λ of 0.7 per year down-weights 2020 experience to 0.49, 2019 to 0.34 - reasonable for a post-FCA recalibration. `BuhlmannStraub` accepts any positive exposure weights, so you pass in the decayed weights directly.
+**The data-generating process is non-stationary.** The standard model assumes v and a are constant across periods. Post-FCA pricing reform (PS21/5, effective January 2022) broke this assumption for UK personal lines renewal pricing: pre-2022 data is a materially different regime. You can partially address this with exponentially discounted weights - giving more recent periods higher weight by scaling w_{ij} by a decay factor λ^(current_year - year_j) before fitting - but if the structural break is severe, the older data may do more harm than good. A λ of 0.7 per year down-weights 2020 experience to 0.49, 2019 to 0.34 - reasonable for a post-FCA recalibration. `BuhlmannStraub` accepts any positive exposure weights, so you pass in the decayed weights directly.
 
 **Your groups have very different structures.** Bühlmann-Straub assumes a single K applies across all groups. If some groups are mass-market commoditised personal lines and others are high-net-worth niche schemes, the between-group heterogeneity is not well-described by a single a parameter. Consider a hierarchical model or run separate credibility analyses by business type.
 
