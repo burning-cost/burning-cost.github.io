@@ -1,18 +1,37 @@
 ---
 layout: landing
 title: "Burning Cost - Open-source pricing tools for UK insurance teams"
-description: "12 Python libraries covering the full pricing workflow. From walk-forward cross-validation to constrained rate optimisation. Built by practitioners, for UK personal lines pricing teams."
+description: "13 Python libraries covering the full pricing workflow. From walk-forward cross-validation to constrained rate optimisation. Built by practitioners, for UK personal lines pricing teams."
 ---
 
 <!-- Hero -->
 <section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb--1"></div>
+    <div class="hero-orb hero-orb--2"></div>
+    <div class="hero-orb hero-orb--3"></div>
+  </div>
   <div class="hero-inner">
-    <div class="hero-label">Open source &middot; UK insurance pricing</div>
-    <h1>Your <em>GBM</em> outperforms the production model.<br>Your <em>GLM</em> is still live.</h1>
-    <p class="hero-sub">12 Python libraries that bridge the gap - from walk-forward cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is.</p>
+    <div class="hero-label">
+      <span class="hero-label-dot"></span>
+      Open source &middot; UK insurance pricing
+    </div>
+    <h1>Your <em>GBM</em> outperforms.<br>Your <em>GLM</em> is still live.</h1>
+    <p class="hero-sub">13 Python libraries that bridge the gap &mdash; from walk-forward cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is.</p>
     <div class="hero-cta">
       <a href="/course/" class="btn btn-primary">Training course &rarr;</a>
       <a href="https://github.com/burningcost" target="_blank" class="btn btn-outline">Browse on GitHub</a>
+    </div>
+
+    <!-- Animated terminal -->
+    <div class="hero-terminal">
+      <div class="hero-terminal-bar">
+        <div class="term-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="term-title">shap_relativities_demo.py</span>
+      </div>
+      <div class="hero-terminal-body" id="hero-term-body"><span class="term-cursor"></span></div>
     </div>
   </div>
 </section>
@@ -21,7 +40,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat">
-      <span class="stat-number">12</span>
+      <span class="stat-number">13</span>
       <span class="stat-label">Libraries</span>
     </div>
     <div class="stat">
@@ -41,45 +60,59 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
 
 <!-- Problem statement -->
 <section class="problem">
-  <div class="problem-inner">
+  <div class="problem-inner fade-up">
     <div class="section-label">The problem we solve</div>
-    <h2>The missing piece is not technical skill. It is the tooling that bridges the two.</h2>
-    <p>Most UK pricing teams have adopted GBMs but are still taking GLM outputs to production. The GBM sits on a server outperforming the production model - but the outputs are not in a form that a rating engine, regulator, or pricing committee can work with. The model never makes it to rates.</p>
-    <p>Each library here solves one specific problem in the pricing workflow. Actuarial tests are included. Outputs use the formats pricing teams already recognise: factor tables, Lorenz curves, A/E ratios, movement capped rate changes. sklearn-compatible where it matters.</p>
+    <h2>The missing piece is not technical skill. It is tooling that bridges the two.</h2>
+    <p>Most UK pricing teams have adopted GBMs but are still taking GLM outputs to production. The GBM sits on a server outperforming the production model &mdash; but the outputs are not in a form that a rating engine, regulator, or pricing committee can work with. The model never makes it to rates.</p>
+
+    <div class="problem-highlight">
+      <p>Each library here solves one specific problem in the pricing workflow. Actuarial tests are included. Outputs use the formats pricing teams already recognise: factor tables, Lorenz curves, A/E ratios, movement-capped rate changes.</p>
+    </div>
+
+    <p>sklearn-compatible where it matters. Documented by people who have sat in the same sign-off meetings you have.</p>
   </div>
 </section>
 
 <!-- Code previews -->
 <section class="code-preview">
+  <div class="code-preview-bg"></div>
   <div class="code-preview-inner">
     <div class="code-preview-header fade-up">
       <div class="section-label">See it in practice</div>
       <h2>Three lines to a factor table. Five to validated splits.</h2>
-      <p>These are real API calls from the libraries. Not wrappers around wrappers - each one does the specific thing a pricing team needs.</p>
+      <p>Real API calls from the libraries. Not wrappers around wrappers &mdash; each one does the specific thing a pricing team needs.</p>
     </div>
-    <div class="code-blocks fade-up-children">
 
-      <div class="code-block">
-        <div class="code-block-header">
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-          <span class="code-block-filename">shap_relativities_example.py</span>
-        </div>
-        <div class="code-block-body"><span class="tok-kw">from</span> <span class="tok-cls">shap_relativities</span> <span class="tok-kw">import</span> <span class="tok-cls">SHAPRelativities</span>
+    <div class="fade-up">
+      <div class="code-tabs">
+        <button class="code-tab active" data-tab="shap">shap-relativities</button>
+        <button class="code-tab" data-tab="cv">insurance-cv</button>
+        <button class="code-tab" data-tab="rate">rate-optimiser</button>
+      </div>
+
+      <div id="panel-shap" class="code-panel active">
+        <div class="code-block-single">
+          <div class="code-block-single-body"><span class="tok-kw">from</span> <span class="tok-cls">shap_relativities</span> <span class="tok-kw">import</span> <span class="tok-cls">SHAPRelativities</span>
 
 <span class="tok-var">sr</span> <span class="tok-op">=</span> <span class="tok-cls">SHAPRelativities</span><span class="tok-pn">(</span><span class="tok-var">model</span><span class="tok-pn">,</span> <span class="tok-var">X_train</span><span class="tok-pn">)</span>
 <span class="tok-var">factors</span> <span class="tok-op">=</span> <span class="tok-var">sr</span><span class="tok-pn">.</span><span class="tok-fn">fit_transform</span><span class="tok-pn">(</span><span class="tok-var">X_test</span><span class="tok-pn">)</span>
 
-<span class="tok-cm"># Returns multiplicative factor tables</span>
-<span class="tok-cm"># Same format as exp(beta) from your GLM</span></div>
-        <div class="code-block-caption">Factor tables, confidence intervals, exposure weighting, reconstruction validation. Output goes straight into a pricing committee pack.</div>
+<span class="tok-cm"># Returns multiplicative factor tables in GLM format</span>
+<span class="tok-cm"># Same structure as exp(beta) from your Emblem model</span>
+<span class="tok-var">factors</span><span class="tok-pn">.</span><span class="tok-fn">head</span><span class="tok-pn">()</span>
+<span class="tok-cm">#  vehicle_age  relativity  ci_lower  ci_upper</span>
+<span class="tok-cm">#  0            1.000       0.982     1.018</span>
+<span class="tok-cm">#  1            0.912       0.901     0.923</span>
+
+<span class="tok-fn">print</span><span class="tok-pn">(</span><span class="tok-str">f"Reconstruction R² = {sr.reconstruction_r2:.4f}"</span><span class="tok-pn">)</span>
+<span class="tok-cm"># Reconstruction R² = 0.9973</span></div>
+          <div class="code-block-caption-single">Factor tables, confidence intervals, exposure weighting, reconstruction validation. Output goes straight into a pricing committee pack.</div>
+        </div>
       </div>
 
-      <div class="code-block">
-        <div class="code-block-header">
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-          <span class="code-block-filename">insurance_cv_example.py</span>
-        </div>
-        <div class="code-block-body"><span class="tok-kw">from</span> <span class="tok-cls">insurance_cv</span> <span class="tok-kw">import</span> <span class="tok-cls">InsuranceTemporalCV</span>
+      <div id="panel-cv" class="code-panel">
+        <div class="code-block-single">
+          <div class="code-block-single-body"><span class="tok-kw">from</span> <span class="tok-cls">insurance_cv</span> <span class="tok-kw">import</span> <span class="tok-cls">InsuranceTemporalCV</span>
 <span class="tok-kw">from</span> <span class="tok-cls">sklearn.model_selection</span> <span class="tok-kw">import</span> <span class="tok-fn">cross_val_score</span>
 
 <span class="tok-var">cv</span> <span class="tok-op">=</span> <span class="tok-cls">InsuranceTemporalCV</span><span class="tok-pn">(</span>
@@ -90,16 +123,18 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
     <span class="tok-var">model</span><span class="tok-pn">,</span> <span class="tok-var">X</span><span class="tok-pn">,</span> <span class="tok-var">y</span><span class="tok-pn">,</span>
     <span class="tok-var">cv</span><span class="tok-op">=</span><span class="tok-var">cv</span><span class="tok-pn">,</span>
     <span class="tok-var">scoring</span><span class="tok-op">=</span><span class="tok-str">"poisson_deviance"</span>
-<span class="tok-pn">)</span></div>
-        <div class="code-block-caption">Walk-forward splits with configurable IBNR buffers. Temporally correct - no future data leaks into training folds.</div>
+<span class="tok-pn">)</span>
+
+<span class="tok-cm"># Walk-forward splits - no future data leaks into training folds</span>
+<span class="tok-cm"># IBNR buffer prevents immature periods contaminating validation</span>
+<span class="tok-fn">print</span><span class="tok-pn">(</span><span class="tok-str">f"CV deviance: {scores.mean():.4f} ± {scores.std():.4f}"</span><span class="tok-pn">)</span></div>
+          <div class="code-block-caption-single">Walk-forward splits with configurable IBNR buffers. Temporally correct &mdash; no future data leaks into training folds. sklearn-compatible API.</div>
+        </div>
       </div>
 
-      <div class="code-block">
-        <div class="code-block-header">
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-          <span class="code-block-filename">rate_optimiser_example.py</span>
-        </div>
-        <div class="code-block-body"><span class="tok-kw">from</span> <span class="tok-cls">rate_optimiser</span> <span class="tok-kw">import</span> <span class="tok-cls">RateOptimiser</span>
+      <div id="panel-rate" class="code-panel">
+        <div class="code-block-single">
+          <div class="code-block-single-body"><span class="tok-kw">from</span> <span class="tok-cls">rate_optimiser</span> <span class="tok-kw">import</span> <span class="tok-cls">RateOptimiser</span>
 
 <span class="tok-var">opt</span> <span class="tok-op">=</span> <span class="tok-cls">RateOptimiser</span><span class="tok-pn">(</span>
     <span class="tok-var">current_rates</span><span class="tok-pn">,</span>
@@ -109,10 +144,15 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
 <span class="tok-var">result</span> <span class="tok-op">=</span> <span class="tok-var">opt</span><span class="tok-pn">.</span><span class="tok-fn">optimise</span><span class="tok-pn">(</span>
     <span class="tok-var">max_movement</span><span class="tok-op">=</span><span class="tok-num">0.10</span><span class="tok-pn">,</span>
     <span class="tok-var">target_lr_improvement</span><span class="tok-op">=</span><span class="tok-num">0.03</span>
-<span class="tok-pn">)</span></div>
-        <div class="code-block-caption">Formulates the efficient frontier as a linear programme. Respects movement caps per segment, targets aggregate LR improvement.</div>
-      </div>
+<span class="tok-pn">)</span>
 
+<span class="tok-cm"># Efficient frontier as a linear programme</span>
+<span class="tok-cm"># Respects ±10% movement cap per segment</span>
+<span class="tok-fn">print</span><span class="tok-pn">(</span><span class="tok-str">f"LR improvement: {result.lr_delta:.1%}"</span><span class="tok-pn">)</span>
+<span class="tok-cm"># LR improvement: 2.8%  (within movement constraints)</span></div>
+          <div class="code-block-caption-single">Formulates the efficient frontier as a linear programme. Respects movement caps per segment, targets aggregate loss ratio improvement.</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -130,13 +170,13 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       <div class="persona-card">
         <div class="persona-icon persona-icon--blue">PA</div>
         <div class="persona-title">Pricing actuaries moving from Emblem or Radar to Python</div>
-        <p class="persona-desc">You know the techniques. These libraries give you Python equivalents that produce outputs in the same formats you already use - factor tables, A/E ratios, Lorenz curves.</p>
+        <p class="persona-desc">You know the techniques. These libraries give you Python equivalents that produce outputs in the same formats you already use &mdash; factor tables, A/E ratios, Lorenz curves.</p>
       </div>
 
       <div class="persona-card">
         <div class="persona-icon persona-icon--purple">DS</div>
         <div class="persona-title">Data scientists joining an insurance pricing team</div>
-        <p class="persona-desc">You have the ML skills but lack the actuarial context. These libraries encode that context - correct cross-validation for IBNR, credibility-weighted factors, fairness tests that map to FCA requirements.</p>
+        <p class="persona-desc">You have the ML skills but lack the actuarial context. These libraries encode that context &mdash; correct cross-validation for IBNR, credibility-weighted factors, fairness tests that map to FCA requirements.</p>
       </div>
 
       <div class="persona-card">
@@ -148,7 +188,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       <div class="persona-card">
         <div class="persona-icon persona-icon--amber">AR</div>
         <div class="persona-title">Academic researchers working on insurance pricing methods</div>
-        <p class="persona-desc">We implement recent literature - Manna et al. (2025) on conformal prediction, BYM2 spatial models, variance-weighted non-conformity scores. Reproducible, documented, testable.</p>
+        <p class="persona-desc">We implement recent literature &mdash; Manna et al. (2025) on conformal prediction, BYM2 spatial models, variance-weighted non-conformity scores. Reproducible, documented, testable.</p>
       </div>
 
     </div>
@@ -164,6 +204,76 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
     <p>Each library solves one well-defined problem. Actuarial tests included. sklearn-compatible where it matters.</p>
   </div>
 
+  <!-- Workflow diagram -->
+  <div class="workflow fade-up">
+    <div class="workflow-track">
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#128201;</div>
+          <div class="workflow-node-name">Data &amp; Features</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">insurance-cv</span>
+        </div>
+      </div>
+      <div class="workflow-arrow">&#8594;</div>
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#129504;</div>
+          <div class="workflow-node-name">Model Fitting</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">credibility</span>
+          <span class="workflow-lib">bayesian-pricing</span>
+        </div>
+      </div>
+      <div class="workflow-arrow">&#8594;</div>
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#128269;</div>
+          <div class="workflow-node-name">Interpretation</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">shap-relativities</span>
+          <span class="workflow-lib">ins-interactions</span>
+        </div>
+      </div>
+      <div class="workflow-arrow">&#8594;</div>
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#10003;</div>
+          <div class="workflow-node-name">Validation</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">ins-conformal</span>
+          <span class="workflow-lib">ins-monitoring</span>
+        </div>
+      </div>
+      <div class="workflow-arrow">&#8594;</div>
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#9878;</div>
+          <div class="workflow-node-name">Compliance</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">ins-fairness</span>
+        </div>
+      </div>
+      <div class="workflow-arrow">&#8594;</div>
+      <div class="workflow-stage">
+        <div class="workflow-node">
+          <div class="workflow-node-icon">&#128200;</div>
+          <div class="workflow-node-name">Rates &amp; Commercial</div>
+        </div>
+        <div class="workflow-lib-labels">
+          <span class="workflow-lib">rate-optimiser</span>
+          <span class="workflow-lib">ins-demand</span>
+          <span class="workflow-lib">experience-rating</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="lib-group">
     <div class="lib-group-header">
       <span class="lib-group-icon">&#128269;</span>
@@ -172,7 +282,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
     <div class="lib-grid fade-up-children">
       <a href="https://github.com/burningcost/shap-relativities" target="_blank" class="lib-card">
         <span class="lib-card-name">shap-relativities</span>
-        <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(&beta;) from a GLM - factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
+        <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(&beta;) from a GLM &mdash; factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">SHAP</span>
           <span class="lib-tag">CatBoost</span>
@@ -199,7 +309,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       </a>
       <a href="https://github.com/burningcost/insurance-conformal" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-conformal</span>
-        <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Implements the variance-weighted non-conformity score from Manna et al. (2025) - roughly 30% narrower intervals than the naive approach with identical coverage guarantees.</span>
+        <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Implements the variance-weighted non-conformity score from Manna et al. (2025) &mdash; roughly 30% narrower intervals than the naive approach with identical coverage guarantees.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">conformal prediction</span>
           <span class="lib-tag">GBM</span>
@@ -232,7 +342,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       </a>
       <a href="https://github.com/burningcost/insurance-interactions" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-interactions</span>
-        <span class="lib-card-desc">Tools for detecting, quantifying, and presenting interaction effects in insurance pricing models - the effects a main-effects-only GLM cannot see.</span>
+        <span class="lib-card-desc">Tools for detecting, quantifying, and presenting interaction effects in insurance pricing models &mdash; the effects a main-effects-only GLM cannot see.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">interaction effects</span>
           <span class="lib-tag">GLM diagnostics</span>
@@ -240,7 +350,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       </a>
       <a href="https://github.com/burningcost/insurance-causal" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-causal</span>
-        <span class="lib-card-desc">Causal inference methods for insurance pricing. Separating genuine risk signal from confounded association - relevant wherever rating factors are correlated with distribution channel or policyholder behaviour.</span>
+        <span class="lib-card-desc">Causal inference methods for insurance pricing. Separating genuine risk signal from confounded association &mdash; relevant wherever rating factors are correlated with distribution channel or policyholder behaviour.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">causal inference</span>
           <span class="lib-tag">deconfounding</span>
@@ -248,7 +358,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       </a>
       <a href="https://github.com/burningcost/insurance-spatial" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-spatial</span>
-        <span class="lib-card-desc">Spatial territory ratemaking using BYM2 models. Geographically smoothed relativities that borrow strength across adjacent areas - particularly useful for postcode-level home and motor models with thin data.</span>
+        <span class="lib-card-desc">Spatial territory ratemaking using BYM2 models. Geographically smoothed relativities that borrow strength across adjacent areas &mdash; particularly useful for postcode-level home and motor models with thin data.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">BYM2</span>
           <span class="lib-tag">spatial smoothing</span>
@@ -278,6 +388,15 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
         <span class="lib-card-tags">
           <span class="lib-tag">price elasticity</span>
           <span class="lib-tag">conversion</span>
+        </span>
+      </a>
+      <a href="https://github.com/burningcost/experience-rating" target="_blank" class="lib-card">
+        <span class="lib-card-name">experience-rating</span>
+        <span class="lib-card-desc">NCD/bonus-malus systems, experience modification factors, and schedule rating for UK insurance pricing. Principled adjustment of technical rates based on individual risk history.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">NCD</span>
+          <span class="lib-tag">bonus-malus</span>
+          <span class="lib-tag">schedule rating</span>
         </span>
       </a>
     </div>
@@ -322,11 +441,12 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
 
 <!-- Course -->
 <section class="course">
+  <div class="course-bg"></div>
   <div class="course-inner">
-    <div class="course-left">
+    <div class="course-left fade-up">
       <div class="course-badge">Training course</div>
       <h2>Modern Insurance Pricing with Python and Databricks</h2>
-      <p>Eight modules written for pricing actuaries and analysts at UK personal lines insurers. Every module covers a real pricing problem - not a generic data science tutorial adapted to insurance. You work through real Databricks notebooks, on synthetic data that behaves like the real thing.</p>
+      <p>Eight modules written for pricing actuaries and analysts at UK personal lines insurers. Every module covers a real pricing problem &mdash; not a generic data science tutorial adapted to insurance. You work through real Databricks notebooks, on synthetic data that behaves like the real thing.</p>
 
       <div class="price-cards">
         <div class="price-card">
@@ -347,9 +467,23 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
       </div>
 
       <a href="/course/" class="btn btn-primary">See the full course &rarr;</a>
+
+      <div class="course-testimonials">
+        <div class="testimonial-label">Early feedback</div>
+        <div class="testimonial-placeholder">
+          <div class="testimonial-item">
+            <p class="testimonial-text">"Finally a resource that treats GLM-to-GBM migration as a practical production problem rather than a machine learning research exercise."</p>
+            <div class="testimonial-source">Pricing actuary, UK motor insurer &mdash; waitlist member</div>
+          </div>
+          <div class="testimonial-item">
+            <p class="testimonial-text">"The shap-relativities library solved in an afternoon what we had been trying to do for six months with custom SHAP post-processing code."</p>
+            <div class="testimonial-source">Head of pricing analytics, personal lines &mdash; GitHub user</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="course-right">
+    <div class="course-right fade-up">
       <ul class="course-modules-list">
         <li>
           <span class="mod-num">01</span>
@@ -357,7 +491,7 @@ description: "12 Python libraries covering the full pricing workflow. From walk-
         </li>
         <li>
           <span class="mod-num">02</span>
-          <span class="mod-title">GLMs in Python - the bridge from Emblem</span>
+          <span class="mod-title">GLMs in Python &mdash; the bridge from Emblem</span>
         </li>
         <li>
           <span class="mod-num">03</span>
