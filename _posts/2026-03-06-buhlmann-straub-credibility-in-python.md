@@ -114,7 +114,7 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 The `credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
 
 ```bash
-uv pip install credibility
+uv add credibility
 ```
 
 The core class is `BuhlmannStraub`. It expects a long-format DataFrame: one row per group-period, with columns for the group identifier, time period, loss rate, and exposure. The library is mid-migration from pandas to Polars; examples below use Polars throughout.

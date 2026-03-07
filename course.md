@@ -87,7 +87,7 @@ Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed
 
 #### Module 3: GBMs for Insurance Pricing
 
-CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data - why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding - a genuine advantage over LightGBM for pricing data. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
+CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data - why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding - no encoding gymnastics required. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
 
 #### Module 5: Conformal Prediction Intervals
 

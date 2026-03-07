@@ -1,114 +1,232 @@
 <style>
-/* === Base typography === */
+/* ============================================================
+   Burning Cost — custom styles
+   Design language: dark hero, clean cards, red accent (#c0392b)
+   Inspired by Stripe/Linear/Vercel — confident, not corporate
+   ============================================================ */
+
+/* === Base === */
 
 body {
   font-size: 1rem;
   line-height: 1.7;
 }
 
-/* === Hero === */
+/* ============================================================
+   HERO
+   Full-bleed dark gradient, large knockout type
+   ============================================================ */
 
 .bc-hero {
-  padding: 3.5rem 0 3rem;
-  border-bottom: 2px solid #e8e8e8;
-  margin-bottom: 3.5rem;
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 50%, #16213e 100%);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-top: -1px;
+  padding: 0 calc(50vw - 50%);
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle grid texture overlay */
+.bc-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* Red glow accent top-right */
+.bc-hero::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(192,57,43,0.2) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.bc-hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 0 4.5rem;
+  max-width: 720px;
 }
 
 .bc-hero-label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #c0392b;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bc-hero-label::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: #c0392b;
+  flex-shrink: 0;
 }
 
 .bc-hero h1 {
-  font-size: 2.6rem;
-  line-height: 1.12;
-  margin-bottom: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 3.2rem;
+  line-height: 1.08;
+  margin-bottom: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
 }
 
 .bc-hero-sub {
   font-size: 1.1rem;
-  color: #444;
-  max-width: 640px;
-  margin-bottom: 1.25rem;
-  line-height: 1.65;
-}
-
-/* Proof strip — replaces orphaned stats bar */
-
-.bc-hero-proof {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0;
-  align-items: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #888;
-  letter-spacing: 0.02em;
-  margin-bottom: 1.75rem;
-}
-
-.bc-proof-sep {
-  margin: 0 0.55rem;
-  color: #ccc;
-  font-weight: 400;
+  color: #94a3b8;
+  max-width: 600px;
+  margin-bottom: 2.25rem;
+  line-height: 1.7;
 }
 
 .bc-cta-row {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
-/* === Buttons === */
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 
 .bc-btn {
   display: inline-block;
-  padding: 0.65rem 1.4rem;
-  border-radius: 3px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  border: 2px solid #333;
-  color: #333;
-  background: transparent;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.bc-btn:hover {
-  background: #333;
-  color: #fff;
-  text-decoration: none;
+  transition: all 0.15s ease;
+  letter-spacing: 0.01em;
 }
 
 .bc-btn-primary {
   background: #c0392b;
   color: #fff;
-  border-color: #c0392b;
+  border: 2px solid #c0392b;
+  box-shadow: 0 0 0 0 rgba(192,57,43,0);
 }
 
 .bc-btn-primary:hover {
   background: #a93226;
   border-color: #a93226;
   color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 24px rgba(192,57,43,0.35);
+  transform: translateY(-1px);
 }
 
-/* === Problem statement === */
+/* Ghost button — used in hero on dark background */
+.bc-btn-ghost {
+  background: transparent;
+  color: #e2e8f0;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.bc-btn-ghost:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+/* Standard outline — used on light background */
+.bc-btn-outline {
+  background: transparent;
+  color: #222;
+  border: 2px solid #333;
+}
+
+.bc-btn-outline:hover {
+  background: #333;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ============================================================
+   STATS STRIP
+   Visually separated numerical proof bar
+   ============================================================ */
+
+.bc-stats-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  border-top: 3px solid #c0392b;
+  padding: 1.75rem 0;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.bc-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2.5rem;
+  text-align: center;
+}
+
+.bc-stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.bc-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.bc-stat-divider {
+  width: 1px;
+  height: 2.5rem;
+  background: #e0e0e0;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   PROBLEM STATEMENT
+   ============================================================ */
 
 .bc-problem {
-  background: #fafafa;
+  background: #f8f8f8;
   border-left: 3px solid #c0392b;
-  padding: 1.5rem 1.85rem;
+  padding: 1.75rem 2rem;
   margin-bottom: 3.5rem;
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.75;
   color: #333;
+  border-radius: 0 4px 4px 0;
 }
 
 .bc-problem p {
@@ -124,21 +242,35 @@ body {
   font-size: 0.95rem;
 }
 
-/* === Section headings === */
+/* ============================================================
+   SECTION HEADINGS
+   ============================================================ */
 
 .bc-section-title {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #aaa;
+  color: #c0392b;
   margin-bottom: 1.5rem;
   margin-top: 0;
-  border-bottom: 1px solid #ebebeb;
-  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-/* === Featured posts === */
+.bc-section-title::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: #e8e8e8;
+}
+
+/* ============================================================
+   FEATURED POSTS
+   Cards with strong top accent, hover elevation
+   ============================================================ */
 
 .bc-featured {
   margin-bottom: 3.5rem;
@@ -146,40 +278,42 @@ body {
 
 .bc-featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 1rem;
 }
 
 .bc-featured-card {
   background: #fff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e8e8e8;
+  border-top: 3px solid #e8e8e8;
   border-radius: 4px;
-  padding: 1.35rem 1.35rem 1.1rem;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  padding: 1.5rem 1.5rem 1.25rem;
+  transition: border-top-color 0.15s, box-shadow 0.2s, transform 0.2s;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .bc-featured-card:hover {
-  border-color: #c0392b;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
-  transform: translateY(-2px);
+  border-top-color: #c0392b;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
 }
 
 .bc-featured-tag {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #c0392b;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
 }
 
 .bc-featured-card h3 {
   font-size: 0.975rem;
   font-weight: 700;
-  margin: 0 0 0.6rem;
-  line-height: 1.35;
+  margin: 0 0 0.7rem;
+  line-height: 1.38;
 }
 
 .bc-featured-card h3 a {
@@ -194,108 +328,177 @@ body {
 .bc-featured-card p {
   font-size: 0.855rem;
   color: #666;
-  margin: 0;
-  line-height: 1.55;
+  margin: 0 0 1rem;
+  line-height: 1.6;
   flex-grow: 1;
 }
 
-/* === Course block === */
+.bc-card-arrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c0392b;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.bc-featured-card:hover .bc-card-arrow {
+  opacity: 1;
+}
+
+/* ============================================================
+   COURSE BLOCK
+   Dark panel — most prominent section on the page
+   ============================================================ */
 
 .bc-course {
-  background: #111;
-  color: #f0f0f0;
-  border-radius: 5px;
-  padding: 2.25rem 2.25rem 2rem;
+  background: linear-gradient(135deg, #111 0%, #1a1a2e 100%);
+  border-radius: 6px;
   margin-bottom: 3.5rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+/* Red accent stripe along the top */
+.bc-course::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #c0392b, #e74c3c);
+}
+
+/* Glow bottom-right */
+.bc-course::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.bc-course-inner {
+  position: relative;
+  z-index: 1;
+  padding: 2.75rem 2.5rem 2.25rem;
 }
 
 .bc-course-label {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #c0392b;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bc-course-label::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  background: #c0392b;
 }
 
 .bc-course h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.65rem;
+  font-weight: 800;
   color: #fff;
-  margin: 0 0 0.85rem;
+  margin: 0 0 1rem;
   border: none;
   padding: 0;
-  letter-spacing: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .bc-course-desc {
   font-size: 0.975rem;
-  color: #bbb;
-  margin-bottom: 1.25rem;
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
   max-width: 620px;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .bc-course-modules {
   font-size: 0.8rem;
-  color: #777;
-  margin-bottom: 1.75rem;
-  line-height: 1.8;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.9;
 }
 
 .bc-course-pricing {
   display: flex;
-  gap: 0.85rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   align-items: stretch;
 }
 
 .bc-price-item {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 4px;
-  padding: 0.85rem 1.1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px;
+  padding: 1rem 1.25rem;
   text-align: center;
   min-width: 110px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.bc-price-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
 }
 
 .bc-price-item--featured {
-  background: rgba(192,57,43,0.18);
-  border-color: rgba(192,57,43,0.5);
+  background: rgba(192,57,43,0.15);
+  border-color: rgba(192,57,43,0.45);
+  box-shadow: 0 0 20px rgba(192,57,43,0.15);
+}
+
+.bc-price-item--featured:hover {
+  background: rgba(192,57,43,0.22);
+  border-color: rgba(192,57,43,0.65);
 }
 
 .bc-price-amount {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.7rem;
+  font-weight: 800;
   color: #fff;
   display: block;
   line-height: 1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.02em;
 }
 
 .bc-price-label {
-  font-size: 0.72rem;
-  color: #888;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .bc-price-item--featured .bc-price-label {
-  color: #c0392b;
+  color: #e07070;
 }
 
-.bc-course .bc-btn {
-  border-color: #c0392b;
-  color: #fff;
-  background: #c0392b;
+.bc-course .bc-cta-row {
+  margin-top: 0;
 }
 
-.bc-course .bc-btn:hover {
-  background: #a93226;
-  border-color: #a93226;
-}
-
-/* === Repo grid === */
+/* ============================================================
+   REPOS
+   ============================================================ */
 
 .bc-repos {
   margin-bottom: 3.5rem;
@@ -306,12 +509,14 @@ body {
 }
 
 .bc-repo-group-label {
-  font-size: 0.67rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #bbb;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid #e0e0e0;
 }
 
 .bc-repo-list {
@@ -319,31 +524,31 @@ body {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 0.65rem;
 }
 
 .bc-repo-item {
   background: #fff;
-  border: 1px solid #e4e4e4;
-  border-radius: 4px;
-  padding: 1rem 1.1rem;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  border: 1px solid #e8e8e8;
   border-left: 3px solid transparent;
+  border-radius: 4px;
+  padding: 1rem 1.15rem;
+  transition: border-left-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
 .bc-repo-item:hover {
-  border-color: #d0d0d0;
   border-left-color: #c0392b;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
 }
 
 .bc-repo-item a {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.875rem;
-  font-family: monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   text-decoration: none;
-  color: #222;
+  color: #1a1a1a;
   display: block;
   margin-bottom: 0.4rem;
 }
@@ -357,10 +562,12 @@ body {
   font-size: 0.82rem;
   color: #666;
   margin: 0;
-  line-height: 1.55;
+  line-height: 1.58;
 }
 
-/* === Posts list === */
+/* ============================================================
+   POSTS LIST
+   ============================================================ */
 
 .bc-posts {
   margin-bottom: 3.5rem;
@@ -373,12 +580,13 @@ body {
 }
 
 .bc-post-item {
-  padding: 0.85rem 0;
-  border-bottom: 1px solid #ebebeb;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #f0f0f0;
   display: flex;
   align-items: baseline;
   gap: 1rem;
   flex-wrap: wrap;
+  transition: padding-left 0.15s;
 }
 
 .bc-post-item:first-child {
@@ -389,12 +597,17 @@ body {
   border-bottom: none;
 }
 
+.bc-post-item:hover {
+  padding-left: 0.4rem;
+}
+
 .bc-post-date {
-  font-size: 0.78rem;
-  color: #bbb;
+  font-size: 0.75rem;
+  color: #ccc;
   white-space: nowrap;
   min-width: 80px;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .bc-post-item a {
@@ -408,61 +621,120 @@ body {
   color: #c0392b;
 }
 
-/* === Newsletter === */
+/* ============================================================
+   NEWSLETTER CTA
+   Dark panel with gradient border treatment
+   ============================================================ */
 
 .bc-newsletter {
-  background: #111;
-  border-radius: 5px;
-  padding: 2rem 2.25rem;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  border-radius: 6px;
   margin-bottom: 3.5rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient border on top */
+.bc-newsletter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 50%, transparent 100%);
+}
+
+.bc-newsletter-inner {
+  position: relative;
+  z-index: 1;
+  padding: 2.25rem 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
 .bc-newsletter-copy h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 0.4rem;
   color: #fff;
+  letter-spacing: -0.02em;
 }
 
 .bc-newsletter-copy p {
-  font-size: 0.875rem;
-  color: #888;
+  font-size: 0.9rem;
+  color: #94a3b8;
   margin: 0;
-  max-width: 480px;
-  line-height: 1.6;
+  max-width: 460px;
+  line-height: 1.65;
 }
 
 .bc-newsletter .bc-btn-primary {
   white-space: nowrap;
   flex-shrink: 0;
+  padding: 0.8rem 1.75rem;
 }
 
-/* === Responsive === */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .bc-hero h1 {
-    font-size: 1.9rem;
+    font-size: 2.2rem;
   }
-  .bc-hero-proof {
-    font-size: 0.75rem;
+
+  .bc-hero-inner {
+    padding: 3.5rem 0 3rem;
   }
-  .bc-proof-sep {
+
+  .bc-stats-strip {
+    gap: 0;
+    padding: 1.25rem 0;
+  }
+
+  .bc-stat {
+    padding: 0.75rem 1.25rem;
+    flex: 1 1 40%;
+  }
+
+  .bc-stat-divider {
     display: none;
   }
-  .bc-hero-proof span {
-    display: block;
+
+  .bc-stat-number {
+    font-size: 1.6rem;
+  }
+
+  .bc-course-inner {
+    padding: 2rem 1.5rem 1.75rem;
+  }
+
+  .bc-course h2 {
+    font-size: 1.35rem;
+  }
+
+  .bc-newsletter-inner {
+    padding: 1.75rem 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bc-newsletter .bc-btn-primary {
     width: 100%;
+    text-align: center;
   }
-  .bc-course {
-    padding: 1.5rem 1.25rem;
+
+  .bc-featured-grid {
+    grid-template-columns: 1fr;
   }
-  .bc-newsletter {
-    padding: 1.5rem 1.25rem;
+
+  .bc-repo-list {
+    grid-template-columns: 1fr;
   }
 }
 </style>
