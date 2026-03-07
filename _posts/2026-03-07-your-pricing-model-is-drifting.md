@@ -169,6 +169,6 @@ The annual full model validation should include: backtesting the model on out-of
 - Murphy score decomposition (calibration, resolution, uncertainty) to support the refit vs recalibrate decision
 - Quarterly monitoring report template suitable for model risk committees
 
-Install with `pip install insurance-monitoring`.
+Install with `uv add insurance-monitoring`.
 
 The only thing we do not supply is the will to run it quarterly. That part is on you.

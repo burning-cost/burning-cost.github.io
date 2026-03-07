@@ -25,7 +25,7 @@
 
 # COMMAND ----------
 
-# Restart the Python interpreter after pip install so imports work cleanly
+# Restart the Python interpreter after installation so imports work cleanly
 dbutils.library.restartPython()
 
 # COMMAND ----------
