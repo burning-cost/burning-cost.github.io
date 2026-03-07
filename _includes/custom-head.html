@@ -9,9 +9,9 @@ body {
 /* === Hero === */
 
 .bc-hero {
-  padding: 3rem 0 2.5rem;
+  padding: 3.5rem 0 3rem;
   border-bottom: 2px solid #e8e8e8;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .bc-hero-label {
@@ -20,30 +20,43 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #c0392b;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.9rem;
 }
 
 .bc-hero h1 {
-  font-size: 2.25rem;
-  line-height: 1.15;
-  margin-bottom: 1rem;
+  font-size: 2.6rem;
+  line-height: 1.12;
+  margin-bottom: 1.1rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .bc-hero-sub {
   font-size: 1.1rem;
   color: #444;
-  max-width: 620px;
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
+  max-width: 640px;
+  margin-bottom: 1.25rem;
+  line-height: 1.65;
 }
 
-.bc-hero-who {
-  font-size: 0.9rem;
+/* Proof strip — replaces orphaned stats bar */
+
+.bc-hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: #888;
+  letter-spacing: 0.02em;
   margin-bottom: 1.75rem;
-  font-style: italic;
+}
+
+.bc-proof-sep {
+  margin: 0 0.55rem;
+  color: #ccc;
+  font-weight: 400;
 }
 
 .bc-cta-row {
@@ -57,7 +70,7 @@ body {
 
 .bc-btn {
   display: inline-block;
-  padding: 0.6rem 1.3rem;
+  padding: 0.65rem 1.4rem;
   border-radius: 3px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -86,79 +99,35 @@ body {
   color: #fff;
 }
 
-/* === Credibility strip === */
-
-.bc-stats {
-  display: flex;
-  gap: 0;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  margin-bottom: 3rem;
-  overflow: hidden;
-  background: #fff;
-}
-
-.bc-stat {
-  flex: 1;
-  padding: 1.25rem 1.5rem;
-  border-right: 1px solid #e0e0e0;
-  text-align: center;
-}
-
-.bc-stat:last-child {
-  border-right: none;
-}
-
-.bc-stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111;
-  line-height: 1;
-  display: block;
-  margin-bottom: 0.3rem;
-}
-
-.bc-stat-label {
-  font-size: 0.78rem;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-}
-
-@media (max-width: 600px) {
-  .bc-stats {
-    flex-direction: column;
-  }
-  .bc-stat {
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  .bc-stat:last-child {
-    border-bottom: none;
-  }
-}
-
 /* === Problem statement === */
 
 .bc-problem {
   background: #fafafa;
   border-left: 3px solid #c0392b;
-  padding: 1.4rem 1.75rem;
-  margin-bottom: 3rem;
+  padding: 1.5rem 1.85rem;
+  margin-bottom: 3.5rem;
   font-size: 1rem;
   line-height: 1.7;
   color: #333;
+}
+
+.bc-problem p {
+  margin-bottom: 0.85rem;
 }
 
 .bc-problem p:last-child {
   margin-bottom: 0;
 }
 
+.bc-problem-solution {
+  color: #555;
+  font-size: 0.95rem;
+}
+
 /* === Section headings === */
 
 .bc-section-title {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -172,29 +141,29 @@ body {
 /* === Featured posts === */
 
 .bc-featured {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .bc-featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
   gap: 1rem;
-  margin-bottom: 1.25rem;
 }
 
 .bc-featured-card {
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  padding: 1.25rem 1.25rem 1rem;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  padding: 1.35rem 1.35rem 1.1rem;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   display: flex;
   flex-direction: column;
 }
 
 .bc-featured-card:hover {
-  border-color: #bbb;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+  border-color: #c0392b;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+  transform: translateY(-2px);
 }
 
 .bc-featured-tag {
@@ -209,7 +178,7 @@ body {
 .bc-featured-card h3 {
   font-size: 0.975rem;
   font-weight: 700;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
   line-height: 1.35;
 }
 
@@ -226,7 +195,7 @@ body {
   font-size: 0.855rem;
   color: #666;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
   flex-grow: 1;
 }
 
@@ -236,8 +205,8 @@ body {
   background: #111;
   color: #f0f0f0;
   border-radius: 5px;
-  padding: 2rem 2rem 1.75rem;
-  margin-bottom: 3rem;
+  padding: 2.25rem 2.25rem 2rem;
+  margin-bottom: 3.5rem;
 }
 
 .bc-course-label {
@@ -250,59 +219,69 @@ body {
 }
 
 .bc-course h2 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #fff;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.85rem;
   border: none;
   padding: 0;
   letter-spacing: 0;
 }
 
 .bc-course-desc {
-  font-size: 0.95rem;
+  font-size: 0.975rem;
   color: #bbb;
   margin-bottom: 1.25rem;
-  max-width: 600px;
-  line-height: 1.6;
+  max-width: 620px;
+  line-height: 1.65;
 }
 
 .bc-course-modules {
   font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 1.5rem;
-  line-height: 1.7;
+  color: #777;
+  margin-bottom: 1.75rem;
+  line-height: 1.8;
 }
 
 .bc-course-pricing {
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
+  align-items: stretch;
 }
 
 .bc-price-item {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 4px;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.1rem;
   text-align: center;
   min-width: 110px;
 }
 
+.bc-price-item--featured {
+  background: rgba(192,57,43,0.18);
+  border-color: rgba(192,57,43,0.5);
+}
+
 .bc-price-amount {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
   display: block;
   line-height: 1;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.25rem;
 }
 
 .bc-price-label {
   font-size: 0.72rem;
   color: #888;
   letter-spacing: 0.06em;
+}
+
+.bc-price-item--featured .bc-price-label {
+  color: #c0392b;
 }
 
 .bc-course .bc-btn {
@@ -316,25 +295,14 @@ body {
   border-color: #a93226;
 }
 
-.bc-course .bc-btn-outline {
-  background: transparent;
-  border-color: rgba(255,255,255,0.3);
-  color: #ccc;
-}
-
-.bc-course .bc-btn-outline:hover {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-}
-
 /* === Repo grid === */
 
 .bc-repos {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .bc-repo-group {
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 .bc-repo-group-label {
@@ -343,7 +311,7 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #bbb;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.75rem;
 }
 
 .bc-repo-list {
@@ -351,7 +319,7 @@ body {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
   gap: 0.75rem;
 }
 
@@ -359,13 +327,15 @@ body {
   background: #fff;
   border: 1px solid #e4e4e4;
   border-radius: 4px;
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.1rem;
   transition: border-color 0.15s, box-shadow 0.15s;
+  border-left: 3px solid transparent;
 }
 
 .bc-repo-item:hover {
-  border-color: #b0b0b0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-color: #d0d0d0;
+  border-left-color: #c0392b;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
 
 .bc-repo-item a {
@@ -375,7 +345,7 @@ body {
   text-decoration: none;
   color: #222;
   display: block;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 }
 
 .bc-repo-item a:hover {
@@ -387,13 +357,13 @@ body {
   font-size: 0.82rem;
   color: #666;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 /* === Posts list === */
 
 .bc-posts {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .bc-post-list {
@@ -409,6 +379,10 @@ body {
   align-items: baseline;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.bc-post-item:first-child {
+  border-top: none;
 }
 
 .bc-post-item:last-child {
@@ -437,11 +411,10 @@ body {
 /* === Newsletter === */
 
 .bc-newsletter {
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 1.75rem 2rem;
-  margin-bottom: 3rem;
-  background: #fafafa;
+  background: #111;
+  border-radius: 5px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -450,26 +423,46 @@ body {
 }
 
 .bc-newsletter-copy h3 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.35rem;
+  color: #fff;
 }
 
 .bc-newsletter-copy p {
   font-size: 0.875rem;
-  color: #666;
+  color: #888;
   margin: 0;
+  max-width: 480px;
+  line-height: 1.6;
 }
+
+.bc-newsletter .bc-btn-primary {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* === Responsive === */
 
 @media (max-width: 600px) {
   .bc-hero h1 {
-    font-size: 1.7rem;
+    font-size: 1.9rem;
+  }
+  .bc-hero-proof {
+    font-size: 0.75rem;
+  }
+  .bc-proof-sep {
+    display: none;
+  }
+  .bc-hero-proof span {
+    display: block;
+    width: 100%;
   }
   .bc-course {
     padding: 1.5rem 1.25rem;
   }
   .bc-newsletter {
-    padding: 1.25rem;
+    padding: 1.5rem 1.25rem;
   }
 }
 </style>

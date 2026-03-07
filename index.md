@@ -3,38 +3,27 @@ layout: home
 ---
 
 <div class="bc-hero">
-<div class="bc-hero-label">Open source - UK insurance pricing</div>
+<div class="bc-hero-label">Open source &mdash; UK insurance pricing</div>
 <h1>The GBM works.<br>The problem is everything around it.</h1>
-<p class="bc-hero-sub">13 Python libraries covering the full pricing workflow - from temporally-correct cross-validation to constrained rate optimisation. Built for teams that already know what a GLM is.</p>
-<p class="bc-hero-who">Practitioner-written. Actuarially tested. Designed to produce outputs a pricing committee will actually accept.</p>
+<p class="bc-hero-sub">13 Python libraries covering the full pricing workflow &mdash; from temporally-correct cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is and are tired of rebuilding the same infrastructure from scratch.</p>
+<div class="bc-hero-proof">
+  <span>13 libraries</span>
+  <span class="bc-proof-sep">&middot;</span>
+  <span>600+ actuarial tests</span>
+  <span class="bc-proof-sep">&middot;</span>
+  <span>8-module training course</span>
+  <span class="bc-proof-sep">&middot;</span>
+  <span>14 technical posts</span>
+</div>
 <div class="bc-cta-row">
   <a class="bc-btn bc-btn-primary" href="/course/">Training course</a>
   <a class="bc-btn" href="https://github.com/burningcost" target="_blank">GitHub</a>
 </div>
 </div>
 
-<div class="bc-stats">
-  <div class="bc-stat">
-    <span class="bc-stat-number">13</span>
-    <span class="bc-stat-label">Python libraries</span>
-  </div>
-  <div class="bc-stat">
-    <span class="bc-stat-number">600+</span>
-    <span class="bc-stat-label">Actuarial tests</span>
-  </div>
-  <div class="bc-stat">
-    <span class="bc-stat-number">14</span>
-    <span class="bc-stat-label">Technical posts</span>
-  </div>
-  <div class="bc-stat">
-    <span class="bc-stat-number">8</span>
-    <span class="bc-stat-label">Course modules</span>
-  </div>
-</div>
-
 <div class="bc-problem">
-<p>Most UK pricing teams have adopted GBMs but are still taking GLM outputs to production. The GBM sits on a server outperforming the production model, but its outputs are not in a form that a rating engine, regulator, or pricing committee can work with. The missing piece is not technical skill - it is the tooling that bridges the two.</p>
-<p>That is what we build here. Each library solves one specific problem in the pricing workflow, ships with actuarial tests, and produces outputs in formats that pricing teams already recognise.</p>
+<p>Most UK pricing teams are running GBMs in development and GLMs in production. The GBM outperforms, but its outputs &mdash; raw SHAP values, unconstrained predictions, no factor tables &mdash; are not in a form a rating engine, regulator, or pricing committee will accept. The missing piece is not technical skill. It is tooling.</p>
+<p class="bc-problem-solution">Each library here solves one specific gap in that pipeline. All ship with actuarial tests and produce outputs in formats pricing teams already recognise.</p>
 </div>
 
 <div class="bc-featured">
@@ -43,26 +32,26 @@ layout: home
 
   <div class="bc-featured-card">
     <div class="bc-featured-tag">End-to-end workflow</div>
-    <h3><a href="/2026/03/06/from-gbm-to-radar-databricks-workflow.html">From GBM to Radar: A Complete Databricks Workflow for Pricing Actuaries</a></h3>
-    <p>Data ingestion, walk-forward CV, CatBoost training, SHAP relativities, conformal intervals, and rate optimisation - one notebook, one pipeline, ready to adapt.</p>
+    <h3><a href="/2026/03/06/from-gbm-to-radar-databricks-workflow.html">From GBM to Radar: A Complete Databricks Workflow</a></h3>
+    <p>The full pipeline in one place: ingestion, walk-forward CV, CatBoost, SHAP relativities, conformal intervals, rate optimisation. Adapt it directly.</p>
   </div>
 
   <div class="bc-featured-card">
     <div class="bc-featured-tag">Core technique</div>
     <h3><a href="/2026/03/05/extracting-rating-relativities-from-gbms-with-shap.html">Extracting Rating Relativities from GBMs with SHAP</a></h3>
-    <p>How to turn SHAP values into multiplicative factor tables in the format a GLM reviewer expects - with confidence intervals, exposure weighting, and reconstruction validation.</p>
+    <p>SHAP values are not factor tables. This shows you how to get from one to the other &mdash; with confidence intervals, exposure weighting, and a reconstruction test your pricing committee can check.</p>
   </div>
 
   <div class="bc-featured-card">
     <div class="bc-featured-tag">Validation</div>
     <h3><a href="/2026/03/06/why-your-cross-validation-is-lying-to-you.html">Why Your Cross-Validation is Lying to You</a></h3>
-    <p>Standard k-fold CV is wrong for insurance data. Walk-forward splits with IBNR buffers are not optional - they are the difference between an honest and a flattering Gini.</p>
+    <p>Standard k-fold gives you a flattering Gini. Walk-forward splits with IBNR buffers give you an honest one. The difference is not subtle.</p>
   </div>
 
   <div class="bc-featured-card">
     <div class="bc-featured-tag">Commercial pricing</div>
     <h3><a href="/2026/03/06/constrained-rate-optimisation-efficient-frontier.html">Constrained Rate Optimisation and the Efficient Frontier</a></h3>
-    <p>Formulating rate changes as a linear programme that respects movement caps, target loss ratio, and cross-subsidy constraints simultaneously - and why most teams do not.</p>
+    <p>If you are optimising rates with movement caps in a spreadsheet, you are probably leaving money on the table. This formulates it as a linear programme and shows you what the frontier looks like.</p>
   </div>
 
 </div>
@@ -71,14 +60,14 @@ layout: home
 <div class="bc-course">
 <div class="bc-course-label">Training course</div>
 <h2>Modern Insurance Pricing with Python and Databricks</h2>
-<p class="bc-course-desc">Eight modules written for pricing actuaries and analysts at UK personal lines insurers. Every module covers a real pricing problem - not a generic data science tutorial adapted for insurance.</p>
+<p class="bc-course-desc">Eight modules written specifically for pricing actuaries and analysts at UK personal lines insurers. Each one covers a real pricing problem &mdash; not a generic data science tutorial with an insurance example bolted on at the end.</p>
 <div class="bc-course-modules">Databricks for pricing teams &middot; GLMs in Python (the bridge from Emblem) &middot; GBMs for insurance &middot; SHAP relativities &middot; Conformal prediction intervals &middot; Credibility and Bayesian pricing &middot; Constrained rate optimisation &middot; End-to-end pipeline capstone</div>
 <div class="bc-course-pricing">
   <div class="bc-price-item">
     <span class="bc-price-amount">&pound;295</span>
     <span class="bc-price-label">MVP bundle</span>
   </div>
-  <div class="bc-price-item">
+  <div class="bc-price-item bc-price-item--featured">
     <span class="bc-price-amount">&pound;495</span>
     <span class="bc-price-label">Full course</span>
   </div>
@@ -100,7 +89,7 @@ layout: home
 <ul class="bc-repo-list">
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/shap-relativities" target="_blank">shap-relativities</a>
-    <p>Extract multiplicative rating factor tables from CatBoost models using SHAP values. Factor tables, confidence intervals, exposure weighting, reconstruction validation.</p>
+    <p>Converts CatBoost SHAP values into multiplicative factor tables &mdash; the format a pricing committee expects. Includes confidence intervals, exposure weighting, and reconstruction validation so you can defend the output.</p>
   </li>
 </ul>
 </div>
@@ -110,11 +99,11 @@ layout: home
 <ul class="bc-repo-list">
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-cv" target="_blank">insurance-cv</a>
-    <p>Temporally-correct cross-validation for insurance pricing models. Walk-forward splits with configurable IBNR buffers, Poisson and Gamma deviance scorers, sklearn-compatible API.</p>
+    <p>Temporally-correct cross-validation that respects development lags. Walk-forward splits with configurable IBNR buffers prevent your Gini from lying to you. Sklearn-compatible, so it drops into existing pipelines.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-conformal" target="_blank">insurance-conformal</a>
-    <p>Distribution-free prediction intervals for insurance GBMs. Implements the variance-weighted non-conformity score from Manna et al. (2025) - roughly 30% narrower than the naive approach with identical coverage guarantees.</p>
+    <p>Distribution-free prediction intervals for insurance GBMs. The variance-weighted non-conformity score from Manna et al. (2025) gives roughly 30% narrower intervals than the naive approach &mdash; with identical coverage guarantees.</p>
   </li>
 </ul>
 </div>
@@ -124,23 +113,23 @@ layout: home
 <ul class="bc-repo-list">
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/credibility" target="_blank">credibility</a>
-    <p>Buhlmann-Straub credibility in Python, with mixed-model equivalence checks. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</p>
+    <p>Buhlmann-Straub credibility in Python, with mixed-model equivalence checks. Useful for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate at review.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/bayesian-pricing" target="_blank">bayesian-pricing</a>
-    <p>Hierarchical Bayesian models for thin-data pricing segments. Partial pooling across risk groups, with credibility factor output in a format that maps back to traditional actuarial review.</p>
+    <p>Hierarchical Bayesian models for segments where you do not have enough data to fit a factor directly. Partial pooling across risk groups, with credibility factor output that maps back to traditional actuarial review formats.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-interactions" target="_blank">insurance-interactions</a>
-    <p>Detecting, quantifying, and presenting interaction effects in insurance pricing models - the effects a main-effects-only GLM cannot see.</p>
+    <p>Finds and quantifies the interaction effects that a main-effects-only GLM cannot see. Useful for understanding where your GBM is doing something your GLM cannot replicate.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-causal" target="_blank">insurance-causal</a>
-    <p>Causal inference methods for insurance pricing. Separating genuine risk signal from confounded association - relevant wherever rating factors are correlated with distribution channel or policyholder behaviour.</p>
+    <p>Separates genuine risk signal from confounded association. Relevant wherever rating factors correlate with distribution channel or policyholder behaviour &mdash; which is most books of business.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-spatial" target="_blank">insurance-spatial</a>
-    <p>Spatial territory ratemaking using BYM2 models. Geographically smoothed relativities that borrow strength across adjacent areas - useful for postcode-level home and motor models with thin data.</p>
+    <p>Geographically smoothed postcode relativities using BYM2 models. Borrows strength across adjacent areas to stabilise thin-data postcodes in home and motor models.</p>
   </li>
 </ul>
 </div>
@@ -150,11 +139,11 @@ layout: home
 <ul class="bc-repo-list">
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/rate-optimiser" target="_blank">rate-optimiser</a>
-    <p>Constrained rate change optimisation for UK personal lines. Formulates the efficient frontier between loss ratio improvement and movement cap constraints as a linear programme.</p>
+    <p>Optimises rate changes across rating cells subject to movement caps, target loss ratio, and cross-subsidy constraints simultaneously &mdash; as a linear programme, not a spreadsheet iteration. Produces the efficient frontier so you can see the trade-off.</p>
   </li>
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-demand" target="_blank">insurance-demand</a>
-    <p>Demand and conversion modelling for insurance pricing. Price elasticity curves, own-price and cross-price effects, integration with rate optimisation.</p>
+    <p>Price elasticity and conversion modelling for pricing decisions. Own-price and cross-price effects, with direct integration into the rate optimiser so demand response feeds back into the objective.</p>
   </li>
 </ul>
 </div>
@@ -164,7 +153,7 @@ layout: home
 <ul class="bc-repo-list">
   <li class="bc-repo-item">
     <a href="https://github.com/burningcost/insurance-fairness" target="_blank">insurance-fairness</a>
-    <p>Proxy discrimination detection for insurance pricing models. Measures of disparate impact, fairness-accuracy trade-off analysis, FCA Consumer Duty documentation support.</p>
+    <p>Proxy discrimination detection and fairness-accuracy trade-off analysis for pricing models. Produces documentation in the format FCA Consumer Duty review requires, not just a p-value.</p>
   </li>
 </ul>
 </div>
@@ -185,8 +174,8 @@ layout: home
 
 <div class="bc-newsletter">
   <div class="bc-newsletter-copy">
-    <h3>Stay up to date</h3>
-    <p>New libraries and posts go out by email. No digest spam - only when something substantive ships.</p>
+    <h3>New work, by email</h3>
+    <p>When a new library ships or a post worth reading goes up, we send one email. No roundups, no digest spam &mdash; only when something substantive is ready.</p>
   </div>
-  <a class="bc-btn bc-btn-primary" href="mailto:pricing.frontier@gmail.com?subject=Subscribe%3A%20Burning%20Cost%20updates">Join the mailing list</a>
+  <a class="bc-btn bc-btn-primary" href="mailto:pricing.frontier@gmail.com?subject=Subscribe%3A%20Burning%20Cost%20updates">Subscribe</a>
 </div>
