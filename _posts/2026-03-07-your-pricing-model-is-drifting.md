@@ -35,7 +35,7 @@ Three distinct things can go wrong with a deployed pricing model, and they requi
 
 **Concept drift** (real drift) is when P(Y|X) changes - the true relationship between risk features and claims frequency or severity has structurally shifted. The whiplash reform is a clean example: a driver's age, vehicle type and NCD band predict a different BI claims frequency in 2022 than they did in 2019, because the legal environment governing what a BI claim looks like has changed. Claims inflation in 2022-23, with CPI above 10% for much of the year, is another: severity models trained before 2021 systematically underestimate current repair and hire costs. Concept drift cannot be fixed with recalibration. The model needs refitting on recent data.
 
-**Prior probability shift** is simpler: overall claims frequency or severity shifts uniformly across all segments. Post-lockdown normalisation of driving frequency in 2021-22 is a reasonable example. The relative risk ordering remains valid and the model just needs its overall level correcting - a straightforward recalibration.
+**Prior probability shift** is simpler: overall claims frequency or severity shifts uniformly across all segments. Post-lockdown normalisation of driving frequency in 2021-22 is a reasonable example. The relative risk ordering remains valid and the model just needs its overall level correcting - an intercept adjustment.
 
 The reason this taxonomy matters operationally: recalibration takes an afternoon. A full model refit takes two to eight weeks of data scientist time, plus governance, plus potentially regulatory notification. Diagnosing the wrong type of drift in either direction is expensive.
 

@@ -9,7 +9,7 @@ description: "Conformal prediction intervals for insurance GBMs that are statist
 
 Your Tweedie GBM gives point estimates. That is a problem.
 
-A point estimate tells you the model's best guess for expected loss cost. It tells you nothing about how confident the model is in that guess, which varies enormously across the portfolio. A straightforward risk in a dense area of the feature space with thousands of similar policies behind it is not the same as an unusual commercial fleet risk that sits in a sparse corner. The model gives you a number in both cases. Without uncertainty quantification, you cannot tell them apart.
+A point estimate tells you the model's best guess for expected loss cost. It tells you nothing about how confident the model is in that guess, which varies enormously across the portfolio. A standard motor risk in a dense area of the feature space with thousands of similar policies behind it is not the same as an unusual commercial fleet risk that sits in a sparse corner. The model gives you a number in both cases. Without uncertainty quantification, you cannot tell them apart.
 
 The standard approach to this is parametric confidence intervals - bootstrap the GLM coefficients, or propagate variance through the Tweedie dispersion parameter. Both approaches depend on distributional assumptions. If the model is misspecified (and it always is), the intervals are wrong in a way that is difficult to characterise.
 

@@ -167,7 +167,7 @@ On hyperparameter selection: the three parameters that matter most for a UK moto
 
 Two models, trained separately. A Poisson CatBoost model for frequency (claims per earned year) and a Gamma CatBoost model for severity (mean incurred per claim, on claims-only data).
 
-**Frequency model.** `loss_function="Poisson"` with `min_data_in_leaf=200`. The case for 200 rather than the default is straightforward: motor pricing cells are uneven. Area band D × NCD 0 × vehicle group 40+ might have 200 observations across five training years. With a small leaf minimum the model will overfit to that cell. With 200 it regularises, and the SHAP relativities for sparse cells will be more stable. The cost is a slight loss of lift in dense cells; the benefit is that the factor table does not need manual smoothing before it goes into Radar.
+**Frequency model.** `loss_function="Poisson"` with `min_data_in_leaf=200`. The case for 200 rather than the default: motor pricing cells are uneven. Area band D × NCD 0 × vehicle group 40+ might have 200 observations across five training years. With a small leaf minimum the model will overfit to that cell. With 200 it regularises, and the SHAP relativities for sparse cells will be more stable. The cost is a slight loss of lift in dense cells; the benefit is that the factor table does not need manual smoothing before it goes into Radar.
 
 Use `depth=6` and `rsm=0.8` (random subspace method) as starting points. An unconstrained deep tree will produce relativities that are noisier than your GLM for thin segments. The pricing committee will rightly ask why NCD 0 in area band C has a different relativity from NCD 0 in area band B when there is no theoretical reason for it. Constrain the depth to reduce spurious interactions.
 
@@ -397,7 +397,7 @@ This is the argument for Databricks that most teams never hear when the platform
 
 ---
 
-## 9. What This Unlocks - and What It Does Not
+## 9. What Changes - and What Does Not
 
 When a team runs this workflow for the first time, three things change. The model retrain cycle drops from a two-week manual process to an overnight job. The audit trail for every factor table is automatic and does not depend on anyone remembering to save a version. The team can run experiments by forking the Job, changing hyperparameters, and comparing out-of-time performance in MLflow without touching the production pipeline.
 
