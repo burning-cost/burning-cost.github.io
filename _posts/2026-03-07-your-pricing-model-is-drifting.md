@@ -9,7 +9,7 @@ description: "PSI and aggregate A/E are not enough. A three-layer monitoring fra
 
 Picture a motor pricing team in late 2022. Their BI frequency model was trained on 2018-2020 data and deployed in early 2021. Eighteen months on, the portfolio stability dashboard is green: PSI on the model score is 0.08, comfortably below the 0.10 threshold. The aggregate A/E ratio is 1.02 - essentially perfect. Nobody is losing sleep.
 
-Meanwhile, bodily injury claims for small road traffic accidents fell sharply after the Civil Liability Act 2021 came into force on 31 May 2021. The Official Injury Claim portal and the fixed whiplash tariff reshaped the BI claims landscape fundamentally. The model, trained on a world that no longer exists, is systematically overpricing customers whose risk profile includes higher whiplash exposure. Other segments are being underpriced to compensate. The aggregate A/E washes out to 1.02 because the errors offset. The PSI is clean because the portfolio composition has not changed - the same customers are buying, just at wrong prices.
+Meanwhile, bodily injury claims for small road traffic accidents fell sharply after the Civil Liability Act 2018's whiplash reforms came into force on 31 May 2021. The Official Injury Claim portal and the fixed whiplash tariff reshaped the BI claims landscape fundamentally. The model, trained on a world that no longer exists, is systematically overpricing customers whose risk profile includes higher whiplash exposure. Other segments are being underpriced to compensate. The aggregate A/E washes out to 1.02 because the errors offset. The PSI is clean because the portfolio composition has not changed - the same customers are buying, just at wrong prices.
 
 This is concept drift. It is the most dangerous failure mode for a pricing model, and the most commonly missed.
 
@@ -129,7 +129,7 @@ This layer is frequently skipped, and it is the most informative.
 
 The Gini coefficient - equivalent to 2 * (AUROC - 0.5) for binary outcomes - measures whether your model still rank-orders risks correctly. A Gini of 0.42 at training that has drifted to 0.35 in production is a different problem from a Gini that has held steady at 0.42 while your A/E has drifted from 1.00 to 0.88. One requires refitting. The other requires recalibration.
 
-The key advance in arXiv 2510.04556 (December 2025) is providing an asymptotic normality result for the insurance Gini that enables formal hypothesis testing. Under the null that Gini has not changed, `sqrt(n) * (G_new - G_old) / sigma` is asymptotically standard normal. This gives you a z-statistic and p-value rather than a subjective judgement about whether the Gini has "changed enough".
+The key advance in arXiv 2510.04556 (2025) is providing an asymptotic normality result for the insurance Gini that enables formal hypothesis testing. Under the null that Gini has not changed, `sqrt(n) * (G_new - G_old) / sigma` is asymptotically standard normal. This gives you a z-statistic and p-value rather than a subjective judgement about whether the Gini has "changed enough".
 
 ```python
 from insurance_monitoring.discrimination import gini_coefficient, gini_drift_test
@@ -217,7 +217,7 @@ The three layers are most useful when read in combination.
 
 **PSI clean, A/E drifted in specific segments only, Gini stable**: local concept drift. The relative risk relationship has changed for a specific segment. Investigate; partial refit or manual override of affected rating factors.
 
-The whiplash scenario falls into the first category. Appropriate response: recalibrate the BI frequency model intercept, document the regulatory trigger (Civil Liability Act 2021), record that refit was not required because discrimination was stable. That is a defensible audit trail under FCA Consumer Duty (PRIN 2A, effective July 2023), which requires firms to evidence that pricing models continue to deliver fair value across customer segments. It also represents the kind of documented decision record that internal model risk governance frameworks call for.
+The whiplash scenario falls into the first category. Appropriate response: recalibrate the BI frequency model intercept, document the regulatory trigger (Civil Liability Act 2018, whiplash reforms effective 31 May 2021), record that refit was not required because discrimination was stable. That is a defensible audit trail under FCA Consumer Duty (PRIN 2A, effective July 2023), which requires firms to evidence that pricing models continue to deliver fair value across customer segments. It also represents the kind of documented decision record that internal model risk governance frameworks call for.
 
 Contrast that with claims severity inflation in 2022-23. CPI peaked at 11.1% in October 2022. Vehicle repair costs and credit hire rates ran well ahead of general inflation. A severity model trained on 2019-20 data would show elevated A/E across most segments - not concentrated in a specific rating factor - alongside likely Gini degradation as the rank ordering of expected costs shifted. That combination points to full refit, not recalibration.
 

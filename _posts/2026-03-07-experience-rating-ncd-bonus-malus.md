@@ -282,7 +282,7 @@ The test suite has 98 tests passing across scale construction, transition matrix
 
 ## What comes next
 
-v0.2 will add neural credibility: Wüthrich's Credibility Transformer (SSRN 4726206, June 2025) embeds Bühlmann-Straub credibility inside a Transformer attention mechanism. The CLS token attention weight plays the role of the credibility factor Z; the architecture learns the optimal blend between individual risk history and portfolio prior from data. The mathematics is well-established; the Python implementation does not yet exist in an accessible form. We will build it as an optional extension in v0.2, keeping the base library free of heavy ML dependencies.
+v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's Credibility Transformer (arXiv:2409.16653, 2024) embeds Bühlmann-Straub credibility inside a Transformer attention mechanism. The CLS token attention weight plays the role of the credibility factor Z; the architecture learns the optimal blend between individual risk history and portfolio prior from data. The mathematics is well-established; the Python implementation does not yet exist in an accessible form. We will build it as an optional extension in v0.2, keeping the base library free of heavy ML dependencies.
 
 The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? Currently `BonusMalusScale` takes a scale you specify; it does not fit one from data. That requires a GLM pipeline and iterative estimation. It is not in v0.1 because we wanted the analysis tools to ship without coupling them to a training framework.
 
@@ -295,5 +295,6 @@ Source and issue tracker at [github.com/burningcost/experience-rating](https://g
 - Lemaire, J. (1995). *Bonus-Malus Systems in Automobile Insurance*. Kluwer Academic Publishers.
 - Norberg, R. (1976). A credibility theory for automobile bonus systems. *Scandinavian Actuarial Journal*, 1976(2), 92-107.
 - Mowbray, A.H. (1914). How extensive a payroll exposure is necessary to give a dependable pure premium. *Proceedings of the Casualty Actuarial Society*, 1, 24-30.
+- Richman, R., Scognamiglio, S. and Wuthrich, M.V. (2024). Credibility Transformer. arXiv:2409.16653.
 - Wüthrich, M.V. (2025). Experience rating in insurance. SSRN 4726206.
 - Association of British Insurers. Motor insurance NCD guidelines (various editions).

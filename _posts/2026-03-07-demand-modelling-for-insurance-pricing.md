@@ -290,7 +290,7 @@ print(violations.select(["policy_id", "channel", "renewal_price",
 
 The ENBP constraint binds by channel. A customer who originally came via Confused.com has an ENBP calculated from your Confused.com new business price for that risk, not your direct price. UK insurers who quote differently across channels - which is common practice - must compute ENBP on a channel-specific basis.
 
-The FCA's MS18/1 market study found that motor insurance customers with 5+ years' tenure were paying on average around 85% more than equivalent new customers in 2018. The ENBP rule made that illegal. The demand modelling that was used to identify and exploit inelastic customers is now only useful for the opposite purpose: identifying customers who need a retention discount before they lapse.
+The FCA's MS18/1 market study documented substantial premium disparities between long-tenure and equivalent new customers. The ENBP rule made that illegal. The demand modelling that was used to identify and exploit inelastic customers is now only useful for the opposite purpose: identifying customers who need a retention discount before they lapse.
 
 ---
 

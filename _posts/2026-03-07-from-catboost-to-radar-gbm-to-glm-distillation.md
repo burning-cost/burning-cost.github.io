@@ -10,7 +10,7 @@ author: Burning Cost
 
 You have built a CatBoost model on three years of motor data. You ran your validation properly: out-of-time holdout, exposure-weighted Gini, double-lift chart. The model beats your existing GLM by 3 Gini points. The pricing committee is interested. Then someone asks the obvious question: how do we get it into Radar?
 
-There is no good answer to that question today. You cannot load a fitted CatBoost model into Radar. Radar needs factor tables: one table per rating variable, with a relativity for each level. CatBoost produces an ensemble of decision trees. These are not the same thing, and no conversion exists that is both automatic and open.
+There is no fully automated, open-source way to convert a fitted CatBoost model into the multiplicative factor tables that Radar consumes natively. Radar's Python integration (added September 2024) lets you call Python models at runtime, and PMML/ONNX import paths exist - CatBoost can export to ONNX - but none of these produce the interpretable factor tables that most UK pricing teams want in their rating engine. A CatBoost model running as a black-box callable inside Radar is not the same thing as a set of auditable, regulatorily-defensible factor tables that actuaries can review, adjust, and sign off. The factor table is the deliverable. The question is how to get there.
 
 The standard workarounds are unpleasant. You can attempt to manually read the GBM's partial dependence plots and hand-code factor tables, which loses most of the model's discrimination power and introduces error. You can rebuild the model inside Radar's native GBM fitter, which abandons your Python training pipeline and the feature engineering that made the model good. You can buy Akur8, which is a SaaS platform that builds its own transparent ML from scratch inside its own environment - it does not accept your existing fitted CatBoost model.
 
@@ -182,7 +182,7 @@ The academic methods that `insurance-distill` implements have existed since Henc
 
 WTW's Layered GBM in Radar is the closest commercial analogue. It layers two GBMs to produce interpretable outputs, but the result is a Radar-proprietary format, not a portable factor table. You cannot take a Layered GBM out of Radar and put it somewhere else.
 
-Akur8 builds transparent ML from within its own platform. It has a WTW integration announced in August 2023. It does not accept external models. Pricing teams that have already built and validated a CatBoost model in Python cannot use Akur8 to deploy it.
+Akur8 builds transparent ML from within its own platform. It has partnerships with Guidewire and hyperexponential, among others. It does not accept external models. Pricing teams that have already built and validated a CatBoost model in Python cannot use Akur8 to deploy it.
 
 The gap is real. We built `insurance-distill` because we needed it ourselves, and because we think it belongs in the open-source Python ecosystem rather than locked inside a commercial platform.
 
