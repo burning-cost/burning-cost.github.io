@@ -7,7 +7,7 @@ tags: [spatial, territory, BYM2, ICAR, pymc, credibility, ratemaking, motor, pyt
 description: "Why postcode sector k-means banding is statistically wrong for territory ratemaking, and how to use the BYM2 spatial model in PyMC to borrow strength across neighbouring areas."
 ---
 
-Every UK motor insurer runs some version of the same process: take postcode sector loss ratios, run k-means, assign sectors to bands, file the bands with your actuarial peer reviewer, move on. The territory model is a solved problem. You have 12 bands. Your Gini is fine.
+Many UK motor insurers run some version of the same process: take postcode sector loss ratios, run k-means, assign sectors to bands, file the bands with your actuarial peer reviewer, move on. The territory model is a solved problem. You have 12 bands. Your Gini is fine.
 
 Except the territory model is not a solved problem. It is a problem that most teams have given up trying to solve properly.
 

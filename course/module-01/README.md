@@ -6,7 +6,7 @@
 
 ## What this module covers
 
-Most large UK insurers are running Databricks. Most pricing teams are not getting close to what it can do for them.
+Databricks adoption is growing across UK insurers. The pricing teams using it are not getting close to what it can do for them.
 
 This module is not a generic Databricks tutorial. It is specifically about what pricing actuaries need: how to structure your data so models are reproducible, how to track what data generated a given set of relativities, how to replace the "run the notebook manually on Thursday" pattern with a scheduled job that runs reliably and fails loudly, and what the FCA's Consumer Duty requirements mean in concrete infrastructure terms.
 

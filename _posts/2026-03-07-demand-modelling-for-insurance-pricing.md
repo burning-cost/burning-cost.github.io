@@ -7,7 +7,7 @@ tags: [demand, elasticity, DML, conversion, retention, survival, FCA, GIPP, pric
 description: "How to build a demand model for UK personal lines pricing: conversion, retention, price elasticity, and demand curves. Covers FCA GIPP requirements and the tools that make it tractable."
 ---
 
-Every UK personal lines pricing team we know has a technical premium model. Most of them have a good one. Few of them have a demand model.
+UK personal lines pricing teams have technical premium models. Most of them have a good one. Few of them have a demand model.
 
 The technical premium tells you what a risk costs. It does not tell you whether the customer will accept the price you set for that risk. On a price comparison website, the gap between your technical premium and the price you quote is not a free variable - it is a commercial decision with a predictable volume consequence, and many teams are making it without quantifying that consequence.
 

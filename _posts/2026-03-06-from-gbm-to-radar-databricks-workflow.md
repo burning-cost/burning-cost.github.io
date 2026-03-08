@@ -7,7 +7,7 @@ tags: [databricks, catboost, shap, radar, pricing, motor, unity-catalog, mlflow,
 description: "A complete Databricks workflow for UK pricing actuaries: CatBoost training with MLflow tracking, SHAP relativities extraction, and export to Radar. End-to-end motor pricing in Python."
 ---
 
-Most UK pricing teams we speak to are running Databricks. Almost none of them are running it well.
+A growing number of UK pricing teams are running Databricks. Almost none of them are running it well.
 
 The workflow we see most often: load a claims extract into a notebook, fit a CatBoost model in a single cell, pickle the model, hand-extract some PDPs, and email a CSV to whoever has Radar access. Unity Catalog sits unused. MLflow has one run in it from a proof-of-concept someone did in 2023. The Jobs scheduler has never been touched.
 
@@ -89,10 +89,10 @@ df = df.with_columns(
 )
 ```
 
-**Ordered categoricals.** ABI area band is an ordinal six-level variable. Vehicle group (ABI 1-50) is quasi-continuous with a non-linear risk profile. NCD years (0-5) is ordered ordinal. CatBoost's native categorical handling works well here - pass these via the `cat_features` parameter in a `Pool` object. CatBoost handles ordered categoricals correctly without one-hot encoding, and its SHAP values remain interpretable at the level of the original category labels:
+**Ordered categoricals.** ABI area band is an ordinal six-level variable. Vehicle group (ABI 1-50) is quasi-continuous with a non-linear risk profile. NCD years is ordered ordinal (the ABI standard scale has 10 levels from 0% to 65% discount; we clip to 0-5 here for the synthetic dataset, but production data typically tracks up to 9 years). CatBoost's native categorical handling works well here - pass these via the `cat_features` parameter in a `Pool` object. CatBoost handles ordered categoricals correctly without one-hot encoding, and its SHAP values remain interpretable at the level of the original category labels:
 
 ```python
-# NCD clipped and cast; will be declared as cat_feature in the Pool
+# NCD clipped to 0-5 for this synthetic dataset (production scales typically go higher)
 df = df.with_columns(
     pl.col("ncd_years").clip(0, 5).cast(pl.Int32)
 )
