@@ -1,45 +1,31 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Module 3: GBMs for Insurance Pricing
-# MAGIC ## Modern Insurance Pricing with Python and Databricks
+# MAGIC # Module 3: GBMs for Insurance Pricing - CatBoost Frequency/Severity
 # MAGIC
-# MAGIC This notebook covers the full Module 3 workflow:
+# MAGIC **Modern Insurance Pricing with Python and Databricks**
 # MAGIC
-# MAGIC 1. Install packages and load the motor policy data from Delta
-# MAGIC 2. Feature engineering
-# MAGIC 3. Temporal cross-validation with `insurance-cv`
-# MAGIC 4. Hyperparameter tuning with Optuna
-# MAGIC 5. Train final frequency (Poisson) and severity (Gamma/Tweedie) models
-# MAGIC 6. MLflow experiment tracking: params, metrics, artefacts
-# MAGIC 7. Model registry registration
-# MAGIC 8. Comparison with the GLM from Module 2: Gini, calibration, double lift
+# MAGIC This notebook trains CatBoost frequency and severity models on a synthetic UK motor
+# MAGIC portfolio, evaluates them against the GLM from Module 2, and registers them in MLflow.
 # MAGIC
-# MAGIC **Requirements:**
-# MAGIC - Databricks Runtime 14.3 LTS or later
-# MAGIC - Unity Catalog enabled (Free Edition includes this)
-# MAGIC - Module 2 completed: the `pricing.motor.policies` Delta table must exist
-# MAGIC   with 100,000 synthetic motor policies and an `inception_date` column
+# MAGIC **What this notebook does:**
+# MAGIC 1. Loads the motor portfolio from Unity Catalog (or generates it)
+# MAGIC 2. Fits a Poisson frequency model with walk-forward CV and IBNR buffer
+# MAGIC 3. Fits a Gamma-equivalent severity model on claims-only data
+# MAGIC 4. Tunes hyperparameters with Optuna (40 trials)
+# MAGIC 5. Compares GBM vs GLM on Gini coefficient and calibration
+# MAGIC 6. Produces a double lift chart for the pricing committee
+# MAGIC 7. Registers the challenger model in the MLflow model registry
 # MAGIC
-# MAGIC **Free Edition note:** All cells in this notebook run on Databricks Free Edition.
-# MAGIC Hyperparameter tuning with 40 trials takes approximately 20-30 minutes on a
-# MAGIC Standard_DS3_v2 single-node cluster. Reduce `N_TRIALS` to 15 if time is short.
+# MAGIC **Runtime:** 30-45 minutes on a 4-core cluster (Standard_DS3_v2).
+# MAGIC
+# MAGIC **Prerequisites:** Module 1 and Module 2 notebooks completed.
+# MAGIC Unity Catalog schemas `pricing.motor` and `pricing.governance` must exist.
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 0. Install packages
-# MAGIC
-# MAGIC CatBoost, Polars, insurance-cv, and Optuna are not pre-installed on the
-# MAGIC standard Databricks Runtime. Install them here, then restart the Python kernel
-# MAGIC so subsequent cells can import them.
-# MAGIC
-# MAGIC `insurance-cv` provides walk-forward cross-validation splits that respect
-# MAGIC policy year boundaries and IBNR development buffers. Install it via `uv add insurance-cv`
-# MAGIC in a local environment; in Databricks, `uv pip install` is the right mechanism.
-
-# COMMAND ----------
-
-# MAGIC %sh uv pip install catboost polars insurance-cv optuna scikit-learn
+# Install libraries
+# Use uv in Databricks shell cells for reproducible installs
+%pip install catboost insurance-cv optuna mlflow polars --quiet
 
 # COMMAND ----------
 
@@ -47,198 +33,269 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 1. Configuration
-# MAGIC
-# MAGIC Set your catalog and schema names here. These should match whatever you
-# MAGIC set in Module 1 and Module 2. Change MLFLOW_EXPERIMENT_PATH to your
-# MAGIC Databricks user email.
+import warnings
+import json
+from datetime import date
 
-# COMMAND ----------
-
-CATALOG  = "pricing"
-SCHEMA   = "motor"
-
-# Change this to your Databricks user path
-MLFLOW_EXPERIMENT_PATH = "/Users/you@insurer.com/motor-gbm-module03"
-
-# Reduce this if you are on Free Edition and want faster tuning
-N_TRIALS = 40
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 2. Imports
-
-# COMMAND ----------
-
-import polars as pl
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
+import polars as pl
+import catboost
 from catboost import CatBoostRegressor, Pool
-from insurance_cv import WalkForwardCV
 import optuna
-optuna.logging.set_verbosity(optuna.logging.WARNING)
-
 import mlflow
 import mlflow.catboost
 from mlflow import MlflowClient
+import matplotlib.pyplot as plt
 from sklearn.metrics import roc_auc_score
 
-print(f"CatBoost version:    {__import__('catboost').__version__}")
-print(f"Polars version:      {pl.__version__}")
-print(f"MLflow version:      {mlflow.__version__}")
-print(f"insurance-cv version: {__import__('insurance_cv').__version__}")
+optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+print(f"CatBoost version: {catboost.__version__}")
+print(f"MLflow version:   {mlflow.__version__}")
+print(f"Today:            {date.today()}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 3. Load data
+# MAGIC ## 1. Load data from Unity Catalog
 # MAGIC
-# MAGIC We load the 100,000-policy synthetic motor dataset from the Delta table
-# MAGIC written in Module 2. The table contains:
-# MAGIC - `policy_id`, `inception_date`, `exposure`
-# MAGIC - Rating factors: `area`, `vehicle_group`, `ncd_years`, `driver_age`, `conviction_flag`
-# MAGIC - Targets: `claim_count`, `claim_amount`
+# MAGIC We read the motor portfolio written by Module 1's notebook.
+# MAGIC If you skipped Module 1, generate synthetic data with the
+# MAGIC `generate_motor_portfolio()` function below.
+# MAGIC
+# MAGIC Key columns we need:
+# MAGIC - `policy_id`, `accident_year`: identifiers
+# MAGIC - `exposure_years`: earned policy-years (offset for the frequency model)
+# MAGIC - `claim_count`: Poisson target for frequency
+# MAGIC - `incurred`: total incurred cost (used to derive average severity)
+# MAGIC - Rating factors: `area`, `ncd_years`, `vehicle_group`, `driver_age`, `conviction_points`
 
 # COMMAND ----------
 
-spark_df = spark.table(f"{CATALOG}.{SCHEMA}.policies")
-df = pl.from_pandas(spark_df.toPandas())
+CATALOG = "pricing"
+SCHEMA  = "motor"
+TABLE   = "claims_exposure"
+FULL_TABLE = f"{CATALOG}.{SCHEMA}.{TABLE}"
 
-print(f"Rows: {df.shape[0]:,}  Columns: {df.shape[1]}")
-print(df.dtypes)
+try:
+    df = pl.from_pandas(spark.table(FULL_TABLE).toPandas())
+    # NOTE: For larger datasets (2M+ rows), filter to your modelling sample before
+    # calling toPandas() — loading a full production portfolio to the driver will OOM.
+    print(f"Loaded from Delta: {len(df):,} rows")
+    print(f"Accident years: {sorted(df['accident_year'].unique().to_list())}")
+except Exception as e:
+    print(f"Could not load table: {e}")
+    print("Generating synthetic portfolio (100,000 policies)...")
+
+    # Fallback: generate synthetic data
+    # (Copy generate_motor_portfolio from Module 1 notebook if needed)
+    from datetime import timedelta
+
+    def generate_motor_portfolio(n_policies=100_000, accident_years=(2019,2020,2021,2022,2023,2024), seed=42):
+        rng = np.random.default_rng(seed)
+        rows_per_year = n_policies // len(accident_years)
+        records = []
+        for ay in accident_years:
+            n = rows_per_year
+            area_bands = rng.choice(["A","B","C","D","E","F"], n, p=[0.15,0.25,0.25,0.20,0.10,0.05])
+            ncd_years  = rng.choice([0,1,2,3,4,5], n, p=[0.08,0.07,0.10,0.15,0.20,0.40])
+            vehicle_group = rng.integers(1, 51, n)
+            driver_age = rng.integers(17, 85, n)
+            conviction_points = rng.choice([0,0,0,0,0,3,6,9], n)
+            exposure = rng.uniform(0.25, 1.0, n)
+            has_conv = (conviction_points > 0).astype(int)
+            area_eff = {"A":0.0,"B":0.10,"C":0.20,"D":0.35,"E":0.50,"F":0.65}
+            log_mu = (
+                -3.0
+                + np.array([area_eff[a] for a in area_bands])
+                + (-0.12) * ncd_years
+                + 0.45 * has_conv
+                + 0.010 * (vehicle_group - 25)
+                + np.where(driver_age < 25, 0.55 * (25 - driver_age) / 8, 0.0)
+                + np.where(driver_age > 70, 0.30 * (driver_age - 70) / 14, 0.0)
+            )
+            claim_count = rng.poisson(np.exp(log_mu) * exposure).astype(int)
+            log_sev = 7.8 + 0.008 * (vehicle_group - 25) + 0.30 * has_conv
+            sev = rng.gamma(2.0, np.exp(log_sev) / 2.0)
+            incurred = np.where(claim_count > 0, claim_count * sev, 0.0)
+            for i in range(n):
+                records.append({
+                    "policy_id": f"POL{ay}{i:06d}",
+                    "accident_year": ay,
+                    "exposure_years": round(float(exposure[i]), 4),
+                    "claim_count": int(claim_count[i]),
+                    "incurred": round(float(incurred[i]), 2),
+                    "area": area_bands[i],
+                    "ncd_years": int(ncd_years[i]),
+                    "vehicle_group": int(vehicle_group[i]),
+                    "driver_age": int(driver_age[i]),
+                    "conviction_points": int(conviction_points[i]),
+                })
+        return pl.DataFrame(records)
+
+    df = generate_motor_portfolio()
+    print(f"Generated: {len(df):,} rows")
+
+# Add policy_year alias for insurance-cv
+df = df.with_columns(pl.col("accident_year").alias("policy_year"))
+
+print(f"\nPortfolio summary:")
+print(f"  Rows: {len(df):,}")
+print(f"  Exposure: {df['exposure_years'].sum():.0f} earned years")
+print(f"  Claims: {df['claim_count'].sum():,} ({df['claim_count'].sum()/df['exposure_years'].sum():.4f} per year)")
+print(f"  Total incurred: {df['incurred'].sum()/1e6:.1f}m")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 4. Feature engineering
+# MAGIC ## 2. Feature setup
 # MAGIC
-# MAGIC We add two derived columns:
-# MAGIC - `policy_year`: extracted from inception_date for temporal cross-validation
-# MAGIC - `avg_severity`: claim amount divided by claim count (for the severity model)
+# MAGIC Key design decision: pass area as a categorical feature to CatBoost.
+# MAGIC CatBoost's native categorical handling uses ordered target statistics - essentially
+# MAGIC a Bayesian mean encoding computed on a permuted training set that prevents leakage.
+# MAGIC This is better than one-hot encoding for factors with 5-10 levels because it preserves
+# MAGIC the ordinality information the tree splits can exploit.
 # MAGIC
-# MAGIC We also declare which features are categorical. CatBoost accepts categorical
-# MAGIC features directly without any manual encoding.
+# MAGIC conviction_points is passed as categorical despite being numeric, because the
+# MAGIC values (0, 3, 6, 9) represent ordered categories, not a linear quantity.
+# MAGIC CatBoost handles this correctly if we declare it categorical.
 
 # COMMAND ----------
 
-df = df.with_columns([
-    pl.col("inception_date").dt.year().alias("policy_year"),
-    pl.when(pl.col("claim_count") > 0)
-      .then(pl.col("claim_amount") / pl.col("claim_count"))
-      .otherwise(None)
-      .alias("avg_severity"),
-])
-
-# Features for both frequency and severity models
 CONTINUOUS_FEATURES = ["driver_age", "vehicle_group", "ncd_years"]
-CAT_FEATURES        = ["area", "conviction_flag"]
+CAT_FEATURES        = ["area", "conviction_points"]
 FEATURES            = CONTINUOUS_FEATURES + CAT_FEATURES
 
-# Targets and exposure
 FREQ_TARGET  = "claim_count"
 SEV_TARGET   = "avg_severity"
-EXPOSURE_COL = "exposure"
+EXPOSURE_COL = "exposure_years"
 
-print("Policy year distribution:")
-print(df.group_by("policy_year").len().sort("policy_year"))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 5. Temporal cross-validation with insurance-cv
-# MAGIC
-# MAGIC We use WalkForwardCV from insurance-cv to create splits that respect policy
-# MAGIC year ordering. This is more appropriate than random splits for insurance data
-# MAGIC because:
-# MAGIC
-# MAGIC 1. Random splits mix policy years, producing optimistic metrics that do not
-# MAGIC    reflect real out-of-time performance
-# MAGIC 2. The ibnr_buffer_years parameter excludes the most recent training year,
-# MAGIC    because its claims are not yet fully reported
-# MAGIC
-# MAGIC For motor AXD, 1 year is a sufficient IBNR buffer.
-# MAGIC For long-tail classes, increase to 2-3 years.
-
-# COMMAND ----------
-
-cv = WalkForwardCV(
-    year_col="policy_year",
-    min_train_years=2,
-    ibnr_buffer_years=1,
-    n_splits=3,
+# Derive average severity for the severity model.
+# Zero-claim rows receive null (not zero) via otherwise(None), which avoids a
+# division-by-zero. The null rows are excluded before the severity model trains
+# (see the filter(pl.col("claim_count") > 0) calls in section 7 below).
+df = df.with_columns(
+    pl.when(pl.col("claim_count") > 0)
+    .then(pl.col("incurred") / pl.col("claim_count"))
+    .otherwise(None)
+    .alias("avg_severity")
 )
 
-folds = list(cv.split(df))
-
-print(f"Number of CV folds: {len(folds)}")
-for i, (train_idx, val_idx) in enumerate(folds):
-    train_years = df[train_idx]["policy_year"].unique().sort().to_list()
-    val_years   = df[val_idx]["policy_year"].unique().sort().to_list()
-    n_train     = len(train_idx)
-    n_val       = len(val_idx)
-    print(f"  Fold {i+1}: train={train_years} (n={n_train:,}), val={val_years} (n={n_val:,})")
+print(f"Features: {FEATURES}")
+print(f"Categorical: {CAT_FEATURES}")
+print(f"\nSeverity statistics (claims-only):")
+claims_only = df.filter(pl.col("claim_count") > 0)
+print(f"  n policies with claims: {len(claims_only):,} ({100*len(claims_only)/len(df):.1f}%)")
+print(f"  Mean severity: {claims_only['avg_severity'].mean():,.0f}")
+print(f"  95th pctile:   {claims_only['avg_severity'].quantile(0.95):,.0f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 6. Helper functions
+# MAGIC ## 3. Walk-forward cross-validation
 # MAGIC
-# MAGIC Poisson deviance and Gini coefficient used throughout.
+# MAGIC This is the section that most pricing teams get wrong. Random train/test splits are
+# MAGIC wrong for insurance data because they mix policy years in both sets. A model that
+# MAGIC trains on 80% of 2019-2024 data and validates on the remaining 20% of 2019-2024 data
+# MAGIC is not being asked to predict the future - it is filling in gaps in a history it has
+# MAGIC already seen. The deviance looks good because the test data shares the same temporal
+# MAGIC autocorrelation patterns as the training data.
+# MAGIC
+# MAGIC Walk-forward CV replicates the actual deployment scenario: train on earlier years,
+# MAGIC predict on later years. The IBNR buffer (1 year) excludes the most recent training
+# MAGIC year from each fold because its claims are not yet fully reported.
 
 # COMMAND ----------
 
-def poisson_deviance(y_true, y_pred, exposure):
-    """Scaled Poisson deviance per unit exposure."""
+try:
+    from insurance_cv import WalkForwardCV
+
+    cv = WalkForwardCV(
+        year_col="policy_year",
+        min_train_years=2,
+        ibnr_buffer_years=1,
+        n_splits=3,
+    )
+
+    # cv.split() works on a pandas DataFrame (or numpy array with same length)
+    df_pd = df.to_pandas()
+    folds = list(cv.split(df_pd))
+
+    print(f"Walk-forward folds: {len(folds)}")
+    for i, (train_idx, val_idx) in enumerate(folds):
+        train_years = sorted(df_pd.iloc[train_idx]["policy_year"].unique().tolist())
+        val_years   = sorted(df_pd.iloc[val_idx]["policy_year"].unique().tolist())
+        print(f"  Fold {i+1}: train={train_years}, validate={val_years}")
+
+except ImportError:
+    print("insurance-cv not installed. Using manual walk-forward folds.")
+    df_pd = df.to_pandas()
+
+    # Manual walk-forward: 3 folds
+    all_years = sorted(df_pd["policy_year"].unique().tolist())
+    folds = []
+    for cutoff in all_years[2:5]:  # use first 3 valid cutoffs
+        # IBNR buffer: exclude the year before cutoff from training
+        train_idx = df_pd[df_pd["policy_year"] <= cutoff - 2].index.to_numpy()
+        val_idx   = df_pd[df_pd["policy_year"] == cutoff].index.to_numpy()
+        if len(train_idx) > 0 and len(val_idx) > 0:
+            folds.append((train_idx, val_idx))
+            print(f"  Fold: train<={cutoff-2}, validate={cutoff}")
+
+    print(f"\n{len(folds)} folds created manually")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 4. Poisson deviance helper and CV loop
+# MAGIC
+# MAGIC The Poisson deviance is the correct loss function for count data. Do not use RMSE
+# MAGIC for frequency model evaluation - it treats a miss of 2 claims on a rare-claims
+# MAGIC policy the same as a miss of 2 claims on a high-frequency policy, which is wrong.
+# MAGIC
+# MAGIC Important: CatBoost's `baseline` takes log(exposure), not exposure. Passing the
+# MAGIC raw exposure value (not log-transformed) is the single most common CatBoost bug
+# MAGIC for insurance models. It silently produces wrong predictions.
+
+# COMMAND ----------
+
+def poisson_deviance(y_true: np.ndarray, y_pred: np.ndarray, exposure: np.ndarray) -> float:
+    """
+    Scaled Poisson deviance per unit exposure.
+
+    y_true and y_pred are on the count scale (not frequency).
+    Dividing by exposure converts to a per-unit-time deviance that
+    is comparable across portfolios with different exposure distributions.
+    """
+    freq_pred = np.clip(y_pred / exposure, 1e-10, None)
     freq_true = y_true / exposure
-    freq_pred = y_pred / exposure
-    freq_pred = np.clip(freq_pred, 1e-10, None)
-    freq_true_safe = np.where(freq_true > 0, freq_true, 1e-10)
     deviance = 2 * exposure * (
-        np.where(freq_true > 0, freq_true * np.log(freq_true_safe / freq_pred), 0)
+        np.where(freq_true > 0, freq_true * np.log(freq_true / freq_pred), 0.0)
         - (freq_true - freq_pred)
     )
-    return deviance.sum() / exposure.sum()
+    return float(deviance.sum() / exposure.sum())
 
-def gini(y_true_counts, y_pred_counts, exposure):
-    """Gini coefficient for a Poisson frequency model."""
-    y_binary = (y_true_counts > 0).astype(int)
-    y_score  = y_pred_counts / exposure
-    auc = roc_auc_score(y_binary, y_score)
-    return 2 * auc - 1
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 7. Cross-validation baseline
-# MAGIC
-# MAGIC Run the frequency model across all folds with default parameters to establish
-# MAGIC a CV baseline before tuning.
-
-# COMMAND ----------
 
 cv_deviances = []
 
 for fold_idx, (train_idx, val_idx) in enumerate(folds):
-    df_train_cv = df[train_idx]
-    df_val_cv   = df[val_idx]
+    df_train = df_pd.iloc[train_idx]
+    df_val   = df_pd.iloc[val_idx]
 
-    X_train = df_train_cv[FEATURES].to_pandas()
-    y_train = df_train_cv[FREQ_TARGET].to_numpy()
-    w_train = df_train_cv[EXPOSURE_COL].to_numpy()
+    X_train = df_train[FEATURES]
+    y_train = df_train[FREQ_TARGET].values
+    w_train = df_train[EXPOSURE_COL].values
 
-    X_val   = df_val_cv[FEATURES].to_pandas()
-    y_val   = df_val_cv[FREQ_TARGET].to_numpy()
-    w_val   = df_val_cv[EXPOSURE_COL].to_numpy()
+    X_val   = df_val[FEATURES]
+    y_val   = df_val[FREQ_TARGET].values
+    w_val   = df_val[EXPOSURE_COL].values
 
-    # Exposure as log-offset (baseline), not sample weight
+    # log(exposure) enters as baseline: the model predicts lambda * exposure
+    # where lambda is the per-unit-time frequency
     train_pool = Pool(X_train, y_train, baseline=np.log(w_train), cat_features=CAT_FEATURES)
     val_pool   = Pool(X_val,   y_val,   baseline=np.log(w_val),   cat_features=CAT_FEATURES)
 
-    baseline_model = CatBoostRegressor(
+    model = CatBoostRegressor(
         iterations=500,
         learning_rate=0.05,
         depth=6,
@@ -247,53 +304,55 @@ for fold_idx, (train_idx, val_idx) in enumerate(folds):
         random_seed=42,
         verbose=0,
     )
-    baseline_model.fit(train_pool, eval_set=val_pool)
+    model.fit(train_pool, eval_set=val_pool)
 
-    y_pred_cv = baseline_model.predict(val_pool)
-    fold_dev  = poisson_deviance(y_val, y_pred_cv, w_val)
+    y_pred = model.predict(val_pool)
+    fold_dev = poisson_deviance(y_val, y_pred, w_val)
     cv_deviances.append(fold_dev)
-    print(f"Fold {fold_idx+1}: Poisson deviance = {fold_dev:.4f}")
+    print(f"Fold {fold_idx+1}: Poisson deviance = {fold_dev:.4f}  "
+          f"(val years: {sorted(df_val['policy_year'].unique().tolist())})")
 
-baseline_cv_deviance = np.mean(cv_deviances)
-print(f"\nBaseline mean CV Poisson deviance: {baseline_cv_deviance:.4f} (+/- {np.std(cv_deviances):.4f})")
+print(f"\nMean CV deviance: {np.mean(cv_deviances):.4f} (+/- {np.std(cv_deviances):.4f})")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 8. Hyperparameter tuning with Optuna
+# MAGIC ## 5. Hyperparameter tuning with Optuna
 # MAGIC
-# MAGIC We tune three parameters that matter most for insurance data:
+# MAGIC We tune on the last fold only. Tuning on all folds is more rigorous but 3x slower.
+# MAGIC For a 100,000-policy book, 40 trials on a single fold takes 15-20 minutes.
 # MAGIC
-# MAGIC - `depth` (4-7): symmetric tree depth. For 5-10 rating factors, depth 4-6 is
-# MAGIC   typically right. Deeper trees fit more interactions but overfit faster on
-# MAGIC   smaller datasets.
-# MAGIC - `learning_rate` (0.02-0.15): shrinkage per tree. Lower values generalise better
-# MAGIC   but require more iterations.
-# MAGIC - `l2_leaf_reg` (1-10): L2 regularisation on leaf values. Increase if train
-# MAGIC   deviance is substantially better than CV deviance.
+# MAGIC The three parameters that matter most for insurance frequency models:
+# MAGIC - depth: controls complexity of captured interactions (4-6 is usually right)
+# MAGIC - learning_rate: lower = slower convergence but better generalisation
+# MAGIC - l2_leaf_reg: regularisation strength; increase if train deviance >> CV deviance
 # MAGIC
-# MAGIC We tune on the last fold only (most recent history, most realistic validation set).
+# MAGIC iterations is also tunable, but it interacts with learning_rate. With early stopping
+# MAGIC you can simply set iterations high and let the model find the right number.
 
 # COMMAND ----------
 
-# Use last fold for tuning
-train_idx_t, val_idx_t = folds[-1]
+train_idx_tune, val_idx_tune = folds[-1]
 
-df_train_t = df[train_idx_t]
-df_val_t   = df[val_idx_t]
+df_train_tune = df_pd.iloc[train_idx_tune]
+df_val_tune   = df_pd.iloc[val_idx_tune]
 
-X_tt = df_train_t[FEATURES].to_pandas()
-y_tt = df_train_t[FREQ_TARGET].to_numpy()
-w_tt = df_train_t[EXPOSURE_COL].to_numpy()
+X_train_t = df_train_tune[FEATURES]
+y_train_t = df_train_tune[FREQ_TARGET].values
+w_train_t = df_train_tune[EXPOSURE_COL].values
 
-X_vt = df_val_t[FEATURES].to_pandas()
-y_vt = df_val_t[FREQ_TARGET].to_numpy()
-w_vt = df_val_t[EXPOSURE_COL].to_numpy()
+X_val_t   = df_val_tune[FEATURES]
+y_val_t   = df_val_tune[FREQ_TARGET].values
+w_val_t   = df_val_tune[EXPOSURE_COL].values
 
-tune_train_pool = Pool(X_tt, y_tt, baseline=np.log(w_tt), cat_features=CAT_FEATURES)
-tune_val_pool   = Pool(X_vt, y_vt, baseline=np.log(w_vt), cat_features=CAT_FEATURES)
+# Pool objects are constructed ONCE here, outside the objective function.
+# Constructing them inside the objective would repeat feature hashing and
+# categorical encoding on every trial — 40x wasteful on a 100,000-row dataset.
+train_pool_t = Pool(X_train_t, y_train_t, baseline=np.log(w_train_t), cat_features=CAT_FEATURES)
+val_pool_t   = Pool(X_val_t,   y_val_t,   baseline=np.log(w_val_t),   cat_features=CAT_FEATURES)
 
-def objective(trial):
+
+def objective(trial: optuna.Trial) -> float:
     params = {
         "iterations":    trial.suggest_int("iterations", 200, 1000),
         "depth":         trial.suggest_int("depth", 4, 7),
@@ -304,65 +363,55 @@ def objective(trial):
         "random_seed":   42,
         "verbose":       0,
     }
-    m = CatBoostRegressor(**params)
-    m.fit(tune_train_pool, eval_set=tune_val_pool)
-    y_pred = m.predict(tune_val_pool)
-    return poisson_deviance(y_vt, y_pred, w_vt)
+    model = CatBoostRegressor(**params)
+    model.fit(train_pool_t, eval_set=val_pool_t)
+    pred = model.predict(val_pool_t)
+    return poisson_deviance(y_val_t, pred, w_val_t)
+
 
 study = optuna.create_study(direction="minimize")
-study.optimize(objective, n_trials=N_TRIALS, show_progress_bar=True)
+study.optimize(objective, n_trials=40, show_progress_bar=True)
 
 best_params = study.best_params
-print("\nBest parameters:")
+print(f"\nBest hyperparameters (40 trials):")
 for k, v in best_params.items():
     print(f"  {k}: {v}")
-print(f"\nBest tune deviance:    {study.best_value:.4f}")
-print(f"Baseline CV deviance:  {baseline_cv_deviance:.4f}")
-print(f"Improvement:           {(baseline_cv_deviance - study.best_value):.4f}")
+print(f"\nBest CV deviance: {study.best_value:.5f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 9. Train final models on full training data
+# MAGIC ## 6. Train final frequency model and log to MLflow
 # MAGIC
-# MAGIC The most recent policy year is held out as the test set (unseen data).
-# MAGIC Everything before it is training data.
+# MAGIC The final model trains on all years except the held-out test year.
+# MAGIC The test year is the most recent year - the closest approximation to
+# MAGIC "predicting next year from this year's data."
 # MAGIC
-# MAGIC We train two models:
-# MAGIC - Frequency: CatBoostRegressor with Poisson loss, exposure as log-offset
-# MAGIC - Severity: CatBoostRegressor with Tweedie(power=2) loss, restricted to claims > 0
+# MAGIC We log the model, all parameters, and key metrics to MLflow.
+# MAGIC This is the FCA audit trail for the model development step:
+# MAGIC everything needed to reproduce this run is recorded in the MLflow run.
 
 # COMMAND ----------
 
-max_year     = df["policy_year"].max()
-df_train_all = df.filter(pl.col("policy_year") < max_year)
-df_test      = df.filter(pl.col("policy_year") == max_year)
+mlflow.set_experiment(f"/Users/{spark.sql('SELECT current_user()').collect()[0][0]}/motor-gbm-module03")
 
-print(f"Training set: {len(df_train_all):,} policies (years < {max_year})")
-print(f"Test set:     {len(df_test):,} policies (year = {max_year})")
+# Train/test split: test = most recent year
+max_year = df["accident_year"].max()
+df_train_final = df.filter(pl.col("accident_year") < max_year)
+df_test        = df.filter(pl.col("accident_year") == max_year)
 
-# Frequency pools
-X_train_f = df_train_all[FEATURES].to_pandas()
-y_train_f = df_train_all[FREQ_TARGET].to_numpy()
-w_train_f = df_train_all[EXPOSURE_COL].to_numpy()
+X_train_f = df_train_final[FEATURES].to_pandas()
+y_train_f = df_train_final[FREQ_TARGET].to_numpy()
+w_train_f = df_train_final[EXPOSURE_COL].to_numpy()
 
 X_test_f  = df_test[FEATURES].to_pandas()
 y_test_f  = df_test[FREQ_TARGET].to_numpy()
 w_test_f  = df_test[EXPOSURE_COL].to_numpy()
 
-freq_train_pool = Pool(X_train_f, y_train_f, baseline=np.log(w_train_f), cat_features=CAT_FEATURES)
-freq_test_pool  = Pool(X_test_f,  y_test_f,  baseline=np.log(w_test_f),  cat_features=CAT_FEATURES)
+final_train_pool = Pool(X_train_f, y_train_f, baseline=np.log(w_train_f), cat_features=CAT_FEATURES)
+final_test_pool  = Pool(X_test_f,  y_test_f,  baseline=np.log(w_test_f),  cat_features=CAT_FEATURES)
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 9a. Frequency model with MLflow tracking
-
-# COMMAND ----------
-
-mlflow.set_experiment(MLFLOW_EXPERIMENT_PATH)
-
-freq_final_params = {
+freq_params = {
     **best_params,
     "loss_function": "Poisson",
     "eval_metric":   "Poisson",
@@ -371,71 +420,54 @@ freq_final_params = {
 }
 
 with mlflow.start_run(run_name="freq_catboost_tuned") as run_freq:
-    mlflow.log_params(freq_final_params)
-    mlflow.log_param("model_type",      "catboost_frequency")
-    mlflow.log_param("cv_strategy",     "walk_forward_ibnr1")
-    mlflow.log_param("n_cv_folds",      len(folds))
-    mlflow.log_param("features",        FEATURES)
-    mlflow.log_param("cat_features",    CAT_FEATURES)
-    mlflow.log_param("n_train",         len(df_train_all))
-    mlflow.log_param("n_test",          len(df_test))
-    mlflow.log_param("train_years",     df_train_all["policy_year"].unique().sort().to_list())
-    mlflow.log_param("test_year",       int(max_year))
+    mlflow.log_params(freq_params)
+    mlflow.log_param("model_type",    "catboost_frequency")
+    mlflow.log_param("cv_strategy",   "walk_forward_ibnr1")
+    mlflow.log_param("n_cv_folds",    len(folds))
+    mlflow.log_param("features",      json.dumps(FEATURES))
+    mlflow.log_param("cat_features",  json.dumps(CAT_FEATURES))
+    mlflow.log_param("train_years",   str(sorted(df_train_final["accident_year"].unique().to_list())))
+    mlflow.log_param("test_year",     str(max_year))
+    mlflow.log_param("run_date",      str(date.today()))
 
-    freq_model = CatBoostRegressor(**freq_final_params)
-    freq_model.fit(freq_train_pool, eval_set=freq_test_pool)
+    freq_model = CatBoostRegressor(**freq_params)
+    freq_model.fit(final_train_pool, eval_set=final_test_pool)
 
-    y_pred_freq = freq_model.predict(freq_test_pool)
+    y_pred_freq = freq_model.predict(final_test_pool)
+    test_dev    = poisson_deviance(y_test_f, y_pred_freq, w_test_f)
 
-    test_dev_freq  = poisson_deviance(y_test_f, y_pred_freq, w_test_f)
-    gini_freq      = gini(y_test_f, y_pred_freq, w_test_f)
+    mlflow.log_metric("test_poisson_deviance",  test_dev)
+    mlflow.log_metric("mean_cv_deviance",       np.mean(cv_deviances))
+    mlflow.log_metric("cv_deviance_std",        np.std(cv_deviances))
 
-    mlflow.log_metric("test_poisson_deviance",    test_dev_freq)
-    mlflow.log_metric("test_gini",                gini_freq)
-    mlflow.log_metric("baseline_cv_deviance",     baseline_cv_deviance)
-    mlflow.log_metric("tuned_cv_deviance",        study.best_value)
-
-    # Feature importance plot
-    importances = freq_model.get_feature_importance(type="FeatureImportance")
-    imp_df = (
-        pl.DataFrame({"feature": FEATURES, "importance": importances.tolist()})
-        .sort("importance", descending=True)
-    )
-    fig_imp, ax_imp = plt.subplots(figsize=(8, 4))
-    ax_imp.barh(imp_df["feature"].to_list(), imp_df["importance"].to_list())
-    ax_imp.set_xlabel("Feature importance")
-    ax_imp.set_title("CatBoost frequency model: feature importances")
-    plt.tight_layout()
-    mlflow.log_figure(fig_imp, "feature_importance.png")
-    plt.show()
-
-    # Log model artefact
     mlflow.catboost.log_model(freq_model, "freq_model")
     freq_run_id = run_freq.info.run_id
 
-print(f"\nFrequency model run ID: {freq_run_id}")
-print(f"Test Poisson deviance:  {test_dev_freq:.4f}")
-print(f"Test Gini:              {gini_freq:.3f}")
+print(f"Frequency model: run_id={freq_run_id}")
+print(f"Test Poisson deviance: {test_dev:.4f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 9b. Severity model
+# MAGIC ## 7. Severity model - Gamma-equivalent Tweedie
 # MAGIC
-# MAGIC We restrict to policies with at least one claim.
-# MAGIC Exposure does not enter the severity model - severity is average cost per
-# MAGIC claim, which is exposure-independent.
+# MAGIC The severity model predicts average cost per claim conditional on having a claim.
+# MAGIC Only policies with claim_count > 0 enter the severity model.
 # MAGIC
-# MAGIC CatBoost does not have a named "Gamma" loss function. Tweedie with
-# MAGIC variance_power=2 is mathematically equivalent to the Gamma log-link model.
+# MAGIC No exposure offset for severity: the cost of a claim does not depend on how long
+# MAGIC the policy was in force. The Poisson frequency model accounts for exposure.
+# MAGIC
+# MAGIC CatBoost does not have a dedicated Gamma loss function by that name.
+# MAGIC "Tweedie:variance_power=2" is mathematically equivalent to the Gamma log-link model.
+# MAGIC Power=1 is Poisson. Power between 1 and 2 is compound Poisson-Gamma. Power=2 is Gamma.
 
 # COMMAND ----------
 
-df_train_sev = df_train_all.filter(pl.col("claim_count") > 0)
+df_train_sev = df_train_final.filter(pl.col("claim_count") > 0)
 df_test_sev  = df_test.filter(pl.col("claim_count") > 0)
 
-print(f"Severity training set: {len(df_train_sev):,} claims")
-print(f"Severity test set:     {len(df_test_sev):,} claims")
+print(f"Severity training set: {len(df_train_sev):,} policies with claims")
+print(f"Severity test set:     {len(df_test_sev):,} policies with claims")
 
 X_train_s = df_train_sev[FEATURES].to_pandas()
 y_train_s = df_train_sev[SEV_TARGET].to_numpy()
@@ -446,9 +478,13 @@ y_test_s  = df_test_sev[SEV_TARGET].to_numpy()
 sev_train_pool = Pool(X_train_s, y_train_s, cat_features=CAT_FEATURES)
 sev_test_pool  = Pool(X_test_s,  y_test_s,  cat_features=CAT_FEATURES)
 
+# NOTE: In production, tune severity hyperparameters separately. The optimal depth for
+# a Poisson frequency model on 100,000 policies is not necessarily optimal for a Gamma
+# severity model on the 7-10% of policies with claims. Shared hyperparameters are a
+# tutorial simplification.
 sev_params = {
     **best_params,
-    "loss_function": "Tweedie:variance_power=2",
+    "loss_function": "Tweedie:variance_power=2",   # Gamma equivalent
     "eval_metric":   "RMSE",
     "random_seed":   42,
     "verbose":       100,
@@ -456,9 +492,10 @@ sev_params = {
 
 with mlflow.start_run(run_name="sev_catboost_tuned") as run_sev:
     mlflow.log_params(sev_params)
-    mlflow.log_param("model_type",     "catboost_severity")
-    mlflow.log_param("n_claims_train", len(df_train_sev))
-    mlflow.log_param("n_claims_test",  len(df_test_sev))
+    mlflow.log_param("model_type",       "catboost_severity")
+    mlflow.log_param("n_claims_train",   len(df_train_sev))
+    mlflow.log_param("n_claims_test",    len(df_test_sev))
+    mlflow.log_param("severity_target",  "avg_cost_per_claim")
 
     sev_model = CatBoostRegressor(**sev_params)
     sev_model.fit(sev_train_pool, eval_set=sev_test_pool)
@@ -466,251 +503,247 @@ with mlflow.start_run(run_name="sev_catboost_tuned") as run_sev:
     y_pred_sev = sev_model.predict(sev_test_pool)
     rmse_sev   = float(np.sqrt(np.mean((y_test_s - y_pred_sev)**2)))
     mae_sev    = float(np.mean(np.abs(y_test_s - y_pred_sev)))
+    mean_err   = float(np.mean(y_pred_sev) / np.mean(y_test_s) - 1)
 
-    mlflow.log_metric("test_rmse_severity", rmse_sev)
-    mlflow.log_metric("test_mae_severity",  mae_sev)
+    mlflow.log_metric("test_rmse",          rmse_sev)
+    mlflow.log_metric("test_mae",           mae_sev)
+    mlflow.log_metric("mean_severity_bias", mean_err)
     mlflow.catboost.log_model(sev_model, "sev_model")
     sev_run_id = run_sev.info.run_id
 
-print(f"\nSeverity model run ID: {sev_run_id}")
-print(f"Test RMSE severity:    {rmse_sev:.0f}")
-print(f"Test MAE severity:     {mae_sev:.0f}")
+print(f"\nSeverity model: run_id={sev_run_id}")
+print(f"RMSE: {rmse_sev:,.0f}  MAE: {mae_sev:,.0f}")
+print(f"Mean severity bias: {mean_err*100:+.1f}%")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 10. Model registry
+# MAGIC ## 8. Compare GBM to GLM baseline
 # MAGIC
-# MAGIC Register the frequency model. We use the "challenger" alias because the GBM
-# MAGIC has not yet been through committee review. In Module 4, when SHAP relativities
-# MAGIC have been produced and reviewed, the model can be promoted to "production".
+# MAGIC The comparison that determines what we do with the GBM. Two diagnostics:
 # MAGIC
-# MAGIC Note: transition_model_version_stage() is deprecated in MLflow 2.9+.
-# MAGIC Use set_registered_model_alias() instead.
+# MAGIC 1. Gini coefficient: how well does each model discriminate between high-risk
+# MAGIC    and low-risk policies? GBM should be higher.
+# MAGIC
+# MAGIC 2. Double lift chart: of the policies the GBM calls high-risk that the GLM
+# MAGIC    does not, are they actually high-risk? A flat chart means the GBM is
+# MAGIC    not finding anything the GLM cannot.
+
+# COMMAND ----------
+
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+
+# Fit a Poisson GLM on the same training data for comparison
+df_glm_train = df_train_final.to_pandas()
+df_glm_train["log_exposure"] = np.log(df_glm_train[EXPOSURE_COL].clip(lower=1e-6))
+
+glm_formula = (
+    "claim_count ~ C(area) + C(ncd_years, Treatment(0)) + "
+    "vehicle_group + driver_age + conviction_points"
+)
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    glm_model = smf.glm(
+        formula=glm_formula,
+        data=df_glm_train,
+        family=sm.families.Poisson(link=sm.families.links.Log()),
+        offset=df_glm_train["log_exposure"],
+    ).fit()
+
+df_glm_test = df_test.to_pandas()
+df_glm_test["log_exposure"] = np.log(df_glm_test[EXPOSURE_COL].clip(lower=1e-6))
+glm_pred_counts = glm_model.predict(df_glm_test, exposure=df_glm_test[EXPOSURE_COL])
+
+print(f"GLM converged: {glm_model.converged}")
+print(f"GLM parameters: {len(glm_model.params)}")
+
+# COMMAND ----------
+
+def gini_coefficient(y_counts: np.ndarray, y_scores: np.ndarray) -> float:
+    """
+    Gini coefficient using binary AUC formulation.
+    y_counts: actual claim counts
+    y_scores: predicted frequencies (score, not count)
+    """
+    y_binary = (y_counts > 0).astype(int)
+    auc = roc_auc_score(y_binary, y_scores)
+    return float(2 * auc - 1)
+
+
+gbm_freq_pred = y_pred_freq / w_test_f
+glm_freq_pred = glm_pred_counts.values / w_test_f
+
+gini_gbm = gini_coefficient(y_test_f, gbm_freq_pred)
+gini_glm = gini_coefficient(y_test_f, glm_freq_pred)
+
+print(f"Gini coefficient - GBM: {gini_gbm:.3f}")
+print(f"Gini coefficient - GLM: {gini_glm:.3f}")
+print(f"Lift:                   {gini_gbm - gini_glm:+.3f} ({(gini_gbm/gini_glm - 1)*100:+.1f}%)")
+
+with mlflow.start_run(run_id=freq_run_id):
+    mlflow.log_metric("gini_gbm",  gini_gbm)
+    mlflow.log_metric("gini_glm",  gini_glm)
+    mlflow.log_metric("gini_lift", gini_gbm - gini_glm)
+
+# COMMAND ----------
+
+# Double lift chart
+ratio = gbm_freq_pred / (glm_freq_pred + 1e-10)
+actual_freq = y_test_f / w_test_f
+
+n_bins = 10
+bin_edges = np.quantile(ratio, np.linspace(0, 1, n_bins + 1))
+bin_idx   = np.digitize(ratio, bin_edges[1:-1])
+
+ratio_means, actual_means, n_obs = [], [], []
+for b in range(n_bins):
+    mask = bin_idx == b
+    if mask.sum() == 0:
+        continue
+    ratio_means.append(ratio[mask].mean())
+    actual_means.append(actual_freq[mask].mean())
+    n_obs.append(mask.sum())
+
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(ratio_means, actual_means, "o-", color="steelblue", linewidth=2, label="Actual frequency")
+ax.axhline(actual_freq.mean(), linestyle="--", color="grey",
+           label=f"Portfolio mean ({actual_freq.mean():.4f})")
+
+for x, y, n in zip(ratio_means, actual_means, n_obs):
+    ax.annotate(f"n={n:,}", (x, y), textcoords="offset points", xytext=(0, 8), fontsize=7, ha="center")
+
+ax.set_xlabel("GBM / GLM predicted frequency ratio (by decile)")
+ax.set_ylabel("Actual observed frequency")
+ax.set_title("Double Lift Chart: CatBoost vs GLM - Motor Frequency")
+ax.legend()
+plt.tight_layout()
+
+with mlflow.start_run(run_id=freq_run_id):
+    mlflow.log_figure(fig, "double_lift_gbm_vs_glm.png")
+
+plt.show()
+print("A positively-sloping curve confirms the GBM identifies genuine additional risk signals.")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 9. Feature importance
+# MAGIC
+# MAGIC CatBoost's default importance metric is PredictionValuesChange (the average change
+# MAGIC in prediction value when a feature is varied across the training data), normalised
+# MAGIC to sum to 100. This is NOT the mean absolute SHAP value. To get SHAP-based
+# MAGIC importances, pass type='ShapValues' explicitly (covered in Module 4).
+# MAGIC
+# MAGIC This tells you which features the model relies on, but not how they influence
+# MAGIC predictions for individual policies. Module 4 covers SHAP values in full for
+# MAGIC relativity extraction.
+
+# COMMAND ----------
+
+importances = freq_model.get_feature_importance(type="FeatureImportance")
+
+imp_df = (
+    pl.DataFrame({"feature": FEATURES, "importance": importances.tolist()})
+    .sort("importance", descending=True)
+)
+
+print("Frequency model feature importances:")
+print(imp_df)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.barh(imp_df["feature"].to_list()[::-1], imp_df["importance"].to_list()[::-1], color="steelblue")
+ax.set_xlabel("Feature importance (PredictionValuesChange)")
+ax.set_title("CatBoost frequency model: feature importances")
+plt.tight_layout()
+
+with mlflow.start_run(run_id=freq_run_id):
+    mlflow.log_figure(fig, "feature_importance.png")
+
+plt.show()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 10. Register the challenger model
+# MAGIC
+# MAGIC We register the frequency model as "challenger" - not "production". The model
+# MAGIC has not yet passed governance review. In Module 4, the SHAP relativities are
+# MAGIC extracted and reviewed by the pricing committee. Only after sign-off does the
+# MAGIC model get promoted from "challenger" to "production".
+# MAGIC
+# MAGIC We use aliases rather than stages: MLflow stages (Staging/Production) were
+# MAGIC deprecated in MLflow 2.9+. Aliases are the recommended replacement.
 
 # COMMAND ----------
 
 client = MlflowClient()
 
-freq_model_name = "motor_freq_catboost_m03"
-freq_uri        = f"runs:/{freq_run_id}/freq_model"
+MODEL_NAME = "motor_freq_catboost_m03"
 
-registered_freq = mlflow.register_model(
-    model_uri=freq_uri,
-    name=freq_model_name,
-)
+try:
+    freq_uri = f"runs:/{freq_run_id}/freq_model"
+    registered = mlflow.register_model(model_uri=freq_uri, name=MODEL_NAME)
 
-client.set_registered_model_alias(
-    name=freq_model_name,
-    alias="challenger",
-    version=registered_freq.version,
-)
-
-for key, val in {
-    "module":       "module_03",
-    "cv_strategy":  "walk_forward_ibnr1",
-    "test_gini":    f"{gini_freq:.3f}",
-    "test_deviance": f"{test_dev_freq:.4f}",
-}.items():
-    client.set_model_version_tag(
-        name=freq_model_name,
-        version=registered_freq.version,
-        key=key,
-        value=val,
+    # Set alias: "challenger" means competing with the production GLM
+    client.set_registered_model_alias(
+        name=MODEL_NAME,
+        alias="challenger",
+        version=registered.version,
     )
 
-print(f"Registered: {freq_model_name} v{registered_freq.version} as 'challenger'")
-print(f"Load with: mlflow.catboost.load_model('models:/{freq_model_name}@challenger')")
+    client.set_model_version_tag(name=MODEL_NAME, version=registered.version,
+                                  key="module",      value="module_03")
+    client.set_model_version_tag(name=MODEL_NAME, version=registered.version,
+                                  key="cv_strategy", value="walk_forward_ibnr1")
+    client.set_model_version_tag(name=MODEL_NAME, version=registered.version,
+                                  key="gini_lift",   value=str(round(gini_gbm - gini_glm, 4)))
+
+    print(f"Registered: {MODEL_NAME} version {registered.version} as 'challenger'")
+    print(f"Load later: mlflow.catboost.load_model('models:/{MODEL_NAME}@challenger')")
+
+except Exception as e:
+    print(f"Registry error (may not have permissions on Free Edition): {e}")
+    print(f"Model logged at run_id: {freq_run_id}")
+    print(f"Load with: mlflow.catboost.load_model('runs:/{freq_run_id}/freq_model')")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 11. Comparison with the Module 2 GLM
+# MAGIC ## Summary
 # MAGIC
-# MAGIC We compare the GBM against the GLM from Module 2 using:
-# MAGIC - Gini coefficient
-# MAGIC - Calibration curve
-# MAGIC - Double lift chart
+# MAGIC What this notebook built:
 # MAGIC
-# MAGIC If you have not completed Module 2, this section generates approximate GLM
-# MAGIC predictions using a simple multiplicative model for comparison purposes.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 11a. Load GLM predictions
+# MAGIC | Step | What was produced |
+# MAGIC |------|-------------------|
+# MAGIC | Walk-forward CV | 3 folds, IBNR buffer of 1 year, mean deviance logged |
+# MAGIC | Optuna tuning | 40 trials on last fold; best depth/lr/l2/iterations logged |
+# MAGIC | Frequency model | CatBoost Poisson, trained on all years except the test year |
+# MAGIC | Severity model | CatBoost Tweedie (power=2), claims-only subset |
+# MAGIC | GLM comparison | Gini lift, double lift chart, logged to MLflow run |
+# MAGIC | Model registry | Challenger alias set; ready for Module 4 SHAP extraction |
 # MAGIC
-# MAGIC If you completed Module 2 and have the GLM registered, uncomment the first block.
-# MAGIC Otherwise, the second block generates approximate predictions from a Poisson GLM
-# MAGIC fitted here.
-
-# COMMAND ----------
-
-# Option A: Load from Module 2 registry (uncomment if available)
-# glm_model = mlflow.statsmodels.load_model("models:/motor_freq_glm@production")
-# X_test_glm = df_test[FEATURES + [EXPOSURE_COL]].to_pandas()
-# y_pred_glm = glm_model.predict(X_test_glm)
-
-# Option B: Fit a quick Poisson GLM for comparison
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-
-df_train_glm = df_train_all.to_pandas()
-df_test_glm  = df_test.to_pandas()
-
-# Treat categoricals as strings for formula interface
-for col in CAT_FEATURES:
-    df_train_glm[col] = df_train_glm[col].astype(str)
-    df_test_glm[col]  = df_test_glm[col].astype(str)
-
-formula = f"{FREQ_TARGET} ~ {' + '.join(CONTINUOUS_FEATURES)} + {' + '.join([f'C({c})' for c in CAT_FEATURES])}"
-
-glm_fit = smf.glm(
-    formula=formula,
-    data=df_train_glm,
-    family=sm.families.Poisson(link=sm.families.links.Log()),
-    offset=np.log(df_train_glm[EXPOSURE_COL]),
-).fit()
-
-y_pred_glm_raw = glm_fit.predict(
-    exog=df_test_glm,
-    offset=np.log(df_test_glm[EXPOSURE_COL]),
-)
-y_pred_glm = y_pred_glm_raw.to_numpy()
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 11b. Gini comparison
-
-# COMMAND ----------
-
-gini_gbm = gini(y_test_f, y_pred_freq, w_test_f)
-gini_glm_val = gini(y_test_f, y_pred_glm,  w_test_f)
-
-print(f"Frequency Gini - GBM: {gini_gbm:.3f}")
-print(f"Frequency Gini - GLM: {gini_glm_val:.3f}")
-print(f"Gini lift:            {gini_gbm - gini_glm_val:+.3f} ({(gini_gbm / gini_glm_val - 1) * 100:+.1f}%)")
-
-# Log comparison metrics to the frequency run
-with mlflow.start_run(run_id=freq_run_id):
-    mlflow.log_metric("glm_gini",        gini_glm_val)
-    mlflow.log_metric("gini_lift_vs_glm", gini_gbm - gini_glm_val)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 11c. Calibration curve
-
-# COMMAND ----------
-
-def calibration_data(y_true, y_pred, exposure, n_bins=10):
-    freq_pred = y_pred / exposure
-    freq_true = y_true / exposure
-    bins      = np.quantile(freq_pred, np.linspace(0, 1, n_bins + 1))
-    bin_idx   = np.digitize(freq_pred, bins[1:-1])
-    actuals, predicteds = [], []
-    for b in range(n_bins):
-        mask = bin_idx == b
-        if mask.sum() < 10:
-            continue
-        actuals.append(freq_true[mask].mean())
-        predicteds.append(freq_pred[mask].mean())
-    return np.array(predicteds), np.array(actuals)
-
-pred_gbm, act_gbm = calibration_data(y_test_f, y_pred_freq, w_test_f)
-pred_glm, act_glm = calibration_data(y_test_f, y_pred_glm,  w_test_f)
-
-fig_cal, ax_cal = plt.subplots(figsize=(7, 6))
-ax_cal.plot(pred_gbm, act_gbm, "o-", label="GBM")
-ax_cal.plot(pred_glm, act_glm, "s--", label="GLM")
-lim = max(pred_gbm.max(), pred_glm.max()) * 1.05
-ax_cal.plot([0, lim], [0, lim], "k:", label="Perfect calibration")
-ax_cal.set_xlabel("Mean predicted frequency")
-ax_cal.set_ylabel("Mean actual frequency")
-ax_cal.set_title("Calibration: GBM vs GLM")
-ax_cal.legend()
-plt.tight_layout()
-
-with mlflow.start_run(run_id=freq_run_id):
-    mlflow.log_figure(fig_cal, "calibration_gbm_vs_glm.png")
-
-plt.show()
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 11d. Double lift chart
+# MAGIC The double lift chart is the key output for the pricing committee.
+# MAGIC A positively-sloping chart means the GBM is finding real additional signal.
+# MAGIC A flat chart means the feature set is already well-captured by the GLM.
 # MAGIC
-# MAGIC The double lift chart shows actual frequency by decile of the ratio
-# MAGIC (GBM prediction / GLM prediction). An upward slope confirms the GBM is
-# MAGIC finding risk signals that the GLM misses. A flat chart means the GBM
-# MAGIC provides no additional discrimination beyond the GLM on this dataset.
+# MAGIC Next: Module 4 extracts SHAP relativities from the frequency model,
+# MAGIC converting the GBM's internal representation into a reviewable factor table.
 
 # COMMAND ----------
 
-freq_pred_gbm = y_pred_freq / w_test_f
-freq_pred_glm = y_pred_glm  / w_test_f
-ratio         = freq_pred_gbm / freq_pred_glm
-freq_actual   = y_test_f / w_test_f
-
-n_bins     = 10
-bins       = np.quantile(ratio, np.linspace(0, 1, n_bins + 1))
-bin_idx    = np.digitize(ratio, bins[1:-1])
-
-ratio_mids, actuals_dl = [], []
-for b in range(n_bins):
-    mask = bin_idx == b
-    if mask.sum() < 20:
-        continue
-    ratio_mids.append(ratio[mask].mean())
-    actuals_dl.append(freq_actual[mask].mean())
-
-fig_dl, ax_dl = plt.subplots(figsize=(8, 5))
-ax_dl.plot(ratio_mids, actuals_dl, "o-")
-ax_dl.axhline(freq_actual.mean(), linestyle="--", color="grey", label="Portfolio mean frequency")
-ax_dl.set_xlabel("GBM predicted frequency / GLM predicted frequency")
-ax_dl.set_ylabel("Actual observed frequency")
-ax_dl.set_title("Double lift: GBM vs GLM")
-ax_dl.legend()
-plt.tight_layout()
-
-with mlflow.start_run(run_id=freq_run_id):
-    mlflow.log_figure(fig_dl, "double_lift_gbm_vs_glm.png")
-
-plt.show()
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 12. Summary
-# MAGIC
-# MAGIC What we built in this notebook:
-# MAGIC
-# MAGIC - CatBoost Poisson frequency model with exposure as log-offset (not sample weight)
-# MAGIC - CatBoost Tweedie(power=2) severity model restricted to claims > 0
-# MAGIC - Temporal cross-validation using insurance-cv: walk-forward splits with 1-year IBNR buffer
-# MAGIC - Optuna hyperparameter tuning across depth, learning_rate, l2_leaf_reg
-# MAGIC - Full MLflow tracking: parameters, metrics, calibration/double-lift figures, model artefacts
-# MAGIC - Model registry registration as "challenger" (pending Module 4 committee review)
-# MAGIC - Comparison with Module 2 GLM: Gini, calibration, double lift
-# MAGIC
-# MAGIC The models are registered in the Databricks model registry.
-# MAGIC In Module 4, we extract SHAP relativities from the frequency model to produce
-# MAGIC a factor table that a pricing committee can review.
-
-# COMMAND ----------
-
-# Final output
 print("=" * 60)
-print("Module 3 complete")
+print("MODULE 3 COMPLETE")
 print("=" * 60)
-print(f"Frequency model: {freq_model_name} v{registered_freq.version} @challenger")
-print(f"  Test Gini:     {gini_gbm:.3f}  (GLM: {gini_glm_val:.3f}, lift: {gini_gbm - gini_glm_val:+.3f})")
-print(f"  Test deviance: {test_dev_freq:.4f}")
 print()
-print(f"Severity model run ID: {sev_run_id}")
-print(f"  Test RMSE:     {rmse_sev:.0f}")
+print(f"Frequency model run:  {freq_run_id}")
+print(f"Severity model run:   {sev_run_id}")
+print(f"GBM Gini:             {gini_gbm:.3f}")
+print(f"GLM Gini:             {gini_glm:.3f}")
+print(f"Gini lift:            {gini_gbm - gini_glm:+.3f}")
+print(f"Test Poisson deviance:{test_dev:.4f}")
 print()
 print("Next: Module 4 - SHAP Relativities")
-print("  Extract multiplicative factor tables from the GBM frequency model")
+print("The double lift chart and Gini lift are inputs to the pricing committee decision.")
+print("Module 4 extracts the underlying relativities for governance sign-off.")

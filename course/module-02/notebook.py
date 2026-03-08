@@ -36,7 +36,6 @@ from datetime import date
 
 import numpy as np
 import polars as pl
-import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -517,7 +516,55 @@ else:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 7b. Actual vs Expected by factor level
+# MAGIC ### 7b. Deviance residuals - severity GLM
+# MAGIC
+# MAGIC For Gamma GLMs, scale is estimated (not fixed at 1.0), so dividing by sqrt(scale)
+# MAGIC does matter - it converts raw deviance residuals to standardised deviance residuals.
+# MAGIC The Gamma scale parameter equals 1/shape, so a scale of 0.25 means shape=4
+# MAGIC (CV of 0.5). Standardised residuals from a well-specified Gamma GLM should be
+# MAGIC approximately normal with unit variance.
+
+# COMMAND ----------
+
+# Deviance residuals for severity GLM - on claimed policies only
+# For Gamma, scale > 1 so the standardisation by sqrt(scale) changes the magnitude
+# of the residuals, unlike the Poisson case where scale=1.0 and it is a no-op.
+sev_resid_deviance = glm_sev.resid_deviance
+sev_resid_std = sev_resid_deviance / np.sqrt(glm_sev.scale)
+sev_fitted_log = np.log(glm_sev.fittedvalues.clip(lower=1e-10))
+
+print(f"Gamma scale (dispersion): {glm_sev.scale:.4f}")
+print(f"sqrt(scale): {np.sqrt(glm_sev.scale):.4f}  (standardisation factor for residuals)")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# Residuals vs fitted
+axes[0].scatter(sev_fitted_log, sev_resid_std, alpha=0.1, s=3, color="darkorange", rasterized=True)
+axes[0].axhline(0, color="black", linestyle="--", lw=1)
+axes[0].axhline(2, color="red", linestyle=":", lw=1, alpha=0.7)
+axes[0].axhline(-2, color="red", linestyle=":", lw=1, alpha=0.7)
+axes[0].set_xlabel("log(fitted severity)")
+axes[0].set_ylabel("Standardised deviance residual")
+axes[0].set_title("Residuals vs Fitted - Severity GLM (Gamma)")
+sev_pct_outside = (np.abs(sev_resid_std) > 2).mean() * 100
+axes[0].annotate(
+    f"{sev_pct_outside:.1f}% outside ±2",
+    xy=(0.05, 0.95), xycoords="axes fraction",
+    fontsize=9, color="red"
+)
+
+# QQ plot
+stats.probplot(sev_resid_std, dist="norm", plot=axes[1])
+axes[1].set_title("Normal QQ - Standardised Deviance Residuals (Severity)")
+
+plt.tight_layout()
+display(fig)
+plt.close()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7c. Actual vs Expected by factor level
 
 # COMMAND ----------
 
@@ -574,7 +621,7 @@ print("This is the signal to add driver age to the model.")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 7c. A/E bar chart
+# MAGIC ### 7d. A/E bar chart
 
 # COMMAND ----------
 

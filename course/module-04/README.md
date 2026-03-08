@@ -62,7 +62,7 @@ This module teaches you to get that table from the GBM using SHAP values. The ap
 This module uses `shap-relativities`, an open-source Python library for extracting multiplicative rating relativities from GBMs. Install via:
 
 ```bash
-uv pip install 'shap-relativities[catboost]==0.1.0'
+uv add 'shap-relativities[catboost]==0.1.0'
 ```
 
 Source: https://github.com/burningcost/shap-relativities

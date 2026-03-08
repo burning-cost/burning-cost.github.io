@@ -10,7 +10,7 @@ You have 200 policies in postcode area SW14 and 3 claims this year. Is 1.5% the 
 
 Every pricing team has this problem. GLMs handle it partially through parameter constraints. GBMs, left unchecked, overfit it completely - min_data_in_leaf is a blunt instrument, not a principled solution.
 
-This module covers two approaches to the thin-cell problem: classical Bühlmann-Straub credibility weighting and full Bayesian hierarchical models. We show where they agree, where they diverge, and how to choose between them. We use the open-source `credibility` library (github.com/burningcost/credibility) for classical credibility and the `bayesian-pricing` library (github.com/burningcost/bayesian-pricing) for hierarchical Bayesian models. All code runs on Databricks.
+This module covers two approaches to the thin-cell problem: classical Bühlmann-Straub credibility weighting and full Bayesian hierarchical models. We show where they agree, where they diverge, and how to choose between them. The Bühlmann-Straub calculation is implemented directly in NumPy (about 20 lines). The Bayesian model is written explicitly in PyMC rather than hidden behind a library wrapper. All code runs on Databricks.
 
 ---
 
@@ -44,27 +44,22 @@ You do not need prior exposure to Bayesian statistics or PyMC. We explain what M
 
 ## Libraries
 
-These libraries are available on GitHub. PyPI publication is planned.
+The notebook requires only standard open-source packages available on PyPI:
 
 ```bash
-uv pip install "credibility[all] @ git+https://github.com/burningcost/credibility.git"
-uv pip install "bayesian-pricing[all] @ git+https://github.com/burningcost/bayesian-pricing.git"
+uv pip install pymc arviz polars numpy matplotlib mlflow
 ```
 
-Sources:
-- [github.com/burningcost/credibility](https://github.com/burningcost/credibility)
-- [github.com/burningcost/bayesian-pricing](https://github.com/burningcost/bayesian-pricing)
-
-The `bayesian-pricing` library depends on PyMC 5.x and ArviZ. On Databricks, install in your notebook's first cell.
+No private or suspended GitHub repositories. PyMC 5.x and ArviZ are the core Bayesian dependencies. On Databricks, install in your notebook's first cell - the ML runtime (DBR 14.x or later) includes most of these already.
 
 ---
 
 ## What you will be able to do after this module
 
-- Apply Bühlmann-Straub credibility to frequency and severity data, with correct exposure weighting
+- Apply Bühlmann-Straub credibility to frequency and severity data, with correct exposure weighting - using a self-contained NumPy implementation you understand line by line
 - Interpret the structural parameters v (EPV), a (VHM), and K, and explain what they tell you about your portfolio's heterogeneity
 - Understand why Bühlmann-Straub is an empirical Bayes method and how it connects to hierarchical Bayesian models
-- Fit a HierarchicalFrequency model using the `bayesian-pricing` library, with non-centered parameterization for convergence
+- Fit a hierarchical Poisson model directly in PyMC, with non-centered parameterization for convergence
 - Produce a shrinkage plot showing observed rates versus credibility-weighted estimates - the most persuasive diagnostic for explaining credibility to a pricing committee
 - Extract credibility factors from Bayesian posteriors and compare them to classical Bühlmann-Straub Z values
 - Decide when classical credibility is sufficient and when full Bayesian is warranted
@@ -76,6 +71,6 @@ The `bayesian-pricing` library depends on PyMC 5.x and ArviZ. On Databricks, ins
 
 The thin-cell problem is not a niche concern. It affects every factor table you produce: vehicle make/model (thousands of levels, most sparsely populated), occupation (hundreds of levels), postcode (9,500 sectors across Great Britain). The question is never whether to use credibility - you are always implicitly making a choice between pooling, no pooling, or partial pooling. The question is whether you make that choice deliberately and with the right mathematics.
 
-Bühlmann-Straub is the most defensible tool for a large fraction of UK pricing problems and is currently done in Excel universally. There is no Python package on PyPI that does it properly with actuarial outputs. We fix that.
+Bühlmann-Straub is the most defensible tool for a large fraction of UK pricing problems and is currently done in Excel universally. The implementation in this module is self-contained - no dependency on any private library. You can read it, audit it, and explain every line to a Chief Actuary.
 
 For cases where Excel credibility is not enough - hierarchical geographic structures, crossed effects, or genuine uncertainty quantification - full Bayesian gives you something classical credibility cannot: a posterior distribution over each segment's true expected loss rate. That distribution is what you need to make defensible, documented decisions on thin cells - and it is substantially stronger evidence than a point estimate when regulators ask how you priced a cell with 8 claims.

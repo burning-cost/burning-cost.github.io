@@ -1,41 +1,27 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Module 1: Databricks for Pricing Teams
-# MAGIC ## Modern Insurance Pricing with Python and Databricks
+# MAGIC # Module 1: Databricks for Pricing Teams — Setup Notebook
 # MAGIC
-# MAGIC This notebook walks through the full Module 1 workflow on synthetic motor data:
+# MAGIC Full setup workflow for a pricing team environment. Runs end-to-end on a
+# MAGIC single-node Databricks cluster (DBR 14.x LTS ML recommended).
 # MAGIC
-# MAGIC 1. Workspace and catalog setup
-# MAGIC 2. Generating and loading synthetic motor policy data to Delta
-# MAGIC 3. EDA: one-way frequency, severity distribution, exposure distribution
-# MAGIC 4. MLflow experiment tracking
-# MAGIC 5. A CatBoost frequency model as a smoke test
-# MAGIC 6. Audit trail entry
+# MAGIC **What this notebook does:**
+# MAGIC 1. Creates a Unity Catalog schema for the course
+# MAGIC 2. Generates a synthetic UK motor claims dataset
+# MAGIC 3. Writes it as a Delta table with enforced schema and partitioning
+# MAGIC 4. Demonstrates Delta time travel — querying a prior table version
+# MAGIC 5. Shows basic pricing data profiling (claim frequency by area, severity distribution)
+# MAGIC 6. Demonstrates incremental updates with MERGE
+# MAGIC 7. Sets up a Databricks Workflow using the SDK (requires a paid workspace)
 # MAGIC
-# MAGIC **Requirements:**
-# MAGIC - Databricks Runtime 14.3 LTS or later
-# MAGIC - Unity Catalog enabled on your workspace (Free Edition includes this)
-# MAGIC - The `pricing` catalog must exist: if you are on Free Edition, use your personal sandbox catalog
+# MAGIC Runtime: ~15 minutes on a small cluster (4 cores).
 # MAGIC
-# MAGIC **Free Edition users:** All steps in this notebook work on Free Edition. Section 7 (Workflows)
-# MAGIC in the tutorial requires a paid workspace; the notebook covers what you can run interactively.
+# MAGIC **Prerequisites:** Unity Catalog enabled on your Databricks workspace.
+# MAGIC Free Edition users can follow all steps except section 7 (Workflows).
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 0. Install packages
-# MAGIC
-# MAGIC CatBoost and Polars are not pre-installed on the standard Databricks Runtime.
-# MAGIC Install them here. The kernel restart ensures the new packages are importable
-# MAGIC in subsequent cells.
-# MAGIC
-# MAGIC If you are using `uv` for package management in a local development environment,
-# MAGIC the equivalent is `uv add catboost polars`. In Databricks notebooks, `uv pip install`
-# MAGIC is the right mechanism.
-
-# COMMAND ----------
-
-# MAGIC %sh uv pip install catboost polars
+# MAGIC %pip install databricks-sdk polars --quiet
 
 # COMMAND ----------
 
@@ -43,764 +29,759 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 1. Workspace setup
-# MAGIC
-# MAGIC Set your catalog and schema names here. If you are on Free Edition and do not
-# MAGIC have a `pricing` catalog, change CATALOG to your user sandbox catalog
-# MAGIC (usually your username or `main`).
-# MAGIC
-# MAGIC **Important:** If you are adopting Databricks into an existing environment,
-# MAGIC your platform team has probably already defined the catalog structure and naming
-# MAGIC conventions. Use what they have set up rather than creating new catalogs -
-# MAGIC agree on the structure first. The names below are targets for a greenfield setup.
-
-# COMMAND ----------
-
-# Constants: set once, used throughout the notebook
-# Do not interpolate user-supplied strings into SQL via f-strings.
-# These are hardcoded constants and are safe. Application code reading
-# table names from user input requires parameterised queries instead.
-CATALOG = "pricing"      # Change to your catalog name if needed
-SCHEMA  = "motor"
-VOLUME  = "raw"
-
-# COMMAND ----------
-
-# Verify Unity Catalog is available and you can access the catalog
-try:
-    spark.sql(f"DESCRIBE CATALOG {CATALOG}")
-    print(f"Catalog '{CATALOG}' is accessible.")
-except Exception as e:
-    print(f"Cannot access catalog '{CATALOG}': {e}")
-    print("If you are on Free Edition, try CATALOG = 'main' or your username.")
-    raise
-
-# COMMAND ----------
-
-# Create the schema and volume if they do not exist
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.{SCHEMA} COMMENT 'Motor pricing models and data'")
-spark.sql(f"CREATE VOLUME IF NOT EXISTS {CATALOG}.{SCHEMA}.{VOLUME}")
-
-print(f"Schema {CATALOG}.{SCHEMA} is ready.")
-print(f"Volume {CATALOG}.{SCHEMA}.{VOLUME} is ready.")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 2. Synthetic motor policy data
-# MAGIC
-# MAGIC We generate 10,000 synthetic motor policies with realistic structure.
-# MAGIC This is not a toy dataset: the claim frequency follows a Poisson process
-# MAGIC with multiplicative rating factors, and the NCD distribution is skewed
-# MAGIC towards higher values as it is in a real UK motor book.
-# MAGIC
-# MAGIC The true data-generating process (DGP) parameters are logged explicitly
-# MAGIC so you can compare them against what the model recovers.
-
-# COMMAND ----------
-
-import polars as pl
-import numpy as np
+import warnings
+import json
 from datetime import date, timedelta
+import random
 
-rng = np.random.default_rng(seed=42)
-n = 10_000
-
-# COMMAND ----------
-
-# Rating factor levels
-age_bands      = ["17-25", "26-35", "36-50", "51-65", "66+"]
-vehicle_groups = ["A", "B", "C", "D", "E"]
-regions        = ["London", "South East", "Midlands", "North", "Scotland", "Wales"]
-
-# Age band distribution: young drivers are a small but important segment
-age_probs = [0.08, 0.22, 0.35, 0.25, 0.10]
-
-# Vehicle group distribution
-vg_probs = [0.15, 0.25, 0.30, 0.20, 0.10]
-
-# NCD distribution: UK motor books are heavily skewed towards higher NCD
-# experienced policyholders dominate. Uniform 0-5 is not realistic.
-# Approximate real-book distribution:
-ncd_probs = [0.05, 0.10, 0.15, 0.20, 0.20, 0.30]  # NCD 0 through NCD 5
-
-ncd_years    = rng.choice(range(6), size=n, p=ncd_probs)
-age_band_arr = rng.choice(age_bands, size=n, p=age_probs)
-vg_arr       = rng.choice(vehicle_groups, size=n, p=vg_probs)
-region_arr   = rng.choice(regions, size=n)  # uniform across regions
-
-# Exposure in years: uniform between 0.25 and 1.0
-# Represents mix of annual, 9-month, 6-month, and 3-month policies
-exposure_arr = rng.uniform(0.25, 1.0, size=n)
-
-df = pl.DataFrame({
-    "policy_id":     [f"POL{i:06d}" for i in range(n)],
-    "age_band":      age_band_arr.tolist(),
-    "vehicle_group": vg_arr.tolist(),
-    "region":        region_arr.tolist(),
-    "ncd_years":     ncd_years.tolist(),
-    "exposure":      exposure_arr.tolist(),
-})
-
-# COMMAND ----------
-
-# True DGP parameters - log these so learners can compare model output against them
-# Base rate is per unit exposure per year
-DGP_BASE_RATE = 0.08  # 8% claim frequency at base level (exp(-2.526) ≈ 0.08)
-
-DGP_AGE_FACTORS = {"17-25": 2.5, "26-35": 1.4, "36-50": 1.0, "51-65": 0.9, "66+": 1.1}
-DGP_VG_FACTORS  = {"A": 0.7, "B": 0.9, "C": 1.0, "D": 1.2, "E": 1.5}
-DGP_NCD_FACTORS = {0: 2.0, 1: 1.6, 2: 1.3, 3: 1.1, 4: 1.0, 5: 0.85}
-
-print("True DGP parameters:")
-print(f"  Base frequency (per policy-year): {DGP_BASE_RATE:.3f}")
-print(f"  Age factors: {DGP_AGE_FACTORS}")
-print(f"  Vehicle group factors: {DGP_VG_FACTORS}")
-print(f"  NCD factors: {DGP_NCD_FACTORS}")
-print(f"\n  Note: factors are multiplicative on the base rate, weighted by exposure.")
-print(f"  A 17-25 driver in vehicle group E with NCD 0 has expected frequency:")
-print(f"  {DGP_BASE_RATE * 2.5 * 1.5 * 2.0:.3f} per year of exposure.")
-
-# COMMAND ----------
-
-# Generate claim counts and amounts
-expected_freq = np.array([
-    DGP_BASE_RATE
-    * DGP_AGE_FACTORS[row["age_band"]]
-    * DGP_VG_FACTORS[row["vehicle_group"]]
-    * DGP_NCD_FACTORS[row["ncd_years"]]
-    * row["exposure"]
-    for row in df.iter_rows(named=True)
-])
-
-# Poisson frequency
-claim_counts = rng.poisson(expected_freq)
-
-# Gamma severity: mean £3,000 per claim, shape 2 (CV = 1/sqrt(2) ≈ 0.71)
-# Severity is independent of frequency factors in this DGP
-claim_amounts = np.where(
-    claim_counts > 0,
-    rng.gamma(shape=2.0, scale=1500.0, size=n) * claim_counts,
-    0.0
+import numpy as np
+import polars as pl
+from pyspark.sql import functions as F
+from pyspark.sql.types import (
+    StructType, StructField,
+    StringType, IntegerType, DoubleType, DateType, BooleanType
 )
 
-df = df.with_columns([
-    pl.Series("claim_count",  claim_counts.tolist()).cast(pl.Int32),
-    pl.Series("claim_amount", claim_amounts.tolist()),
-])
-
-print(f"Generated {n:,} policies")
-print(f"Overall claim frequency: {claim_counts.sum() / exposure_arr.sum():.4f} claims per policy-year")
-print(f"Mean claim amount (claimants only): £{claim_amounts[claim_amounts > 0].mean():,.0f}")
-print(f"Total claim count: {claim_counts.sum():,}")
-print(f"\nFirst five rows:")
-print(df.head(5))
+print("Libraries loaded.")
+print(f"Today: {date.today()}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 3. Load to Delta and set table properties
+# MAGIC ## 1. Unity Catalog schema setup
+# MAGIC
+# MAGIC We create a catalog and schema for the course. In a real environment these would
+# MAGIC be created once by a platform admin — you would be granted access, not creating
+# MAGIC the catalog itself. We create it here so the course is self-contained.
+# MAGIC
+# MAGIC **Note:** Most teams do not get a greenfield environment. If your workspace already
+# MAGIC has a catalog structure set up by a platform team, update CATALOG and SCHEMA
+# MAGIC below to point to what you have been given. You will need at minimum USE CATALOG,
+# MAGIC USE SCHEMA, and CREATE TABLE permissions on the target namespace.
+# MAGIC
+# MAGIC If you already have a catalog and schema you want to use, skip the catalog
+# MAGIC creation cell and update CATALOG and SCHEMA below.
 
 # COMMAND ----------
 
-# PySpark does not yet natively accept Polars DataFrames.
-# Convert to pandas at the Spark boundary only.
-spark_df = spark.createDataFrame(df.to_pandas())
+CATALOG = "pricing"
+SCHEMA  = "motor"
+TABLE   = "claims_exposure"
+FULL_TABLE = f"{CATALOG}.{SCHEMA}.{TABLE}"
 
-(spark_df
+print(f"Target table: {FULL_TABLE}")
+
+# COMMAND ----------
+
+# Create catalog (requires account admin or metastore admin — skip if using an existing catalog)
+try:
+    spark.sql(f"CREATE CATALOG IF NOT EXISTS {CATALOG} COMMENT 'Insurance pricing models and data'")
+    print(f"Catalog '{CATALOG}' ready.")
+except Exception as e:
+    print(f"Could not create catalog (you may not have admin rights): {e}")
+    print("If using an existing catalog, update CATALOG above and continue.")
+    print("Ask your platform team to grant you USE CATALOG on the appropriate catalog.")
+
+# COMMAND ----------
+
+# Create schema
+spark.sql(f"""
+    CREATE SCHEMA IF NOT EXISTS {CATALOG}.{SCHEMA}
+    COMMENT 'Motor personal lines pricing: claims, exposure, models, relativities'
+""")
+print(f"Schema '{CATALOG}.{SCHEMA}' ready.")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 2. Generate synthetic UK motor data
+# MAGIC
+# MAGIC We generate a realistic synthetic motor portfolio with known properties.
+# MAGIC The dataset mimics a typical UK personal lines motor book:
+# MAGIC - 100,000 policy-periods across accident years 2019-2024
+# MAGIC - ABI area bands A-F, ABI vehicle groups 1-50
+# MAGIC - NCD years 0-5 (skewed towards NCD 4-5, reflecting a mature book)
+# MAGIC - Driver age 17-84
+# MAGIC - Claim frequency ~10% pa, claim severity 2,000-15,000
+# MAGIC
+# MAGIC The true DGP parameters are logged below so you can verify extraction later.
+
+# COMMAND ----------
+
+def generate_motor_portfolio(
+    n_policies: int = 100_000,
+    accident_years: tuple = (2019, 2020, 2021, 2022, 2023, 2024),
+    seed: int = 42,
+) -> pl.DataFrame:
+    """
+    Generate a synthetic UK personal lines motor portfolio.
+
+    Each row is one policy-period. Exposure is a random float < 1 to simulate
+    mid-term cancellations and new business part-years.
+
+    True frequency DGP (Poisson, log link):
+        log(freq) = -3.0
+                    + 0.10 * (area_B) + 0.20 * (area_C) + 0.35 * (area_D)
+                    + 0.50 * (area_E) + 0.65 * (area_F)
+                    + (-0.12) * ncd_years
+                    + 0.45 * has_convictions
+                    + 0.010 * (vehicle_group - 25)
+                    + young_driver_effect(driver_age)
+
+    True severity DGP (Gamma, log link):
+        log(sev) = 7.8 + 0.008 * vehicle_group + 0.30 * has_convictions
+
+    NCD distribution: skewed towards higher values (reflecting a mature book
+    where most policyholders have accumulated NCD). A uniform 0-5 distribution
+    would understate the concentration at NCD 5 typical of a real motor book.
+    """
+    rng = np.random.default_rng(seed)
+
+    rows_per_year = n_policies // len(accident_years)
+
+    records = []
+    for ay in accident_years:
+        n = rows_per_year + (n_policies % len(accident_years) if ay == accident_years[-1] else 0)
+
+        area_bands = rng.choice(["A", "B", "C", "D", "E", "F"], size=n,
+                                p=[0.15, 0.25, 0.25, 0.20, 0.10, 0.05])
+        # NCD skewed towards 4-5: reflects a mature UK motor book
+        ncd_years  = rng.choice([0, 1, 2, 3, 4, 5], size=n,
+                                p=[0.08, 0.07, 0.10, 0.15, 0.20, 0.40])
+        vehicle_group = rng.integers(1, 51, size=n)
+        driver_age = rng.integers(17, 85, size=n)
+        conviction_points = rng.choice([0, 0, 0, 0, 0, 3, 6, 9], size=n)
+        annual_mileage = rng.integers(2000, 25001, size=n)
+        exposure = rng.uniform(0.25, 1.0, size=n)
+
+        has_convictions = (conviction_points > 0).astype(int)
+
+        # Log-linear frequency parameters
+        area_effect = {
+            "A": 0.00, "B": 0.10, "C": 0.20, "D": 0.35, "E": 0.50, "F": 0.65
+        }
+        log_mu = (
+            -3.0
+            + np.array([area_effect[a] for a in area_bands])
+            + (-0.12) * ncd_years
+            + 0.45 * has_convictions
+            + 0.010 * (vehicle_group - 25)
+            # Young driver U-shape: ages 17-24 elevated, 70+ mildly elevated
+            + np.where(driver_age < 25, 0.55 * (25 - driver_age) / 8, 0.0)
+            + np.where(driver_age > 70, 0.30 * (driver_age - 70) / 14, 0.0)
+        )
+        mu = np.exp(log_mu) * exposure
+        claim_count = rng.poisson(mu).astype(int)
+
+        # Gamma severity
+        log_sev = (
+            7.8
+            + 0.008 * (vehicle_group - 25)
+            + 0.30 * has_convictions
+        )
+        mean_sev = np.exp(log_sev)
+        # Gamma with shape=2 (moderate dispersion)
+        sev_per_claim = rng.gamma(shape=2.0, scale=mean_sev / 2.0, size=n)
+        incurred = np.where(claim_count > 0, claim_count * sev_per_claim, 0.0)
+
+        # Policy dates
+        base_date = date(ay, 1, 1)
+        day_offsets = rng.integers(0, 365, size=n)
+        policy_starts = [base_date + timedelta(days=int(d)) for d in day_offsets]
+        policy_ends   = [s + timedelta(days=int(e * 365)) for s, e in zip(policy_starts, exposure)]
+
+        policy_ids = [f"POL{ay}{str(i).zfill(6)}" for i in range(n)]
+
+        for i in range(n):
+            # Clip birth year to avoid pre-1900 dates for very old drivers in early accident years
+            birth_year = max(ay - int(driver_age[i]), 1900)
+            records.append({
+                "policy_id":        policy_ids[i],
+                "accident_year":    ay,
+                "policy_start":     policy_starts[i],
+                "policy_end":       policy_ends[i],
+                "exposure_years":   round(float(exposure[i]), 4),
+                "claim_count":      int(claim_count[i]),
+                "incurred":         round(float(incurred[i]), 2),
+                "area_band":        area_bands[i],
+                "ncd_years":        int(ncd_years[i]),
+                "vehicle_group":    int(vehicle_group[i]),
+                "driver_age":       int(driver_age[i]),
+                "annual_mileage":   float(annual_mileage[i]),
+                "conviction_points":int(conviction_points[i]),
+                "policyholder_name": f"Policyholder_{policy_ids[i]}",
+                "policyholder_dob":  date(birth_year, 6, 15),
+            })
+
+    return pl.DataFrame(records)
+
+
+print("Generating synthetic portfolio (100,000 policy-periods)...")
+portfolio = generate_motor_portfolio(n_policies=100_000, seed=42)
+
+print(f"Portfolio: {len(portfolio):,} policy-periods")
+print(f"Accident years: {sorted(portfolio['accident_year'].unique().to_list())}")
+print(f"Exposure: {portfolio['exposure_years'].sum():.0f} earned years")
+print(f"Claims: {portfolio['claim_count'].sum():,} ({portfolio['claim_count'].sum() / portfolio['exposure_years'].sum():.3f} per earned year)")
+print(f"Total incurred: {portfolio['incurred'].sum() / 1e6:.1f}m")
+print()
+print("True DGP parameters:")
+print("  Frequency (Poisson, log link):")
+print("    Intercept: -3.0 (base rate is exp(-3.0) = 5.0% per unit exposure at area A, NCD=0, no convictions)")
+print("    area_B: +0.10, area_C: +0.20, area_D: +0.35, area_E: +0.50, area_F: +0.65")
+print("    ncd_years: -0.12 per year (NCD=5 vs NCD=0 = exp(-0.60) = 0.549)")
+print("    has_convictions: +0.45 (exp(0.45) = 1.568)")
+print("    vehicle_group: +0.010 per group above 25")
+print("    young driver (<25): strong positive, elderly (>70): mild positive")
+print("  Severity (Gamma, log link):")
+print("    Intercept: 7.8 (base severity ~2,440)")
+print("    vehicle_group: +0.008 per group above 25")
+print("    has_convictions: +0.30 (exp(0.30) = 1.350)")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 3. Write to Delta with enforced schema
+# MAGIC
+# MAGIC We define the schema explicitly rather than inferring it. Every production data
+# MAGIC load should do this.
+# MAGIC
+# MAGIC Note: delta.autoOptimize.optimizeWrite was deprecated in DBR 11.3 and has no
+# MAGIC effect in DBR 14.x. Do not include it in new table definitions — the runtime
+# MAGIC handles write optimisation automatically.
+
+# COMMAND ----------
+
+claims_schema = StructType([
+    StructField("policy_id",          StringType(),  nullable=False),
+    StructField("accident_year",      IntegerType(), nullable=False),
+    StructField("policy_start",       DateType(),    nullable=True),
+    StructField("policy_end",         DateType(),    nullable=True),
+    StructField("exposure_years",     DoubleType(),  nullable=False),
+    StructField("claim_count",        IntegerType(), nullable=False),
+    StructField("incurred",           DoubleType(),  nullable=False),
+    StructField("area_band",          StringType(),  nullable=True),
+    StructField("ncd_years",          IntegerType(), nullable=True),
+    StructField("vehicle_group",      IntegerType(), nullable=True),
+    StructField("driver_age",         IntegerType(), nullable=True),
+    StructField("annual_mileage",     DoubleType(),  nullable=True),
+    StructField("conviction_points",  IntegerType(), nullable=True),
+    StructField("policyholder_name",  StringType(),  nullable=True),
+    StructField("policyholder_dob",   DateType(),    nullable=True),
+])
+
+# COMMAND ----------
+
+# Create table with explicit DDL (schema + partitioning + properties)
+spark.sql(f"""
+    CREATE TABLE IF NOT EXISTS {FULL_TABLE} (
+        policy_id          STRING  NOT NULL,
+        accident_year      INT     NOT NULL,
+        policy_start       DATE,
+        policy_end         DATE,
+        exposure_years     DOUBLE  NOT NULL,
+        claim_count        INT     NOT NULL,
+        incurred           DOUBLE  NOT NULL,
+        area_band          STRING,
+        ncd_years          INT,
+        vehicle_group      INT,
+        driver_age         INT,
+        annual_mileage     DOUBLE,
+        conviction_points  INT,
+        policyholder_name  STRING,
+        policyholder_dob   DATE
+    )
+    USING DELTA
+    PARTITIONED BY (accident_year)
+    TBLPROPERTIES (
+        'delta.logRetentionDuration' = 'interval 7 years',
+        'delta.enableChangeDataFeed' = 'true'
+    )
+    COMMENT 'Motor personal lines claims and exposure. One row per policy-period. Partitioned by accident_year.'
+""")
+# delta.logRetentionDuration is set to 7 years - common practice that exceeds
+# the FCA's SYSC 9.1.1R minimum (5 years) and aligns with HMRC requirements.
+# See the tutorial for context on the interaction with GDPR right to erasure.
+print(f"Table {FULL_TABLE} created (or already exists).")
+
+# COMMAND ----------
+
+# Write the 2019-2022 subset first (we will simulate adding 2023-2024 later)
+portfolio_initial = portfolio.filter(pl.col("accident_year") <= 2022)
+
+# Bridge: Polars -> pandas -> Spark. PySpark does not yet natively accept Polars DataFrames.
+spark_df = spark.createDataFrame(portfolio_initial.to_pandas(), schema=claims_schema)
+
+(
+    spark_df
     .write
     .format("delta")
     .mode("overwrite")
     .option("overwriteSchema", "true")
-    .saveAsTable(f"{CATALOG}.{SCHEMA}.policies"))
-
-print(f"Saved {n:,} rows to {CATALOG}.{SCHEMA}.policies")
-
-# COMMAND ----------
-
-# Set table properties
-# delta.autoOptimize.optimizeWrite was deprecated in DBR 11.3 - do not use it.
-# Use delta.autoCompact.enabled instead.
-#
-# Retention: 7 years for production tables matches FCA Consumer Duty evidence guidance.
-# For development/training tables, 90 days is sufficient.
-#
-# GDPR note: Delta version history retains all historical data including PII.
-# If your book contains policyholders who may exercise right to erasure, discuss
-# the tension between FCA data retention and GDPR right to erasure with your DPO
-# before setting retention policies on tables containing personal data.
-spark.sql(f"""
-    ALTER TABLE {CATALOG}.{SCHEMA}.policies
-    SET TBLPROPERTIES (
-        'delta.autoCompact.enabled' = 'true',
-        'delta.logRetentionDuration' = 'interval 7 years',
-        'delta.deletedFileRetentionDuration' = 'interval 7 years'
-    )
-""")
-
-print("Table properties set.")
-print("  autoCompact.enabled: true  - keeps file sizes sensible over time")
-print("  logRetentionDuration: 7 years  - for FCA Consumer Duty evidence")
-
-# COMMAND ----------
-
-# Verify the table exists and inspect
-display(spark.sql(f"DESCRIBE EXTENDED {CATALOG}.{SCHEMA}.policies"))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 4. Exploratory data analysis
-# MAGIC
-# MAGIC We work in Polars for all data manipulation. PySpark is used only to read from
-# MAGIC and write to Delta.
-
-# COMMAND ----------
-
-# Read back from Delta (confirms the write worked)
-df = pl.from_pandas(spark.table(f"{CATALOG}.{SCHEMA}.policies").toPandas())
-
-print(f"Loaded {len(df):,} rows from {CATALOG}.{SCHEMA}.policies")
-print(f"Schema: {df.schema}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 4.1 Exposure distribution
-
-# COMMAND ----------
-
-exposure_summary = df.select("exposure").describe()
-print(exposure_summary)
-
-# Distribution by rounded exposure band
-exposure_dist = (
-    df
-    .with_columns(
-        pl.col("exposure").round(1).alias("exposure_band")
-    )
-    .group_by("exposure_band")
-    .agg(pl.len().alias("policy_count"))
-    .sort("exposure_band")
-)
-print("\nPolicy count by exposure band (rounded to 0.1 years):")
-print(exposure_dist)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 4.2 Frequency one-way by rating factor
-
-# COMMAND ----------
-
-def frequency_oneway(df: pl.DataFrame, factor: str) -> pl.DataFrame:
-    """
-    One-way frequency analysis by a single rating factor.
-
-    Returns a DataFrame with exposure, claim count, and frequency per policy-year
-    for each level of the factor.
-    """
-    return (
-        df
-        .group_by(factor)
-        .agg([
-            pl.col("exposure").sum().alias("exposure"),
-            pl.col("claim_count").sum().alias("claims"),
-        ])
-        .with_columns(
-            (pl.col("claims") / pl.col("exposure")).alias("freq_pa")
-        )
-        .sort(factor)
-    )
-
-# COMMAND ----------
-
-print("Frequency by age band:")
-print(frequency_oneway(df, "age_band"))
-
-# COMMAND ----------
-
-print("\nFrequency by vehicle group:")
-print(frequency_oneway(df, "vehicle_group"))
-
-# COMMAND ----------
-
-print("\nFrequency by NCD years:")
-ncd_ow = frequency_oneway(df, "ncd_years")
-print(ncd_ow)
-
-# COMMAND ----------
-
-print("\nFrequency by region:")
-print(frequency_oneway(df, "region"))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 4.3 Severity distribution (claimants only)
-
-# COMMAND ----------
-
-# Severity: claim amount per claim, for policies with at least one claim
-claimants = df.filter(pl.col("claim_count") > 0).with_columns(
-    (pl.col("claim_amount") / pl.col("claim_count")).alias("cost_per_claim")
+    .partitionBy("accident_year")
+    .saveAsTable(FULL_TABLE)
 )
 
-severity_summary = claimants.select("cost_per_claim").describe()
-print("Severity distribution (cost per claim):")
-print(severity_summary)
+print(f"Initial load complete: {len(portfolio_initial):,} rows (accident years 2019-2022)")
+print()
 
-# COMMAND ----------
-
-# Severity by vehicle group (higher groups tend to have higher repair costs)
-severity_by_vg = (
-    claimants
-    .group_by("vehicle_group")
-    .agg([
-        pl.col("claim_count").sum().alias("claim_count"),
-        pl.col("claim_amount").sum().alias("total_loss"),
-        pl.col("cost_per_claim").mean().alias("mean_cost_per_claim"),
-    ])
-    .with_columns(
-        (pl.col("total_loss") / pl.col("claim_count")).alias("weighted_mean_severity")
-    )
-    .sort("vehicle_group")
-)
-
-print("\nSeverity by vehicle group:")
-print(severity_by_vg)
+spark.sql(f"DESCRIBE HISTORY {FULL_TABLE}").select(
+    "version", "timestamp", "operation", "operationMetrics"
+).show(5, truncate=False)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 4.4 NCD distribution check
+# MAGIC ## 4. Delta time travel
 # MAGIC
-# MAGIC UK motor books are skewed towards higher NCD values. Uniform distributions
-# MAGIC in synthetic data produce unrealistic one-way analyses. Our DGP uses the
-# MAGIC approximate real-book distribution. Compare the output here against the
-# MAGIC true DGP proportions.
-
-# COMMAND ----------
-
-ncd_dist = (
-    df
-    .group_by("ncd_years")
-    .agg([
-        pl.len().alias("policy_count"),
-        pl.col("exposure").sum().alias("exposure"),
-    ])
-    .with_columns(
-        (pl.col("policy_count") / pl.col("policy_count").sum()).alias("pct_policies")
-    )
-    .sort("ncd_years")
-)
-
-print("NCD distribution (compare against DGP probs: [0.05, 0.10, 0.15, 0.20, 0.20, 0.30]):")
-print(ncd_dist)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 5. Feature engineering for modelling
-
-# COMMAND ----------
-
-# Create a modelling dataset
-# In a real project this would be a separate Delta table with its own version history
-df_model = df.with_columns([
-    # NCD as a string for CatBoost categorical treatment
-    pl.col("ncd_years").cast(pl.Utf8).alias("ncd_group"),
-    # Log exposure as offset for Poisson model
-    pl.col("exposure").log().alias("log_exposure"),
-])
-
-cat_features = ["age_band", "vehicle_group", "region", "ncd_group"]
-num_features = ["exposure"]
-
-feature_cols = cat_features + num_features
-target_col   = "claim_count"
-
-print(f"Feature columns: {feature_cols}")
-print(f"Target: {target_col} (Poisson with exposure offset)")
-print(f"\nModelling dataset: {len(df_model):,} rows")
-
-# COMMAND ----------
-
-# Train/validation split: 80/20 by row index
-# In a real project use walk-forward CV with an IBNR buffer (see Module 3)
-train_size = int(0.8 * len(df_model))
-df_train   = df_model[:train_size]
-df_val     = df_model[train_size:]
-
-print(f"Train: {len(df_train):,} rows")
-print(f"Val:   {len(df_val):,} rows")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 6. CatBoost frequency model with MLflow tracking
+# MAGIC Every write to a Delta table creates a new version. We can query any historical
+# MAGIC version — essential for reproducing a model run against the exact data snapshot
+# MAGIC it used.
 # MAGIC
-# MAGIC This is the smoke test: a simple CatBoost Poisson model to confirm the
-# MAGIC environment is set up correctly and MLflow logging works. Module 3 covers
-# MAGIC CatBoost hyperparameter choices for insurance data in detail.
-# MAGIC
-# MAGIC CatBoost handles categorical features natively - no ordinal encoding needed.
-# MAGIC Pass the categorical column names to `cat_features` and CatBoost handles the rest.
+# MAGIC We will:
+# MAGIC 1. Record the current version number
+# MAGIC 2. Add 2023-2024 data (simulating a new bordereaux)
+# MAGIC 3. Query the old version to confirm time travel works
 
 # COMMAND ----------
 
-import mlflow
-import mlflow.catboost
-from catboost import CatBoostRegressor, Pool
-from mlflow import MlflowClient
+# Record the version before the next write
+history = spark.sql(f"DESCRIBE HISTORY {FULL_TABLE} LIMIT 1").collect()
+version_before_update = history[0]["version"]
+timestamp_before_update = history[0]["timestamp"]
+
+print(f"Version before update: {version_before_update}")
+print(f"Timestamp: {timestamp_before_update}")
 
 # COMMAND ----------
 
-# Set the MLflow experiment
-# In a shared workspace, use your username in the path to avoid collisions
-experiment_path = f"/Users/{spark.sql('SELECT current_user()').collect()[0][0]}/motor-frequency-module1"
-mlflow.set_experiment(experiment_path)
-print(f"MLflow experiment: {experiment_path}")
+# Add 2023-2024 data
+portfolio_update = portfolio.filter(pl.col("accident_year") >= 2023)
 
-# COMMAND ----------
-
-# Prepare arrays for CatBoost
-# CatBoost accepts categorical features by index or name
-X_train = df_train.select(feature_cols).to_pandas()
-y_train = df_train[target_col].to_numpy()
-w_train = df_train["exposure"].to_numpy()  # exposure as sample weight for Poisson
-
-X_val   = df_val.select(feature_cols).to_pandas()
-y_val   = df_val[target_col].to_numpy()
-w_val   = df_val["exposure"].to_numpy()
-
-# CatBoost Pool: specify categorical feature names
-cat_feature_indices = [X_train.columns.tolist().index(c) for c in cat_features]
-
-train_pool = Pool(X_train, label=y_train, weight=w_train, cat_features=cat_feature_indices)
-val_pool   = Pool(X_val,   label=y_val,   weight=w_val,   cat_features=cat_feature_indices)
-
-# COMMAND ----------
-
-# Model parameters
-# These are conservative starter parameters for an infrastructure smoke test.
-# Module 3 covers the tuning choices that matter for insurance data.
-params = {
-    "iterations":    300,
-    "learning_rate": 0.05,
-    "depth":         4,
-    "loss_function": "Poisson",   # Poisson deviance for frequency
-    "eval_metric":   "Poisson",
-    "random_seed":   42,
-    "verbose":       100,
-}
-
-# COMMAND ----------
-
-with mlflow.start_run(run_name="freq_catboost_module1_smoke_test") as run:
-    # Log parameters
-    mlflow.log_params(params)
-    mlflow.log_params({
-        "n_train":       len(df_train),
-        "n_val":         len(df_val),
-        "cat_features":  str(cat_features),
-        "feature_set":   "v1_base_rating_factors",
-        "offset":        "log(exposure) via sample_weight",
-    })
-
-    # Train
-    model = CatBoostRegressor(**params)
-    model.fit(train_pool, eval_set=val_pool, use_best_model=True)
-
-    # Predictions: model output is log(frequency), exponentiate for frequency
-    pred_train = model.predict(train_pool)
-    pred_val   = model.predict(val_pool)
-
-    # Poisson deviance: 2 * sum(y*log(y/mu) - (y-mu))
-    # Only defined where y > 0 for the log term; use where clause
-    def poisson_deviance(y_true, y_pred, weights):
-        """Exposure-weighted Poisson deviance."""
-        y_pred = np.maximum(y_pred, 1e-10)  # avoid log(0)
-        dev = 2.0 * (
-            np.where(y_true > 0, y_true * np.log(y_true / y_pred), 0.0)
-            - (y_true - y_pred)
-        )
-        return np.average(dev, weights=weights)
-
-    train_dev = poisson_deviance(y_train, pred_train, w_train)
-    val_dev   = poisson_deviance(y_val,   pred_val,   w_val)
-
-    mlflow.log_metrics({
-        "train_poisson_deviance": train_dev,
-        "val_poisson_deviance":   val_dev,
-        "best_iteration":         model.best_iteration_,
-    })
-
-    # Log the model artefact
-    mlflow.catboost.log_model(model, "freq_model")
-
-    run_id = run.info.run_id
-
-print(f"\nResults:")
-print(f"  Train Poisson deviance: {train_dev:.6f}")
-print(f"  Val Poisson deviance:   {val_dev:.6f}")
-print(f"  Best iteration:         {model.best_iteration_}")
-print(f"\nRun ID: {run_id}")
-print(f"Open the MLflow UI (Experiments tab) to see the full run.")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 6.1 Feature importance
-# MAGIC
-# MAGIC CatBoost produces feature importance natively. These are the PredictionValuesChange
-# MAGIC importances - roughly, how much the model output changes when a feature is permuted.
-# MAGIC Module 4 covers SHAP-based importances which are more interpretable for pricing.
-
-# COMMAND ----------
-
-importances = pl.DataFrame({
-    "feature":    feature_cols,
-    "importance": model.get_feature_importance().tolist(),
-}).sort("importance", descending=True)
-
-print("Feature importances (PredictionValuesChange):")
-print(importances)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 6.2 True DGP vs model comparison
-# MAGIC
-# MAGIC The synthetic data has known true parameters. Compare the model's predictions
-# MAGIC against the true DGP as a sanity check.
-
-# COMMAND ----------
-
-# Mean predicted frequency vs mean actual frequency by age band
-comparison = (
-    df_val
-    .with_columns(
-        pl.Series("predicted_freq", pred_val / df_val["exposure"].to_numpy())
-    )
-    .group_by("age_band")
-    .agg([
-        pl.col("exposure").sum().alias("exposure"),
-        pl.col("claim_count").sum().alias("actual_claims"),
-        pl.col("predicted_freq").mean().alias("mean_predicted_freq"),
-    ])
-    .with_columns(
-        (pl.col("actual_claims") / pl.col("exposure")).alias("actual_freq_pa")
-    )
-    .sort("age_band")
-)
-
-print("Age band: actual vs predicted frequency (validation set):")
-print(comparison.select(["age_band", "actual_freq_pa", "mean_predicted_freq"]))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 7. Model registry and aliases
-# MAGIC
-# MAGIC Register the model so it can be loaded by name rather than by run ID.
-# MAGIC Uses aliases (not stages) - stages were deprecated in MLflow 2.9+.
-
-# COMMAND ----------
-
-client = MlflowClient()
-
-# Register the model from the run we just completed
-model_uri = f"runs:/{run_id}/freq_model"
-model_name = "motor_freq_catboost_module1"
-
-registered = mlflow.register_model(model_uri=model_uri, name=model_name)
-print(f"Registered model '{model_name}' version {registered.version}")
-
-# Set an alias - use this instead of stage transitions (deprecated in MLflow 2.9+)
-client.set_registered_model_alias(
-    name=model_name,
-    alias="development",
-    version=registered.version,
-)
-
-# Tag with metadata
-client.set_model_version_tag(
-    name=model_name,
-    version=registered.version,
-    key="module",
-    value="module1_smoke_test",
-)
-
-print(f"Alias 'development' -> version {registered.version}")
-print(f"\nTo load this model:")
-print(f"  model = mlflow.catboost.load_model('models:/{model_name}@development')")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 8. FCA audit trail
-# MAGIC
-# MAGIC Every model run should produce an audit record that ties together:
-# MAGIC - The MLflow run ID (parameters and metrics)
-# MAGIC - The data version (which Delta table version was used)
-# MAGIC - Model metadata (what the model is, who is responsible)
-# MAGIC
-# MAGIC This table is append-only. Grant INSERT but not UPDATE or DELETE to
-# MAGIC the pricing team group.
-
-# COMMAND ----------
-
-from datetime import datetime
-
-# Get the current Delta table version (the version used for training)
-table_version = (
-    spark.sql(f"DESCRIBE HISTORY {CATALOG}.{SCHEMA}.policies LIMIT 1")
-    .collect()[0]["version"]
-)
-
-audit_record = {
-    "run_id":            run_id,
-    "model_name":        "freq_catboost_motor_v1",
-    "model_version":     1,
-    "registered_name":   model_name,
-    "registered_version": int(registered.version),
-    "training_date":     datetime.utcnow().isoformat(),
-    "data_table":        f"{CATALOG}.{SCHEMA}.policies",
-    "data_version":      int(table_version),
-    "train_deviance":    float(train_dev),
-    "val_deviance":      float(val_dev),
-    "n_train":           len(df_train),
-    "n_val":             len(df_val),
-    "feature_set":       "v1_base_rating_factors",
-    "approved_by":       None,
-    "deployed_to_prod":  False,
-    "notes":             "Module 1 smoke test - synthetic data only",
-}
-
-# Create the governance schema if needed
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.governance COMMENT 'Audit and governance tables'")
-
-# Append to the audit log
-audit_df = spark.createDataFrame([audit_record])
-(audit_df
+(
+    spark.createDataFrame(portfolio_update.to_pandas(), schema=claims_schema)
     .write
     .format("delta")
     .mode("append")
-    .saveAsTable(f"{CATALOG}.governance.model_run_log"))
-
-print(f"Audit record written to {CATALOG}.governance.model_run_log")
-print(f"  run_id: {run_id}")
-print(f"  data_version: {table_version}")
-print(f"  val_deviance: {val_dev:.6f}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 9. Delta table time travel
-# MAGIC
-# MAGIC Check the version history of the policies table. In a real project you would use
-# MAGIC this to reproduce a training run: query the data at exactly the version that
-# MAGIC was used when the model was trained.
-
-# COMMAND ----------
-
-# View the history
-display(spark.sql(f"DESCRIBE HISTORY {CATALOG}.{SCHEMA}.policies"))
-
-# COMMAND ----------
-
-# Reading a specific version by number
-# Useful for reproducing a training run
-df_v0 = pl.from_pandas(
-    spark.read.format("delta")
-    .option("versionAsOf", 0)
-    .table(f"{CATALOG}.{SCHEMA}.policies")
-    .toPandas()
+    .saveAsTable(FULL_TABLE)
 )
 
-print(f"Version 0 of policies table: {len(df_v0):,} rows")
-print("This is the exact data that was current when the audit record was written.")
+print(f"Update complete: added {len(portfolio_update):,} rows (accident years 2023-2024)")
+print(f"Table now has {spark.table(FULL_TABLE).count():,} rows")
+
+# COMMAND ----------
+
+print("Full table history:")
+spark.sql(f"DESCRIBE HISTORY {FULL_TABLE}").select(
+    "version", "timestamp", "operation", "numOutputRows"
+).show(10, truncate=False)
+
+# COMMAND ----------
+
+# Query current version via Spark, convert to Polars for analysis
+df_current = pl.from_pandas(spark.table(FULL_TABLE).toPandas())
+print(f"Current version: {len(df_current):,} rows, accident years: "
+      f"{sorted(df_current['accident_year'].unique().to_list())}")
+
+# Query the version before the 2023-2024 update
+df_historical = pl.from_pandas(
+    spark.read
+    .format("delta")
+    .option("versionAsOf", version_before_update)
+    .table(FULL_TABLE)
+    .toPandas()
+)
+print(f"Version {version_before_update}: {len(df_historical):,} rows, accident years: "
+      f"{sorted(df_historical['accident_year'].unique().to_list())}")
+
+# COMMAND ----------
+
+print("In a modelling notebook, log the table version used for training:")
+print(f"""
+    audit = {{
+        'training_table': '{FULL_TABLE}',
+        'training_table_version': {version_before_update},
+        'training_accident_years': '2019-2022',
+        'run_date': '{date.today()}',
+    }}
+    # Write to pricing.governance.model_run_log
+""")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 10. Z-ordering for query performance
+# MAGIC ## 5. Incremental updates with MERGE
 # MAGIC
-# MAGIC For tables you query repeatedly with the same filters, Z-ordering improves
-# MAGIC performance. Run this after loading the data, not on every write.
+# MAGIC Month-end bordereaux typically contain updated development on prior accident years
+# MAGIC (late-reported claims, reserve movements) as well as new business. MERGE applies
+# MAGIC only the changed rows atomically.
 # MAGIC
-# MAGIC This rewrites the table, which takes time. Only run when query performance
-# MAGIC is a problem.
+# MAGIC The correct pattern:
+# MAGIC 1. Create the update DataFrame
+# MAGIC 2. Register it as a temp view — separate statement, because createOrReplaceTempView returns None
+# MAGIC 3. Call spark.sql() with the MERGE SQL, referring to the view by name
 
 # COMMAND ----------
 
-# Z-order by the factors most commonly used in WHERE clauses
-# This is optional for the training dataset but included for completeness
+rng = np.random.default_rng(999)
+
+# Pick 500 existing 2023 policies to update (simulate late claim development)
+existing_ids_spark = (
+    spark.table(FULL_TABLE)
+    .filter(F.col("accident_year") == 2023)
+    .limit(500)
+    .select("policy_id", "accident_year", "claim_count", "incurred")
+)
+existing_ids = pl.from_pandas(existing_ids_spark.toPandas())
+factors = pl.Series("factor", rng.uniform(1.02, 1.15, size=len(existing_ids)))
+existing_ids = existing_ids.with_columns(
+    (pl.col("incurred") * factors).round(2).alias("incurred")
+)
+
+# 200 new policies
+new_policies = generate_motor_portfolio(n_policies=200, accident_years=(2024,), seed=888)
+
+# Pull matching rows from the full portfolio and apply updated incurred
+updated_existing = (
+    portfolio
+    .filter(pl.col("policy_id").is_in(existing_ids["policy_id"]))
+    .join(existing_ids.select(["policy_id", "incurred"]), on="policy_id", how="left", suffix="_new")
+    .with_columns(pl.col("incurred_new").alias("incurred"))
+    .drop("incurred_new")
+)
+
+bordereaux = pl.concat([updated_existing, new_policies])
+bordereaux_spark = spark.createDataFrame(bordereaux.to_pandas(), schema=claims_schema)
+
+# Step 1: register temp view (separate statement — createOrReplaceTempView returns None)
+bordereaux_spark.createOrReplaceTempView("bordereaux_updates")
+
+# Step 2: MERGE SQL refers to the view by name
 spark.sql(f"""
-    OPTIMIZE {CATALOG}.{SCHEMA}.policies
-    ZORDER BY (region, vehicle_group)
+    MERGE INTO {FULL_TABLE} AS target
+    USING bordereaux_updates AS source
+    ON target.policy_id = source.policy_id
+       AND target.accident_year = source.accident_year
+    WHEN MATCHED THEN
+        UPDATE SET
+            target.claim_count    = source.claim_count,
+            target.incurred       = source.incurred,
+            target.exposure_years = source.exposure_years
+    WHEN NOT MATCHED THEN
+        INSERT *
 """)
 
-print("OPTIMIZE complete. Query performance for region and vehicle_group filters improved.")
+print(f"MERGE complete.")
+print(f"Table now has {spark.table(FULL_TABLE).count():,} rows")
+print()
+spark.sql(f"DESCRIBE HISTORY {FULL_TABLE}").select(
+    "version", "operation", "operationMetrics"
+).show(5, truncate=False)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 6. Data profiling — the basics a pricing team needs
+# MAGIC
+# MAGIC Before fitting any model, run these checks. They catch the data issues that
+# MAGIC produce wrong models rather than error messages.
+
+# COMMAND ----------
+
+df = pl.from_pandas(spark.table(FULL_TABLE).toPandas())
+
+print("=" * 60)
+print("DATA QUALITY SUMMARY")
+print("=" * 60)
+print()
+
+ay_summary = (
+    df
+    .group_by("accident_year")
+    .agg([
+        pl.col("policy_id").count().alias("n_policies"),
+        pl.col("exposure_years").sum().alias("exposure"),
+        pl.col("claim_count").sum().alias("claims"),
+        pl.col("incurred").sum().alias("incurred"),
+    ])
+    .sort("accident_year")
+    .with_columns([
+        (pl.col("claims") / pl.col("exposure")).alias("claim_freq"),
+        (pl.col("incurred") / pl.col("claims").clip(lower_bound=1)).alias("avg_severity"),
+    ])
+)
+
+print("Policy-periods by accident year:")
+print(ay_summary)
+
+# COMMAND ----------
+
+import scipy.stats as stats
+
+area_summary = (
+    df
+    .group_by("area_band")
+    .agg([
+        pl.col("exposure_years").sum().alias("exposure"),
+        pl.col("claim_count").sum().alias("claims"),
+    ])
+    .sort("area_band")
+    .with_columns(
+        (pl.col("claims") / pl.col("exposure")).alias("freq")
+    )
+)
+
+alpha = 0.05
+print()
+print("Claim frequency by area band (with 95% Poisson CI):")
+for row in area_summary.to_dicts():
+    lower = stats.chi2.ppf(alpha / 2, 2 * row["claims"]) / (2 * row["exposure"])
+    upper = stats.chi2.ppf(1 - alpha / 2, 2 * (row["claims"] + 1)) / (2 * row["exposure"])
+    print(f"  {row['area_band']}: freq={row['freq']:.4f}  95% CI [{lower:.4f}, {upper:.4f}]  "
+          f"(n_claims={row['claims']:,}, exposure={row['exposure']:,.0f})")
+
+# COMMAND ----------
+
+claims_only = df.filter(pl.col("claim_count") > 0).with_columns(
+    (pl.col("incurred") / pl.col("claim_count")).alias("avg_sev")
+)
+
+print()
+print("Severity distribution (claims-only policies):")
+print(f"  n policies with claims: {len(claims_only):,}")
+print(f"  Mean severity:          {claims_only['avg_sev'].mean():,.0f}")
+print(f"  Median severity:        {claims_only['avg_sev'].median():,.0f}")
+print(f"  75th percentile:        {claims_only['avg_sev'].quantile(0.75):,.0f}")
+print(f"  95th percentile:        {claims_only['avg_sev'].quantile(0.95):,.0f}")
+print(f"  99th percentile:        {claims_only['avg_sev'].quantile(0.99):,.0f}")
+print(f"  Max severity:           {claims_only['avg_sev'].max():,.0f}")
+
+# COMMAND ----------
+
+print()
+print("NCD year distribution:")
+ncd_dist = (
+    df
+    .group_by("ncd_years")
+    .agg(pl.count().alias("n"))
+    .sort("ncd_years")
+)
+print(ncd_dist)
+print()
+
+n_negative_exposure = (df["exposure_years"] <= 0).sum()
+n_negative_incurred = (df["incurred"] < 0).sum()
+n_missing_area = df["area_band"].is_null().sum()
+n_extreme_sev = (claims_only["avg_sev"] > 50_000).sum()
+
+print("Data quality flags:")
+print(f"  Negative or zero exposure:     {n_negative_exposure}")
+print(f"  Negative incurred:             {n_negative_incurred}")
+print(f"  Missing area band:             {n_missing_area}")
+print(f"  Severity > 50,000:             {n_extreme_sev} ({100 * n_extreme_sev / max(len(claims_only), 1):.2f}% of claims)")
+
+if any([n_negative_exposure > 0, n_negative_incurred > 0]):
+    print()
+    print("WARNING: data quality issues found. Investigate before modelling.")
+else:
+    print()
+    print("All data quality checks passed.")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 7. Databricks Workflows — automated scheduling
+# MAGIC
+# MAGIC This section creates a Databricks Workflow that runs the data quality check
+# MAGIC notebook on a daily schedule. Requires a paid Databricks workspace with the
+# MAGIC Jobs API enabled.
+# MAGIC
+# MAGIC Skip this section if using Free Edition.
+# MAGIC
+# MAGIC In production this pattern would schedule the full modelling pipeline:
+# MAGIC data_prep -> train -> extract_relativities -> export. We show the simpler
+# MAGIC single-task version here to demonstrate the SDK without the full pipeline.
+
+# COMMAND ----------
+
+try:
+    from databricks.sdk import WorkspaceClient
+    from databricks.sdk.service.jobs import (
+        JobSettings, Task, NotebookTask, JobEmailNotifications, CronSchedule,
+        JobCluster, ClusterSpec,
+    )
+
+    w = WorkspaceClient()
+    current_user = w.current_user.me()
+    print(f"Workspace: {w.config.host}")
+    print(f"Current user: {current_user.user_name}")
+    WORKFLOWS_AVAILABLE = True
+except Exception as e:
+    print(f"Workflows API not available: {e}")
+    print("This is expected in Free Edition. Skip to the JSON example below.")
+    WORKFLOWS_AVAILABLE = False
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7a. Workflow definition as code
+# MAGIC
+# MAGIC Define the Workflow in Python using the SDK, commit the definition file to
+# MAGIC your Git repo alongside the notebooks it runs. A Workflow that exists only
+# MAGIC in the UI is not auditable and not reproducible.
+
+# COMMAND ----------
+
+WORKFLOW_DEFINITION = {
+    "name": "motor_pricing_daily_dq",
+    "schedule": {
+        "quartz_cron_expression": "0 0 7 * * ?",
+        "timezone_id": "Europe/London",
+    },
+    "tasks": [
+        {
+            "task_key": "data_quality_check",
+            "description": "Validate claims data quality, write results to Delta",
+            "notebook_task": {
+                "notebook_path": "/Repos/pricing-team/motor-pricing/notebooks/data_quality_check",
+                "base_parameters": {
+                    "target_table": FULL_TABLE,
+                    "output_table": f"{CATALOG}.{SCHEMA}.dq_monitoring",
+                    "alert_threshold_pct": "5.0",
+                },
+            },
+        }
+    ],
+    "email_notifications": {
+        "on_failure": ["pricing-team@yourinsurer.co.uk"],
+    },
+    "max_concurrent_runs": 1,
+}
+
+print("Workflow definition (as would be committed to the repo):")
+print(json.dumps(WORKFLOW_DEFINITION, indent=2))
+
+# COMMAND ----------
+
+if WORKFLOWS_AVAILABLE:
+    from databricks.sdk.service import jobs as jobs_sdk
+
+    try:
+        new_job = w.jobs.create(
+            settings=jobs_sdk.JobSettings.from_dict(WORKFLOW_DEFINITION)
+        )
+        print(f"Workflow created: job_id = {new_job.job_id}")
+        print(f"View at: {w.config.host}#job/{new_job.job_id}")
+    except Exception as e:
+        print(f"Could not create workflow: {e}")
+        print("Check that you have Jobs admin or Creator permission.")
+else:
+    print("Workflows API not available — showing example output only.")
+    print()
+    print("Cron '0 0 7 * * ?' means every day at 07:00 Europe/London.")
+    print("The job would run data quality checks before the pricing team starts work.")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 8. Write model run audit record
+# MAGIC
+# MAGIC Every time a model pipeline runs, it should write a structured record to the
+# MAGIC governance schema. This is the FCA audit trail in practice.
+
+# COMMAND ----------
+
+current_version = spark.sql(
+    f"DESCRIBE HISTORY {FULL_TABLE} LIMIT 1"
+).collect()[0]["version"]
+
+audit_record = {
+    "run_date":              str(date.today()),
+    "run_type":              "module_01_setup_notebook",
+    "table_written":         FULL_TABLE,
+    "source_table":          FULL_TABLE,
+    "source_table_version":  int(current_version),
+    "n_rows":                len(df),
+    "n_claims":              int(df["claim_count"].sum()),
+    "total_exposure":        round(float(df["exposure_years"].sum()), 2),
+    "accident_years":        str(sorted(df["accident_year"].unique().to_list())),
+    "dq_negative_exposure":  int((df["exposure_years"] <= 0).sum()),
+    "dq_negative_incurred":  int((df["incurred"] < 0).sum()),
+    "dq_missing_area":       int(df["area_band"].is_null().sum()),
+    "notes":                 "Initial load and setup for Module 1 course notebook",
+}
+
+audit_schema_ddl = f"""
+    CREATE TABLE IF NOT EXISTS {CATALOG}.governance.model_run_log (
+        run_date             STRING,
+        run_type             STRING,
+        table_written        STRING,
+        source_table         STRING,
+        source_table_version BIGINT,
+        n_rows               BIGINT,
+        n_claims             BIGINT,
+        total_exposure       DOUBLE,
+        accident_years       STRING,
+        dq_negative_exposure INT,
+        dq_negative_incurred INT,
+        dq_missing_area      INT,
+        notes                STRING
+    )
+    USING DELTA
+    COMMENT 'Model and pipeline run log for FCA audit trail'
+"""
+
+try:
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.governance")
+    spark.sql(audit_schema_ddl)
+
+    audit_df = spark.createDataFrame([audit_record])
+    audit_df.write.format("delta").mode("append").saveAsTable(
+        f"{CATALOG}.governance.model_run_log"
+    )
+    print(f"Audit record written to {CATALOG}.governance.model_run_log")
+    print(f"  Training data version: {current_version}")
+    print(f"  n_rows: {audit_record['n_rows']:,}")
+    print(f"  n_claims: {audit_record['n_claims']:,}")
+except Exception as e:
+    print(f"Could not write audit record (governance schema may not exist): {e}")
+    print("In a real environment, create the governance schema first with admin access.")
+    print(f"Audit record that would have been written:")
+    print(json.dumps(audit_record, indent=2))
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Summary
 # MAGIC
-# MAGIC You have:
+# MAGIC What we have built in this notebook:
 # MAGIC
-# MAGIC 1. Set up a Unity Catalog schema and volume for motor pricing data
-# MAGIC 2. Generated 10,000 synthetic motor policies with a realistic DGP
-# MAGIC 3. Loaded the data to a Delta table with correct retention properties
-# MAGIC 4. Done one-way EDA by age band, vehicle group, NCD, and region
-# MAGIC 5. Trained a CatBoost Poisson frequency model and logged it to MLflow
-# MAGIC 6. Registered the model with an alias
-# MAGIC 7. Written an audit record that ties the run to the data version
+# MAGIC | Artefact | Location |
+# MAGIC |----------|---------|
+# MAGIC | Motor claims Delta table | pricing.motor.claims_exposure |
+# MAGIC | Table partitioned by accident_year | --- |
+# MAGIC | 7-year version history retention (FCA standard) | TBLPROPERTIES |
+# MAGIC | Time travel demonstrated | Version 0 vs current |
+# MAGIC | MERGE-based incremental update | Demonstrated |
+# MAGIC | Data quality checks | Run inline, ready to schedule |
+# MAGIC | Workflow definition | WORKFLOW_DEFINITION dict, commit to repo |
+# MAGIC | Audit log | pricing.governance.model_run_log |
 # MAGIC
-# MAGIC The MLflow experiment is in your Experiments tab. Click it to see the
-# MAGIC run parameters, metrics, and model artefact. This is the record you
-# MAGIC point to when asked to demonstrate reproducibility.
-# MAGIC
-# MAGIC **Next:** Module 2 covers GLMs in Python - replicating what Emblem does
-# MAGIC with statsmodels, including offset terms and one-way/two-way analysis.
+# MAGIC The next step is to train a frequency model on this data in Module 2.
+# MAGIC The training notebook will read from pricing.motor.claims_exposure,
+# MAGIC log the table version it used, and write model outputs back to
+# MAGIC pricing.motor.freq_model_relativities.
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Appendix: MERGE pattern for incremental data loads
-# MAGIC
-# MAGIC When new claims data arrives (weekly or monthly bordereaux), use MERGE
-# MAGIC rather than overwriting the entire table. MERGE is atomic and idempotent
-# MAGIC on a unique key - retrying a MERGE that failed halfway does not produce
-# MAGIC duplicate records.
-# MAGIC
-# MAGIC The pattern below shows how to update existing claims and insert new ones.
-
-# COMMAND ----------
-
-# Generate some "update" data - in production this would be a new bordereaux extract
-update_data = df.sample(n=100, seed=99).with_columns(
-    (pl.col("claim_amount") * 1.05).alias("claim_amount")  # simulate a 5% case reserve increase
-)
-
-# Step 1: register as temp view (separate statement - createOrReplaceTempView returns None)
-update_spark = spark.createDataFrame(update_data.to_pandas())
-update_spark.createOrReplaceTempView("bordereaux_updates")
-
-# Step 2: MERGE using the temp view
-spark.sql(f"""
-    MERGE INTO {CATALOG}.{SCHEMA}.policies AS target
-    USING bordereaux_updates AS source
-    ON target.policy_id = source.policy_id
-    WHEN MATCHED THEN UPDATE SET
-        target.claim_amount = source.claim_amount,
-        target.claim_count  = source.claim_count
-    WHEN NOT MATCHED THEN INSERT *
-""")
-
-print("MERGE complete.")
-print("Updated 100 rows with revised claim amounts.")
-print(f"New table version: {spark.sql(f'DESCRIBE HISTORY {CATALOG}.{SCHEMA}.policies LIMIT 1').collect()[0]['version']}")
+print("=" * 60)
+print("MODULE 1 SETUP COMPLETE")
+print("=" * 60)
+print()
+print(f"Target table: {FULL_TABLE}")
+print(f"Current version: {current_version}")
+print(f"Rows: {len(df):,}")
+print(f"Claim frequency (all years): {df['claim_count'].sum() / df['exposure_years'].sum():.4f}")
+print()
+print("Next: Module 2 — GLMs for Frequency and Severity")
+print("Training notebook reads from this table and writes relativities back to Unity Catalog.")

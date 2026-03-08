@@ -7,23 +7,22 @@
 # MAGIC
 # MAGIC **What this notebook does:**
 # MAGIC 1. Generates a synthetic UK motor portfolio with area-level variation and deliberately thin cells
-# MAGIC 2. Computes Bühlmann-Straub credibility estimates using the `credibility` library
-# MAGIC 3. Fits a hierarchical Bayesian frequency model using the `bayesian-pricing` library
+# MAGIC 2. Computes Bühlmann-Straub credibility estimates using a self-contained NumPy implementation
+# MAGIC 3. Fits a hierarchical Bayesian frequency model directly in PyMC (no wrapper library)
 # MAGIC 4. Produces the shrinkage plot - observed rate vs credibility-weighted estimate
-# MAGIC 5. Compares classical Z to Bayesian credibility_factor per segment
-# MAGIC 6. Checks convergence (R-hat, ESS, divergences)
+# MAGIC 5. Compares classical Z to Bayesian posterior shrinkage per segment
+# MAGIC 6. Checks convergence (R-hat, ESS, divergences) including a separate ESS check for variance components
 # MAGIC 7. Stores results in Delta tables with MLflow tracking
 # MAGIC
 # MAGIC **Runtime:** Classical credibility: < 1 minute. Bayesian MCMC: 5–15 minutes on a 4-core cluster.
+# MAGIC
+# MAGIC **Dependencies:** pymc, arviz, polars, numpy, matplotlib, mlflow — all available on PyPI.
+# MAGIC No private GitHub repositories required.
 
 # COMMAND ----------
 
-# MAGIC %pip install \
-# MAGIC   "credibility[all] @ git+https://github.com/burningcost/credibility.git" \
-# MAGIC   "bayesian-pricing[all] @ git+https://github.com/burningcost/bayesian-pricing.git" \
-# MAGIC   arviz \
-# MAGIC   --quiet
-# MAGIC # Note: these libraries are available on GitHub. PyPI publication is planned.
+# MAGIC %pip install pymc arviz polars --quiet
+# MAGIC # numpy, matplotlib, mlflow are pre-installed on Databricks ML runtime
 
 # COMMAND ----------
 
@@ -39,22 +38,21 @@ import numpy as np
 import polars as pl
 import matplotlib
 import matplotlib.pyplot as plt
+import pymc as pm
 import arviz as az
 import mlflow
 
-from credibility import BuhlmannStraub
-from bayesian_pricing import HierarchicalFrequency, HierarchicalSeverity
-from bayesian_pricing.datasets.motor import load_motor_with_thin_cells, TRUE_AREA_PARAMS
-
 print("Libraries imported successfully.")
 print(f"Available CPU cores: {multiprocessing.cpu_count()}")
+print(f"PyMC version: {pm.__version__}")
+print(f"ArviZ version: {az.__version__}")
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## 1. Generate synthetic data
 # MAGIC
-# MAGIC The `load_motor_with_thin_cells` function generates a UK motor portfolio where:
+# MAGIC We generate a UK motor portfolio directly in NumPy/Polars, with:
 # MAGIC - Most postcode districts have moderate exposure (200–2,000 policy-years)
 # MAGIC - 30% of districts are deliberately thin (< 50 policy-years)
 # MAGIC - True area-level frequency relativities vary from 0.7x to 2.1x the portfolio mean
@@ -65,17 +63,53 @@ print(f"Available CPU cores: {multiprocessing.cpu_count()}")
 
 # COMMAND ----------
 
-np.random.seed(42)
+RNG = np.random.default_rng(42)
 
-# load_motor_with_thin_cells returns a pandas DataFrame; convert to Polars immediately
-df = pl.from_pandas(load_motor_with_thin_cells(
-    n_policies=80_000,
-    n_districts=120,          # 120 postcode districts
-    thin_fraction=0.30,       # 30% of districts are thin (< 50 earned years)
-    seed=42,
-))
+N_DISTRICTS = 120
+THIN_FRACTION = 0.30        # 30% of districts are thin (< 50 earned years)
+BASE_FREQUENCY = 0.068      # 6.8% per annum
+N_YEARS = 5                 # accident years
+TOTAL_POLICIES = 80_000
 
-print(f"Portfolio: {len(df):,} policies")
+# --- True district log-relativities ---
+# Drawn from Normal(0, 0.4) on the log scale, so most districts are within
+# ~1.5x of the base rate, with a few genuinely extreme districts at the tails.
+true_log_rels = RNG.normal(0, 0.4, N_DISTRICTS)
+district_names = [f"D{i:03d}" for i in range(N_DISTRICTS)]
+TRUE_AREA_PARAMS = dict(zip(district_names, true_log_rels))
+
+# --- Exposure distribution ---
+# 30% thin districts (< 50 earned years total over N_YEARS)
+# 70% normal districts (200–2,000 earned years total)
+n_thin = int(N_DISTRICTS * THIN_FRACTION)
+n_normal = N_DISTRICTS - n_thin
+
+total_exposure_per_district = np.concatenate([
+    RNG.uniform(5, 45, n_thin),          # thin: 5–45 earned years total
+    RNG.uniform(200, 2000, n_normal),    # normal: 200–2,000 earned years total
+])
+RNG.shuffle(total_exposure_per_district)
+
+# --- Build policy-level data as district × year sufficient statistics ---
+rows = []
+for d_idx, (d_name, log_rel) in enumerate(zip(district_names, true_log_rels)):
+    true_freq = BASE_FREQUENCY * np.exp(log_rel)
+    total_exp = total_exposure_per_district[d_idx]
+    for yr in range(2018, 2018 + N_YEARS):
+        year_exp = RNG.uniform(0.1, 0.4) * total_exp   # uneven year-to-year exposure
+        year_exp = max(year_exp, 0.5)                   # at least half a year
+        year_claims = RNG.poisson(true_freq * year_exp)
+        rows.append({
+            "postcode_district": d_name,
+            "accident_year": yr,
+            "earned_years": round(year_exp, 2),
+            "claim_count": int(year_claims),
+            "incurred": float(year_claims * RNG.gamma(shape=2.5, scale=3000)),
+        })
+
+df = pl.DataFrame(rows)
+
+print(f"Portfolio: {len(df):,} district-year rows")
 print(f"Exposure:  {df['earned_years'].sum():.0f} earned years")
 print(f"Claims:    {df['claim_count'].sum():,}")
 print(f"Raw frequency: {df['claim_count'].sum() / df['earned_years'].sum():.4f} per earned year")
@@ -123,16 +157,16 @@ print(f"\n... ({len(TRUE_AREA_PARAMS)} districts total)")
 # MAGIC %md
 # MAGIC ## 2. Aggregate to district level
 # MAGIC
-# MAGIC Bühlmann-Straub and HierarchicalFrequency both work on segment-level sufficient statistics.
-# MAGIC We aggregate the policy-level data to one row per postcode district per year.
-# MAGIC This gives us the multi-period structure that Bühlmann-Straub requires.
+# MAGIC Bühlmann-Straub requires the multi-period (district × year) structure.
+# MAGIC The Bayesian model works on district-level totals (sufficient statistics for Poisson).
+# MAGIC
+# MAGIC We filter rows with earned_years < 0.5 to exclude near-zero exposure cells
+# MAGIC that would produce near-infinite frequencies. Using `.clip(lower=1e-6)` on
+# MAGIC exposure would mask bad data; explicit filtering removes it.
 
 # COMMAND ----------
 
 # District × year sufficient statistics - needed for B-S (multi-period structure)
-# Filter to earned_years > 0.5 to exclude near-zero exposure rows that would produce
-# near-infinite frequencies. Clipping to a tiny value like 1e-6 masks bad data;
-# explicit filtering removes it.
 dist_year = (
     df.group_by(["postcode_district", "accident_year"])
     .agg([
@@ -147,14 +181,14 @@ dist_year = (
 )
 
 print(f"District × year rows: {len(dist_year):,}")
-print(f"Years in data: {sorted(dist_year['accident_year'].to_list())}")
+print(f"Years in data: {sorted(dist_year['accident_year'].unique().to_list())}")
 print()
 print("Sample:")
 print(dist_year.head(12))
 
 # COMMAND ----------
 
-# District-level totals - needed for HierarchicalFrequency
+# District-level totals - sufficient statistics for the Bayesian Poisson model
 dist_totals = (
     df.group_by("postcode_district")
     .agg([
@@ -176,42 +210,170 @@ print(dist_totals.select(["postcode_district", "claims", "earned_years", "observ
 # MAGIC %md
 # MAGIC ## 3. Bühlmann-Straub credibility
 # MAGIC
-# MAGIC Classical credibility weighting. Fast, transparent, no MCMC required.
+# MAGIC Self-contained implementation in NumPy/Polars — no external library required.
 # MAGIC
 # MAGIC Key outputs:
 # MAGIC - `grand_mean`: the portfolio collective mean (mu_hat)
-# MAGIC - `v_hat_`: Expected Process Variance (EPV) - within-district year-to-year variation
-# MAGIC - `a_hat_`: Variance of Hypothetical Means (VHM) - between-district heterogeneity
-# MAGIC - `k_`: Bühlmann's K = v/a - how much exposure you need for Z = 0.5
+# MAGIC - `v_hat`: Expected Process Variance (EPV) - within-district year-to-year variation
+# MAGIC - `a_hat`: Variance of Hypothetical Means (VHM) - between-district heterogeneity
+# MAGIC - `k`: Bühlmann's K = v/a - how much exposure you need for Z = 0.5
 # MAGIC - `results`: per-district credibility factors and blended estimates
 # MAGIC
 # MAGIC We use log_transform=True because we are working in a multiplicative (Poisson log-link)
 # MAGIC framework. Applying B-S in rate space and then converting to relativities introduces
-# MAGIC a Jensen's inequality bias. log_transform=True applies the blending in log-rate space.
+# MAGIC a Jensen's inequality bias — the log of the expected value does not equal the expected
+# MAGIC value of the log. log_transform=True applies the blending in log-rate space, correcting
+# MAGIC for this bias. For most UK motor portfolios the correction is small in absolute terms;
+# MAGIC for extreme relativities (thin cells far from the mean) it is material.
 
 # COMMAND ----------
 
-# credibility library expects pandas input; bridge from Polars here
-bs = BuhlmannStraub(log_transform=True)
-bs.fit(
-    data=dist_year.to_pandas(),
+def buhlmann_straub(
+    data: pl.DataFrame,
+    group_col: str,
+    value_col: str,
+    weight_col: str,
+    log_transform: bool = True,
+) -> dict:
+    """
+    Bühlmann-Straub credibility estimator.
+
+    Parameters
+    ----------
+    data : Polars DataFrame with one row per (group, period).
+    group_col : column identifying the group (e.g. postcode_district).
+    value_col : observed loss rate per unit of exposure (e.g. claim_frequency).
+    weight_col : exposure weight (e.g. earned_years or claim_count for severity).
+    log_transform : if True, apply B-S in log-rate space to avoid the
+        Jensen's inequality bias in multiplicative (log-link) frameworks.
+        Set False for additive models or severity data.
+
+    Returns
+    -------
+    dict with keys:
+        grand_mean, v_hat, a_hat, a_hat_raw, k, results (Polars DataFrame)
+    """
+    if log_transform:
+        data = data.with_columns(
+            pl.col(value_col).clip(lower_bound=1e-9).log().alias("_y")
+        )
+        y_col = "_y"
+    else:
+        y_col = value_col
+
+    groups = data[group_col].unique().sort().to_list()
+    r = len(groups)
+
+    # Per-group sufficient statistics
+    group_agg = (
+        data.group_by(group_col)
+        .agg([
+            pl.col(weight_col).sum().alias("w_i"),
+            (
+                (pl.col(y_col) * pl.col(weight_col)).sum()
+                / pl.col(weight_col).sum()
+            ).alias("x_bar_i"),
+            pl.col(weight_col).count().alias("T_i"),
+        ])
+        .sort(group_col)
+    )
+
+    # Filter out single-period groups for EPV calculation.
+    # Groups with T_i = 1 contribute 0 to the EPV numerator (no within-group
+    # deviation) but -1 to the denominator, incorrectly reducing the effective
+    # sample size and biasing v_hat upward.
+    group_agg_epv = group_agg.filter(pl.col("T_i") > 1)
+
+    w_i = group_agg["w_i"].to_numpy()
+    x_bar_i = group_agg["x_bar_i"].to_numpy()
+    w = w_i.sum()
+
+    # --- Collective mean ---
+    mu_hat = (w_i * x_bar_i).sum() / w
+
+    # --- EPV (v_hat): within-group variance ---
+    def _epv_num_for_group(grp_name: str) -> float:
+        grp = data.filter(pl.col(group_col) == grp_name)
+        if grp.height <= 1:
+            return 0.0
+        x_bar = float(
+            (grp[y_col] * grp[weight_col]).sum() / grp[weight_col].sum()
+        )
+        resid_sq = (grp[y_col].to_numpy() - x_bar) ** 2
+        return float((resid_sq * grp[weight_col].to_numpy()).sum())
+
+    epv_groups = group_agg_epv[group_col].to_list()
+    epv_num = sum(_epv_num_for_group(g) for g in epv_groups)
+    epv_den = float(group_agg_epv["T_i"].sum() - len(epv_groups))
+    v_hat = epv_num / epv_den if epv_den > 0 else 0.0
+
+    # --- VHM (a_hat): between-group variance ---
+    c = w - (w_i ** 2).sum() / w
+    s_sq = (w_i * (x_bar_i - mu_hat) ** 2).sum()
+    a_hat_raw = (s_sq - (r - 1) * v_hat) / c
+    # a_hat can be negative when within-group variance dominates.
+    # Truncate at zero: all Z_i = 0, every group gets the portfolio mean.
+    # A substantially negative a_hat_raw is a diagnostic — see tutorial for
+    # the implications.
+    a_hat = max(a_hat_raw, 0.0)
+
+    # --- Credibility factors and estimates ---
+    k = v_hat / a_hat if a_hat > 0 else np.inf
+    z_i = w_i / (w_i + k) if np.isfinite(k) else np.zeros(r)
+    cred_est_y = z_i * x_bar_i + (1 - z_i) * mu_hat
+
+    if log_transform:
+        grand_mean = np.exp(mu_hat)
+        cred_est = np.exp(cred_est_y)
+        obs_mean = np.exp(x_bar_i)
+    else:
+        grand_mean = mu_hat
+        cred_est = cred_est_y
+        obs_mean = x_bar_i
+
+    results = pl.DataFrame({
+        group_col: group_agg[group_col].to_list(),
+        "exposure": w_i.tolist(),
+        "obs_mean": obs_mean.tolist(),
+        "Z": z_i.tolist(),
+        "credibility_estimate": cred_est.tolist(),
+    })
+
+    return {
+        "grand_mean": grand_mean,
+        "v_hat": v_hat,
+        "a_hat": a_hat,
+        "a_hat_raw": a_hat_raw,
+        "k": k,
+        "results": results,
+    }
+
+# COMMAND ----------
+
+bs = buhlmann_straub(
+    data=dist_year,
     group_col="postcode_district",
     value_col="claim_frequency",
     weight_col="earned_years",
+    log_transform=True,
 )
 
 print("Bühlmann-Straub structural parameters:")
-print(f"  Grand mean (mu):  {bs.grand_mean:.5f}  ({bs.grand_mean * 100:.3f}% per year)")
-print(f"  EPV (v):          {bs.v_hat_:.7f}  (within-district variance)")
-print(f"  VHM (a):          {bs.a_hat_:.7f}  (between-district variance)")
-print(f"  K = v/a:          {bs.k_:.1f}")
-print(f"  Implied half-credibility exposure: {bs.k_:.0f} earned years")
+print(f"  Grand mean (mu):  {bs['grand_mean']:.5f}  ({bs['grand_mean'] * 100:.3f}% per year)")
+print(f"  EPV (v):          {bs['v_hat']:.7f}  (within-district variance)")
+print(f"  VHM (a):          {bs['a_hat']:.7f}  (between-district variance)")
+print(f"  a_hat (raw, before truncation): {bs['a_hat_raw']:.7f}")
+if bs['a_hat_raw'] < 0:
+    print("  WARNING: a_hat was negative before truncation. The data cannot")
+    print("  distinguish district effects. All Z = 0; check grouping structure.")
+print(f"  K = v/a:          {bs['k']:.1f}")
+print(f"  Implied half-credibility exposure: {bs['k']:.0f} earned years")
 print()
 # Z = w/(w+K); solve for w at Z = 0.50, 0.67, 0.90
 print("Interpretation of K (Z = w/(w+K)):")
-print(f"  A district needs {bs.k_:.0f} earned years for Z = 0.50")
-print(f"  A district needs {2 * bs.k_:.0f} earned years for Z = 0.67  [w = 2K/(2K+K) = 0.667]")
-print(f"  A district needs {9 * bs.k_:.0f} earned years for Z = 0.90  [w = 9K/(9K+K) = 0.900]")
+print(f"  A district needs {bs['k']:.0f} earned years for Z = 0.50")
+print(f"  A district needs {2 * bs['k']:.0f} earned years for Z = 0.67")
+print(f"  A district needs {9 * bs['k']:.0f} earned years for Z = 0.90")
 
 # COMMAND ----------
 
@@ -220,8 +382,7 @@ print(f"  A district needs {9 * bs.k_:.0f} earned years for Z = 0.90  [w = 9K/(9
 
 # COMMAND ----------
 
-# Bridge bs.results (pandas) to Polars for all downstream manipulation
-bs_results = pl.from_pandas(bs.results)
+bs_results = bs["results"]  # already a Polars DataFrame
 
 print(f"Credibility factor distribution across {len(bs_results)} districts:")
 z_vals = bs_results["Z"]
@@ -236,11 +397,11 @@ print(f"  max    {z_vals.max():.3f}")
 print()
 print("Districts with Z < 0.10 (nearly all prior):")
 thin = bs_results.filter(pl.col("Z") < 0.10).sort("Z")
-print(thin.select(["group", "exposure", "obs_mean", "Z", "credibility_estimate"]).head(10))
+print(thin.select(["postcode_district", "exposure", "obs_mean", "Z", "credibility_estimate"]).head(10))
 print()
 print("Districts with Z > 0.80 (mostly own experience):")
 thick = bs_results.filter(pl.col("Z") > 0.80).sort("Z", descending=True)
-print(thick.select(["group", "exposure", "obs_mean", "Z", "credibility_estimate"]).head(10))
+print(thick.select(["postcode_district", "exposure", "obs_mean", "Z", "credibility_estimate"]).head(10))
 
 # COMMAND ----------
 
@@ -250,10 +411,12 @@ print(thick.select(["group", "exposure", "obs_mean", "Z", "credibility_estimate"
 # COMMAND ----------
 
 bs_vs_true = bs_results.with_columns([
-    pl.col("group").map_elements(lambda d: TRUE_AREA_PARAMS.get(d, 0.0), return_dtype=pl.Float64).alias("true_log_rel"),
+    pl.col("postcode_district").map_elements(
+        lambda d: TRUE_AREA_PARAMS.get(d, 0.0), return_dtype=pl.Float64
+    ).alias("true_log_rel"),
 ])
 bs_vs_true = bs_vs_true.with_columns([
-    (bs.grand_mean * (pl.col("true_log_rel").exp())).alias("true_rate"),
+    (bs["grand_mean"] * (pl.col("true_log_rel").exp())).alias("true_rate"),
 ])
 
 mse_observed = ((bs_vs_true["obs_mean"] - bs_vs_true["true_rate"]) ** 2).mean()
@@ -279,41 +442,97 @@ print("MAPE is more informative about typical accuracy across the portfolio.")
 # MAGIC %md
 # MAGIC ## 4. Hierarchical Bayesian frequency model
 # MAGIC
-# MAGIC We now fit a Poisson hierarchical model using the `bayesian-pricing` library.
-# MAGIC This gives us:
-# MAGIC - Posterior distributions (not just point estimates) for each district's rate
-# MAGIC - A Bayesian credibility_factor comparable to B-S Z
-# MAGIC - Proper uncertainty quantification for thin cells
+# MAGIC We fit a Poisson hierarchical model directly in PyMC — no wrapper library.
+# MAGIC The model structure is:
 # MAGIC
-# MAGIC The model uses non-centered parameterization by default to avoid the funnel
-# MAGIC geometry that causes divergent transitions in standard hierarchical models.
+# MAGIC ```
+# MAGIC claims_i | lambda_i  ~  Poisson(lambda_i * exposure_i)
+# MAGIC log(lambda_i) = alpha + u_district[i]
+# MAGIC u_district[k] = u_raw[k] * sigma_district   (non-centered)
+# MAGIC u_raw[k]      ~ Normal(0, 1)
+# MAGIC sigma_district ~ HalfNormal(0.3)
+# MAGIC alpha          ~ Normal(log(mu_portfolio), 0.5)
+# MAGIC ```
+# MAGIC
+# MAGIC **Non-centered parameterization** is mandatory. The centered form
+# MAGIC `u_district ~ Normal(0, sigma_district)` creates funnel geometry when
+# MAGIC sigma_district is near zero. The sampler under-samples the funnel neck,
+# MAGIC biasing variance components toward zero — your credibility factors will be
+# MAGIC too low without obvious warning. Non-centered decouples u_raw from sigma,
+# MAGIC eliminating the funnel.
+# MAGIC
+# MAGIC **Prior justification:**
+# MAGIC - alpha SD=0.5 (log scale): allows the intercept to range from ~0.6x to ~1.65x
+# MAGIC   the observed portfolio mean at ±1 SD. For a UK motor book at 6-8% frequency,
+# MAGIC   this permits 3.7% to 13% at ±1 SD - not unduly informative.
+# MAGIC - sigma_district HalfNormal(0.3): places most mass below ~0.6 log points,
+# MAGIC   implying most districts fall within roughly 0.5x-2.0x the portfolio mean.
+# MAGIC   Widen to HalfNormal(0.5) or HalfNormal(0.7) for factor types with broader
+# MAGIC   expected ranges (e.g. vehicle group effects which can reach 3-4x).
 
 # COMMAND ----------
 
 n_chains = min(4, multiprocessing.cpu_count())
-print(f"Fitting HierarchicalFrequency with {n_chains} chains...")
+print(f"Fitting hierarchical model with {n_chains} chains...")
+
+# Encode districts as integer indices for PyMC
+districts_sorted = dist_totals["postcode_district"].sort().to_list()
+district_to_idx = {d: i for i, d in enumerate(districts_sorted)}
+n_districts_model = len(districts_sorted)
+
+district_idx_arr = np.array([
+    district_to_idx[d] for d in dist_totals["postcode_district"].to_list()
+])
+claims_arr   = dist_totals["claims"].to_numpy()
+exposure_arr = dist_totals["earned_years"].to_numpy()
+
+# Portfolio log-rate for prior centre
+log_mu_portfolio = np.log(claims_arr.sum() / exposure_arr.sum())
+
+coords = {"district": districts_sorted}
 
 mlflow.set_experiment("/pricing/credibility-bayesian/module06")
 
 with mlflow.start_run(run_name="hierarchical_frequency_v1"):
 
-    hf = HierarchicalFrequency(
-        group_cols=["postcode_district"],
-        claims_col="claims",
-        exposure_col="earned_years",
-        n_chains=n_chains,
-        n_samples=1000,
-        n_warmup=1000,
-        target_accept=0.90,
-    )
+    with pm.Model(coords=coords) as hierarchical_model:
 
-    # HierarchicalFrequency expects pandas; bridge from Polars
-    hf.fit(dist_totals.to_pandas())
+        # Global intercept
+        alpha = pm.Normal("alpha", mu=log_mu_portfolio, sigma=0.5)
+
+        # Between-district variance (log scale)
+        sigma_district = pm.HalfNormal("sigma_district", sigma=0.3)
+
+        # Non-centered parameterization: u_district_raw is N(0,1),
+        # independent of sigma_district. No funnel geometry.
+        u_district_raw = pm.Normal("u_district_raw", mu=0, sigma=1, dims="district")
+        u_district = pm.Deterministic(
+            "u_district", u_district_raw * sigma_district, dims="district"
+        )
+
+        # Log-rate per district
+        log_lambda = alpha + u_district[district_idx_arr]
+
+        # Poisson likelihood with exposure offset
+        claims_obs = pm.Poisson(
+            "claims_obs",
+            mu=pm.math.exp(log_lambda) * exposure_arr,
+            observed=claims_arr,
+        )
+
+        trace = pm.sample(
+            draws=1000,
+            tune=1000,
+            chains=n_chains,
+            cores=n_chains,
+            target_accept=0.90,
+            return_inferencedata=True,
+            random_seed=42,
+        )
 
     print("Fit complete.")
 
     # ---- Convergence diagnostics ----
-    trace = hf.posteriors
     rhat = az.rhat(trace)
     ess_bulk = az.ess(trace, method="bulk")
 
@@ -322,39 +541,41 @@ with mlflow.start_run(run_name="hierarchical_frequency_v1"):
     n_div = int(trace.sample_stats["diverging"].sum())
 
     # Variance components need higher ESS than the global minimum.
+    # sigma_district drives the credibility factors for all districts.
     # Underpowered sigma estimation is the most common way Bayesian credibility
     # factors are wrong without the model appearing to fail convergence.
-    sigma_ess = float(ess_bulk["sigma_postcode_district"].min())
+    sigma_ess = float(ess_bulk["sigma_district"].min())
 
     print()
     print("Convergence diagnostics:")
     print(f"  Max R-hat:              {max_rhat:.4f}  ({'OK' if max_rhat < 1.01 else 'INVESTIGATE'})")
     print(f"  Min ESS (bulk):         {min_ess:.0f}  ({'OK' if min_ess > 400 else 'INVESTIGATE'})")
-    print(f"  sigma ESS:              {sigma_ess:.0f}  ({'OK' if sigma_ess > 1000 else 'INVESTIGATE - increase n_samples'})")
+    print(f"  sigma_district ESS:     {sigma_ess:.0f}  ({'OK' if sigma_ess > 1000 else 'INVESTIGATE - increase draws'})")
     print(f"  Divergences:            {n_div}  ({'OK' if n_div == 0 else 'INVESTIGATE'})")
 
     # ---- Variance components ----
-    sigma_district = float(trace.posterior["sigma_postcode_district"].mean())
+    sigma_district_mean = float(trace.posterior["sigma_district"].mean())
+    alpha_mean = float(trace.posterior["alpha"].mean())
+    grand_mean_bayes = np.exp(alpha_mean)
+
     print()
     print("Variance components:")
-    print(f"  sigma_postcode_district: {sigma_district:.4f}  (log-scale between-district SD)")
-    print(f"  Implied between-district range (±1 SD): [{np.exp(-sigma_district):.3f}, {np.exp(sigma_district):.3f}]")
+    print(f"  sigma_district: {sigma_district_mean:.4f}  (log-scale between-district SD)")
+    print(f"  Implied between-district range (±1 SD): "
+          f"[{np.exp(-sigma_district_mean):.3f}, {np.exp(sigma_district_mean):.3f}]")
+    print(f"  Grand mean (posterior): {grand_mean_bayes:.5f}")
 
     # ---- MLflow logging ----
     mlflow.log_metric("max_rhat", max_rhat)
     mlflow.log_metric("min_ess_bulk", min_ess)
     mlflow.log_metric("sigma_ess", sigma_ess)
     mlflow.log_metric("n_divergences", n_div)
-    mlflow.log_metric("n_segments", len(dist_totals))
-    mlflow.log_metric("grand_mean", hf.grand_mean_)
-    mlflow.log_metric("sigma_district", sigma_district)
+    mlflow.log_metric("n_segments", n_districts_model)
+    mlflow.log_metric("grand_mean", grand_mean_bayes)
+    mlflow.log_metric("sigma_district", sigma_district_mean)
 
     trace.to_netcdf("/tmp/posteriors_module06.nc")
     mlflow.log_artifact("/tmp/posteriors_module06.nc", "posteriors")
-
-    results_path = "/tmp/credibility_results_module06.csv"
-    hf.results.to_csv(results_path, index=False)
-    mlflow.log_artifact(results_path, "results")
 
     print()
     print("Run logged to MLflow.")
@@ -362,15 +583,53 @@ with mlflow.start_run(run_name="hierarchical_frequency_v1"):
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Bayesian results preview
+# MAGIC ### Extract posterior results
 
 # COMMAND ----------
 
-# hf.results is a pandas DataFrame from the bayesian-pricing library
-# Convert to Polars for display and all subsequent operations
-results = pl.from_pandas(hf.results)
+# Posterior mean log-rate per district
+u_post_mean = trace.posterior["u_district"].mean(dim=("chain", "draw")).values  # shape: (n_districts,)
 
-print("HierarchicalFrequency results (sample):")
+log_rate_post = alpha_mean + u_post_mean
+posterior_mean_rate = np.exp(log_rate_post)
+
+# 90% credible intervals from posterior samples
+log_rate_samples = (
+    trace.posterior["alpha"].values[:, :, None]     # (chains, draws, 1)
+    + trace.posterior["u_district"].values           # (chains, draws, n_districts)
+)  # shape: (chains, draws, n_districts)
+log_rate_flat = log_rate_samples.reshape(-1, n_districts_model)   # (chains*draws, n_districts)
+
+lower_90 = np.exp(np.percentile(log_rate_flat, 5, axis=0))
+upper_90 = np.exp(np.percentile(log_rate_flat, 95, axis=0))
+posterior_sd = np.exp(log_rate_flat).std(axis=0)
+
+observed_rate_arr = claims_arr / exposure_arr
+
+# Approximate credibility factor Z from the shrinkage plot:
+# Z_i = 1 - |posterior_mean - grand_mean| / |observed_rate - grand_mean|
+# This is zero for fully-pooled estimates and one for unpooled estimates.
+# It is an approximation for non-conjugate models but gives the right intuition.
+z_approx = np.where(
+    np.abs(observed_rate_arr - grand_mean_bayes) > 1e-9,
+    1.0 - np.abs(posterior_mean_rate - grand_mean_bayes)
+         / np.abs(observed_rate_arr - grand_mean_bayes),
+    1.0,
+).clip(0, 1)
+
+results = pl.DataFrame({
+    "postcode_district": districts_sorted,
+    "claims": claims_arr.tolist(),
+    "earned_years": exposure_arr.tolist(),
+    "observed_rate": observed_rate_arr.tolist(),
+    "posterior_mean": posterior_mean_rate.tolist(),
+    "posterior_sd": posterior_sd.tolist(),
+    "lower_90": lower_90.tolist(),
+    "upper_90": upper_90.tolist(),
+    "credibility_factor": z_approx.tolist(),
+})
+
+print("Bayesian results (sample):")
 print(results.select([
     "postcode_district", "claims", "earned_years",
     "observed_rate", "posterior_mean", "posterior_sd",
@@ -385,17 +644,10 @@ print(results.select([
 # MAGIC This is the key diagnostic. We plot observed rates against posterior means.
 # MAGIC - Points near the 45° line: dense segments trusted by the model
 # MAGIC - Points near the horizontal (grand mean) line: thin segments shrunk toward the portfolio average
-# MAGIC - Colour = Bayesian credibility factor Z (green = high Z, red = low Z)
+# MAGIC - Colour = approximate credibility factor Z (green = high Z, red = low Z)
 # MAGIC - Point size = log exposure
 
 # COMMAND ----------
-
-# Merge in true rates for overlay (bridge to numpy for plotting)
-true_log_rels = np.array([TRUE_AREA_PARAMS.get(d, 0.0) for d in results["postcode_district"].to_list()])
-results = results.with_columns([
-    pl.Series("true_log_rel", true_log_rels),
-    pl.Series("true_rate", hf.grand_mean_ * np.exp(true_log_rels)),
-])
 
 log_exposure = np.log1p(results["earned_years"].to_numpy())
 sizes = 20 + 100 * (log_exposure - log_exposure.min()) / (log_exposure.max() - log_exposure.min())
@@ -420,10 +672,10 @@ rate_range = [obs_arr.min() * 0.9, obs_arr.max() * 1.1]
 ax.plot(rate_range, rate_range, "k--", alpha=0.25, lw=1.5, label="Observed = estimate (no shrinkage)")
 
 # Grand mean line
-ax.axhline(hf.grand_mean_, color="steelblue", linestyle=":", alpha=0.6, lw=1.5,
-           label=f"Grand mean = {hf.grand_mean_:.4f}")
+ax.axhline(grand_mean_bayes, color="steelblue", linestyle=":", alpha=0.6, lw=1.5,
+           label=f"Grand mean = {grand_mean_bayes:.4f}")
 
-plt.colorbar(sc, label="Credibility factor Z (Bayesian)")
+plt.colorbar(sc, label="Approximate credibility factor Z")
 ax.set_xlabel("Observed claim frequency")
 ax.set_ylabel("Posterior mean claim frequency")
 ax.set_title("Shrinkage plot: credibility effect on thin cells\n"
@@ -442,14 +694,13 @@ plt.close(fig)
 
 # Join Polars DataFrames
 bs_for_join = bs_results.rename({
-    "group": "postcode_district",
     "Z": "Z_bs",
     "credibility_estimate": "bs_estimate",
-}).select(["postcode_district", "Z_bs", "bs_estimate"])
+}).select(["postcode_district", "Z_bs", "bs_estimate", "obs_mean"])
 
 comparison = results.join(bs_for_join, on="postcode_district", how="inner")
 
-print("Credibility factor comparison: Bühlmann-Straub Z vs Bayesian Z")
+print("Credibility factor comparison: Bühlmann-Straub Z vs Bayesian (approximate) Z")
 print()
 print(comparison.select([
     "postcode_district", "earned_years",
@@ -468,9 +719,10 @@ mad = np.abs(z_bs_arr - z_bay_arr).mean()
 print(f"\nCorrelation between B-S Z and Bayesian credibility_factor: {corr:.4f}")
 print(f"Mean absolute difference in Z values: {mad:.4f}")
 print()
-print("Note: the Bayesian credibility_factor is a numerical approximation from posterior moments,")
-print("not an exact quantity for this non-conjugate Poisson-lognormal model.")
-print("For very thin groups (Z < 0.10) the two may diverge beyond the Normal approximation alone.")
+print("Note: the Bayesian credibility_factor here is a numerical approximation from")
+print("posterior shrinkage. For this non-conjugate Poisson-lognormal model it is not")
+print("exact. For very thin groups (Z < 0.10) the two may diverge for reasons beyond")
+print("the Normal approximation alone.")
 
 # COMMAND ----------
 
@@ -487,7 +739,7 @@ ax.scatter(comparison["Z_bs"].to_numpy(), comparison["credibility_factor"].to_nu
            alpha=0.6, s=30, edgecolors="none", c="steelblue")
 ax.plot([0, 1], [0, 1], "k--", alpha=0.3, lw=1.5)
 ax.set_xlabel("Bühlmann-Straub Z")
-ax.set_ylabel("Bayesian credibility factor")
+ax.set_ylabel("Bayesian credibility factor (approx)")
 ax.set_title("Credibility factor comparison\nB-S vs Bayesian")
 ax.set_xlim(0, 1)
 ax.set_ylim(0, 1)
@@ -517,22 +769,32 @@ plt.close(fig)
 # MAGIC Simulate datasets from the fitted Bayesian model and compare to observed data.
 # MAGIC If the model is well-calibrated, the observed claim counts should fall within
 # MAGIC the posterior predictive distribution.
+# MAGIC
+# MAGIC A model that converges (good R-hat, ESS, zero divergences) can still be
+# MAGIC misspecified. PPCs are how you detect misspecification.
 
 # COMMAND ----------
 
-ppc = hf.posterior_predictive_check(dist_totals.to_pandas())
+with hierarchical_model:
+    ppc = pm.sample_posterior_predictive(trace, random_seed=42)
 
-# Compare observed total claims to PPC distribution
-ppc_total_claims = ppc["total_claims"]
-obs_total = dist_totals["claims"].sum()
+# Simulated total claims per replicated dataset
+sim_claims_ppc = ppc.posterior_predictive["claims_obs"].values.reshape(
+    -1, n_districts_model
+)  # shape: (n_samples, n_districts)
+
+sim_totals = sim_claims_ppc.sum(axis=1)
+obs_total = int(claims_arr.sum())
 
 print("Posterior predictive check - total claims:")
 print(f"  Observed: {obs_total:,}")
-print(f"  PPC mean: {ppc_total_claims.mean():.0f}")
-print(f"  PPC 5th percentile:  {np.percentile(ppc_total_claims, 5):.0f}")
-print(f"  PPC 95th percentile: {np.percentile(ppc_total_claims, 95):.0f}")
-in_interval = np.percentile(ppc_total_claims, 5) <= obs_total <= np.percentile(ppc_total_claims, 95)
+print(f"  PPC mean: {sim_totals.mean():.0f}")
+print(f"  PPC 5th percentile:  {np.percentile(sim_totals, 5):.0f}")
+print(f"  PPC 95th percentile: {np.percentile(sim_totals, 95):.0f}")
+in_interval = np.percentile(sim_totals, 5) <= obs_total <= np.percentile(sim_totals, 95)
 print(f"  Observed in 90% predictive interval: {in_interval}")
+pvalue_total = (sim_totals >= obs_total).mean()
+print(f"  Posterior predictive p-value: {pvalue_total:.3f}  (should be 0.05-0.95)")
 
 # COMMAND ----------
 
@@ -548,10 +810,12 @@ print(f"  Observed in 90% predictive interval: {in_interval}")
 
 # COMMAND ----------
 
-ppc_calibration = ppc["district_calibration"]  # DataFrame: district, obs_claims, lower_90, upper_90
-covered = ((ppc_calibration["obs_claims"] >= ppc_calibration["lower_90"]) &
-           (ppc_calibration["obs_claims"] <= ppc_calibration["upper_90"]))
-coverage_rate = covered.mean()
+lower_ppc = np.percentile(sim_claims_ppc, 5, axis=0)
+upper_ppc = np.percentile(sim_claims_ppc, 95, axis=0)
+obs_claims_arr = claims_arr  # already numpy
+
+within = ((obs_claims_arr >= lower_ppc) & (obs_claims_arr <= upper_ppc))
+coverage_rate = within.mean()
 
 print(f"District-level 90% PPC coverage: {coverage_rate * 100:.1f}%  (target: 90%)")
 
@@ -559,7 +823,7 @@ if abs(coverage_rate - 0.90) < 0.05:
     print("  Coverage is within 5pp of target - model is well calibrated.")
 elif coverage_rate < 0.85:
     print("  Coverage is below 85% - model may be overconfident.")
-    print("  Actions: (1) try likelihood='negative_binomial', (2) widen sigma prior,")
+    print("  Actions: (1) try Negative Binomial likelihood, (2) widen sigma prior,")
     print("  (3) if persistent, revert to Bühlmann-Straub and document why.")
 else:
     print("  Coverage is above 95% - model may be underconfident (too much uncertainty).")
@@ -571,36 +835,40 @@ else:
 
 # COMMAND ----------
 
-true_rates = pl.Series(
-    "true_rate",
-    hf.grand_mean_ * np.exp(
-        [TRUE_AREA_PARAMS.get(d, 0.0) for d in comparison["postcode_district"].to_list()]
-    )
+true_rates_arr = np.array([
+    BASE_FREQUENCY * np.exp(TRUE_AREA_PARAMS.get(d, 0.0))
+    for d in districts_sorted
+])
+
+comparison = comparison.with_columns(
+    pl.Series("true_rate", [
+        BASE_FREQUENCY * np.exp(TRUE_AREA_PARAMS.get(d, 0.0))
+        for d in comparison["postcode_district"].to_list()
+    ])
 )
-comparison = comparison.with_columns(true_rates)
 
-obs_arr   = comparison["observed_rate"].to_numpy()
-bs_arr    = comparison["bs_estimate"].to_numpy()
-bayes_arr = comparison["posterior_mean"].to_numpy()
-true_arr  = comparison["true_rate"].to_numpy()
+obs_arr_c   = comparison["observed_rate"].to_numpy()
+bs_arr_c    = comparison["bs_estimate"].to_numpy()
+bayes_arr_c = comparison["posterior_mean"].to_numpy()
+true_arr_c  = comparison["true_rate"].to_numpy()
 
-mse_observed = ((obs_arr   - true_arr) ** 2).mean()
-mse_bs       = ((bs_arr    - true_arr) ** 2).mean()
-mse_bayes    = ((bayes_arr - true_arr) ** 2).mean()
+mse_observed_c = ((obs_arr_c   - true_arr_c) ** 2).mean()
+mse_bs_c       = ((bs_arr_c    - true_arr_c) ** 2).mean()
+mse_bayes_c    = ((bayes_arr_c - true_arr_c) ** 2).mean()
 
-mape_observed = (np.abs(obs_arr   - true_arr) / true_arr).mean()
-mape_bs       = (np.abs(bs_arr    - true_arr) / true_arr).mean()
-mape_bayes    = (np.abs(bayes_arr - true_arr) / true_arr).mean()
+mape_observed_c = (np.abs(obs_arr_c   - true_arr_c) / true_arr_c).mean()
+mape_bs_c       = (np.abs(bs_arr_c    - true_arr_c) / true_arr_c).mean()
+mape_bayes_c    = (np.abs(bayes_arr_c - true_arr_c) / true_arr_c).mean()
 
 print("MSE vs true rate (lower is better):")
-print(f"  Observed rate:              {mse_observed:.8f}  (no pooling)")
-print(f"  Bühlmann-Straub estimate:   {mse_bs:.8f}  ({(1 - mse_bs/mse_observed)*100:.1f}% reduction)")
-print(f"  Bayesian posterior mean:    {mse_bayes:.8f}  ({(1 - mse_bayes/mse_observed)*100:.1f}% reduction)")
+print(f"  Observed rate:              {mse_observed_c:.8f}  (no pooling)")
+print(f"  Bühlmann-Straub estimate:   {mse_bs_c:.8f}  ({(1 - mse_bs_c/mse_observed_c)*100:.1f}% reduction)")
+print(f"  Bayesian posterior mean:    {mse_bayes_c:.8f}  ({(1 - mse_bayes_c/mse_observed_c)*100:.1f}% reduction)")
 print()
 print("MAPE vs true rate (lower is better):")
-print(f"  Observed rate:              {mape_observed * 100:.2f}%")
-print(f"  Bühlmann-Straub estimate:   {mape_bs * 100:.2f}%  ({(1 - mape_bs/mape_observed)*100:.1f}% reduction)")
-print(f"  Bayesian posterior mean:    {mape_bayes * 100:.2f}%  ({(1 - mape_bayes/mape_observed)*100:.1f}% reduction)")
+print(f"  Observed rate:              {mape_observed_c * 100:.2f}%")
+print(f"  Bühlmann-Straub estimate:   {mape_bs_c * 100:.2f}%  ({(1 - mape_bs_c/mape_observed_c)*100:.1f}% reduction)")
+print(f"  Bayesian posterior mean:    {mape_bayes_c * 100:.2f}%  ({(1 - mape_bayes_c/mape_observed_c)*100:.1f}% reduction)")
 print()
 print("Both credibility methods substantially outperform naive observed rates.")
 print("Bayesian and B-S are close - the Normal approximation in B-S works well here.")
@@ -658,10 +926,10 @@ factor_table = comparison.select([
 
 # Convert to relativities vs grand mean
 factor_table = factor_table.with_columns([
-    (pl.col("posterior_mean") / hf.grand_mean_).alias("relativity"),
-    (pl.col("lower_90") / hf.grand_mean_).alias("ci_lower"),
-    (pl.col("upper_90") / hf.grand_mean_).alias("ci_upper"),
-    (pl.col("observed_rate") / hf.grand_mean_).alias("observed_relativity"),
+    (pl.col("posterior_mean") / grand_mean_bayes).alias("relativity"),
+    (pl.col("lower_90") / grand_mean_bayes).alias("ci_lower"),
+    (pl.col("upper_90") / grand_mean_bayes).alias("ci_upper"),
+    (pl.col("observed_rate") / grand_mean_bayes).alias("observed_relativity"),
 ])
 
 # Round for presentation
@@ -683,7 +951,7 @@ print(factor_table_display.select([
 ]).head(15))
 
 print()
-print(f"\nGrand mean (base rate): {hf.grand_mean_:.5f} ({hf.grand_mean_ * 100:.3f}% per year)")
+print(f"\nGrand mean (base rate): {grand_mean_bayes:.5f} ({grand_mean_bayes * 100:.3f}% per year)")
 print("Relativities are multiplicative vs the grand mean.")
 print("90% credible intervals widen substantially for thin cells - this is correct, not a bug.")
 
@@ -734,18 +1002,17 @@ print(f"Written {len(bayes_out)} rows to main.pricing.module06_credibility_estim
 
 # Bühlmann-Straub results
 bs_out = bs_results.rename({
-    "group": "postcode_district",
     "obs_mean": "observed_rate",
     "credibility_estimate": "bs_estimate",
 }).with_columns([
-    (pl.col("bs_estimate") / bs.grand_mean).alias("bs_relativity"),
+    (pl.col("bs_estimate") / bs["grand_mean"]).alias("bs_relativity"),
     pl.lit(MODEL_NAME_BS).alias("model_name"),
     pl.lit("buhlmann_straub").alias("model_type"),
     pl.lit(RUN_DATE).alias("run_date"),
-    pl.lit(bs.grand_mean).alias("grand_mean"),
-    pl.lit(bs.v_hat_).alias("v_hat"),
-    pl.lit(bs.a_hat_).alias("a_hat"),
-    pl.lit(bs.k_).alias("K"),
+    pl.lit(bs["grand_mean"]).alias("grand_mean"),
+    pl.lit(bs["v_hat"]).alias("v_hat"),
+    pl.lit(bs["a_hat"]).alias("a_hat"),
+    pl.lit(bs["k"]).alias("K"),
 ])
 
 (
@@ -771,31 +1038,31 @@ print("MODULE 6 - CREDIBILITY & BAYESIAN PRICING SUMMARY")
 print("=" * 65)
 print()
 print("Portfolio:")
-print(f"  {len(df):,} policies, {df['earned_years'].sum():.0f} earned years")
+print(f"  {len(df):,} district-year rows")
 print(f"  {len(dist_totals)} postcode districts")
 thin_count = dist_totals.filter(pl.col("earned_years") < 50).height
 print(f"  {thin_count} thin districts (< 50 earned years)")
 print()
-print("Bühlmann-Straub:")
-print(f"  Grand mean:  {bs.grand_mean:.5f}")
-print(f"  K = v/a:     {bs.k_:.1f}  (half-credibility at {bs.k_:.0f} earned years)")
+print("Bühlmann-Straub (inline NumPy implementation):")
+print(f"  Grand mean:  {bs['grand_mean']:.5f}")
+print(f"  K = v/a:     {bs['k']:.1f}  (half-credibility at {bs['k']:.0f} earned years)")
 z_min = bs_results["Z"].min()
 z_max = bs_results["Z"].max()
 print(f"  Z range:     [{z_min:.3f}, {z_max:.3f}]")
-print(f"  MSE vs true: {mse_bs:.8f}  ({(1 - mse_bs/mse_observed)*100:.1f}% vs observed)")
-print(f"  MAPE vs true:{mape_bs * 100:.2f}%  ({(1 - mape_bs/mape_observed)*100:.1f}% vs observed)")
+print(f"  MSE vs true: {mse_bs_c:.8f}  ({(1 - mse_bs_c/mse_observed_c)*100:.1f}% vs observed)")
+print(f"  MAPE vs true:{mape_bs_c * 100:.2f}%  ({(1 - mape_bs_c/mape_observed_c)*100:.1f}% vs observed)")
 print()
-print("Bayesian (HierarchicalFrequency):")
-print(f"  Grand mean:             {hf.grand_mean_:.5f}")
-print(f"  sigma_district:         {sigma_district:.4f}  (log-scale between-district SD)")
+print("Bayesian (hierarchical PyMC model):")
+print(f"  Grand mean:             {grand_mean_bayes:.5f}")
+print(f"  sigma_district:         {sigma_district_mean:.4f}  (log-scale between-district SD)")
 print(f"  Max R-hat:              {max_rhat:.4f}")
 print(f"  sigma ESS:              {sigma_ess:.0f}")
 print(f"  Divergences:            {n_div}")
 z_bay_min = results["credibility_factor"].min()
 z_bay_max = results["credibility_factor"].max()
 print(f"  Z range:                [{z_bay_min:.3f}, {z_bay_max:.3f}]")
-print(f"  MSE vs true:            {mse_bayes:.8f}  ({(1 - mse_bayes/mse_observed)*100:.1f}% vs observed)")
-print(f"  MAPE vs true:           {mape_bayes * 100:.2f}%  ({(1 - mape_bayes/mape_observed)*100:.1f}% vs observed)")
+print(f"  MSE vs true:            {mse_bayes_c:.8f}  ({(1 - mse_bayes_c/mse_observed_c)*100:.1f}% vs observed)")
+print(f"  MAPE vs true:           {mape_bayes_c * 100:.2f}%  ({(1 - mape_bayes_c/mape_observed_c)*100:.1f}% vs observed)")
 print(f"  PPC district coverage:  {coverage_rate * 100:.1f}%  (target 90%)")
 print()
 print("Delta tables written:")

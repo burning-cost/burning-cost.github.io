@@ -1,43 +1,32 @@
-# Module 3: GBMs for Insurance Pricing
+# Module 3: GBMs for Insurance Pricing - CatBoost
 
-Part of **Modern Insurance Pricing with Python and Databricks**.
+**Part of: Modern Insurance Pricing with Python and Databricks**
 
 ---
 
 ## What this module covers
 
-You built a frequency-severity GLM in Module 2. This module adds a CatBoost GBM to the same dataset and teaches you how to train, validate, and track it properly - then compare it honestly against the GLM.
+Gradient boosted machines have been used for insurance pricing in the UK since the mid-2010s, mostly at the more technically ambitious direct writers. The standard critique from actuaries trained on GLMs is that GBMs are a black box: you cannot read off a table of relativities, you cannot explain a particular customer's price to a regulator, and you cannot validate the direction of effects without specialist tooling. That critique was largely fair until about 2020. It is not fair now.
 
-The comparison is the point. GBMs almost always show better hold-out performance than GLMs on the same data. What this module teaches is what to do with that: when the lift is real and worth acting on, when it reflects overfitting, how to validate correctly using temporal splits (not random splits), and what the production decision actually looks like in practice.
+This module teaches you to train a CatBoost frequency-severity model on the same motor portfolio you built a GLM for in Module 2. CatBoost is our preferred GBM library for insurance pricing for two reasons: it handles categorical rating factors natively (no dummy encoding required) and its `Poisson` and `Tweedie` loss functions implement the correct actuarial objectives without any workarounds. We cover the full pipeline from data to MLflow registration: walk-forward cross-validation with an IBNR buffer using `insurance-cv`, hyperparameter tuning with Optuna across 40 trials, and the two diagnostics that determine whether the GBM actually adds anything over the GLM - the Gini coefficient comparison and the double lift chart. Both diagnostics are computed on the same temporal test set and logged to the same MLflow experiment, so the champion-challenger comparison is reproducible and auditable.
 
-We use CatBoost throughout. We use `insurance-cv` for cross-validation. We track everything in MLflow and register the best model in the model registry.
-
----
-
-## What you will be able to do after this module
-
-- Train a CatBoost Poisson frequency model and Gamma severity model on insurance data, handling exposure correctly
-- Explain why temporal cross-validation matters for insurance pricing and how to implement it with `insurance-cv`
-- Tune CatBoost hyperparameters for insurance data using Optuna, and understand what each key parameter actually does
-- Track experiments in MLflow: parameters, metrics, model artefacts, and the comparison between GBM and GLM runs
-- Register a model in the Databricks model registry using aliases rather than deprecated stages
-- Compare GBM and GLM performance properly: Gini, calibration curves, double lift charts, and out-of-sample deviance
-- State clearly when you would use a GBM, when a GLM, and when to run both in tandem
+The module ends with the model registered in MLflow as a "challenger" - not "production". The governance gate is explicit: a challenger GBM does not touch the production pricing system until a pricing committee has reviewed the SHAP relativities (Module 4) and signed off.
 
 ---
 
 ## Prerequisites
 
-- Module 1 completed: you have a working Databricks workspace with Unity Catalog and a Delta table with the synthetic motor policy data
-- Module 2 completed: you have a fitted frequency-severity GLM, logged to MLflow, with factor tables in Unity Catalog. This module builds the GBM as a direct comparator to that GLM
-- Comfortable with Poisson and Gamma GLM theory - you know what the deviance measures, what an exposure offset is, and why we model frequency and severity separately
-- Basic Python: you can modify a function and follow a data pipeline
+- Modules 1 and 2 completed, or equivalent: you have a Databricks workspace with `pricing.motor.claims_exposure` in Unity Catalog, and you understand what a Poisson GLM with exposure offset does
+- Comfortable with the GLM output: you know what a Gini coefficient is and what "actual versus expected by factor level" tells you
+- Basic Python: you can read a function, follow a for loop, and modify parameters
+
+You do not need prior CatBoost or Optuna experience. We introduce both APIs as we use them.
 
 ---
 
 ## Estimated time
 
-4-5 hours for the tutorial and exercises. The notebook trains end-to-end in about 25-35 minutes on a standard Databricks single-node cluster (Standard_DS3_v2 or equivalent), including hyperparameter search.
+5-6 hours for the tutorial plus exercises. The notebook runs end-to-end in 30-45 minutes on a 4-core cluster (Standard_DS3_v2 on Azure). The Optuna tuning step (40 trials) takes 15-20 minutes of that.
 
 ---
 
@@ -45,25 +34,29 @@ We use CatBoost throughout. We use `insurance-cv` for cross-validation. We track
 
 | File | Purpose |
 |------|---------|
-| `tutorial.md` | The full written tutorial. Read this before running the notebook. |
-| `notebook.py` | Databricks notebook. Import this into your workspace and run cell by cell. |
+| `tutorial.md` | Main written tutorial - read this first |
+| `notebook.py` | Databricks notebook - CatBoost frequency/severity pipeline, Optuna tuning, GLM comparison |
+| `exercises.md` | Five hands-on exercises with full solutions |
 
 ---
 
-## Key technical decisions
+## What you will be able to do after this module
 
-**Why CatBoost.** CatBoost handles categorical features without ordinal encoding. Its ordered boosting algorithm is specifically designed to reduce overfitting on smaller datasets - relevant because most UK personal lines books have 50,000-500,000 policies, not ten million. Its symmetric tree structure also makes SHAP value computation faster than alternatives, which matters in Module 4. The practical reason we picked it: CatBoost's native `cat_features` parameter means we pass the column names and the library handles everything, rather than preprocessing with label encoders that need to be versioned alongside the model.
-
-**Polars for data manipulation.** All DataFrame operations use Polars. We convert to a CatBoost `Pool` at training time; the Pool accepts numpy arrays and lists, so the conversion is a one-liner. Pandas does not appear.
-
-**`insurance-cv` for cross-validation.** Random cross-validation on insurance data produces optimistic metrics because it mixes policies from different development years in train and validation sets. A model trained on policies from 2021-2023 and validated on a random 20% of the same period will look better than it performs on 2024 data. `insurance-cv` implements walk-forward splits that respect policy year boundaries and accept IBNR development buffers. Install via `uv add insurance-cv`.
-
-**Exposure as offset, not weight.** This is the same rule as Module 2, and it is easy to get wrong. In a Poisson frequency model, exposure enters as `log(exposure)` added to the linear predictor. Setting `sample_weight=exposure` instead gives a weighted likelihood that is not the same thing. CatBoost's Poisson objective uses `baseline` for the log-offset. Setting both `baseline` and `sample_weight` to exposure simultaneously double-counts exposure and produces wrong predictions. The notebook demonstrates this.
+- Fit a CatBoost Poisson frequency model with the correct exposure offset (`baseline=np.log(exposure)`) - the single most common implementation error, and the one that silently produces wrong predictions
+- Pass categorical rating factors directly to CatBoost without dummy encoding, and understand why CatBoost's ordered target statistics are preferable to one-hot encoding for factors with 5-10 levels
+- Implement walk-forward cross-validation with an IBNR buffer using `insurance-cv`, and explain why random train/test splits are not valid for insurance data
+- Run 40-trial Optuna hyperparameter searches targeting Poisson deviance and identify which parameters actually matter (depth and learning rate dominate; l2_leaf_reg is secondary)
+- Train the Gamma-equivalent severity model using `loss_function="Tweedie:variance_power=2"` on the claims-only subset, without an exposure offset, and understand why the offset belongs in the frequency model and not the severity model
+- Compute a Gini coefficient comparison between the GBM and the GLM from Module 2, and build a double lift chart that shows where the GBM finds signal the GLM misses
+- Log all parameters, metrics, and model artefacts to MLflow and register the challenger model using aliases (not the deprecated stage transition API)
+- Explain to a pricing committee what the double lift chart shows and what Gini lift threshold justifies deployment
 
 ---
 
-## Part of the MVP bundle
+## Why this is worth your time
 
-This module is part of the £295 MVP bundle (modules 1, 2, 4, 6). Individual module: £79.
+The GLM you built in Module 2 is correct. It will remain the production model for most UK personal lines risks, and it should: it is interpretable, auditable, and well-understood by your pricing committee, reserving team, and the FCA. The question this module answers is not "should we replace the GLM?" but "does the GBM find genuine additional risk signal, and if so, where?"
 
-See [burningcost.github.io/course](https://burningcost.github.io/course/) for the full curriculum.
+That is the right question because the business case for a GBM is marginal or zero on most well-developed UK motor books. GLMs with interaction terms can capture most of the signal a GBM finds, especially if your actuaries have been iterating on the model for years. But the double lift chart will tell you this directly: a flat chart means go back to the GLM. A positively sloping chart means the GBM is capturing interactions the GLM is missing - typically young driver x high vehicle group combinations where the true risk is superadditive and the multiplicative GLM structure underestimates it.
+
+The infrastructure matters as much as the result. Running a GBM as a challenger to a production GLM, with both models trained on versioned Delta data, both logged to MLflow, both evaluated on the same temporal test split, is a meaningful champion-challenger process. Running a GBM in an unversioned notebook with a random train/test split and presenting the Gini improvement to a pricing committee is not. This module builds the former.

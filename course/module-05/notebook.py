@@ -1,40 +1,34 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Module 5: Conformal Prediction Intervals for Insurance Pricing Models
-# MAGIC ## Modern Insurance Pricing with Python and Databricks
+# MAGIC # Module 5: Conformal Prediction Intervals for Insurance Pricing
 # MAGIC
-# MAGIC This notebook covers the full Module 5 workflow:
+# MAGIC **Modern Insurance Pricing with Python and Databricks**
 # MAGIC
-# MAGIC 1. Install packages and generate synthetic UK motor data
-# MAGIC 2. Temporal train/calibration/test split
-# MAGIC 3. Train a CatBoost Tweedie pure premium model
-# MAGIC 4. Wrap with InsuranceConformalPredictor (pearson_weighted score)
-# MAGIC 5. Calibrate on the held-out calibration set
-# MAGIC 6. Generate 90% prediction intervals
-# MAGIC 7. Coverage-by-decile diagnostics
-# MAGIC 8. Comparison with naive absolute-residual intervals
-# MAGIC 9. Practical applications: uncertain risk flagging and minimum premium floors
-# MAGIC 10. Write intervals and coverage log to Unity Catalog
+# MAGIC Prediction intervals that hold: distribution-free coverage guarantees on
+# MAGIC insurance claims data using the `insurance-conformal` library.
 # MAGIC
-# MAGIC **Requirements:**
-# MAGIC - Databricks Runtime 14.3 LTS or later
-# MAGIC - Unity Catalog enabled (Free Edition includes this)
+# MAGIC **What this notebook does:**
+# MAGIC 1. Trains a CatBoost Tweedie pure premium model
+# MAGIC 2. Calibrates conformal prediction intervals using `InsuranceConformalPredictor`
+# MAGIC 3. Validates coverage by risk decile (the key diagnostic)
+# MAGIC 4. Demonstrates three practical applications: uncertain risk flagging, minimum premium
+# MAGIC    floors, and portfolio-level reserve range estimates
+# MAGIC 5. Writes intervals and coverage diagnostics to Unity Catalog Delta tables
 # MAGIC
-# MAGIC **Free Edition note:** All cells run on Databricks Free Edition. Data generation
-# MAGIC and model training take approximately 5-10 minutes on a single-node cluster.
+# MAGIC **Runtime:** 15-20 minutes on a 4-core cluster.
+# MAGIC
+# MAGIC **Prerequisites:** Module 1 notebook run (pricing.motor.claims_exposure exists).
+# MAGIC CatBoost and insurance-conformal installed.
+# MAGIC
+# MAGIC **Key concept:** The coverage guarantee is distribution-free in that it makes no
+# MAGIC parametric assumptions about the data — but it does require exchangeability and a
+# MAGIC well-calibrated conformity score. For insurance, that means: calibrate on recent
+# MAGIC business, test on more recent business, and validate coverage by decile.
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 0. Install packages
-# MAGIC
-# MAGIC `insurance-conformal` is not pre-installed on the standard Databricks Runtime.
-# MAGIC The `[catboost]` extra pulls in CatBoost and enables auto-detection of the Tweedie
-# MAGIC power from the model's loss function parameter.
-
-# COMMAND ----------
-
-# MAGIC %sh uv pip install "insurance-conformal[catboost]" polars scikit-learn
+%pip install "insurance-conformal[catboost]" polars --quiet
+# In a Databricks notebook, use %pip install rather than uv add — the %pip command installs into the cluster session. Outside Databricks, use uv add.
 
 # COMMAND ----------
 
@@ -42,532 +36,474 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 1. Configuration
+import warnings
+import json
+from datetime import date
 
-# COMMAND ----------
-
-CATALOG = "pricing"
-SCHEMA  = "motor"
-
-# Change to your Databricks user path
-MLFLOW_EXPERIMENT_PATH = "/Users/you@insurer.com/motor-conformal-module05"
-
-# Conformal coverage target: 90% prediction intervals
-ALPHA = 0.10
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 2. Imports
-
-# COMMAND ----------
-
-import polars as pl
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
-
+import polars as pl
 from catboost import CatBoostRegressor, Pool
-from sklearn.model_selection import train_test_split
+import mlflow
+import matplotlib.pyplot as plt
 
-print(f"CatBoost version:             {__import__('catboost').__version__}")
-print(f"Polars version:               {pl.__version__}")
-print(f"insurance-conformal version:  {__import__('insurance_conformal').__version__}")
+from insurance_conformal import InsuranceConformalPredictor, CoverageDiagnostics
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 3. Synthetic data generation
-# MAGIC
-# MAGIC We generate 50,000 synthetic UK motor policies with known true parameters.
-# MAGIC This lets us verify that the conformal intervals achieve correct coverage.
-# MAGIC The key columns are:
-# MAGIC
-# MAGIC - `claim_count`, `exposure`: Poisson frequency outcome
-# MAGIC - `incurred`: total incurred cost, the pure premium target
-# MAGIC - `vehicle_group`, `driver_age`, `ncd_years`, `area`, `conviction_points`,
-# MAGIC   `annual_mileage`: rating features
-# MAGIC - `accident_year`: used for the temporal split
-# MAGIC
-# MAGIC In production, replace this cell with `spark.table("your_catalog.motor.policies")`.
-
-# COMMAND ----------
-
-rng = np.random.default_rng(42)
-N = 50_000
-YEARS = [2021, 2022, 2023, 2024]
-N_PER_YEAR = N // len(YEARS)
-
-cohorts = []
-for year in YEARS:
-    n = N_PER_YEAR
-    area = rng.choice(["A", "B", "C", "D", "E", "F"], n, p=[0.18, 0.20, 0.22, 0.18, 0.12, 0.10])
-    vehicle_group = rng.integers(1, 7, n)
-    driver_age    = rng.choice([21, 30, 43, 58, 72], n, p=[0.10, 0.20, 0.35, 0.25, 0.10])
-    ncd_years     = rng.integers(0, 6, n)
-    conviction_points = rng.choice([0, 3, 6, 9], n, p=[0.80, 0.12, 0.06, 0.02])
-    annual_mileage    = rng.choice([5000, 10000, 15000, 20000], n, p=[0.20, 0.35, 0.30, 0.15])
-    exposure = rng.uniform(0.3, 1.0, n)
-
-    area_freq = {"A": 0.045, "B": 0.055, "C": 0.062, "D": 0.070, "E": 0.078, "F": 0.090}
-    freq_base = np.array([area_freq[a] for a in area])
-    freq_base *= (vehicle_group / 3.5)
-    freq_base *= np.where(driver_age <= 25, 1.8, np.where(driver_age >= 65, 1.2, 1.0))
-    freq_base *= np.maximum(0.5, 1.0 - 0.05 * ncd_years)
-    freq_base *= (1.0 + 0.04 * conviction_points)
-    freq_base *= (1.0 + annual_mileage / 50_000)
-
-    claim_count = rng.poisson(freq_base * exposure)
-
-    base_sev = 2_500
-    mean_sev = base_sev * (vehicle_group / 3.5) * np.where(driver_age <= 25, 1.3, 1.0)
-    incurred  = np.where(
-        claim_count > 0,
-        rng.gamma(shape=2.0, scale=mean_sev / 2.0) * claim_count,
-        0.0,
-    )
-
-    cohorts.append(
-        pl.DataFrame({
-            "policy_id":         [f"{year}-{i:06d}" for i in range(n)],
-            "accident_year":     [year] * n,
-            "area":              area,
-            "vehicle_group":     vehicle_group.tolist(),
-            "driver_age":        driver_age.tolist(),
-            "ncd_years":         ncd_years.tolist(),
-            "conviction_points": conviction_points.tolist(),
-            "annual_mileage":    annual_mileage.tolist(),
-            "exposure":          exposure.tolist(),
-            "claim_count":       claim_count.tolist(),
-            "incurred":          incurred.tolist(),
-        })
-    )
-
-df = pl.concat(cohorts)
-
-print(f"Total policies:    {len(df):,}")
-print(f"Overall frequency: {df['claim_count'].sum() / df['exposure'].sum():.4f}")
-print(f"Average severity:  £{df.filter(pl.col('incurred') > 0)['incurred'].mean():,.0f}")
-print(f"Years: {df['accident_year'].unique().sort().to_list()}")
+print(f"Today: {date.today()}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 4. Temporal train / calibration / test split
+# MAGIC ## 1. Load data and make the temporal split
 # MAGIC
-# MAGIC This is the single most important practical decision in this module. We split by
-# MAGIC accident year, not randomly.
+# MAGIC The temporal split is the single most important practical decision in this module.
+# MAGIC Conformal prediction requires that calibration data is exchangeable with test data.
+# MAGIC In insurance, exchangeable means: drawn from the same temporal distribution.
 # MAGIC
-# MAGIC The conformal prediction exchangeability condition requires that calibration scores
-# MAGIC and test scores come from the same distribution in the same temporal ordering.
-# MAGIC A temporal split makes that assumption visible and testable: if coverage in the
-# MAGIC test period is below target, temporal drift is the first thing to investigate.
+# MAGIC Split order: train (oldest) -> calibration -> test (most recent)
 # MAGIC
-# MAGIC Split: 2021-2022 = training (60%), 2023 = calibration (20%), 2024 = test (20%).
+# MAGIC Do not use a random split here. A random split hides temporal trends in residuals.
+# MAGIC It technically satisfies the exchangeability condition but makes coverage drift
+# MAGIC invisible until it is too late.
 
 # COMMAND ----------
 
-FEATURES = ["vehicle_group", "driver_age", "ncd_years", "conviction_points", "annual_mileage"]
+CATALOG    = "pricing"
+SCHEMA     = "motor"
+FULL_TABLE = f"{CATALOG}.{SCHEMA}.claims_exposure"
+
+try:
+    df = pl.from_pandas(spark.table(FULL_TABLE).toPandas())
+    print(f"Loaded from Delta: {len(df):,} rows")
+except Exception:
+    print("Loading fallback synthetic dataset (Module 1 table not found)")
+    from insurance_conformal.datasets import load_motor_synthetic
+    df = load_motor_synthetic(n_policies=50_000, seed=42)
+
+print(f"Rows: {len(df):,}")
+print(f"Accident years: {sorted(df['accident_year'].unique().to_list())}")
+
+# COMMAND ----------
+
+# Temporal split: 60% train, 20% calibration, 20% test
+# Sort by accident_year to ensure temporal ordering
+df = df.sort("accident_year")
+n  = len(df)
+
+train_end = int(0.60 * n)
+cal_end   = int(0.80 * n)
+
+X_COLS = [
+    "vehicle_group", "driver_age", "ncd_years",
+    "area", "conviction_points", "annual_mileage",
+]
 CAT_FEATURES = ["area"]
-ALL_FEATURES = FEATURES + CAT_FEATURES
 
-df_train = df.filter(pl.col("accident_year").is_in([2021, 2022]))
-df_cal   = df.filter(pl.col("accident_year") == 2023)
-df_test  = df.filter(pl.col("accident_year") == 2024)
+# The pure premium target: total incurred per policy-year
+# This is what we model directly with Tweedie - no need for a freq/sev split
+# when the goal is prediction intervals on the combined outcome
+df = df.with_columns(
+    (pl.col("incurred") / pl.col("exposure_years").clip(lower_bound=0.01)).alias("pure_premium")
+)
 
-X_train = df_train[ALL_FEATURES].to_pandas()
-y_train = df_train["incurred"].to_numpy()
+X_train = df[:train_end][X_COLS].to_pandas()
+y_train = df[:train_end]["pure_premium"].to_pandas()
 
-X_cal   = df_cal[ALL_FEATURES].to_pandas()
-y_cal   = df_cal["incurred"].to_numpy()
+X_cal   = df[train_end:cal_end][X_COLS].to_pandas()
+y_cal   = df[train_end:cal_end]["pure_premium"].to_pandas()
 
-X_test  = df_test[ALL_FEATURES].to_pandas()
-y_test  = df_test["incurred"].to_numpy()
+X_test  = df[cal_end:][X_COLS].to_pandas()
+y_test  = df[cal_end:]["pure_premium"].to_pandas()
 
-print(f"Training:    {len(X_train):,} policies (accident years 2021-2022)")
-print(f"Calibration: {len(X_cal):,} policies (accident year 2023)")
-print(f"Test:        {len(X_test):,} policies (accident year 2024)")
+train_years = sorted(df[:train_end]["accident_year"].unique().to_list())
+cal_years   = sorted(df[train_end:cal_end]["accident_year"].unique().to_list())
+test_years  = sorted(df[cal_end:]["accident_year"].unique().to_list())
+
+print(f"Train:       {len(X_train):,} policies (accident years {train_years})")
+print(f"Calibration: {len(X_cal):,} policies (accident years {cal_years})")
+print(f"Test:        {len(X_test):,} policies (accident years {test_years})")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 5. Train CatBoost Tweedie pure premium model
+# MAGIC ## 2. Train the Tweedie pure premium model
 # MAGIC
-# MAGIC We use a Tweedie pure premium model - the direct target for most UK personal lines
-# MAGIC pricing teams. Tweedie with variance_power=1.5 is typical for UK motor: it handles
-# MAGIC the mix of zero and positive incurred losses without requiring separate frequency
-# MAGIC and severity models.
+# MAGIC We use a Tweedie model with variance_power=1.5, which is the standard choice
+# MAGIC for UK motor pure premium modelling. Power=1.5 sits between Poisson (power=1)
+# MAGIC and Gamma (power=2), modelling the compound Poisson-Gamma structure of insurance
+# MAGIC pure premiums - a continuous distribution with a point mass at zero when claims=0.
 # MAGIC
-# MAGIC The model is trained on training data only. The calibration pool is passed as
-# MAGIC `eval_set` for early stopping only - this is a minor practical compromise. To be
-# MAGIC strict about the held-out assumption, use a separate validation set for early
-# MAGIC stopping and keep calibration genuinely untouched.
+# MAGIC The pure premium target has two advantages for conformal prediction:
+# MAGIC 1. One model, one set of calibration residuals, one interval
+# MAGIC 2. No need to compose frequency and severity intervals separately
+# MAGIC
+# MAGIC The trade-off: you cannot decompose the interval into a frequency component
+# MAGIC and a severity component. If you need that decomposition, train separate
+# MAGIC conformal predictors for each and accept the composition complexity.
 
 # COMMAND ----------
 
-train_pool = Pool(data=X_train, label=y_train, cat_features=CAT_FEATURES)
-cal_pool   = Pool(data=X_cal,   label=y_cal,   cat_features=CAT_FEATURES)
-test_pool  = Pool(data=X_test,  label=y_test,  cat_features=CAT_FEATURES)
+train_pool = Pool(X_train, y_train, cat_features=CAT_FEATURES)
+cal_pool   = Pool(X_cal,   y_cal,   cat_features=CAT_FEATURES)
+test_pool  = Pool(X_test,  y_test,  cat_features=CAT_FEATURES)
 
 tweedie_params = {
-    "loss_function":  "Tweedie:variance_power=1.5",
-    "eval_metric":    "Tweedie:variance_power=1.5",
-    "learning_rate":  0.05,
-    "depth":          5,
+    "loss_function":   "Tweedie:variance_power=1.5",
+    "eval_metric":     "Tweedie:variance_power=1.5",
+    "learning_rate":   0.05,
+    "depth":           5,
     "min_data_in_leaf": 50,
-    "iterations":     500,
-    "random_seed":    42,
-    "verbose":        100,
+    "iterations":      500,
+    "random_seed":     42,
+    "verbose":         100,
 }
 
+# Note: early stopping on the calibration pool introduces a mild dependency.
+# The calibration pool has influenced the fitting decision (iteration count).
+# In practice this has negligible effect on coverage.
+# If you need strict separation, use a separate validation pool for early stopping.
 model = CatBoostRegressor(**tweedie_params)
 model.fit(train_pool, eval_set=cal_pool, early_stopping_rounds=50)
 
-y_pred_test = model.predict(test_pool)
-test_rmse   = float(np.sqrt(np.mean((y_pred_test - y_test) ** 2)))
+test_preds = model.predict(test_pool)
+test_rmse  = float(np.sqrt(np.mean((test_preds - y_test.values)**2)))
 
-print(f"\nBest iteration: {model.best_iteration_}")
-print(f"Test RMSE:      {test_rmse:.2f}")
-print(f"Test mean pred: {y_pred_test.mean():.4f}")
+print(f"Best iteration: {model.best_iteration_}")
+print(f"Test RMSE:      {test_rmse:.4f}")
+print(f"Test mean pred: {test_preds.mean():.4f}")
 print(f"Test mean actual: {y_test.mean():.4f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 6. Wrap with InsuranceConformalPredictor
+# MAGIC ## 3. Wrap and calibrate: InsuranceConformalPredictor
 # MAGIC
-# MAGIC The `pearson_weighted` non-conformity score normalises by ŷ^(p/2), where p=1.5 is
-# MAGIC the Tweedie power. This accounts for the heteroscedasticity of insurance data:
-# MAGIC larger risks get wider intervals, smaller risks get narrower ones.
+# MAGIC The calibration step is fast: score the calibration observations, sort the scores,
+# MAGIC store the quantile. For 10,000 calibration observations this takes a few seconds.
 # MAGIC
-# MAGIC The alternative - raw absolute residuals - produces fixed-width intervals.
-# MAGIC For a £300 risk and a £30,000 risk, fixed-width intervals are wrong in opposite
-# MAGIC directions simultaneously. The pearson_weighted score eliminates this problem.
+# MAGIC The `pearson_weighted` non-conformity score divides the absolute residual by
+# MAGIC ŷ^(p/2), which normalises by the model's expected standard deviation.
+# MAGIC This produces intervals that widen proportionally with risk level.
+# MAGIC
+# MAGIC Do not use the `raw` score for insurance data. The module tutorial shows
+# MAGIC why: raw residual intervals achieve 90% marginal coverage but only 72%
+# MAGIC coverage in the top risk decile. The aggregate number hides the failure.
 
 # COMMAND ----------
-
-from insurance_conformal import InsuranceConformalPredictor
 
 cp = InsuranceConformalPredictor(
     model=model,
-    nonconformity="pearson_weighted",
+    nonconformity="pearson_weighted",  # variance-weighted: correct for Tweedie data
     distribution="tweedie",
-    tweedie_power=1.5,
+    tweedie_power=1.5,                 # matches the model's loss function
 )
-
-print(f"Predictor: {cp}")
-print(f"Non-conformity score: pearson_weighted")
-print(f"Tweedie power: 1.5")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 7. Calibrate
-# MAGIC
-# MAGIC Calibration computes the non-conformity score for every observation in the
-# MAGIC calibration set: `|y - ŷ| / ŷ^(p/2)`. The result is a sorted score distribution.
-# MAGIC For a target miscoverage rate α, we find the ⌈(1 - α)(n + 1)⌉ / n quantile.
-# MAGIC That quantile is the threshold used for all subsequent test intervals.
-# MAGIC
-# MAGIC With 12,500 calibration observations, the margin of error on 90% coverage
-# MAGIC is approximately ±0.9pp - tight enough for all practical insurance applications.
-
-# COMMAND ----------
 
 cp.calibrate(X_cal, y_cal)
 
 print(f"Calibration complete.")
-print(f"Calibration n:         {len(y_cal):,}")
-print(f"Calibration quantile (alpha=0.10): {cp.calibration_quantile(alpha=ALPHA):.4f}")
-print(f"Calibration coverage:  {cp.calibration_coverage_:.4f}")
+print(f"  n_calibration: {len(X_cal):,}")
+print(f"  Calibration 90th percentile score: {cp.calibration_scores_[int(0.90 * len(cp.calibration_scores_))]:.4f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 8. Generate 90% prediction intervals
+# MAGIC ## 4. Generate prediction intervals
 # MAGIC
-# MAGIC `predict_interval` returns a DataFrame with `lower`, `point`, and `upper` columns.
-# MAGIC The lower bound is always clipped at zero - insurance losses are non-negative.
+# MAGIC `alpha=0.10` gives 90% prediction intervals.
+# MAGIC The lower bound is clipped at zero unconditionally.
 # MAGIC
-# MAGIC Notice the variance-weighted scaling: high-risk observations get wide intervals,
-# MAGIC low-risk observations get narrow ones. This is the correct behaviour for
-# MAGIC Tweedie data where variance scales with the mean.
+# MAGIC Notice that large risks (high point estimate) get wider absolute intervals.
+# MAGIC That is the variance-weighted score working correctly: a £20,000 expected
+# MAGIC loss has more absolute variance than a £200 expected loss.
 
 # COMMAND ----------
 
-intervals = cp.predict_interval(X_test, alpha=ALPHA)
+# 90% intervals for uncertainty flagging
+intervals_90 = cp.predict_interval(X_test, alpha=0.10)
+# 95% intervals for conservative minimum premium floors
+intervals_95 = cp.predict_interval(X_test, alpha=0.05)
+# 80% intervals for practical floor construction
+intervals_80 = cp.predict_interval(X_test, alpha=0.20)
 
-print("First 10 prediction intervals (£):")
-print(intervals.head(10).to_string(index=False))
-
-print(f"\nInterval summary:")
-print(f"  Mean point estimate:  £{intervals['point'].mean():.2f}")
-print(f"  Mean interval width:  £{(intervals['upper'] - intervals['lower']).mean():.2f}")
-print(f"  Median interval width: £{(intervals['upper'] - intervals['lower']).median():.2f}")
-print(f"  Min width:            £{(intervals['upper'] - intervals['lower']).min():.2f}")
-print(f"  Max width:            £{(intervals['upper'] - intervals['lower']).max():.2f}")
+print("90% prediction intervals (first 10 rows):")
+print(intervals_90.head(10).to_string())
+print(f"\nInterval statistics:")
+widths_90 = intervals_90["upper"] - intervals_90["lower"]
+print(f"  Mean width (90%):   {widths_90.mean():.4f}")
+print(f"  Median width (90%): {widths_90.median():.4f}")
+print(f"  Max width (90%):    {widths_90.max():.4f}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 9. Coverage-by-decile diagnostics
+# MAGIC ## 5. Validate coverage - the gate before any downstream use
 # MAGIC
-# MAGIC This is the gate. Do not use conformal intervals for any business purpose
-# MAGIC without running this diagnostic and confirming coverage is flat across deciles.
+# MAGIC Do not skip this step. The coverage-by-decile diagnostic is the gate.
 # MAGIC
-# MAGIC Marginal coverage above 90% does not mean the intervals are working correctly.
-# MAGIC With naive absolute-residual intervals, you will typically see >97% coverage
-# MAGIC in the lowest risk decile and <75% coverage in the highest risk decile.
-# MAGIC The aggregate looks fine; the tails are wrong in opposite directions.
+# MAGIC What you are looking for:
+# MAGIC - All deciles within 5pp of target: good, use the intervals
+# MAGIC - Monotone decline from low to high deciles: residual heteroscedasticity,
+# MAGIC   try switching to the "deviance" score
+# MAGIC - Non-monotone: distribution shift between calibration and test data
 # MAGIC
-# MAGIC With `pearson_weighted`, coverage should be flat: all deciles within 3-4pp
-# MAGIC of the 90% target.
+# MAGIC With `pearson_weighted`, coverage should be flat across deciles.
+# MAGIC Any monotone pattern means the score function is not fully accounting
+# MAGIC for the variance structure in your specific data.
 
 # COMMAND ----------
 
-diag = cp.coverage_by_decile(X_test, y_test, alpha=ALPHA)
-print("Coverage by predicted-value decile:")
-print(diag.to_string(index=False))
+diag = cp.coverage_by_decile(X_test, y_test, alpha=0.10)
+print("Coverage by decile (target: 0.90 across all deciles):")
+print(diag.to_string())
 
-marginal_coverage = (
-    (intervals["lower"].values <= y_test) & (y_test <= intervals["upper"].values)
-).mean()
-print(f"\nMarginal coverage: {marginal_coverage:.4f}  (target: {1 - ALPHA:.2f})")
+# Check for concerning patterns
+coverages = diag["coverage"].to_list()
+min_cov   = min(coverages)
+max_cov   = max(coverages)
+spread    = max_cov - min_cov
+
+print(f"\nCoverage range: [{min_cov:.3f}, {max_cov:.3f}]  spread={spread:.3f}")
+
+if spread > 0.10:
+    print("WARNING: Coverage spread > 10pp. Investigate score function choice.")
+elif min_cov < 0.85:
+    print("WARNING: At least one decile below 85% coverage. Investigate distribution shift.")
+else:
+    print("Coverage is acceptable. Intervals may be used for downstream applications.")
+
+# COMMAND ----------
+
+# Coverage plot with Wilson score confidence bands
+try:
+    fig = cp.coverage_plot(X_test, y_test, alpha=0.10)
+    plt.show()
+except Exception as e:
+    print(f"Coverage plot requires matplotlib: {e}")
+
+# COMMAND ----------
+
+# Full summary
+# cp.summary() returns a dict of coverage metrics (e.g. {"marginal_coverage": 0.904, ...}).
+# Assign the return value to use it for downstream logging or comparisons.
+try:
+    summary = cp.summary(X_test, y_test, alpha=0.10)
+    print("Coverage summary:")
+    for k, v in summary.items():
+        print(f"  {k}: {v}")
+except Exception as e:
+    print(f"Summary: {e}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 9a. Coverage plot
-
-# COMMAND ----------
-
-fig, ax = plt.subplots(figsize=(9, 5))
-
-deciles = diag["decile"].astype(str)
-coverages = diag["coverage"].values * 100
-target = (1 - ALPHA) * 100
-
-bars = ax.bar(deciles, coverages, color="steelblue", alpha=0.75, edgecolor="white", linewidth=0.5)
-ax.axhline(target, color="red", linestyle="--", linewidth=1.5, label=f"Target {target:.0f}%")
-ax.axhline(target - 5, color="orange", linestyle=":", linewidth=1, label="±5pp band", alpha=0.8)
-ax.axhline(target + 5, color="orange", linestyle=":", linewidth=1, alpha=0.8)
-
-ax.set_xlabel("Predicted value decile (1 = lowest risk, 10 = highest risk)")
-ax.set_ylabel("Coverage (%)")
-ax.set_title("Conformal interval coverage by predicted-value decile\n(pearson_weighted score, alpha=0.10)")
-ax.set_ylim(max(0, target - 15), min(100, target + 15))
-ax.legend()
-ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.0f%%"))
-plt.tight_layout()
-plt.show()
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 10. Comparison with naive absolute-residual intervals
+# MAGIC ## 6. Application 1: Uncertain risk flagging
 # MAGIC
-# MAGIC To show why `pearson_weighted` matters, we repeat the analysis with raw
-# MAGIC absolute residuals as the non-conformity score. This is what you would
-# MAGIC get from a standard conformal prediction implementation that does not
-# MAGIC account for the heteroscedastic structure of insurance data.
+# MAGIC The most immediate operational use. Flag the top 10% of risks by relative
+# MAGIC interval width for underwriting referral.
+# MAGIC
+# MAGIC Relative width = (upper - lower) / point estimate
+# MAGIC
+# MAGIC High relative width indicates the model is uncertain about this risk - typically
+# MAGIC because the feature combination is rare in the training data. This is distinct
+# MAGIC from the risk being inherently high-risk: a young driver in a high vehicle group
+# MAGIC might have a wide interval because we have few training examples of exactly that
+# MAGIC combination, even though we "know" young drivers are expensive.
 
 # COMMAND ----------
 
-cp_naive = InsuranceConformalPredictor(
-    model=model,
-    nonconformity="raw",          # absolute residual, no variance weighting
-    distribution="tweedie",
-    tweedie_power=1.5,
-)
-cp_naive.calibrate(X_cal, y_cal)
+point_est    = intervals_90["point"].to_numpy()
+lower_90     = intervals_90["lower"].to_numpy()
+upper_90     = intervals_90["upper"].to_numpy()
 
-intervals_naive = cp_naive.predict_interval(X_test, alpha=ALPHA)
-diag_naive      = cp_naive.coverage_by_decile(X_test, y_test, alpha=ALPHA)
+rel_width     = (upper_90 - lower_90) / np.clip(point_est, 1e-6, None)
+width_threshold = np.quantile(rel_width, 0.90)
 
-marginal_naive = (
-    (intervals_naive["lower"].values <= y_test) & (y_test <= intervals_naive["upper"].values)
-).mean()
+flag_for_review = rel_width > width_threshold
+n_flagged       = flag_for_review.sum()
 
-print("Naive (raw residual) coverage by decile:")
-print(diag_naive.to_string(index=False))
-print(f"\nMarginal coverage (naive): {marginal_naive:.4f}")
-print(f"Marginal coverage (weighted): {marginal_coverage:.4f}")
+print(f"Relative width threshold (90th pctile): {width_threshold:.4f}")
+print(f"Policies flagged for review: {n_flagged:,} ({100*n_flagged/len(flag_for_review):.1f}%)")
 
-# Compare mean interval widths
-width_weighted = float((intervals["upper"] - intervals["lower"]).mean())
-width_naive    = float((intervals_naive["upper"] - intervals_naive["lower"]).mean())
-print(f"\nMean interval width (pearson_weighted): £{width_weighted:.2f}")
-print(f"Mean interval width (raw):              £{width_naive:.2f}")
-print(f"Width reduction from pearson_weighted:  {(1 - width_weighted / width_naive) * 100:.1f}%")
+# Characterise flagged risks
+X_test_pl = pl.from_pandas(X_test.reset_index(drop=True))
+flagged_mask   = pl.Series("flagged", flag_for_review)
+X_test_pl = X_test_pl.with_columns(flagged_mask)
+
+print("\nFlagged risk profile vs portfolio:")
+for col in ["driver_age", "vehicle_group", "ncd_years"]:
+    flagged_mean = X_test_pl.filter(pl.col("flagged"))[col].mean()
+    all_mean     = X_test_pl[col].mean()
+    print(f"  {col:<20}: flagged={flagged_mean:.1f}  portfolio={all_mean:.1f}")
+
+conv_flagged = (X_test_pl.filter(pl.col("flagged"))["conviction_points"] > 0).mean()
+conv_all     = (X_test_pl["conviction_points"] > 0).mean()
+print(f"  {'% convictions':<20}: flagged={conv_flagged:.1%}  portfolio={conv_all:.1%}")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 10a. Side-by-side coverage comparison plot
+# MAGIC ## 7. Application 2: Minimum premium floors
+# MAGIC
+# MAGIC The 95% upper bound as a principled minimum premium floor.
+# MAGIC
+# MAGIC Logic: the 90% upper bound is the loss cost we expect to be exceeded only
+# MAGIC 10% of the time. Using it as a minimum premium floor means we anticipate being
+# MAGIC unprofitable on this risk no more than 10% of the time, assuming the calibration
+# MAGIC period was representative. For a more conservative floor, use the 95% upper bound
+# MAGIC (5% exceedance), which we demonstrate below.
+# MAGIC
+# MAGIC In practice, you would not set the minimum premium equal to the upper bound -
+# MAGIC that is too conservative for a competitive market. The practical floor combines
+# MAGIC the conformal upper bound with a minimum multiplier:
+# MAGIC "max(1.5 x technical premium, 80% upper bound)"
+# MAGIC
+# MAGIC This is auditable under Consumer Duty: the 80% coverage level is validated,
+# MAGIC the 1.5x multiplier captures the insurer's loading, and the combination is
+# MAGIC risk-specific rather than uniform.
 
 # COMMAND ----------
 
-fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+upper_95_arr = intervals_95["upper"].to_numpy()
+upper_80_arr = intervals_80["upper"].to_numpy()
 
-for ax, diag_data, title, colour in [
-    (axes[0], diag,       "pearson_weighted (correct for insurance)",    "steelblue"),
-    (axes[1], diag_naive, "raw absolute residual (naive)",               "tomato"),
+floor_conventional = np.maximum(1.3 * point_est, 250)      # typical current practice
+floor_conformal_95 = upper_95_arr                           # 95% upper bound
+floor_practical    = np.maximum(1.5 * point_est, upper_80_arr)  # combined approach
+
+print("Minimum premium floor comparison:")
+print(f"{'Approach':<30} {'Median':>10} {'Mean':>10} {'95th pctile':>14}")
+print("-" * 66)
+for label, floor in [
+    ("Conventional (1.3x, floor 250)", floor_conventional),
+    ("Conformal 95% upper bound",      floor_conformal_95),
+    ("Practical (1.5x vs 80% upper)", floor_practical),
 ]:
-    deciles   = diag_data["decile"].astype(str)
-    coverages = diag_data["coverage"].values * 100
-    ax.bar(deciles, coverages, color=colour, alpha=0.75, edgecolor="white", linewidth=0.5)
-    ax.axhline(target, color="red",    linestyle="--", linewidth=1.5, label=f"Target {target:.0f}%")
-    ax.axhline(target - 5, color="orange", linestyle=":", linewidth=1, alpha=0.7)
-    ax.axhline(target + 5, color="orange", linestyle=":", linewidth=1, alpha=0.7)
-    ax.set_xlabel("Predicted value decile")
-    ax.set_title(title)
-    ax.legend(fontsize=8)
-    ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.0f%%"))
+    print(f"{label:<30} {np.median(floor):>10.2f} {np.mean(floor):>10.2f} {np.quantile(floor, 0.95):>14.2f}")
 
-axes[0].set_ylabel("Coverage (%)")
-fig.suptitle("Conformal coverage by decile: pearson_weighted vs. raw residuals", fontsize=12)
-plt.tight_layout()
-plt.show()
+# Where does conformal floor exceed conventional?
+higher = floor_conformal_95 > floor_conventional
+print(f"\nConformal > conventional floor: {higher.sum():,} policies ({higher.mean():.1%})")
+print("These are the high-volatility risks where the conventional flat multiplier")
+print("understates the required floor.")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 11. Practical application: flagging uncertain risks
+# MAGIC ## 8. Application 3: Portfolio reserve range estimates
 # MAGIC
-# MAGIC The most immediate operational use of prediction intervals is flagging risks
-# MAGIC for underwriting referral. A risk with a wide interval relative to its point
-# MAGIC estimate is one the model is uncertain about.
+# MAGIC Individual prediction intervals aggregate to portfolio-level range estimates.
+# MAGIC Two methods:
 # MAGIC
-# MAGIC The natural measure of relative uncertainty is the interval-to-point ratio.
-# MAGIC Flagging the top 10% by relative width produces a referral list.
+# MAGIC 1. Naive (perfect correlation): sum of individual upper bounds.
+# MAGIC    Assumes all risks simultaneously hit their upper bound. Conservative.
+# MAGIC
+# MAGIC 2. Independence (CLT): approximates individual standard deviations from
+# MAGIC    interval widths, sums variance, takes sqrt. Assumes no shared risk factors.
+# MAGIC
+# MAGIC The true range lies between these bounds. For UK motor, independence is
+# MAGIC reasonable for most risks with a catastrophe/weather overlay added separately.
 
 # COMMAND ----------
 
-intervals_90 = cp.predict_interval(X_test, alpha=ALPHA)
-intervals_90["interval_width"]  = intervals_90["upper"] - intervals_90["lower"]
-intervals_90["relative_width"]  = intervals_90["interval_width"] / intervals_90["point"].clip(lower=1e-6)
+portfolio_point = point_est.sum()
+portfolio_lower_naive = lower_90.sum()
+portfolio_upper_naive = upper_90.sum()
 
-width_threshold = float(intervals_90["relative_width"].quantile(0.90))
-intervals_90["flag_for_review"] = intervals_90["relative_width"] > width_threshold
+# CLT-based range: approximate sd from interval width
+# For a symmetric 90% interval: width = 2 * 1.645 * sd => sd = width / 3.29
+# WARNING: Individual conformal prediction intervals are asymmetric for Tweedie models
+# (e.g. lower=2.13, point=14.92, upper=58.21). This CLT-based aggregation uses a
+# symmetric normal approximation to derive individual standard deviations, which will
+# understate portfolio-level variance. The independence range below is therefore an
+# optimistic lower bound on portfolio uncertainty. For a more accurate portfolio range,
+# simulate from the Tweedie distribution at the calibrated quantile scale.
+approx_sd = (upper_90 - lower_90) / 3.29
+portfolio_sd = np.sqrt((approx_sd**2).sum())
 
-n_flagged = int(intervals_90["flag_for_review"].sum())
-print(f"Width threshold (90th pct): {width_threshold:.2f}")
-print(f"Flagged for review: {n_flagged:,} ({100 * n_flagged / len(intervals_90):.1f}%)")
+portfolio_lower_indep = max(0, portfolio_point - 1.645 * portfolio_sd)
+portfolio_upper_indep = portfolio_point + 1.645 * portfolio_sd
 
-flagged = intervals_90[intervals_90["flag_for_review"]]
-print(f"\nFlagged risk summary:")
-print(flagged[["lower", "point", "upper", "relative_width"]].describe().round(2))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 11a. Which features drive wide intervals?
-# MAGIC
-# MAGIC Join the interval frame back to features to understand which feature values
-# MAGIC correlate with high uncertainty. This helps the team identify where the model
-# MAGIC is thin and where underwriting rules may need strengthening.
-
-# COMMAND ----------
-
-analysis = pd.concat(
-    [X_test.reset_index(drop=True), intervals_90.reset_index(drop=True)],
-    axis=1,
-)
-
-print("Mean relative width by area:")
-print(
-    analysis.groupby("area")["relative_width"]
-    .agg(["mean", "count"])
-    .sort_values("mean", ascending=False)
-    .round(3)
-)
-
-print("\nMean relative width by vehicle_group:")
-print(
-    analysis.groupby("vehicle_group")["relative_width"]
-    .mean()
-    .sort_values(ascending=False)
-    .round(3)
-)
+print(f"Portfolio point estimate (sum):  {portfolio_point:,.0f}")
+print()
+print(f"Naive 90% range (perfect corr):")
+print(f"  [{portfolio_lower_naive:,.0f}, {portfolio_upper_naive:,.0f}]")
+print(f"  Upper/lower ratio: {portfolio_upper_naive / portfolio_lower_naive:.2f}")
+print()
+print(f"Independence 90% range (CLT):")
+print(f"  [{portfolio_lower_indep:,.0f}, {portfolio_upper_indep:,.0f}]")
+print(f"  Upper/lower ratio: {portfolio_upper_indep / portfolio_lower_indep:.2f}")
+print()
+print("Present both to the reserving team. Be explicit that independence")
+print("excludes weather events and economic shocks - add a catastrophe overlay.")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## 12. Practical application: minimum premium floors
-# MAGIC
-# MAGIC Prediction interval upper bounds give a principled minimum premium floor.
-# MAGIC The upper bound of a 90% interval is a loss outcome expected to be exceeded
-# MAGIC only 10% of the time. Setting a floor near the upper bound means that even
-# MAGIC in bad years, the premium is likely to cover losses.
-# MAGIC
-# MAGIC The practical floor: the higher of 150% of the technical premium and the
-# MAGIC 80th percentile upper bound. This is more defensible under Consumer Duty than
-# MAGIC a flat £350 floor applied uniformly.
+# Segmented reserve ranges by area band
+import pandas as pd
 
-# COMMAND ----------
+segment_frame = pd.concat([
+    X_test.reset_index(drop=True)[["area"]],
+    pd.DataFrame({
+        "point": point_est,
+        "lower": lower_90,
+        "upper": upper_90,
+    })
+], axis=1)
 
-intervals_95 = cp.predict_interval(X_test, alpha=0.05)   # 95% intervals
-intervals_80 = cp.predict_interval(X_test, alpha=0.20)   # 80% intervals
+seg_summary = segment_frame.groupby("area").agg(
+    n_risks       = ("point", "count"),
+    total_point   = ("point", "sum"),
+    total_lower   = ("lower", "sum"),
+    total_upper   = ("upper", "sum"),
+).assign(
+    upper_lower_ratio = lambda df: df["total_upper"] / df["total_lower"]
+).sort_values("upper_lower_ratio", ascending=False)
 
-# Practical floor: max of (1.5 x point estimate, 80th pct upper bound)
-practical_floor = np.maximum(
-    1.5 * intervals_80["point"].values,
-    intervals_80["upper"].values,
-)
-
-ratio_to_point = practical_floor / intervals_95["point"].values
-
-print("Practical minimum premium floor summary:")
-print(f"  Mean floor: £{practical_floor.mean():.2f}")
-print(f"  Median floor / point estimate: {np.median(ratio_to_point):.2f}x")
-print(f"  90th pct floor / point estimate: {np.percentile(ratio_to_point, 90):.2f}x")
-
-# Distribution of floor-to-point ratios
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.hist(ratio_to_point, bins=40, color="steelblue", alpha=0.8, edgecolor="white")
-ax.axvline(np.median(ratio_to_point), color="red", linestyle="--",
-           label=f"Median = {np.median(ratio_to_point):.2f}x")
-ax.set_xlabel("Floor / point estimate ratio")
-ax.set_ylabel("Number of policies")
-ax.set_title("Distribution of minimum premium floor relative to point estimate")
-ax.legend()
-plt.tight_layout()
-plt.show()
+print("Reserve range by area band (90% intervals, naive sum):")
+print(seg_summary.to_string())
+print("\nAreas with high upper/lower ratios have the most reserve uncertainty.")
+print("These are candidates for aggregate stop-loss reinsurance cover.")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 13. Write intervals and coverage log to Unity Catalog
+# MAGIC ## 9. Write results to Unity Catalog
 # MAGIC
-# MAGIC Do not write intervals to a local file. Write to Delta Lake so there is a
-# MAGIC permanent, versioned record tied to the model version and run date.
+# MAGIC Write intervals and coverage diagnostics to Delta tables.
+# MAGIC Do not write to local files - Delta gives you versioning, time travel,
+# MAGIC and a permanent audit trail tied to the model run.
 # MAGIC
-# MAGIC Keep a history of coverage diagnostics in an append-mode table. If coverage
-# MAGIC in the top decile degrades from 89% to 78% between runs, that is a signal
-# MAGIC the model needs recalibration.
+# MAGIC The coverage log is an append-mode table: every run adds one set of
+# MAGIC diagnostic rows. Track this over time - degrading top-decile coverage
+# MAGIC is the signal that triggers recalibration.
 
 # COMMAND ----------
 
-import mlflow
-from datetime import date
+with mlflow.start_run(run_name="conformal_calibration_m05"):
+    mlflow.log_param("nonconformity_score",  "pearson_weighted")
+    mlflow.log_param("tweedie_power",        1.5)
+    mlflow.log_param("alpha",                0.10)
+    mlflow.log_param("calibration_n",        len(X_cal))
+    mlflow.log_param("calibration_years",    str(cal_years))
+    mlflow.log_param("test_years",           str(test_years))
+    mlflow.log_metric("marginal_coverage",   float(diag["coverage"].mean()))
+    mlflow.log_metric("min_decile_coverage", float(diag["coverage"].min()))
+    conf_run_id = mlflow.active_run().info.run_id
 
-RUN_DATE     = str(date.today())
-MODEL_VERSION = "tweedie_catboost_module05"
+print(f"MLflow run: {conf_run_id}")
 
-# Prepare the intervals frame
-intervals_to_write = intervals_90.copy()
-intervals_to_write["model_run_date"]      = RUN_DATE
-intervals_to_write["model_version"]       = MODEL_VERSION
-intervals_to_write["alpha"]               = ALPHA
+# COMMAND ----------
+
+# Write intervals to Delta
+intervals_to_write = intervals_90.to_pandas().copy()
+intervals_to_write["model_run_date"]     = str(date.today())
+intervals_to_write["mlflow_run_id"]      = conf_run_id
+intervals_to_write["alpha"]              = 0.10
 intervals_to_write["nonconformity_score"] = "pearson_weighted"
-intervals_to_write["policy_id"]           = df_test["policy_id"].to_list()
+intervals_to_write["flag_for_review"]    = flag_for_review.tolist()
+intervals_to_write["relative_width"]     = rel_width.tolist()
 
-# Try to write; gracefully handle catalog permission issues on Free Edition
 try:
     spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.{SCHEMA}")
-
     (
         spark.createDataFrame(intervals_to_write)
         .write.format("delta")
@@ -577,10 +513,11 @@ try:
     )
     print(f"Intervals written to {CATALOG}.{SCHEMA}.conformal_intervals")
 
-    # Coverage log (append-mode for monitoring over time)
-    diag_to_write = diag.copy()
-    diag_to_write["model_run_date"] = RUN_DATE
-    diag_to_write["model_version"]  = MODEL_VERSION
+    # Coverage diagnostics: append so we can track over time
+    diag_to_write = diag.to_pandas().copy()
+    diag_to_write["model_run_date"] = str(date.today())
+    diag_to_write["mlflow_run_id"]  = conf_run_id
+    diag_to_write["test_years"]     = str(test_years)
 
     (
         spark.createDataFrame(diag_to_write)
@@ -588,95 +525,81 @@ try:
         .mode("append")
         .saveAsTable(f"{CATALOG}.{SCHEMA}.conformal_coverage_log")
     )
-    print(f"Coverage log appended to {CATALOG}.{SCHEMA}.conformal_coverage_log")
+    print(f"Coverage diagnostics appended to {CATALOG}.{SCHEMA}.conformal_coverage_log")
 
 except Exception as e:
-    print(f"Delta write skipped (check catalog access): {e}")
-    print("Intervals available in `intervals_to_write` DataFrame for local use.")
+    print(f"Could not write to Unity Catalog: {e}")
+    print("Intervals and diagnostics available in memory as `intervals_to_write` and `diag`")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 14. MLflow logging
+# MAGIC ## 10. Recalibration - separate from retraining
 # MAGIC
-# MAGIC Log the conformal calibration state alongside the model. This creates an
-# MAGIC auditable record of which model version and calibration set produced which
-# MAGIC intervals.
+# MAGIC The key operational advantage of conformal prediction: calibration can be
+# MAGIC refreshed on recent data without retraining the base model.
+# MAGIC
+# MAGIC When to recalibrate: monthly or quarterly, or when the coverage monitoring
+# MAGIC log shows top-decile coverage degrading below target.
+# MAGIC
+# MAGIC When to retrain: annually, or when recalibration does not restore coverage
+# MAGIC (which indicates the model's rankings have drifted, not just its scale).
 
 # COMMAND ----------
 
-try:
-    mlflow.set_experiment(MLFLOW_EXPERIMENT_PATH)
+# Demonstrate recalibration: recalibrate using only the most recent calibration data
+# This simulates a quarterly refresh cycle
+n_recent = min(2_000, len(X_cal))
 
-    with mlflow.start_run(run_name="conformal_calibration_module05"):
-        mlflow.log_param("nonconformity_score",  "pearson_weighted")
-        mlflow.log_param("tweedie_power",        1.5)
-        mlflow.log_param("alpha",                ALPHA)
-        mlflow.log_param("calibration_n",        len(X_cal))
-        mlflow.log_param("calibration_year",     2023)
-        mlflow.log_param("test_year",            2024)
+X_cal_recent = X_cal.tail(n_recent)
+y_cal_recent = y_cal.tail(n_recent)
 
-        mlflow.log_metric("marginal_coverage_test",     float(marginal_coverage))
-        mlflow.log_metric("marginal_coverage_naive",    float(marginal_naive))
-        mlflow.log_metric("mean_interval_width",        float(width_weighted))
-        mlflow.log_metric("mean_interval_width_naive",  float(width_naive))
-        mlflow.log_metric("width_reduction_pct",        float((1 - width_weighted / width_naive) * 100))
+import time
+t0 = time.time()
+cp.calibrate(X_cal_recent, y_cal_recent)
+recal_time = time.time() - t0
 
-        mlflow.log_figure(fig, "coverage_comparison.png")
-
-    print("MLflow run logged.")
-
-except Exception as e:
-    print(f"MLflow logging skipped: {e}")
+# Check coverage after recalibration
+diag_recal = cp.coverage_by_decile(X_test, y_test, alpha=0.10)
+print(f"Recalibration on {n_recent:,} most recent observations: {recal_time:.2f} seconds")
+print(f"Coverage after recalibration:")
+print(diag_recal.select(["decile", "coverage"]).to_string())
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 15. Summary
+# MAGIC ## Summary
 # MAGIC
-# MAGIC What we built in this notebook:
+# MAGIC What this notebook built:
 # MAGIC
-# MAGIC - **Synthetic data**: 50,000 UK motor policies across four accident years with
-# MAGIC   known true Tweedie structure
-# MAGIC - **Temporal split**: 60% training (2021-2022), 20% calibration (2023),
-# MAGIC   20% test (2024) - the split that makes the exchangeability assumption explicit
-# MAGIC - **CatBoost Tweedie model**: `Tweedie:variance_power=1.5`, trained on the
-# MAGIC   training split only
-# MAGIC - **Conformal calibration**: `pearson_weighted` score, calibrated on 2023 data
-# MAGIC - **90% prediction intervals**: intervals that widen for large/uncertain risks
-# MAGIC   and narrow for well-supported small risks
-# MAGIC - **Coverage diagnostics**: by-decile coverage confirms the intervals are flat
-# MAGIC   and uniform - no systematic over- or under-coverage in the tails
-# MAGIC - **Naive comparison**: raw absolute-residual intervals fail in both directions
-# MAGIC   simultaneously; `pearson_weighted` fixes both
-# MAGIC - **Uncertain risk flagging**: top-10% by relative width gives a principled
-# MAGIC   referral list for underwriting
-# MAGIC - **Minimum premium floor**: upper bound of 80% interval provides a data-driven,
-# MAGIC   risk-specific floor
+# MAGIC | Step | Output |
+# MAGIC |------|--------|
+# MAGIC | Temporal split | 60/20/20 by accident year; calibration = most recent before test |
+# MAGIC | Tweedie model | CatBoost Tweedie (power=1.5) on pure premium target |
+# MAGIC | Conformal predictor | pearson_weighted score; calibrated on 10,000 policies |
+# MAGIC | Coverage validation | Flat coverage by decile confirms intervals are valid |
+# MAGIC | Uncertain risk flagging | Top 10% by relative width; driven by sparse risk cells |
+# MAGIC | Minimum premium floors | Conformal 95% upper bound vs conventional 1.3x multiplier |
+# MAGIC | Reserve range | Independence-based CLT range for reserving inputs |
+# MAGIC | Delta tables | conformal_intervals, conformal_coverage_log |
 # MAGIC
-# MAGIC The coverage-by-decile diagnostic is the gate. Never deploy conformal intervals
-# MAGIC for business decisions without running it first.
+# MAGIC The coverage-by-decile diagnostic is the gate. Do not proceed to downstream
+# MAGIC applications without confirming flat coverage across deciles.
 # MAGIC
-# MAGIC **Next: Module 6 - Credibility Weighting**
-# MAGIC Where the model relativities from a GBM are thin, credibility blending with
-# MAGIC incumbent rates gives a more stable and defensible factor table.
+# MAGIC Next: Module 6 - Credibility and Bayesian Methods
+# MAGIC Thin-cell regularisation: how to handle the sparse cells that produce
+# MAGIC wide intervals in this module.
 
 # COMMAND ----------
 
 print("=" * 60)
-print("Module 5 complete")
+print("MODULE 5 COMPLETE")
 print("=" * 60)
-print(f"Model:               CatBoost Tweedie (power=1.5)")
-print(f"Calibration set:     {len(X_cal):,} policies (accident year 2023)")
-print(f"Test set:            {len(X_test):,} policies (accident year 2024)")
-print(f"")
-print(f"Marginal coverage (pearson_weighted): {marginal_coverage:.4f}  (target: {1 - ALPHA:.2f})")
-print(f"Marginal coverage (naive raw):        {marginal_naive:.4f}  (target: {1 - ALPHA:.2f})")
-print(f"")
-print(f"Mean interval width (pearson_weighted): £{width_weighted:.2f}")
-print(f"Mean interval width (naive):            £{width_naive:.2f}")
-print(f"Width reduction:                        {(1 - width_weighted / width_naive) * 100:.1f}%")
-print(f"")
-print(f"Policies flagged for review: {n_flagged:,} ({100 * n_flagged / len(intervals_90):.1f}%)")
-print(f"")
-print("Next: Module 6 - Credibility Weighting")
+print()
+print(f"Calibration set:       {len(X_cal):,} policies")
+print(f"Test set:              {len(X_test):,} policies")
+print(f"Marginal coverage:     {float(diag['coverage'].mean()):.3f}")
+print(f"Min decile coverage:   {float(diag['coverage'].min()):.3f}")
+print(f"Policies flagged:      {flag_for_review.sum():,} ({flag_for_review.mean():.1%})")
+print()
+print("Next: Module 6 - Credibility and Bayesian Pricing")

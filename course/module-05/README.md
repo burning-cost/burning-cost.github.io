@@ -6,28 +6,27 @@
 
 ## What this module covers
 
-Your Tweedie GBM gives point estimates. A point estimate tells you the model's expected loss cost. It tells you nothing about how certain the model is in that figure - and certainty varies enormously across a portfolio.
+The technical premium your model produces is a point estimate. It tells you the expected loss, but nothing about the uncertainty around that expectation. For a well-understood risk on a large book, the uncertainty is small and the point estimate is nearly sufficient. For a young driver in an unusual vehicle group with conviction points - a thin cell in the training data - the uncertainty is substantial, and using the point estimate alone as if it were certain is a modelling error with real consequences: underpriced floors, over-confident reserve estimates, and no principled basis for referring uncertain risks to human underwriters.
 
-A straightforward domestic combined risk sitting in a dense area of the feature space, with thousands of similar risks behind it, is not the same as an unusual commercial property in a thin cell. Both get a number from the model. Without uncertainty quantification, you cannot tell them apart at the underwriting stage.
+Conformal prediction intervals give you a lower and upper bound around the point estimate with a guaranteed coverage property. If you request 90% intervals, at least 90% of future observations will fall inside the interval. The guarantee is distribution-free in that it makes no parametric assumptions about the data - but it does require exchangeability and a well-calibrated conformity score, as the coverage-by-decile diagnostic in this module makes clear. In insurance terms: calibrate on recent business, test on more recent business, and validate that coverage is flat across risk deciles before using the intervals for any downstream purpose.
 
-This module covers conformal prediction as a practical solution to that problem. Conformal prediction produces intervals with a finite-sample coverage guarantee that does not depend on distributional assumptions. We implement it using the `insurance-conformal` library, which extends the standard approach with variance-weighted non-conformity scores adapted for the heteroscedastic structure of insurance data - approximately 30% narrower intervals than the naive approach, with identical coverage guarantees.
-
-The theory is from Manna et al. (2025), arXiv:2507.06921.
+This module covers the complete conformal prediction workflow for UK motor pricing using the `insurance-conformal` library. We train a CatBoost Tweedie pure premium model, calibrate `InsuranceConformalPredictor` with the variance-weighted non-conformity score that produces correct coverage across all risk deciles, validate coverage using `CoverageDiagnostics`, and build three practical applications: flagging model-uncertain risks for underwriting referral, constructing risk-specific minimum premium floors that are defensible under Consumer Duty, and producing portfolio-level reserve range estimates that the reserving team can use. Results are written to versioned Delta tables in Unity Catalog with MLflow logging throughout.
 
 ---
 
 ## Prerequisites
 
-- Completed Modules 1-4, or equivalent experience with CatBoost frequency-severity models and Python data pipelines
-- Know what a prediction interval is and how it differs from a confidence interval for the mean
-- Basic familiarity with Polars and CatBoost Pool syntax
-- Databricks access (Free Edition is sufficient for the exercises)
+- Modules 1 and 2 completed: `pricing.motor.claims_exposure` exists in Unity Catalog and you understand Poisson and Gamma GLMs
+- Module 3 completed or understood: you know what a CatBoost Tweedie model is and how to train one
+- Basic Python and statistics: you know what a confidence interval is and why coverage matters
+
+You do not need prior conformal prediction experience. We introduce the theory and the `insurance-conformal` API from scratch.
 
 ---
 
 ## Estimated time
 
-4-5 hours for the tutorial plus exercises. Calibration is fast - the conformal wrapping adds seconds to any trained model. The coverage diagnostics section takes the most thought; budget time to understand what you are looking at before accepting the intervals as fit for purpose.
+4-5 hours for the tutorial plus exercises. The notebook runs end-to-end in 15-20 minutes on a 4-core cluster.
 
 ---
 
@@ -36,51 +35,28 @@ The theory is from Manna et al. (2025), arXiv:2507.06921.
 | File | Purpose |
 |------|---------|
 | `tutorial.md` | Main written tutorial - read this first |
-| `notebook.py` | Databricks notebook - full workflow on synthetic data |
+| `notebook.py` | Databricks notebook - full conformal prediction workflow on synthetic UK motor data |
 | `exercises.md` | Five hands-on exercises with full solutions |
-
----
-
-## Library
-
-```bash
-uv add "insurance-conformal[catboost]"
-
-# On Databricks:
-%pip install "insurance-conformal[catboost]" --quiet
-```
-
-Source: [github.com/burningcost/insurance-conformal](https://github.com/burningcost/insurance-conformal)
 
 ---
 
 ## What you will be able to do after this module
 
-- Explain what split conformal prediction guarantees and what it does not - specifically the difference between marginal coverage and conditional coverage
-- Understand why raw absolute residuals produce badly calibrated intervals for insurance data, and what the Pearson-weighted score fixes
-- Implement the full conformal workflow: temporal split, model training, `InsuranceConformalPredictor`, calibration, interval generation
-- Run and interpret `coverage_by_decile()` - the diagnostic that distinguishes genuinely calibrated intervals from ones with correct marginal coverage but poor conditional coverage
-- Use prediction intervals to flag uncertain risks for manual underwriting review
-- Set minimum premium floors based on the upper bound of the prediction interval
-- Construct reserve range estimates from portfolio-level interval aggregation
-- Know when conformal prediction breaks down: temporal drift, distribution shift, and the exchangeability assumption
+- Explain what a conformal prediction interval is, what the coverage guarantee means, and what assumptions it requires - including the specific exchangeability requirement for insurance data
+- Calibrate `InsuranceConformalPredictor` from the `insurance-conformal` library using the `pearson_weighted` non-conformity score, and explain why the raw residual score fails for insurance data
+- Validate intervals using `coverage_by_decile` and interpret the results: identify whether a monotone decline indicates residual heteroscedasticity or a distribution shift
+- Flag the top decile of risks by relative interval width for underwriting referral, and distinguish between predictive uncertainty (wide interval) and risk level (high point estimate) - they are not the same thing
+- Build risk-specific minimum premium floors from the conformal upper bound, compare them to conventional flat-multiplier floors, and articulate why the conformal approach is more consistent with FCA Consumer Duty's fair value requirement
+- Produce portfolio-level reserve range estimates using both the naive (perfect correlation) and independence (CLT) aggregation methods, and explain when each is appropriate
+- Write intervals and coverage diagnostics to Unity Catalog Delta tables with MLflow logging, and set up the coverage monitoring log that triggers recalibration
+- Recalibrate the predictor on recent data without retraining the base model, and understand when recalibration is sufficient versus when the base model itself needs retraining
 
 ---
 
-## The insurance-conformal library
+## Why this is worth your time
 
-The library wraps any sklearn-compatible model with split conformal prediction. The key extension is the variance-weighted non-conformity score:
+The reserving team wants a range, not a point. The underwriting director wants to know which risks to refer. The FCA wants evidence that minimum premiums are set on a principled basis. Point estimates alone cannot answer any of these questions.
 
-```
-score(y, ŷ) = |y - ŷ| / ŷ^(p/2)
-```
+The standard alternative is parametric uncertainty: assume the errors are normally distributed, compute a standard error, multiply by 1.96. This is wrong for insurance data in at least three ways: claim distributions are heavily right-skewed, model errors are heteroscedastic (larger for larger risks), and the normality assumption cannot be tested from the data you would use to compute the interval. Conformal prediction makes none of these parametric assumptions. The coverage guarantee requires no assumption about the shape of the loss distribution or the form of the model — provided calibration and test data are exchangeable and the non-conformity score is well-calibrated across risk levels, both of which this module validates explicitly.
 
-where p is the Tweedie variance power. Standard implementations use `|y - ŷ|`, which treats a £500 error on a £500 risk identically to a £500 error on a £50,000 risk. For Tweedie data with variance proportional to μ^p, this systematic error means intervals are too wide at the low end and too narrow where it matters - large risks.
-
-The library reads the Tweedie power from CatBoost's `loss_function` parameter automatically.
-
----
-
-## Part of the MVP bundle
-
-This module is included in the £295 MVP bundle alongside Modules 1, 2, 4, and 6. Individual module: £79.
+The practical advantage is that conformal calibration is fast and separable from model training. When claim frequencies drift 8% due to weather events or premium inflation, you recalibrate the predictor on recent business in a few seconds without retraining the model. That separation - calibrate often, retrain annually - is the right operational pattern. It is also the pattern that Consumer Duty's continuous monitoring requirement suggests: you need to be able to demonstrate that your intervals are achieving stated coverage on recent business, not just on the holdout set you reported at model deployment.
