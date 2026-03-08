@@ -17,7 +17,7 @@ Thirteen Python libraries covering the full pricing workflow.
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap.
 
-- [`shap-relativities`](https://github.com/burningcost/shap-relativities) - extract multiplicative rating factor tables from CatBoost models using SHAP values, in the same format as exp(beta) from a GLM
+- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - extract multiplicative rating factor tables from CatBoost models using SHAP values, in the same format as exp(beta) from a GLM
 
 **Validation**
 
@@ -34,7 +34,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 **Commercial**
 
-- [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) - constrained rate change optimisation; the efficient frontier between loss ratio target and movement cap constraints
+- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation; the efficient frontier between loss ratio target and movement cap constraints
 - [`insurance-demand`](https://github.com/burningcost/insurance-demand) - price elasticity and conversion modelling, integrated with rate optimisation
 
 **Compliance**
@@ -44,7 +44,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 **Infrastructure**
 
 - [`insurance-datasets`](https://github.com/burningcost/insurance-datasets) - synthetic personal lines datasets with realistic exposure, claim count, and development structure, for testing and teaching
-- [`burning-cost`](https://github.com/burningcost/burning-cost) - the Burning Cost CLI; orchestration for pricing model pipelines
+- [`burning-cost`](https://github.com/burning-cost/burning-cost) - the Burning Cost CLI; orchestration for pricing model pipelines
 
 ---
 
@@ -68,4 +68,4 @@ We also run a training course - [Modern Insurance Pricing with Python and Databr
 
 **Email:** [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com)
 
-**GitHub:** [github.com/burningcost](https://github.com/burningcost)
+**GitHub:** [github.com/burning-cost](https://github.com/burning-cost)

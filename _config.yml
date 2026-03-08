@@ -1,7 +1,7 @@
 title: "Burning Cost"
 description: "Open-source pricing tools for UK personal lines insurance teams. Python libraries covering the full pricing workflow: from walk-forward cross-validation to constrained rate optimisation."
 baseurl: ""
-url: "https://burningcost.github.io"
+url: "https://burning-cost.github.io"
 
 author:
   name: "Burning Cost"
@@ -37,7 +37,7 @@ kramdown:
 permalink: /:year/:month/:day/:title/
 
 github:
-  - repo: "https://github.com/burningcost/shap-relativities"
+  - repo: "https://github.com/burning-cost/shap-relativities"
 
 exclude:
   - Gemfile
