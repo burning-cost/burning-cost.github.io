@@ -239,7 +239,7 @@ Causal analysis becomes important when the question is about intervention - when
 uv add insurance-causal
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-causal).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-causal).
 
 Start with the confounding bias report. Run it on a factor you already have in your GLM and think you understand. If the DML estimate and the GLM coefficient are within 10% of each other, confounding is not a major problem for that factor - the GLM is doing a reasonable job. If they diverge materially, you have evidence that the factor's GLM coefficient is carrying confounding bias, and you should think carefully about how that affects the decisions it is used for.
 

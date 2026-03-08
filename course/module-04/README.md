@@ -65,7 +65,7 @@ This module uses `shap-relativities`, an open-source Python library for extracti
 uv add 'shap-relativities[catboost]==0.1.0'
 ```
 
-Source: https://github.com/burningcost/shap-relativities
+Source: https://github.com/burning-cost/shap-relativities
 
 The library outputs Polars DataFrames with columns: `feature`, `level`, `relativity`, `lower_ci`, `upper_ci`, `mean_shap`, `shap_std`, `n_obs`, `exposure_weight`.
 

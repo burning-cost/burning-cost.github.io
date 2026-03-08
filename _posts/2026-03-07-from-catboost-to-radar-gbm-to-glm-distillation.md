@@ -210,6 +210,6 @@ uv add "insurance-distill[catboost]"
 
 Python 3.10 or later. The library requires polars >= 0.20, numpy >= 1.24, scikit-learn >= 1.3, and glum >= 2.0.
 
-The source is at [github.com/burningcost/insurance-distill](https://github.com/burningcost/insurance-distill). The `README.md` has a worked example on synthetic motor data. Issues and pull requests welcome.
+The source is at [github.com/burning-cost/insurance-distill](https://github.com/burning-cost/insurance-distill). The `README.md` has a worked example on synthetic motor data. Issues and pull requests welcome.
 
 One thing the library does not do: it does not tell you whether the Gini retention on your specific dataset is acceptable. A 93% Gini ratio on a 0.28 Gini model retains more absolute discrimination than a 97% ratio on a 0.12 Gini model. The right threshold depends on your book, your rating structure, and what the pricing committee considers material. That judgement remains yours.

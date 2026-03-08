@@ -228,7 +228,7 @@ The output of `interaction_table()` is the document you take to the model review
 uv add insurance-interactions
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-interactions).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-interactions).
 
 The minimum viable workflow is two calls: `detector.fit()` and `detector.interaction_table()`. Everything else - SHAP validation, ensemble averaging, MLP-M - is configuration that improves reliability. The core output is the ranked table and the set of interactions marked `recommended=True`.
 

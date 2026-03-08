@@ -11,16 +11,16 @@ permalink: /course/
   "@type": "Course",
   "name": "Modern Insurance Pricing with Python and Databricks",
   "description": "A practitioner-written course for UK personal lines pricing teams. Eight modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, and constrained rate optimisation on Databricks.",
-  "url": "https://burningcost.github.io/course/",
+  "url": "https://burning-cost.github.io/course/",
   "provider": {
     "@type": "Organization",
     "name": "Burning Cost",
-    "url": "https://burningcost.github.io"
+    "url": "https://burning-cost.github.io"
   },
   "author": {
     "@type": "Organization",
     "name": "Burning Cost",
-    "url": "https://burningcost.github.io"
+    "url": "https://burning-cost.github.io"
   },
   "educationalLevel": "Professional",
   "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, and constrained rate optimisation",
@@ -385,43 +385,43 @@ permalink: /course/
       <div class="proof-libs-grid">
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/insurance-cv" target="_blank">insurance-cv</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-cv" target="_blank">insurance-cv</a></div>
             <div class="proof-lib-desc">Temporal CV with IBNR buffers</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/shap-relativities" target="_blank">shap-relativities</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/shap-relativities" target="_blank">shap-relativities</a></div>
             <div class="proof-lib-desc">SHAP values as multiplicative factor tables</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/credibility" target="_blank">credibility</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/credibility" target="_blank">credibility</a></div>
             <div class="proof-lib-desc">Buhlmann-Straub credibility in Python</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/insurance-conformal" target="_blank">insurance-conformal</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a></div>
             <div class="proof-lib-desc">Distribution-free intervals for GBMs</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/rate-optimiser" target="_blank">rate-optimiser</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/rate-optimiser" target="_blank">rate-optimiser</a></div>
             <div class="proof-lib-desc">Constrained rate change optimisation</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/bayesian-pricing" target="_blank">bayesian-pricing</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/bayesian-pricing" target="_blank">bayesian-pricing</a></div>
             <div class="proof-lib-desc">Hierarchical Bayesian models for thin segments</div>
           </div>
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burningcost/insurance-distill" target="_blank">insurance-distill</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-distill" target="_blank">insurance-distill</a></div>
             <div class="proof-lib-desc">GBM-to-GLM distillation for production</div>
           </div>
         </div>

@@ -64,9 +64,9 @@ pip install \
 ```
 
 Sources:
-- [github.com/burningcost/insurance-cv](https://github.com/burningcost/insurance-cv)
-- [github.com/burningcost/insurance-conformal](https://github.com/burningcost/insurance-conformal)
-- [github.com/burningcost/rate-optimiser](https://github.com/burningcost/rate-optimiser)
+- [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
+- [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
+- [github.com/burning-cost/rate-optimiser](https://github.com/burning-cost/rate-optimiser)
 
 ---
 

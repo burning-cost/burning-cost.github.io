@@ -11,7 +11,7 @@ Your renewal pricing model has a price elasticity coefficient. Your team uses it
 
 Not wrong as in: someone made an arithmetic error. Wrong as in: the quantity it estimates is not the quantity you need for sound pricing decisions. It measures the association between price change and lapse, and it embeds a confound that naive regression cannot remove. In observational insurance data, this confound can materially overstate true price sensitivity. A renewal optimiser built on an overstated elasticity gives back margin to customers who would have renewed anyway.
 
-We built [`insurance-demand`](https://github.com/burningcost/insurance-demand) to fix this. This post explains the problem in detail and shows how the library addresses it.
+We built [`insurance-demand`](https://github.com/burning-cost/insurance-demand) to fix this. This post explains the problem in detail and shows how the library addresses it.
 
 ---
 
@@ -304,4 +304,4 @@ On motor PCW datasets, the DML estimate is commonly lower in absolute magnitude 
 
 Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodology in their demand modules. The methodology is not proprietary. The `insurance-demand` library is the same maths in an auditable Python package with no vendor lock-in, a clean sklearn-compatible API, and a data structure that your existing Polars and CatBoost workflow already understands.
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-demand).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-demand).

@@ -11,16 +11,16 @@ permalink: /course/
   "@type": "Course",
   "name": "Modern Insurance Pricing with Python and Databricks",
   "description": "A practitioner-written course for UK personal lines pricing teams. Eight modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, and constrained rate optimisation on Databricks.",
-  "url": "https://burningcost.github.io/course/",
+  "url": "https://burning-cost.github.io/course/",
   "provider": {
     "@type": "Organization",
     "name": "Burning Cost",
-    "url": "https://burningcost.github.io"
+    "url": "https://burning-cost.github.io"
   },
   "author": {
     "@type": "Organization",
     "name": "Burning Cost",
-    "url": "https://burningcost.github.io"
+    "url": "https://burning-cost.github.io"
   },
   "educationalLevel": "Professional",
   "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, and constrained rate optimisation",
@@ -155,7 +155,7 @@ How to replicate what Emblem does in Python, transparently. `statsmodels` GLMs w
 
 #### [Module 4: SHAP Relativities](/course/module-04/)
 
-SHAP values as a replacement for GLM relativities. How to extract them, how to aggregate them into a format that looks like a traditional relativities table, and how to explain them to someone who has spent twenty years using Emblem. We cover the cases where SHAP relativities are honest and the cases where they are misleading - interaction effects, correlated features, and what to do when the SHAP waterfall plot does not match the underwriter's intuition. Includes coverage of protected characteristics and proxy discrimination detection using SHAP - essential for FCA Consumer Duty compliance. Uses our open-source [`shap-relativities`](https://github.com/burningcost/shap-relativities) library.
+SHAP values as a replacement for GLM relativities. How to extract them, how to aggregate them into a format that looks like a traditional relativities table, and how to explain them to someone who has spent twenty years using Emblem. We cover the cases where SHAP relativities are honest and the cases where they are misleading - interaction effects, correlated features, and what to do when the SHAP waterfall plot does not match the underwriter's intuition. Includes coverage of protected characteristics and proxy discrimination detection using SHAP - essential for FCA Consumer Duty compliance. Uses our open-source [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library.
 
 **Files:** [README](/course/module-04/README.md) - [Tutorial](/course/module-04/tutorial.md) - [Notebook](/course/module-04/notebook.py)
 
@@ -163,7 +163,7 @@ SHAP values as a replacement for GLM relativities. How to extract them, how to a
 
 #### [Module 6: Credibility and Bayesian Pricing](/course/module-06/)
 
-Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed models and partial pooling. When to use credibility weighting versus a hierarchical GLM. Practical applications: capping thin segments, stabilising NCD factors, blending a new model with an incumbent rate. Uses our open-source [`credibility`](https://github.com/burningcost/credibility) library. We also cover the cases where credibility gives you false comfort - specifically, what it does not protect you from when the underlying exposure mix is shifting.
+Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed models and partial pooling. When to use credibility weighting versus a hierarchical GLM. Practical applications: capping thin segments, stabilising NCD factors, blending a new model with an incumbent rate. Uses our open-source [`credibility`](https://github.com/burning-cost/credibility) library. We also cover the cases where credibility gives you false comfort - specifically, what it does not protect you from when the underlying exposure mix is shifting.
 
 **Files:** [README](/course/module-06/README.md) - [Tutorial](/course/module-06/tutorial.md) - [Notebook](/course/module-06/notebook.py)
 
@@ -173,15 +173,15 @@ Classical credibility (Buhlmann-Straub) in Python, and its relationship to mixed
 
 #### Module 3: GBMs for Insurance Pricing
 
-CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data - why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding - no encoding gymnastics required. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burningcost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
+CatBoost from a pricing perspective. Poisson objective for frequency, gamma for severity, Tweedie for pure premium. Hyperparameter tuning calibrated to insurance data - why the defaults from generic tutorials are wrong for insurance and what to use instead. CatBoost's native handling of categorical features means no more manual ordinal encoding - no encoding gymnastics required. Walk-forward cross-validation with IBNR buffers using our open-source [`insurance-cv`](https://github.com/burning-cost/insurance-cv) library, so you are not lying to yourself about out-of-sample performance.
 
 #### Module 5: Conformal Prediction Intervals
 
-Prediction intervals for insurance models that are statistically honest - not confidence intervals for the mean, but intervals for individual risk predictions. Conformal prediction on top of a trained GBM, calibrated to your own holdout data. How to use these intervals to flag uncertain risks and to set minimum premium floors. Uses our [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) library, which implements the variance-weighted non-conformity score from Manna et al. (2025) - producing intervals roughly 30% narrower than the naive approach with identical coverage guarantees.
+Prediction intervals for insurance models that are statistically honest - not confidence intervals for the mean, but intervals for individual risk predictions. Conformal prediction on top of a trained GBM, calibrated to your own holdout data. How to use these intervals to flag uncertain risks and to set minimum premium floors. Uses our [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) library, which implements the variance-weighted non-conformity score from Manna et al. (2025) - producing intervals roughly 30% narrower than the naive approach with identical coverage guarantees.
 
 #### Module 7: Constrained Rate Optimisation
 
-Building a rate change that meets a target loss ratio, respects a maximum movement cap per cell, and minimises cross-subsidy across rating factors simultaneously. Linear programming formulation, `scipy.optimize` and `PuLP` in Databricks, and how to structure the constraints so that the optimiser produces something a pricing actuary and a commercial director will both accept. Uses our open-source [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) library. This is the module most courses do not have.
+Building a rate change that meets a target loss ratio, respects a maximum movement cap per cell, and minimises cross-subsidy across rating factors simultaneously. Linear programming formulation, `scipy.optimize` and `PuLP` in Databricks, and how to structure the constraints so that the optimiser produces something a pricing actuary and a commercial director will both accept. Uses our open-source [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) library. This is the module most courses do not have.
 
 #### Module 8: End-to-End Pipeline (Capstone)
 
@@ -207,12 +207,12 @@ These are one-time prices. You get the notebook files and the written tutorials.
 
 We have written open-source tools for every topic this course covers.
 
-- [`insurance-cv`](https://github.com/burningcost/insurance-cv) - temporally-correct cross-validation for insurance pricing models, with IBNR buffer support and sklearn compatibility.
-- [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025).
-- [`shap-relativities`](https://github.com/burningcost/shap-relativities) - SHAP values aggregated into multiplicative relativities tables in the format actuarial reviewers expect.
-- [`credibility`](https://github.com/burningcost/credibility) - Buhlmann-Straub credibility in Python, with mixed-model equivalence checks.
-- [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) - constrained rate change optimisation for UK personal lines.
-- [`bayesian-pricing`](https://github.com/burningcost/bayesian-pricing) - hierarchical Bayesian models for thin-data segments, with Buhlmann-Straub credibility factor output.
+- [`insurance-cv`](https://github.com/burning-cost/insurance-cv) - temporally-correct cross-validation for insurance pricing models, with IBNR buffer support and sklearn compatibility.
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025).
+- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - SHAP values aggregated into multiplicative relativities tables in the format actuarial reviewers expect.
+- [`credibility`](https://github.com/burning-cost/credibility) - Buhlmann-Straub credibility in Python, with mixed-model equivalence checks.
+- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation for UK personal lines.
+- [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data segments, with Buhlmann-Straub credibility factor output.
 
 We have also written at length about [why standard k-fold cross-validation is wrong for insurance data](/2026/03/06/why-your-cross-validation-is-lying-to-you.html) - the kind of detail that only comes from having had to fix it in production.
 

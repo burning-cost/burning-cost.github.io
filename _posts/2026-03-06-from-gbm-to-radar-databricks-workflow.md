@@ -13,9 +13,9 @@ The workflow we see most often: load a claims extract into a notebook, fit a Cat
 
 The reason this persists is not laziness. It is the absence of a worked example that connects the actuarial output - a Radar-loadable factor table with auditable relativities - to the Databricks infrastructure that should be generating it. This post is that worked example.
 
-What we are going to build: a scheduled Databricks Job that reads claims and exposure data from Delta tables in Unity Catalog, trains separate Poisson and Gamma CatBoost models, validates them using [`insurance-cv`](https://github.com/burningcost/insurance-cv) temporal splits, extracts SHAP relativities with [`shap-relativities`](https://github.com/burningcost/shap-relativities), benchmarks them against a GLM, and writes a Radar-format CSV to a versioned Delta table. The job runs on the 15th of every month. Nothing requires a human to press a button.
+What we are going to build: a scheduled Databricks Job that reads claims and exposure data from Delta tables in Unity Catalog, trains separate Poisson and Gamma CatBoost models, validates them using [`insurance-cv`](https://github.com/burning-cost/insurance-cv) temporal splits, extracts SHAP relativities with [`shap-relativities`](https://github.com/burning-cost/shap-relativities), benchmarks them against a GLM, and writes a Radar-format CSV to a versioned Delta table. The job runs on the 15th of every month. Nothing requires a human to press a button.
 
-This is not a rehash of our [SHAP validation notebook](https://github.com/burningcost/databricks-shap-notebook). That notebook validates the extraction method against a known data-generating process on synthetic data. This is the thing you would actually build at a carrier.
+This is not a rehash of our [SHAP validation notebook](https://github.com/burning-cost/databricks-shap-notebook). That notebook validates the extraction method against a known data-generating process on synthetic data. This is the thing you would actually build at a carrier.
 
 ---
 
@@ -125,7 +125,7 @@ Standard k-fold cross-validation is wrong for insurance data, and not in a subtl
 
 A random 80/20 split mixes accident years in training and validation. A 2022 policy ends up in the training set while a 2021 policy with an identical risk profile ends up in validation. The model has effectively seen the future. Your CV metrics are optimistic, by a margin that depends on how fast the book is changing. On a stable, mature motor book the bias might be 2-3 Gini points. On a book with rapid mix shift or large claims inflation, it can be large enough to change which model architecture you select.
 
-[`insurance-cv`](https://github.com/burningcost/insurance-cv) implements walk-forward temporal splits that respect the insurance time structure: train on accident years 2019-2021, validate on 2022; train on 2019-2022, validate on 2023. The library also handles the IBNR buffer - by default it excludes the most recent 12 months from any training fold, because late-reported claims in the most recent period will be systematically under-counted, biasing severity models downward. Forget this and your severity model will look better in cross-validation than it will on unseen data:
+[`insurance-cv`](https://github.com/burning-cost/insurance-cv) implements walk-forward temporal splits that respect the insurance time structure: train on accident years 2019-2021, validate on 2022; train on 2019-2022, validate on 2023. The library also handles the IBNR buffer - by default it excludes the most recent 12 months from any training fold, because late-reported claims in the most recent period will be systematically under-counted, biasing severity models downward. Forget this and your severity model will look better in cross-validation than it will on unseen data:
 
 ```python
 from insurance_cv import TemporalSplit
@@ -229,7 +229,7 @@ The model that generated a given Radar factor table must be traceable. MLflow ma
 
 ## 5. SHAP Relativity Extraction
 
-This is where [`shap-relativities`](https://github.com/burningcost/shap-relativities) does its work.
+This is where [`shap-relativities`](https://github.com/burning-cost/shap-relativities) does its work.
 
 The maths: for a Poisson GBM with log link, SHAP values are additive in log space. Every prediction decomposes exactly as `log(μ_i) = expected_value + SHAP_area_i + SHAP_ncd_i + ...`. Exposure-weighted means of those SHAP values give level contributions; exponentiation gives multiplicative relativities. This is directly analogous to `exp(β)` from a GLM - same interpretation, same format, usable in the same factor table structure.
 
@@ -415,8 +415,8 @@ Now the honest caveats, because they matter and they do not disappear by running
 
 | Library | Purpose | Install |
 |---------|---------|---------|
-| [`shap-relativities`](https://github.com/burningcost/shap-relativities) | SHAP extraction from CatBoost | `uv add git+https://github.com/burningcost/shap-relativities` |
-| [`insurance-cv`](https://github.com/burningcost/insurance-cv) | Temporal cross-validation splits | `uv add git+https://github.com/burningcost/insurance-cv` |
+| [`shap-relativities`](https://github.com/burning-cost/shap-relativities) | SHAP extraction from CatBoost | `uv add git+https://github.com/burning-cost/shap-relativities` |
+| [`insurance-cv`](https://github.com/burning-cost/insurance-cv) | Temporal cross-validation splits | `uv add git+https://github.com/burning-cost/insurance-cv` |
 | `catboost` | Model training | `uv add catboost` |
 | `statsmodels` | GLM benchmark | `uv add statsmodels` |
 | `mlflow` | Experiment tracking | Pre-installed on Databricks Runtime 14+ |

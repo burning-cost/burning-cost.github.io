@@ -11,7 +11,7 @@ Your GLM has a price elasticity coefficient of -0.045. Your pricing team uses it
 
 Not wrong as in miscoded. Wrong as in: the coefficient does not measure what you think it measures. It is an estimate of the association between price changes and renewal, not the causal effect of price on renewal. Those are different quantities, often materially so, and the difference has direct consequences for how you price, what you tell the FCA, and how you compete.
 
-We built [`insurance-causal`](https://github.com/burningcost/insurance-causal) to measure the difference. This post explains why it matters and how the library works.
+We built [`insurance-causal`](https://github.com/burning-cost/insurance-causal) to measure the difference. This post explains why it matters and how the library works.
 
 ---
 
@@ -290,7 +290,7 @@ uv add insurance-causal
 
 Dependencies: `doubleml`, `catboost`, `polars`, `pandas`, `scikit-learn`, `scipy`, `numpy`.
 
-The [README](https://github.com/burningcost/insurance-causal) covers the full API. The recommended starting point for most teams is the price elasticity use case on renewal data - it is the application where the confounding bias is most consistently material and the commercial consequences most direct.
+The [README](https://github.com/burning-cost/insurance-causal) covers the full API. The recommended starting point for most teams is the price elasticity use case on renewal data - it is the application where the confounding bias is most consistently material and the commercial consequences most direct.
 
 On Databricks Free Edition, DML with CatBoost nuisance models and 5-fold cross-fitting runs in 5-15 minutes on 100k observations with a standard cluster. Use `cv_folds=3` for exploratory work.
 
@@ -306,4 +306,4 @@ The academic literature on causal inference in insurance is thin. A 2023 survey 
 
 We built `insurance-causal` because the tools existed (DoubleML, CatBoost) but the insurance-specific interface did not. The confounding bias report - one method call, a table showing naive GLM coefficient vs DML causal estimate vs implied bias - is the output that makes this immediately actionable for a pricing team.
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-causal).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-causal).

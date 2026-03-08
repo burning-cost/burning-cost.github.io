@@ -235,7 +235,7 @@ On Databricks specifically, the recommended pattern is to run `ExposureTransform
 
 ## Connecting to rate optimisation
 
-The CLV output from `SurvivalCLV` is the natural input to CLV-based discount targeting in [`rate-optimiser`](https://github.com/burningcost/rate-optimiser). The pattern is:
+The CLV output from `SurvivalCLV` is the natural input to CLV-based discount targeting in [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser). The pattern is:
 
 1. Fit the cure model on the retention book.
 2. Run `SurvivalCLV.discount_sensitivity()` with a range of discount amounts.

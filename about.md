@@ -21,29 +21,29 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 **Validation**
 
-- [`insurance-cv`](https://github.com/burningcost/insurance-cv) - temporally-correct walk-forward cross-validation with IBNR buffer support and sklearn-compatible scorers
-- [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025)
+- [`insurance-cv`](https://github.com/burning-cost/insurance-cv) - temporally-correct walk-forward cross-validation with IBNR buffer support and sklearn-compatible scorers
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025)
 
 **Techniques**
 
-- [`credibility`](https://github.com/burningcost/credibility) - Buhlmann-Straub credibility in Python with mixed-model equivalence checks
-- [`bayesian-pricing`](https://github.com/burningcost/bayesian-pricing) - hierarchical Bayesian models for thin-data pricing segments
-- [`insurance-interactions`](https://github.com/burningcost/insurance-interactions) - detecting and quantifying interaction effects that a main-effects GLM cannot see
-- [`insurance-causal`](https://github.com/burningcost/insurance-causal) - causal inference for insurance pricing; separating genuine risk signal from confounded association
-- [`insurance-spatial`](https://github.com/burningcost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking
+- [`credibility`](https://github.com/burning-cost/credibility) - Buhlmann-Straub credibility in Python with mixed-model equivalence checks
+- [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data pricing segments
+- [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - detecting and quantifying interaction effects that a main-effects GLM cannot see
+- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal inference for insurance pricing; separating genuine risk signal from confounded association
+- [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking
 
 **Commercial**
 
 - [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation; the efficient frontier between loss ratio target and movement cap constraints
-- [`insurance-demand`](https://github.com/burningcost/insurance-demand) - price elasticity and conversion modelling, integrated with rate optimisation
+- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - price elasticity and conversion modelling, integrated with rate optimisation
 
 **Compliance**
 
-- [`insurance-fairness`](https://github.com/burningcost/insurance-fairness) - proxy discrimination detection and FCA Consumer Duty documentation support
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination detection and FCA Consumer Duty documentation support
 
 **Infrastructure**
 
-- [`insurance-datasets`](https://github.com/burningcost/insurance-datasets) - synthetic personal lines datasets with realistic exposure, claim count, and development structure, for testing and teaching
+- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) - synthetic personal lines datasets with realistic exposure, claim count, and development structure, for testing and teaching
 - [`burning-cost`](https://github.com/burning-cost/burning-cost) - the Burning Cost CLI; orchestration for pricing model pipelines
 
 ---

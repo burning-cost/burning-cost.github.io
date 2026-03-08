@@ -12,7 +12,7 @@ Every UK motor insurer has an NCD system. Almost none of them has a clean implem
 
 This matters more than it sounds. The spreadsheet contains the ABI scale in a tab someone built in 2017. You cannot call it from your pricing pipeline. You cannot ask it "at what claim amount should a customer at 65% NCD absorb the loss rather than claim?" with any precision, because the answer depends on that customer's actual premium, the exact transition rules, and how many years of NCD cost you're projecting - and the spreadsheet doesn't connect those things. Someone in pricing does the arithmetic by hand and gives a rule of thumb. The rule of thumb is wrong for a meaningful fraction of the portfolio.
 
-We built [`experience-rating`](https://github.com/burningcost/experience-rating) to replace the spreadsheet. It covers three things that belong together: NCD/bonus-malus systems, experience modification factors for commercial lines, and schedule rating. This post works through each one and then gets to the non-obvious result buried in the claiming threshold analysis.
+We built [`experience-rating`](https://github.com/burning-cost/experience-rating) to replace the spreadsheet. It covers three things that belong together: NCD/bonus-malus systems, experience modification factors for commercial lines, and schedule rating. This post works through each one and then gets to the non-obvious result buried in the claiming threshold analysis.
 
 ---
 
@@ -286,7 +286,7 @@ v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's Credibili
 
 The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? Currently `BonusMalusScale` takes a scale you specify; it does not fit one from data. That requires a GLM pipeline and iterative estimation. It is not in v0.1 because we wanted the analysis tools to ship without coupling them to a training framework.
 
-Source and issue tracker at [github.com/burningcost/experience-rating](https://github.com/burningcost/experience-rating).
+Source and issue tracker at [github.com/burning-cost/experience-rating](https://github.com/burning-cost/experience-rating).
 
 ---
 

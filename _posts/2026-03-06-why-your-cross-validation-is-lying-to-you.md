@@ -221,7 +221,7 @@ Walk-forward CV with an IBNR buffer removes temporal leakage. It does not fix ot
 uv add insurance-cv
 ```
 
-Source and issue tracker at [github.com/burningcost/insurance-cv](https://github.com/burningcost/insurance-cv).
+Source and issue tracker at [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv).
 
 The API is stable. The three split generators cover the main use cases in UK personal and commercial lines. What is not yet implemented: rolling-window splits (where old data drops out of training as the window advances, rather than expanding), which some teams prefer for very long portfolios where 2015 data is genuinely stale.
 

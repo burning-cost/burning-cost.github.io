@@ -272,7 +272,7 @@ uv add "insurance-spatial[geo]"     # geopandas + libpysal for real boundaries
 uv add "insurance-spatial[nutpie]"  # Rust sampler
 ```
 
-Source is on [GitHub](https://github.com/burningcost/insurance-spatial). The library is at v0.1 - the core adjacency, BYM2 model, and diagnostics are stable. The covariate enrichment pipeline (IMD, police.uk crime, Environment Agency flood risk joins) and Stan backend are next.
+Source is on [GitHub](https://github.com/burning-cost/insurance-spatial). The library is at v0.1 - the core adjacency, BYM2 model, and diagnostics are stable. The covariate enrichment pipeline (IMD, police.uk crime, Environment Agency flood risk joins) and Stan backend are next.
 
 ---
 

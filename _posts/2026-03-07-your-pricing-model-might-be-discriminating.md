@@ -15,7 +15,7 @@ This is proxy discrimination. It is the subject of Equality Act 2010 Section 19.
 
 The FCA has signalled this is a priority area. In TR24/2 (August 2024), they found that fair value assessments from reviewed firms were too high level and lacked the granularity to adequately evidence good outcomes across customer groups. The next step is enforcement.
 
-We built [`insurance-fairness`](https://github.com/burningcost/insurance-fairness) to give pricing teams an audit-ready answer to this problem. This post explains the regulatory exposure, the technical problem of proxy discrimination in insurance models, and how to use the library to measure and mitigate it.
+We built [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) to give pricing teams an audit-ready answer to this problem. This post explains the regulatory exposure, the technical problem of proxy discrimination in insurance models, and how to use the library to measure and mitigate it.
 
 ---
 
@@ -324,7 +324,7 @@ Three things to be honest about.
 uv add insurance-fairness
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-fairness). The library requires CatBoost models and Polars DataFrames; postcode-to-LSOA linkage data and ONS Census 2021 ethnic group tables at LSOA level are available from the ONS open data portal.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-fairness). The library requires CatBoost models and Polars DataFrames; postcode-to-LSOA linkage data and ONS Census 2021 ethnic group tables at LSOA level are available from the ONS open data portal.
 
 Start with the proxy audit. Run it on your current production model before you do anything else. If the postcode correlation with your ethnicity proxy is below 0.15, you have a defensible position and can document it. If it is above 0.30, you need to understand the disparity decomposition before your next Consumer Duty review.
 

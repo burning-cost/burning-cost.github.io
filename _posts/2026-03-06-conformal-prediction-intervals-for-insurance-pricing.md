@@ -15,7 +15,7 @@ The standard approach to this is parametric confidence intervals - bootstrap the
 
 Conformal prediction offers a different kind of guarantee. It does not need to assume anything about the error distribution. It produces intervals that contain the true value at least 90% of the time - not in expectation conditional on the model being correct, but unconditionally, as a finite-sample guarantee.
 
-We built [`insurance-conformal`](https://github.com/burningcost/insurance-conformal) to apply conformal prediction to insurance pricing models. The key contribution is handling the heteroscedasticity that standard conformal implementations ignore.
+We built [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) to apply conformal prediction to insurance pricing models. The key contribution is handling the heteroscedasticity that standard conformal implementations ignore.
 
 ---
 
@@ -241,6 +241,6 @@ It is also not a replacement for model calibration. A model that is systematical
 uv add insurance-conformal
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-conformal). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-conformal). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
 
 The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate.

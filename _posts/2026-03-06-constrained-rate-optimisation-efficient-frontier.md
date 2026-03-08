@@ -15,7 +15,7 @@ The Excel scenario is a single point. The team has picked one combination of fac
 
 The shadow prices on constraints are never known either. How much volume would you lose if you tightened the LR target by one percentage point? Which constraint is actually binding? What is the regulatory cost of FCA PS21/5 ENBP compliance, in dislocation terms? These are answerable questions. Nobody is answering them.
 
-We built [`rate-optimiser`](https://github.com/burningcost/rate-optimiser) to answer them formally.
+We built [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) to answer them formally.
 
 ---
 
@@ -186,6 +186,6 @@ uv add rate-optimiser
 uv add "rate-optimiser[stochastic]"
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/rate-optimiser). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/rate-optimiser). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
 
 The `feasibility_report()` method is the first thing to run before any solve. If your constraints are infeasible at current rates, the solver will tell you - and that is itself useful information about the portfolio.

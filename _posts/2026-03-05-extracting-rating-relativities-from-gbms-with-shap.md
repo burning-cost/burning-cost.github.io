@@ -206,4 +206,4 @@ rels = extract_relativities(
 )
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/shap-relativities). If you find a case where extracted relativities diverge materially from your expected model behaviour, the `validate()` method is the first place to look.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/shap-relativities). If you find a case where extracted relativities diverge materially from your expected model behaviour, the `validate()` method is the first place to look.

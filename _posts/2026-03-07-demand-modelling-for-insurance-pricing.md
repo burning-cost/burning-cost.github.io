@@ -13,7 +13,7 @@ The technical premium tells you what a risk costs. It does not tell you whether 
 
 The result is pricing decisions that leave money on the table in both directions. Overpriced risks convert at rates lower than they should. Underpriced risks convert well but generate inadequate margins. Without a demand model, you cannot tell which situation you are in, or by how much.
 
-We built [`insurance-demand`](https://github.com/burningcost/insurance-demand) to close this gap.
+We built [`insurance-demand`](https://github.com/burning-cost/insurance-demand) to close this gap.
 
 ---
 
@@ -321,7 +321,7 @@ uv add "insurance-demand[survival]"
 uv add "insurance-demand[dml,survival]"
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burningcost/insurance-demand).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-demand).
 
 The minimum viable starting point: fit a `ConversionModel` on your quote data and run `model.predict_proba()` on your current book. Plot predicted conversion against the actual bind rate by price decile. If they match, your GLM is adequate. If they diverge above the 7th or 8th decile, you have a non-linearity that a logistic GLM is not capturing and CatBoost will.
 

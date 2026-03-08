@@ -237,7 +237,7 @@ The annual full model validation should include: backtesting the model on out-of
 
 ## The library
 
-[`insurance-monitoring`](https://github.com/burningcost/insurance-monitoring) implements the three-layer framework described above:
+[`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) implements the three-layer framework described above:
 
 - Exposure-weighted PSI and CSI, with per-feature traffic-light output
 - Segmented A/E ratios with optional IBNR adjustment via development factor tables
