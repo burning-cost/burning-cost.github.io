@@ -11,7 +11,7 @@ Per-risk excess-of-loss pricing has a dirty secret: for many of the teams doing 
 
 The correct approach — fitting an MBBEFD exposure curve to destruction-rate data, deriving Increased Limits Factors analytically, and pricing the XL layer as the integral of the severity distribution across the layer — has been standard actuarial practice since Stefan Bernegger's 1997 ASTIN paper. The Swiss Re curve family, which parameterises the whole of MBBEFD space with a single scalar c, has been in the Lloyd's and London market toolbox for decades. None of this is new.
 
-What is new is doing it in Python. Until now, the only open-source implementation of the MBBEFD distribution family was the `mbbefd` package in R. Python had nothing.
+What is new is doing it in Python. Until now, the only open-source implementation of the MBBEFD distribution family we are aware of was the `mbbefd` package in R (confirmed on CRAN). We found no equivalent Python package on PyPI at the time of writing.
 
 [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) is our 24th open-source library, and our first in commercial lines and London market reinsurance. Five modules, 129 tests, v0.1.0 on PyPI.
 

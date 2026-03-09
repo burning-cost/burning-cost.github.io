@@ -9,7 +9,7 @@ description: "Buhlmann-Straub credibility in Python for blending thin segment ex
 
 Every pricing actuary has stared at a claim frequency for a small segment and known, with some certainty, that the number is wrong. Not wrong as in a data error. Wrong in the sense that 14 claims across 800 earned car years is not a reliable estimate of anything. You have a prior - your book experience, your GLM, your market data - and the segment's own history, and you need to combine them in a principled way.
 
-The classical actuarial solution is credibility weighting. Specifically, the Bühlmann-Straub model (1970): a formula for blending segment experience with a portfolio prior, weighted by exposure and calibrated to the actual between-group and within-group variance in your data. It has been the standard in UK scheme and affinity pricing for decades. It is done, almost universally, in Excel.
+The classical actuarial solution is credibility weighting. Specifically, the Bühlmann-Straub model (1970): a formula for blending segment experience with a portfolio prior, weighted by exposure and calibrated to the actual between-group and within-group variance in your data. It has been the standard in UK scheme and affinity pricing for decades. In our experience, it is widely performed in Excel or R across UK pricing teams.
 
 This post covers the maths, the Python implementation via `credibility.BuhlmannStraub`, and why the approach is more coherent than it appears when you first encounter it as a formula.
 
@@ -302,7 +302,7 @@ This connection also appears in recent deep learning work. Richman, Scognamiglio
 
 ## A note on the Python gap
 
-There is no other Python package that does this well. The R `actuar` package has `cm()`, which is excellent - it handles Bühlmann-Straub, hierarchical credibility, Hachemeister regression credibility, and several conjugate Bayesian models. If your team works in R, use it.
+There is no other dedicated Python package for this that we are aware of. The R `actuar` package has `cm()`, which is excellent - it handles Bühlmann-Straub, hierarchical credibility, Hachemeister regression credibility, and several conjugate Bayesian models. If your team works in R, use it.
 
 In Python, the options before `credibility` were: fit a `statsmodels.MixedLM` and extract the BLUPs manually (no Poisson response, no actuarial output), use `gpboost` (powerful, but a GLMM combined with gradient boosting - not a standalone credibility tool), or do it in Excel and paste the numbers into your pipeline.
 

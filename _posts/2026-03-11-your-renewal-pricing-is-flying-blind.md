@@ -5,7 +5,7 @@ date: 2026-03-11
 categories: [pricing, causal-inference]
 ---
 
-Every UK personal lines insurer has a renewal demand model. Almost all of them are wrong in the same way — and the wrongness compounds directly into pricing decisions.
+Most UK personal lines insurers have a renewal demand model. Many of them are wrong in the same way — and the wrongness compounds directly into pricing decisions.
 
 The problem is not technical incompetence. It is a structural confound that standard logistic regression cannot fix, no matter how many features you add or how long you spend tuning your hyperparameters.
 

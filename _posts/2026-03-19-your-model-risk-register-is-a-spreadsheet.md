@@ -9,7 +9,7 @@ description: "PRA SS1/23 is expected to extend to insurers by 2026-2027. Most UK
 
 If the PRA asked you today for your model inventory, what would you send them?
 
-We know what most UK insurers would send. A shared Excel workbook with a tab called "Model Register." Forty or fifty rows. Columns for model name, owner, last review date, status. The last review date column has blanks in it. The status column says "Live" for everything. There is no link to the validation report. There is no change log. The person who set it up left eighteen months ago.
+In our experience, the answer is likely a shared Excel workbook with a tab called "Model Register." Forty or fifty rows. Columns for model name, owner, last review date, status. The last review date column has blanks in it. The status column says "Live" for everything. There is no link to the validation report. There is no change log. The person who set it up left eighteen months ago.
 
 That is not a model risk register. It is a list.
 
@@ -27,13 +27,13 @@ pip install insurance-mrm
 
 PRA SS1/23 — Model Risk Management Principles for Banks — came into force on 17 May 2024. It is currently scoped to banks, building societies, and PRA-designated investment firms. Insurance firms are not formally in scope. That will change.
 
-Deloitte (2025), 4most (January 2025), and the PRA's own supervision signals all converge on the same assessment: extension to insurers is a matter of when, not if. The most credible timeline is post-Solvency UK embedding, which points to 2026-2027. The firms that will handle that extension well are the ones who start building the infrastructure now, not the ones who scramble to retrofit documentation after the formal notice arrives.
+4most (January 2025) and the PRA's own supervision signals point in the same direction: extension to insurers is a matter of when, not if. A plausible timeline is post-Solvency UK embedding, which would point to 2026-2027 — though that remains directional rather than confirmed. The firms that will handle that extension well are the ones who start building the infrastructure now, not the ones who scramble to retrofit documentation after the formal notice arrives.
 
 SS1/23's five principles are: (1) model identification and risk classification, (2) governance, (3) model development, implementation, and use, (4) independent validation, and (5) model risk mitigants. The critical text in Principle 3 is that documentation must allow "a party unfamiliar with the model to understand its operation." In Principle 1, every model must be classified by complexity, business use, and materiality, with a change log.
 
 That is a model inventory with structured metadata and an audit trail — not a spreadsheet.
 
-The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) found that documentation failures — not model failures — are the primary enforcement trigger. The firms that got caught were not running bad models. They were running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed.
+The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) — a thematic review of product governance — found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. TR24/2 is a supervisory review, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
 
 ---
 
