@@ -345,6 +345,6 @@ Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning
 ---
 
 **Related articles from Burning Cost:**
-- [Your Territory Banding Is Wrong](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)

@@ -241,4 +241,4 @@ Those are the interactions your GLM missed. The library finds them.
 **Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)
-- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)

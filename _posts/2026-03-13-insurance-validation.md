@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Model Validation Report Won't Survive a PRA Review"
+title: "PRA SS1/23-Compliant Model Validation in Python"
 date: 2026-03-13
 categories: [regulation, libraries]
 tags: [model-validation, pra-ss123, fca-tr242, model-risk, gini, calibration, python, insurance-validation]
@@ -176,6 +176,6 @@ The test suite was validated on Databricks serverless (Python 3.11). The library
 ---
 
 **Related articles from Burning Cost:**
-- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/)
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/07/your-pricing-model-is-drifting/)
 - [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

@@ -311,6 +311,6 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-c
 ---
 
 **Related articles from Burning Cost:**
-- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
-- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)
-- [Your Rate Change Didn't Prove Anything](/2026/03/09/your-rate-change-didnt-prove-anything/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/07/your-demand-model-is-confounded/)
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/09/your-rate-change-didnt-prove-anything/)

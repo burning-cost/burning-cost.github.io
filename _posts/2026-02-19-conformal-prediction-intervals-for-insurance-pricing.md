@@ -248,6 +248,6 @@ The first thing to check after calibrating is always `coverage_by_decile()`. If 
 ---
 
 **Related articles from Burning Cost:**
-- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/)
-- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/08/insurance-distributional/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/08/insurance-quantile/)
 - [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)

@@ -531,5 +531,5 @@ The tools exist to do all of this properly. The bottleneck is almost never the s
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing) — distribution-free coverage guarantees and handling heteroscedasticity in GBMs
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing) — Double Machine Learning for price elasticity estimation
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier) — LP formulation for ENBP-compliant rate changes
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/15/your-champion-challenger-test-has-no-audit-trail) — ICOBS 6B.2.51R requirements and what a proper audit trail looks like
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/13/insurance-validation) — what PRA SS1/23-level validation documentation actually requires
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail) — ICOBS 6B.2.51R requirements and what a proper audit trail looks like
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation) — what PRA SS1/23-level validation documentation actually requires

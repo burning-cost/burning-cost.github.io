@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Model Risk Register Is a Spreadsheet"
+title: "Model Risk Governance for UK Insurers: Beyond the Excel Register"
 date: 2026-03-19
 categories: [libraries, regulation]
 tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-mrm, insurance-validation, insurance-monitoring]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Synthetic Data Doesn't Know What Exposure Is"
+title: "Why Generic Synthetic Data Fails Actuarial Fidelity Tests"
 date: 2026-03-09
 categories: [techniques, libraries]
 tags: [synthetic-data, insurance-synthetic, vine-copula, exposure, fidelity, FCA, Consumer-Duty, privacy, python, motor]
@@ -294,6 +294,6 @@ The generic tools are not going to add Tweedie marginals or exposure-weighted KS
 ---
 
 **Related articles from Burning Cost:**
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
 - [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)

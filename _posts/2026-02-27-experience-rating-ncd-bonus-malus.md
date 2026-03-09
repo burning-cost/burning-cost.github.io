@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your NCD Threshold Advice Is Wrong at 65%"
+title: "Experience Rating: NCD and Bonus-Malus"
 date: 2026-02-27
 categories: [techniques]
 tags: [experience-rating, ncd, bonus-malus, experience-mod, schedule-rating, motor, commercial-lines, python]
@@ -304,4 +304,4 @@ Source and issue tracker at [github.com/burning-cost/experience-rating](https://
 **Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
 - [Survival Models for Insurance Retention](/2026/03/08/survival-models-for-insurance-retention/)
-- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/09/your-broker-adjustments-are-guesswork/)

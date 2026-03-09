@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Burning Cost Has a Tail Risk Problem"
+title: "Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings"
 date: 2026-03-07
 categories: [techniques, libraries]
 tags: [quantile-regression, tail-risk, tvar, large-loss-loading, ilf, catboost, gbm, reinsurance, motor, python]
@@ -307,6 +307,6 @@ The burning cost gives you the centre. The quantile model gives you the tail. Bo
 ---
 
 **Related articles from Burning Cost:**
-- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/)
-- [Your Excess-of-Loss Pricing Has No Curves](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/08/insurance-distributional/)
+- [MBBEFD Exposure Curves and ILF Pricing in Python](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)

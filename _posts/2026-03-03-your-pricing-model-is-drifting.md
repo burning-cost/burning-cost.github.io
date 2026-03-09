@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Pricing Model is Drifting (and You Probably Can't Tell)"
+title: "Three-Layer Drift Detection for Deployed Pricing Models"
 date: 2026-03-03
 categories: [monitoring]
 tags: [insurance-monitoring, drift, PSI, Gini, calibration, motor, FCA, python]
@@ -252,6 +252,6 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 ---
 
 **Related articles from Burning Cost:**
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
 - [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

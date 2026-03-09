@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Territory Banding Is Wrong"
+title: "BYM2 Spatial Smoothing for Territory Ratemaking"
 date: 2026-02-23
 categories: [techniques]
 tags: [spatial, territory, BYM2, ICAR, pymc, credibility, ratemaking, motor, python, bayesian]
@@ -288,5 +288,5 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-spatial). The li
 
 **Related articles from Burning Cost:**
 - [Getting Spatial Territory Factors Into Production](/2026/03/08/spatial-territory-ratemaking-bym2/)
-- [Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)

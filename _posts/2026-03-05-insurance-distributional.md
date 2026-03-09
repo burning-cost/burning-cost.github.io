@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Technical Price Ignores Variance"
+title: "Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean"
 date: 2026-03-05
 categories: [techniques, libraries]
 tags: [distributional-regression, tweedie, catboost, gbm, dispersion, volatility, motor, pet, zip, zero-inflation, python, astin]
@@ -284,6 +284,6 @@ The expected loss is necessary. It is not sufficient. Two risks at £350 are not
 ---
 
 **Related articles from Burning Cost:**
-- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/08/insurance-quantile/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
-- [Your Excess-of-Loss Pricing Has No Curves](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)
+- [MBBEFD Exposure Curves and ILF Pricing in Python](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)

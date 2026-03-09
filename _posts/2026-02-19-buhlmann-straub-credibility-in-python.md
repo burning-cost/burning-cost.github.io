@@ -323,6 +323,6 @@ We built this because UK pricing teams should not be doing credibility in Excel.
 ---
 
 **Related articles from Burning Cost:**
-- [Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)
-- [Your NCD Threshold Advice Is Wrong at 65%](/2026/03/07/experience-rating-ncd-bonus-malus/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/09/your-broker-adjustments-are-guesswork/)
+- [Experience Rating: NCD and Bonus-Malus](/2026/03/07/experience-rating-ncd-bonus-malus/)

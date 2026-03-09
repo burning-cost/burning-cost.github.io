@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Rating Factor Might Be Confounded"
+title: "When exp(beta) Lies: Confounding in GLM Rating Factors"
 date: 2026-03-05
 categories: [techniques]
 tags: [causal-inference, double-machine-learning, DML, confounding, pricing, python, motor, elasticity]
@@ -249,5 +249,5 @@ The right use of this library is not to replace your GLM. It is to audit the cau
 
 **Related articles from Burning Cost:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [Your Rate Change Didn't Prove Anything](/2026/03/09/your-rate-change-didnt-prove-anything/)
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/09/your-rate-change-didnt-prove-anything/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)

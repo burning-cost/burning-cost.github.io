@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Pricing Model Might Be Discriminating"
+title: "Proxy Discrimination in UK Motor Pricing: Detection and Correction"
 date: 2026-03-03
 categories: [techniques, compliance]
 tags: [fairness, proxy-discrimination, FCA, Consumer-Duty, Equality-Act, LRTW, GBM, postcode, python, motor, insurance-fairness]
@@ -333,6 +333,6 @@ The fairness-accuracy trade-off is real. But "we did not audit this because we w
 ---
 
 **Related articles from Burning Cost:**
-- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
-- [Your Territory Banding Is Wrong](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)

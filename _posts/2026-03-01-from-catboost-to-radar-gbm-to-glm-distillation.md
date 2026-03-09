@@ -219,4 +219,4 @@ One thing the library does not do: it does not tell you whether the Gini retenti
 **Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
 - [From GBM to Radar: A Complete Databricks Workflow for Pricing Actuaries](/2026/03/06/from-gbm-to-radar-databricks-workflow/)
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)

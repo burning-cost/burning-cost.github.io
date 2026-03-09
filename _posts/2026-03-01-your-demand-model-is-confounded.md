@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Demand Model Is Confounded"
+title: "Double Machine Learning for Insurance Price Elasticity"
 date: 2026-03-01
 categories: [techniques]
 tags: [demand, elasticity, DML, double-machine-learning, conversion, retention, FCA, GIPP, PS21-11, ENBP, insurance-demand, python, motor, catboost, polars]
@@ -310,5 +310,5 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-d
 
 **Related articles from Burning Cost:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [Your Renewal Pricing Is Flying Blind](/2026/03/08/your-renewal-pricing-is-flying-blind/)
+- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/08/your-renewal-pricing-is-flying-blind/)
 - [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Rate Change Didn't Prove Anything"
+title: "Synthetic Difference-in-Differences for Rate Change Evaluation"
 date: 2026-03-19
 categories: [regulation, libraries, causal-inference]
 tags: [sdid, causal-inference, difference-in-differences, fca-tr242, fca-ep252, rate-change-evaluation, python, insurance-causal-policy]
@@ -223,5 +223,5 @@ A before/after chart is not evidence. It is a description of what happened. The 
 
 **Related articles from Burning Cost:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

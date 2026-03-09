@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Interpretable Model Isn't Interpretable Enough"
+title: "Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss"
 date: 2026-03-17
 author: Burning Cost
 categories: [pricing, machine-learning]
@@ -213,5 +213,5 @@ Your SHAP values are not your model. They are a post-hoc explanation of a model 
 **Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
 - [Finding the Interactions Your GLM Missed](/2026/03/07/finding-the-interactions-your-glm-missed/)
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
 - [From CatBoost to Radar: GBM-to-GLM Distillation](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)

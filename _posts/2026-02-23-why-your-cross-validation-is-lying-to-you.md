@@ -232,6 +232,6 @@ Run `split_summary` before you tune anything. If the `gap_days` column contains 
 ---
 
 **Related articles from Burning Cost:**
-- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/)
-- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/07/your-pricing-model-is-drifting/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

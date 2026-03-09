@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Trend Assumption Is the Largest Unexamined Number in Your Rate"
+title: "Trend Selection Is Not Actuarial Judgment: A Python Approach"
 date: 2026-03-13
 categories: [techniques, libraries, pricing]
 tags: [trend, frequency, severity, loss-cost, superimposed-inflation, ons-api, structural-breaks, ruptures, statsmodels, python, insurance-trend]
@@ -318,6 +318,6 @@ The ONS integration removes the last reason to do this manually. The HPTH series
 ---
 
 **Related articles from Burning Cost:**
-- [Your Rate Change Didn't Prove Anything](/2026/03/09/your-rate-change-didnt-prove-anything/)
-- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/09/your-rate-change-didnt-prove-anything/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/08/insurance-quantile/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Champion/Challenger Test Has No Audit Trail"
+title: "Champion/Challenger Testing with ICOBS 6B.2.51R Compliance"
 date: 2026-03-15
 categories: [pricing, libraries, regulation]
 tags: [champion-challenger, enbp, icobs-6b, fca-ps21-5, shadow-mode, python, insurance-deploy, model-governance, bootstrap, power-analysis]

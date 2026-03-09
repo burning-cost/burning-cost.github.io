@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing"
+title: "Bayesian Hierarchical Models for Thin-Data Pricing"
 date: 2026-02-17
 categories: [techniques]
 tags: [bayesian, hierarchical-models, pymc, credibility, partial-pooling, pricing, python, motor]
@@ -257,5 +257,5 @@ The thin-cell problem is not going away. If anything it is getting worse as pers
 
 **Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
-- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/09/your-broker-adjustments-are-guesswork/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)

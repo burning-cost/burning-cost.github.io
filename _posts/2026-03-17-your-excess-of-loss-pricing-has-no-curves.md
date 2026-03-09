@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Excess-of-Loss Pricing Has No Curves"
+title: "MBBEFD Exposure Curves and ILF Pricing in Python"
 date: 2026-03-17
 categories: [reinsurance, libraries, pricing]
 tags: [mbbefd, exposure-rating, ilf, xl-pricing, swiss-re, bernegger, london-market, reinsurance, python, insurance-ilf]
