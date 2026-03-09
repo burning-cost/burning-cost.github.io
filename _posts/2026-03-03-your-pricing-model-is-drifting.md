@@ -252,6 +252,6 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 ---
 
 **Related articles from Burning Cost:**
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
-- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
+- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)

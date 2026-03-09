@@ -211,7 +211,7 @@ Your SHAP values are not your model. They are a post-hoc explanation of a model 
 ---
 
 **Related articles from Burning Cost:**
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
-- [Finding the Interactions Your GLM Missed](/2026/03/07/finding-the-interactions-your-glm-missed/)
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
-- [From CatBoost to Radar: GBM-to-GLM Distillation](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [From CatBoost to Radar: GBM-to-GLM Distillation](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)

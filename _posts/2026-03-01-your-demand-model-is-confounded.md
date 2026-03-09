@@ -223,6 +223,6 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-d
 ---
 
 **Related articles from Burning Cost:**
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/08/your-renewal-pricing-is-flying-blind/)
-- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/11/your-renewal-pricing-is-flying-blind/)
+- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)

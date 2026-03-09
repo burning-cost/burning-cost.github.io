@@ -246,6 +246,6 @@ The `insurance-optimise` library is open source under the MIT licence at [github
 ---
 
 **Related articles from Burning Cost:**
-- [Constrained Rate Optimisation and the Efficient Frontier](/2026/03/06/constrained-rate-optimisation-efficient-frontier/)
-- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/07/your-demand-model-is-confounded/)
+- [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/)
+- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)

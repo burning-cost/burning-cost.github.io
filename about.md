@@ -80,7 +80,7 @@ We wrote those libraries because we needed them. Then we kept going. Everything 
 
 ## Training course
 
-We also run a training course — [Modern Insurance Pricing with Python and Databricks](/course/) — for pricing actuaries and analysts who want to use these tools properly. Twelve modules, written from first principles for insurance, not adapted from generic data science tutorials. Every module runs on Databricks.
+We also run a free training course — [Modern Insurance Pricing with Python and Databricks](/course/) — for pricing actuaries and analysts who want to use these tools properly. Twelve modules, written from first principles for insurance, not adapted from generic data science tutorials.
 
 ---
 

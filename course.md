@@ -1,7 +1,7 @@
 ---
 layout: course
 title: "Modern Insurance Pricing with Python and Databricks"
-description: "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating on Databricks."
+description: "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, model monitoring, and spatial territory rating on Databricks."
 permalink: /course/
 ---
 
@@ -10,7 +10,7 @@ permalink: /course/
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "Modern Insurance Pricing with Python and Databricks",
-  "description": "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating on Databricks.",
+  "description": "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, model monitoring, and spatial territory rating on Databricks.",
   "url": "https://burning-cost.github.io/course/",
   "provider": {
     "@type": "Organization",
@@ -23,17 +23,9 @@ permalink: /course/
     "url": "https://burning-cost.github.io"
   },
   "educationalLevel": "Professional",
-  "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating",
+  "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, constrained rate optimisation, demand modelling, interaction detection, model monitoring, and spatial territory rating",
   "inLanguage": "en-GB",
-  "offers": [
-    {
-      "@type": "Offer",
-      "name": "Full course - all modules + all Burning Cost tools",
-      "price": "295",
-      "priceCurrency": "GBP",
-      "availability": "https://schema.org/PreOrder"
-    }
-  ]
+  "isAccessibleForFree": true
 }
 </script>
 
@@ -42,18 +34,18 @@ permalink: /course/
   <div class="hero-eyebrow">Practitioner course &middot; UK personal lines</div>
   <h1>Modern Insurance Pricing<br>with <em>Python and Databricks</em></h1>
   <p class="hero-sub">
-    Twelve modules. GLMs, GBMs, SHAP relativities, conformal intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating.
+    Twelve modules. GLMs, GBMs, SHAP relativities, conformal intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, model monitoring, and spatial territory rating.
     Every line of code written for insurance pricing specifically.
   </p>
   <p class="hero-detail">12 modules &nbsp;&middot;&nbsp; Databricks notebooks included &nbsp;&middot;&nbsp; Synthetic UK motor data throughout</p>
   <div class="hero-cta">
-    <a href="#waitlist" class="btn btn-primary btn-lg">Join the waitlist</a>
+    <a href="/course/" class="btn btn-primary btn-lg">Start the course</a>
     <a href="#modules" class="btn btn-outline btn-lg">View the modules</a>
   </div>
   <div class="hero-trust">
-    <span class="trust-item"><span class="trust-check"></span>One-time payment, no subscription</span>
-    <span class="trust-item"><span class="trust-check"></span>All future updates included</span>
-    <span class="trust-item"><span class="trust-check"></span>Access to all Burning Cost tools</span>
+    <span class="trust-item"><span class="trust-check"></span>Free and open source</span>
+    <span class="trust-item"><span class="trust-check"></span>All 12 modules available now</span>
+    <span class="trust-item"><span class="trust-check"></span>Continuously updated</span>
   </div>
 </section>
 
@@ -166,6 +158,11 @@ permalink: /course/
         <span class="build-card-num">Module 10</span>
         <div class="build-card-title">An automated GLM interaction shortlist with statistical evidence</div>
         <div class="build-card-desc">CANN-based Neural Interaction Detection on your GLM residuals, ranked candidates with LR test results after Bonferroni correction, and a rebuilt GLM with the approved interactions.</div>
+      </div>
+      <div class="build-card">
+        <span class="build-card-num">Module 11</span>
+        <div class="build-card-title">A monitoring dashboard that catches model drift before it hits the loss ratio</div>
+        <div class="build-card-desc">PSI, CSI, A/E ratios with confidence intervals, Gini drift z-test, traffic-light triggers, and a Databricks job that runs it all automatically on a schedule.</div>
       </div>
       <div class="build-card">
         <span class="build-card-num">Module 12</span>
@@ -432,6 +429,30 @@ permalink: /course/
       </div>
     </div>
 
+    <!-- Module 11 -->
+    <div class="module-card available">
+      <div class="module-card-header">
+        <span class="module-num-badge">11</span>
+        <div class="module-card-content">
+          <div class="module-card-title">Model Monitoring and Drift Detection</div>
+          <div class="module-card-desc">A deployed model degrades silently. Population shift, claim inflation, regulatory changes. This module builds the monitoring layer that catches it before the underwriting committee does.</div>
+        </div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
+      </div>
+      <div class="module-card-detail">
+        <ul class="module-covers">
+          <li>Population stability index (PSI) and characteristic stability index (CSI) with exposure weighting</li>
+          <li>Actual-versus-expected ratios with Poisson confidence intervals, not just point estimates</li>
+          <li>Gini coefficient drift z-test (arXiv 2510.04556) for discriminatory power monitoring</li>
+          <li>Traffic-light trigger framework: green/amber/red thresholds with automated alerts</li>
+          <li>Delta Lake logging and Databricks job scheduling for continuous monitoring without manual runs</li>
+        </ul>
+        <div class="module-links">
+          <a href="/course/module-11/" class="module-link">Module overview</a>
+        </div>
+      </div>
+    </div>
+
     <!-- Module 12 -->
     <div class="module-card available">
       <div class="module-card-header">
@@ -545,49 +566,32 @@ permalink: /course/
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- ACCESS -->
 <section class="pricing" id="pricing">
   <div class="pricing-inner">
     <div class="pricing-header">
-      <span class="section-label" style="color:var(--accent)">Pricing</span>
-      <h2 class="section-h2 section-h2-light">One product. One price. Everything included.</h2>
-      <p>Buy once. Get the full course, every update, and access to all Burning Cost tools as they ship.</p>
+      <span class="section-label" style="color:var(--accent)">Access</span>
+      <h2 class="section-h2 section-h2-light">Free and open. Start now.</h2>
+      <p>The full course, all 12 modules, every update. No payment, no signup, no waitlist.</p>
     </div>
 
     <div class="pricing-single">
       <div class="pricing-card featured pricing-card-single">
-        <div class="pricing-card-label">Full course + all tools</div>
-        <div class="pricing-card-price"><span>&pound;</span>295</div>
-        <div class="pricing-card-sub">One-time payment &mdash; no subscription, no expiry</div>
+        <div class="pricing-card-label">Full course</div>
+        <div class="pricing-card-price" style="font-size:2rem">Free</div>
+        <div class="pricing-card-sub">Open access - no registration required</div>
         <ul class="pricing-card-includes">
-          <li>All 12 modules &mdash; immediate access to all published modules</li>
-          <li>New modules as they publish, at no extra cost</li>
-          <li>All future updates and curriculum additions included</li>
-          <li>Access to every Burning Cost tool and product as it ships</li>
+          <li>All 12 modules - available now</li>
+          <li>New modules and updates as they publish</li>
           <li>Written tutorials (~4,000 words per module)</li>
           <li>Databricks notebooks, runnable end-to-end</li>
           <li>Synthetic UK motor dataset throughout</li>
           <li>Databricks Free Edition compatible</li>
+          <li>25 open-source Python libraries included</li>
         </ul>
-        <a href="#waitlist" class="btn btn-primary" style="width:100%;text-align:center;display:block;font-size:1.1rem;padding:0.85rem 1.5rem;">Join the waitlist &rarr;</a>
+        <a href="/course/" class="btn btn-primary" style="width:100%;text-align:center;display:block;font-size:1.1rem;padding:0.85rem 1.5rem;">Start the course &rarr;</a>
       </div>
     </div>
-
-    <p class="pricing-cta-note">
-      Payment processing is nearly ready. Join the waitlist and we will email you when it is live &mdash; waitlist members get first access at the launch price.
-    </p>
-  </div>
-</section>
-
-<!-- WAITLIST -->
-<section class="waitlist-band" id="waitlist">
-  <h2>Get notified when it launches</h2>
-  <p>Payment processing is nearly ready. Leave your email and we will send you a link the day it goes live. Waitlist members get first access.</p>
-  <div class="waitlist-form">
-    <form action="https://formspree.io/f/pricing.frontier@gmail.com" method="POST" class="waitlist-formspree">
-      <input type="email" name="email" placeholder="your@email.com" required class="waitlist-input">
-      <button type="submit" class="btn btn-primary btn-lg">Join the waitlist</button>
-    </form>
   </div>
 </section>
 
@@ -630,17 +634,17 @@ permalink: /course/
 
       <div class="faq-item">
         <div class="faq-q">What does "access to all Burning Cost tools" mean?</div>
-        <div class="faq-a">As we build new products &mdash; additional tools, dashboards, templates, or workflow utilities &mdash; course purchasers get access as part of the same one-time payment. We are building a suite of things for UK pricing teams. One payment gets you into all of it.</div>
+        <div class="faq-a">All Burning Cost libraries are open source and free. The course, blog, and all tools are available at no cost. We build pricing tools for UK insurance teams and make everything freely available.</div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q">Are all twelve modules available now?</div>
-        <div class="faq-a">All twelve modules are published and available immediately when you purchase. Future curriculum additions (new techniques, updated exercises) are included at no extra cost.</div>
+        <div class="faq-a">All twelve modules are published and available now. Future curriculum additions (new techniques, updated exercises) will be added as they are ready.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">What if the content does not meet my expectations?</div>
-        <div class="faq-a">You can preview the tutorials for Modules 1, 2, 4, and 6 before buying. If you read those and feel the depth and style are not what you need, we would rather you saved the money. Email us and we will discuss it.</div>
+        <div class="faq-q">How can I contribute or report errors?</div>
+        <div class="faq-a">Email pricing.frontier@gmail.com with corrections, suggestions, or questions. Include the module and part number. We fix errors promptly and credit contributors.</div>
       </div>
 
     </div>
@@ -650,9 +654,9 @@ permalink: /course/
 <!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Stop spending months adapting the wrong tutorials</h2>
-  <p>Twelve modules written specifically for UK personal lines pricing teams. GLMs, GBMs, SHAP relativities, credibility, rate optimisation, demand modelling, interaction detection, exposure curves, spatial territory rating. The full workflow, done properly. One price, everything included.</p>
+  <p>Twelve modules written specifically for UK personal lines pricing teams. GLMs, GBMs, SHAP relativities, credibility, rate optimisation, demand modelling, interaction detection, model monitoring, spatial territory rating. The full workflow, done properly. Free and open.</p>
   <div class="final-cta-actions">
-    <a href="#waitlist" class="btn btn-primary btn-lg">Join the waitlist</a>
+    <a href="/course/" class="btn btn-primary btn-lg">Start the course</a>
     <a href="#modules" class="btn btn-outline btn-lg">Review the modules</a>
   </div>
 </section>

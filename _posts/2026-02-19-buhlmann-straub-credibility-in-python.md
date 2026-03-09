@@ -331,6 +331,6 @@ For multi-dimensional crossed effects (vehicle group and driver age and postcode
 ---
 
 **Related articles from Burning Cost:**
-- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/09/your-broker-adjustments-are-guesswork/)
-- [Experience Rating: NCD and Bonus-Malus](/2026/03/07/experience-rating-ncd-bonus-malus/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/)
+- [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

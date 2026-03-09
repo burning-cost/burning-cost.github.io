@@ -146,7 +146,7 @@ It probably is not the right choice if:
 
 ## Getting started
 
-All 28 libraries are on PyPI. Install any of them individually:
+All 25 libraries are on PyPI. Install any of them individually:
 
 ```
 pip install shap-relativities
@@ -156,7 +156,7 @@ pip install rate-optimiser
 
 The [full library index](/tools/) lists every library with pip install commands, links to GitHub repos, and links to relevant blog posts. Each library ships with a Databricks notebook demo on synthetic UK motor data.
 
-If you are moving from Emblem to Python, the [training course](/course/) covers the transition — GLMs in Python, GBM pricing, SHAP relativities, conformal prediction intervals, and constrained rate optimisation. Eight modules, written for pricing actuaries who already know what they are doing.
+If you are moving from Emblem to Python, the [training course](/course/) covers the transition — GLMs in Python, GBM pricing, SHAP relativities, conformal prediction intervals, and constrained rate optimisation. Twelve modules, free and open, written for pricing actuaries who already know what they are doing.
 
 ---
 

@@ -294,6 +294,6 @@ The generic tools are not going to add Tweedie marginals or exposure-weighted KS
 ---
 
 **Related articles from Burning Cost:**
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
-- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)

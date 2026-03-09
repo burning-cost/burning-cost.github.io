@@ -288,5 +288,5 @@ The burning cost gives you the centre. The quantile model gives you the tail. Bo
 ---
 
 **Related articles from Burning Cost:**
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/08/insurance-distributional/)
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
