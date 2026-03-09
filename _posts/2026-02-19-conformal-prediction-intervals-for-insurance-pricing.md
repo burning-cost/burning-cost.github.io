@@ -63,7 +63,7 @@ interval = ŷ ± q × ŷ^(p/2)
 
 where q is the calibration quantile. This produces intervals that automatically widen proportionally with risk size, which is what the data's variance structure requires.
 
-The practical effect is approximately 30% narrower intervals with identical coverage guarantees. This is not free - you are paying with a slightly more involved score function - but it is an improvement with no downside. The result is based on Manna et al. (2025), arXiv:2507.06921.
+The practical effect is approximately 30% narrower intervals with identical coverage guarantees. This is not free - you are paying with a slightly more involved score function - but it is an improvement with no downside. The result is based on Manna (2025), arXiv:2507.06921.
 
 ---
 

@@ -147,7 +147,7 @@ We want to be clear about what this library does and does not solve.
 
 ## The Regulatory Incentive
 
-FCA EP25/2, published in December 2025, confirmed that the GIPP remedies are working in motor — the evaluation estimated £1.6 billion in consumer savings since January 2022. The FCA is watching whether firms are using segment-level elasticity appropriately. A firm that cannot demonstrate how it computed renewal elasticity estimates, or that cannot show the estimates are defensible at a segment level, is exposed under Consumer Duty.
+FCA EP25/2, published in July 2025, confirmed that the GIPP remedies are working in motor — the evaluation estimated £1.6 billion in consumer savings since January 2022. The FCA is watching whether firms are using segment-level elasticity appropriately. A firm that cannot demonstrate how it computed renewal elasticity estimates, or that cannot show the estimates are defensible at a segment level, is exposed under Consumer Duty.
 
 A causal elasticity model with an explicit audit trail — treatment variation diagnostics, CI-bounded estimates, ENBP compliance reports per policy — is not just better pricing. It is a defensible methodology.
 
