@@ -305,3 +305,10 @@ On motor PCW datasets, the DML estimate is commonly lower in absolute magnitude 
 Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodology in their demand modules. The methodology is not proprietary. The `insurance-demand` library is the same maths in an auditable Python package with no vendor lock-in, a clean sklearn-compatible API, and a data structure that your existing Polars and CatBoost workflow already understands.
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-demand).
+
+---
+
+**Related articles from Burning Cost:**
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
+- [Your Renewal Pricing Is Flying Blind](/2026/03/08/your-renewal-pricing-is-flying-blind/)
+- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)

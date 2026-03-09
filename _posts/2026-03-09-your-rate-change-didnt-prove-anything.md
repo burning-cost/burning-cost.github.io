@@ -218,3 +218,10 @@ The source is at [github.com/burning-cost/insurance-causal-policy](https://githu
 ---
 
 A before/after chart is not evidence. It is a description of what happened. The question — whether the rate change caused what happened — requires a counterfactual. This library builds the counterfactual.
+
+---
+
+**Related articles from Burning Cost:**
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
+- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

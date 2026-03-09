@@ -189,3 +189,10 @@ uv add "rate-optimiser[stochastic]"
 Source and issue tracker on [GitHub](https://github.com/burning-cost/rate-optimiser). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
 
 The `feasibility_report()` method is the first thing to run before any solve. If your constraints are infeasible at current rates, the solver will tell you - and that is itself useful information about the portfolio.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Rate Changes Are Leaving Money on the Table](/2026/03/08/insurance-optimise/)
+- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)
+- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)

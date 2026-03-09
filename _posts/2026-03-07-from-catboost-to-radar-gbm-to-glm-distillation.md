@@ -213,3 +213,10 @@ Python 3.10 or later. The library requires polars >= 0.20, numpy >= 1.24, scikit
 The source is at [github.com/burning-cost/insurance-distill](https://github.com/burning-cost/insurance-distill). The `README.md` has a worked example on synthetic motor data. Issues and pull requests welcome.
 
 One thing the library does not do: it does not tell you whether the Gini retention on your specific dataset is acceptable. A 93% Gini ratio on a 0.28 Gini model retains more absolute discrimination than a 97% ratio on a 0.12 Gini model. The right threshold depends on your book, your rating structure, and what the pricing committee considers material. That judgement remains yours.
+
+---
+
+**Related articles from Burning Cost:**
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
+- [From GBM to Radar: A Complete Databricks Workflow for Pricing Actuaries](/2026/03/06/from-gbm-to-radar-databricks-workflow/)
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)

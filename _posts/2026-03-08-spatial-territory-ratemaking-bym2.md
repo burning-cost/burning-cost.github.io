@@ -341,3 +341,10 @@ Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning
 - Gschlohl, S., Czado, C., & Held, L. (2019). Spatial statistical modelling of insurance risk: a spatial epidemiological approach to car insurance. *Scandinavian Actuarial Journal*.
 - Besag, J., York, J., & Mollie, A. (1991). Bayesian image restoration, with two applications in spatial statistics. *Annals of the Institute of Statistical Mathematics*, 43(1), 1-59.
 - Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., & Burkner, P.C. (2021). Rank-normalization, folding, and localization: an improved R-hat for assessing convergence of MCMC. *Bayesian Analysis*, 16(2), 667-718.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Territory Banding Is Wrong](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [From CatBoost to Radar in 50 Lines of Python](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)

@@ -203,3 +203,10 @@ The Bühlmann-Straub framework has been in actuarial syllabuses since the 1970s.
 ---
 
 `insurance-multilevel` is open source under the MIT licence at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `pip install insurance-multilevel`. 61 tests passing. Requires Python 3.10+, CatBoost, Polars, and SciPy.
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
+- [Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Your NCD Threshold Advice Is Wrong at 65%](/2026/03/07/experience-rating-ncd-bonus-malus/)

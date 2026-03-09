@@ -283,3 +283,10 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-spatial). The li
 - Brockman, M.J., & Wright, T.S. (1992). Statistical motor rating: making effective use of your data. *Journal of the Institute of Actuaries*, 119, 457-543.
 - Besag, J., York, J., & Mollié, A. (1991). Bayesian image restoration, with two applications in spatial statistics. *Annals of the Institute of Statistical Mathematics*, 43(1), 1-59.
 - Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., & Bürkner, P.C. (2021). Rank-normalization, folding, and localization: An improved R-hat for assessing convergence of MCMC. *Bayesian Analysis*, 16(2), 667-718.
+
+---
+
+**Related articles from Burning Cost:**
+- [Getting Spatial Territory Factors Into Production](/2026/03/08/spatial-territory-ratemaking-bym2/)
+- [Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)

@@ -165,3 +165,10 @@ uv add 'insurance-validation[shap]'
 ```
 
 The library is at [github.com/burning-cost/insurance-validation](https://github.com/burning-cost/insurance-validation). It is the 21st library in the Burning Cost open source stack for UK insurance pricing.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

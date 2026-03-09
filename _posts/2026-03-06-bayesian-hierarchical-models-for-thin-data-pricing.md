@@ -252,3 +252,10 @@ uv add "bayesian-pricing[numpyro]"
 Source is on [GitHub](https://github.com/burning-cost/bayesian-pricing). The library is at version 0.1.0 - the core frequency and severity models are stable, and we consider the API for `HierarchicalFrequency`, `HierarchicalSeverity`, and `BayesianRelativities` settled. What is not yet built: spatial CAR components for geographic smoothing, temporal random walks for time-varying risk profiles, and the Credibility Transformer integration (Richman, Scognamiglio & Wüthrich, arXiv:2409.16653). Those are on the roadmap.
 
 The thin-cell problem is not going away. If anything it is getting worse as personal lines pricing moves toward more granular segmentation. Partial pooling is the principled answer. Use it.
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
+- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)

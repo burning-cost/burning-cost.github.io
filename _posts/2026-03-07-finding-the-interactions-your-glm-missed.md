@@ -235,3 +235,10 @@ The minimum viable workflow is two calls: `detector.fit()` and `detector.interac
 For most UK personal lines teams, the interesting result will be that the interactions flagged by the automated search are not the ones that have been in the GLM for years. The ones in the GLM are the ones that looked obvious. The interesting ones are the ones that are not obvious but are in the data - the area × NCD interaction where high-NCD drivers in urban postcodes behave differently than you would expect from either factor alone, or the vehicle age × annual mileage interaction where high-mileage drivers in old vehicles represent a meaningfully different risk profile.
 
 Those are the interactions your GLM missed. The library finds them.
+
+---
+
+**Related articles from Burning Cost:**
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
+- [From CatBoost to Radar in 50 Lines of Python](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)
+- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)

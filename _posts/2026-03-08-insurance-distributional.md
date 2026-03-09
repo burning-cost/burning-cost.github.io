@@ -280,3 +280,10 @@ The expected loss is necessary. It is not sufficient. Two risks at £350 are not
 ---
 
 *`insurance-distributional` is open source under MIT licence. It is the first open-source implementation of the So & Valdez ASTIN 2024 Best Paper approach. Source, tests, and documentation on [GitHub](https://github.com/burning-cost/insurance-distributional).*
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
+- [Your Excess-of-Loss Pricing Has No Curves](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)

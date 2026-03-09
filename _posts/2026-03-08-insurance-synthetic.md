@@ -290,3 +290,10 @@ The best starting point is `synth.summary()` after fitting — look at which mar
 The library is at v0.1.0 — API stability will improve as we use it in anger on real UK motor books. If you hit edge cases, particularly on high-cardinality categorical columns or unusual exposure distributions, we want to know.
 
 The generic tools are not going to add Tweedie marginals or exposure-weighted KS statistics any time soon. DataCebo's SDV roadmap is finance and healthcare. The actuarial gap is real, and it is ours to fill.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
