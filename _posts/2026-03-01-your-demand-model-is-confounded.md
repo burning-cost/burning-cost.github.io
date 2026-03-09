@@ -43,101 +43,15 @@ Post-PS21/11, this matters even more. The FCA's GIPP remedies (PS21/11, effectiv
 
 ## The Double Machine Learning fix
 
-Double Machine Learning (DML), from Chernozhukov et al.'s 2018 paper in *The Econometrics Journal*, solves the confounding problem by separating what the confounders explain from what the price explains.
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
-The model is:
-
-```
-Y = theta * D + g(X) + epsilon
-D = m(X) + v
-```
-
-Y is the outcome (conversion or renewal indicator). D is the treatment (log price ratio: log of quoted price divided by technical premium). X is the set of confounders (risk features, channel, time period). theta is the elasticity you want. g(X) and m(X) are unknown nonlinear functions.
-
-The algorithm:
-
-1. Fit a flexible model - we use CatBoost - to predict Y from X. Compute residuals: Y_tilde = Y - predicted_Y.
-2. Fit a separate CatBoost model to predict D from X. Compute residuals: D_tilde = D - predicted_D.
-3. Regress Y_tilde on D_tilde via OLS. The coefficient is theta.
-
-The residualised treatment D_tilde is the part of the price variation that is not explained by risk characteristics. It is the exogenous variation: the pricing decisions that were not mechanically driven by the risk profile. Seasonal rate changes, portfolio rebalancing exercises, manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect.
-
-Both residualisation steps use 5-fold cross-fitting: the nuisance models are trained on held-out folds and the residuals are computed on the fold not used for training. Cross-fitting prevents overfitting bias from leaking into the final estimate. The mathematical guarantee (Neyman orthogonality) is that errors in steps 1 and 2 produce only second-order bias in theta, not first-order. You get a valid confidence interval.
+The practical upshot: the residualised treatment `D_tilde` is the part of the price variation not explained by risk characteristics — the exogenous variation from seasonal rate changes, portfolio rebalancing, and manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect and produces a valid confidence interval.
 
 ---
 
 ## The full pipeline: conversion, retention, elasticity, demand curve
 
-`insurance-demand` implements this as four connected components.
-
-### Conversion modelling
-
-```bash
-uv add insurance-demand
-```
-
-```python
-import polars as pl
-from insurance_demand import ConversionModel
-from insurance_demand.datasets import load_motor_quotes
-
-df = load_motor_quotes()  # 200k synthetic quotes with known data generating process
-
-model = ConversionModel(
-    base_estimator="catboost",
-    price_col="quoted_price",
-    technical_premium_col="technical_premium",
-    feature_cols=["age_band", "vehicle_group", "ncd_years", "area", "channel",
-                  "rank_position", "price_ratio_to_cheapest"],
-    price_transform="log_ratio",  # models log(price / technical_premium)
-)
-
-model.fit(df.filter(pl.col("quote_date") < "2025-01-01"))
-probs = model.predict_proba(df.filter(pl.col("quote_date") >= "2025-01-01"))
-```
-
-The `price_transform="log_ratio"` option is not optional in practice. A quoted price of £800 means different things for a risk with a technical premium of £700 versus one of £400. The ratio removes this ambiguity. The model is estimating how conversion responds to pricing above or below technical, which is the commercial decision you are actually making.
-
-If you have aggregator data - competitor prices from Consumer Intelligence or eBenchmarkers - include `rank_position` and `price_ratio_to_cheapest`. In 2024, 63% of UK motor insurance switchers used a PCW. On a PCW, being near the top of results matters significantly for conversion, and no smooth function of absolute price captures that visibility effect. A conversion model without rank position is misspecified for PCW business.
-
-### Retention modelling
-
-```python
-from insurance_demand import RetentionModel
-from insurance_demand.datasets import load_motor_renewals
-
-df_renewals = load_motor_renewals()  # 100k synthetic renewal records
-
-model = RetentionModel(
-    model_type="logistic",
-    price_col="renewal_price",
-    price_change_col="price_change_pct",
-    feature_cols=["tenure_years", "ncd_years", "payment_method",
-                  "claim_count_3yr", "channel"],
-    event_col="lapsed",
-)
-
-model.fit(df_renewals)
-renewal_probs = model.predict_proba(df_renewals)
-```
-
-For customer lifetime value modelling, the logistic single-renewal model is insufficient. You need a multi-period renewal probability, which requires survival analysis. Weibull AFT gives a parametric hazard function and handles the mid-term censoring problem correctly - policies that have not yet reached renewal are not treated as definitive non-lapses:
-
-```python
-model = RetentionModel(
-    model_type="survival_weibull",
-    tenure_col="tenure_years",
-    event_col="lapsed",
-    price_col="renewal_price",
-    price_change_col="price_change_pct",
-    feature_cols=["ncd_years", "payment_method", "claim_count_3yr", "channel"],
-)
-
-model.fit(df_renewals)
-survival_curve = model.predict_survival(df_renewals, times=[1, 2, 3, 5])
-```
-
-Post-PS21/11, the commercial game for renewals is CLV optimisation rather than inertia extraction. You cannot charge loyal customers more than new customers for the same risk. What you can do is identify which customers will lapse without a discount (high elasticity) and offer targeted retention discounts to them. For that, you need multi-period renewal probabilities. Survival models provide them. Logistic renewal models do not.
+`insurance-demand` implements this as four connected components. For the full `ConversionModel` and `RetentionModel` setup — including the `price_transform="log_ratio"` choice, the PCW rank position features, and CLV survival modelling — see [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/). What follows here is the causal estimation layer that sits on top of those base models.
 
 ### Debiased elasticity estimation
 

@@ -7,6 +7,8 @@ tags: [rate-optimisation, efficient-frontier, pricing, python, FCA]
 description: "How to build a rate change that meets a target loss ratio, respects movement caps, and minimises cross-subsidy simultaneously. Linear programming for UK personal lines pricing teams."
 ---
 
+This post covers **factor-level** tariff optimisation — adjusting multiplicative rating factor relativities subject to constraints. For policy-level optimisation that finds the optimal price multiplier per individual risk, see [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/).
+
 Most of the UK personal lines pricing teams we have spoken to run their rate change process the same way. Someone builds a scenario in Excel. They apply a set of factor adjustments, sum the expected loss ratios across the portfolio, check it against the LR target, and iterate. If the numbers look acceptable, the scenario goes to the underwriting director.
 
 It works. The problems are structural.

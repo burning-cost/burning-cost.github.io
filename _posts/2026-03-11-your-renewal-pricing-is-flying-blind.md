@@ -35,15 +35,9 @@ This is not a modelling failure. It is a consequence of the data-generating proc
 
 ## Double Machine Learning
 
-Double Machine Learning (DML), introduced by Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey and Robins in their 2018 *Econometrics Journal* paper, addresses this through a partialling-out procedure:
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. Both residualisation steps use cross-fitting to prevent overfitting bias, and the resulting elasticity estimate is root-n-consistent and asymptotically normal. For the full mathematical procedure and Neyman orthogonality guarantee, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
-**Step 1 — Treatment model.** Train an ML model to predict log price change from risk factors. Call the predictions `E[D|X]`, the residuals `D_tilde = D - E[D|X]`.
-
-**Step 2 — Outcome model.** Train a separate ML model to predict renewal from risk factors (not from price). Call the residuals `Y_tilde = Y - E[Y|X]`.
-
-**Step 3 — Causal estimate.** Regress `Y_tilde` on `D_tilde`. Because both residuals have been purged of the variation explained by risk factors, what remains in `D_tilde` is the part of the price change *not driven by risk*. This is exogenous variation — manual overrides, bulk re-rating decisions, competitive environment effects — and the regression of renewal residuals on price residuals gives an approximately unbiased causal estimate.
-
-Cross-fitting (training the nuisance models on held-out folds) prevents the nuisance models from overfitting and biasing the final estimate. The resulting elasticity estimate is root-n-consistent and asymptotically normal under conditions that are achievable with real insurance data.
+The key point for renewal pricing: what remains in `D_tilde = D - E[D|X]` after partialling out risk factors is the part of the price change *not driven by risk* — manual overrides, bulk re-rating decisions, competitive environment effects. This is exogenous variation, and regressing renewal residuals on price residuals gives an approximately unbiased causal estimate.
 
 For heterogeneous elasticity — the question of which customers are more or less price-sensitive — CausalForestDML extends this by fitting a causal forest on the residuals. Rather than a single average elasticity, you get a separate estimate for each customer, with confidence intervals.
 

@@ -41,21 +41,9 @@ Double Machine Learning tells you.
 
 ## The DML approach
 
-The foundational paper is Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey and Robins (2018), "Double/Debiased Machine Learning for Treatment and Structural Parameters", _The Econometrics Journal_, 21(1): C1-C68. The mathematical result they prove is: you can isolate the causal effect of D on Y from observational data if you correctly partial out the confounders, and you can use ML to do the partialling out without the regularisation bias destroying your inference.
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure, cross-fitting details, and theoretical guarantees, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
-The key procedure is three steps:
-
-**Step 1.** Fit a flexible model (we use CatBoost, but any gradient booster or neural net works) to predict Y from X. Subtract: this is the residualised outcome, Ỹ = Y - E[Y|X].
-
-**Step 2.** Fit a separate flexible model to predict D from X. Subtract: residualised treatment, D̃ = D - E[D|X].
-
-**Step 3.** Regress Ỹ on D̃ with OLS. The coefficient is θ̂.
-
-The intuition: D̃ is the part of the treatment that cannot be explained by the confounders. It is the exogenous variation in D - the variation that is not systematically correlated with risk characteristics. Regressing the residualised outcome on residualised treatment isolates the causal channel.
-
-The mathematical guarantee (the "debiasing" in the name): even though the ML models in steps 1 and 2 introduce regularisation bias, those biases cancel in the final regression at order δ² rather than δ. When ML convergence rates are √n or faster - which they are for CatBoost on most insurance datasets - the bias in θ̂ is negligible relative to its standard error. You get a valid confidence interval.
-
-**Cross-fitting** prevents overfitting bias: the nuisance models in steps 1 and 2 are trained on held-out folds, so the residuals used in step 3 are not on data the ML model has already seen. Use 5-fold cross-fitting as the default.
+The key intuition: the residualised treatment `D̃ = D - E[D|X]` is the part of the treatment that cannot be explained by the confounders — the exogenous variation. Regressing residualised outcomes on residualised treatment isolates the causal channel. Even though ML models introduce regularisation bias in the nuisance steps, those biases cancel at second order (Neyman orthogonality), leaving a valid confidence interval on the causal estimate.
 
 ---
 

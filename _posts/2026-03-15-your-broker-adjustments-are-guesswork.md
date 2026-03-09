@@ -206,6 +206,14 @@ The Bühlmann-Straub framework has been in actuarial syllabuses since the 1970s.
 
 ---
 
+## When to use which credibility approach
+
+This library is the right tool when you need to adjust for group-level residuals from a GBM pricing model — broker, scheme, or territory effects that the risk model cannot capture. The two-stage CatBoost + REML architecture keeps the stages clean and produces credibility-weighted adjustments that compose multiplicatively with the technical price.
+
+For segment-level credibility pricing without a GBM stage — where you want to blend thin segment loss experience with a portfolio prior using explicit EPV/VHM decomposition and K factors — see [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/). For full Bayesian posteriors with multiple crossed rating dimensions and Poisson or Gamma likelihoods, see [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/).
+
+---
+
 **Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)

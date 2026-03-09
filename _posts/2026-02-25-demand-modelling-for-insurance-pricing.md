@@ -151,15 +151,7 @@ This matters for pricing decisions. A renewal optimiser built on an overstated p
 
 ## Unbiased elasticity via Double Machine Learning
 
-The `ElasticityEstimator` class implements Double Machine Learning (DML), from Chernozhukov et al.'s 2018 paper in *The Econometrics Journal*. DML removes confounding bias by residualising both the outcome and the treatment on the set of observed confounders, then regressing the outcome residuals on the treatment residuals.
-
-The algorithm, concretely:
-
-1. Fit E[conversion | confounders] using CatBoost. Compute residuals: Ỹ = conversion - predicted\_conversion.
-2. Fit E[log\_price\_ratio | confounders] using CatBoost. Compute residuals: D̃ = log\_price\_ratio - predicted\_log\_price\_ratio.
-3. Regress Ỹ on D̃ via OLS. The coefficient is the debiased elasticity estimate.
-
-Both steps use 5-fold cross-fitting to ensure nuisance estimation errors are asymptotically independent. The result is a √n-consistent estimate with a valid confidence interval.
+The `ElasticityEstimator` class implements Double Machine Learning (DML), from Chernozhukov et al.'s 2018 paper in *The Econometrics Journal*. DML removes confounding bias by partialling out confounders from both the outcome and the treatment using flexible ML models. For the full mathematical procedure and why this produces a valid confidence interval, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
 ```python
 from insurance_demand import ElasticityEstimator

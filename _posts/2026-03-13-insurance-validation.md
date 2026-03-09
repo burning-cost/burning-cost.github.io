@@ -13,7 +13,7 @@ We have seen what this looks like in practice. A pricing actuary opens a folder 
 
 This is not a PRA-compliant model validation. It is a collection of artefacts that gives the appearance of validation without the substance.
 
-SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring — structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. And the FCA's TR24/2 (August 2024) thematic review found that documentation failures — not model failures — are the primary enforcement trigger.
+SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring — structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. On the enforcement side, FCA TR24/2 (August 2024) confirmed that documentation failures are the primary trigger — for the full regulatory context on SS1/23 scope and direction of travel, see [Model Risk Governance for UK Insurers](/2026/03/19/your-model-risk-register-is-a-spreadsheet/).
 
 A PowerPoint deck does not meet this bar. [`insurance-validation`](https://github.com/burning-cost/insurance-validation) does.
 

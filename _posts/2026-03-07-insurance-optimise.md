@@ -7,6 +7,8 @@ tags: [optimisation, portfolio-pricing, enbp, fca, slsqp, elasticity, renewal-pr
 description: "Applying rate changes without solving the demand-constraint system simultaneously is a guaranteed route to suboptimal profit. insurance-optimise is an open-source constrained portfolio rate optimiser for UK personal lines — SLSQP, analytical Jacobians, FCA ENBP enforcement, shadow prices."
 ---
 
+This post covers **policy-level** profit optimisation — finding the optimal price multiplier for each individual risk given elasticity estimates. For factor-level tariff optimisation that adjusts multiplicative rating factor relativities, see [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/).
+
 The typical UK personal lines pricing cycle works like this. The technical model produces a set of risk-adequate prices. Separately, a demand model estimates how customers will respond to price changes. Someone — often the Chief Pricing Actuary, in a spreadsheet — then tries to reconcile the two: applying rate changes that are technically justified, commercially viable, and ENBP-compliant, while watching the portfolio loss ratio and not shocking customers with 40% increases.
 
 This manual reconciliation process produces rates that are approximately right and definitively not optimal. It cannot be optimal because it is not solving the joint problem. It is solving a sequence of sub-problems that interact with each other in ways that manual iteration cannot fully untangle.
