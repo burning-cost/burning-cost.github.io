@@ -168,11 +168,6 @@ permalink: /course/
         <div class="build-card-desc">CANN-based Neural Interaction Detection on your GLM residuals, ranked candidates with LR test results after Bonferroni correction, and a rebuilt GLM with the approved interactions.</div>
       </div>
       <div class="build-card">
-        <span class="build-card-num">Module 11</span>
-        <div class="build-card-title">ILF tables and a priced per-risk XL layer</div>
-        <div class="build-card-desc">MBBEFD exposure curves fitted to claims data, increased limits factor tables, and a per-risk excess-of-loss layer price using the exposure rating method. London market ready.</div>
-      </div>
-      <div class="build-card">
         <span class="build-card-num">Module 12</span>
         <div class="build-card-title">Territory relativities with spatial smoothing and credibility intervals</div>
         <div class="build-card-desc">BYM2 spatial Bayesian model fitted to postcode sector claim frequencies, territory factors with 95% credibility intervals, a choropleth map, and integration into a downstream GLM as a log-offset.</div>
@@ -437,30 +432,6 @@ permalink: /course/
       </div>
     </div>
 
-    <!-- Module 11 -->
-    <div class="module-card available">
-      <div class="module-card-header">
-        <span class="module-num-badge">11</span>
-        <div class="module-card-content">
-          <div class="module-card-title">Exposure Curves and ILFs</div>
-          <div class="module-card-desc">Move up the tower. Exposure curves, MBBEFD distributions, and per-risk excess-of-loss pricing for London market and commercial lines work.</div>
-        </div>
-        <div class="module-status"><span class="badge badge-available">Available</span></div>
-      </div>
-      <div class="module-card-detail">
-        <ul class="module-covers">
-          <li>What an exposure curve is and why it is the right tool when burning cost has insufficient large losses</li>
-          <li>The MBBEFD distribution family: Swiss Re standard curves and how to fit your own from truncated and censored claims data</li>
-          <li>Building ILF tables and understanding the marginal ILF structure</li>
-          <li>Pricing a per-risk XL layer from a cedant's risk profile using the exposure rating method</li>
-          <li>Lee diagrams for communicating results to underwriters</li>
-        </ul>
-        <div class="module-links">
-          <a href="/course/module-11/" class="module-link">Module overview</a>
-        </div>
-      </div>
-    </div>
-
     <!-- Module 12 -->
     <div class="module-card available">
       <div class="module-card-header">
@@ -567,12 +538,6 @@ permalink: /course/
           <div>
             <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-interactions" target="_blank">insurance-interactions</a></div>
             <div class="proof-lib-desc">Automated GLM interaction detection (CANN/NID)</div>
-          </div>
-        </div>
-        <div class="proof-lib-item">
-          <div>
-            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-ilf" target="_blank">insurance-ilf</a></div>
-            <div class="proof-lib-desc">MBBEFD exposure curves and ILF tables</div>
           </div>
         </div>
       </div>
