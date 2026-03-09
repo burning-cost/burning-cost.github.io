@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   {% feed_meta %}
   {% seo %}
-  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.svg">{% endif %}
+  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.png">{% endif %}
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1594,6 +1594,8 @@
 
     /* ── Responsive ──────────────────────────────────────────────── */
 
+    .nav-hamburger { display: none; }
+
     @media (max-width: 1024px) {
       .workflow-track {
         padding-bottom: 0.5rem;
@@ -1616,7 +1618,11 @@
       .stats-inner { gap: 0; flex-wrap: wrap; }
       .stat { flex: 1 1 40%; padding: 0.75rem 1rem; }
       .stat + .stat::before { display: none; }
-      .nav-links { display: none; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(15,17,23,0.98); border-bottom: 1px solid #1e2535; padding: 0.75rem 1rem; gap: 0; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-links a { display: block; padding: 0.6rem 0.75rem; }
+      .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
       .post-grid { grid-template-columns: 1fr; }
       .price-cards { flex-direction: column; }
       .lib-grid { grid-template-columns: 1fr; }
@@ -1664,6 +1670,7 @@
   <nav class="nav" id="main-nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">Burning<span class="logo-accent">Cost</span></a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/" class="active">Home</a></li>
         <li><a href="/course/">Course</a></li>
@@ -1672,6 +1679,17 @@
         <li><a href="/course/#waitlist" class="nav-cta">Join waitlist</a></li>
       </ul>
     </div>
+  <script>
+    (function() {
+      var btn = document.getElementById('nav-hamburger');
+      var links = document.querySelector('.nav-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    })();
+  </script>
   </nav>
 
   {{ content }}

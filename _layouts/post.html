@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   {% feed_meta %}
   {% seo %}
-  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.svg">{% endif %}
+  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.png">{% endif %}
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -114,6 +114,8 @@
     }
 
     .nav-cta:hover { background: var(--accent-hover) !important; }
+
+    .nav-hamburger { display: none; }
 
     /* ── Article header ──────────────────────────────────────────── */
 
@@ -419,7 +421,11 @@
 
     @media (max-width: 768px) {
       .article-header { padding: 2.5rem 1.25rem 2rem; }
-      .nav-links { display: none; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(15,17,23,0.98); border-bottom: 1px solid #1e2535; padding: 0.75rem 1rem; gap: 0; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-links a { display: block; padding: 0.6rem 0.75rem; }
+      .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
       .article-body { padding: 2rem 1.25rem 3rem; }
       .article-content pre { padding: 1rem; }
     }
@@ -431,6 +437,7 @@
   <nav class="nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">Burning<span>Cost</span></a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/course/">Course</a></li>
@@ -439,6 +446,17 @@
         <li><a href="mailto:pricing.frontier@gmail.com?subject=Waitlist%3A%20Modern%20Insurance%20Pricing%20with%20Python%20and%20Databricks" class="btn btn-primary nav-cta">Join waitlist</a></li>
       </ul>
     </div>
+  <script>
+    (function() {
+      var btn = document.getElementById('nav-hamburger');
+      var links = document.querySelector('.nav-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    })();
+  </script>
   </nav>
 
   <!-- Article header -->
