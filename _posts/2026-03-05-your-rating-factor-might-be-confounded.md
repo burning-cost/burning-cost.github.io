@@ -236,6 +236,6 @@ The right use of this library is not to replace your GLM. It is to audit the cau
 ---
 
 **Related articles from Burning Cost:**
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/09/your-rate-change-didnt-prove-anything/)
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/19/your-rate-change-didnt-prove-anything/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)

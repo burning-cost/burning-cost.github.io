@@ -215,6 +215,6 @@ For segment-level credibility pricing without a GBM stage — where you want to 
 ---
 
 **Related articles from Burning Cost:**
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
-- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Experience Rating: NCD and Bonus-Malus](/2026/03/07/experience-rating-ncd-bonus-malus/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

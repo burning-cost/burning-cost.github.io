@@ -222,6 +222,6 @@ A before/after chart is not evidence. It is a description of what happened. The 
 ---
 
 **Related articles from Burning Cost:**
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)

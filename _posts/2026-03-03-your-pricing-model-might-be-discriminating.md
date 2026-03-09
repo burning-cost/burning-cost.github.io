@@ -333,6 +333,6 @@ The fairness-accuracy trade-off is real. But "we did not audit this because we w
 ---
 
 **Related articles from Burning Cost:**
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/07/your-rating-factor-might-be-confounded/)
-- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/09/insurance-validation/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)

@@ -287,6 +287,6 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-spatial). The li
 ---
 
 **Related articles from Burning Cost:**
-- [Getting Spatial Territory Factors Into Production](/2026/03/08/spatial-territory-ratemaking-bym2/)
-- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/07/your-pricing-model-might-be-discriminating/)
+- [Getting Spatial Territory Factors Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)

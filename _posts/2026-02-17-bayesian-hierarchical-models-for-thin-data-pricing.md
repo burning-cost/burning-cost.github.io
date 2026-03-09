@@ -264,6 +264,6 @@ For simpler one-dimensional segment blending in scheme or affinity pricing — w
 ---
 
 **Related articles from Burning Cost:**
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
-- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/09/your-broker-adjustments-are-guesswork/)
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

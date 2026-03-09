@@ -324,6 +324,6 @@ The libraries that commercial platforms sell for significant annual fees are doi
 ---
 
 **Related articles from Burning Cost:**
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/07/your-demand-model-is-confounded/)
-- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/08/your-renewal-pricing-is-flying-blind/)
-- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/08/insurance-optimise/)
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
+- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/11/your-renewal-pricing-is-flying-blind/)
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)

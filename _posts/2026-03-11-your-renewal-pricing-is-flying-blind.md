@@ -166,6 +166,6 @@ If your renewal demand model gives you a single price sensitivity parameter and 
 ---
 
 **Related articles from Burning Cost:**
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/07/your-demand-model-is-confounded/)
-- [Survival Models for Insurance Retention](/2026/03/08/survival-models-for-insurance-retention/)
-- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/08/insurance-optimise/)
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
+- [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/)
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)

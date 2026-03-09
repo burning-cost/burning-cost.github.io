@@ -284,5 +284,5 @@ The expected loss is necessary. It is not sufficient. Two risks at £350 are not
 ---
 
 **Related articles from Burning Cost:**
-- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/08/insurance-quantile/)
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
