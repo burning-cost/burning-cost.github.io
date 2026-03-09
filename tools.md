@@ -353,6 +353,10 @@ Structured PRA SS1/23 model validation reports covering nine required sections, 
 `pip install insurance-validation`
 &rarr; [Model validation reports for PRA SS1/23](https://burning-cost.github.io/2026/03/13/insurance-validation/)
 
+**[insurance-calibration](https://github.com/burning-cost/insurance-calibration)**
+Balance property testing, auto-calibration curves, Murphy score decomposition. Detect and correct systematic bias in predicted frequencies and severities before deployment.
+`pip install insurance-calibration`
+
 **[insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)**
 Exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for deployed models. Scheduled monitoring with alert thresholds, not one-off validation.
 `pip install insurance-monitoring`
