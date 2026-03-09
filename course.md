@@ -220,14 +220,14 @@ permalink: /course/
     </div>
 
     <!-- Module 03 -->
-    <div class="module-card">
+    <div class="module-card available">
       <div class="module-card-header">
         <span class="module-num-badge">03</span>
         <div class="module-card-content">
           <div class="module-card-title">GBMs for Insurance Pricing</div>
           <div class="module-card-desc">CatBoost with Poisson, Gamma, and Tweedie objectives. Walk-forward cross-validation with IBNR buffers so you are not lying to yourself about out-of-sample performance.</div>
         </div>
-        <div class="module-status"><span class="badge badge-soon">Coming soon</span></div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
       </div>
       <div class="module-card-detail">
         <ul class="module-covers">
@@ -237,6 +237,10 @@ permalink: /course/
           <li>Optuna hyperparameter tuning and MLflow experiment tracking</li>
           <li>Proper GBM-vs-GLM comparison: Gini, calibration curves, and double-lift charts</li>
         </ul>
+        <div class="module-links">
+          <a href="/course/module-03/" class="module-link">Module overview</a>
+          <a href="/course/module-03/tutorial.md" class="module-link">Preview tutorial</a>
+        </div>
       </div>
     </div>
 
@@ -266,14 +270,14 @@ permalink: /course/
     </div>
 
     <!-- Module 05 -->
-    <div class="module-card">
+    <div class="module-card available">
       <div class="module-card-header">
         <span class="module-num-badge">05</span>
         <div class="module-card-content">
           <div class="module-card-title">Conformal Prediction Intervals</div>
           <div class="module-card-desc">Prediction intervals with a finite-sample coverage guarantee that does not depend on distributional assumptions. Calibrated to your holdout data.</div>
         </div>
-        <div class="module-status"><span class="badge badge-soon">Coming soon</span></div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
       </div>
       <div class="module-card-detail">
         <ul class="module-covers">
@@ -283,6 +287,10 @@ permalink: /course/
           <li>Intervals roughly 30% narrower than the naive approach, with identical coverage</li>
           <li>Using intervals to flag uncertain risks and set minimum premium floors</li>
         </ul>
+        <div class="module-links">
+          <a href="/course/module-05/" class="module-link">Module overview</a>
+          <a href="/course/module-05/tutorial.md" class="module-link">Preview tutorial</a>
+        </div>
       </div>
     </div>
 
@@ -312,14 +320,14 @@ permalink: /course/
     </div>
 
     <!-- Module 07 -->
-    <div class="module-card">
+    <div class="module-card available">
       <div class="module-card-header">
         <span class="module-num-badge">07</span>
         <div class="module-card-content">
           <div class="module-card-title">Constrained Rate Optimisation</div>
           <div class="module-card-desc">The module most courses do not have. Linear programming for rate changes that hit a target loss ratio, respect movement caps, and minimise cross-subsidy simultaneously.</div>
         </div>
-        <div class="module-status"><span class="badge badge-soon">Coming soon</span></div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
       </div>
       <div class="module-card-detail">
         <ul class="module-covers">
@@ -329,18 +337,22 @@ permalink: /course/
           <li>Shadow price analysis: the marginal cost of tightening the LR target, quantified</li>
           <li>FCA PS21/5 Consumer Duty compliance constraints built into the optimisation</li>
         </ul>
+        <div class="module-links">
+          <a href="/course/module-07/" class="module-link">Module overview</a>
+          <a href="/course/module-07/tutorial.md" class="module-link">Preview tutorial</a>
+        </div>
       </div>
     </div>
 
     <!-- Module 08 -->
-    <div class="module-card">
+    <div class="module-card available">
       <div class="module-card-header">
         <span class="module-num-badge">08</span>
         <div class="module-card-content">
           <div class="module-card-title">End-to-End Pipeline (Capstone)</div>
           <div class="module-card-desc">Every component from Modules 1-7 connected into a working motor pricing pipeline. Not a demonstration: a template for a real project.</div>
         </div>
-        <div class="module-status"><span class="badge badge-soon">Coming soon</span></div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
       </div>
       <div class="module-card-detail">
         <ul class="module-covers">
@@ -350,6 +362,10 @@ permalink: /course/
           <li>Output tables written to Delta: relativities, rate change summary, efficient frontier data, model diagnostics</li>
           <li>Designed to work with your own motor portfolio data with minimal modification</li>
         </ul>
+        <div class="module-links">
+          <a href="/course/module-08/" class="module-link">Module overview</a>
+          <a href="/course/module-08/tutorial.md" class="module-link">Preview tutorial</a>
+        </div>
       </div>
     </div>
 
@@ -364,9 +380,9 @@ permalink: /course/
 
     <div class="proof-grid">
       <div class="proof-card">
-        <p>14 open-source libraries, each solving one well-defined pricing problem. Over 600 tests. Every library used in the course was built by us.</p>
+        <p>28 open-source libraries, each solving one well-defined pricing problem. Over 3,000 tests. Every library used in the course was built by us.</p>
         <div class="proof-card-author">Open source</div>
-        <div class="proof-card-role">github.com/burningcost</div>
+        <div class="proof-card-role">github.com/burning-cost</div>
       </div>
       <div class="proof-card">
         <p>Written for people who already know what a GLM is. No generic data science padding. Every module covers a real pricing workflow problem.</p>
@@ -421,8 +437,8 @@ permalink: /course/
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-distill" target="_blank">insurance-distill</a></div>
-            <div class="proof-lib-desc">GBM-to-GLM distillation for production</div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-deploy" target="_blank">insurance-deploy</a></div>
+            <div class="proof-lib-desc">Champion/challenger pricing framework</div>
           </div>
         </div>
       </div>
@@ -520,7 +536,7 @@ permalink: /course/
 
       <div class="faq-item">
         <div class="faq-q">When will the remaining modules be published?</div>
-        <div class="faq-a">Modules 3, 5, 7, and 8 are in progress. We publish them as they are ready rather than waiting until the full course is complete. When you buy, you get immediate access to published modules and new ones as they land.</div>
+        <div class="faq-a">All eight modules are published and available immediately when you purchase. Future curriculum additions (new techniques, updated exercises) are included at no extra cost.</div>
       </div>
 
       <div class="faq-item">

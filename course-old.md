@@ -232,4 +232,4 @@ Email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com?subject=MVP
 
 ---
 
-*Questions or suggestions on the curriculum? Email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com) or open an issue on our [GitHub](https://github.com/burningcost).*
+*Questions or suggestions on the curriculum? Email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com) or open an issue on our [GitHub](https://github.com/burning-cost).*
