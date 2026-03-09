@@ -72,7 +72,7 @@ The notebook opens in the editor. You will see an empty cell with a grey triangl
 
 If your cluster from Module 5 is still running, click **Connect** in the top right and select it. If it has terminated (clusters auto-terminate after inactivity), start a new cluster: click **Connect > Create new cluster** (or go to the Compute section in the left sidebar). Use the default settings — a single-node cluster with the ML runtime (DBR 15.x) is sufficient for this module.
 
-Databricks Free Edition (Community Edition) clusters have one driver node with no workers. That is fine for everything in this module. MCMC runs on the driver node.
+Databricks Free Edition (Free Edition) clusters have one driver node with no workers. That is fine for everything in this module. MCMC runs on the driver node.
 
 ### Installing PyMC
 
@@ -981,12 +981,12 @@ Now sample. This is the slow step — it runs MCMC:
 #   return_inferencedata=True: Return an ArviZ InferenceData object (recommended).
 #   random_seed=42:      For reproducibility.
 #
-# This takes approximately 3-6 minutes on a Databricks Community Edition cluster.
+# This takes approximately 3-6 minutes on a Databricks Free Edition cluster.
 # The progress bar shows chains running in parallel if cores > 1.
 # Do not stop it early — incomplete chains cannot be used for diagnostics.
 
 print("Fitting hierarchical Bayesian model via NUTS...")
-print("Expected time: 3-6 minutes on Databricks Community Edition.")
+print("Expected time: 3-6 minutes on Databricks Free Edition.")
 print()
 
 with hierarchical_model:
@@ -1005,7 +1005,7 @@ print("Sampling complete.")
 
 **What this does:** Runs NUTS sampling. PyMC will print a progress bar showing the sampling status for each chain.
 
-**Run this cell and wait.** On Databricks Community Edition (single node), this takes 3-6 minutes for 120 districts. A multi-core worker cluster would be faster — see the Databricks Deployment section later in this module.
+**Run this cell and wait.** On Databricks Free Edition (single node), this takes 3-6 minutes for 120 districts. A multi-core worker cluster would be faster — see the Databricks Deployment section later in this module.
 
 **What you should see during sampling:** A progress bar like:
 ```
@@ -1554,7 +1554,7 @@ with hierarchical_model:
     )
 ```
 
-On a 4-core single-node cluster: 4 chains run in parallel, cutting wall-clock time by roughly 3-4×. On Databricks Community Edition (typically 1-2 cores), the chains run sequentially or with limited parallelism. For production models, use a standard cluster with 4-8 cores.
+On a 4-core single-node cluster: 4 chains run in parallel, cutting wall-clock time by roughly 3-4×. On Databricks Free Edition (typically 1-2 cores), the chains run sequentially or with limited parallelism. For production models, use a standard cluster with 4-8 cores.
 
 ### MLflow tracking
 
