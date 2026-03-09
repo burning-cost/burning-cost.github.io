@@ -13,7 +13,7 @@ What you probably do not have: a record of which model priced which renewal quot
 
 That is not a champion/challenger test. It is a comparison exercise. They are not the same thing.
 
-[`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) is our 25th open-source library. It provides the infrastructure that a genuine champion/challenger framework requires: deterministic routing, append-only audit logging, ENBP compliance tracking, insurance-specific KPI computation, bootstrap statistical tests, and an ICOBS 6B.2.51R report. Shadow mode is the default, for reasons we will explain. It is on PyPI at v0.1.1, 146 tests passing.
+[`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) is our 25th open-source library. It provides the infrastructure that a genuine champion/challenger framework requires: deterministic routing, append-only audit logging, ENBP compliance tracking, insurance-specific KPI computation, bootstrap statistical tests, and an ICOBS 6B.2.51R report. It is on PyPI at v0.1.1, 146 tests passing.
 
 ```bash
 uv add insurance-deploy
@@ -25,7 +25,7 @@ uv add insurance-deploy
 
 In most domains where A/B testing is routine, the reward signal arrives quickly. An e-commerce test produces a conversion rate within hours. A recommendation algorithm gets click feedback within minutes. You accumulate evidence, run a z-test, make a decision.
 
-Insurance pricing has a 12–36 month reward tail. The thing you actually care about — whether the new model correctly prices risk — is not observable until claims develop. Claim frequency gives you a signal at six to nine months if you have enough volume. Developed loss ratio takes twelve months minimum, and that is before you account for IBNR on long-tail lines. If you are comparing models on motor after three months, you are comparing noise.
+Insurance pricing has a 12–36 month reward tail. The thing you actually care about (whether the new model correctly prices risk) is not observable until claims develop. Claim frequency gives you a signal at six to nine months if you have enough volume. Developed loss ratio takes twelve months minimum, and that is before you account for IBNR on long-tail lines. If you are comparing models on motor after three months, you are comparing noise.
 
 The power calculation makes this concrete. Assume a mid-size UK motor book: 3,000 bound policies per month to champion, with a 10% challenger split giving 300 per month to challenger. You want to detect a 3 percentage point difference in loss ratio with 80% power at alpha = 0.05. Given typical UK motor LR volatility (sigma approximately 0.26), the challenger arm needs roughly 5,000 bound policies. At 300 per month, that takes 17 months to bind. Add 12 months of claims development. You are looking at 29 months from experiment start to a credible LR comparison.
 
@@ -61,7 +61,7 @@ The library has two modes: `shadow` and `live`. Shadow is the default and we thi
 
 In shadow mode, champion prices every live quote. Challenger runs in parallel on identical inputs, and its outputs are logged but never returned to the customer. There is no pricing difference. There is no regulatory risk. You accumulate challenger predictions alongside champion quotes, then compare them statistically once sufficient data has developed.
 
-Live mode routes a configurable fraction of policies — 10% by default — to the challenger model, which prices their quotes for real. The library raises a warning when you enable it:
+Live mode routes a configurable fraction of policies (10% by default) to the challenger model, which prices their quotes for real. The library raises a warning when you enable it:
 
 ```python
 from insurance_deploy import Experiment
@@ -81,7 +81,7 @@ exp = Experiment(
 
 The Consumer Duty concern is real. PRIN 2A requires firms to ensure customers receive fair value. Two customers with identical risk profiles receiving different prices simultaneously — because one was randomly assigned to a challenger model — is not a clear-cut position. The FCA has not explicitly prohibited A/B pricing tests, but the asymmetry matters: shadow mode has zero regulatory risk; live mode has non-trivial regulatory risk. Get legal sign-off before enabling live in production.
 
-Shadow mode has its own limitation: you cannot observe conversion rate or customer behaviour from challenger pricing, because challenger prices were never shown to customers. If the question is "does the challenger model price risk better?" — shadow mode answers it. If the question is "does the challenger model produce better commercial outcomes?" — you need live mode, and the caveats that come with it.
+Shadow mode has its own limitation: you cannot observe conversion rate or customer behaviour from challenger pricing, because challenger prices were never shown to customers. Shadow mode answers the question of whether the challenger model prices risk better. For commercial outcomes, you need live mode with all its caveats.
 
 For the vast majority of pricing actuaries we work with, "does the challenger model price risk better?" is the right first question.
 
@@ -128,7 +128,7 @@ exp = Experiment(
 )
 ```
 
-`ModelRegistry` is append-only by design: you cannot delete or overwrite a registered version. The model file is SHA-256 hashed at registration and verified at load time. This is not pedantry — it is what "we used model version 2.0 to price this renewal" actually means in an audit context. If the file changed between registration and the audit, verification fails.
+`ModelRegistry` is append-only by design: you cannot delete or overwrite a registered version. The model file is SHA-256 hashed at registration and verified at load time. This is not pedantry; it is what "we used model version 2.0 to price this renewal" actually means in an audit context. If the file changed between registration and the audit, verification fails.
 
 ---
 
@@ -141,11 +141,11 @@ arm = exp.route("POL-12345")
 # Always 'champion' or 'challenger' for this policy_id and experiment name
 ```
 
-This is deterministic: given the same policy_id and experiment name, you get the same routing decision every time. That is not a minor implementation detail. It is the property that makes the audit trail meaningful.
+This is deterministic: given the same policy_id and experiment name, you get the same routing decision every time, which is the property that makes the audit trail meaningful.
 
-Random assignment — `random.random() < 0.1` — is not reproducible. You cannot reconstruct which model priced a specific renewal quote six months later. For ENBP compliance, this matters: the model that priced the renewal is part of the record you must keep. Hash-based routing is recomputable from first principles at any time.
+Random assignment (`random.random() < 0.1`) is not reproducible. You cannot reconstruct which model priced a specific renewal quote six months later. For ENBP compliance, this matters: the model that priced the renewal is part of the record you must keep. Hash-based routing is recomputable from first principles at any time.
 
-Assignment is also by policy, not by quote. A policy that routes to challenger on its first quote will always route to challenger within that experiment. A returning customer does not flip between models mid-experiment. This is required for ENBP audit integrity: the pricing model should be consistent across the lifecycle of each policy.
+Assignment is also by policy, not by quote. A policy that routes to challenger on its first quote will always route to challenger within that experiment. A returning customer does not flip between models mid-experiment, which is required for ENBP audit integrity: the pricing model should be consistent across the lifecycle of each policy.
 
 ---
 
@@ -175,7 +175,7 @@ logger.log_quote(
 )
 ```
 
-The ENBP field is worth explaining. The library records the ENBP value you provide. It does not calculate it. ICOBS 6B calculation is your pricing team's responsibility — the correct ENBP depends on your specific rating factors, model configuration, and the FCA's Q&A guidance. What the library does is store the value you provide, flag automatically whether `quoted_price <= enbp`, and surface breaches in the audit report.
+The ENBP field is worth explaining. The library records the ENBP value you provide. It does not calculate it. ICOBS 6B calculation is your pricing team's responsibility: the correct ENBP depends on your specific rating factors, model configuration, and the FCA's Q&A guidance. What the library does is store the value you provide, flag automatically whether `quoted_price <= enbp`, and surface breaches in the audit report.
 
 When a renewal quote is logged with ENBP provided, the library sets `enbp_flag = 1` if compliant and `enbp_flag = 0` if the quoted price exceeds ENBP. A breach triggers a warning:
 
@@ -276,11 +276,11 @@ Recommendation: Challenger shows significantly better loss_ratio (p=0.014,
 Document the promotion decision with reviewer name and date.
 ```
 
-The bootstrap resamples at policy level — 10,000 iterations, each drawing with replacement from the bound policies in each arm. Policy-level resampling is appropriate here because the quantity of interest is the portfolio loss ratio, not the mean of individual policy loss ratios, and because within-policy claim correlation needs to be preserved. SPRT-style sequential testing is not appropriate for developed LR: the reward signal is not i.i.d. and the test requires the claims to have developed first.
+The bootstrap resamples at policy level, using 10,000 iterations each drawing with replacement from the bound policies in each arm. Policy-level resampling is appropriate because the quantity of interest is the portfolio loss ratio, not the mean of individual policy loss ratios. SPRT-style sequential testing is not appropriate for developed LR: the reward signal is not i.i.d. and the test requires the claims to have developed first.
 
 The confidence interval excluding zero and p-value of 0.014 is evidence that the difference is not random variation. A 2.9 percentage point LR improvement on a book of that size is meaningful.
 
-Three caveats the library surfaces automatically. First: this is a recommendation for human review, not an automatic promotion. The conclusion string is `CHALLENGER_BETTER`, not "promote challenger." Someone with a name and a date needs to make that decision and record it. Second: in live mode, the LR difference may partly reflect adverse selection — if the challenger priced risks differently, the bound cohorts have different underlying risk mixes, and the observed LR difference is not purely attributable to model quality. Shadow mode avoids this entirely. Third: 329 challenger bound policies is on the low side. The bootstrap is valid, but the CI is wide.
+Three caveats the library surfaces automatically. First: this is a recommendation for human review, not an automatic promotion. Someone with a name and a date needs to make that decision and record it. Second: in live mode, the LR difference may partly reflect adverse selection. If the challenger priced risks differently, the bound cohorts have different underlying risk mixes, and the observed LR difference is not purely attributable to model quality. Shadow mode avoids this entirely. Third: 329 challenger bound policies is on the low side. The bootstrap is valid, but the CI is wide.
 
 The library also provides a two-proportion z-test for hit rate (available earlier, noisier) and a Poisson GLM for claim frequency (available at 6–9 months, a useful early signal):
 
@@ -325,7 +325,7 @@ recomputed independently from policy_id and experiment_name.
 
 That sentence matters. An SMF holder signing the annual attestation can say, with specificity, how routing decisions were made and how any specific routing decision could be reconstructed. That is what the FCA means by "records sufficient to enable the attestation."
 
-The report explicitly references ICOBS 6B.2.51R. It does not claim to calculate ENBP — that caveat is printed in the footer of every report, because the separation of concerns matters: the library records what you provide; the correctness of your ENBP calculation is upstream.
+The report explicitly references ICOBS 6B.2.51R. It does not claim to calculate ENBP; that caveat is printed in the footer of every report. The library records what you provide; the correctness of your ENBP calculation is upstream.
 
 ---
 
@@ -377,11 +377,11 @@ The storage is SQLite by default. SQLite handles 1–10 million rows without dif
 
 ## Our view
 
-Champion/challenger testing in insurance is not conceptually hard. The concept is 30 years old; FICO was using it in credit card decisioning in the 1990s. What has been hard is doing it with the infrastructure the UK regulatory environment now requires: a record of which model priced which renewal quote, an ENBP compliance check on each of those quotes, a statistical test robust to the 12-month claims tail, and documentation sufficient for an SMF holder to sign.
+Champion/challenger testing in insurance is not conceptually hard. The concept is 30 years old. What has been hard is doing it with the infrastructure the UK regulatory environment now requires: a record of which model priced which renewal quote, an ENBP compliance check on each of those quotes, a statistical test robust to the 12-month claims tail, and documentation sufficient for an SMF holder to sign.
 
-No open-source Python library provided all of this before. The commercial platforms that do — DataRobot MLOps, Akur8 Deploy — are either model-specific (only works if you built the model in their system) or infrastructure-heavy (Kubernetes required). Neither is an option for a pricing team running Radar on a desktop or working in Databricks notebooks with sklearn models.
+No open-source Python library provided all of this before. The commercial platforms that do (DataRobot MLOps, Akur8 Deploy) are either model-specific or infrastructure-heavy (Kubernetes required). Neither is an option for a pricing team running Radar on a desktop or working in Databricks notebooks with sklearn models.
 
-The 29-month timeline to LR significance is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early (insufficient evidence) or abandon the experiment before it matures (impatience). The power analysis module is not a nice-to-have — we think it is the most important output in the library for setting operational expectations correctly.
+The 29-month timeline to LR significance is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early or abandon the experiment before it matures. The power analysis module is not a nice-to-have; we think it is the most important output in the library for setting operational expectations correctly.
 
 ---
 

@@ -12,9 +12,9 @@ Your GBM is not interpretable. You already know that. The SHAP values explain it
 
 But here is the thing you may not have noticed: your "interpretable model" probably is not interpretable either.
 
-If your interpretable model is an Explainable Boosting Machine, its shape functions are exact — genuinely intrinsic to the architecture — but they can be jagged in ways that produce artificial pricing discontinuities, it has no native Tweedie or Gamma loss for severity modelling, and its monotonicity constraints are post-hoc edits that break the model's internal consistency the moment you apply them. If your interpretable model is a GAM fitted inside a commercial pricing tool, the interpretability is real but the fitting is proprietary and the model building block is locked to the vendor's platform.
+If your interpretable model is an Explainable Boosting Machine, its shape functions are exact, genuinely intrinsic to the architecture, but they can be jagged in ways that produce artificial pricing discontinuities, it has no native Tweedie or Gamma loss for severity modelling, and its monotonicity constraints are post-hoc edits that break the model's internal consistency the moment you apply them. If your interpretable model is a GAM fitted inside a commercial pricing tool, the interpretability is real but the fitting is proprietary and the model building block is locked to the vendor's platform.
 
-The Actuarial Neural Additive Model — ANAM, introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025) — resolves all three problems. We have built [`insurance-anam`](https://github.com/burning-cost/insurance-anam), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
+The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025), resolves all three problems. We have built [`insurance-anam`](https://github.com/burning-cost/insurance-anam), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
 
 ---
 
@@ -22,9 +22,9 @@ The Actuarial Neural Additive Model — ANAM, introduced by Laub, Pho and Wong (
 
 There are two ways a model can be interpretable. The first is intrinsic: the architecture is structured so that the contribution of each feature to each prediction is exactly decomposed by construction. The second is post-hoc: the model is a black box, and a separate explanation algorithm — SHAP, LIME, integrated gradients — approximates the feature contributions after the prediction is made.
 
-Post-hoc interpretability is approximation. SHAP values for a CatBoost model satisfy the Shapley axioms — they decompose the prediction exactly — but they do not tell you what the model would predict if a feature changed. The feature's SHAP value is an average marginal contribution over all feature orderings, which is not the same as a shape function. Two models with identical SHAP distributions can have radically different behaviour outside the training distribution.
+Post-hoc interpretability is approximation. SHAP values for a CatBoost model satisfy the Shapley axioms and decompose the prediction exactly, but they do not tell you what the model would predict if a feature changed. The feature's SHAP value is an average marginal contribution over all feature orderings, which is not the same as a shape function. Two models with identical SHAP distributions can have radically different behaviour outside the training distribution.
 
-Under PRA SS1/23 (effective May 2024), model validators are expected to understand the decision boundaries of their models and test behaviour at margins. "The SHAP values look reasonable" is harder to defend than "here is the shape function for driver age; it is monotone increasing and smooth, and here is the test coverage that proves it." This is not a hypothetical regulatory concern — it is the practical challenge of explaining ML model behaviour to someone who is trained to think in GLM relativity tables.
+Under PRA SS1/23 (effective May 2024), model validators are expected to understand the decision boundaries of their models and test behaviour at margins. "The SHAP values look reasonable" is harder to defend than "here is the shape function for driver age; it is monotone increasing and smooth, and here is the test coverage that proves it." This is not a hypothetical regulatory concern; it is the practical challenge of explaining ML model behaviour to someone trained to think in GLM relativity tables.
 
 The ANAM architecture gives you intrinsic interpretability. Each feature gets its own subnetwork. The model's prediction is additive over those subnetworks:
 
@@ -32,25 +32,25 @@ The ANAM architecture gives you intrinsic interpretability. Each feature gets it
 log(E[Y]) = offset + f_1(x_1) + f_2(x_2) + ... + f_p(x_p)
 ```
 
-The function `f_i(x_i)` is not an approximation or a SHAP summary. It is exactly the contribution of feature `x_i` to the log-linear predictor. It is a smooth curve you can plot, export as a Polars DataFrame, hand to a validator, and use directly in a rating engine.
+The function `f_i(x_i)` is not an approximation or a SHAP summary. It is exactly the contribution of feature `x_i` to the log-linear predictor: a smooth curve you can plot, export as a Polars DataFrame, hand to a validator, and use directly in a rating engine.
 
 ---
 
 ## The monotonicity problem is not cosmetic
 
-In any UK motor or home pricing model, you will have features where the direction of the relationship is known a priori. Claims frequency for drivers aged 17-25 does not decrease with age in the 17-25 band. Theft frequency does not decrease with vehicle age in the 0-3 year band. Property claims severity does not decrease with sum insured. These are not empirical discoveries; they are prior knowledge that should be encoded in the model.
+In any UK motor or home pricing model, you will have features where the direction of the relationship is known a priori. Claims frequency for drivers aged 17-25 does not decrease with age in that band. These are not empirical discoveries; they are prior knowledge that should be encoded in the model.
 
-The problem with soft monotonicity penalties — including the approach used in most GBM implementations and some GAM packages — is that they are not guarantees. A soft penalty adds a term to the loss function that makes violations expensive. It does not make them impossible. If the data locally contradicts the constraint, the penalty term competes with the likelihood and the violation survives in proportion to how much likelihood is being sacrificed by honoring the constraint. You can end up with a model that is mostly monotone, with small violations hidden in low-exposure regions of the feature space.
+The problem with soft monotonicity penalties (including the approach used in most GBM implementations and some GAM packages) is that they are not guarantees. A soft penalty adds a term to the loss function that makes violations expensive. It does not make them impossible. If the data locally contradicts the constraint, the penalty term competes with the likelihood and the violation survives in proportion to how much likelihood is being sacrificed by honoring the constraint. You can end up with a model that is mostly monotone, with small violations hidden in low-exposure regions of the feature space.
 
-This is a real problem for UK pricing, not a theoretical one. Small monotonicity violations in low-exposure regions are hard to catch in the A/E analysis during model validation. They create pricing anomalies that only surface when a broker or an aggregator finds the rate inversion and exploits it. "Our model is approximately monotone in that region" is not a satisfying answer to your Chief Actuary or to a PRA model validator.
+This is a real problem for UK pricing, not a theoretical one. Small monotonicity violations in low-exposure regions are hard to catch in validation. They create pricing anomalies that only surface when a broker or an aggregator finds the rate inversion and exploits it.
 
-`insurance-anam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. This is applied every gradient step via `model.project_monotone_weights()`. The cost is negligible — a weight clamp after each batch update. The result is not "very few violations" — it is zero violations, provable by inspection of the shape function curve.
+`insurance-anam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. This is applied every gradient step via `model.project_monotone_weights()`. The result is not "very few violations" but zero violations, provable by inspection of the shape function curve.
 
 ---
 
 ## The distributional loss matters
 
-GLMs use Poisson deviance for claim frequency and Tweedie deviance for pure premium because those losses correspond to the actual data-generating process. The claims count process is Poisson (to a first approximation). The claim severity process, mixed with the frequency process, gives you Tweedie. Fitting a frequency model with MSE loss is wrong — it implicitly assumes Gaussian residuals, which misweights the high-frequency cells that carry the most predictive information and mishandles the zero-inflation that is structural in insurance data.
+GLMs use Poisson deviance for claim frequency and Tweedie deviance for pure premium because those losses correspond to the actual data-generating process. Fitting a frequency model with MSE loss is wrong: it implicitly assumes Gaussian residuals, misweights the high-frequency cells that carry the most predictive information, and mishandles the zero-inflation that is structural in insurance data.
 
 The EBM (InterpretML) supports Poisson and Gamma objectives but not native Tweedie loss for combined frequency-severity modelling. The original NAM paper (Agarwal et al. 2021, NeurIPS) uses MSE throughout — it was designed for regression and classification on general tabular data, not actuarial targets.
 
@@ -158,11 +158,11 @@ The overlay plots the ANAM continuous shape function against the GLM step functi
 
 The honest competitive picture:
 
-**EBM (InterpretML)** is more mature, faster to train (C++ backend, no PyTorch overhead), and the lookup-table prediction format is extremely fast at inference. If you are running inference on 10 million policies per second and do not need Tweedie loss, EBM is competitive. Its shape functions are exact, its interaction detection is automated, and it has been in production at real insurers for several years. The two concrete gaps versus `insurance-anam`: no native Tweedie deviance for combined frequency-severity modelling, and monotonicity constraints are post-hoc edits that modify the shape function table rather than the model's learned weights. For a pricing team that treats the GLM relativity table as a live document edited during model review, the EBM's post-hoc editing is not necessarily a disadvantage. For a pricing team that wants to demonstrate mathematical guarantees to a validator, it is.
+**EBM (InterpretML)** is more mature, faster to train (C++ backend, no PyTorch overhead), and the lookup-table prediction format is extremely fast at inference. Its two concrete gaps versus `insurance-anam`: no native Tweedie deviance for combined frequency-severity modelling, and monotonicity constraints are post-hoc edits rather than architectural guarantees.
 
-**SHAP on a GBM** gives you approximate post-hoc interpretability. The SHAP values are individually useful for understanding which features drive specific predictions but do not give you the continuous shape function that model validation requires, do not support monotonicity guarantees, and are not equivalent to GLM parameters in log space without additional work. We have a [separate library](https://github.com/burning-cost/shap-relativities) for extracting GLM-compatible relativities from CatBoost models via SHAP if your organisation is not yet ready to adopt ANAM.
+**SHAP on a GBM** gives you approximate post-hoc interpretability, useful for understanding which features drive specific predictions but not the same as a continuous shape function, and not equivalent to GLM parameters in log space without additional work.
 
-**Commercial GAM/GLM platforms** (Akur8 and equivalents) provide shape-function interpretability as a first-class feature in a validated UI with audit trails. The model building block they are exposing is essentially what `insurance-anam` provides as open-source Python. If you have the budget for a SaaS platform and want the UI, governance workflow, and vendor support, that is a reasonable choice. If you want to understand what the model building block is doing and own the implementation, that is what this library is for.
+**Commercial GAM/GLM platforms** (Akur8 and equivalents) provide shape-function interpretability in a validated UI with audit trails. The model building block they expose is essentially what `insurance-anam` provides as open-source Python.
 
 ---
 
@@ -170,13 +170,13 @@ The honest competitive picture:
 
 We should be direct about what the regulatory advantage is and what it is not.
 
-The FCA confirmed in December 2025 that it will not introduce AI-specific rules for insurance pricing. It is relying on Consumer Duty and the existing principle-based framework. That means the interpretability advantage of ANAM is not about satisfying a specific rule — there is no rule requiring NAM architecture. It is about the quality of the evidence you can produce when asked to demonstrate that your model produces fair outcomes.
+The FCA confirmed in December 2025 that it will not introduce AI-specific rules for insurance pricing, relying instead on Consumer Duty and the existing principle-based framework. The interpretability advantage of ANAM is not about satisfying a specific rule. It is about the quality of the evidence you can produce when asked to demonstrate that your model produces fair outcomes.
 
 Under Consumer Duty, if your model produces differential pricing across protected characteristic groups, you need to demonstrate that the differential is actuarially justified. An ANAM shape function for the feature driving that differential is a cleaner piece of evidence than a SHAP summary: it is exact, it is a continuous function with no hidden approximation, and it is structurally analogous to the GLM relativity tables that regulators already understand.
 
-Under PRA SS1/23, model validators must assess whether model behaviour is understood at boundaries and under distributional shift. An ANAM model with monotonicity guarantees passes one specific validation test trivially: there are no monotonicity violations to find. That removes one category of validation finding entirely. The validator's time and the model owner's remediation work are both reduced.
+Under PRA SS1/23, model validators must assess whether model behaviour is understood at boundaries and under distributional shift. An ANAM model with monotonicity guarantees passes one specific validation test trivially: there are no monotonicity violations to find.
 
-These are genuine advantages. They are not magic. ANAM does not automatically produce a fairer or more accurate model than a GBM. It produces a model whose behaviour is intrinsically more auditable. For a UK pricing team navigating the current regulatory environment, that difference is not cosmetic.
+These are genuine advantages. ANAM does not automatically produce a fairer or more accurate model than a GBM. It produces a model whose behaviour is intrinsically more auditable.
 
 ---
 
@@ -186,7 +186,7 @@ Three honest limitations.
 
 First, **ANAM training is slower than EBM.** PyTorch SGD with per-batch Dykstra projection is not as fast as cyclic gradient boosting on a C++ backend. For a standard UK personal lines book (200k–1m policies, 10–20 features), expect training times of 5–20 minutes on a modern laptop rather than 30–60 seconds for EBM. This is acceptable for monthly or quarterly model rebuilds but would need GPU hardware to run in a tight automated pipeline.
 
-Second, **the additive structure is a constraint.** An ANAM is not a GBM. It cannot capture arbitrary high-order interactions. The pairwise interaction subnetworks extend the architecture to handle the most important two-way terms, but a portfolio with complex multiway interactions — telematics data, connected home sensor data — will lose predictive accuracy relative to a well-tuned GBM. The interpretability-accuracy trade-off is real; the paper (arXiv:2509.08467) benchmarks against GLM, GAM, XGBoost and EBM and shows ANAM competitive or superior in most settings on the beMTPL97 Belgian MTPL benchmark, but "competitive" is not "equal."
+Second, **the additive structure is a constraint.** An ANAM is not a GBM. It cannot capture arbitrary high-order interactions. The pairwise interaction subnetworks extend the architecture to handle the most important two-way terms, but a portfolio with complex multiway interactions (telematics data, connected home sensor data) will lose predictive accuracy relative to a well-tuned GBM. The interpretability-accuracy trade-off is real; the paper (arXiv:2509.08467) benchmarks against GLM, GAM, XGBoost and EBM and shows ANAM competitive or superior in most settings on the beMTPL97 Belgian MTPL benchmark, but "competitive" is not "equal."
 
 Third, **151 tests is not the same as production battle-hardening.** The library is v0.1. Edge cases in categorical handling with rare levels, behaviour under extreme class imbalance, and performance on very wide feature spaces (50+ features) have not all been characterised. Use with a holdout validation set and inspect shape functions before putting this in production.
 

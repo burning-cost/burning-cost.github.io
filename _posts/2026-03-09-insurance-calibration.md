@@ -7,11 +7,11 @@ tags: [calibration, balance-property, murphy-decomposition, auto-calibration, gl
 description: "A Poisson z-test tells you if your totals balance. An auto-calibration test tells you if each price cohort is self-financing. The Murphy decomposition tells you whether miscalibration is a levelling error or a structural one. insurance-calibration v0.1.0 implements all three."
 ---
 
-There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly — low-risk policies get lower prices than high-risk ones — but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.
+There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.
 
 This happens because most validation pipelines stop at discrimination. Gini, lift chart, double lift, maybe a decile plot. These all measure whether the model ranks risks correctly. None of them measure whether it prices them at the right level. A model can pass all of these tests and still produce a portfolio loss ratio 10 points worse than the actuarial assumption, because the prediction scale is off in a way that the ranking metrics do not penalise.
 
-The balance property — the requirement that sum(predicted claims) = sum(actual claims) across the portfolio — is the minimal calibration requirement. It is also the one most commonly omitted from validation frameworks, partly because scikit-learn's calibration module handles binary classification only, and partly because the actuarial tools that do exist (R's `actuaRE`, for instance) are tightly coupled to their own model objects. There has been no Python library that took raw prediction arrays, handled exposure weighting, and ran the Poisson/Gamma/Tweedie deviance framework that insurance data requires.
+The balance property, the requirement that sum(predicted claims) = sum(actual claims) across the portfolio, is the minimal calibration requirement. It is also the one most commonly omitted from validation frameworks, partly because scikit-learn's calibration module handles binary classification only, and partly because the actuarial tools that do exist (R's `actuaRE`, for instance) are tightly coupled to their own model objects. There has been no Python library that took raw prediction arrays, handled exposure weighting, and ran the Poisson/Gamma/Tweedie deviance framework that insurance data requires.
 
 [`insurance-calibration`](https://github.com/burning-cost/insurance-calibration) is that library. Based on Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, 2025). Seven modules, 99 tests, v0.1.0 on PyPI.
 
@@ -25,7 +25,7 @@ uv add insurance-calibration
 
 The library answers three ordered questions. Each is a stronger condition than the previous.
 
-**1. Is the model globally unbiased?** Does sum(predicted) equal sum(actual), exposure-weighted? This is the balance property — the weakest and most commercially important calibration requirement.
+**1. Is the model globally unbiased?** Does sum(predicted) equal sum(actual), exposure-weighted? This is the balance property: the weakest and most commercially important calibration requirement.
 
 **2. Is each price cohort self-financing?** Do the high-risk predictions actually correspond to high observed claims, at the right level? A model can be globally balanced but have systematic cross-subsidisation between segments. This is auto-calibration.
 
@@ -62,7 +62,7 @@ The balance ratio `alpha = sum(v_i * y_i) / sum(v_i * y_hat_i)` should be 1.0. V
 
 The p-value uses a Poisson z-test. Under H0, the observed claim count is approximately Normal(predicted, predicted), giving a z-statistic. This is the appropriate test for frequency data. The 95% confidence interval comes from 999 bootstrap resamples of the (y, y_hat, exposure) triplets — it preserves the joint dependence structure.
 
-A model with a balance ratio of 1.08 and a CI of [1.06, 1.10] is not borderline — it is definitively charging the wrong premium. The CI tells you how certain that conclusion is.
+A model with a balance ratio of 1.08 and a CI of [1.06, 1.10] is not borderline. It is definitively charging the wrong premium. The CI tells you how certain that conclusion is.
 
 ---
 
@@ -116,13 +116,13 @@ Every deviance score decomposes as:
 D(y, y_hat) = UNC − DSC + MCB
 ```
 
-- **UNC** (Uncertainty): the baseline deviance from an intercept-only model — the grand mean. This is determined by the data, not the model. You cannot reduce UNC.
+- **UNC** (Uncertainty): the baseline deviance from an intercept-only model (the grand mean). This is determined by the data, not the model. You cannot reduce UNC.
 - **DSC** (Discrimination): how much better the model is than the grand mean, after correcting calibration. This is essentially the model's Gini expressed as a deviance reduction. High DSC means good ranking.
 - **MCB** (Miscalibration): the excess deviance from wrong price levels, independent of ranking. A well-calibrated model has MCB close to zero.
 
 MCB splits further:
 
-- **GMCB** (Global MCB): the portion of miscalibration removable by multiplying all predictions by a single constant — the balance correction. Cheap to fix.
+- **GMCB** (Global MCB): the portion of miscalibration removable by multiplying all predictions by a single constant. Cheap to fix.
 - **LMCB** (Local MCB): residual miscalibration after balance correction. Requires model refit or isotonic recalibration.
 
 ```python
@@ -141,9 +141,9 @@ print(f"\nVerdict: {murphy.verdict}")
 
 The verdict logic is:
 
-- `MCB / UNC < 1%` and `DSC > 0`: **OK** — calibration is acceptable.
-- `GMCB >= LMCB`: **RECALIBRATE** — the dominant error is a global scale shift. Multiply predictions by the balance ratio and redeploy. Model structure is sound.
-- `LMCB > GMCB`: **REFIT** — the error is in the model's shape, not its level. A scalar correction will not fix it. The model needs rebuilding or isotonic recalibration on a large holdout sample.
+- `MCB / UNC < 1%` and `DSC > 0`: **OK**: calibration is acceptable.
+- `GMCB >= LMCB`: **RECALIBRATE**: the dominant error is a global scale shift. Multiply predictions by the balance ratio and redeploy. Model structure is sound.
+- `LMCB > GMCB`: **REFIT**: the error is in the model's shape, not its level. A scalar correction will not fix it. The model needs rebuilding or isotonic recalibration on a large holdout sample.
 
 This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive.
 
@@ -153,7 +153,7 @@ This is the decision the decomposition is designed for. "RECALIBRATE" costs an a
 
 Once you know the type of miscalibration, the library applies the correction.
 
-**Multiplicative correction** — the RECALIBRATE case:
+**Multiplicative correction** (the RECALIBRATE case):
 
 ```python
 from insurance_calibration import rectify_balance
@@ -164,7 +164,7 @@ y_hat_corrected = rectify_balance(y_hat, y, exposure, method='multiplicative')
 
 This is a single scalar multiplication. It restores global balance exactly and does not change the model's ranking or relative price structure. Run `check_balance` on the corrected predictions to confirm alpha = 1.0.
 
-**Affine correction** — for when there is also a slope error:
+**Affine correction**: for when there is also a slope error:
 
 ```python
 # Fits log(mu) = beta_0 + beta_1 * log(y_hat), minimising Poisson deviance
@@ -172,9 +172,9 @@ This is a single scalar multiplication. It restores global balance exactly and d
 y_hat_affine = rectify_balance(y_hat, y, exposure, method='affine', distribution='poisson')
 ```
 
-Affine correction is the more general form from Lindholm & Wüthrich (2025). If beta_1 != 1, the model is not just offset — it is over- or under-responsive to risk factors. A beta_1 < 1 means the model's predictions are too compressed: high-risk policies are under-charged even after balance correction, and low-risk policies are over-charged. This is common in GBMs with low learning rates on gradient-boosted frequency models.
+Affine correction is the more general form from Lindholm & Wüthrich (2025). If beta_1 != 1, the model is not just offset; it is over- or under-responsive to risk factors. A beta_1 < 1 means the model's predictions are too compressed: high-risk policies are under-charged even after balance correction, and low-risk policies are over-charged. This is common in GBMs with low learning rates on gradient-boosted frequency models.
 
-**Isotonic recalibration** — for the REFIT case when a full refit is not yet possible:
+**Isotonic recalibration**: for the REFIT case when a full refit is not yet possible:
 
 ```python
 from insurance_calibration import isotonic_recalibrate
@@ -218,11 +218,11 @@ The `to_polars()` output is a one-row DataFrame with all diagnostic values: bala
 
 ## The GLM versus GBM distinction
 
-This is worth being explicit about. GLMs with canonical links — Poisson with log link, Gamma with log link — satisfy the auto-calibration property on training data as a mathematical consequence of the score equations. If `sum(predicted) == sum(actual)` on training data, it is not a coincidence; it is a constraint the optimiser enforced.
+This is worth being explicit about. GLMs with canonical links (Poisson with log link, Gamma with log link) satisfy the auto-calibration property on training data as a mathematical consequence of the score equations. If `sum(predicted) == sum(actual)` on training data, it is not a coincidence; it is a constraint the optimiser enforced.
 
 GBMs do not have this property. A gradient-boosted Poisson model minimises Poisson deviance but does not enforce the calibration constraint at the prediction level. The holdout predictions will typically have a balance ratio different from 1.0, and the auto-calibration test will often reject even on well-developed models, because the GBM has fitted the residuals from an implicitly miscalibrated base rather than enforcing calibration at each step.
 
-This is not a reason to avoid GBMs. It is a reason to add a recalibration step after any GBM training — and to check the result. The multiplicative balance correction is almost always sufficient for the GMCB component. Whether LMCB is significant enough to warrant concern depends on the Murphy decomposition.
+This is not a reason to avoid GBMs. It is a reason to add a recalibration step after any GBM training, and to check the result. The multiplicative balance correction is almost always sufficient for the GMCB component. Whether LMCB is significant enough to warrant concern depends on the Murphy decomposition.
 
 A canonical GLM that passes into a GBM pipeline without calibration checking at the GBM stage will typically lose its calibration guarantee. The GLM was calibrated; the GBM trained on top of it may not be.
 
@@ -232,7 +232,7 @@ A canonical GLM that passes into a GBM pipeline without calibration checking at 
 
 The standard alternative is a residual plot: actual versus predicted, often in deciles, checked visually. This catches gross failures but is insensitive to modest systematic miscalibration. A 7% global balance error is unambiguous in the data; it is often invisible in a decile residual plot because the axis scale is set by the prediction range, not the residual range.
 
-The Hosmer-Lemeshow test — already in `insurance-validation` — catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
+The Hosmer-Lemeshow test (already in `insurance-validation`) catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
 
 The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), published October 2024. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
 
@@ -244,7 +244,7 @@ The Murphy decomposition is the piece that was missing from Python tooling for i
 uv add insurance-calibration
 ```
 
-Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-learn required — isotonic regression uses scipy.stats.isotonic_regression (scipy >= 1.12) with a pure numpy PAVA fallback.
+Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-learn required; isotonic regression uses scipy.stats.isotonic_regression (scipy >= 1.12) with a pure numpy PAVA fallback.
 
 [`insurance-calibration` on GitHub](https://github.com/burning-cost/insurance-calibration) — MIT licence. 99 tests, 7 modules.
 

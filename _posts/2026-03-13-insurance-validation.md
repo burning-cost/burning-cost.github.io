@@ -13,7 +13,7 @@ We have seen what this looks like in practice. A pricing actuary opens a folder 
 
 This is not a PRA-compliant model validation. It is a collection of artefacts that gives the appearance of validation without the substance.
 
-SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring — structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. On the enforcement side, FCA TR24/2 (August 2024) confirmed that documentation failures are the primary trigger — for the full regulatory context on SS1/23 scope and direction of travel, see [Model Risk Governance for UK Insurers](/2026/03/19/your-model-risk-register-is-a-spreadsheet/).
+SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring, structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. On the enforcement side, FCA TR24/2 (August 2024) confirmed that documentation failures are the primary trigger; for the full regulatory context on SS1/23 scope and direction of travel, see [Model Risk Governance for UK Insurers](/2026/03/19/your-model-risk-register-is-a-spreadsheet/).
 
 A PowerPoint deck does not meet this bar. [`insurance-validation`](https://github.com/burning-cost/insurance-validation) does.
 
@@ -21,7 +21,7 @@ A PowerPoint deck does not meet this bar. [`insurance-validation`](https://githu
 
 ## What the library produces
 
-`insurance-validation` v0.2.0 generates a self-contained HTML report and a JSON sidecar from a single call. The HTML is printable, has no CDN dependencies, and no JavaScript — it will render identically in Chrome, in a PDF export, and in the regulatory annexe to your submission. The JSON sidecar carries a `run_id` UUID so your Model Risk Management system can ingest and track it.
+`insurance-validation` v0.2.0 generates a self-contained HTML report and a JSON sidecar from a single call. The HTML is printable, has no CDN dependencies, and no JavaScript. It renders identically in Chrome, in a PDF export, and in the regulatory annexe to your submission. The JSON sidecar carries a `run_id` UUID so your Model Risk Management system can ingest and track it.
 
 The report covers nine sections, mapped directly to PRA SS1/23 and FCA Consumer Duty obligations:
 
@@ -37,7 +37,7 @@ The report covers nine sections, mapped directly to PRA SS1/23 and FCA Consumer 
 | 8. Feature Importance (optional) | SS1/23 Principle 3 |
 | 9. Monitoring Plan and Sign-Off | SS1/23 Principle 5 |
 
-The RAG status — red, amber, green — is computed from the test results and appears in the Executive Summary. It is not editorial. If the Hosmer-Lemeshow test rejects calibration, the report goes amber. If the renewal cohort A/E falls outside [0.85, 1.15] for a material tenure band, it goes red. The thresholds are hardcoded, transparent, and documented in the methodology section.
+The RAG status (red, amber, green) is computed from the test results and appears in the Executive Summary. It is not editorial. If the Hosmer-Lemeshow test rejects calibration, the report goes amber. If the renewal cohort A/E falls outside [0.85, 1.15] for a material tenure band, it goes red. The thresholds are hardcoded, transparent, and documented in the methodology section.
 
 ---
 
@@ -76,7 +76,7 @@ report.generate("validation_report.html")
 report.to_json("validation_report.json")
 ```
 
-That is the full API for the common case. The `ModelCard` carries the information required by SS1/23 Principle 3: purpose, methodology, known limitations, and ownership. The `limitations` field goes directly into the report's Data Quality section with a built-in IBNR caveat for frequency models — you are not writing the disclaimer yourself and hoping it is sufficient.
+That is the full API for the common case. The `ModelCard` carries the information required by SS1/23 Principle 3: purpose, methodology, known limitations, and ownership. The `limitations` field goes directly into the report's Data Quality section with a built-in IBNR caveat for frequency models, so you are not writing the disclaimer yourself and hoping it is sufficient.
 
 ---
 
@@ -97,11 +97,11 @@ lower = χ²(2A, 0.025) / (2E)
 upper = χ²(2A+2, 0.975) / (2E)
 ```
 
-This is exact for Poisson data. The alternative — Wald intervals on the ratio — is approximate and performs poorly when A is small, which is exactly when your sub-segment A/E ratios are most uncertain. We use the Dobson (1991) formulation throughout, which is consistent with UK actuarial practice.
+This is exact for Poisson data. The alternative (Wald intervals on the ratio) is approximate and performs poorly when A is small, which is exactly when your sub-segment A/E ratios are most uncertain. We use the Dobson (1991) formulation throughout, which is consistent with UK actuarial practice.
 
 ### Hosmer-Lemeshow calibration test
 
-Calibration is assessed via the Hosmer-Lemeshow test across deciles of predicted probability. A rejection (p < 0.05) means your model is systematically over- or under-predicting in parts of the distribution — the kind of failure that produces unfair pricing outcomes even when the aggregate loss ratio looks fine. The HL test result feeds into the RAG computation.
+Calibration is assessed via the Hosmer-Lemeshow test across deciles of predicted probability. A rejection (p < 0.05) means your model is systematically over- or under-predicting in parts of the distribution: the kind of failure that produces unfair pricing outcomes even when the aggregate loss ratio looks fine. The HL test result feeds into the RAG computation.
 
 ### Double-lift chart
 
@@ -113,15 +113,15 @@ The performance section includes a double-lift chart: a comparison of the new mo
 
 ### Renewal cohort A/E by tenure band (FCA TR24/2)
 
-Section 6 implements the renewal cohort A/E test from TR24/2. The FCA's thematic review found that several firms could not demonstrate that their pricing models produced equitable outcomes across customer tenure bands — specifically, that loyal customers were not systematically over-charged relative to risk.
+Section 6 implements the renewal cohort A/E test from TR24/2. The FCA's thematic review found that several firms could not demonstrate that their pricing models produced equitable outcomes across customer tenure bands, specifically that loyal customers were not systematically over-charged relative to risk.
 
-The library splits the validation population into tenure bands (0–1 year, 1–3 years, 3–5 years, 5+ years by default), computes A/E for each, and flags any band outside [0.85, 1.15] as a divergence. The threshold is taken from TR24/2 guidance. A divergence in the 5+ year band — your most loyal customers — moves the RAG to red.
+The library splits the validation population into tenure bands (0–1 year, 1–3 years, 3–5 years, 5+ years by default), computes A/E for each, and flags any band outside [0.85, 1.15] as a divergence. The threshold is taken from TR24/2 guidance. A divergence in the 5+ year band (your most loyal customers) moves the RAG to red.
 
 This test does not require a separate consumer outcomes dataset. It runs on your standard validation data with a `tenure_months` column. If you do not have tenure on your validation set, the section is skipped with a documented caveat rather than silently omitted.
 
 ### Sub-segment calibration
 
-Section 6 also runs sub-segment calibration across categorical features: by age band, by region, by vehicle group, by any categorical features you specify. Each sub-segment gets a Poisson A/E with exact CI. Segments where the CI excludes 1.0 are flagged. This is the Consumer Duty fair value evidence — documented, reproducible, attached to a run_id that your MRM system can retrieve.
+Section 6 also runs sub-segment calibration across categorical features: by age band, by region, by vehicle group, by any categorical features you specify. Each sub-segment gets a Poisson A/E with exact CI. Segments where the CI excludes 1.0 are flagged. This is the Consumer Duty fair value evidence: documented, reproducible, attached to a run_id that your MRM system can retrieve.
 
 ---
 
@@ -147,7 +147,7 @@ Section 6 also runs sub-segment calibration across categorical features: by age 
 }
 ```
 
-The `run_id` is a UUID generated at run time. Every time you regenerate the report — after retraining, after adding data, after fixing a data quality issue — you get a new `run_id`. Your MRM system can store the JSON, link it to the model version in your model inventory, and produce an audit trail of validation outcomes over the model lifecycle.
+The `run_id` is a UUID generated at run time. Every time you regenerate the report (after retraining, after adding data, after fixing a data quality issue) you get a new `run_id`. Your MRM system can store the JSON, link it to the model version in your model inventory, and produce an audit trail of validation outcomes over the model lifecycle.
 
 This is what SS1/23 Principle 1 (model inventory with change log) requires in practice: not a spreadsheet that someone remembers to update, but a machine-readable artefact that is produced automatically as part of the validation process.
 
@@ -159,7 +159,7 @@ TR24/2 is worth reading carefully, particularly its description of what went wro
 
 These are documentation failures. They are also, under SM&CR, personal liability failures for the named Senior Manager responsible for model risk.
 
-A validation report generated by `insurance-validation` is reproducible from the run_id, linked to a specific model version, and contains its own methodology documentation. The HTML is the report that goes to the committee. The JSON is the evidence that the MRM system holds. The two are consistent by construction — they come from the same run.
+A validation report generated by `insurance-validation` is reproducible from the run_id, linked to a specific model version, and contains its own methodology documentation. The HTML is the report that goes to the committee. The JSON is the evidence that the MRM system holds. The two are consistent by construction: they come from the same run.
 
 We are not claiming this eliminates model risk. A model with a Gini of 0.15 will still get a red RAG and a bad validation report. That is the point: the report tells you the truth, in a format the regulator can read.
 
@@ -167,11 +167,11 @@ We are not claiming this eliminates model risk. A model with a Gini of 0.15 will
 
 ## 148 tests, no external dependencies
 
-The library ships 148 passing tests covering the statistical functions, the report generation, the RAG logic, and the JSON sidecar. The HTML template is self-contained — no CDN calls, no external fonts, no JavaScript. It will render in environments with no internet access, which matters if your validation runs in an air-gapped model development environment.
+The library ships 148 passing tests covering the statistical functions, the report generation, the RAG logic, and the JSON sidecar. The HTML template is self-contained: no CDN calls, no external fonts, no JavaScript. It will render in environments with no internet access, which matters if your validation runs in an air-gapped model development environment.
 
-The test suite was validated on Databricks serverless (Python 3.11). The library has no hard dependency on Spark or any cloud runtime — it runs anywhere scikit-learn runs.
+The test suite was validated on Databricks serverless (Python 3.11). The library has no hard dependency on Spark or any cloud runtime; it runs anywhere scikit-learn runs.
 
-[`insurance-validation` on GitHub](https://github.com/burning-cost/insurance-validation) — MIT licence.
+[`insurance-validation` on GitHub](https://github.com/burning-cost/insurance-validation) (MIT licence).
 
 ---
 

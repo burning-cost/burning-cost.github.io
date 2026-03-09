@@ -9,9 +9,9 @@ description: "CatBoost's MultiQuantile loss gives you quantile predictions. It d
 
 Your Tweedie GBM gives you an expected loss. That expected loss is one number. It summarises the centre of a conditional distribution that, for most insurance lines, has a right tail that will periodically destroy your loss ratio.
 
-The expected loss is not the problem — you need it. The problem is using it as your only view of risk. A motor bodily injury risk with an expected cost of £800/year and a risk with the same expected cost but 40% more variance in the tail are not the same risk. Your burning cost model treats them identically. Your tail risk does not.
+The expected loss is not the problem; you need it. The problem is using it as your only view of risk. A motor bodily injury risk with an expected cost of £800/year and a risk with the same expected cost but 40% more variance in the tail are not the same risk. Your burning cost model treats them identically. Your tail risk does not.
 
-Quantile regression gives you the full conditional distribution, not just the mean. CatBoost has had MultiQuantile loss since version 1.0. What it has not had is an actuarial output layer: the functions pricing actuaries actually need — TVaR, large loss loadings, ILF curves, exceedance probabilities, calibration diagnostics. We built [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) to provide those.
+Quantile regression gives you the full conditional distribution, not just the mean. CatBoost has had MultiQuantile loss since version 1.0. What it has not had is an actuarial output layer: TVaR, large loss loadings, ILF curves, exceedance probabilities, calibration diagnostics. We built [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) to provide those.
 
 ---
 
@@ -21,7 +21,7 @@ CatBoost's `MultiQuantile` loss function fits all quantile levels simultaneously
 
 What you get out of `model.predict()` is an array of numbers. CatBoost does not know what an ILF is. It does not compute TVaR. It does not tell you whether the q_0.9 prediction for your validation set is actually covering 90% of observed losses, or 74% because the tail is heavier than the GBM learned.
 
-There is also a practical problem: CatBoost's MultiQuantile does not guarantee monotone predictions across quantile levels at inference time (GitHub issue #2317). It is trained with a monotone penalty, but at prediction time you can get q_0.9 < q_0.95 for individual risks. For a loss severity model this is nonsensical. The fix — isotonic regression applied per row after prediction — is O(n × k) and negligible in practice, but it needs to be applied.
+There is also a practical problem: CatBoost's MultiQuantile does not guarantee monotone predictions across quantile levels at inference time (GitHub issue #2317). You can get q_0.9 < q_0.95 for individual risks. The fix (isotonic regression applied per row after prediction) is O(n × k) and negligible in practice.
 
 `insurance-quantile` handles both: the isotonic correction is on by default, and the actuarial functions are the primary interface.
 
@@ -31,15 +31,15 @@ There is also a practical problem: CatBoost's MultiQuantile does not guarantee m
 
 The library has five functional areas.
 
-**QuantileGBM** wraps CatBoost MultiQuantile and returns predictions in Polars with actuarial column naming. `model.predict(X)` gives you a DataFrame with columns `q_0.5`, `q_0.9`, `q_0.99` — not `column_0`, `column_1`, `column_2`.
+**QuantileGBM** wraps CatBoost MultiQuantile and returns predictions in Polars with actuarial column naming. `model.predict(X)` gives you a DataFrame with columns `q_0.5`, `q_0.9`, `q_0.99`, not `column_0`, `column_1`, `column_2`.
 
-**TVaR** — per-risk and portfolio-level. TVaR (Tail Value at Risk, also called CVaR or CTE depending on who trained you) is E[Y | Y > VaR_alpha(Y)]. It is the expected loss given that the loss exceeds its alpha-quantile. Unlike VaR, it is a coherent risk measure: it satisfies subadditivity, which means TVaR(portfolio) ≤ sum(TVaR(individual risks)). VaR does not have this property, which is why it is unsuitable for capital allocation.
+**TVaR**, per-risk and portfolio-level. TVaR (Tail Value at Risk, also called CVaR or CTE depending on who trained you) is E[Y | Y > VaR_alpha(Y)]. It is the expected loss given that the loss exceeds its alpha-quantile. Unlike VaR, it is a coherent risk measure, satisfying subadditivity, which means TVaR(portfolio) ≤ sum(TVaR(individual risks)). VaR does not have this property, which is why it is unsuitable for capital allocation.
 
-**Large loss loading** — the additive supplement to burning cost. The loading is TVaR_alpha(i) − E[Y_i], where TVaR comes from the quantile model and E[Y] from a separate Tweedie model. This is the per-risk premium adjustment required to cover tail losses with alpha-level confidence.
+**Large loss loading**: the additive supplement to burning cost. The loading is TVaR_alpha(i) − E[Y_i], where TVaR comes from the quantile model and E[Y] from a separate Tweedie model. This is the per-risk premium adjustment required to cover tail losses with alpha-level confidence.
 
-**ILF** — Increased Limits Factors, estimated from the exceedance curve via numerical integration. E[min(Y, L)] = ∫₀ᴸ P(Y > x) dx, which is estimated from the quantile predictions. ILF(L1, L2) = E[min(Y, L2)] / E[min(Y, L1)]. This lets you price excess layers directly from the GBM.
+**ILF**: Increased Limits Factors, estimated from the exceedance curve via numerical integration. E[min(Y, L)] = ∫₀ᴸ P(Y > x) dx, which is estimated from the quantile predictions. ILF(L1, L2) = E[min(Y, L2)] / E[min(Y, L1)]. This lets you price excess layers directly from the GBM.
 
-**Calibration diagnostics** — coverage fraction per quantile level and pinball loss. A well-calibrated q_0.9 model should be exceeded by roughly 10% of validation observations. If it is exceeded by 22%, your tail risk estimates are materially understated and you need to investigate before relying on them for large loss loading.
+**Calibration diagnostics**: coverage fraction per quantile level and pinball loss. A well-calibrated q_0.9 model should be exceeded by roughly 10% of validation observations. If it is exceeded by 22%, your tail risk estimates are materially understated.
 
 ---
 
@@ -69,7 +69,7 @@ model.fit(X_train, y_severity_train, exposure=exposure_train)
 preds = model.predict(X_val)
 ```
 
-The `exposure` parameter weights each row's contribution to the loss function by its earned exposure. This is not offset modelling — there is no log-link adjustment. If your target is aggregate cost rather than severity, pass exposure here so that full-year policies weight more heavily in training.
+The `exposure` parameter weights each row's contribution to the loss function by its earned exposure. This is not offset modelling; there is no log-link adjustment. If your target is aggregate cost rather than severity, pass exposure here so that full-year policies weight more heavily in training.
 
 ---
 
@@ -113,7 +113,7 @@ loading = large_loss_loading(
 
 The loading formula is additive: `technical_premium = burning_cost + large_loss_loading`. This is the appropriate form when the Tweedie model handles expected severity and the quantile model handles the tail supplement. For motor bodily injury and liability lines where large losses are the primary concern, use alpha=0.99.
 
-One important consistency check: both models must be on the same scale. If the Tweedie model predicts severity (claim cost | claim occurred) and the quantile model was fitted on aggregate cost (including zero claims), the scales differ and the loading will be nonsense. Document the scale used in both models.
+One important consistency check: both models must be on the same scale. If the Tweedie model predicts severity and the quantile model was fitted on aggregate cost (including zero claims), the scales differ and the loading will be nonsense.
 
 ---
 
@@ -150,10 +150,10 @@ For motor bodily injury, where claims can run into millions and the tail beyond 
 
 The theoretical distinction is worth being clear about:
 
-- **Quantiles** are *elicitable* (there exists a strictly proper scoring rule — the pinball loss) but not coherent. The 95th percentile quantile is the threshold that 5% of losses exceed; it tells you nothing about how bad those exceedances are.
+- **Quantiles** are *elicitable* (there exists a strictly proper scoring rule, the pinball loss) but not coherent. The 95th percentile quantile is the threshold that 5% of losses exceed; it tells you nothing about how bad those exceedances are.
 - **Expectiles** are both *elicitable* (via an asymmetric squared loss) and *coherent*. They satisfy subadditivity. The expectile at level tau is the unique solution to a weighted squared error problem: it places weight tau on underprediction and (1 − tau) on overprediction. For tau > 0.5, it tilts toward the upper tail more aggressively than a quantile of the same nominal level, producing a risk measure that better captures severity in heavy-tailed distributions.
 
-This is not a theoretical nicety. For motor BI severity, where the 99th percentile claim can be 50× the median and the distribution has no closed form, using a coherent risk measure for premium loading is the correct actuarial practice. Quantile-based TVaR is common in practice; expectile-based risk measures are theoretically superior and produce tighter capital estimates without being reckless.
+This is not a theoretical nicety. For motor BI severity, where the 99th percentile claim can be 50× the median and the distribution has no closed form, using a coherent risk measure for premium loading is the correct actuarial practice.
 
 ```python
 # For motor bodily injury severity: expectile mode
@@ -186,7 +186,7 @@ print(report["coverage"])
 # Undercoverage at the 90th: the model is underestimating tail severity.
 ```
 
-Coverage below target at high quantile levels is the common failure mode. It means the model's tail predictions are too low — 90th percentile predictions are being exceeded more than 10% of the time. This matters most for the large loss loading calculation: if the q_0.95 prediction is systematically too low, the large loss loading is understated.
+Coverage below target at high quantile levels is the common failure mode. It means the model's tail predictions are too low: 90th percentile predictions are being exceeded more than 10% of the time. This matters most for the large loss loading calculation: if the q_0.95 prediction is systematically too low, the large loss loading is understated.
 
 The standalone functions give more control:
 
@@ -204,7 +204,7 @@ print(calib)
 pb = pinball_loss(y_val, preds["q_0.95"], alpha=0.95)
 ```
 
-The pinball loss is the correct diagnostic for comparing quantile models against each other at the same alpha level. Do not compare pinball loss across alpha levels: the scaling differs. Use coverage_error to diagnose miscalibration, pinball_loss to select between competing model specifications.
+The pinball loss is the correct diagnostic for comparing quantile models against each other at the same alpha level. Do not compare pinball loss across alpha levels, as the scaling differs. Use coverage_error to diagnose miscalibration, pinball_loss to select between competing model specifications.
 
 If coverage is short at high quantile levels, the first things to check are: whether the training data includes enough extreme losses (is the 99th percentile of training claims actually extreme, or has the dataset been capped?), whether the quantile levels in the model are dense enough near the tail, and whether exposure weighting is being applied consistently between training and the Tweedie mean model. Tail miscalibration from data issues is more common than tail miscalibration from model misspecification.
 
@@ -212,7 +212,7 @@ If coverage is short at high quantile levels, the first things to check are: whe
 
 ## Zero-inflated data
 
-Motor own damage and property books typically have large zero-claim fractions — often 70–85% of policies produce no claims in a year. This affects the quantile model materially.
+Motor own damage and property books typically have large zero-claim fractions, often 70-85% of policies producing no claims in a year. This affects the quantile model materially.
 
 For a book where 80% of policies claim nothing, the 50th through 79th quantile predictions will be zero. This is mathematically correct. It is also not useful for large loss loading, because the loading is derived from the severity distribution, not the full (zero-inclusive) aggregate distribution.
 
@@ -222,7 +222,7 @@ The recommended approach for zero-inflated books:
 2. Filter to non-zero claims only; fit `QuantileGBM` on severity.
 3. Compute TVaR from the severity model; multiply by predicted frequency to get the expected per-risk large loss loading.
 
-The library does not handle the frequency/severity split automatically — that decision needs to be made for your specific book, and it is model sign-off territory. For motor own damage with a 78% zero fraction, splitting is the right call. For motor BI where zeros are uncommon (most reported BI claims result in some payment), fitting the quantile model on the full aggregate is reasonable.
+The library does not handle the frequency/severity split automatically; that decision needs to be made for your specific book and is model sign-off territory. For motor own damage with a 78% zero fraction, splitting is the right call. For motor BI where zeros are uncommon (most reported BI claims result in some payment), fitting the quantile model on the full aggregate is reasonable.
 
 ---
 
@@ -281,7 +281,7 @@ model.fit(X_train, y_train)
 report = model.calibration_report(X_val, y_val)
 ```
 
-Check the coverage report first, before touching the loading calculations. If q_0.9 observed coverage is below 0.87, the loading numbers will be unreliable — fix the calibration issue or use CQR on top before presenting the outputs to a sign-off committee.
+Check the coverage report first, before touching the loading calculations. If q_0.9 observed coverage is below 0.87, the loading numbers will be unreliable; fix the calibration issue or use CQR on top before presenting the outputs to a sign-off committee.
 
 The burning cost gives you the centre. The quantile model gives you the tail. Both are required. Using only the first is pricing for average experience. Average experience is not what determines whether you write a profitable book of motor BI.
 

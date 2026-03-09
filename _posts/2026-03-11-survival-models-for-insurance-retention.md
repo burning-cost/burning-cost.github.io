@@ -11,9 +11,9 @@ The standard retention model for UK personal lines is a logistic GLM. Target var
 
 It works, after a fashion. The problems emerge when you try to use it for anything beyond the next renewal.
 
-The logistic model gives you P(renewal at anniversary t+1). It does not give you P(still active at year t+2 | renewed at t+1), or at t+3, or t+5. If you want a customer lifetime value figure — which post-PS21/11 you increasingly need — you have to chain together multiple logistic models, each conditioned on survival to that point. That chain breaks down quickly because it ignores censoring: the mid-term policies still active at your observation cutoff are not discards, they are incomplete observations that carry information about the tenure distribution. A logistic model that drops them, or treats them as non-renewers, is misspecified.
+The logistic model gives you P(renewal at anniversary t+1). It does not give you P(still active at year t+2 | renewed at t+1), or at t+3, or t+5. If you want a customer lifetime value figure (which post-PS21/11 you increasingly need), you have to chain together multiple logistic models, each conditioned on survival to that point. That chain breaks down quickly because it ignores censoring: the mid-term policies still active at your observation cutoff are not discards, they are incomplete observations that carry information about the tenure distribution. A logistic model that drops them, or treats them as non-renewers, is misspecified.
 
-There is a second problem specific to insurance that clinical survival software does not handle: a meaningful fraction of your policyholders effectively never lapse. The high-NCD customer paying by direct debit who has been with the same insurer since 2011 is not meaningfully "at risk" in the same sense as a PCW switcher on their first renewal. If you fit a standard Weibull or Cox model on the full book, the survival curve will converge asymptotically towards zero. It should not — it should plateau. The plateau is the never-lapse subgroup.
+There is a second problem specific to insurance that clinical survival software does not handle: a meaningful fraction of your policyholders effectively never lapse. The high-NCD customer paying by direct debit who has been with the same insurer since 2011 is not meaningfully "at risk" in the same sense as a PCW switcher on their first renewal. If you fit a standard Weibull or Cox model on the full book, the survival curve will converge asymptotically towards zero. It should plateau instead. The plateau is the never-lapse subgroup.
 
 Both problems now have regulatory weight. Consumer Duty (PS22/9, effective July 2023) requires insurers to demonstrate fair value across the customer lifecycle, not just at point of sale. The FCA's September 2024 Good and Poor Practice guidance makes explicit that firms are expected to use data analytics to understand how long customers benefit from coverage. A single-year renewal probability is not that analysis.
 
@@ -25,7 +25,7 @@ We built [`insurance-survival`](https://github.com/burning-cost/insurance-surviv
 
 [lifelines](https://lifelines.readthedocs.io/) is an excellent general-purpose survival library. We use it. `insurance-survival` calls it for the standard models. The gaps are specific to insurance:
 
-**Covariate-adjusted cure models.** `lifelines.MixtureCureFitter` exists, but it is univariate — it fits a single cure fraction for the whole population. Insurance data needs a cure fraction that varies by covariate: a high-NCD direct debit customer has a different never-lapse probability than a PCW shopper on NCD 0. The cure logistic model captures this.
+**Covariate-adjusted cure models.** `lifelines.MixtureCureFitter` exists, but it is univariate: it fits a single cure fraction for the whole population. Insurance data needs a cure fraction that varies by covariate: a high-NCD direct debit customer has a different never-lapse probability than a PCW shopper on NCD 0. The cure logistic model captures this.
 
 **Customer lifetime value.** No Python library integrates survival probabilities with premium and loss schedules to produce per-policy CLV. This is the calculation Consumer Duty requires: can you document that a loyalty discount is CLV-justified? The output needs to be audit-ready, not just a number.
 
@@ -41,11 +41,11 @@ Before fitting anything, you need your policy data in survival format: one row p
 
 Three complications that bite you if you ignore them:
 
-**MTAs.** A mid-term adjustment updates a policy's covariates without constituting a lapse. NCD level, vehicle change, address change — all of these produce transactions in your policy admin system. The survival model needs to split the observation interval at each MTA and carry the updated covariates forward. It must not treat the MTA as an event.
+**MTAs.** A mid-term adjustment updates a policy's covariates without constituting a lapse. NCD level, vehicle change, address change: all of these produce transactions in your policy admin system. The survival model needs to split the observation interval at each MTA and carry the updated covariates forward. It must not treat the MTA as an event.
 
 **Fractional first-year exposure.** A policy incepted on 1 July contributes 0.5 years to the first observation period. If you assign it a full year's exposure it will look artificially long-tenured in the model.
 
-**Left truncation.** Policies already in force at the start of your study window are conditionally observed — you only see them because they had not yet lapsed. Dropping them loses the long-tenure policies entirely, which biases the survival curve downwards. Including them without accounting for the truncation also biases the model.
+**Left truncation.** Policies already in force at the start of your study window are conditionally observed: you only see them because they had not yet lapsed. Dropping them loses the long-tenure policies entirely, which biases the survival curve downwards. Including them without accounting for the truncation also biases the model.
 
 `ExposureTransformer` handles all of this:
 
@@ -69,7 +69,7 @@ print(transformer.summary())
 #  'censoring_rate': 0.69, 'left_truncated_count': 8312, 'mta_count': 14201}
 ```
 
-The output is start/stop format, directly compatible with `lifelines.CoxTimeVaryingFitter` and all `insurance-survival` models. The `event_rate` of 0.31 means 31% of policies were observed to lapse within the study window. The `censoring_rate` of 0.69 — the majority — would be silently discarded by a logistic model. They are the mid-term policies still active at the observation cutoff, and they carry real information about tenure.
+The output is start/stop format, directly compatible with `lifelines.CoxTimeVaryingFitter` and all `insurance-survival` models. The `event_rate` of 0.31 means 31% of policies were observed to lapse within the study window. The `censoring_rate` of 0.69 (the majority) would be silently discarded by a logistic model. They are the mid-term policies still active at the observation cutoff, and they carry real information about tenure.
 
 ---
 
@@ -81,11 +81,11 @@ Fit a `WeibullMixtureCureFitter` and the survival function becomes:
 S(t|x) = π(x) + (1 − π(x)) × S_u(t|x)
 ```
 
-`π(x)` is the cure fraction — the never-lapse probability, modelled as a logistic function of covariates. `S_u(t|x)` is Weibull AFT survival for the subgroup who are genuinely at risk. The two-component structure means the survival curve can plateau correctly for customers who are likely to be permanent.
+`π(x)` is the cure fraction, the never-lapse probability, modelled as a logistic function of covariates. `S_u(t|x)` is Weibull AFT survival for the subgroup who are genuinely at risk. The two-component structure means the survival curve can plateau correctly for customers who are likely to be permanent.
 
 The R equivalent is `flexsurvcure::flexsurvcure(mixture=TRUE, dist="weibull")`. In Python, nothing comparable existed with covariate adjustment until now.
 
-Parameters are estimated by EM initialisation followed by joint L-BFGS-B optimisation. EM handles the fundamental identification problem: censored observations are ambiguous — they might be cured (never-lapsers) or simply not-yet-lapsed. The EM algorithm treats the cure indicator for censored observations as a latent variable and iterates to convergence, giving L-BFGS-B a sensible starting point for the joint maximisation.
+Parameters are estimated by EM initialisation followed by joint L-BFGS-B optimisation. EM handles the fundamental identification problem: censored observations are ambiguous, as they might be cured (never-lapsers) or simply not-yet-lapsed. The EM algorithm treats the cure indicator for censored observations as a latent variable and iterates to convergence, giving L-BFGS-B a sensible starting point for the joint maximisation.
 
 ```python
 from insurance_survival import WeibullMixtureCureFitter
@@ -101,7 +101,7 @@ fitter.fit(survival_df, duration_col="stop", event_col="event")
 print(fitter.summary())
 ```
 
-The `summary()` output separates the cure logistic coefficients from the Weibull AFT coefficients, with standard errors and confidence intervals on both. The NCD coefficient in the cure model tells you how much each additional NCD step changes the log-odds of being a never-lapper. The NCD coefficient in the Weibull model tells you how the time-to-lapse distribution shifts for the at-risk subgroup. These are different quantities with different practical interpretations.
+The `summary()` output separates the cure logistic coefficients from the Weibull AFT coefficients, with standard errors and confidence intervals on both. The NCD coefficient in the cure model tells you how much each additional NCD step changes the log-odds of being a never-lapper. The NCD coefficient in the Weibull model tells you how the time-to-lapse distribution shifts for the at-risk subgroup.
 
 To predict cure probability for a new cohort:
 
@@ -122,7 +122,7 @@ Once you have a fitted survival model, `SurvivalCLV` integrates it with premium 
 CLV(x) = Σ_{t=1}^{T} S(t|x(t)) × (P_t − C_t) × (1+r)^{−t}
 ```
 
-The `x(t)` notation matters. NCD level is not static — it advances year by year via the UK motor NCD Markov chain (claim: two steps back; no claim: one step up). A customer on NCD 3 today will have a different NCD distribution in year 3 depending on how many claims they make, and that changes both their lapse probability and their premium. `SurvivalCLV` handles this via exact Markov chain marginalisation — no simulation required for this discrete, finite state space.
+The `x(t)` notation matters. NCD level is not static; it advances year by year via the UK motor NCD Markov chain (claim: two steps back; no claim: one step up). A customer on NCD 3 today will have a different NCD distribution in year 3 depending on how many claims they make, and that changes both their lapse probability and their premium. `SurvivalCLV` handles this via exact Markov chain marginalisation — no simulation required for this discrete, finite state space.
 
 ```python
 from insurance_survival import SurvivalCLV
@@ -141,7 +141,7 @@ results = clv_model.predict(
 # Columns: policy_id, clv, survival_integral, cure_prob, s_yr1 .. s_yr5
 ```
 
-The `survival_integral` is expected tenure — the sum of annual survival probabilities. A customer with `survival_integral = 3.2` is expected to stay for 3.2 years on average. This is the number that belongs in a fair value assessment alongside the headline CLV figure.
+The `survival_integral` is expected tenure, the sum of annual survival probabilities. A customer with `survival_integral = 3.2` is expected to stay for 3.2 years on average, which belongs in a fair value assessment alongside the headline CLV figure.
 
 For discount targeting:
 
@@ -154,7 +154,7 @@ sensitivity = clv_model.discount_sensitivity(
 #          clv_without_discount, incremental_clv, discount_justified
 ```
 
-The `discount_justified` column is a boolean: is the CLV with the discount greater than or equal to the CLV without? For a loyalty discount of £50, a customer on the margin of lapsing will flip this to True. A customer who is very likely to stay regardless will have `discount_justified=False` for any discount — you are giving money away for nothing.
+The `discount_justified` column is a boolean: is the CLV with the discount greater than or equal to the CLV without? For a loyalty discount of £50, a customer on the margin of lapsing will flip this to True. A customer who is very likely to stay regardless will have `discount_justified=False` for any discount: you are giving money away for nothing.
 
 This is the Consumer Duty output. Consumer Duty requires that loyalty discounts are demonstrably fair-value-positive for the customers who receive them. An explicit `discount_justified` column with the calculation behind it is what a fair value file should contain. It is not a compliance document by itself, but it is the analysis that a compliance document should be built on.
 
@@ -190,7 +190,7 @@ shape: (7, 6)
 └──────┴───────┴──────┴───────┴───────┴───────┘
 ```
 
-The `Tx` column is curtate expected future lifetime from year x — the number an actuary uses to calculate expected tenure conditional on having survived to that point. It decreases as tenure increases, as you would expect: a customer who has survived to year 5 has a shorter expected remaining tenure than one who just incepted, simply because the cure model's plateau means the remaining population is increasingly concentrated in the never-lapse subgroup.
+The `Tx` column is curtate expected future lifetime from year x, the number an actuary uses to calculate expected tenure conditional on having survived to that point. It decreases as tenure increases, as you would expect: a customer who has survived to year 5 has a shorter expected remaining tenure than one who just incepted, simply because the cure model's plateau means the remaining population is increasingly concentrated in the never-lapse subgroup.
 
 You can generate tables for multiple segments and compare:
 
@@ -242,7 +242,7 @@ The CLV output from `SurvivalCLV` is the natural input to CLV-based discount tar
 3. Pass the `discount_justified` segmentation to `rate-optimiser` as the set of policies eligible for a loyalty discount.
 4. Let `rate-optimiser` find the factor adjustments that hit the LR target while maximising the discount budget allocated to CLV-positive policies.
 
-Without the CLV analysis, a rate optimiser will spread discounts across the renewal book according to a demand model that assumes all retained customers have equal value. They do not. The PCW-sourced NCD-0 customer retained by a £50 discount has a low cure probability and a short expected tenure. The direct NCD-5 customer who receives the same discount has a much higher expected lifetime value. Allocating the same discount to both is a misallocation that the CLV model makes visible.
+Without the CLV analysis, a rate optimiser will spread discounts across the renewal book as though all retained customers have equal value. They do not. The PCW-sourced NCD-0 customer retained by a £50 discount has a low cure probability and a short expected tenure. The direct NCD-5 customer who receives the same discount has a much higher expected lifetime value.
 
 ---
 
@@ -257,7 +257,7 @@ uv add "insurance-survival[mlflow,plot,excel]"
 
 Source and tests on [GitHub](https://github.com/burning-cost/insurance-survival). 106 tests, all passing.
 
-The minimum viable starting point: run `ExposureTransformer` on your policy transaction data and look at `transformer.summary()`. The `event_rate` and `censoring_rate` tell you immediately whether you have a censoring problem that a logistic model is hiding. If `censoring_rate > 0.5` — and on most live books it will be — the logistic model is making implicit assumptions about those censored observations that it has no right to make.
+The minimum viable starting point: run `ExposureTransformer` on your policy transaction data and look at `transformer.summary()`. The `event_rate` and `censoring_rate` tell you immediately whether you have a censoring problem that a logistic model is hiding. If `censoring_rate > 0.5` (and on most live books it will be), the logistic model is making implicit assumptions about those censored observations that it has no right to make.
 
 After that: fit `WeibullMixtureCureFitter` with NCD and channel as cure covariates and call `predict_cure()` on a slice of your current renewal book. The distribution of cure probabilities will tell you where your retention commercial risk actually sits, at a per-policy level, for the first time.
 

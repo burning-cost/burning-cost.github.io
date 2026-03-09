@@ -9,11 +9,11 @@ description: "PRA SS1/23 is expected to extend to insurers by 2026-2027. Most UK
 
 If the PRA asked you today for your model inventory, what would you send them?
 
-In our experience, the answer is likely a shared Excel workbook with a tab called "Model Register." Forty or fifty rows. Columns for model name, owner, last review date, status. The last review date column has blanks in it. The status column says "Live" for everything. There is no link to the validation report. There is no change log. The person who set it up left eighteen months ago.
+In our experience, the answer is likely a shared Excel workbook with a tab called "Model Register." Forty or fifty rows. Columns for model name, owner, last review date, status. The last review date column has blanks in it. The status column says "Live" for everything. There is no link to the validation report, no change log. The person who set it up left eighteen months ago.
 
 That is not a model risk register. It is a list.
 
-The distinction matters because the PRA's 2026 supervision priorities letter — issued in January 2026 — specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
+The distinction matters because the PRA's 2026 supervision priorities letter (issued in January 2026) specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
 
 [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests — it wraps [`insurance-validation`](https://github.com/burning-cost/insurance-validation) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
@@ -25,13 +25,13 @@ uv add insurance-mrm
 
 ## The regulatory direction of travel
 
-PRA SS1/23 — Model Risk Management Principles for Banks — came into force on 17 May 2024. It is currently scoped to banks, building societies, and PRA-designated investment firms. Insurance firms are not formally in scope. That will change.
+PRA SS1/23 (Model Risk Management Principles for Banks) came into force on 17 May 2024. It is currently scoped to banks, building societies, and PRA-designated investment firms. Insurance firms are not formally in scope. That will change.
 
-4most (January 2025) and the PRA's own supervision signals point in the same direction: extension to insurers is a matter of when, not if. A plausible timeline is post-Solvency UK embedding, which would point to 2026-2027 — though that remains directional rather than confirmed. The firms that will handle that extension well are the ones who start building the infrastructure now, not the ones who scramble to retrofit documentation after the formal notice arrives.
+4most (January 2025) and the PRA's own supervision signals point in the same direction: extension to insurers is a matter of when, not if. A plausible timeline is post-Solvency UK embedding, pointing to 2026-2027, though that remains directional rather than confirmed. The firms that will handle that extension well are the ones who start building the infrastructure now, not the ones who scramble to retrofit documentation after the formal notice arrives.
 
 SS1/23's five principles are: (1) model identification and risk classification, (2) governance, (3) model development, implementation, and use, (4) independent validation, and (5) model risk mitigants. The critical text in Principle 3 is that documentation must allow "a party unfamiliar with the model to understand its operation." In Principle 1, every model must be classified by complexity, business use, and materiality, with a change log.
 
-That is a model inventory with structured metadata and an audit trail — not a spreadsheet.
+That is a model inventory with structured metadata and an audit trail, not a spreadsheet.
 
 The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) — a thematic review of product governance — found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. TR24/2 is a supervisory review, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
 
@@ -43,7 +43,7 @@ The only serious commercial MRM platform in the Python ecosystem is ValidMind. I
 
 ValidMind's open-source library ships 200+ pre-configured validation tests. It generates structured HTML reports. It references SS1/23 and SR 11-7 explicitly. On paper, it looks like the right tool.
 
-Three problems. First, the licence. ValidMind's library is AGPL v3. Any commercial pricing team that incorporates AGPL code into its workflow must either open-source all downstream code or purchase a commercial licence. That is a hard blocker at most insurers — the legal team will not allow it, and the conversations required to get a commercial agreement signed will take longer than just building the governance layer yourself.
+Three problems. First, the licence. ValidMind's library is AGPL v3. Any commercial pricing team that incorporates AGPL code into its workflow must either open-source all downstream code or purchase a commercial licence. That is a hard blocker at most insurers: the legal team will not allow it, and the conversations required to get a commercial agreement signed will take longer than just building the governance layer yourself.
 
 Second, the target market. ValidMind is built for US and EU banking compliance: credit scoring, fraud detection, market risk. It has no Gini/Lorenz support, no A/E calibration by decile, no lift charts, no FCA Consumer Duty structure, no UK proxy discrimination testing under the Equality Act 2010. It is a banking tool wearing a general MRM badge.
 
@@ -107,15 +107,15 @@ card = ModelCard(
 )
 ```
 
-The `not_intended_for` list is not decorative. SS1/23 Principle 3 requires documentation that specifies the model's scope of valid application. A model that is used outside its documented scope — because someone did not know it was not appropriate for reserving — is a governance failure that starts with absent documentation.
+The `not_intended_for` list is not decorative. SS1/23 Principle 3 requires documentation that specifies the model's scope of valid application. A model used outside its documented scope (because someone did not know it was not appropriate for reserving) is a governance failure that starts with absent documentation.
 
-The `monitoring_triggers` dictionary feeds directly into `insurance-monitoring`: when a monitoring run produces a PSI above 0.25, the library can fire a review trigger automatically against the card's registered thresholds. That connection — between live monitoring output and the governance record — is the audit trail the PRA wants to see.
+The `monitoring_triggers` dictionary feeds directly into `insurance-monitoring`: when a monitoring run produces a PSI above 0.25, the library can fire a review trigger automatically against the card's registered thresholds. That connection between live monitoring output and the governance record is the audit trail the PRA wants to see.
 
 ---
 
 ### RiskTierScorer: objective tier assignment
 
-The standard in practice at UK insurers is for a pricing actuary to assign a risk tier by judgment. Tier 1, Tier 2, Tier 3 — someone decides, writes a justification, and that is the tier. This produces defensible documentation in good-faith firms and compliance theatre in bad-faith ones. The PRA's supervision framework cannot distinguish between the two.
+The standard in practice at UK insurers is for a pricing actuary to assign a risk tier by judgment. Tier 1, Tier 2, Tier 3: someone decides, writes a justification, and that is the tier. This produces defensible documentation in good-faith firms and compliance theatre in bad-faith ones. The PRA's supervision framework cannot distinguish between the two.
 
 `RiskTierScorer` replaces judgment with a scored rubric. Six factors, weighted and summed to a score from 0 to 100:
 
@@ -192,9 +192,9 @@ models = inventory.list()
 
 The inventory is file-backed JSON. No database, no infrastructure dependencies. It runs in a notebook, a CI pipeline, or a model development environment with no internet access. A mid-tier insurer has maybe 50-100 production models — JSON scales to thousands, which is more than enough.
 
-The `run_id` field is the connection point between governance and statistical evidence. When `insurance-validation` generates a validation report, it produces a JSON sidecar with a UUID. `ModelInventory.update_validation()` takes that UUID and stores it against the model record. You now have a machine-readable link from the governance register to the specific validation run. If the PRA asks "what validation evidence supports this model's continued use?" — you query the inventory, retrieve the `run_id`, and retrieve the JSON that carries the Gini, A/E ratios, RAG status, and all test results.
+The `run_id` field is the connection point between governance and statistical evidence. When `insurance-validation` generates a validation report, it produces a JSON sidecar with a UUID. `ModelInventory.update_validation()` takes that UUID and stores it against the model record. You now have a machine-readable link from the governance register to the specific validation run. If the PRA asks what validation evidence supports this model's continued use, you query the inventory, retrieve the `run_id`, and retrieve the JSON that carries the Gini, A/E ratios, RAG status, and all test results.
 
-The `due_for_review()` method is worth running as a scheduled job — daily, from a CI pipeline, with a Slack notification. A Tier 1 model where `next_review_date` is within 30 days and `status` is `live` (not `validated`) is a governance breach waiting to happen. Surfacing it automatically removes the "we didn't know" defence.
+The `due_for_review()` method is worth running as a scheduled job, daily, from a CI pipeline, with a Slack notification. A Tier 1 model where `next_review_date` is within 30 days and `status` is `live` (not `validated`) is a governance breach waiting to happen. Surfacing it automatically removes the "we didn't know" defence.
 
 ---
 
@@ -202,7 +202,7 @@ The `due_for_review()` method is worth running as a scheduled job — daily, fro
 
 `insurance-validation` produces a technical validation report: nine sections, full statistical methodology, 40-50 pages of HTML when printed. That report goes to the independent validation function and the model risk committee.
 
-The governance committee — ExCo, board risk committee, regulator — needs something different. They need a 1-2 page summary: what does the model do, what tier is it, what did the last validation find, who approved it, when is the next review, what are the key risks.
+The governance committee (ExCo, board risk committee, regulator) needs something different. They need a 1-2 page summary: what does the model do, what tier is it, what did the last validation find, who approved it, when is the next review, what are the key risks.
 
 `GovernanceReport` generates that summary.
 
@@ -223,7 +223,7 @@ The HTML output covers: model identity and purpose, risk tier with scoring ratio
 
 It is readable in five minutes by someone who has not seen the technical validation report. That is the audience for this document.
 
-The optional `validation_results` and `monitoring_results` parameters accept plain dicts — you do not need `insurance-validation` or `insurance-monitoring` installed. But when you do have them, pass the output of their `to_dict()` methods and the report renders the headline metrics automatically. If the last validation produced an AMBER RAG — triggered by a renewal cohort flag on the 5+ year tenure band — that context appears in the executive pack. The committee is looking at the same evidence, condensed rather than rewritten.
+The optional `validation_results` and `monitoring_results` parameters accept plain dicts; you do not need `insurance-validation` or `insurance-monitoring` installed. But when you do have them, pass the output of their `to_dict()` methods and the report renders the headline metrics automatically. If the last validation produced an AMBER RAG, triggered by a renewal cohort flag on the 5+ year tenure band, that context appears in the executive pack. The committee is looking at the same evidence, condensed rather than rewritten.
 
 ---
 
@@ -269,11 +269,11 @@ The validation statistics are computed once, by `insurance-validation`. The gove
 
 It is worth being precise about what `insurance-mrm` does and does not do.
 
-It does not compute PSI, Gini, A/E ratios, calibration tests, or any other statistical measure. `insurance-validation` and `insurance-monitoring` do that. Duplicating those tests in this library would create a maintenance burden and a divergence risk — two libraries computing the same statistic with slightly different implementations, producing different numbers depending on which one you run.
+It does not compute PSI, Gini, A/E ratios, calibration tests, or any other statistical measure. `insurance-validation` and `insurance-monitoring` do that. Duplicating those tests in this library would create a maintenance burden and a divergence risk: two libraries computing the same statistic with slightly different implementations, producing different numbers depending on which one you run.
 
 What the library adds is everything that neither validation nor monitoring provides: a persistent model register that does not require a human to remember to update it; an objective tier scoring methodology that produces an auditable rationale rather than a judgment; a governance workflow that tracks sign-off status, review dates, and escalation triggers; and an executive committee report that is distinct from the technical validation report in audience, format, and purpose.
 
-The gap this fills is not statistical. The gap is institutional. The reason most UK pricing teams' model governance is inadequate is not that they lack statisticians — it is that there is no tooling that connects the statistical output to the governance workflow in a way that is reproducible, auditable, and appropriate for the regulatory context they operate in.
+The gap this fills is not statistical. The gap is institutional. The reason most UK pricing teams' model governance is inadequate is not a lack of statisticians: there is no tooling that connects the statistical output to the governance workflow in a way that is reproducible, auditable, and appropriate for the regulatory context they operate in.
 
 ---
 
@@ -290,7 +290,7 @@ The firms that will handle the regulatory transition smoothly are the ones that 
 
 An Excel workbook cannot answer these questions reliably. `insurance-mrm` can.
 
-If your team is already using `insurance-validation` and `insurance-monitoring`, the incremental work to adopt `insurance-mrm` is low — the integration points are designed to be frictionless, and the run_id linkage between the libraries requires one additional line. If you are starting from scratch, the three libraries together give you a complete, PRA-aligned, auditable pricing governance workflow in Python, under MIT licence, with no infrastructure dependencies.
+If your team is already using `insurance-validation` and `insurance-monitoring`, the incremental work to adopt `insurance-mrm` is low. The integration points are designed to be frictionless, and the run_id linkage between the libraries requires one additional line. If you are starting from scratch, the three libraries together give you a complete, PRA-aligned, auditable pricing governance workflow in Python, under MIT licence, with no infrastructure dependencies.
 
 ---
 

@@ -7,7 +7,7 @@ tags: [renewal, elasticity, DML, causal-inference, FCA, ENBP, GIPP, python, moto
 description: "Standard renewal demand models overestimate price sensitivity for bad risks and underestimate it for good ones — because risk drives both premium and lapse. Double Machine Learning removes this structural confound to produce causal elasticity estimates that hold up under FCA Consumer Duty scrutiny."
 ---
 
-Most UK personal lines insurers have a renewal demand model. Many of them are wrong in the same way — and the wrongness compounds directly into pricing decisions.
+Most UK personal lines insurers have a renewal demand model. Many of them are wrong in the same way, and the wrongness compounds directly into pricing decisions.
 
 The problem is not technical incompetence. It is a structural confound that standard logistic regression cannot fix, no matter how many features you add or how long you spend tuning your hyperparameters.
 
@@ -37,11 +37,11 @@ This is not a modelling failure. It is a consequence of the data-generating proc
 
 ## Double Machine Learning
 
-DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. Both residualisation steps use cross-fitting to prevent overfitting bias, and the resulting elasticity estimate is root-n-consistent and asymptotically normal. For the full mathematical procedure and Neyman orthogonality guarantee, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and Neyman orthogonality guarantee, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
-The key point for renewal pricing: what remains in `D_tilde = D - E[D|X]` after partialling out risk factors is the part of the price change *not driven by risk* — manual overrides, bulk re-rating decisions, competitive environment effects. This is exogenous variation, and regressing renewal residuals on price residuals gives an approximately unbiased causal estimate.
+The key point for renewal pricing: what remains in `D_tilde = D - E[D|X]` after partialling out risk factors is the part of the price change not driven by risk: manual overrides, bulk re-rating decisions, competitive environment effects. This is exogenous variation, and regressing renewal residuals on price residuals gives an approximately unbiased causal estimate.
 
-For heterogeneous elasticity — the question of which customers are more or less price-sensitive — CausalForestDML extends this by fitting a causal forest on the residuals. Rather than a single average elasticity, you get a separate estimate for each customer, with confidence intervals.
+For heterogeneous elasticity (the question of which customers are more or less price-sensitive), CausalForestDML extends this by fitting a causal forest on the residuals. Rather than a single average elasticity, you get a separate estimate for each customer, with confidence intervals.
 
 ## Using the Library
 
@@ -73,11 +73,11 @@ cate_df = estimator.cate(df)
 estimator.gate(df, by='channel')
 ```
 
-The `gate()` method gives Group Average Treatment Effects — the average elasticity within each channel, NCD band, age group, or any other segmentation variable. In practice, PCW customers are reliably the most price-sensitive. Direct customers with five or more years' NCD and a direct debit mandate are typically among the least price-sensitive. These patterns are what you would expect from first principles, but a biased demand model will not recover them reliably.
+The `gate()` method gives Group Average Treatment Effects: the average elasticity within each channel, NCD band, age group, or any other segmentation variable. In practice, PCW customers are reliably the most price-sensitive. Direct customers with five or more years' NCD and a direct debit mandate are typically among the least price-sensitive.
 
 ## Heterogeneity Matters for Optimisation
 
-A single average elasticity is not actionable. Renewal pricing operates at the individual policy level. The question is not "what is our average elasticity?" but "for this specific customer, if we offer them ENBP minus 2%, how does that change their renewal probability, and what is the marginal contribution to profit?"
+A single average elasticity is not actionable. Renewal pricing operates at the individual policy level. The question is not 'what is our average elasticity?' but 'for this specific customer, if we offer them ENBP minus 2%, how does that change their renewal probability?'
 
 The per-customer elasticity from CausalForestDML feeds directly into the renewal optimisation problem:
 
@@ -113,11 +113,11 @@ We should be direct about the biggest limitation of this approach, because most 
 
 DML works by exploiting variation in price that is *not explained by risk factors*. In insurance, how much such variation actually exists?
 
-Run the treatment model — the one that predicts log price change from risk features — and look at the R². In a typical UK motor renewal dataset, this is 0.85 to 0.95. Your rating engine explains most of the price change. What is left — the residual `D_tilde` — is a small signal: manual underwriting overrides, competitive environment shifts applied at the book level, timing effects from when in the renewal cycle the customer was priced.
+Run the treatment model — the one that predicts log price change from risk features — and look at the R². In a typical UK motor renewal dataset, this is 0.85 to 0.95. Your rating engine explains most of the price change. What is left (the residual `D_tilde`) is a small signal: manual underwriting overrides, competitive environment shifts applied at the book level, timing effects from when in the renewal cycle the customer was priced.
 
 When residual variance is small, DML estimates become noisy. The standard errors on the elasticity estimate widen. The confidence intervals may span the range from "inelastic" to "highly elastic". You have identified the treatment effect, but not precisely.
 
-The library flags this explicitly. If the treatment model R² exceeds 0.90, you will see a warning. If it exceeds 0.95, the estimates should be treated with serious caution regardless of what the confidence intervals say — the asymptotic theory requires meaningful residual variation, and near-zero residual variance violates the effective positivity assumption.
+The library flags this explicitly. If the treatment model R² exceeds 0.90, you will see a warning. If it exceeds 0.95, the estimates should be treated with serious caution regardless of what the confidence intervals say. The asymptotic theory requires meaningful residual variation, and near-zero residual variance violates the effective positivity assumption.
 
 This is not a library design flaw. It is an honest description of what observational data can and cannot tell you.
 
@@ -127,9 +127,9 @@ If observational data is limited, there are genuine quasi-experimental designs a
 
 **A/B testing.** The gold standard. Randomly assign a subset of renewals to price variants that deviate from the rating model output. Even a 2–3% random price perturbation on 10% of renewals, run for two renewal cycles, gives clean exogenous variation. The library handles A/B data cleanly — the treatment model R² will be low (the perturbation is random by construction), and the elasticity estimate will be precise.
 
-**Bulk re-rating quasi-experiments.** When a book is re-rated (new base rates, new rating factors), some customers see price changes that are mechanically determined by the rating change rather than by their individual risk change. If you can isolate these — customers who experienced the same rating factor change for non-risk reasons — you have something close to an instrumental variable. The library's diagnostic tools help identify these sub-populations.
+**Bulk re-rating quasi-experiments.** When a book is re-rated (new base rates, new rating factors), some customers see price changes that are mechanically determined by the rating change rather than by their individual risk change. If you can isolate customers who experienced the same rating factor change for non-risk reasons, you have something close to an instrumental variable. The library's diagnostic tools help identify these sub-populations.
 
-**ENBP kink regression.** PS21/5 created a natural experiment. For customers who were previously priced above ENBP (price-walking was common before January 2022), the rule forced a price reduction to exactly ENBP. This generates a discontinuity in the price-change distribution at the ENBP level. Regression kink or discontinuity designs can exploit this to estimate elasticity near the ENBP constraint — precisely the elasticity that matters most for post-GIPP optimisation.
+**ENBP kink regression.** PS21/5 created a natural experiment. For customers who were previously priced above ENBP (price-walking was common before January 2022), the rule forced a price reduction to exactly ENBP. This generates a discontinuity in the price-change distribution at the ENBP level. Regression kink or discontinuity designs can exploit this to estimate elasticity near the ENBP constraint, precisely the elasticity that matters most for post-GIPP optimisation.
 
 **Panel data within-customer variation.** For customers with multiple renewal cycles, the within-customer price change (net of risk change) provides identification. A customer whose risk profile is stable but who received different price changes in consecutive years has given you a near-controlled comparison. This requires multi-year data and careful risk-change adjustment, but it is genuine exogenous variation.
 
@@ -137,13 +137,13 @@ If observational data is limited, there are genuine quasi-experimental designs a
 
 We want to be clear about what this library does and does not solve.
 
-**It does not create data that does not exist.** If your observational data has near-zero exogenous price variation (treatment R² > 0.90) and you have no quasi-experimental supplement, the estimates will be imprecise. A wide confidence interval is an honest answer. Do not use a point estimate in this situation.
+**It does not create data that does not exist.** If your observational data has near-zero exogenous price variation (treatment R² > 0.90) and you have no quasi-experimental supplement, the estimates will be imprecise. A wide confidence interval is an honest answer.
 
-**It does not handle pre-2022 data correctly by default.** Pre-GIPP data has a fundamentally different demand structure. Price-walking inflated premiums for inertial customers, creating artificially low measured elasticity for long-tenure customers. If you train on pre-2022 data, the structural break at January 2022 will bias estimates. The library flags data containing pre-2022 renewals and recommends using post-2022 data only.
+**It does not handle pre-2022 data correctly by default.** Pre-GIPP data has a fundamentally different demand structure. Price-walking inflated premiums for inertial customers, creating artificially low measured elasticity for long-tenure customers. The library flags data containing pre-2022 renewals and recommends using post-2022 data only.
 
-**Channel mixing produces a fiction.** PCW and direct customers have different elasticity distributions by a large margin. If your data conflates channels, the average elasticity estimate is the average of two different populations weighted by their share of your book. This average does not describe either population correctly. Always fit channel-stratified models.
+**Channel mixing produces a fiction.** PCW and direct customers have different elasticity distributions by a large margin. The average of the two populations does not describe either correctly. Always fit channel-stratified models.
 
-**ENBP is taken as a given.** The library takes the ENBP column as input. Computing ENBP correctly — applying the right new business model, the right channel, the right incentive adjustments — is the firm's responsibility and is not inside the library's scope. Wrong ENBP inputs produce wrong optimisation outputs.
+**ENBP is taken as a given.** The library takes the ENBP column as input. Computing ENBP correctly (applying the right new business model, the right channel, the right incentive adjustments) is the firm's responsibility and is not inside the library's scope. Wrong ENBP inputs produce wrong optimisation outputs.
 
 **The positivity assumption can fail for extreme risks.** For customers with very constrained pricing (technical premium near or above ENBP, underwriting restrictions), the assumption that they could in principle have received any price in a reasonable range breaks down. The library's diagnostics flag policies where the elasticity estimate should be discarded rather than used.
 
@@ -151,15 +151,15 @@ We want to be clear about what this library does and does not solve.
 
 FCA EP25/2, published in July 2025, confirmed that the GIPP remedies are working in motor — the evaluation estimated £1.6 billion in consumer savings since January 2022. The FCA is watching whether firms are using segment-level elasticity appropriately. A firm that cannot demonstrate how it computed renewal elasticity estimates, or that cannot show the estimates are defensible at a segment level, is exposed under Consumer Duty.
 
-A causal elasticity model with an explicit audit trail — treatment variation diagnostics, CI-bounded estimates, ENBP compliance reports per policy — is not just better pricing. It is a defensible methodology.
+A causal elasticity model with an explicit audit trail (treatment variation diagnostics, CI-bounded estimates, ENBP compliance reports per policy) is not just better pricing. It is a defensible methodology.
 
 ## What We Think
 
-Standard demand models produce biased elasticity estimates. We think this is widely understood at a theoretical level in UK actuarial functions and almost never fixed at a practical level, because the fix requires tooling that sits outside the standard actuarial toolkit.
+Standard demand models produce biased elasticity estimates. We think this is widely understood at a theoretical level in UK actuarial functions and almost never fixed at a practical level.
 
 That is what `insurance-elasticity` is for: DML estimation with the insurance-specific corrections applied by default, connected directly to an ENBP-constrained optimiser, with diagnostics that tell you honestly when the data cannot support reliable estimates.
 
-If your renewal demand model gives you a single price sensitivity parameter and a confidence interval that your team treats as decoration, the model is flying blind. The question is whether the answer to that is a better model or better data. Usually it is both — but the better model at least tells you which.
+If your renewal demand model gives you a single price sensitivity parameter and a confidence interval that your team treats as decoration, the model is flying blind. Usually better data and a better model are both needed, but the better model at least tells you which.
 
 ---
 

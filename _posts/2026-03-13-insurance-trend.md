@@ -31,7 +31,7 @@ log(freq_t) = α + β·t + Σ γ_k·seasonal_k + ε_t
 
 The annual trend rate is `exp(β × periods_per_year) − 1`. On quarterly data that means `exp(β × 4) − 1`. The logged left-hand side is the key decision: it constrains the trend to be multiplicative, which is the correct assumption for insurance claims. A 5% trend on a £1,000 average cost produces a £50 increment in year 1, a £52.50 increment in year 2. That is not what an additive model does, and the actuarial literature has always been clear that multiplicative is right.
 
-Seasonal dummies are included by default for quarterly data — Q1, Q2, Q3 with Q4 as base. This matters for motor: roadworks, school holidays, and adverse weather create persistent seasonal patterns in frequency. If you fit trend through seasonal variation without dummy controls, the slope estimate absorbs some of the pattern. We have seen this produce trend estimates 1–2 percentage points different from the seasonally adjusted figure on typical UK motor data.
+Seasonal dummies are included by default for quarterly data (Q1, Q2, Q3 with Q4 as base). This matters for motor: roadworks, school holidays, and adverse weather create persistent seasonal patterns in frequency. If you fit trend through seasonal variation without dummy controls, the slope estimate absorbs some of the pattern. We have seen this produce trend estimates 1–2 percentage points different from the seasonally adjusted figure on typical UK motor data.
 
 WLS is available via the `weights` parameter for anyone who wants to down-weight older periods. The default is equal weights (OLS). We do not pick a default decay scheme because the right answer is domain-specific and should be explicit.
 
@@ -74,9 +74,9 @@ Changepoints    : [4]
 Bootstrap N     : 1000
 ```
 
-The `changepoints: [4]` flag is the library detecting that index 4 — the Q1 2020 observation — marks a structural break in the log-frequency series. The `piecewise` method fits a separate slope to each segment and reports the trend from the final segment. That is almost certainly the right thing to do: a single regression through 2019–2023 that includes the Q2 2020 lockdown nadir would produce a spuriously steep positive trend as frequency recovered from its artificial floor.
+The `changepoints: [4]` flag is the library detecting that index 4 (the Q1 2020 observation) marks a structural break in the log-frequency series. The `piecewise` method fits a separate slope to each segment and reports the trend from the final segment. That is almost certainly the right thing to do: a single regression through 2019–2023 that includes the Q2 2020 lockdown nadir would produce a spuriously steep positive trend as frequency recovered from its artificial floor.
 
-The detection uses the PELT algorithm from the `ruptures` package with an L2 cost function and a default penalty of 3.0. PELT is O(n) in the number of observations — it does not brute-force all possible segmentations. The penalty controls the false positive rate; at 3.0 it is conservative enough for typical insurance quarterly series of 16–24 observations. The library warns when breaks are detected and asks you to review them for actuarial plausibility:
+The detection uses the PELT algorithm from the `ruptures` package with an L2 cost function and a default penalty of 3.0. PELT is O(n) in the number of observations; it does not brute-force all possible segmentations. The penalty controls the false positive rate; at 3.0 it is conservative enough for typical insurance quarterly series of 16–24 observations. The library warns when breaks are detected and asks you to review them for actuarial plausibility:
 
 ```
 UserWarning: Structural breaks detected at indices [4].
@@ -87,7 +87,7 @@ to suppress piecewise fitting.
 
 You can pass `changepoints=[4]` to force the break at a specific index, `changepoints=[]` to suppress piecewise fitting entirely, or `detect_breaks=False` to skip automatic detection. The mechanism is explicit; nothing happens silently.
 
-The 95% bootstrap CI runs 1,000 parametric replicates — resampling residuals from the OLS fit, refitting on each perturbed series, collecting the slope distribution. The interval `(-3.12%, -0.58%)` tells you the trend is negative with reasonable confidence but not tight: the uncertainty spans 2.5 points. That uncertainty matters for pricing. If you are building a rate indication on this segment and the trend could plausibly be -0.6% or -3.1%, those are meaningfully different pricing answers.
+The 95% bootstrap CI runs 1,000 parametric replicates, resampling residuals from the OLS fit, refitting on each perturbed series, and collecting the slope distribution. The interval `(-3.12%, -0.58%)` tells you the trend is negative with reasonable confidence but not tight: the uncertainty spans 2.5 points. That uncertainty matters for pricing. If you are building a rate indication on this segment and the trend could plausibly be -0.6% or -3.1%, those are meaningfully different pricing answers.
 
 ---
 
@@ -144,7 +144,7 @@ Bootstrap N     : 1000
 Superimposed inflation: 0.0284
 ```
 
-When an external index is provided, the fit is performed on the deflated severity series — total paid divided by the re-based index. So `trend_rate` is the trend in severity after stripping out the index-measured inflation. `superimposed_inflation()` returns the residual: the severity cost growth that the economic index did not capture. In this example the 2.84% superimposed component represents ADAS recalibration costs, labour time complexity, and parts pricing dynamics — the structural drivers that the ONS SPPI basket does not fully weight.
+When an external index is provided, the fit is performed on the deflated severity series: total paid divided by the re-based index. So `trend_rate` is the trend in severity after stripping out the index-measured inflation. `superimposed_inflation()` returns the residual: the severity cost growth that the economic index did not capture. In this example the 2.84% superimposed component represents ADAS recalibration costs, labour time complexity, and parts pricing dynamics — the structural drivers that the ONS SPPI basket does not fully weight.
 
 The ONS HPTH series is free, public, and updated monthly. No API key, no commercial licence. Other indices catalogued in the library include L7JE (CPI 12.5.4.1 Motor vehicle insurance), D7DO (CPI 04.3.2 services for maintenance and repair of dwellings — useful for household books), and CZEA (RPI Maintenance of motor vehicles). For BCIS data, which is subscription-only, `ExternalIndex.from_csv()` handles the load.
 
@@ -217,7 +217,7 @@ Superimposed inflation (pa)  :  2.84%
 }
 ```
 
-The combined trend of 4.49% is not the sum of -1.83% and 6.41% — it is the product. The difference is small here but becomes material at higher trend rates or over longer projection horizons.
+The combined trend of 4.49% is not the sum of -1.83% and 6.41%; it is the product. The difference is small here but becomes material at higher trend rates or over longer projection horizons.
 
 The trend factor method on the result converts this to a compound multiplier for any projection horizon:
 
@@ -235,9 +235,9 @@ For a portfolio with an average loss cost of £450 at the mid-point of the exper
 
 The Ogden rate changed from -0.75% to -0.25% in July 2019 (England, Wales, and Northern Ireland). This is a structural break in the severity series for liability-heavy lines: bodily injury claims settled close to the change date had materially different reserve values than those settled six months earlier. If you are fitting severity trend on a liability book that spans the 2019 boundary, the regression slope will absorb some of the level shift as a slope estimate, biasing both the pre-change and post-change trends.
 
-PELT will typically detect this as a structural break if the signal-to-noise ratio is adequate — the level change from the Ogden reform was substantial relative to within-period noise on most liability books. If it does not detect it automatically, pass `changepoints=[2]` (for a 2019Q1-indexed quarterly series) to force the break.
+PELT will typically detect this as a structural break if the signal-to-noise ratio is adequate. The level change from the Ogden reform was substantial relative to within-period noise on most liability books. If it does not detect it automatically, pass `changepoints=[2]` (for a 2019Q1-indexed quarterly series) to force the break.
 
-COVID creates the same problem on the frequency side, with greater magnitude. The lockdown quarters — Q2 and Q3 2020 for most UK personal lines — have frequencies so far below the structural trend that including them without a break will pull the post-2021 trend upward, because the regression is trying to fit through the recovery as well as the steady state. Automatic PELT detection handles this correctly in most cases; we tested it on synthetic series with a lockdown-sized frequency dip and it reliably places the break at the dip entry and exit.
+COVID creates the same problem on the frequency side, with greater magnitude. The lockdown quarters (Q2 and Q3 2020 for most UK personal lines) have frequencies so far below the structural trend that including them without a break will pull the post-2021 trend upward, because the regression is trying to fit through the recovery as well as the steady state. Automatic PELT detection handles this correctly in most cases; we tested it on synthetic series with a lockdown-sized frequency dip and it reliably places the break at the dip entry and exit.
 
 The 2022–2023 inflation shock is the current live version of this problem for severity. Average repair costs in UK motor climbed approximately 25–30% in nominal terms between Q1 2021 and Q4 2023. The slope of a single regression through this period will be dominated by the inflation jump. The post-2023 trend, as parts costs stabilise and supply chains normalise, will be lower than the 2021–2023 slope suggests. Whether PELT separates these or not depends on whether the inflation period looks like a level shift (break) or a sustained slope change (the log-linear trend picks it up). Our view: use the ONS index deflation and let the residual superimposed inflation estimate reveal the structural component.
 
@@ -252,7 +252,7 @@ result_uc = fitter.fit(method='local_linear_trend', n_bootstrap=200)
 print(result_uc.summary())
 ```
 
-The UnobservedComponents model has a time-varying slope — it allows the trend rate to evolve rather than holding it constant within segments. The reported trend rate is the mean of the smoothed state slope over the last four quarters: essentially a recent-period estimate of where the trend is now. Bootstrap CIs are capped at 200 replicates for this method because fitting a state-space model is substantially more expensive than OLS.
+The UnobservedComponents model has a time-varying slope, allowing the trend rate to evolve rather than holding it constant within segments. The reported trend rate is the mean of the smoothed state slope over the last four quarters: essentially a recent-period estimate of where the trend is now. Bootstrap CIs are capped at 200 replicates for this method because fitting a state-space model is substantially more expensive than OLS.
 
 We think `local_linear_trend` is appropriate when the trend genuinely seems to be changing gradually — a slow moderation of frequency decline as market saturation approaches, for example — and `log_linear` with explicit structural breaks is appropriate when the discontinuities are abrupt and actuarially attributable to specific events. In practice: use `log_linear` by default, switch to `local_linear_trend` as a cross-check, and document why the two diverge if they do.
 
