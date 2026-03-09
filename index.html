@@ -1,7 +1,7 @@
 ---
 layout: landing
 title: "Burning Cost - Open-source pricing tools for UK insurance teams"
-description: "15 Python libraries covering the full pricing workflow. From walk-forward cross-validation to constrained rate optimisation. Built by practitioners, for UK personal lines pricing teams."
+description: "25 Python libraries covering the full pricing workflow. From walk-forward cross-validation to constrained rate optimisation. Built by practitioners, for UK personal lines pricing teams."
 ---
 
 <!-- Hero -->
@@ -17,7 +17,7 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
       Open source &middot; UK insurance pricing
     </div>
     <h1>Your <em>GBM</em> outperforms.<br>Your <em>GLM</em> is still live.</h1>
-    <p class="hero-sub">15 Python libraries that bridge the gap: from walk-forward cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is.</p>
+    <p class="hero-sub">25 Python libraries that bridge the gap: from walk-forward cross-validation to constrained rate optimisation. Written for teams that already know what a GLM is.</p>
     <div class="hero-cta">
       <a href="/course/" class="btn btn-primary">Training course &rarr;</a>
       <a href="https://github.com/burning-cost" target="_blank" class="btn btn-outline">Browse on GitHub</a>
@@ -40,15 +40,15 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat">
-      <span class="stat-number">15</span>
+      <span class="stat-number">25</span>
       <span class="stat-label">Libraries</span>
     </div>
     <div class="stat">
-      <span class="stat-number">600+</span>
+      <span class="stat-number">2,500+</span>
       <span class="stat-label">Tests</span>
     </div>
     <div class="stat">
-      <span class="stat-number">17</span>
+      <span class="stat-number">29</span>
       <span class="stat-label">Articles</span>
     </div>
     <div class="stat">
@@ -210,42 +210,47 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
       <div class="workflow-stage">
         <div class="workflow-node">
           <div class="workflow-node-icon">&#128201;</div>
-          <div class="workflow-node-name">Data &amp; Features</div>
+          <div class="workflow-node-name">Data</div>
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">insurance-cv</span>
+          <span class="workflow-lib">ins-synthetic</span>
+          <span class="workflow-lib">ins-datasets</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
       <div class="workflow-stage">
         <div class="workflow-node">
           <div class="workflow-node-icon">&#129504;</div>
-          <div class="workflow-node-name">Model Fitting</div>
+          <div class="workflow-node-name">Model</div>
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">credibility</span>
           <span class="workflow-lib">bayesian-pricing</span>
+          <span class="workflow-lib">ins-multilevel</span>
+          <span class="workflow-lib">ins-spatial</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
       <div class="workflow-stage">
         <div class="workflow-node">
           <div class="workflow-node-icon">&#128269;</div>
-          <div class="workflow-node-name">Interpretation</div>
+          <div class="workflow-node-name">Interpret</div>
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">shap-relativities</span>
           <span class="workflow-lib">ins-interactions</span>
-          <span class="workflow-lib">insurance-distill</span>
+          <span class="workflow-lib">ins-causal</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
       <div class="workflow-stage">
         <div class="workflow-node">
           <div class="workflow-node-icon">&#10003;</div>
-          <div class="workflow-node-name">Validation</div>
+          <div class="workflow-node-name">Validate</div>
         </div>
         <div class="workflow-lib-labels">
+          <span class="workflow-lib">ins-validation</span>
           <span class="workflow-lib">ins-conformal</span>
           <span class="workflow-lib">ins-monitoring</span>
         </div>
@@ -258,18 +263,19 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">ins-fairness</span>
+          <span class="workflow-lib">ins-causal-policy</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
       <div class="workflow-stage">
         <div class="workflow-node">
           <div class="workflow-node-icon">&#128200;</div>
-          <div class="workflow-node-name">Rates &amp; Commercial</div>
+          <div class="workflow-node-name">Deploy</div>
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">rate-optimiser</span>
-          <span class="workflow-lib">ins-demand</span>
-          <span class="workflow-lib">experience-rating</span>
+          <span class="workflow-lib">ins-elasticity</span>
+          <span class="workflow-lib">ins-deploy</span>
         </div>
       </div>
     </div>
@@ -290,22 +296,13 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
           <span class="lib-tag">factor tables</span>
         </span>
       </a>
-      <a href="https://github.com/burning-cost/insurance-distill" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-distill</span>
-        <span class="lib-card-desc">GBM-to-GLM distillation for insurance pricing. Fit a GLM that approximates a GBM's predictions, giving you a transparent, auditable model that regulators and rating engines can work with.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">model distillation</span>
-          <span class="lib-tag">GLM</span>
-          <span class="lib-tag">GBM</span>
-        </span>
-      </a>
     </div>
   </div>
 
   <div class="lib-group">
     <div class="lib-group-header">
       <span class="lib-group-icon">&#10003;</span>
-      <span class="lib-group-label">Validation</span>
+      <span class="lib-group-label">Validation &amp; deployment</span>
     </div>
     <div class="lib-grid fade-up-children">
       <a href="https://github.com/burning-cost/insurance-cv" target="_blank" class="lib-card">
@@ -319,7 +316,7 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
       </a>
       <a href="https://github.com/burning-cost/insurance-conformal" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-conformal</span>
-        <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Implements the variance-weighted non-conformity score from Manna et al. (2025), producing 30% narrower intervals than the naive approach with identical coverage guarantees.</span>
+        <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Variance-weighted non-conformity scores produce narrower intervals than the naive approach with identical coverage guarantees.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">conformal prediction</span>
           <span class="lib-tag">GBM</span>
@@ -332,6 +329,24 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
           <span class="lib-tag">PSI/CSI</span>
           <span class="lib-tag">A/E ratios</span>
           <span class="lib-tag">Gini z-test</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-validation" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-validation</span>
+        <span class="lib-card-desc">PRA SS1/23 compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test, 9-section HTML/JSON output ready for model governance.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">PRA SS1/23</span>
+          <span class="lib-tag">model governance</span>
+          <span class="lib-tag">HTML report</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-deploy" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-deploy</span>
+        <span class="lib-card-desc">Champion/challenger pricing framework. Shadow mode deployment, SHA-256 deterministic routing, SQLite quote log, bootstrap likelihood ratio comparison, ENBP audit trail for ICOBS 6B.2.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">champion/challenger</span>
+          <span class="lib-tag">shadow mode</span>
+          <span class="lib-tag">audit trail</span>
         </span>
       </a>
     </div>
@@ -384,6 +399,33 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
           <span class="lib-tag">postcode</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-multilevel" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-multilevel</span>
+        <span class="lib-card-desc">Two-stage CatBoost + REML random effects for high-cardinality group factors like broker, scheme, or fleet. Credibility-weighted adjustments with ICC diagnostics.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">mixed effects</span>
+          <span class="lib-tag">CatBoost</span>
+          <span class="lib-tag">credibility</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-survival" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-survival</span>
+        <span class="lib-card-desc">Survival models for insurance retention. Cure rate models, CLV, lapse tables, insurance exposure handling, MLflow wrapper. Wraps lifelines with insurance-specific gaps filled.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">lapse</span>
+          <span class="lib-tag">retention</span>
+          <span class="lib-tag">CLV</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-causal-policy" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-causal-policy</span>
+        <span class="lib-card-desc">Synthetic difference-in-differences for causal rate change evaluation. Event study, HonestDiD sensitivity, FCA evidence pack. Did your rate change actually cause the movement you see?</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">SDID</span>
+          <span class="lib-tag">causal inference</span>
+          <span class="lib-tag">rate change</span>
+        </span>
+      </a>
     </div>
   </div>
 
@@ -416,6 +458,69 @@ description: "15 Python libraries covering the full pricing workflow. From walk-
           <span class="lib-tag">NCD</span>
           <span class="lib-tag">bonus-malus</span>
           <span class="lib-tag">schedule rating</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-elasticity" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-elasticity</span>
+        <span class="lib-card-desc">Causal price elasticity via DML. CausalForestDML and DR-Learner from EconML, ENBP-constrained optimiser, ICOBS 6B.2 audit trail. Segment-level elasticity curves for renewal pricing.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">price elasticity</span>
+          <span class="lib-tag">CausalForestDML</span>
+          <span class="lib-tag">ICOBS</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="lib-group">
+    <div class="lib-group-header">
+      <span class="lib-group-icon">&#128202;</span>
+      <span class="lib-group-label">Tail risk &amp; distributions</span>
+    </div>
+    <div class="lib-grid fade-up-children">
+      <a href="https://github.com/burning-cost/insurance-quantile" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-quantile</span>
+        <span class="lib-card-desc">Actuarial tail risk quantile/expectile regression. QuantileGBM wrapping CatBoost MultiQuantile, per-risk TVaR, large loss loading, ILF tables, exceedance curves, isotonic crossing fix.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">quantile GBM</span>
+          <span class="lib-tag">TVaR</span>
+          <span class="lib-tag">tail risk</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-distributional" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-distributional</span>
+        <span class="lib-card-desc">Distributional GBMs for insurance. TweedieGBM, GammaGBM, ZIPGBM, NegBinomialGBM. Smyth-J&oslash;rgensen double GLM for dispersion. Per-risk volatility scoring.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">Tweedie</span>
+          <span class="lib-tag">distributional</span>
+          <span class="lib-tag">volatility</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-ilf" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-ilf</span>
+        <span class="lib-card-desc">MBBEFD exposure curves, Swiss Re families, ILF tables, per-risk XL pricing. Fit exposure curves from censored/truncated loss data. The first Python MBBEFD implementation.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">MBBEFD</span>
+          <span class="lib-tag">ILF</span>
+          <span class="lib-tag">reinsurance</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-synthetic" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-synthetic</span>
+        <span class="lib-card-desc">Vine copula synthetic portfolio generation with insurance-specific marginals. Exposure-aware Poisson, constraint enforcement, fidelity reporting with TSTR Gini gap.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">vine copula</span>
+          <span class="lib-tag">synthetic data</span>
+          <span class="lib-tag">fidelity</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-datasets" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-datasets</span>
+        <span class="lib-card-desc">Synthetic UK motor insurance datasets with known data generating process. Useful for model validation benchmarks, library demos, and training exercises.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">synthetic data</span>
+          <span class="lib-tag">UK motor</span>
+          <span class="lib-tag">DGP</span>
         </span>
       </a>
     </div>
