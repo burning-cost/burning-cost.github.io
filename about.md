@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-description: "Burning Cost builds open-source Python tools for UK personal lines pricing teams. Thirteen libraries covering GLMs, GBMs, SHAP relativities, credibility, rate optimisation, and FCA compliance."
+description: "Burning Cost builds open-source Python tools for UK personal lines pricing teams. Twenty-eight libraries covering the full pricing workflow: data validation, model building, interpretation, tail risk, commercial optimisation, compliance, and governance."
 permalink: /about/
 ---
 
@@ -13,37 +13,58 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Thirteen Python libraries covering the full pricing workflow.
+Twenty-eight Python libraries covering the full pricing workflow.
 
-UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap.
+UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail.
 
-- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - extract multiplicative rating factor tables from CatBoost models using SHAP values, in the same format as exp(beta) from a GLM
+**Data & Validation**
 
-**Validation**
+- [`insurance-cv`](https://github.com/burning-cost/insurance-cv) - temporal walk-forward cross-validation with IBNR buffers and sklearn-compatible scorers
+- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) - synthetic UK motor data with a known data-generating process, for testing and teaching
+- [`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic) - vine copula synthetic portfolio generation preserving multivariate dependence structure
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) - exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for deployed models
+- [`insurance-validation`](https://github.com/burning-cost/insurance-validation) - structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON
 
-- [`insurance-cv`](https://github.com/burning-cost/insurance-cv) - temporally-correct walk-forward cross-validation with IBNR buffer support and sklearn-compatible scorers
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025)
-
-**Techniques**
+**Model Building**
 
 - [`credibility`](https://github.com/burning-cost/credibility) - Buhlmann-Straub credibility in Python with mixed-model equivalence checks
-- [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data pricing segments
-- [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - detecting and quantifying interaction effects that a main-effects GLM cannot see
-- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal inference for insurance pricing; separating genuine risk signal from confounded association
-- [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking
+- [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data pricing segments using PyMC 5
+- [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking, borrowing strength from neighbours
+- [`insurance-multilevel`](https://github.com/burning-cost/insurance-multilevel) - CatBoost combined with REML random effects for high-cardinality categorical groups
+- [`insurance-trend`](https://github.com/burning-cost/insurance-trend) - loss cost trend analysis with structural break detection and regime-aware projections
+- [`insurance-anam`](https://github.com/burning-cost/insurance-anam) - actuarial neural additive model in PyTorch: interpretable deep learning for pricing
+- [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - automated GLM interaction detection using CANN, NID, and SHAP-based methods
+
+**Interpretation**
+
+- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM
+- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal inference via double machine learning for deconfounding rating factors
+
+**Tail Risk & Distributions**
+
+- [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) - quantile and expectile GBMs for tail risk, TVaR, and increased limit factors
+- [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) - distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives
+- [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) - MBBEFD exposure curves, Swiss Re families, ILF tables, and per-risk excess-of-loss pricing
 
 **Commercial**
 
-- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation; the efficient frontier between loss ratio target and movement cap constraints
-- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - price elasticity and conversion modelling, integrated with rate optimisation
+- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints
+- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - conversion, retention, and DML price elasticity modelling integrated with rate optimisation
+- [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML and DR-Learner
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - SLSQP portfolio rate optimisation with analytical Jacobians for large factor spaces
+- [`experience-rating`](https://github.com/burning-cost/experience-rating) - NCD and bonus-malus systems, experience modification factors for commercial lines
+- [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling
 
-**Compliance**
+**Compliance & Governance**
 
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination detection and FCA Consumer Duty documentation support
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination auditing and FCA Consumer Duty documentation support
+- [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) - synthetic difference-in-differences for causal rate change evaluation and FCA evidence packs
+- [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) - model risk management: ModelCard, ModelInventory, and GovernanceReport generation
+- [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) - champion/challenger framework with shadow mode, rollback, and full audit trail
 
 **Infrastructure**
 
-- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) - synthetic personal lines datasets with realistic exposure, claim count, and development structure, for testing and teaching
 - [`burning-cost`](https://github.com/burning-cost/burning-cost) - the Burning Cost CLI; orchestration for pricing model pipelines
 
 ---
@@ -52,7 +73,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 UK pricing teams have been building GBMs for years, mostly CatBoost. The models are better than the production GLMs. But many teams are still taking the GLM to production, because the GBM outputs are not in a form that a rating engine, regulator, or pricing committee can work with.
 
-The issue is not technical skill. It is tooling. There is no standard Python library that extracts a multiplicative relativities table from a GBM. There is no standard library that does temporally-correct walk-forward cross-validation with IBNR buffers. There is no standard library that builds a constrained rate optimisation a pricing actuary can challenge.
+The issue is not technical skill. It is tooling. There is no standard Python library that extracts a multiplicative relativities table from a GBM. There is no standard library that does temporally-correct walk-forward cross-validation with IBNR buffers. There is no standard library that builds a constrained rate optimisation a pricing actuary can challenge. There is no standard library that generates a PRA SS1/23-compliant model validation report.
 
 We wrote those libraries because we needed them. Then we kept going.
 

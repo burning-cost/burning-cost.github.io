@@ -150,7 +150,7 @@ permalink: /course/
       <div class="build-card">
         <span class="build-card-num">Module 07</span>
         <div class="build-card-title">A constrained rate optimisation with an FCA compliance check</div>
-        <div class="build-card-desc">Linear programming that hits a target loss ratio, respects movement caps, and has Consumer Duty PS21/5 constraints built in. Includes efficient frontier analysis and shadow price reporting.</div>
+        <div class="build-card-desc">Linear programming that hits a target loss ratio, respects movement caps, and has FCA GIPP (PS21/5) constraints built in. Includes efficient frontier analysis and shadow price reporting.</div>
       </div>
       <div class="build-card">
         <span class="build-card-num">Module 08</span>
@@ -335,7 +335,7 @@ permalink: /course/
           <li>Linear programming formulation using <code>rate-optimiser</code> and <code>scipy.optimize</code></li>
           <li>The efficient frontier of achievable (loss ratio, volume) outcomes for a rate review cycle</li>
           <li>Shadow price analysis: the marginal cost of tightening the LR target, quantified</li>
-          <li>FCA PS21/5 Consumer Duty compliance constraints built into the optimisation</li>
+          <li>FCA GIPP (PS21/5) compliance constraints built into the optimisation</li>
         </ul>
         <div class="module-links">
           <a href="/course/module-07/" class="module-link">Module overview</a>
