@@ -23,6 +23,7 @@ minima:
 
 header_pages:
   - course.md
+  - tools.md
   - about.md
 
 plugins:
