@@ -11,6 +11,11 @@ twitter:
   username: burningcost
   card: summary
 
+social:
+  name: Burning Cost
+  links:
+    - https://github.com/burning-cost
+
 theme: minima
 
 minima:
