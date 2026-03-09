@@ -303,3 +303,10 @@ report = model.calibration_report(X_val, y_val)
 Check the coverage report first, before touching the loading calculations. If q_0.9 observed coverage is below 0.87, the loading numbers will be unreliable — fix the calibration issue or use CQR on top before presenting the outputs to a sign-off committee.
 
 The burning cost gives you the centre. The quantile model gives you the tail. Both are required. Using only the first is pricing for average experience. Average experience is not what determines whether you write a profitable book of motor BI.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/)
+- [Your Excess-of-Loss Pricing Has No Curves](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)

@@ -215,3 +215,10 @@ The Aigner et al. (2024) truncated/censored likelihood is the part we are most s
 ---
 
 `insurance-ilf` is open source under the MIT licence at [github.com/burning-cost/insurance-ilf](https://github.com/burning-cost/insurance-ilf). Install with `pip install insurance-ilf`. 129 tests passing. Requires Python 3.10+, NumPy, SciPy, and Pandas.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)

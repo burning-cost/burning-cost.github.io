@@ -298,3 +298,10 @@ Source and issue tracker at [github.com/burning-cost/experience-rating](https://
 - Richman, R., Scognamiglio, S. and Wuthrich, M.V. (2024). Credibility Transformer. arXiv:2409.16653.
 - Wüthrich, M.V. (2025). Experience rating in insurance. SSRN 4726206.
 - Association of British Insurers. Motor insurance NCD guidelines (various editions).
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/03/06/buhlmann-straub-credibility-in-python/)
+- [Survival Models for Insurance Retention](/2026/03/08/survival-models-for-insurance-retention/)
+- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)

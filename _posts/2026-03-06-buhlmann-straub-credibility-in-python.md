@@ -319,3 +319,10 @@ We built this because UK pricing teams should not be doing credibility in Excel.
 - Richman, R., Scognamiglio, S., & Wüthrich, M.V. (2024). The Credibility Transformer. *arXiv:2409.16653*.
 - Robinson, G.K. (1991). That BLUP is a good thing: The estimation of random effects. *Statistical Science*, 6(1), 15-51.
 - Dutang, C., Goulet, V., & Pigeon, M. actuar: Actuarial functions and heavy-tailed distributions. R package, CRAN.
+
+---
+
+**Related articles from Burning Cost:**
+- [Partial Pooling for Thin Rating Cells: Introducing bayesian-pricing](/2026/03/06/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Your Broker Adjustments Are Guesswork](/2026/03/09/your-broker-adjustments-are-guesswork/)
+- [Your NCD Threshold Advice Is Wrong at 65%](/2026/03/07/experience-rating-ncd-bonus-malus/)

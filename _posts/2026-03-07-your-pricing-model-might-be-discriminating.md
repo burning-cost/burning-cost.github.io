@@ -329,3 +329,10 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-f
 Start with the proxy audit. Run it on your current production model before you do anything else. If the postcode correlation with your ethnicity proxy is below 0.15, you have a defensible position and can document it. If it is above 0.30, you need to understand the disparity decomposition before your next Consumer Duty review.
 
 The fairness-accuracy trade-off is real. But "we did not audit this because we were worried about our loss ratio" is not a position you can sustain with the regulator. The Citizens Advice analysis is public. The FCA's expectations are documented. The question is not whether you will address this - it is whether you address it now or after a letter arrives from Stratford.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [Your Territory Banding Is Wrong](/2026/03/06/spatial-territory-ratemaking-with-bym2/)
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)

@@ -328,3 +328,10 @@ The minimum viable starting point: fit a `ConversionModel` on your quote data an
 After that: run `ElasticityEstimator` on a year of PCW quote data. Compare the DML estimate with `ConversionModel.marginal_effect()`. If they are materially different - and they often are - the difference is the confounding bias you have been pricing with. That number, concretely, is how wrong your current pricing assumption is.
 
 The libraries that commercial platforms sell for significant annual fees are doing the same maths. The methodology is not proprietary. What they sell is the integration, the UI, and the professional services. `insurance-demand` is the methodology in an auditable Python package with no vendor lock-in and an API that reads like sklearn.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)
+- [Your Renewal Pricing Is Flying Blind](/2026/03/08/your-renewal-pricing-is-flying-blind/)
+- [Your Rate Changes Are Leaving Money on the Table](/2026/03/08/insurance-optimise/)

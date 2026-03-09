@@ -307,3 +307,10 @@ The academic literature on causal inference in insurance is thin. A 2023 survey 
 We built `insurance-causal` because the tools existed (DoubleML, CatBoost) but the insurance-specific interface did not. The confounding bias report - one method call, a table showing naive GLM coefficient vs DML causal estimate vs implied bias - is the output that makes this immediately actionable for a pricing team.
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-causal).
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Rating Factor Might Be Confounded](/2026/03/07/your-rating-factor-might-be-confounded/)
+- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)
+- [Your Rate Change Didn't Prove Anything](/2026/03/09/your-rate-change-didnt-prove-anything/)

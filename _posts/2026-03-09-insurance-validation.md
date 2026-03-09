@@ -172,3 +172,10 @@ The library ships 148 passing tests covering the statistical functions, the repo
 The test suite was validated on Databricks serverless (Python 3.11). The library has no hard dependency on Spark or any cloud runtime — it runs anywhere scikit-learn runs.
 
 [`insurance-validation` on GitHub](https://github.com/burning-cost/insurance-validation) — MIT licence.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/)
+- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

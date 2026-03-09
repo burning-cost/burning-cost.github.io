@@ -262,3 +262,10 @@ The minimum viable starting point: run `ExposureTransformer` on your policy tran
 After that: fit `WeibullMixtureCureFitter` with NCD and channel as cure covariates and call `predict_cure()` on a slice of your current renewal book. The distribution of cure probabilities will tell you where your retention commercial risk actually sits, at a per-policy level, for the first time.
 
 The R survival community has had covariate-adjusted cure models in `flexsurvcure` for years. Python did not. Now it does.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Renewal Pricing Is Flying Blind](/2026/03/08/your-renewal-pricing-is-flying-blind/)
+- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)
+- [Your NCD Threshold Advice Is Wrong at 65%](/2026/03/07/experience-rating-ncd-bonus-malus/)

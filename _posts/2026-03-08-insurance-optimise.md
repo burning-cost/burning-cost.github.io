@@ -240,3 +240,10 @@ ENBP is taken as an input. Computing it correctly — applying the right new bus
 ---
 
 The `insurance-optimise` library is open source under the MIT licence at [github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise).
+
+---
+
+**Related articles from Burning Cost:**
+- [Constrained Rate Optimisation and the Efficient Frontier](/2026/03/06/constrained-rate-optimisation-efficient-frontier/)
+- [Demand Modelling for Insurance Pricing](/2026/03/07/demand-modelling-for-insurance-pricing/)
+- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)

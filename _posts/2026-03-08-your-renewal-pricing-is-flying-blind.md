@@ -168,3 +168,10 @@ If your renewal demand model gives you a single price sensitivity parameter and 
 ---
 
 *The `insurance-elasticity` library is open source under MIT licence. The ENBP optimiser, heterogeneous elasticity surface, and compliance audit tools are covered in the [library documentation](#).*
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Demand Model Is Confounded](/2026/03/07/your-demand-model-is-confounded/)
+- [Survival Models for Insurance Retention](/2026/03/08/survival-models-for-insurance-retention/)
+- [Your Rate Changes Are Leaving Money on the Table](/2026/03/08/insurance-optimise/)

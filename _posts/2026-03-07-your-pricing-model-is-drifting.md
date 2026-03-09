@@ -248,3 +248,10 @@ The annual full model validation should include: backtesting the model on out-of
 Install with `uv add insurance-monitoring`.
 
 The only thing we do not supply is the will to run it quarterly. That part is on you.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

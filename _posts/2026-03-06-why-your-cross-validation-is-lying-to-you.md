@@ -228,3 +228,10 @@ The API is stable. The three split generators cover the main use cases in UK per
 The core argument is simple: a model that performs well in k-fold CV on insurance data has proved it can interpolate within a temporally-shuffled dataset. It has not proved it can generalise prospectively. Those are different tests, and the second one is the one that matters.
 
 Run `split_summary` before you tune anything. If the `gap_days` column contains zeros, you have a problem.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/)
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/)

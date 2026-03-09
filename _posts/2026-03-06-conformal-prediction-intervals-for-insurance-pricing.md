@@ -244,3 +244,10 @@ uv add insurance-conformal
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-conformal). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
 
 The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/)
+- [Your Burning Cost Has a Tail Risk Problem](/2026/03/08/insurance-quantile/)
+- [Why Your Cross-Validation is Lying to You](/2026/03/06/why-your-cross-validation-is-lying-to-you/)

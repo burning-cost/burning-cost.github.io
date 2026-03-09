@@ -244,3 +244,10 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-c
 Start with the confounding bias report. Run it on a factor you already have in your GLM and think you understand. If the DML estimate and the GLM coefficient are within 10% of each other, confounding is not a major problem for that factor - the GLM is doing a reasonable job. If they diverge materially, you have evidence that the factor's GLM coefficient is carrying confounding bias, and you should think carefully about how that affects the decisions it is used for.
 
 The right use of this library is not to replace your GLM. It is to audit the causal standing of the factors in your GLM - to find out which coefficients you can trust for intervention decisions and which ones are proxies. Most pricing models have a mix of both. Knowing which is which is commercially valuable.
+
+---
+
+**Related articles from Burning Cost:**
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/07/causal-inference-for-insurance-pricing/)
+- [Your Rate Change Didn't Prove Anything](/2026/03/09/your-rate-change-didnt-prove-anything/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/)

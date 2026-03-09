@@ -422,3 +422,10 @@ Now the honest caveats, because they matter and they do not disappear by running
 | `mlflow` | Experiment tracking | Pre-installed on Databricks Runtime 14+ |
 
 The full notebook set - `01_data_prep`, `02_train_extract`, `03_export` - and the Job JSON definition are available as a downloadable archive. The notebooks map 1:1 to the sections above and can be imported directly into a Databricks workspace.
+
+---
+
+**Related articles from Burning Cost:**
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/)
+- [From CatBoost to Radar in 50 Lines of Python](/2026/03/07/from-catboost-to-radar-gbm-to-glm-distillation/)
+- [Your Model Validation Report Won't Survive a PRA Review](/2026/03/09/insurance-validation/)
