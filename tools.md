@@ -270,6 +270,7 @@ Vine copula synthetic portfolio generation that preserves the multivariate depen
 **[insurance-whittaker](https://github.com/burning-cost/insurance-whittaker)**
 Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML/GCV/AIC lambda selection and Bayesian confidence intervals. Borrows strength from neighbours to smooth noisy age curves, NCD scales, and vehicle group relativities. Pure NumPy/SciPy.
 `uv add insurance-whittaker`
+&rarr; [Whittaker-Henderson smoothing for insurance pricing](https://burning-cost.github.io/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/)
 
 ---
 
