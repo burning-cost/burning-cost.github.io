@@ -1,11 +1,11 @@
 ---
 layout: page
 title: About
-description: "Burning Cost builds open-source Python tools for UK personal lines pricing teams. Twenty-seven libraries covering the full pricing workflow: data validation, model building, interpretation, tail risk, commercial optimisation, compliance, and governance."
+description: "Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks."
 permalink: /about/
 ---
 
-Burning Cost builds open-source Python tools for UK personal lines pricing teams.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks.
 
 The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. Simple, direct, no mystification. That is how we think about tooling.
 
@@ -13,9 +13,9 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Twenty-seven Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+Twenty-eight Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
-UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail.
+UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
 **Data & Validation**
 
@@ -74,13 +74,13 @@ UK pricing teams have been building GBMs for years, mostly CatBoost. The models 
 
 The issue is not technical skill. It is tooling. There is no standard Python library that extracts a multiplicative relativities table from a GBM. There is no standard library that does temporally-correct walk-forward cross-validation with IBNR buffers. There is no standard library that builds a constrained rate optimisation a pricing actuary can challenge. There is no standard library that generates a PRA SS1/23-compliant model validation report.
 
-We wrote those libraries because we needed them. Then we kept going.
+We wrote those libraries because we needed them. Then we kept going. Everything is built to run on Databricks — that is where UK pricing teams are working, and where our research demonstrates its best practice.
 
 ---
 
 ## Training course
 
-We also run a training course - [Modern Insurance Pricing with Python and Databricks](/course/) - for pricing actuaries and analysts who want to use these tools properly. Eight modules, written from first principles for insurance, not adapted from generic data science tutorials.
+We also run a training course — [Modern Insurance Pricing with Python and Databricks](/course/) — for pricing actuaries and analysts who want to use these tools properly. Twelve modules, written from first principles for insurance, not adapted from generic data science tutorials. Every module runs on Databricks.
 
 ---
 
