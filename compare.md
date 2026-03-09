@@ -146,7 +146,7 @@ It probably is not the right choice if:
 
 ## Getting started
 
-All 25 libraries are on PyPI. Install any of them individually:
+All 26 libraries are on PyPI. Install any of them individually:
 
 ```
 pip install shap-relativities
