@@ -3,6 +3,8 @@ layout: post
 title: "Causal Elasticity Estimation for Renewal Pricing"
 date: 2026-03-11
 categories: [pricing, causal-inference]
+tags: [renewal, elasticity, DML, causal-inference, FCA, ENBP, GIPP, python, motor]
+description: "Standard renewal demand models overestimate price sensitivity for bad risks and underestimate it for good ones — because risk drives both premium and lapse. Double Machine Learning removes this structural confound to produce causal elasticity estimates that hold up under FCA Consumer Duty scrutiny."
 ---
 
 Most UK personal lines insurers have a renewal demand model. Many of them are wrong in the same way — and the wrongness compounds directly into pricing decisions.
