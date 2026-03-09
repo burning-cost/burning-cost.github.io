@@ -223,7 +223,7 @@ uv add insurance-cv
 
 Source and issue tracker at [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv).
 
-The API is stable. The three split generators cover the main use cases in UK personal and commercial lines. What is not yet implemented: rolling-window splits (where old data drops out of training as the window advances, rather than expanding), which some teams prefer for very long portfolios where 2015 data is genuinely stale.
+The API is stable. The three split generators cover the main use cases in UK personal lines. What is not yet implemented: rolling-window splits (where old data drops out of training as the window advances, rather than expanding), which some teams prefer for very long portfolios where 2015 data is genuinely stale.
 
 The core argument is simple: a model that performs well in k-fold CV on insurance data has proved it can interpolate within a temporally-shuffled dataset. It has not proved it can generalise prospectively. Those are different tests, and the second one is the one that matters.
 

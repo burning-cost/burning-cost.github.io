@@ -3,8 +3,8 @@ layout: post
 title: "Experience Rating: NCD and Bonus-Malus"
 date: 2026-02-27
 categories: [techniques]
-tags: [experience-rating, ncd, bonus-malus, experience-mod, schedule-rating, motor, commercial-lines, python]
-description: "A Python library for NCD/bonus-malus systems, experience modification factors, and schedule rating. Includes the non-obvious finding that optimal NCD claiming thresholds peak at 30% NCD, not 65%."
+tags: [experience-rating, ncd, bonus-malus, motor, python]
+description: "A Python library for NCD/bonus-malus systems in UK motor insurance. Includes the non-obvious finding that optimal NCD claiming thresholds peak at 20% NCD, not 65%."
 author: Burning Cost
 ---
 
@@ -12,7 +12,7 @@ UK motor insurers all have NCD systems. Almost none of them has a clean implemen
 
 This matters more than it sounds. The spreadsheet contains the ABI scale in a tab someone built in 2017. You cannot call it from your pricing pipeline. You cannot ask it "at what claim amount should a customer at 65% NCD absorb the loss rather than claim?" with any precision, because the answer depends on that customer's actual premium, the exact transition rules, and how many years of NCD cost you're projecting - and the spreadsheet doesn't connect those things. Someone in pricing does the arithmetic by hand and gives a rule of thumb. The rule of thumb is wrong for a meaningful fraction of the portfolio.
 
-We built [`experience-rating`](https://github.com/burning-cost/experience-rating) to replace the spreadsheet. It covers three things that belong together: NCD/bonus-malus systems, experience modification factors for commercial lines, and schedule rating. This post works through each one and then gets to the non-obvious result buried in the claiming threshold analysis.
+We built [`experience-rating`](https://github.com/burning-cost/experience-rating) to replace the spreadsheet. This post works through the NCD system as a Markov chain and then gets to the non-obvious result buried in the claiming threshold analysis.
 
 ---
 
@@ -43,7 +43,7 @@ shape: (10, 6)
 └───────┴──────────┴────────────────┴─────────────┴─────────────────────┴─────────────────┘
 ```
 
-`from_uk_standard()` gives you the ABI scale. If you have a commercial BM system with different transition rules - some fleet policies use three-step progressions, some commercial vehicle covers have different back-steps by fleet size - you define it via `from_dict()` with a JSON-compatible spec. The validation at construction time checks that every transition destination is a valid level index. There is no silent out-of-range behaviour.
+`from_uk_standard()` gives you the ABI scale. If you have a non-standard BM system with different transition rules - some affinity schemes use bespoke progressions - you define it via `from_dict()` with a JSON-compatible spec. The validation at construction time checks that every transition destination is a valid level index. There is no silent out-of-range behaviour.
 
 ### What the stationary distribution tells you
 
@@ -146,118 +146,6 @@ curve = ct.threshold_curve(current_level=9, annual_premium=280.0, max_horizon=7)
 
 ---
 
-## Experience modification factors for commercial lines
-
-On the commercial side, the equivalent question to NCD is the experience modification factor: given this risk's actual loss history versus what we expected, what adjustment do we apply to next year's rate?
-
-The standard formula (NCCI-style, used in US workers' compensation and adapted widely for UK commercial lines) is:
-
-```
-Mod = (A * actual_losses + (1 - A) * expected_losses + B) / (expected_losses + B)
-```
-
-Where A is the credibility weight and B is the ballast. A Mod above 1.0 means the risk has performed worse than expected; below 1.0 means better. The ballast B limits the swing that any single large loss can produce. Without it, one catastrophic year sends the mod to 2.0+ and the customer cannot renew at a remotely competitive price.
-
-The `ExperienceModFactor` class makes the parameter choices explicit:
-
-```python
-import polars as pl
-from experience_rating import ExperienceModFactor
-from experience_rating.experience_mod import CredibilityParams
-
-params = CredibilityParams(credibility_weight=0.65, ballast=8_000.0)
-emod = ExperienceModFactor(params)
-
-portfolio = pl.DataFrame({
-    "risk_id":          ["Precision Mfg Ltd", "Cornish Hotels Ltd", "BrightTech Ltd"],
-    "expected_losses":  [25_000.0,             80_000.0,             10_000.0],
-    "actual_losses":    [32_000.0,             65_000.0,              8_000.0],
-})
-
-result = emod.predict_batch(portfolio, cap=2.0, floor=0.5)
-print(result.select(["risk_id", "expected_losses", "actual_losses", "mod_factor"]))
-```
-
-```
-shape: (3, 4)
-┌────────────────────┬─────────────────┬───────────────┬────────────┐
-│ risk_id            ┆ expected_losses ┆ actual_losses ┆ mod_factor │
-│ ---                ┆ ---             ┆ ---           ┆ ---        │
-│ str                ┆ f64             ┆ f64           ┆ f64        │
-╞════════════════════╪═════════════════╪═══════════════╪════════════╡
-│ Precision Mfg Ltd  ┆ 25000.0         ┆ 32000.0       ┆ 1.137      │
-│ Cornish Hotels Ltd ┆ 80000.0         ┆ 65000.0       ┆ 0.894      │
-│ BrightTech Ltd     ┆ 10000.0         ┆ 8000.0        ┆ 0.893      │
-└────────────────────┴─────────────────┴───────────────┴────────────┘
-```
-
-We expose ballast directly rather than deriving it in a calibration function. The choice of B is a deliberate actuarial decision with regulatory implications: it determines which risks get penalised and which get discounts, and the reasoning needs to be defensible. Hiding B inside a `fit()` call obscures a parameter that underwriters and compliance teams will ask about.
-
-If you want to derive credibility from exposure rather than setting A manually:
-
-```python
-emod = ExperienceModFactor.from_exposure(
-    actual_exposure=3_500_000,        # e.g., payroll in £
-    full_credibility_exposure=5_000_000,
-    ballast=8_000.0,
-    credibility_formula="square_root",  # Mowbray formula: A = sqrt(e / e_full)
-)
-```
-
-The `sensitivity()` method is useful for underwriting conversations:
-
-```python
-sense = emod.sensitivity(expected_losses=25_000)
-# Returns: actual_losses, mod_factor, loss_ratio across the range [0, 75_000]
-```
-
-Show an underwriter how the mod responds to different loss outcomes before binding. If the cap kicks in below 2x expected losses, that is worth knowing in advance.
-
----
-
-## Schedule rating
-
-Schedule rating is the older, less systematic sibling of experience rating. The underwriter applies judgemental debits and credits within pre-approved bounds for factors not captured in the statistical rate: premises condition, management quality, risk controls, claims co-operation history. In UK commercial liability, property, and professional indemnity, schedule rating is a standard part of the underwriting process.
-
-`ScheduleRating` is a validated container for this. The bounds are checked at entry time, not at rating time:
-
-```python
-from experience_rating import ScheduleRating
-
-sr = ScheduleRating(max_total_debit=0.25, max_total_credit=0.25)
-sr.add_factor("Premises",      min_credit=-0.10, max_debit=0.10, description="Premises quality")
-sr.add_factor("Management",    min_credit=-0.07, max_debit=0.07, description="Management quality")
-sr.add_factor("Risk_Controls", min_credit=-0.08, max_debit=0.08, description="Risk controls in place")
-
-# Rate a specific risk
-factor = sr.rate({
-    "Premises":      0.05,   # 5% debit - below-average premises
-    "Management":   -0.03,   # 3% credit - experienced management
-    "Risk_Controls": 0.02,   # 2% debit - adequate but not strong
-})
-print(f"Schedule factor: {factor:.4f}")  # 1.0400
-```
-
-Batch rating against a portfolio:
-
-```python
-risks = pl.DataFrame({
-    "risk_id":       ["A", "B", "C"],
-    "Premises":      [0.05, -0.10,  0.00],
-    "Management":   [-0.03,  0.07, -0.05],
-    "Risk_Controls": [0.02,  0.08, -0.08],
-})
-
-result = sr.rate_batch(risks)
-# Adds "schedule_factor" column; aggregate cap/floor applied silently
-```
-
-The aggregate cap (25% in this example) is applied after summing all individual factors. If the risk scores +10% on premises, +7% on management, and +8% on risk controls, the total is +25% - exactly at the cap. Any further factors would be absorbed. This is UK commercial practice: the cap is set by underwriting authority and the aggregate controls the total swing, not individual factor bounds.
-
-The reason bounds are validated at entry rather than at the `rate()` call is compliance risk. If an underwriter keys in 0.15 for a factor with a 0.10 cap, you want that error caught immediately, not silently clipped when the factor runs at month-end. Fail early.
-
----
-
 ## Installing and running
 
 ```bash
@@ -271,12 +159,10 @@ from experience_rating import (
     BonusMalusScale,
     BonusMalusSimulator,
     ClaimThreshold,
-    ExperienceModFactor,
-    ScheduleRating,
 )
 ```
 
-The test suite has 98 tests passing across scale construction, transition matrix properties, stationary distribution agreement between analytical and simulation methods, claiming thresholds, experience modification formula correctness, and schedule rating bounds validation.
+The test suite has 62 tests passing across scale construction, transition matrix properties, stationary distribution agreement between analytical and simulation methods, and claiming thresholds.
 
 ---
 

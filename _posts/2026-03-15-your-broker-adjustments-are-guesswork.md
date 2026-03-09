@@ -7,7 +7,7 @@ tags: [multilevel-models, random-effects, credibility, catboost, reml, broker, s
 description: "Most pricing teams handle broker, scheme, and territory effects with ad-hoc loadings or ignore them entirely. insurance-multilevel implements two-stage CatBoost + REML random effects with full Bühlmann-Straub credibility weighting — so the adjustments are derived, not guessed."
 ---
 
-There is a specific conversation that happens in most UK commercial lines and specialty pricing teams, usually during model validation, and usually when someone pulls a double-lift chart broken down by broker.
+There is a specific conversation that happens in most UK personal lines pricing teams, usually during model validation, and usually when someone pulls a double-lift chart broken down by broker.
 
 The chart shows that the model — the GBM you spent three months building and validating — is systematically mispricing risks from five or six brokers. The average log loss ratio residual for Broker A is +18%. For Broker B it is −12%. The model is otherwise well-calibrated. It predicts individual risk factors well. It just cannot handle the fact that different brokers write structurally different business that your features do not fully capture.
 
@@ -68,7 +68,7 @@ model.fit(X_train, y_train, weights=exposure, group_cols=["broker_id", "scheme_i
 premiums = model.predict(X_test, group_cols=["broker_id", "scheme_id"])
 ```
 
-The `group_cols` list accepts multiple levels. The library fits a separate `RandomEffectsEstimator` for each — broker effects and scheme effects are estimated independently, with their own REML variance components, and the adjustments compose on the log scale. This handles the typical commercial lines structure where policies sit within schemes, schemes sit within brokers, and you want a loading at each level.
+The `group_cols` list accepts multiple levels. The library fits a separate `RandomEffectsEstimator` for each — broker effects and scheme effects are estimated independently, with their own REML variance components, and the adjustments compose on the log scale. This handles the common structure where policies sit within schemes, schemes sit within brokers, and you want a loading at each level.
 
 The `credibility_summary()` method is where you should spend most of your diagnostic time:
 
@@ -115,7 +115,7 @@ print(vd)
 
 The ICC (Intraclass Correlation Coefficient) is `tau2 / (tau2 + sigma2)` — the proportion of total residual variance explained by group membership, after Stage 1 CatBoost has done its job. An ICC of 0.13 for broker means 13% of the premium variation your CatBoost cannot explain is attributable to which broker placed the risk. That is not noise. That is pricing signal you were previously ignoring.
 
-The scheme-level ICC of 0.21 is higher — schemes are selected by definition (a fleet scheme, a professional indemnity scheme for solicitors, a property owner scheme) and carry more embedded selection effect than broker identity alone. This is the typical pattern in UK commercial lines.
+The scheme-level ICC of 0.21 is higher — schemes are selected by definition (a fleet scheme, a professional indemnity scheme for solicitors, a property owner scheme) and carry more embedded selection effect than broker identity alone. This is the typical pattern in UK motor and home insurance.
 
 The Bühlmann k is `sigma2 / tau2`. It answers the question: how many policy-years of group experience are equivalent to the prior? At k = 6.69 for broker, a group needs roughly 6.69 policy-years of exposure to reach 50% credibility (`Z = n / (n + k)`). At 200 policy-years, `Z = 0.97`. At 20 policy-years, `Z = 0.75`. These thresholds are estimated from your data, not assumed.
 

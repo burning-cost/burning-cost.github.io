@@ -3,13 +3,13 @@ layout: post
 title: "Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings"
 date: 2026-03-07
 categories: [techniques, libraries]
-tags: [quantile-regression, tail-risk, tvar, large-loss-loading, ilf, catboost, gbm, reinsurance, motor, python]
+tags: [quantile-regression, tail-risk, tvar, large-loss-loading, ilf, catboost, gbm, motor, python]
 description: "CatBoost's MultiQuantile loss gives you quantile predictions. It does not give you TVaR, large loss loadings, ILF curves, or exceedance probabilities. insurance-quantile closes that gap with an actuarial output layer on top of the GBM."
 ---
 
 Your Tweedie GBM gives you an expected loss. That expected loss is one number. It summarises the centre of a conditional distribution that, for most insurance lines, has a right tail that will periodically destroy your loss ratio.
 
-The expected loss is not the problem — you need it. The problem is using it as your only view of risk. A motor bodily injury risk with an expected cost of £800/year and a risk with the same expected cost but 40% more variance in the tail are not the same risk. Your burning cost model treats them identically. Your reinsurance contract does not.
+The expected loss is not the problem — you need it. The problem is using it as your only view of risk. A motor bodily injury risk with an expected cost of £800/year and a risk with the same expected cost but 40% more variance in the tail are not the same risk. Your burning cost model treats them identically. Your tail risk does not.
 
 Quantile regression gives you the full conditional distribution, not just the mean. CatBoost has had MultiQuantile loss since version 1.0. What it has not had is an actuarial output layer: the functions pricing actuaries actually need — TVaR, large loss loadings, ILF curves, exceedance probabilities, calibration diagnostics. We built [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) to provide those.
 
@@ -111,7 +111,7 @@ loading = large_loss_loading(
 # Negative values: unusual, check model consistency
 ```
 
-The loading formula is additive: `technical_premium = burning_cost + large_loss_loading`. This is the appropriate form when the Tweedie model handles expected severity and the quantile model handles the tail supplement. For commercial lines where aggregate stop-loss treaties are priced at higher confidence, use alpha=0.99.
+The loading formula is additive: `technical_premium = burning_cost + large_loss_loading`. This is the appropriate form when the Tweedie model handles expected severity and the quantile model handles the tail supplement. For motor bodily injury and liability lines where large losses are the primary concern, use alpha=0.99.
 
 One important consistency check: both models must be on the same scale. If the Tweedie model predicts severity (claim cost | claim occurred) and the quantile model was fitted on aggregate cost (including zero claims), the scales differ and the loading will be nonsense. Document the scale used in both models.
 
@@ -141,25 +141,6 @@ ilf_values = ilf(
 The ILF is computed by numerically integrating the survival function derived from the quantile predictions: E[min(Y, L)] = ∫₀ᴸ S(x) dx. The integration uses 200 quadrature points by default, which is accurate for smooth exceedance curves. The survival function is interpolated from the quantile predictions — accuracy in the upper tail depends on having high quantile levels (q_0.99 or higher) in the model.
 
 For motor bodily injury, where claims can run into millions and the tail beyond £500k is material, fitting expectile mode and including q_0.995 is the right approach. The expectile provides a better-estimated upper tail than the quantile for heavy-tailed lines (more on this below).
-
----
-
-## Exceedance curves for reinsurance placement
-
-The occurrence exceedance probability (OEP) curve is standard output for XL reinsurance pricing. It gives P(maximum single-risk loss > x) across the portfolio:
-
-```python
-from insurance_quantile import oep_curve
-
-oep = oep_curve(model, X_portfolio, n_thresholds=200)
-curve_df = oep.as_dataframe()
-
-# Polars DataFrame: threshold, exceedance_prob
-# Read off: at what attachment point does the exceedance probability drop to 0.01?
-attachment = curve_df.filter(pl.col("exceedance_prob") <= 0.01).head(1)
-```
-
-The default method uses mean exceedance — the average P(Y_i > x) across risks — which is stable for large portfolios and appropriate for risk profile reporting. For a small portfolio of large commercial risks where you want the true OEP under independence, set `independence_assumption=True`. This computes 1 − ∏ᵢ P(Yᵢ ≤ x), which is mathematically exact for independent risks but numerically unstable for portfolios over ~1000 risks (probability products underflow). Use the independence flag only where independence is actually a defensible assumption.
 
 ---
 
@@ -275,7 +256,7 @@ This is the right combination for any application where the coverage guarantee m
 
 **Motor bodily injury.** Expectile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99]. Use ILF curves for excess layer pricing. TVaR at alpha=0.99. BI claims have IBNR tails that extend years, so ensure your severity data is sufficiently developed before fitting.
 
-**Property.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99, 0.995]. Use exceedance curves for cat accumulation monitoring and reinsurance attachment setting. Include perils separately if you have enough volume per peril.
+**Home/property.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99, 0.995]. Use exceedance curves for cat accumulation monitoring. Include perils separately if you have enough volume per peril.
 
 **Employer's liability / public liability.** Expectile mode. These lines are heavy-tailed enough that quantile TVaR understates the tail. The expectile's coherence matters for capital allocation.
 
@@ -308,5 +289,4 @@ The burning cost gives you the centre. The quantile model gives you the tail. Bo
 
 **Related articles from Burning Cost:**
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/08/insurance-distributional/)
-- [MBBEFD Exposure Curves and ILF Pricing in Python](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)

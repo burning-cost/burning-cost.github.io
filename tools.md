@@ -84,7 +84,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "experience-rating",
-      "description": "NCD and bonus-malus systems, experience modification factors for commercial lines.",
+      "description": "NCD and bonus-malus systems for UK motor insurance, including claiming threshold optimisation.",
       "codeRepository": "https://github.com/burning-cost/experience-rating",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -110,14 +110,6 @@ permalink: /tools/
       "name": "insurance-distributional",
       "description": "Distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives.",
       "codeRepository": "https://github.com/burning-cost/insurance-distributional",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-ilf",
-      "description": "MBBEFD exposure curves, Swiss Re families, ILF tables, and per-risk excess-of-loss pricing.",
-      "codeRepository": "https://github.com/burning-cost/insurance-ilf",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -286,7 +278,7 @@ Buhlmann-Straub credibility in Python with mixed-model equivalence checks. Inclu
 &rarr; [Buhlmann-Straub credibility in Python](https://burning-cost.github.io/2026/02/19/buhlmann-straub-credibility-in-python/)
 
 **[experience-rating](https://github.com/burning-cost/experience-rating)**
-NCD and bonus-malus systems, experience modification factors for commercial lines. The tools actuaries actually need when a client's loss history drives their rate.
+NCD and bonus-malus systems for UK motor insurance. NCD as a Markov chain, stationary distributions, and the non-obvious claiming threshold result: optimal thresholds peak at 20% NCD, not 65%.
 `pip install experience-rating`
 &rarr; [Experience rating: NCD and bonus-malus systems](https://burning-cost.github.io/2026/02/27/experience-rating-ncd-bonus-malus/)
 
@@ -308,11 +300,6 @@ Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors. Wh
 Distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives. Fit the full conditional distribution, not just the conditional mean.
 `pip install insurance-distributional`
 &rarr; [Distributional GBMs for insurance pricing](https://burning-cost.github.io/2026/03/05/insurance-distributional/)
-
-**[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
-MBBEFD exposure curves, Swiss Re families, ILF tables, and per-risk excess-of-loss pricing. The actuarial severity tools that no general ML library provides.
-`pip install insurance-ilf`
-&rarr; [Your excess-of-loss pricing has no curves](https://burning-cost.github.io/2026/03/17/your-excess-of-loss-pricing-has-no-curves/)
 
 ---
 

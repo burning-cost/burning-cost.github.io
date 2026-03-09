@@ -13,7 +13,7 @@ Here is where that breaks down.
 
 Take two motor risks both priced at £350 pure premium. Risk A is a 45-year-old driving a 1.4 Focus in Swindon — low frequency, modest severity. Risk B is a 22-year-old with a modified 2.0 Golf in Manchester — also low expected frequency (young drivers claim rarely in any given year), but when they do, it is expensive. The conditional distributions of these two risks are completely different. The Tweedie GBM — even a well-specified one — returns £350 for both, because it is predicting E[Y|x]. It has nothing to say about Var[Y|x].
 
-That distinction matters in at least five places: safety loading, underwriter referrals, reinsurance attachment, IFRS 17 risk adjustment, and capital allocation under Solvency II. In all five, it is the variance — specifically the coefficient of variation per risk — that should be driving the decision. You are currently using a constant, or a blunt segmented estimate, because no tool in your standard stack produces CoV per risk.
+That distinction matters in at least four places: safety loading, underwriter referrals, IFRS 17 risk adjustment, and capital allocation under Solvency II. In all five, it is the variance — specifically the coefficient of variation per risk — that should be driving the decision. You are currently using a constant, or a blunt segmented estimate, because no tool in your standard stack produces CoV per risk.
 
 We built [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) to fix that. It is the 20th library in the Burning Cost suite, and the first open-source implementation of the approach from the ASTIN 2024 Best Paper (So & Valdez, *Applied Soft Computing*, doi:10.1016/j.asoc.2025.113226; arXiv 2406.16206).
 
@@ -286,4 +286,3 @@ The expected loss is necessary. It is not sufficient. Two risks at £350 are not
 **Related articles from Burning Cost:**
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/08/insurance-quantile/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/)
-- [MBBEFD Exposure Curves and ILF Pricing in Python](/2026/03/09/your-excess-of-loss-pricing-has-no-curves/)

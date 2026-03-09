@@ -1,11 +1,11 @@
 ---
 layout: page
 title: About
-description: "Burning Cost builds open-source Python tools for UK personal lines pricing teams. Twenty-eight libraries covering the full pricing workflow: data validation, model building, interpretation, tail risk, commercial optimisation, compliance, and governance."
+description: "Burning Cost builds open-source Python tools for UK personal lines pricing teams. Twenty-seven libraries covering the full pricing workflow: data validation, model building, interpretation, tail risk, commercial optimisation, compliance, and governance."
 permalink: /about/
 ---
 
-Burning Cost builds open-source Python tools for UK personal lines and commercial pricing teams.
+Burning Cost builds open-source Python tools for UK personal lines pricing teams.
 
 The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. Simple, direct, no mystification. That is how we think about tooling.
 
@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Twenty-eight Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+Twenty-seven Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail.
 
@@ -45,7 +45,6 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 - [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) - quantile and expectile GBMs for tail risk, TVaR, and increased limit factors
 - [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) - distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives
-- [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) - MBBEFD exposure curves, Swiss Re families, ILF tables, and per-risk excess-of-loss pricing
 
 **Commercial**
 
@@ -53,7 +52,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - conversion, retention, and DML price elasticity modelling integrated with rate optimisation
 - [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML and DR-Learner
 - [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - SLSQP portfolio rate optimisation with analytical Jacobians for large factor spaces
-- [`experience-rating`](https://github.com/burning-cost/experience-rating) - NCD and bonus-malus systems, experience modification factors for commercial lines
+- [`experience-rating`](https://github.com/burning-cost/experience-rating) - NCD and bonus-malus systems for UK motor, including claiming threshold optimisation
 - [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling
 
 **Compliance & Governance**
