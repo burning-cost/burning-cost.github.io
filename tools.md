@@ -231,6 +231,8 @@ permalink: /tools/
 
 Burning Cost builds open-source Python libraries for UK personal lines pricing teams. Each library solves one well-defined problem in the pricing workflow — nothing more, nothing less. All 25 libraries are on PyPI and MIT-licensed.
 
+The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
+
 ---
 
 ## Data & Validation
@@ -400,3 +402,5 @@ Cure models, customer lifetime value, lapse tables, and MLflow wrapper for reten
 ---
 
 All libraries are MIT-licensed and available on [PyPI](https://pypi.org/search/?q=insurance-) and [GitHub](https://github.com/burning-cost). Each ships with a Databricks notebook demo and synthetic data. If something is missing from this list, [get in touch](mailto:pricing.frontier@gmail.com).
+
+Looking for runnable notebooks? The [Databricks Notebook Archive](/notebooks/) collects 10 curated demos you can import directly.
