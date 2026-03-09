@@ -240,12 +240,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-ilf",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-nested-glm",
+      "description": "Nested GLM with neural network entity embeddings and spatially constrained territory clustering for insurance ratemaking.",
+      "codeRepository": "https://github.com/burning-cost/insurance-nested-glm",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 29 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 30 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -418,6 +426,10 @@ Champion/challenger framework with shadow mode, rollback, and full audit trail. 
 BYM2 spatial models for postcode-level territory ratemaking, borrowing strength from neighbouring areas. Handles the sparse-data problem in granular geographic segmentation.
 `uv add insurance-spatial`
 &rarr; [Spatial territory ratemaking with BYM2](https://burning-cost.github.io/2026/03/09/spatial-territory-ratemaking-bym2/)
+
+**[insurance-nested-glm](https://github.com/burning-cost/insurance-nested-glm)**
+Nested GLM with neural network entity embeddings for high-cardinality categoricals (vehicle make/model, postcode sector) and spatially constrained territory clustering via SKATER. The final model is a standard interpretable GLM with multiplicative relativities. Based on Wang, Shi, Cao (NAAJ 2025).
+`uv add insurance-nested-glm`
 
 ---
 

@@ -587,7 +587,7 @@ permalink: /course/
           <li>Databricks notebooks, runnable end-to-end</li>
           <li>Synthetic UK motor dataset throughout</li>
           <li>Databricks Free Edition compatible</li>
-          <li>29 open-source Python libraries included</li>
+          <li>30 open-source Python libraries included</li>
         </ul>
         <a href="/course/" class="btn btn-primary" style="width:100%;text-align:center;display:block;font-size:1.1rem;padding:0.85rem 1.5rem;">Start the course &rarr;</a>
       </div>
