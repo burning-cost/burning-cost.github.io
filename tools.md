@@ -221,7 +221,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost builds open-source Python libraries for UK personal lines pricing teams. Each library solves one well-defined problem in the pricing workflow — nothing more, nothing less. All 25 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 28 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
