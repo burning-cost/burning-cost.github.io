@@ -209,7 +209,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-01/" class="module-link">Module overview</a>
-          <a href="/course/module-01/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-01/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -234,7 +234,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-02/" class="module-link">Module overview</a>
-          <a href="/course/module-02/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-02/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -259,7 +259,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-03/" class="module-link">Module overview</a>
-          <a href="/course/module-03/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-03/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -284,7 +284,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-04/" class="module-link">Module overview</a>
-          <a href="/course/module-04/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-04/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -303,13 +303,13 @@ permalink: /course/
         <ul class="module-covers">
           <li>Why point estimates are not enough and why standard confidence intervals are the wrong answer</li>
           <li>Conformal prediction: the theory and why the coverage guarantee is unconditional</li>
-          <li>Variance-weighted non-conformity scores for heteroscedastic insurance data (Manna et al., 2025)</li>
+          <li>Variance-weighted non-conformity scores for heteroscedastic insurance data (Manna, 2025)</li>
           <li>Intervals roughly 30% narrower than the naive approach, with identical coverage</li>
           <li>Using intervals to flag uncertain risks and set minimum premium floors</li>
         </ul>
         <div class="module-links">
           <a href="/course/module-05/" class="module-link">Module overview</a>
-          <a href="/course/module-05/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-05/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -334,7 +334,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-06/" class="module-link">Module overview</a>
-          <a href="/course/module-06/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-06/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -359,7 +359,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-07/" class="module-link">Module overview</a>
-          <a href="/course/module-07/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-07/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -384,7 +384,7 @@ permalink: /course/
         </ul>
         <div class="module-links">
           <a href="/course/module-08/" class="module-link">Module overview</a>
-          <a href="/course/module-08/tutorial.md" class="module-link">Preview tutorial</a>
+          <a href="/course/module-08/overview/" class="module-link">Preview tutorial</a>
         </div>
       </div>
     </div>
@@ -467,7 +467,7 @@ permalink: /course/
         <span class="module-num-badge">12</span>
         <div class="module-card-content">
           <div class="module-card-title">Spatial Territory Rating</div>
-          <div class="module-card-desc">Geography accounts for 15&ndash;25% of explainable claims variation in most UK books. The Emblem postcode group approach produces numbers. This module produces credible ones.</div>
+          <div class="module-card-desc">Geography is typically one of the most important rating factors in UK motor pricing. The Emblem postcode group approach produces numbers. This module produces credible ones.</div>
         </div>
         <div class="module-status"><span class="badge badge-available">Available</span></div>
       </div>
