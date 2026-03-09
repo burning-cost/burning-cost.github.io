@@ -71,6 +71,6 @@ The library outputs Polars DataFrames with columns: `feature`, `level`, `relativ
 
 ---
 
-## Part of the MVP bundle
+## Part of the free course
 
-This module is included in the £295 MVP bundle alongside Module 1 (Databricks for Pricing Teams), Module 2 (GLMs in Python), and Module 6 (Credibility and Bayesian Pricing). Individual module: £79.
+This module is part of the free [Modern Insurance Pricing with Python and Databricks](/course/) course — twelve modules covering the full pricing workflow from GLMs through to spatial territory rating.
