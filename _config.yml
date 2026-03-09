@@ -26,6 +26,7 @@ header_pages:
   - tools.md
   - notebooks.md
   - about.md
+  - compare.md
 
 plugins:
   - jekyll-feed
