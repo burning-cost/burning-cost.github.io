@@ -1,7 +1,7 @@
 ---
 layout: course
 title: "Modern Insurance Pricing with Python and Databricks"
-description: "A practitioner-written course for UK personal lines pricing teams. Eight modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, and constrained rate optimisation on Databricks."
+description: "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating on Databricks."
 permalink: /course/
 ---
 
@@ -10,7 +10,7 @@ permalink: /course/
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "Modern Insurance Pricing with Python and Databricks",
-  "description": "A practitioner-written course for UK personal lines pricing teams. Eight modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, and constrained rate optimisation on Databricks.",
+  "description": "A practitioner-written course for UK personal lines pricing teams. Twelve modules covering GLMs, GBMs, SHAP relativities, conformal prediction intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating on Databricks.",
   "url": "https://burning-cost.github.io/course/",
   "provider": {
     "@type": "Organization",
@@ -23,7 +23,7 @@ permalink: /course/
     "url": "https://burning-cost.github.io"
   },
   "educationalLevel": "Professional",
-  "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, and constrained rate optimisation",
+  "teaches": "Insurance pricing using Python, Databricks, GLMs, GBMs, SHAP, credibility theory, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating",
   "inLanguage": "en-GB",
   "offers": [
     {
@@ -42,10 +42,10 @@ permalink: /course/
   <div class="hero-eyebrow">Practitioner course &middot; UK personal lines</div>
   <h1>Modern Insurance Pricing<br>with <em>Python and Databricks</em></h1>
   <p class="hero-sub">
-    Eight modules. GLMs, GBMs, SHAP relativities, conformal intervals, credibility, and constrained rate optimisation.
+    Twelve modules. GLMs, GBMs, SHAP relativities, conformal intervals, credibility, constrained rate optimisation, demand modelling, interaction detection, exposure curves, and spatial territory rating.
     Every line of code written for insurance pricing specifically.
   </p>
-  <p class="hero-detail">8 modules &nbsp;&middot;&nbsp; Databricks notebooks included &nbsp;&middot;&nbsp; Synthetic UK motor data throughout</p>
+  <p class="hero-detail">12 modules &nbsp;&middot;&nbsp; Databricks notebooks included &nbsp;&middot;&nbsp; Synthetic UK motor data throughout</p>
   <div class="hero-cta">
     <a href="#waitlist" class="btn btn-primary btn-lg">Join the waitlist</a>
     <a href="#modules" class="btn btn-outline btn-lg">View the modules</a>
@@ -157,6 +157,26 @@ permalink: /course/
         <div class="build-card-title">A complete motor pricing pipeline, ready to use as a template</div>
         <div class="build-card-desc">From Delta ingestion to rate change recommendation, every component connected. Structured so you can swap in your own data and run it with minimal modification.</div>
       </div>
+      <div class="build-card">
+        <span class="build-card-num">Module 09</span>
+        <div class="build-card-title">A causal demand model and profit-maximising price curve</div>
+        <div class="build-card-desc">Conversion and retention models, causal price elasticity via Double Machine Learning, a portfolio demand curve, and an ENBP-constrained renewal optimisation with a PS21/5 per-policy audit.</div>
+      </div>
+      <div class="build-card">
+        <span class="build-card-num">Module 10</span>
+        <div class="build-card-title">An automated GLM interaction shortlist with statistical evidence</div>
+        <div class="build-card-desc">CANN-based Neural Interaction Detection on your GLM residuals, ranked candidates with LR test results after Bonferroni correction, and a rebuilt GLM with the approved interactions.</div>
+      </div>
+      <div class="build-card">
+        <span class="build-card-num">Module 11</span>
+        <div class="build-card-title">ILF tables and a priced per-risk XL layer</div>
+        <div class="build-card-desc">MBBEFD exposure curves fitted to claims data, increased limits factor tables, and a per-risk excess-of-loss layer price using the exposure rating method. London market ready.</div>
+      </div>
+      <div class="build-card">
+        <span class="build-card-num">Module 12</span>
+        <div class="build-card-title">Territory relativities with spatial smoothing and credibility intervals</div>
+        <div class="build-card-desc">BYM2 spatial Bayesian model fitted to postcode sector claim frequencies, territory factors with 95% credibility intervals, a choropleth map, and integration into a downstream GLM as a log-offset.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -166,7 +186,7 @@ permalink: /course/
   <div class="modules-inner">
     <div class="modules-header">
       <span class="section-label" style="color:var(--accent)">The curriculum</span>
-      <h2 class="section-h2 section-h2-light">Eight modules. No filler.</h2>
+      <h2 class="section-h2 section-h2-light">Twelve modules. No filler.</h2>
     </div>
 
     <!-- Module 01 -->
@@ -369,6 +389,102 @@ permalink: /course/
       </div>
     </div>
 
+    <!-- Module 09 -->
+    <div class="module-card available">
+      <div class="module-card-header">
+        <span class="module-num-badge">09</span>
+        <div class="module-card-content">
+          <div class="module-card-title">Demand Modelling and Price Elasticity</div>
+          <div class="module-card-desc">A well-calibrated risk model answers half the commercial question. This module answers the other half: at this price, will the customer buy?</div>
+        </div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
+      </div>
+      <div class="module-card-detail">
+        <ul class="module-covers">
+          <li>Conversion and retention models with CatBoost &mdash; the demand side of the pricing equation</li>
+          <li>Why naive price elasticity estimates are confounded and how to diagnose the problem</li>
+          <li>Causal elasticity estimation via Double Machine Learning (<code>econml</code> CausalForestDML)</li>
+          <li>Portfolio demand curves and identifying the profit-maximising price level</li>
+          <li>ENBP-constrained renewal pricing optimisation with FCA PS21/5 per-policy audit</li>
+        </ul>
+        <div class="module-links">
+          <a href="/course/module-09/" class="module-link">Module overview</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 10 -->
+    <div class="module-card available">
+      <div class="module-card-header">
+        <span class="module-num-badge">10</span>
+        <div class="module-card-content">
+          <div class="module-card-title">Interaction Detection</div>
+          <div class="module-card-desc">A Poisson GLM with 12 rating factors has 66 possible pairwise interactions. Checking them by hand takes days and misses the non-obvious pairs. This module automates the search.</div>
+        </div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
+      </div>
+      <div class="module-card-detail">
+        <ul class="module-covers">
+          <li>Why a correctly-specified GLM still misses interaction terms that manual 2D A/E plots do not reveal</li>
+          <li>Combined Actuarial Neural Networks (CANN): injecting the GLM prediction as a skip-connection to learn residual structure only</li>
+          <li>Neural Interaction Detection (NID): ranking candidates from the trained weight matrices</li>
+          <li>Bonferroni correction and likelihood-ratio tests for each candidate pair</li>
+          <li>Rebuilding the GLM with approved interactions and logging to MLflow &mdash; PRA SS1/23 audit trail included</li>
+        </ul>
+        <div class="module-links">
+          <a href="/course/module-10/" class="module-link">Module overview</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 11 -->
+    <div class="module-card available">
+      <div class="module-card-header">
+        <span class="module-num-badge">11</span>
+        <div class="module-card-content">
+          <div class="module-card-title">Exposure Curves and ILFs</div>
+          <div class="module-card-desc">Move up the tower. Exposure curves, MBBEFD distributions, and per-risk excess-of-loss pricing for London market and commercial lines work.</div>
+        </div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
+      </div>
+      <div class="module-card-detail">
+        <ul class="module-covers">
+          <li>What an exposure curve is and why it is the right tool when burning cost has insufficient large losses</li>
+          <li>The MBBEFD distribution family: Swiss Re standard curves and how to fit your own from truncated and censored claims data</li>
+          <li>Building ILF tables and understanding the marginal ILF structure</li>
+          <li>Pricing a per-risk XL layer from a cedant's risk profile using the exposure rating method</li>
+          <li>Lee diagrams for communicating results to underwriters</li>
+        </ul>
+        <div class="module-links">
+          <a href="/course/module-11/" class="module-link">Module overview</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 12 -->
+    <div class="module-card available">
+      <div class="module-card-header">
+        <span class="module-num-badge">12</span>
+        <div class="module-card-content">
+          <div class="module-card-title">Spatial Territory Rating</div>
+          <div class="module-card-desc">Geography accounts for 15&ndash;25% of explainable claims variation in most UK books. The Emblem postcode group approach produces numbers. This module produces credible ones.</div>
+        </div>
+        <div class="module-status"><span class="badge badge-available">Available</span></div>
+      </div>
+      <div class="module-card-detail">
+        <ul class="module-covers">
+          <li>The structural problems with Emblem-style postcode group rating: sharp boundaries, no borrowing, opacity</li>
+          <li>Adjacency matrices from UK geography and Moran's I for confirming spatial structure before fitting</li>
+          <li>The BYM2 model (ICAR + IID components): theory and intuition, accessible without a spatial statistics background</li>
+          <li>Fitting BYM2 via PyMC 5 on Databricks, MCMC diagnostics, and territory relativities with 95% credibility intervals</li>
+          <li>Integrating smoothed territory factors into a downstream GLM as a log-offset</li>
+        </ul>
+        <div class="module-links">
+          <a href="/course/module-12/" class="module-link">Module overview</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -441,6 +557,24 @@ permalink: /course/
             <div class="proof-lib-desc">Champion/challenger pricing framework</div>
           </div>
         </div>
+        <div class="proof-lib-item">
+          <div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-demand" target="_blank">insurance-demand</a></div>
+            <div class="proof-lib-desc">Conversion and retention demand modelling</div>
+          </div>
+        </div>
+        <div class="proof-lib-item">
+          <div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-interactions" target="_blank">insurance-interactions</a></div>
+            <div class="proof-lib-desc">Automated GLM interaction detection (CANN/NID)</div>
+          </div>
+        </div>
+        <div class="proof-lib-item">
+          <div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-ilf" target="_blank">insurance-ilf</a></div>
+            <div class="proof-lib-desc">MBBEFD exposure curves and ILF tables</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -461,7 +595,7 @@ permalink: /course/
         <div class="pricing-card-price"><span>&pound;</span>295</div>
         <div class="pricing-card-sub">One-time payment &mdash; no subscription, no expiry</div>
         <ul class="pricing-card-includes">
-          <li>All 8 modules &mdash; immediate access to published modules</li>
+          <li>All 12 modules &mdash; immediate access to all published modules</li>
           <li>New modules as they publish, at no extra cost</li>
           <li>All future updates and curriculum additions included</li>
           <li>Access to every Burning Cost tool and product as it ships</li>
@@ -501,7 +635,7 @@ permalink: /course/
 
       <div class="faq-item">
         <div class="faq-q">Do I need a paid Databricks account?</div>
-        <div class="faq-a">No. All exercises are compatible with <a href="https://www.databricks.com/product/pricing/databricks-free-edition" target="_blank">Databricks Free Edition</a>. You do not need company approval or a budget to start.</div>
+        <div class="faq-a">No. Most exercises are compatible with <a href="https://www.databricks.com/product/pricing/databricks-free-edition" target="_blank">Databricks Free Edition</a>. Modules 7, 8, 9, 11, and 12 include exercises that require a paid workspace, but the core learning in each module runs on Free Edition. You do not need company approval or a budget to start.</div>
       </div>
 
       <div class="faq-item">
@@ -535,8 +669,8 @@ permalink: /course/
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">When will the remaining modules be published?</div>
-        <div class="faq-a">All eight modules are published and available immediately when you purchase. Future curriculum additions (new techniques, updated exercises) are included at no extra cost.</div>
+        <div class="faq-q">Are all twelve modules available now?</div>
+        <div class="faq-a">All twelve modules are published and available immediately when you purchase. Future curriculum additions (new techniques, updated exercises) are included at no extra cost.</div>
       </div>
 
       <div class="faq-item">
@@ -551,7 +685,7 @@ permalink: /course/
 <!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Stop spending months adapting the wrong tutorials</h2>
-  <p>Eight modules written specifically for UK personal lines pricing teams. GLMs, GBMs, SHAP relativities, credibility, rate optimisation. The full workflow, done properly. One price, everything included.</p>
+  <p>Twelve modules written specifically for UK personal lines pricing teams. GLMs, GBMs, SHAP relativities, credibility, rate optimisation, demand modelling, interaction detection, exposure curves, spatial territory rating. The full workflow, done properly. One price, everything included.</p>
   <div class="final-cta-actions">
     <a href="#waitlist" class="btn btn-primary btn-lg">Join the waitlist</a>
     <a href="#modules" class="btn btn-outline btn-lg">Review the modules</a>
