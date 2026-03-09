@@ -202,7 +202,7 @@ The Bühlmann-Straub framework has been in actuarial syllabuses since the 1970s.
 
 ---
 
-`insurance-multilevel` is open source under the MIT licence at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `pip install insurance-multilevel`. 61 tests passing. Requires Python 3.10+, CatBoost, Polars, and SciPy.
+`insurance-multilevel` is open source under the MIT licence at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `uv add insurance-multilevel`. 61 tests passing. Requires Python 3.10+, CatBoost, Polars, and SciPy.
 
 ---
 

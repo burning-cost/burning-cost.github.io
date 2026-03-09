@@ -66,7 +66,7 @@ The exposure handling is identical to a GLM: `log(exposure)` is added as a fixed
 ## Using the library
 
 ```bash
-pip install insurance-anam
+uv add insurance-anam
 ```
 
 The sklearn-compatible API makes the transition from GLM or GBM straightforward:
@@ -195,7 +195,7 @@ Third, **151 tests is not the same as production battle-hardening.** The library
 ## Getting started
 
 ```bash
-pip install insurance-anam
+uv add insurance-anam
 ```
 
 Python 3.10 or later. Dependencies: PyTorch, scikit-learn, Polars, NumPy, Matplotlib.

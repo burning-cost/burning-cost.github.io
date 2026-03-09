@@ -48,10 +48,10 @@ More practically: vine copulas separate marginal fitting from dependency modelli
 Install it:
 
 ```bash
-pip install insurance-synthetic
+uv add insurance-synthetic
 
 # With TSTR fidelity testing (requires CatBoost):
-pip install "insurance-synthetic[fidelity]"
+uv add "insurance-synthetic[fidelity]"
 ```
 
 The minimal workflow is three steps:
@@ -277,10 +277,10 @@ We do not provide differential privacy guarantees in v1. The library does not co
 ## Getting started
 
 ```bash
-pip install insurance-synthetic
+uv add insurance-synthetic
 
 # With fidelity testing:
-pip install "insurance-synthetic[fidelity]"
+uv add "insurance-synthetic[fidelity]"
 ```
 
 Source and tests on [GitHub](https://github.com/burning-cost/insurance-synthetic).

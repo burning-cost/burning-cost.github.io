@@ -31,7 +31,7 @@ We built [`insurance-survival`](https://github.com/burning-cost/insurance-surviv
 
 **Actuarial output format.** Pricing actuaries expect qx/px/lx tables. Survival software produces survival curves. Bridging them is mechanical but sufficiently tedious that people avoid it, which is why lapse tables in practice are often computed outside the model.
 
-**MLflow deployment.** lifelines has no native MLflow flavour. You cannot register a `WeibullAFTFitter` in the Model Registry without writing a custom pyfunc wrapper. On Databricks, where most large UK insurers run their modelling platforms, this matters.
+**MLflow deployment.** lifelines has no native MLflow flavour. You cannot register a `WeibullAFTFitter` in the Model Registry without writing a custom pyfunc wrapper. If your data science platform uses MLflow — increasingly common in UK insurance — this matters.
 
 ---
 
@@ -209,7 +209,7 @@ The qx at year 1 for the PCW NCD0 segment will typically be 35–40% for a compe
 
 ## Databricks and MLflow deployment
 
-Most large UK insurers run their data science platforms on Databricks. lifelines is not natively registered in MLflow's model flavours, which creates friction when you want to promote a fitted survival model from an experiment to the Model Registry and serve it in a pipeline.
+Databricks is increasingly adopted by UK insurance data science teams, and lifelines is not natively registered in MLflow's model flavours, which creates friction when you want to promote a fitted survival model from an experiment to the Model Registry and serve it in a pipeline.
 
 `LifelinesMLflowWrapper` resolves this with a pyfunc wrapper:
 
@@ -249,10 +249,10 @@ Without the CLV analysis, a rate optimiser will spread discounts across the rene
 ## Getting started
 
 ```bash
-pip install insurance-survival
+uv add insurance-survival
 
 # With optional extras:
-pip install "insurance-survival[mlflow,plot,excel]"
+uv add "insurance-survival[mlflow,plot,excel]"
 ```
 
 Source and tests on [GitHub](https://github.com/burning-cost/insurance-survival). 106 tests, all passing.

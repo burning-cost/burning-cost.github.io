@@ -43,10 +43,10 @@ The RAG status — red, amber, green — is computed from the test results and a
 
 ## Generating the report
 
-Install with pip or uv:
+Install with uv:
 
 ```bash
-pip install insurance-validation
+uv add insurance-validation
 ```
 
 The `ModelValidationReport` facade takes your model, training and validation data, exposure vectors, and a `ModelCard`:

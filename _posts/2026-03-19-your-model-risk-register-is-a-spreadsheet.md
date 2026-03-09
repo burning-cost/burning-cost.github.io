@@ -18,7 +18,7 @@ The distinction matters because the PRA's 2026 supervision priorities letter —
 [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests — it wraps [`insurance-validation`](https://github.com/burning-cost/insurance-validation) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
 ```bash
-pip install insurance-mrm
+uv add insurance-mrm
 ```
 
 ---

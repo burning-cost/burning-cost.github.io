@@ -16,7 +16,7 @@ Trend is the largest unexamined number in the rate. It gets less scrutiny than t
 [`insurance-trend`](https://github.com/burning-cost/insurance-trend) is our 30th open-source library. Nine modules, 2,273 lines, 154 tests, v0.1.0. It brings frequency trend, severity trend, and combined loss cost trend into Python with composable fitters, ONS API integration, automatic structural break detection via ruptures, and 1,000-replicate bootstrap confidence intervals.
 
 ```bash
-pip install insurance-trend
+uv add insurance-trend
 ```
 
 ---
@@ -313,7 +313,7 @@ The ONS integration removes the last reason to do this manually. The HPTH series
 
 ---
 
-`insurance-trend` is open source under the MIT licence at [github.com/burning-cost/insurance-trend](https://github.com/burning-cost/insurance-trend). Install with `pip install insurance-trend`. 154 tests, all passing. Requires Python 3.10+, NumPy, Polars, statsmodels, and ruptures.
+`insurance-trend` is open source under the MIT licence at [github.com/burning-cost/insurance-trend](https://github.com/burning-cost/insurance-trend). Install with `uv add insurance-trend`. 154 tests, all passing. Requires Python 3.10+, NumPy, Polars, statsmodels, and ruptures.
 
 ---
 

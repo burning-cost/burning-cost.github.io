@@ -16,7 +16,7 @@ The balance property — the requirement that sum(predicted claims) = sum(actual
 [`insurance-calibration`](https://github.com/burning-cost/insurance-calibration) is that library. Based on Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, 2025). Seven modules, 99 tests, v0.1.0 on PyPI.
 
 ```bash
-pip install insurance-calibration
+uv add insurance-calibration
 ```
 
 ---
@@ -241,7 +241,7 @@ The Murphy decomposition is the piece that was missing from Python tooling for i
 ## Install
 
 ```bash
-pip install insurance-calibration
+uv add insurance-calibration
 ```
 
 Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-learn required — isotonic regression uses scipy.stats.isotonic_regression (scipy >= 1.12) with a pure numpy PAVA fallback.

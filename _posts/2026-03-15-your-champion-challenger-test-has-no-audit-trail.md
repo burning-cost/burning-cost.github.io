@@ -16,7 +16,7 @@ That is not a champion/challenger test. It is a comparison exercise. They are no
 [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) is our 25th open-source library. It provides the infrastructure that a genuine champion/challenger framework requires: deterministic routing, append-only audit logging, ENBP compliance tracking, insurance-specific KPI computation, bootstrap statistical tests, and an ICOBS 6B.2.51R report. Shadow mode is the default, for reasons we will explain. It is on PyPI at v0.1.1, 146 tests passing.
 
 ```bash
-pip install insurance-deploy
+uv add insurance-deploy
 ```
 
 ---
@@ -385,4 +385,4 @@ The 29-month timeline to LR significance is real and worth knowing about. Teams 
 
 ---
 
-`insurance-deploy` is open source under the MIT licence at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). Install with `pip install insurance-deploy`. 146 tests passing. Requires Python 3.10+, NumPy, SciPy, and joblib.
+`insurance-deploy` is open source under the MIT licence at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). Install with `uv add insurance-deploy`. 146 tests passing. Requires Python 3.10+, NumPy, SciPy, and joblib.

@@ -208,7 +208,7 @@ None of these mean the method is not worth using. They mean the output needs to 
 ## Installation
 
 ```bash
-pip install insurance-causal-policy
+uv add insurance-causal-policy
 ```
 
 Python 3.10 or later. Dependencies: Polars, NumPy, SciPy, CVXPY (with Clarabel solver), Pandas. The optional `differences` package enables the full Callaway-Sant'Anna implementation; without it, the library falls back to a native doubly-robust estimator.

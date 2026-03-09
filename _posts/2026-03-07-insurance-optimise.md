@@ -46,10 +46,10 @@ Manual iteration does not solve this. It approximates it badly.
 
 ## Using the library
 
-Install with pip or uv:
+Install with uv:
 
 ```bash
-pip install insurance-optimise
+uv add insurance-optimise
 ```
 
 The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) feeds directly in.

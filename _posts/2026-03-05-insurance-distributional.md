@@ -40,7 +40,7 @@ So the state of play as of March 2026: the ASTIN award-winning approach to distr
 ## What insurance-distributional does
 
 ```bash
-pip install insurance-distributional
+uv add insurance-distributional
 ```
 
 Four distribution classes. Same fit/predict interface throughout.
@@ -252,7 +252,7 @@ This library fills that gap. It is not a research prototype — it is production
 ## Getting started
 
 ```bash
-pip install insurance-distributional
+uv add insurance-distributional
 ```
 
 Minimum viable motor workflow:

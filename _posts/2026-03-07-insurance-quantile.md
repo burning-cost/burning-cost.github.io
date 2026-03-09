@@ -46,7 +46,7 @@ The library has five functional areas.
 ## Getting started
 
 ```bash
-pip install insurance-quantile
+uv add insurance-quantile
 ```
 
 The motor property damage workflow:
@@ -265,10 +265,10 @@ This is the right combination for any application where the coverage guarantee m
 ## Getting started
 
 ```bash
-pip install insurance-quantile
+uv add insurance-quantile
 
 # With plotting:
-pip install "insurance-quantile[plot]"
+uv add "insurance-quantile[plot]"
 ```
 
 Source and tests on [GitHub](https://github.com/burning-cost/insurance-quantile). The library is 1,351 lines of source, 122 tests passing, and built around a single primary class.
