@@ -510,13 +510,14 @@ The complete workflow, in order:
 4. SHAP relativities to make the GBM explainable (`shap-relativities`)
 5. Interaction detection to find what the GLM missed (`insurance-interactions`)
 6. Conformal intervals for prediction uncertainty (`insurance-conformal`)
-7. Distributional models and quantile regression for tail risk (`insurance-distributional`, `insurance-quantile`)
-8. Causal elasticity for defensible demand modelling (`insurance-causal`)
-9. Constrained optimisation and the efficient frontier (`rate-optimiser`)
-10. Formal validation report for PRA SS1/23 (`insurance-validation`)
-11. Drift monitoring with a three-layer framework (`insurance-monitoring`)
-12. Champion/challenger with SHA-256 routing and quote logging (`insurance-deploy`)
-13. Model inventory and fairness audit for Consumer Duty (`insurance-mrm`)
+7. Calibration testing — balance test, auto-calibration, Murphy decomposition (`insurance-calibration`)
+8. Distributional models and quantile regression for tail risk (`insurance-distributional`, `insurance-quantile`)
+9. Causal elasticity for defensible demand modelling (`insurance-causal`)
+10. Constrained optimisation and the efficient frontier (`rate-optimiser`)
+11. Formal validation report for PRA SS1/23 (`insurance-validation`)
+12. Drift monitoring with a three-layer framework (`insurance-monitoring`)
+13. Champion/challenger with SHA-256 routing and quote logging (`insurance-deploy`)
+14. Model inventory and fairness audit for Consumer Duty (`insurance-mrm`)
 
 None of these steps is optional if you are pricing personal lines in the UK in 2026. Some can be implemented more lightly than others. But skipping the causal inference step means your demand model is producing confident estimates of the wrong quantity. Skipping the audit trail means you are exposed on ICOBS 6B. Skipping the drift monitoring means your model may be deteriorating for months before anyone notices.
 
@@ -529,6 +530,7 @@ The tools exist to do all of this properly. The bottleneck is almost never the s
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — how `shap-relativities` works in detail, including the reconstruction check and exposure weighting
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — temporal leakage and IBNR contamination in standard CV, and the walk-forward fix
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free coverage guarantees and handling heteroscedasticity in GBMs
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — balance test, auto-calibration, and Murphy decomposition for the recalibrate-vs-refit decision
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) — Double Machine Learning for price elasticity estimation
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/) — LP formulation for ENBP-compliant rate changes
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/) — ICOBS 6B.2.51R requirements and what a proper audit trail looks like
