@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "25 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "35 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -249,11 +249,43 @@ permalink: /tools/
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     }
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-distributional-glm",
+      "description": "GAMLSS for Python: model ALL distribution parameters as functions of covariates. Seven families, RS algorithm with backtracking. Pure NumPy/SciPy.",
+      "codeRepository": "https://github.com/burning-cost/insurance-distributional-glm",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-drn",
+      "description": "Distributional Refinement Networks for insurance pricing. Refines any baseline GLM or GBM distribution bin by bin, per covariate. Vectorised CDF/quantile/CRPS. PyTorch. JBCE loss.",
+      "codeRepository": "https://github.com/burning-cost/insurance-drn",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-fairness-ot",
+      "description": "Discrimination-free pricing via optimal transport. Lindholm marginalisation, causal path decomposition, Wasserstein barycenter for multi-attribute fairness, FCA EP25/2 compliance.",
+      "codeRepository": "https://github.com/burning-cost/insurance-fairness-ot",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-trend",
+      "description": "Loss cost trend analysis with structural break detection, ONS API integration, and bootstrap confidence intervals. Frequency, severity, and combined loss cost fitters.",
+      "codeRepository": "https://github.com/burning-cost/insurance-trend",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 30 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 35 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -283,6 +315,11 @@ Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson 
 ---
 
 ## Model Building
+
+**[insurance-trend](https://github.com/burning-cost/insurance-trend)**
+Loss cost trend analysis with structural break detection. Frequency/severity/loss cost fitters, ONS API integration for index deflation, superimposed inflation decomposition, and 1,000-replicate bootstrap confidence intervals. Regime-aware trend selection with ruptures.
+`uv add insurance-trend`
+&rarr; [Trend selection is not actuarial judgment](https://burning-cost.github.io/2026/03/13/insurance-trend/)
 
 **[shap-relativities](https://github.com/burning-cost/shap-relativities)**
 Multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM. Exports to Excel and Radar-compatible CSV.
@@ -343,6 +380,16 @@ Distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives. 
 `uv add insurance-distributional`
 &rarr; [Distributional GBMs for insurance pricing](https://burning-cost.github.io/2026/03/05/insurance-distributional/)
 
+**[insurance-drn](https://github.com/burning-cost/insurance-drn)**
+Distributional Refinement Networks for insurance pricing. Wraps any GLM or GBM baseline with a neural network that refines the predictive distribution bin by bin, per covariate. Vectorised CDF, quantile, CRPS, and Expected Shortfall. JBCE loss. PyTorch. Preserves GLM calibration exactly when the network has nothing useful to add.
+`uv add insurance-drn`
+&rarr; [GLMs Predict Means. DRN Predicts Everything Else.](https://burning-cost.github.io/2026/03/10/distributional-refinement-network-insurance/)
+
+**[insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm)**
+GAMLSS (Generalised Additive Models for Location, Scale and Shape) for Python. Model ALL distribution parameters as functions of covariates — mean, dispersion, shape, zero-inflation probability. Seven families: Gamma, LogNormal, InverseGaussian, Tweedie, Poisson, NegativeBinomial, ZIP. RS algorithm with backtracking. Pure NumPy/SciPy.
+`uv add insurance-distributional-glm`
+&rarr; [GAMLSS in Python, finally](https://burning-cost.github.io/2026/03/10/insurance-distributional-glm/)
+
 **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
 Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.
 `uv add insurance-ilf`
@@ -393,6 +440,11 @@ SLSQP portfolio rate optimisation with analytical Jacobians for large factor spa
 Proxy discrimination auditing and FCA Consumer Duty documentation support. Quantifies indirect discrimination risk through protected characteristic proxies in rating factors.
 `uv add insurance-fairness`
 &rarr; [Your pricing model might be discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/)
+
+**[insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot)**
+Optimal transport discrimination-free pricing. Computes corrected premiums via Lindholm (2022) marginalisation, Côté-Genest-Abdallah (2025) causal path decomposition, and Wasserstein barycenter for the multi-attribute case. Built for FCA EP25/2 compliance and the Equality Act Section 19 proportionate justification test. PyPI pending.
+`uv add insurance-fairness-ot`
+&rarr; [Discrimination-Free Pricing with Optimal Transport](https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/)
 
 **[insurance-validation](https://github.com/burning-cost/insurance-validation)**
 Structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON. Designed around the actual regulatory standard, not a generic model card.

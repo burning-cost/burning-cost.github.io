@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Twenty-eight Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+Thirty-five Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
@@ -43,6 +43,8 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 **Tail Risk & Distributions**
 
+- [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) - GAMLSS for Python: model ALL distribution parameters as functions of covariates, seven families, RS algorithm
+- [`insurance-drn`](https://github.com/burning-cost/insurance-drn) - Distributional Refinement Networks: refine a GLM/GBM baseline distribution covariate-by-covariate using a neural network
 - [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) - quantile and expectile GBMs for tail risk, TVaR, and increased limit factors
 - [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) - distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives
 
@@ -58,6 +60,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 **Compliance & Governance**
 
 - [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination auditing and FCA Consumer Duty documentation support
+- [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) - optimal transport discrimination-free pricing via Lindholm marginalisation, causal path decomposition, and Wasserstein barycenter and FCA Consumer Duty documentation support
 - [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) - synthetic difference-in-differences for causal rate change evaluation and FCA evidence packs
 - [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) - model risk management: ModelCard, ModelInventory, and GovernanceReport generation
 - [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) - champion/challenger framework with shadow mode, rollback, and full audit trail
