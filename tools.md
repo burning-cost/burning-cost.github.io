@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "35 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "36 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -486,10 +486,6 @@ Champion/challenger framework with shadow mode, rollback, and full audit trail. 
 `uv add insurance-deploy`
 &rarr; [Your champion/challenger test has no audit trail](https://burning-cost.github.io/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
 
-**[insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot)**
-Optimal transport discrimination-free pricing: Lindholm marginalisation, causal path decomposition, and Wasserstein barycenter methods. Produces FCA EP25/2-compliant pricing adjustments that remove proxy discrimination while preserving actuarial soundness.
-`uv pip install insurance-fairness-ot`
-&rarr; [Optimal transport for discrimination-free pricing](https://burning-cost.github.io/2026/03/21/insurance-fairness-ot/)
 
 ---
 
@@ -524,22 +520,6 @@ Cure models, customer lifetime value, lapse tables, and MLflow wrapper for reten
 
 ---
 
-## Telematics & UBI
-
-**[insurance-telematics](https://github.com/burning-cost/insurance-telematics)**
-HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data. Continuous-time HMM identifies latent driving regimes from 1Hz GPS/accelerometer data; extracted state features drop directly into a Poisson frequency GLM alongside traditional rating factors.
-`uv pip install insurance-telematics`
-&rarr; [HMM-based telematics risk scoring for insurance pricing](https://burning-cost.github.io/2026/03/21/insurance-telematics/)
-
----
-
-## Reinsurance & Large Loss
-
-**[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
-MBBEFD exposure curves, Swiss Re family parameterisation, increased limit factor tables, and per-risk excess-of-loss pricing. The actuarial standard for large loss modelling, implemented in Python with calibration to observed loss distributions.
-`uv pip install insurance-ilf`
-
----
 
 All libraries are MIT-licensed and available on [PyPI](https://pypi.org/search/?q=insurance-) and [GitHub](https://github.com/burning-cost). Each ships with a Databricks notebook demo and synthetic data. If something is missing from this list, [get in touch](mailto:pricing.frontier@gmail.com).
 
