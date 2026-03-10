@@ -488,7 +488,7 @@ permalink: /course/
 
     <div class="proof-grid">
       <div class="proof-card">
-        <p>28 open-source libraries, each solving one well-defined pricing problem. Over 3,000 tests. Every library used in the course was built by us.</p>
+        <p>36 open-source libraries, each solving one well-defined pricing problem. Over 4,000 tests. Every library used in the course was built by us.</p>
         <div class="proof-card-author">Open source</div>
         <div class="proof-card-role">github.com/burning-cost</div>
       </div>
@@ -587,7 +587,7 @@ permalink: /course/
           <li>Databricks notebooks, runnable end-to-end</li>
           <li>Synthetic UK motor dataset throughout</li>
           <li>Databricks Free Edition compatible</li>
-          <li>30 open-source Python libraries included</li>
+          <li>36 open-source Python libraries included</li>
         </ul>
         <a href="/course/" class="btn btn-primary" style="width:100%;text-align:center;display:block;font-size:1.1rem;padding:0.85rem 1.5rem;">Start the course &rarr;</a>
       </div>

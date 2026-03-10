@@ -44,7 +44,7 @@ description: "On the forefront of machine learning and data science research in 
       <span class="stat-label">Libraries</span>
     </div>
     <div class="stat">
-      <span class="stat-number">3,200+</span>
+      <span class="stat-number">4,000+</span>
       <span class="stat-label">Tests</span>
     </div>
     <div class="stat">
@@ -231,6 +231,7 @@ description: "On the forefront of machine learning and data science research in 
           <span class="workflow-lib">ins-spatial</span>
           <span class="workflow-lib">ins-trend</span>
           <span class="workflow-lib">ins-anam</span>
+          <span class="workflow-lib">ins-telematics</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
@@ -243,6 +244,7 @@ description: "On the forefront of machine learning and data science research in 
           <span class="workflow-lib">shap-relativities</span>
           <span class="workflow-lib">ins-interactions</span>
           <span class="workflow-lib">ins-causal</span>
+          <span class="workflow-lib">ins-ebm</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
@@ -265,6 +267,7 @@ description: "On the forefront of machine learning and data science research in 
         </div>
         <div class="workflow-lib-labels">
           <span class="workflow-lib">ins-fairness</span>
+          <span class="workflow-lib">ins-fairness-ot</span>
           <span class="workflow-lib">ins-causal-policy</span>
           <span class="workflow-lib">ins-mrm</span>
         </div>
@@ -297,6 +300,15 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">SHAP</span>
           <span class="lib-tag">CatBoost</span>
           <span class="lib-tag">factor tables</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-ebm" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-ebm</span>
+        <span class="lib-card-desc">Insurance workflow layer for interpretML&#39;s ExplainableBoostingMachine. RelativitiesTable, MonotonicityEditor, GLMComparison, and actuarial diagnostics. EBMs are GAMs fitted by gradient boosting: the shape functions are the model, not a post-hoc summary.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">EBM</span>
+          <span class="lib-tag">interpretable ML</span>
+          <span class="lib-tag">monotonicity</span>
         </span>
       </a>
     </div>
@@ -350,6 +362,15 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">calibration</span>
           <span class="lib-tag">Murphy score</span>
           <span class="lib-tag">reliability</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-whittaker" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-whittaker</span>
+        <span class="lib-card-desc">Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML/GCV/AIC lambda selection and Bayesian confidence intervals. Smooths noisy age curves, NCD scales, and vehicle group relativities without manual tuning.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">Whittaker-Henderson</span>
+          <span class="lib-tag">REML</span>
+          <span class="lib-tag">experience tables</span>
         </span>
       </a>
       <a href="https://github.com/burning-cost/insurance-deploy" target="_blank" class="lib-card">
@@ -456,6 +477,24 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">deep learning</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-nested-glm" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-nested-glm</span>
+        <span class="lib-card-desc">Nested GLM with neural network entity embeddings for high-cardinality categoricals (vehicle make/model, postcode sector) and SKATER spatially constrained territory clustering. Final model is a standard interpretable GLM with multiplicative relativities.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">entity embeddings</span>
+          <span class="lib-tag">territory clustering</span>
+          <span class="lib-tag">GLM</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-telematics" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-telematics</span>
+        <span class="lib-card-desc">End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. TripSimulator for synthetic fleet generation. DrivingStateHMM and ContinuousTimeHMM classify driving states. B&uuml;hlmann-Straub credibility aggregation to driver level.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">HMM</span>
+          <span class="lib-tag">telematics</span>
+          <span class="lib-tag">credibility</span>
+        </span>
+      </a>
     </div>
   </div>
 
@@ -499,6 +538,15 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">ICOBS</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-optimise" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-optimise</span>
+        <span class="lib-card-desc">SLSQP portfolio rate optimisation with analytical Jacobians for large factor spaces. Complements rate-optimiser: use when the number of factors makes linear programming slow or the constraint structure is non-linear.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">SLSQP</span>
+          <span class="lib-tag">portfolio optimisation</span>
+          <span class="lib-tag">Jacobian</span>
+        </span>
+      </a>
     </div>
   </div>
 
@@ -524,6 +572,33 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">Tweedie</span>
           <span class="lib-tag">distributional</span>
           <span class="lib-tag">volatility</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-distributional-glm" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-distributional-glm</span>
+        <span class="lib-card-desc">GAMLSS for Python. Models ALL distribution parameters as functions of covariates &mdash; mean, dispersion, shape, zero-inflation probability. Seven families: Gamma, LogNormal, InverseGaussian, Tweedie, Poisson, NegativeBinomial, ZIP. RS algorithm with backtracking. Pure NumPy/SciPy.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">GAMLSS</span>
+          <span class="lib-tag">location-scale-shape</span>
+          <span class="lib-tag">dispersion modelling</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-drn" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-drn</span>
+        <span class="lib-card-desc">Distributional Refinement Network: wraps any GLM or GBM baseline with a neural network that refines the predictive distribution bin by bin, per covariate. Vectorised CDF, quantile, CRPS, and Expected Shortfall. JBCE loss. PyTorch.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">DRN</span>
+          <span class="lib-tag">full distribution</span>
+          <span class="lib-tag">CRPS</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-ilf" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-ilf</span>
+        <span class="lib-card-desc">Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">ILF</span>
+          <span class="lib-tag">MBBEFD</span>
+          <span class="lib-tag">excess of loss</span>
         </span>
       </a>
 
@@ -560,6 +635,15 @@ description: "On the forefront of machine learning and data science research in 
         <span class="lib-card-tags">
           <span class="lib-tag">FCA Consumer Duty</span>
           <span class="lib-tag">proxy discrimination</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-fairness-ot" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-fairness-ot</span>
+        <span class="lib-card-desc">Optimal transport discrimination-free pricing. Corrected premiums via Lindholm marginalisation, causal path decomposition, and Wasserstein barycenter for the multi-attribute case. Built for FCA EP25/2 compliance and the Equality Act Section 19 proportionate justification test.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">optimal transport</span>
+          <span class="lib-tag">FCA EP25/2</span>
+          <span class="lib-tag">Lindholm</span>
         </span>
       </a>
       <a href="https://github.com/burning-cost/insurance-mrm" target="_blank" class="lib-card">
