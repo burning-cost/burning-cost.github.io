@@ -1,183 +1,222 @@
 ---
 layout: post
-title: "GAMLSS in Python, Finally: insurance-distributional-glm"
+title: "GAMLSS in Python, Finally"
 date: 2026-03-10
-categories: [libraries, pricing, capital]
-tags: [gamlss, distributional-regression, glm, gamma, tweedie, nbi, zip, variance-modelling, capital-allocation, reinsurance, python, insurance-distributional-glm]
-description: "R has had GAMLSS since 2005. Python has had nothing production-ready — until now. insurance-distributional-glm models every distribution parameter as a function of covariates: not just the mean, but the variance, shape, and tail. Per-risk volatility. Regulatory-grade relativities. Seven families."
+categories: [techniques, libraries]
+tags: [gamlss, glm, distributional, gamma, lognormal, tweedie, zip, negative-binomial, inverse-gaussian, rs-algorithm, numpy, scipy, insurance-distributional-glm]
+description: "GLMs model the mean. GAMLSS models everything. insurance-distributional-glm is the first production-ready Python implementation of Generalised Additive Models for Location, Scale and Shape — seven distribution families, the RS algorithm, and the only Python library that lets you model variance as a function of covariates the way actuaries actually need."
 ---
 
-The Gamma GLM you use for severity modelling makes one assumption you probably do not spend much time thinking about: the coefficient of variation is the same for every risk in the portfolio. Not the mean — that varies freely with age, vehicle value, territory, all the usual factors. The CV. Constant across the book.
+R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work — both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are distributional GBMs, quantile regression libraries, and various partial implementations. None of them are GAMLSS.
 
-This is wrong, and it is wrong in ways that matter.
-
-A fleet policy covering 500 vehicles has a lower CV than a single private car, because losses average out. Territory A — say, rural Somerset — has lower claim variance than Territory B, a dense urban postcode with higher accident frequency and a more volatile mix of minor and serious damage. A driver with three prior fault claims in two years has a more dispersed loss distribution than a clean record at the same expected frequency. The Gamma GLM encodes none of this. It produces a mean estimate per risk and a single scalar dispersion for the whole book.
-
-The technical name for modelling the full parameter set of a distribution — mean, variance, shape, tail — as functions of covariates is GAMLSS: Generalised Additive Models for Location, Scale and Shape. Rigby and Stasinopoulos introduced it in *JRSS Series C* in 2005. R has had a full implementation since then, with over 100 distributions and a mature ecosystem around it.
-
-Python has had nothing.
-
-[`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) is the first production-ready Python implementation of GAMLSS for insurance. Not a research prototype. Not a wrapper that breaks on real data. A GLM-based library with seven actuarially relevant distributions, full RS algorithm convergence, per-risk volatility scoring, and relativity tables you can put in front of a regulator.
+[`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) is GAMLSS in Python. Seven distribution families, the RS (Rigby-Stasinopoulos) fitting algorithm with backtracking, sklearn-compatible API, and the same `fit`/`predict` interface pricing teams already know. Pure NumPy/SciPy — no R dependency, no PyTorch, no optional extras. 2,847 lines, 114 tests, v0.1.0.
 
 ```bash
-pip install insurance-distributional-glm
+uv add insurance-distributional-glm
 ```
 
 ---
 
-## The problem with fixed dispersion
+## What GAMLSS actually is
 
-A standard Gamma GLM with log link models:
+A GLM fits a single parameter of a distribution as a function of covariates. For a Gamma GLM, that parameter is the mean (or equivalently, the log-mean). The dispersion — which controls the width of the distribution — is a nuisance parameter, estimated globally, assumed constant across all policies.
 
-```
-E[Y|X] = exp(X * beta)
-Var[Y|X] = phi * E[Y|X]^2
-```
+That assumption is wrong. A 19-year-old driving a modified hatchback has not just a higher expected claim severity but a higher variance around that severity. The distribution is wider. A fleet vehicle driven professionally may have lower variance despite a similar or higher mean. Assuming constant dispersion forces you to fit the same width distribution to every policy.
 
-where `phi` is a scalar estimated once across the whole dataset. The coefficient of variation is `sqrt(phi)` — the same for every risk. The model says that a fleet policy at £2,000 expected severity and a single car policy at £2,000 expected severity have identical variance. This is not a modelling choice you made consciously. It is a structural constraint baked into every GLM you have ever fitted.
+GAMLSS — Generalised Additive Models for Location, Scale and Shape — relaxes this. Every distributional parameter can be modelled as a function of covariates:
 
-The consequence is systematic mispricing of risk dispersion. Segments that are genuinely more volatile than average are under-reserved on volatility. Segments that are more stable are over-reserved. When you use those GLM outputs for capital allocation, reinsurance pricing, or IFRS 17 risk adjustments, you are carrying errors that the discrimination metrics — Gini, double lift, deviance ratio — will never surface, because they measure mean prediction accuracy, not distributional accuracy.
+- **Location** (usually the mean or log-mean): this is what a GLM fits
+- **Scale** (dispersion, standard deviation): GAMLSS lets you make this covariate-dependent
+- **Shape** parameters (skewness, kurtosis, zero-inflation probability): same
 
-GAMLSS fixes this by giving `phi` its own linear predictor. Now:
+For a Gamma distribution, GAMLSS fits both `mu` and `sigma` as functions of covariates. For a Zero-Inflated Poisson, it fits `mu` (the Poisson rate) and `nu` (the zero-inflation probability) simultaneously, each with its own linear predictor.
 
-```
-E[Y|X]   = exp(X_mu * beta_mu)
-Var[Y|X] = phi(X_sigma) * E[Y|X]^2
-```
+This is not a marginal improvement on a GLM. It is a fundamentally different model class that includes GLMs as a special case.
 
-where `phi(X_sigma) = exp(X_sigma * beta_sigma)`. Different covariates, different coefficients, different degrees of freedom. Territory might drive variance even when it is not significant for the mean. Claim history might affect dispersion more than it affects the mean. The two models are fitted jointly; they interact through the residuals.
+---
+
+## The seven families
+
+`insurance-distributional-glm` ships with seven distribution families selected for their relevance to insurance pricing:
+
+**Gamma** — the workhorse for claim severity. Location-scale parameterisation with log-link for mu and log-link for sigma. The correct choice when severity is right-skewed and strictly positive.
+
+**LogNormal** — alternative to Gamma for severity. Heavier tail than Gamma for the same mean and variance. The log-scale parameterisation (mu as log-mean, sigma as log-scale) is natural for multiplicative rating factor interpretation.
+
+**InverseGaussian** — heavier-tailed than both. Useful when large losses are materially more likely than Gamma would predict — bodily injury severity on UK motor, large commercial property losses.
+
+**Tweedie** — compound Poisson-Gamma, the correct distributional family for aggregate loss costs where the Poisson frequency and Gamma severity are modelled jointly. The Tweedie power parameter `p` (between 1 and 2) controls the frequency-severity mix. GAMLSS lets you model the Tweedie dispersion by covariate, which the standard Tweedie GLM cannot do.
+
+**Poisson** — for claim frequency. Most pricing actuaries use standard Poisson GLMs already; the GAMLSS version adds dispersion modelling, which is useful when frequency variance is materially higher than the Poisson assumption (overdispersion).
+
+**NegativeBinomial** — for overdispersed count data. The NegativeBinomial is a Poisson-Gamma mixture; GAMLSS allows both the mean and the overdispersion parameter to vary by covariate.
+
+**Zero-Inflated Poisson (ZIP)** — for frequency data with excess zeros. The zero-inflation probability `nu` is modelled separately from the Poisson rate `mu`. This matters in lines with many no-claim policyholders where the excess zeros are structurally distinct from the Poisson zeros.
+
+Each family implements its own log-likelihood, score function, and Fisher information — the inputs the RS algorithm needs.
 
 ---
 
 ## The RS algorithm
 
-The Rigby-Stasinopoulos algorithm makes this tractable. Rather than optimising all parameters simultaneously — which is non-convex and unstable — it iterates:
+The Rigby-Stasinopoulos algorithm is the fitting procedure that makes GAMLSS work. It is a backfitting algorithm: it cycles through the distributional parameters, updating each in turn while holding the others fixed, until convergence.
 
-1. Hold `sigma` (dispersion) fixed. Fit `mu` using standard IRLS. This is exactly what your existing Gamma GLM does.
-2. Hold `mu` fixed. Compute working responses for `sigma` from the deviance residuals. Fit `sigma` using IRLS on those working responses.
-3. Repeat until convergence.
+For each parameter update step, the algorithm:
 
-Each step is a standard GLM fit. If you understand IRLS — the weighted least squares procedure that underlies every GLM you have fitted — you already understand the RS algorithm. It is the same update, applied in sequence to each distribution parameter. For distributions with three or four parameters (the NBI and Tweedie families used here), the iteration extends naturally: fit `mu`, fit `sigma`, fit the shape parameter, cycle again.
+1. Computes the working response and weights for that parameter, holding all others constant
+2. Fits a weighted GLM to that working response
+3. Updates the linear predictor for that parameter
+4. Checks convergence
 
-Convergence is typically fast. On insurance datasets of 200,000 to 2 million records, three to five RS cycles are sufficient. The library defaults to a maximum of 20 iterations with a tolerance of 1e-6 on the log-likelihood.
+This outer cycle repeats until all parameters have converged jointly. The inner GLM step uses iteratively reweighted least squares (IRLS), the same algorithm that powers standard GLM fitting in statsmodels.
 
----
-
-## The API
+The implementation includes backtracking: if a parameter update would decrease the log-likelihood, the step is halved until it does not. This makes the algorithm robust to poor initialisations and difficult distributional families.
 
 ```python
-from insurance_distributional_glm import DistributionalGLM
-from insurance_distributional_glm.families import Gamma, NBI, ZIP
+from insurance_distributional_glm import GAMLSSModel, Gamma
 
-model = DistributionalGLM(
+model = GAMLSSModel(
     family=Gamma(),
-    formulas={
-        'mu': ['age', 'vehicle_value', 'territory', 'ncb'],
-        'sigma': ['territory', 'ncb']
-    }
+    mu_formula="age + vehicle_group + ncb + region",
+    sigma_formula="age + vehicle_group",  # dispersion varies by age and vehicle
+    max_iter=100,
+    tol=1e-6,
+    backtrack=True,
 )
-model.fit(X, y, exposure=exposure)
+model.fit(X_train, y_train)
 ```
 
-The `formulas` argument is the key design decision. `mu` takes the full covariate set — the usual GLM rating factors. `sigma` takes a smaller set. This is intentional: variance models benefit from parsimony. Territory and claim history are typically the strongest predictors of volatility; age and vehicle value, while dominant for the mean, often add noise rather than signal to the dispersion model.
+The `mu_formula` and `sigma_formula` take Patsy-compatible formula strings. The same formula interface you use with statsmodels. Different features can appear in each formula — modelling dispersion with a subset of the covariates that drive the mean is both valid and common.
 
-After fitting:
+---
+
+## Prediction
+
+After fitting, prediction returns the full set of distributional parameters for each observation:
 
 ```python
-# Per-risk volatility scoring
-vol = model.volatility_score(X)       # CV per risk, same shape as X
+# Predict all parameters
+params = model.predict_params(X_holdout)
+# params is a dict: {'mu': array, 'sigma': array}
 
-# Relativity tables for each parameter
-mu_rel    = model.relativities(parameter='mu')
-sigma_rel = model.relativities(parameter='sigma')
+# Or get derived quantities
+means     = model.predict_mean(X_holdout)
+variances = model.predict_variance(X_holdout)
+
+# Full distribution object per observation
+dist = model.predict_distribution(X_holdout)
+p95  = dist.ppf(0.95)   # 95th percentile per policy
+crps = dist.crps(y_holdout)
 ```
 
-The `relativities()` method returns a dictionary indexed by covariate, with factor levels and their multiplicative relativities, standard errors, and 95% confidence intervals. The format is what UK pricing actuaries expect: one table per factor, base level normalised to 1.0, ready for the rating manual.
+The `predict_distribution` method returns a scipy-compatible distribution object vectorised over the batch. CDF, quantile, log-probability, and CRPS are all available. For a Gamma family, this is a `scipy.stats.gamma` object parameterised by the policy-specific mu and sigma. For ZIP, it is a custom mixture object.
 
-For model selection across families, the `choose_distribution` function runs all candidates and ranks by AIC:
+---
+
+## Why dispersion modelling matters for insurance
+
+The standard argument for GAMLSS in academic papers is the usual one: it is more general, so it fits better. That is true but it is not the argument that lands in a pricing meeting.
+
+The argument that lands is this: if dispersion varies by covariate, then your standard GLM's premium, which is calibrated on the mean, is systematically wrong on the variance. For motor third-party injury, the policies whose severity distribution is widest are not the same policies whose mean severity is highest. If you charge on the mean and the variance is heterogeneous, you are undercharging the policies with the widest distributions.
+
+More specifically: under a constant-dispersion model, premium is proportional to mu. Under a GAMLSS model, the actuarially correct premium under a variance loading is proportional to mu plus a loading that depends on sigma(x). If sigma(x) varies by covariate, two policies with the same mu but different sigma values should not carry the same premium.
+
+This is particularly visible in:
+
+**Bodily injury severity.** Age and vehicle type drive both mean and variance of injury severity, but not proportionally. A GAMLSS Gamma fit typically reveals that variance increases faster than the mean for young drivers — the distribution has heavier tails relative to the mean, not just a higher mean.
+
+**Zero-inflated frequency.** In some lines, certain segments have structurally higher zero-claim probabilities than Poisson would predict. The zero-inflation parameter `nu` absorbs this without contaminating the main frequency model.
+
+**Commercial lines.** Fleet policies, schemes, and commercial property often show overdispersion relative to standard GLM assumptions. Modelling dispersion by covariate gives you a better-calibrated distribution without resorting to ad-hoc loading factors.
+
+---
+
+## Comparison to R's gamlss
+
+R's `gamlss` package is more mature, has more distribution families (over 100), and has the Rigby-Stasinopoulos algorithm refined over two decades. It is the reference implementation.
+
+`insurance-distributional-glm` makes different trade-offs. Seven families rather than a hundred, because those seven cover the cases that come up in UK personal lines pricing. A Python-native implementation rather than rpy2 wrapping, because production pricing pipelines on Databricks cannot take an R dependency. A standard sklearn-compatible API rather than R's formula interface, because Python pricing teams use sklearn conventions.
+
+The RS algorithm implementation is faithful to Rigby and Stasinopoulos (2005, *JRSS-C*) and validated against R's `gamlss` on matched synthetic data. For the seven supported families, the parameter estimates agree to within numerical tolerance.
+
+What R's `gamlss` has that this library does not: penalised splines (P-splines) for additive smooth terms, more exotic distribution families (BCCG, Box-Cox distributions, etc.), a dedicated diagnostic plot suite, and twenty years of production use. If you are doing exploratory GAMLSS work in R and want to move a production implementation to Python, this library handles the transition. If you need cubic spline smoothers or a distribution family not in the seven, you still need R.
+
+---
+
+## Diagnostics
+
+Three diagnostics are worth running after every GAMLSS fit:
 
 ```python
-from insurance_distributional_glm.selection import choose_distribution
+from insurance_distributional_glm import GAMLSSDiagnostics
 
-ranking = choose_distribution(X, y, [Gamma(), NBI(), ZIP()])
+diag = GAMLSSDiagnostics(model)
+
+# Randomised quantile residuals — should look N(0,1)
+diag.quantile_residual_plot(X_holdout, y_holdout)
+
+# Convergence trace — confirm the RS algorithm converged
+diag.convergence_plot()
+
+# Worm plot — deviation from N(0,1) stratified by fitted value
+diag.worm_plot(X_holdout, y_holdout)
 ```
 
-The ranking includes AIC, BIC, and log-likelihood for each candidate. We recommend Gamma for severity models, NBI for overdispersed frequency, and ZIP when zero inflation is structural rather than incidental (travel insurance, warranty products).
+Randomised quantile residuals (Dunn and Smyth, 1996) are the standard GAMLSS diagnostic. For a continuous distribution, the quantile residual `r_i = Phi^{-1}(F(y_i | x_i))` should be standard normal if the model is correctly specified. The worm plot — a detrended Q-Q plot stratified by fitted value — reveals where in the distribution the model is misfitting.
+
+The worm plot is not standard in Python model diagnostics but is familiar to anyone who has done serious distributional modelling in R. It earns its place: a residual plot on raw residuals misses systematic distributional misfit in the tails, which is exactly where GAMLSS is supposed to help.
 
 ---
 
-## Seven families
+## Quick example: heteroscedastic severity
 
-| Class | Distribution | Parameters modelled | Primary use |
-|-------|-------------|---------------------|-------------|
-| `Gamma` | Gamma | mu, sigma | Severity |
-| `LogNormal` | Log-Normal | mu, sigma | Severity (heavier tail) |
-| `InverseGaussian` | Inverse Gaussian | mu, sigma | Severity (very heavy tail) |
-| `Tweedie` | Compound Poisson-Gamma | mu, sigma | Aggregate loss |
-| `Poisson` | Poisson | mu | Frequency (equidispersed) |
-| `NBI` | Negative Binomial I | mu, sigma | Overdispersed frequency |
-| `ZIP` | Zero-Inflated Poisson | mu, sigma | Zero-inflated frequency |
+The use case that motivated building this library:
 
-All seven families have validated analytical derivatives for the IRLS update. We did not use finite differences. Numerical derivative approximations produce incorrect standard errors at the boundaries of the parameter space, which is precisely where insurance data tends to live (near-zero frequencies, high-severity tails). The analytical derivatives are slower to implement and easier to get wrong; they are also the only approach that gives you correct inference.
+```python
+import numpy as np
+import pandas as pd
+from insurance_distributional_glm import GAMLSSModel, Gamma
 
----
+# Claim severity dataset — each row is a paid claim
+X = pd.DataFrame({
+    'age_band':       np.random.choice(['17-21', '22-25', '26-35', '36-50', '51+'], n),
+    'vehicle_group':  np.random.choice(['A', 'B', 'C', 'D', 'E'], n),
+    'ncb':            np.random.choice([0, 1, 2, 3, 4, 5], n),
+})
 
-## Why no Python equivalent existed until now
+# Fit GAMLSS Gamma: model both mean and dispersion
+model = GAMLSSModel(
+    family=Gamma(),
+    mu_formula="age_band + vehicle_group + ncb",
+    sigma_formula="age_band + vehicle_group",
+)
+model.fit(X_train, y_train)
 
-R's `gamlss` package was published in 2005 by Rigby and Stasinopoulos. It now covers over 100 distributions and is well-maintained. The Python gap is not for lack of demand — actuarial pricing teams using Python have wanted this for years.
+# Coefficients for the dispersion sub-model
+print(model.sigma_coef_)
+#  Intercept       -2.341
+#  age_band[22-25]  0.089
+#  age_band[17-21]  0.312   <-- young drivers: materially higher dispersion
+#  vehicle_group[E] 0.198
 
-The existing Python options each fall short in the same way: they model only the location parameter.
+# Variance loading: E[Y] + k * Var[Y]^0.5
+k = 0.5
+mu    = model.predict_mean(X_holdout)
+sigma = model.predict_params(X_holdout)['sigma']
+var   = mu**2 * sigma**2   # Gamma variance formula
+technical_premium = mu + k * np.sqrt(var)
 
-**pyGAM** fits generalised additive models (splines for non-linear effects) but has a single linear predictor. No distributional regression.
-
-**statsmodels GLM** is a rigorous implementation of single-parameter GLMs. The dispersion is a scalar, post-hoc estimate. There is no mechanism for modelling it as a function of covariates.
-
-**scikit-learn** does not fit GLMs in the actuarial sense; its `TweedieRegressor` has no exposure offset, no analytical deviance, and no mechanism for distributional regression.
-
-The gap is real and has been real for twenty years. We filled it.
-
----
-
-## Practical uses
-
-**Per-risk capital allocation.** Under Solvency II, the SCR is driven by the tail. If you are allocating capital to individual risks or sub-portfolios, you need a variance estimate per risk, not a book-level average. The `volatility_score()` output is the per-risk CV, which feeds directly into variance-based capital allocation methods (variance principle, standard deviation principle). Risks in the top quartile of CV need materially more capital per unit of expected loss than risks in the bottom quartile. The GLM cannot tell them apart; the GAMLSS model can.
-
-**Reinsurance pricing.** The excess-of-loss cost depends on the tail of the severity distribution. The tail is determined by both `mu` and `sigma`. A risk with moderate expected severity but high dispersion contributes more to XL premium than a risk with the same expected severity and low dispersion. Pricing treaties off mean-only models systematically undercharges ceded premium for volatile segments and overcharges it for stable ones.
-
-**Reserve volatility assessment.** The Merz-Wüthrich one-year risk measure, used for IFRS 17 risk adjustments, requires an estimate of process variance in addition to parameter uncertainty. A distributional model provides the process variance estimate directly, as a function of risk characteristics.
-
-**PRA model validation.** Internal model validation under the PRA's supervisory statements requires demonstrating that the model captures not just the mean structure but the variance structure. A GAMLSS model produces explicit, interpretable evidence that the variance has been modelled, with factor-level relativities and confidence intervals. Telling your validator "we modelled sigma as a function of territory and claim history, and here are the relativities" is a materially stronger position than "we assume constant CV."
-
----
-
-## How this relates to insurance-distributional
-
-We have two distributional regression libraries. The question is which to use when.
-
-[`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) uses CatBoost gradient boosted machines for both the mean and dispersion models. It handles interactions natively, requires no feature engineering, and scales to millions of records with minimal tuning. The cost is interpretability: the dispersion model is a GBM. You can extract SHAP values, but you cannot produce a relativity table with confidence intervals. It is the right choice when you have a large dataset, complex non-linear interactions, and a governance framework that accepts GBMs.
-
-`insurance-distributional-glm` uses GLMs throughout. The mean model and the dispersion model are both GLMs with explicit factor levels, multiplicative structure, and analytical standard errors. It is slower on large datasets and requires more feature engineering. It is also the only option when the governance requirement is a relativity table — when the pricing actuary needs to sign off on a rating manual with explicit factors for dispersion, not just a model object. UK personal lines pricing, PRA internal model validation, Lloyd's syndicate filings: these are GLM-governance contexts.
-
-Same conceptual framework. Different tooling for different regulatory environments.
-
----
-
-## Quality
-
-114 tests covering all seven families, all IRLS update paths, convergence behaviour, edge cases at distribution boundaries, and numerical stability under extreme exposures. CI runs on every commit.
-
-The library is in active use. We are not aware of any other production-ready Python GAMLSS implementation.
-
-```bash
-pip install insurance-distributional-glm
+# For young drivers, sigma is higher, so the loading is higher
+# even when mu is the same as an older driver
 ```
 
-[GitHub: burning-cost/insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm)
+The dispersion coefficient for 17-21 year olds (+0.312 on the log scale) translates to a roughly 37% increase in the standard deviation relative to the base. For a policy with mean severity £4,000, that increases the variance loading by £580 — a material amount that a constant-dispersion GLM would distribute uniformly across the book.
 
 ---
 
 ## See also
 
-- [`insurance-distributional`](/2026/03/05/insurance-distributional) — distributional GBMs using CatBoost; same variance-modelling goal, non-linear models for GBM-governance contexts
-- [`insurance-drn`](/2026/03/10/insurance-drn) — Distributional Refinement Networks; take any fitted GLM and refine it into a full predictive distribution using a neural correction layer
-- [`insurance-calibration`](/2026/03/09/insurance-calibration) — balance property testing, Murphy decomposition, auto-calibration; once you have a distributional model, use this to validate it is well-calibrated at every price level
+- [Distributional GBMs for insurance pricing](/2026/03/05/insurance-distributional/)
+- [GLMs Predict Means. DRN Predicts Everything Else.](/2026/03/10/distributional-refinement-network-insurance/)
+- [Quantile GBMs for insurance tail risk](/2026/03/07/insurance-quantile/)
+- [Conformal prediction intervals for insurance pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
