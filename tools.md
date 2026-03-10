@@ -283,6 +283,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-fairness-diag",
+      "description": "Proxy discrimination diagnostics. D_proxy scalar (LRTW 2026), Owen (2014) Shapley attribution of discrimination to individual rating factors, per-policyholder vulnerability scores, HTML/JSON audit reports for FCA EP25/2 compliance.",
+      "codeRepository": "https://github.com/burning-cost/insurance-fairness-diag",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-trend",
       "description": "Loss cost trend analysis with structural break detection, ONS API integration, and bootstrap confidence intervals. Frequency, severity, and combined loss cost fitters.",
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
@@ -301,7 +309,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 36 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 37 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -461,6 +469,11 @@ Proxy discrimination auditing and FCA Consumer Duty documentation support. Quant
 Optimal transport discrimination-free pricing. Computes corrected premiums via Lindholm (2022) marginalisation, Côté-Genest-Abdallah (2025) causal path decomposition, and Wasserstein barycenter for the multi-attribute case. Built for FCA EP25/2 compliance and the Equality Act Section 19 proportionate justification test. PyPI pending.
 `uv add insurance-fairness-ot`
 &rarr; [Discrimination-Free Pricing with Optimal Transport](https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/)
+
+**[insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag)**
+Proxy discrimination diagnostics. Quantifies how much proxy discrimination a fitted model contains (D_proxy scalar, LRTW 2026) and which rating factors are responsible (Owen 2014 Shapley effects). Per-policyholder vulnerability scores (Côté-Charpentier 2025). HTML/JSON audit reports for FCA EP25/2 and Consumer Duty evidence. The diagnostic layer before you decide whether to correct.
+`uv add insurance-fairness-diag`
+&rarr; [Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It.](https://burning-cost.github.io/2026/03/10/insurance-fairness-diag/)
 
 **[insurance-validation](https://github.com/burning-cost/insurance-validation)**
 Structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON. Designed around the actual regulatory standard, not a generic model card.
