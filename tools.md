@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "34 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "36 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -203,6 +203,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-calibration",
+      "description": "Balance property testing, auto-calibration curves, and Murphy score decomposition for insurance frequency and severity models.",
+      "codeRepository": "https://github.com/burning-cost/insurance-calibration",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-monitoring",
       "description": "Exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for deployed models.",
       "codeRepository": "https://github.com/burning-cost/insurance-monitoring",
@@ -240,12 +248,60 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-survival",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-trend",
+      "description": "Log-linear frequency, severity, and loss cost trend with ONS deflation, superimposed inflation separation, structural break detection, and bootstrap confidence intervals.",
+      "codeRepository": "https://github.com/burning-cost/insurance-trend",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-whittaker",
+      "description": "Whittaker-Henderson penalised least squares smoothing for insurance rating tables, with REML lambda selection, Bayesian credible intervals, and 2D cross-table support.",
+      "codeRepository": "https://github.com/burning-cost/insurance-whittaker",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-ebm",
+      "description": "Explainable Boosting Machines for insurance tariff construction: additive shape functions with GBM accuracy, multiplicative relativity tables, monotonicity editing, GLM comparison diagnostics.",
+      "codeRepository": "https://github.com/burning-cost/insurance-ebm",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-fairness-ot",
+      "description": "Optimal transport discrimination-free pricing: Lindholm marginalisation, causal path decomposition, Wasserstein barycenter, FCA EP25/2 compliance.",
+      "codeRepository": "https://github.com/burning-cost/insurance-fairness-ot",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-telematics",
+      "description": "HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data.",
+      "codeRepository": "https://github.com/burning-cost/insurance-telematics",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-ilf",
+      "description": "MBBEFD exposure curves, Swiss Re families, increased limit factor tables, and per-risk excess-of-loss pricing.",
+      "codeRepository": "https://github.com/burning-cost/insurance-ilf",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research - each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 34 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research - each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 36 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks - no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -266,6 +322,16 @@ Temporal walk-forward cross-validation with IBNR buffers and sklearn-compatible 
 Vine copula synthetic portfolio generation that preserves the multivariate dependence structure of your actual book, for scenario testing and model benchmarking.
 `uv pip install insurance-synthetic`
 &rarr; [Generating realistic synthetic insurance portfolios](https://burning-cost.github.io/2026/03/09/insurance-synthetic/)
+
+**[insurance-trend](https://github.com/burning-cost/insurance-trend)**
+Log-linear frequency, severity, and loss cost trend with ONS index deflation, superimposed inflation separation, and automatic structural break detection via ruptures. Bootstrap confidence intervals replace actuarial judgment for trend selection.
+`uv pip install insurance-trend`
+&rarr; [Trend selection is not actuarial judgment](https://burning-cost.github.io/2026/03/13/insurance-trend/)
+
+**[insurance-whittaker](https://github.com/burning-cost/insurance-whittaker)**
+Whittaker-Henderson penalised least squares smoothing for insurance rating tables. REML lambda selection, Bayesian credible intervals, 1D and 2D cross-table support. Replaces ad hoc moving averages with a principled, reproducible graduation method.
+`uv pip install insurance-whittaker`
+&rarr; [Whittaker-Henderson smoothing for insurance pricing](https://burning-cost.github.io/2026/03/20/whittaker-henderson-smoothing-for-insurance-pricing/)
 
 ---
 
@@ -310,6 +376,11 @@ NCD and bonus-malus systems for UK motor insurance. NCD as a Markov chain, stati
 Nested GLMs with neural network embeddings for territory clustering and high-cardinality variable handling. Learns geographic and categorical structure that a standard GLM treats as fixed factors.
 `uv pip install insurance-nested-glm`
 &rarr; [Nested GLMs with neural network embeddings](https://burning-cost.github.io/2026/03/09/insurance-nested-glm/)
+
+**[insurance-ebm](https://github.com/burning-cost/insurance-ebm)**
+Explainable Boosting Machines for insurance tariff construction. EBMs give you additive shape functions like a GAM but with GBM-level accuracy — the same multiplicative relativity table format as a GLM, with monotonicity editing and GLM comparison diagnostics built in.
+`uv pip install insurance-ebm`
+&rarr; [EBMs for insurance tariff construction](https://burning-cost.github.io/2026/03/20/ebms-for-insurance-tariff-construction/)
 
 ---
 
@@ -411,6 +482,11 @@ Champion/challenger framework with shadow mode, rollback, and full audit trail. 
 `uv pip install insurance-deploy`
 &rarr; [Your champion/challenger test has no audit trail](https://burning-cost.github.io/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
 
+**[insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot)**
+Optimal transport discrimination-free pricing: Lindholm marginalisation, causal path decomposition, and Wasserstein barycenter methods. Produces FCA EP25/2-compliant pricing adjustments that remove proxy discrimination while preserving actuarial soundness.
+`uv pip install insurance-fairness-ot`
+&rarr; [Optimal transport for discrimination-free pricing](https://burning-cost.github.io/2026/03/21/insurance-fairness-ot/)
+
 ---
 
 ## Spatial
@@ -428,6 +504,23 @@ BYM2 spatial models for postcode-level territory ratemaking, borrowing strength 
 Cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling. Treats lapse as a competing risk rather than a binary outcome.
 `uv pip install insurance-survival`
 &rarr; [Survival models for insurance retention](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/)
+
+---
+
+## Telematics & UBI
+
+**[insurance-telematics](https://github.com/burning-cost/insurance-telematics)**
+HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data. Continuous-time HMM identifies latent driving regimes from 1Hz GPS/accelerometer data; extracted state features drop directly into a Poisson frequency GLM alongside traditional rating factors.
+`uv pip install insurance-telematics`
+&rarr; [HMM-based telematics risk scoring for insurance pricing](https://burning-cost.github.io/2026/03/21/insurance-telematics/)
+
+---
+
+## Reinsurance & Large Loss
+
+**[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
+MBBEFD exposure curves, Swiss Re family parameterisation, increased limit factor tables, and per-risk excess-of-loss pricing. The actuarial standard for large loss modelling, implemented in Python with calibration to observed loss distributions.
+`uv pip install insurance-ilf`
 
 ---
 
