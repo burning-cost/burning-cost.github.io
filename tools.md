@@ -248,7 +248,7 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-nested-glm",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
-    }
+    },
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-distributional-glm",
@@ -280,12 +280,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-telematics",
+      "description": "End-to-end telematics pricing pipeline: 1Hz GPS/accelerometer ingestion, continuous-time HMM driving state classification, Bühlmann-Straub credibility aggregation, and Poisson GLM integration. Includes TripSimulator for synthetic fleet generation.",
+      "codeRepository": "https://github.com/burning-cost/insurance-telematics",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 35 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 36 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -482,6 +490,15 @@ BYM2 spatial models for postcode-level territory ratemaking, borrowing strength 
 **[insurance-nested-glm](https://github.com/burning-cost/insurance-nested-glm)**
 Nested GLM with neural network entity embeddings for high-cardinality categoricals (vehicle make/model, postcode sector) and spatially constrained territory clustering via SKATER. The final model is a standard interpretable GLM with multiplicative relativities. Based on Wang, Shi, Cao (NAAJ 2025).
 `uv add insurance-nested-glm`
+
+---
+
+## Telematics
+
+**[insurance-telematics](https://github.com/burning-cost/insurance-telematics)**
+End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. TripSimulator generates synthetic fleets (Ornstein-Uhlenbeck speed processes, Dirichlet regime mixtures) so teams without raw data can build and test immediately. DrivingStateHMM and ContinuousTimeHMM classify driving into cautious/normal/aggressive states. Bühlmann-Straub credibility aggregation to driver level. Poisson GLM pipeline.
+`uv add insurance-telematics`
+&rarr; [HMM-Based Telematics Risk Scoring for Insurance Pricing](https://burning-cost.github.io/2026/03/10/insurance-telematics/)
 
 ---
 
