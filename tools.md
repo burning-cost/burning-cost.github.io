@@ -328,6 +328,14 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-composite",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-sensitivity",
+      "description": "Shapley effects for rating factor variance decomposition — Song (2016) random permutation estimator, Rabitti-Tzougas (2025) CLH subsampling, exposure weighting, correlated categoricals. Answers which rating factor drives the most premium variance.",
+      "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
@@ -446,6 +454,11 @@ GAMLSS (Generalised Additive Models for Location, Scale and Shape) for Python. M
 **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
 Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.
 `uv add insurance-ilf`
+
+**[insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity)**
+Shapley effects for rating factor variance decomposition. Which rating factor drives the most premium variance in your book? Song et al. (2016) random permutation estimator with Rabitti-Tzougas (2025) CLH subsampling for large datasets, exposure-weighted variance throughout, and a fitted-model interface that accepts any GLM or GBM. 112 tests.
+`uv add insurance-sensitivity`
+&rarr; [Shapley Effects for Rating Factor Variance Decomposition](https://burning-cost.github.io/2026/03/22/insurance-sensitivity/)
 
 **[insurance-composite](https://github.com/burning-cost/insurance-composite)**
 Composite severity regression — spliced body/tail distributions with covariate-dependent thresholds, ILF estimation, and TVaR. The body and tail of a severity distribution obey different physics; this fits them separately while letting the threshold vary by covariate. 106 tests.
