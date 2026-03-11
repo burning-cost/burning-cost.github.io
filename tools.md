@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "45 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "46 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -150,6 +150,14 @@ permalink: /tools/
       "name": "insurance-demand",
       "description": "Conversion, retention, and DML price elasticity modelling integrated with rate optimisation.",
       "codeRepository": "https://github.com/burning-cost/insurance-demand",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-uplift",
+      "description": "Heterogeneous treatment effects for UK personal lines retention targeting. RetentionPanel, CausalForestDML CATE estimation, Qini evaluation, four-customer taxonomy (Persuadable/Sure Thing/Lost Cause/Do Not Disturb), PolicyTree, ENBP constraint, Consumer Duty fairness audit.",
+      "codeRepository": "https://github.com/burning-cost/insurance-uplift",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -389,7 +397,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 45 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 46 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -555,6 +563,12 @@ Conversion, retention, and DML price elasticity modelling integrated with rate o
 `uv add insurance-demand`
 &rarr; [Demand modelling for insurance pricing](https://burning-cost.github.io/2026/02/25/demand-modelling-for-insurance-pricing/)
 
+
+**[insurance-uplift](https://github.com/burning-cost/insurance-uplift)**
+Uplift modelling for UK personal lines retention targeting. Estimates per-customer treatment effects (CATE) on renewal probability via CausalForestDML, classifies the portfolio into Persuadables, Sure Things, Lost Causes, and Do Not Disturbs (Guelman et al.), evaluates with Qini curves and AUUC, builds optimal targeting rules via PolicyTree, clips recommendations to ENBP (ICOBS 6B.2), and audits CATE distribution across vulnerability proxies for Consumer Duty. 127 tests.
+`uv add insurance-uplift`
+[![PyPI](https://img.shields.io/pypi/v/insurance-uplift)](https://pypi.org/project/insurance-uplift/)
+&rarr; [Your Retention Campaign Has No Targeting Rule](https://burning-cost.github.io/2026/03/11/insurance-uplift/)
 ---
 
 ## Optimisation
