@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "47 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "46 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -100,7 +100,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-conformal",
-      "description": "Distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees.",
+      "description": "Distribution-free prediction intervals for insurance GBMs. v0.2 adds locally-weighted intervals (~24% narrower via CatBoost spread model), model-free conformal (Hong 2025), and SCRReport for Solvency II 99.5% upper bounds with coverage validation tables.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -179,6 +179,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-dro",
+      "description": "Distributionally robust rate optimisation using Wasserstein ambiguity sets. Produces a price-of-robustness curve for pricing committee papers.",
+      "codeRepository": "https://github.com/burning-cost/insurance-dro",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-fairness",
       "description": "Proxy discrimination auditing and FCA Consumer Duty documentation support.",
       "codeRepository": "https://github.com/burning-cost/insurance-fairness",
@@ -219,6 +227,13 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-bunching",
+      "description": "Bunching estimators for insurance threshold gaming detection. Adapted from Saez (2010) and Kleven (2016) public economics methodology to detect mileage declaration fraud, adverse deductible selection, and sum-insured rounding. BH FDR-corrected multi-threshold scanning, FCA Consumer Duty HTML reports.",
+      "codeRepository": "https://github.com/burning-cost/insurance-bunching",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
       "name": "insurance-deploy",
       "description": "Champion/challenger framework with shadow mode, rollback, and full audit trail.",
       "codeRepository": "https://github.com/burning-cost/insurance-deploy",
@@ -323,6 +338,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-gas",
+      "description": "GAS (Generalised Autoregressive Score) models for dynamic insurance pricing. Poisson frequency, Gamma/LogNormal severity, Beta loss ratio, and NegBin variants. Exposure-weighted MLE, trend_index output, panel data support. First maintained Python GAS library.",
+      "codeRepository": "https://github.com/burning-cost/insurance-gas",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-telematics",
       "description": "End-to-end telematics pricing pipeline: 1Hz GPS/accelerometer ingestion, continuous-time HMM driving state classification, Bühlmann-Straub credibility aggregation, and Poisson GLM integration. Includes TripSimulator for synthetic fleet generation.",
       "codeRepository": "https://github.com/burning-cost/insurance-telematics",
@@ -413,7 +436,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 49 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 46 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -448,6 +471,11 @@ Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson 
 Loss cost trend analysis with structural break detection. Frequency/severity/loss cost fitters, ONS API integration for index deflation, superimposed inflation decomposition, and 1,000-replicate bootstrap confidence intervals. Regime-aware trend selection with ruptures.
 `uv add insurance-trend`
 &rarr; [Trend selection is not actuarial judgment](https://burning-cost.github.io/2026/03/13/insurance-trend/)
+
+**[insurance-gas](https://github.com/burning-cost/insurance-gas)**
+GAS (Generalised Autoregressive Score) models for dynamic insurance pricing — the first maintained Python implementation. Exposure-weighted Poisson frequency, Gamma/log-normal severity, Beta loss ratio, and negative binomial variants. GAS(1,1) MLE via L-BFGS-B, `trend_index` in the development factor format, panel data across rating cells, and formal diagnostics (PIT, Ljung-Box). Sits between changepoint detection and static trend projection: continuous adaptive estimation updated at each period.
+`uv add insurance-gas`
+&rarr; [Your Trend Estimate Has No Likelihood](https://burning-cost.github.io/2026/03/25/insurance-gas/)
 
 **[shap-relativities](https://github.com/burning-cost/shap-relativities)**
 Multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM. Exports to Excel and Radar-compatible CSV.
@@ -511,9 +539,9 @@ Credibility Transformer — CLS token attention as Bühlmann-Straub credibility,
 ## Interpretation & Risk
 
 **[insurance-conformal](https://github.com/burning-cost/insurance-conformal)**
-Distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce intervals roughly 30% narrower than the naive approach.
-`uv add insurance-conformal`
-&rarr; [Conformal prediction intervals for insurance pricing](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+Distribution-free prediction intervals with finite-sample coverage guarantees. v0.2 adds locally-weighted intervals (~24% narrower, CatBoost spread model), model-free conformal (Hong 2025, no point predictor needed), SCRReport for Solvency II 99.5% upper bounds with multi-alpha coverage validation tables, and ERT diagnostics for conditional coverage by rating segment. 186 tests.
+`uv add "insurance-conformal[catboost]"`
+&rarr; [Distribution-free solvency capital from conformal prediction](https://burning-cost.github.io/2026/03/11/conformal-scr-solvency/) · [Why your prediction intervals are lying to you](https://burning-cost.github.io/2026/03/06/why-your-prediction-intervals-are-lying-to-you/)
 
 **[insurance-quantile](https://github.com/burning-cost/insurance-quantile)**
 Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors. When the mean is not the right risk measure.
@@ -599,6 +627,11 @@ SLSQP portfolio rate optimisation with analytical Jacobians for large factor spa
 `uv add insurance-optimise`
 &rarr; [Portfolio rate optimisation with insurance-optimise](https://burning-cost.github.io/2026/03/07/insurance-optimise/)
 
+**[insurance-dro](https://github.com/burning-cost/insurance-dro)**
+Distributionally robust rate optimisation using Wasserstein ambiguity sets. Instead of optimising against a point-estimate demand model, optimises against the worst-case distribution within a calibrated ball around your empirical samples. Produces a price-of-robustness curve for pricing committee papers. CVXPY + CLARABEL backend, FCA ENBP as hard constraint, 137 tests.
+`pip install insurance-dro`
+&rarr; [Your Rate Optimiser Has No Safety Margin](https://burning-cost.github.io/2026/03/25/insurance-dro/)
+
 ---
 
 ## Compliance & Governance
@@ -641,6 +674,11 @@ Model risk management: ModelCard, ModelInventory, and GovernanceReport generatio
 Champion/challenger framework with shadow mode, rollback, and full audit trail. Structured deployment for pricing models that need a sign-off process.
 `uv add insurance-deploy`
 &rarr; [Your champion/challenger test has no audit trail](https://burning-cost.github.io/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
+
+**[insurance-bunching](https://github.com/burning-cost/insurance-bunching)**
+Bunching estimators for threshold gaming detection. Adapted from public economics (Saez 2010; Kleven 2016) to detect mileage declaration fraud, adverse deductible selection, sum-insured rounding, and age misreporting. BH FDR-controlled multi-threshold scanning. Self-contained HTML reports for FCA Consumer Duty evidence. First Python bunching estimator in any field.
+`uv add insurance-bunching`
+&rarr; [Detecting Threshold Gaming in Insurance Portfolios](https://burning-cost.github.io/2026/03/11/insurance-bunching/)
 
 
 ---
