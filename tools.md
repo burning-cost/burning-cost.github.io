@@ -472,12 +472,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-evt",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-reconcile",
+      "description": "Hierarchical forecast reconciliation for insurance pricing hierarchies. MinTrace with earned premium weighting, loss cost / loss ratio transform, frequency x severity log-space reconciliation, peril tree DSL, coherence diagnostics. 160 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-reconcile",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 50 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 51 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -798,6 +806,11 @@ Bayesian change-point detection for UK insurance pricing time series. Online BOC
 `uv add insurance-changepoint`
 [![PyPI](https://img.shields.io/pypi/v/insurance-changepoint)](https://pypi.org/project/insurance-changepoint/)
 &rarr; [When Did Your Loss Ratio Actually Change?](https://burning-cost.github.io/2026/03/25/insurance-changepoint/)
+
+**[insurance-reconcile](https://github.com/burning-cost/insurance-reconcile)**
+Hierarchical forecast reconciliation for insurance pricing hierarchies. MinTrace (Wickramasuriya et al. 2019 JASA) with earned premium weighting — the economically correct weight, not structural count. Loss cost / loss ratio transform via claims amounts (so the EP-weighted aggregation constraint is satisfied). Frequency×severity log-space reconciliation. Peril tree and geographic hierarchy DSL. Coherence diagnostics pre-reconciliation, attribution report post-reconciliation. 160 tests, pure NumPy GLS.
+`pip install 'insurance-reconcile[mintrace]'`
+&rarr; [Your Peril Forecasts Don't Add Up](https://burning-cost.github.io/2026/03/11/your-peril-forecasts-dont-add-up/)
 
 ---
 
