@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "52 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "53 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -347,6 +347,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-mediation",
+      "description": "Causal mediation analysis for FCA proxy discrimination compliance. Decomposes postcode price differentials into legitimate (IMD-mediated) and residual (direct) effects via CDE/NDE/NIE estimators. Imai rho sensitivity analysis, E-values, FCA-ready HTML audit reports. Poisson, Gamma, Tweedie GLM outcome models.",
+      "codeRepository": "https://github.com/burning-cost/insurance-mediation",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-trend",
       "description": "Loss cost trend analysis with structural break detection, ONS API integration, and bootstrap confidence intervals. Frequency, severity, and combined loss cost fitters.",
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
@@ -493,7 +501,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 52 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 53 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -727,6 +735,11 @@ Optimal transport discrimination-free pricing. Computes corrected premiums via L
 Proxy discrimination diagnostics. Quantifies how much proxy discrimination a fitted model contains (D_proxy scalar, LRTW 2026) and which rating factors are responsible (Owen 2014 Shapley effects). Per-policyholder vulnerability scores (Côté-Charpentier 2025). HTML/JSON audit reports for FCA EP25/2 and Consumer Duty evidence. The diagnostic layer before you decide whether to correct.
 `uv add insurance-fairness-diag`
 &rarr; [Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It.](https://burning-cost.github.io/2026/03/10/insurance-fairness-diag/)
+
+**[insurance-mediation](https://github.com/burning-cost/insurance-mediation)**
+Causal mediation analysis for FCA proxy discrimination compliance. Decomposes the total causal effect of postcode (or any protected characteristic proxy) into the component mediated by a legitimate risk factor (e.g., IMD deprivation score) and the residual direct effect. CDE, NDE, NIE estimators with Poisson/Gamma/Tweedie GLM outcome models. Imai et al. rho sensitivity analysis, E-value robustness, FCA-ready HTML audit reports with Section 19 proportionality statements.
+`uv add insurance-mediation`
+&rarr; [Your Postcode Premium Isn't Discriminatory. Probably. Can You Prove It?](https://burning-cost.github.io/2026/03/11/insurance-mediation/)
 
 **[insurance-validation](https://github.com/burning-cost/insurance-validation)**
 Structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON. Designed around the actual regulatory standard, not a generic model card.
