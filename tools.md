@@ -439,12 +439,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-changepoint",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-conformal-fraud",
+      "description": "Conformal p-values for claims fraud detection with FDR-controlled SIU referral. Mondrian stratification by claim type, integrative conformal using SIU case files (Lemos et al. 2024), Fisher combination for IFB consortium detection. 133 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-conformal-fraud",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 46 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 47 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -550,6 +558,11 @@ Credibility Transformer — CLS token attention as Bühlmann-Straub credibility,
 Distribution-free prediction intervals with finite-sample coverage guarantees. v0.2 adds locally-weighted intervals (~24% narrower, CatBoost spread model), model-free conformal (Hong 2025, no point predictor needed), SCRReport for Solvency II 99.5% upper bounds with multi-alpha coverage validation tables, and ERT diagnostics for conditional coverage by rating segment. 186 tests.
 `uv add "insurance-conformal[catboost]"`
 &rarr; [Distribution-free solvency capital from conformal prediction](https://burning-cost.github.io/2026/03/11/conformal-scr-solvency/) · [Why your prediction intervals are lying to you](https://burning-cost.github.io/2026/03/06/why-your-prediction-intervals-are-lying-to-you/)
+
+**[insurance-conformal-fraud](https://github.com/burning-cost/insurance-conformal-fraud)**
+Conformal p-values for claims fraud detection with provable FDR-controlled SIU referral. Wraps any sklearn anomaly detector. Mondrian stratification by claim type (TPBI, AD, Theft), integrative conformal from SIU case files (Lemos et al. 2024, JRSS-B), Fisher combination for IFB consortium detection without sharing claim data. 133 tests.
+`pip install insurance-conformal-fraud`
+&rarr; [Your SIU Referral Threshold Is Arbitrary. Here Is How to Fix It.](https://burning-cost.github.io/2026/03/11/insurance-conformal-fraud/)
 
 **[insurance-quantile](https://github.com/burning-cost/insurance-quantile)**
 Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors. When the mean is not the right risk measure.
