@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "41 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "42 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -267,6 +267,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-dispersion",
+      "description": "Double GLM (DGLM) for joint modelling of mean and dispersion in insurance pricing. Per-observation phi_i, alternating IRLS, REML correction. Six families. Pure NumPy/SciPy.",
+      "codeRepository": "https://github.com/burning-cost/insurance-dispersion",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-drn",
       "description": "Distributional Refinement Networks for insurance pricing. Refines any baseline GLM or GBM distribution bin by bin, per covariate. Vectorised CDF/quantile/CRPS. PyTorch. JBCE loss.",
       "codeRepository": "https://github.com/burning-cost/insurance-drn",
@@ -450,6 +458,11 @@ Distributional Refinement Networks for insurance pricing. Wraps any GLM or GBM b
 GAMLSS (Generalised Additive Models for Location, Scale and Shape) for Python. Model ALL distribution parameters as functions of covariates — mean, dispersion, shape, zero-inflation probability. Seven families: Gamma, LogNormal, InverseGaussian, Tweedie, Poisson, NegativeBinomial, ZIP. RS algorithm with backtracking. Pure NumPy/SciPy.
 `uv add insurance-distributional-glm`
 &rarr; [GAMLSS in Python, finally](https://burning-cost.github.io/2026/03/10/insurance-distributional-glm/)
+
+**[insurance-dispersion](https://github.com/burning-cost/insurance-dispersion)**
+Double GLM (DGLM) for joint modelling of mean AND dispersion in insurance pricing. Every observation gets its own phi_i — enabling risk-adequate margin loading, Solvency II variance at policy level, and Tweedie segments with independent frequency-severity movement. Six families, REML correction, overdispersion LRT, factor tables. Pure NumPy/SciPy.
+`uv add insurance-dispersion`
+&rarr; [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](https://burning-cost.github.io/2026/03/11/insurance-dispersion/)
 
 **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
 Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.
