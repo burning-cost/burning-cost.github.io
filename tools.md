@@ -100,7 +100,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-conformal",
-      "description": "Distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees.",
+      "description": "Distribution-free prediction intervals for insurance GBMs. v0.2 adds locally-weighted intervals (~24% narrower via CatBoost spread model), model-free conformal (Hong 2025), and SCRReport for Solvency II 99.5% upper bounds with coverage validation tables.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -511,9 +511,9 @@ Credibility Transformer — CLS token attention as Bühlmann-Straub credibility,
 ## Interpretation & Risk
 
 **[insurance-conformal](https://github.com/burning-cost/insurance-conformal)**
-Distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce intervals roughly 30% narrower than the naive approach.
-`uv add insurance-conformal`
-&rarr; [Conformal prediction intervals for insurance pricing](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+Distribution-free prediction intervals with finite-sample coverage guarantees. v0.2 adds locally-weighted intervals (~24% narrower, CatBoost spread model), model-free conformal (Hong 2025, no point predictor needed), SCRReport for Solvency II 99.5% upper bounds with multi-alpha coverage validation tables, and ERT diagnostics for conditional coverage by rating segment. 186 tests.
+`uv add "insurance-conformal[catboost]"`
+&rarr; [Distribution-free solvency capital from conformal prediction](https://burning-cost.github.io/2026/03/11/conformal-scr-solvency/) · [Why your prediction intervals are lying to you](https://burning-cost.github.io/2026/03/06/why-your-prediction-intervals-are-lying-to-you/)
 
 **[insurance-quantile](https://github.com/burning-cost/insurance-quantile)**
 Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors. When the mean is not the right risk measure.
