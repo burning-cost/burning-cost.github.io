@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "46 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "47 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -142,6 +142,14 @@ permalink: /tools/
       "name": "insurance-causal-policy",
       "description": "Synthetic difference-in-differences for causal rate change evaluation and FCA evidence packs.",
       "codeRepository": "https://github.com/burning-cost/insurance-causal-policy",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-counterfactual-sets",
+      "description": "Lei & Candès 2021 weighted conformal inference for individual ENBP counterfactual prediction sets. Finite-sample valid harm assessment at the policyholder level for ICOBS 6B compliance.",
+      "codeRepository": "https://github.com/burning-cost/insurance-counterfactual-sets",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -614,6 +622,11 @@ Causal price elasticity estimation via CausalForestDML and DR-Learner. Heterogen
 Synthetic difference-in-differences for causal rate change evaluation. Produces the counterfactual portfolio and FCA evidence pack you need to demonstrate a rate change worked.
 `uv add insurance-causal-policy`
 &rarr; [Your rate change didn't prove anything](https://burning-cost.github.io/2026/03/19/your-rate-change-didnt-prove-anything/)
+
+**[insurance-counterfactual-sets](https://github.com/burning-cost/insurance-counterfactual-sets)**
+Lei & Candès 2021 weighted conformal inference for individual ENBP counterfactual prediction sets. Finite-sample valid harm assessment at the policyholder level: for each renewing customer, constructs a prediction set for their claims under new-business pricing. FCA EP25/2 attestation pack output. CQR variant for heteroskedastic claims. Jin, Ren & Candès 2023 (PNAS) sensitivity analysis with per-policyholder Gamma values.
+`pip install insurance-counterfactual-sets`
+&rarr; [The ENBP Counterfactual Problem Has a Statistical Answer](https://burning-cost.github.io/2026/03/11/conformal-counterfactual-sets/)
 
 **[insurance-demand](https://github.com/burning-cost/insurance-demand)**
 Conversion, retention, and DML price elasticity modelling integrated with rate optimisation. Demand curves feed directly into constrained optimisation.
