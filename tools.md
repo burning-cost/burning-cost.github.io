@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "51 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "52 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -480,12 +480,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-reconcile",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-tabpfn",
+      "description": "TabPFN v2 and TabICLv2 foundation model wrapper for thin-data insurance pricing. In-context learning with no gradient descent, split conformal intervals, GLM benchmark, PDP relativities, committee report with five mandatory limitations (72 tests).",
+      "codeRepository": "https://github.com/burning-cost/insurance-tabpfn",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 51 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 52 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -582,6 +590,11 @@ Individual policy-level Bayesian posterior experience rating. Four model tiers: 
 Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing, base/deep/ICL variants (85 tests). The CLS token's self-attention weight IS the credibility weight — mathematically identical to Bühlmann-Straub, not an analogy. 1,746 parameters, beats CAFTT (27K parameters). ICL extension enables zero-shot pricing for unseen categorical levels (new vehicle models, new regions) without retraining.
 `pip install insurance-credibility-transformer`
 &rarr; [The Attention Head That Is Also a Credibility Weight](https://burning-cost.github.io/2026/03/11/credibility-transformer/)
+
+**[insurance-tabpfn](https://github.com/burning-cost/insurance-tabpfn)**
+TabPFN v2 and TabICLv2 foundation model wrappers for thin-data insurance pricing. When a segment has under 2,000 policies and GLM MLE is unstable, in-context learning from pretraining on millions of synthetic datasets outperforms tuned XGBoost by 3–8 Gini points. GLMBenchmark (Gini/deviance/RMSE/double-lift), split conformal prediction intervals, PDP-based RelativitiesExtractor, and CommitteeReport with five mandatory disclosure fields. Not a GLM replacement — a thin-segment specialist. 72 tests.
+`uv add insurance-tabpfn`
+&rarr; [Your Thin Segment Has 200 Policies. Your GLM Has No Idea What to Do With Them.](https://burning-cost.github.io/2026/03/25/insurance-tabpfn/)
 
 ---
 
