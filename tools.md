@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "40 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "41 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -320,12 +320,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-nowcast",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-composite",
+      "description": "Composite severity regression — spliced body/tail distributions with covariate-dependent thresholds, ILF estimation, and TVaR. 106 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-composite",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 40 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 41 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -438,6 +446,10 @@ GAMLSS (Generalised Additive Models for Location, Scale and Shape) for Python. M
 **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
 Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.
 `uv add insurance-ilf`
+
+**[insurance-composite](https://github.com/burning-cost/insurance-composite)**
+Composite severity regression — spliced body/tail distributions with covariate-dependent thresholds, ILF estimation, and TVaR. The body and tail of a severity distribution obey different physics; this fits them separately while letting the threshold vary by covariate. 106 tests.
+`uv add insurance-composite`
 
 ---
 
