@@ -347,6 +347,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-reserving-neural",
+      "description": "Individual neural RBNS claims reserving — FNN+ with case estimate history features, Duan smearing bias correction, bootstrap uncertainty intervals, built-in chain-ladder benchmark. First Python library for individual neural claims reserving.",
+      "codeRepository": "https://github.com/burning-cost/insurance-reserving-neural",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-composite",
       "description": "Composite severity regression — spliced body/tail distributions with covariate-dependent thresholds, ILF estimation, and TVaR. 106 tests.",
       "codeRepository": "https://github.com/burning-cost/insurance-composite",
@@ -397,7 +405,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 46 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 47 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -670,6 +678,12 @@ HTE uplift modelling for retention. CausalForestDML heterogeneous treatment effe
 ML-EM nowcasting for claims reporting delays. The last 6–24 months of your accident year data is partially developed. Standard practice applies aggregate development factors from the reserving triangle — factors that do not condition on your actual risk mix. insurance-nowcast implements the Wilsens/Antonio/Claeskens ML-EM algorithm to produce completion factors by risk segment, and nowcasted IBNR counts that a frequency GLM can treat as fully developed data.
 `uv add insurance-nowcast`
 &rarr; [Your Most Recent Experience Data Is Wrong, and Aggregate Factors Won't Fix It](https://burning-cost.github.io/2026/03/23/insurance-nowcast/)
+
+**[insurance-reserving-neural](https://github.com/burning-cost/insurance-reserving-neural)**
+Individual neural RBNS claims reserving. Chain-ladder aggregates claims into a triangle and discards everything that makes individual claims different — claim type, litigation status, case estimate revision history. insurance-reserving-neural implements FNN+ micro-level reserving (Avanzi et al. 2025): per-claim predictions conditioned on payment and case reserve history, Duan (1983) smearing bias correction, bootstrap uncertainty intervals at Solvency II percentiles, and a built-in chain-ladder benchmark for PRA SS8/24 model validation. First Python library for individual neural claims reserving.
+`uv add insurance-reserving-neural`
+[![PyPI](https://img.shields.io/pypi/v/insurance-reserving-neural)](https://pypi.org/project/insurance-reserving-neural/)
+&rarr; [The Chain-Ladder Stops Here: Neural Reserving at the Claim Level](https://burning-cost.github.io/2026/03/11/insurance-reserving-neural/)
 
 ---
 
