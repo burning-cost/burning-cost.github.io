@@ -346,6 +346,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-gas",
+      "description": "GAS (Generalised Autoregressive Score) models for dynamic insurance pricing. Poisson frequency, Gamma/LogNormal severity, Beta loss ratio, and NegBin variants. Exposure-weighted MLE, trend_index output, panel data support. First maintained Python GAS library.",
+      "codeRepository": "https://github.com/burning-cost/insurance-gas",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-telematics",
       "description": "End-to-end telematics pricing pipeline: 1Hz GPS/accelerometer ingestion, continuous-time HMM driving state classification, Bühlmann-Straub credibility aggregation, and Poisson GLM integration. Includes TripSimulator for synthetic fleet generation.",
       "codeRepository": "https://github.com/burning-cost/insurance-telematics",
@@ -463,6 +471,11 @@ Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson 
 Loss cost trend analysis with structural break detection. Frequency/severity/loss cost fitters, ONS API integration for index deflation, superimposed inflation decomposition, and 1,000-replicate bootstrap confidence intervals. Regime-aware trend selection with ruptures.
 `uv add insurance-trend`
 &rarr; [Trend selection is not actuarial judgment](https://burning-cost.github.io/2026/03/13/insurance-trend/)
+
+**[insurance-gas](https://github.com/burning-cost/insurance-gas)**
+GAS (Generalised Autoregressive Score) models for dynamic insurance pricing — the first maintained Python implementation. Exposure-weighted Poisson frequency, Gamma/log-normal severity, Beta loss ratio, and negative binomial variants. GAS(1,1) MLE via L-BFGS-B, `trend_index` in the development factor format, panel data across rating cells, and formal diagnostics (PIT, Ljung-Box). Sits between changepoint detection and static trend projection: continuous adaptive estimation updated at each period.
+`uv add insurance-gas`
+&rarr; [Your Trend Estimate Has No Likelihood](https://burning-cost.github.io/2026/03/25/insurance-gas/)
 
 **[shap-relativities](https://github.com/burning-cost/shap-relativities)**
 Multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM. Exports to Excel and Radar-compatible CSV.
