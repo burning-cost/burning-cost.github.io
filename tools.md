@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "49 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "47 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -315,14 +315,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-fairness-ldp",
-      "description": "Discrimination-free pricing under GDPR Article 9 — k-ary Randomised Response LDP mechanism, correction matrix T^{-1} for group distribution recovery, and discrimination-free price computation without ever processing the true sensitive attribute. Zhang/Liu/Shi (arXiv:2504.11775). 214 tests.",
-      "codeRepository": "https://github.com/burning-cost/insurance-fairness-ldp",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-trend",
       "description": "Loss cost trend analysis with structural break detection, ONS API integration, and bootstrap confidence intervals. Frequency, severity, and combined loss cost fitters.",
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
@@ -350,14 +342,6 @@ permalink: /tools/
       "name": "insurance-nowcast",
       "description": "ML-EM nowcasting for claims reporting delays — covariate-conditioned completion factors and IBNR counts by risk segment.",
       "codeRepository": "https://github.com/burning-cost/insurance-nowcast",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-reserving-neural",
-      "description": "Individual neural RBNS claims reserving — FNN+ with case estimate history features, Duan smearing bias correction, bootstrap uncertainty intervals, built-in chain-ladder benchmark. First Python library for individual neural claims reserving.",
-      "codeRepository": "https://github.com/burning-cost/insurance-reserving-neural",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -634,11 +618,6 @@ Proxy discrimination diagnostics. Quantifies how much proxy discrimination a fit
 `uv add insurance-fairness-diag`
 &rarr; [Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It.](https://burning-cost.github.io/2026/03/10/insurance-fairness-diag/)
 
-**[insurance-fairness-ldp](https://github.com/burning-cost/insurance-fairness-ldp)**
-Discrimination-free pricing without ever holding the sensitive attribute. k-ary Randomised Response LDP mechanism allows a policyholder or trusted third party to privatise ethnicity/gender before transmission; correction matrix T^{-1} recovers unbiased group distributions from the noisy data; discrimination-free prices via Zhang/Liu/Shi (arXiv:2504.11775, 2025) and Lindholm (2022). The GDPR Article 9 layer of the fairness stack. 214 tests.
-`uv add insurance-fairness-ldp`
-&rarr; [You Can Prove Your Pricing Isn't Discriminatory Without Ever Seeing the Sensitive Attribute](https://burning-cost.github.io/2026/03/11/insurance-fairness-ldp/)
-
 **[insurance-validation](https://github.com/burning-cost/insurance-validation)**
 Structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON. Designed around the actual regulatory standard, not a generic model card.
 `uv add insurance-validation`
@@ -708,12 +687,6 @@ HTE uplift modelling for retention. CausalForestDML heterogeneous treatment effe
 ML-EM nowcasting for claims reporting delays. The last 6–24 months of your accident year data is partially developed. Standard practice applies aggregate development factors from the reserving triangle — factors that do not condition on your actual risk mix. insurance-nowcast implements the Wilsens/Antonio/Claeskens ML-EM algorithm to produce completion factors by risk segment, and nowcasted IBNR counts that a frequency GLM can treat as fully developed data.
 `uv add insurance-nowcast`
 &rarr; [Your Most Recent Experience Data Is Wrong, and Aggregate Factors Won't Fix It](https://burning-cost.github.io/2026/03/23/insurance-nowcast/)
-
-**[insurance-reserving-neural](https://github.com/burning-cost/insurance-reserving-neural)**
-Individual neural RBNS claims reserving. Chain-ladder aggregates claims into a triangle and discards everything that makes individual claims different — claim type, litigation status, case estimate revision history. insurance-reserving-neural implements FNN+ micro-level reserving (Avanzi et al. 2025): per-claim predictions conditioned on payment and case reserve history, Duan (1983) smearing bias correction, bootstrap uncertainty intervals at Solvency II percentiles, and a built-in chain-ladder benchmark for PRA SS8/24 model validation. First Python library for individual neural claims reserving.
-`uv add insurance-reserving-neural`
-[![PyPI](https://img.shields.io/pypi/v/insurance-reserving-neural)](https://pypi.org/project/insurance-reserving-neural/)
-&rarr; [The Chain-Ladder Stops Here: Neural Reserving at the Claim Level](https://burning-cost.github.io/2026/03/11/insurance-reserving-neural/)
 
 **[insurance-bunching](https://github.com/burning-cost/insurance-bunching)**
 Bunching estimators for detecting threshold gaming in insurance portfolios. Adapted from public economics (Saez 2010, Kleven 2016) — the first Python implementation for insurance. Detects excess mass at NCD thresholds, deductible boundaries, and sum-insured round numbers. Iterative polynomial counterfactual density, WLS exposure weighting, bootstrap standard errors, kink/notch modes, Benjamini-Hochberg FDR correction for multi-threshold scanning, and Jinja2 HTML/JSON reports.
