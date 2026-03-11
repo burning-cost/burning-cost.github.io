@@ -360,6 +360,22 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-dispersion",
+      "description": "Double GLM (DGLM) for joint modelling of mean and dispersion in non-life insurance pricing. Adds a separate regression for the dispersion parameter so volatility varies by risk segment, not just the mean.",
+      "codeRepository": "https://github.com/burning-cost/insurance-dispersion",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-experience",
+      "description": "Individual Bayesian a posteriori experience rating — four model tiers (static Bühlmann-Straub, dynamic Poisson-Gamma state-space, surrogate GBM with IS posteriors, deep attention), policy-level posterior credibility factors with balance property.",
+      "codeRepository": "https://github.com/burning-cost/insurance-experience",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
