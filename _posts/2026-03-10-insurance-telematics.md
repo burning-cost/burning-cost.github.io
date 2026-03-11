@@ -14,7 +14,7 @@ Teams with raw sensor data — 1Hz GPS and accelerometer readings from their own
 [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) fills that gap. End-to-end pipeline, 84 tests, runs on Databricks serverless.
 
 ```bash
-uv pip install insurance-telematics
+uv add insurance-telematics
 ```
 
 ---
@@ -202,7 +202,7 @@ The Bühlmann-Straub credibility aggregation follows the implementation in our [
 ## Installation and requirements
 
 ```bash
-uv pip install insurance-telematics
+uv add insurance-telematics
 ```
 
 Dependencies: NumPy, SciPy, pandas, hmmlearn, statsmodels. No GPU required. All 84 tests pass on Databricks serverless (Python 3.11) and standard CPython 3.10+.

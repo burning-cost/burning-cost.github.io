@@ -18,7 +18,7 @@ Distributional GBMs go further. CatBoost's quantile and expectile modes let you 
 [`insurance-drn`](https://github.com/burning-cost/insurance-drn) takes a different path. It wraps any baseline model - GLM, GBM, whatever you have - with a neural network that refines the entire predictive distribution without discarding the baseline. The baseline's calibration is preserved exactly when the neural network has nothing useful to add. When it does have something to add, it adjusts the distribution bin by bin, differently for each covariate profile. 2,835 lines, 137 tests, v0.1.0.
 
 ```bash
-uv pip install insurance-drn
+uv add insurance-drn
 ```
 
 ---

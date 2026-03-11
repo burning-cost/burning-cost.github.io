@@ -14,7 +14,7 @@ What the GLM does not tell you is whether the young driver's 99th percentile los
 [`insurance-drn`](https://github.com/burning-cost/insurance-drn) is a Python library implementing Distributional Refinement Networks (Avanzi, Dong, Laub & Wong, arXiv:2406.00998, 2024). It takes any fitted baseline model (a statsmodels Gamma GLM, a CatBoost model) and refines it into a full predictive distribution. The result: per-risk quantiles, CRPS scoring, and adjustment factors that show exactly where the distribution deviates from the baseline and why.
 
 ```bash
-pip install insurance-drn
+uv add insurance-drn
 ```
 
 137 tests. No Lightning dependency. Vectorised inference throughout.
@@ -158,7 +158,7 @@ Our `insurance-drn` takes that research implementation and adds what production 
 ## Getting started
 
 ```bash
-pip install insurance-drn
+uv add insurance-drn
 ```
 
 Dependencies: `torch>=2.0`, `numpy`, `scipy`, `statsmodels`. No Lightning. No SHAP in v1. Gamma and LogNormal baseline families are supported; Inverse Gaussian and Tweedie are in v2.

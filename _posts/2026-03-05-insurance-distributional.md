@@ -208,7 +208,7 @@ CRPS has the same units as the target (pounds, claim counts) and is strictly pro
 
 ## Practical notes for UK personal lines
 
-**CatBoost, not XGBoost.** CatBoost's ordered target statistics for categorical features handle vehicle make/model, occupation code, and postcode area without encoding. The Chevalier & Côté EAJ 2025 comparison confirmed that CatBoost outperforms XGBoost and LightGBM when the dataset has many high-cardinality categoricals, which UK personal lines always does. Pass them directly:
+**CatBoost, not XGBoost.** CatBoost's ordered target statistics for categorical features handle vehicle make/model, occupation code, and postcode area without encoding. The Chevalier & Côté EAJ 2025 comparison confirmed that CatBoost outperforms XGBoost and other GBM frameworks when the dataset has many high-cardinality categoricals, which UK personal lines always does. Pass them directly:
 
 ```python
 model = TweedieGBM(

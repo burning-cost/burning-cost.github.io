@@ -14,7 +14,7 @@ This is the highest-labour activity in GLM development, and it produces results 
 [`insurance-glm-cluster`](https://github.com/burning-cost/insurance-glm-cluster) automates factor level collapsing for Poisson, Gamma, and Tweedie GLMs. It implements the R2VF algorithm (Ben Dror, Earnix, arXiv:2503.01521, March 2025) — the same method that powers Earnix's proprietary Auto-GLM "Smart Grouping" feature, now available in Python under MIT licence.
 
 ```bash
-pip install insurance-glm-cluster
+uv add insurance-glm-cluster
 ```
 
 ---

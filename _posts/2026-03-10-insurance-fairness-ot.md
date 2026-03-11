@@ -17,7 +17,7 @@ That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance
 ```bash
 uv add insurance-fairness-ot
 # or
-pip install insurance-fairness-ot
+uv add insurance-fairness-ot
 ```
 
 ---

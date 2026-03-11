@@ -236,9 +236,9 @@ uv add "insurance-sensitivity[plots]"    # matplotlib bar and pie charts
 uv add "insurance-sensitivity[polars]"   # polars DataFrame input
 ```
 
-Python 3.10+. The model wrapper handles sklearn estimators, statsmodels GLM results, glum `GeneralizedLinearRegressor`, LightGBM, XGBoost, and CatBoost out of the box. For anything else, pass `predict_fn='my_method_name'` or pass a bare callable as `model`.
+Python 3.10+. The model wrapper handles sklearn estimators, statsmodels GLM results, glum `GeneralizedLinearRegressor`, CatBoost, XGBoost, and LightGBM out of the box. For anything else, pass `predict_fn='my_method_name'` or pass a bare callable as `model`.
 
-The source is at [github.com/burning-cost/insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity). The `notebooks/` directory has a worked example on synthetic UK motor data: 200,000 policies, 12 factors including four categoricals, a statsmodels GLM and a LightGBM challenger. The notebook runs the full Shapley comparison, CLH subsampling validation, and group attribution workflow in under three minutes on a laptop.
+The source is at [github.com/burning-cost/insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity). The `notebooks/` directory has a worked example on synthetic UK motor data: 200,000 policies, 12 factors including four categoricals, a statsmodels GLM and a CatBoost challenger. The notebook runs the full Shapley comparison, CLH subsampling validation, and group attribution workflow in under three minutes on a laptop.
 
 ---
 

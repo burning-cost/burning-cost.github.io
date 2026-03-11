@@ -14,7 +14,7 @@ There is a third option that most UK pricing teams have not tried: Explainable B
 [`insurance-ebm`](https://github.com/burning-cost/insurance-ebm) wraps interpretML's `ExplainableBoostingRegressor` in the workflow a UK pricing team actually uses: exposure-aware fitting, multiplicative relativity tables normalised to the modal risk, post-fit monotonicity editing, and GLM comparison diagnostics. The model is transparent enough to review factor by factor, accurate enough to outperform a standard GLM on most datasets, and fast enough to fit on a laptop.
 
 ```bash
-uv pip install insurance-ebm
+uv add insurance-ebm
 ```
 
 ---
@@ -141,7 +141,7 @@ print(cmp.divergence_summary(glm_relativities_by_feature=by_feature))
 
 **Use a GLM** when you need a deterministic, fully auditable tariff where every factor is constrained by actuarial judgment, when you are operating in a heavily regulated environment where the regulator expects a parameter table with standard errors, or when the portfolio is small enough that a non-parametric model will overfit.
 
-**Use a GBM** (CatBoost, XGBoost, LightGBM) when pure predictive accuracy is the objective and interpretability is not a hard constraint. Accept that you will need a distillation step - [insurance-distill](https://github.com/burning-cost/insurance-distill) or SHAP-based relativity extraction - before the model can go into a rating engine.
+**Use a GBM** (CatBoost, XGBoost) when pure predictive accuracy is the objective and interpretability is not a hard constraint. Accept that you will need a distillation step - [insurance-distill](https://github.com/burning-cost/insurance-distill) or SHAP-based relativity extraction - before the model can go into a rating engine.
 
 **Use an EBM** when you want the accuracy gain of a boosted model and the transparency of a factor table without a distillation step. EBMs are the natural choice when you are building a new pricing model from scratch, have the time to review shape functions feature by feature, and want to take the output directly to a rating engine. They fit faster than CatBoost on the same dataset, produce directly readable factor tables, and handle monotonicity constraints natively.
 
@@ -165,11 +165,11 @@ Whether this beats a frequency x severity approach depends on your data. The sep
 ## Installation
 
 ```bash
-uv pip install insurance-ebm
+uv add insurance-ebm
 # With Excel export:
-uv pip install "insurance-ebm[excel]"
+uv add "insurance-ebm[excel]"
 # With statsmodels GLM integration for GLMComparison:
-uv pip install "insurance-ebm[glm]"
+uv add "insurance-ebm[glm]"
 ```
 
 Python 3.10+. Requires `interpret >= 0.7.0`, `polars >= 0.20`, `numpy >= 1.21`. A full workflow notebook is in `notebooks/insurance_ebm_demo.py`. Source at [github.com/burning-cost/insurance-ebm](https://github.com/burning-cost/insurance-ebm).

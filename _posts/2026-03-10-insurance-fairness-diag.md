@@ -190,7 +190,7 @@ The Shapley attribution is the part most UK pricing teams do not have. Knowing D
 ```bash
 uv add insurance-fairness-diag
 # or
-pip install insurance-fairness-diag
+uv add insurance-fairness-diag
 ```
 
 Python 3.10+. Requires `polars >= 0.20`, `numpy >= 1.21`, `scikit-learn >= 1.3`. 1,911 lines of source, 137 tests. MIT licence. Source and notebooks at [github.com/burning-cost/insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag).

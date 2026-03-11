@@ -14,9 +14,9 @@ The problem with this approach is well understood but rarely fixed. K-means on l
 [`insurance-nested-glm`](https://github.com/burning-cost/insurance-nested-glm) solves all three problems in a single pipeline.
 
 ```bash
-uv pip install insurance-nested-glm
+uv add insurance-nested-glm
 # With spatial clustering:
-uv pip install "insurance-nested-glm[spatial]"
+uv add "insurance-nested-glm[spatial]"
 ```
 
 ---
@@ -184,10 +184,10 @@ The pipeline currently supports Poisson (frequency) and Gamma (severity) familie
 ## Installation
 
 ```bash
-uv pip install insurance-nested-glm
-uv pip install "insurance-nested-glm[spatial]"   # geopandas, libpysal, spopt
-uv pip install "insurance-nested-glm[plot]"       # matplotlib territory maps
-uv pip install "insurance-nested-glm[all]"        # everything
+uv add insurance-nested-glm
+uv add "insurance-nested-glm[spatial]"   # geopandas, libpysal, spopt
+uv add "insurance-nested-glm[plot]"       # matplotlib territory maps
+uv add "insurance-nested-glm[all]"        # everything
 ```
 
 Requires PyTorch (for the embedding network) and statsmodels (for the outer GLM). Python 3.10+. Source at [github.com/burning-cost/insurance-nested-glm](https://github.com/burning-cost/insurance-nested-glm).

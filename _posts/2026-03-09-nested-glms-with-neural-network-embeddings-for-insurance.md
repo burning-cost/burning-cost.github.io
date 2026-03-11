@@ -246,7 +246,7 @@ uv add insurance-nested-glm
 uv add "insurance-nested-glm[geo]"    # adds geopandas + spopt
 ```
 
-Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for LightGBM and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
+Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
 
 ---
 
