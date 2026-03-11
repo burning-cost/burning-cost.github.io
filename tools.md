@@ -155,6 +155,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-uplift",
+      "description": "Heterogeneous treatment effects for UK personal lines retention targeting. RetentionPanel, CausalForestDML CATE estimation, Qini evaluation, four-customer taxonomy (Persuadable/Sure Thing/Lost Cause/Do Not Disturb), PolicyTree, ENBP constraint, Consumer Duty fairness audit.",
+      "codeRepository": "https://github.com/burning-cost/insurance-uplift",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "rate-optimiser",
       "description": "Constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints.",
       "codeRepository": "https://github.com/burning-cost/rate-optimiser",
@@ -571,6 +579,12 @@ Conversion, retention, and DML price elasticity modelling integrated with rate o
 `uv add insurance-demand`
 &rarr; [Demand modelling for insurance pricing](https://burning-cost.github.io/2026/02/25/demand-modelling-for-insurance-pricing/)
 
+
+**[insurance-uplift](https://github.com/burning-cost/insurance-uplift)**
+Uplift modelling for UK personal lines retention targeting. Estimates per-customer treatment effects (CATE) on renewal probability via CausalForestDML, classifies the portfolio into Persuadables, Sure Things, Lost Causes, and Do Not Disturbs (Guelman et al.), evaluates with Qini curves and AUUC, builds optimal targeting rules via PolicyTree, clips recommendations to ENBP (ICOBS 6B.2), and audits CATE distribution across vulnerability proxies for Consumer Duty. 127 tests.
+`uv add insurance-uplift`
+[![PyPI](https://img.shields.io/pypi/v/insurance-uplift)](https://pypi.org/project/insurance-uplift/)
+&rarr; [Your Retention Campaign Has No Targeting Rule](https://burning-cost.github.io/2026/03/11/insurance-uplift/)
 ---
 
 ## Optimisation
