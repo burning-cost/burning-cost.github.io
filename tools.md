@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "46 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "49 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -408,12 +408,28 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-uplift",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-bunching",
+      "description": "Bunching estimators for insurance threshold gaming — exposure-weighted density discontinuity, kink/notch modes, FCA report (120 tests).",
+      "codeRepository": "https://github.com/burning-cost/insurance-bunching",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-changepoint",
+      "description": "Bayesian change-point detection for UK insurance pricing — exposure-weighted Poisson-Gamma BOCPD, PELT with bootstrap CIs, UK regulatory event priors, Consumer Duty evidence pack (157 tests).",
+      "codeRepository": "https://github.com/burning-cost/insurance-changepoint",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 47 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 49 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -698,6 +714,18 @@ Individual neural RBNS claims reserving. Chain-ladder aggregates claims into a t
 `uv add insurance-reserving-neural`
 [![PyPI](https://img.shields.io/pypi/v/insurance-reserving-neural)](https://pypi.org/project/insurance-reserving-neural/)
 &rarr; [The Chain-Ladder Stops Here: Neural Reserving at the Claim Level](https://burning-cost.github.io/2026/03/11/insurance-reserving-neural/)
+
+**[insurance-bunching](https://github.com/burning-cost/insurance-bunching)**
+Bunching estimators for detecting threshold gaming in insurance portfolios. Adapted from public economics (Saez 2010, Kleven 2016) — the first Python implementation for insurance. Detects excess mass at NCD thresholds, deductible boundaries, and sum-insured round numbers. Iterative polynomial counterfactual density, WLS exposure weighting, bootstrap standard errors, kink/notch modes, Benjamini-Hochberg FDR correction for multi-threshold scanning, and Jinja2 HTML/JSON reports.
+`uv add insurance-bunching`
+[![PyPI](https://img.shields.io/pypi/v/insurance-bunching)](https://pypi.org/project/insurance-bunching/)
+&rarr; [Detecting Threshold Gaming in Insurance Portfolios](https://burning-cost.github.io/2026/03/25/insurance-bunching/)
+
+**[insurance-changepoint](https://github.com/burning-cost/insurance-changepoint)**
+Bayesian change-point detection for UK insurance pricing time series. Online BOCPD (Adams & MacKay 2007) with exposure-weighted Poisson-Gamma conjugate for claim frequency — no existing Python package handles insurance exposure in BOCPD. PELT with bootstrap CIs for retrospective analysis. Ten UK regulatory event priors (Ogden, COVID, Whiplash Reform, GIPP, storms) encoded as hazard function multipliers. Consumer Duty (PRIN 2A.9) evidence pack generation for FCA compliance.
+`uv add insurance-changepoint`
+[![PyPI](https://img.shields.io/pypi/v/insurance-changepoint)](https://pypi.org/project/insurance-changepoint/)
+&rarr; [When Did Your Loss Ratio Actually Change?](https://burning-cost.github.io/2026/03/25/insurance-changepoint/)
 
 ---
 
