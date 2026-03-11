@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "36 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "39 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -304,12 +304,28 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-telematics",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-sensitivity",
+      "description": "Global sensitivity analysis for insurance pricing models: Song 2016 Shapley effects, Rabitti-Tzougas 2025 CLH subsampling, exposure-weighted variance decomposition, Sobol first/total-order indices. Correct under correlated rating factors.",
+      "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-glm-cluster",
+      "description": "Automated GLM factor level clustering for insurance pricing. R2VF algorithm: ridge ranking for nominals, split-coded fused lasso for fusion, unpenalised GLM refit. Poisson, Gamma, Tweedie. BIC lambda selection. Monotonicity enforcement.",
+      "codeRepository": "https://github.com/burning-cost/insurance-glm-cluster",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 37 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 39 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -385,6 +401,11 @@ NCD and bonus-malus systems for UK motor insurance. NCD as a Markov chain, stati
 `uv add experience-rating`
 &rarr; [Experience rating: NCD and bonus-malus systems](https://burning-cost.github.io/2026/02/27/experience-rating-ncd-bonus-malus/)
 
+**[insurance-glm-cluster](https://github.com/burning-cost/insurance-glm-cluster)**
+Automated GLM factor level clustering for insurance pricing. R2VF algorithm (Ben Dror, 2025): ridge ranking for nominal factors, split-coded fused lasso for fusion, unpenalised GLM refit. Collapses 500 vehicle makes or 350 occupation codes into pricing bands automatically. Poisson, Gamma, Tweedie. BIC lambda selection. Monotonicity enforcement for ordered factors.
+`uv add insurance-glm-cluster`
+&rarr; [500 Vehicle Makes, One Afternoon, Zero Reproducibility](https://burning-cost.github.io/2026/03/22/insurance-glm-cluster/)
+
 ---
 
 ## Interpretation & Risk
@@ -417,6 +438,11 @@ GAMLSS (Generalised Additive Models for Location, Scale and Shape) for Python. M
 **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)**
 Increased limits factor curves from severity distributions. Mixed Exponential, Lognormal-Pareto, and empirical methods with bootstrap confidence intervals. For pricing layers and excess-of-loss attachments.
 `uv add insurance-ilf`
+
+**[insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity)**
+Global sensitivity analysis for insurance pricing models. Song 2016 Shapley effects (the correct variance decomposition under correlated rating factors), Rabitti-Tzougas 2025 CLH subsampling for large portfolios, exposure-weighted variance throughout, Sobol first and total-order indices. Answers the regulatory question: what fraction of premium variance is attributable to each rating factor?
+`uv add insurance-sensitivity`
+&rarr; [Shapley Effects for Rating Factor Variance Decomposition](https://burning-cost.github.io/2026/03/22/insurance-sensitivity/)
 
 ---
 
