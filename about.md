@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Forty-three Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+Fifty Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
