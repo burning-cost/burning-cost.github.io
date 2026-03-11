@@ -378,6 +378,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-evt",
+      "description": "Extreme Value Theory for catastrophic insurance claim severity. GPD/GEV fitting with censored MLE for open TPBI claims, profile likelihood CIs, return levels, ExcessGPD layer pricing, and Solvency II 1-in-200 reporting. First Python ExcessGPD implementation.",
+      "codeRepository": "https://github.com/burning-cost/insurance-evt",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-sensitivity",
       "description": "Shapley effects for rating factor variance decomposition — Song (2016) random permutation estimator, Rabitti-Tzougas (2025) CLH subsampling, exposure weighting, correlated categoricals. Answers which rating factor drives the most premium variance.",
       "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
@@ -582,6 +590,11 @@ Composite severity regression — spliced body/tail distributions with covariate
 `uv add insurance-composite`
 [![PyPI](https://img.shields.io/pypi/v/insurance-composite)](https://pypi.org/project/insurance-composite/)
 &rarr; [Composite Severity Regression: Fitting Body and Tail Separately](https://burning-cost.github.io/2026/03/23/insurance-composite/)
+
+**[insurance-evt](https://github.com/burning-cost/insurance-evt)**
+Extreme Value Theory for catastrophic claim severity. GPD fitting with censored MLE for open TPBI claims (Poudyal & Brazauskas 2023), profile likelihood confidence intervals, return levels for Solvency II SCR, and the first Python implementation of ExcessGPD for XL layer pure premium pricing. GEV for block maxima (subsidence, portfolio catastrophe). Five UK peril presets: TPBI, flood, subsidence, large fire, storm.
+`uv add insurance-evt`
+&rarr; [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/25/insurance-evt/)
 
 ---
 
