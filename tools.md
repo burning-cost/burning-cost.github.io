@@ -264,7 +264,6 @@ permalink: /tools/
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
-    },
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-cure",
