@@ -219,6 +219,13 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-bunching",
+      "description": "Bunching estimators for insurance threshold gaming detection. Adapted from Saez (2010) and Kleven (2016) public economics methodology to detect mileage declaration fraud, adverse deductible selection, and sum-insured rounding. BH FDR-corrected multi-threshold scanning, FCA Consumer Duty HTML reports.",
+      "codeRepository": "https://github.com/burning-cost/insurance-bunching",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
       "name": "insurance-deploy",
       "description": "Champion/challenger framework with shadow mode, rollback, and full audit trail.",
       "codeRepository": "https://github.com/burning-cost/insurance-deploy",
@@ -413,7 +420,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 47 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 48 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -646,6 +653,11 @@ Model risk management: ModelCard, ModelInventory, and GovernanceReport generatio
 Champion/challenger framework with shadow mode, rollback, and full audit trail. Structured deployment for pricing models that need a sign-off process.
 `uv add insurance-deploy`
 &rarr; [Your champion/challenger test has no audit trail](https://burning-cost.github.io/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
+
+**[insurance-bunching](https://github.com/burning-cost/insurance-bunching)**
+Bunching estimators for threshold gaming detection. Adapted from public economics (Saez 2010; Kleven 2016) to detect mileage declaration fraud, adverse deductible selection, sum-insured rounding, and age misreporting. BH FDR-controlled multi-threshold scanning. Self-contained HTML reports for FCA Consumer Duty evidence. First Python bunching estimator in any field.
+`uv add insurance-bunching`
+&rarr; [Detecting Threshold Gaming in Insurance Portfolios](https://burning-cost.github.io/2026/03/11/insurance-bunching/)
 
 
 ---
