@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "42 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "43 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -352,12 +352,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-dispersion",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-experience",
+      "description": "Individual Bayesian a posteriori experience rating — four model tiers (static Bühlmann-Straub, dynamic Poisson-Gamma state-space, surrogate GBM with IS posteriors, deep attention), policy-level posterior credibility factors with balance property.",
+      "codeRepository": "https://github.com/burning-cost/insurance-experience",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 42 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 43 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -443,6 +451,11 @@ Buhlmann-Straub credibility in Python with mixed-model equivalence checks. Inclu
 NCD and bonus-malus systems for UK motor insurance. NCD as a Markov chain, stationary distributions, and the non-obvious claiming threshold result: optimal thresholds peak at 20% NCD, not 65%.
 `uv add experience-rating`
 &rarr; [Experience rating: NCD and bonus-malus systems](https://burning-cost.github.io/2026/02/27/experience-rating-ncd-bonus-malus/)
+
+**[insurance-experience](https://github.com/burning-cost/insurance-experience)**
+Individual Bayesian a posteriori experience rating. NCD is a contractual mechanism — this is the actuarially correct alternative. Four model tiers: StaticCredibilityModel (Bühlmann-Straub at policy level), DynamicPoissonGammaModel (Ahn/Jeong/Lu/Wüthrich 2023 state-space with seniority weighting), SurrogateModel (Calcetero/Badescu/Lin 2024, IS-based posteriors for non-conjugate models), DeepAttentionModel (Wüthrich 2024, PyTorch). All produce multiplicative credibility factors with the balance property — slots into Emblem or Radar as a rating variable. 125 tests.
+`uv add insurance-experience`
+&rarr; [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](https://burning-cost.github.io/2026/03/24/insurance-experience/)
 
 ---
 
