@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "36 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "37 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -304,12 +304,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-telematics",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-glm-cluster",
+      "description": "GLM factor level clustering via R2VF algorithm. Collapses high-cardinality categoricals (vehicle make, occupation) into pricing bands using ridge-regularised ranking and fused lasso fusion. BIC lambda selection, min-exposure enforcement, monotonicity constraints. Poisson, Gamma, Tweedie.",
+      "codeRepository": "https://github.com/burning-cost/insurance-glm-cluster",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 37 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 38 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -354,6 +362,11 @@ Multiplicative rating factor tables from CatBoost models via SHAP, in the same f
 Automated interaction detection using CANN, NID, and SHAP-based methods. Finds the interaction effects your GLM missed and quantifies their materiality.
 `uv add insurance-interactions`
 &rarr; [Finding the interactions your GLM missed](https://burning-cost.github.io/2026/02/27/finding-the-interactions-your-glm-missed/)
+
+**[insurance-glm-cluster](https://github.com/burning-cost/insurance-glm-cluster)**
+GLM factor level clustering via R2VF (Ben Dror, arXiv:2503.01521). Collapses high-cardinality categoricals — 500 vehicle makes to 20 pricing bands, 350 occupation codes to 30 groups — using ridge-regularised ranking followed by fused lasso fusion. BIC lambda selection, min-exposure enforcement, monotonicity constraints. Poisson, Gamma, Tweedie with log(exposure) offset.
+`pip install insurance-glm-cluster`
+&rarr; [500 Vehicle Makes, One Afternoon, Zero Reproducibility](https://burning-cost.github.io/2026/03/10/insurance-glm-cluster/)
 
 **[insurance-anam](https://github.com/burning-cost/insurance-anam)**
 Actuarial neural additive model in PyTorch: interpretable deep learning for pricing with per-feature shape functions a pricing committee can inspect.
