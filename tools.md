@@ -352,14 +352,6 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-dispersion",
-      "description": "Double GLM (DGLM) for joint modelling of mean and dispersion in non-life insurance pricing. Adds a separate regression for the dispersion parameter so volatility varies by risk segment, not just the mean.",
-      "codeRepository": "https://github.com/burning-cost/insurance-dispersion",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
@@ -416,11 +408,6 @@ GLM factor level clustering via R2VF (Ben Dror, arXiv:2503.01521). Collapses hig
 `uv add insurance-glm-cluster`
 [![PyPI](https://img.shields.io/pypi/v/insurance-glm-cluster)](https://pypi.org/project/insurance-glm-cluster/)
 &rarr; [500 Vehicle Makes, One Afternoon, Zero Reproducibility](https://burning-cost.github.io/2026/03/10/insurance-glm-cluster/)
-
-**[insurance-dispersion](https://github.com/burning-cost/insurance-dispersion)**
-Double GLM (DGLM) for joint modelling of mean and dispersion. Standard Gamma severity GLMs assume a single scalar phi shared across all observations — fleet brokers and personal lines get identical volatility assumptions. That is almost always wrong. DGLM fits a second regression for phi so dispersion varies by risk segment. Smyth (1989) REML estimation, Tweedie and Gamma families, sklearn-compatible API.
-`uv add insurance-dispersion`
-[![PyPI](https://img.shields.io/pypi/v/insurance-dispersion)](https://pypi.org/project/insurance-dispersion/)
 
 **[insurance-anam](https://github.com/burning-cost/insurance-anam)**
 Actuarial neural additive model in PyTorch: interpretable deep learning for pricing with per-feature shape functions a pricing committee can inspect.
@@ -505,6 +492,7 @@ Shapley effects for rating factor variance decomposition. Which rating factor dr
 Composite severity regression — spliced body/tail distributions with covariate-dependent thresholds, ILF estimation, and TVaR. The body and tail of a severity distribution obey different physics; this fits them separately while letting the threshold vary by covariate. 106 tests.
 `uv add insurance-composite`
 [![PyPI](https://img.shields.io/pypi/v/insurance-composite)](https://pypi.org/project/insurance-composite/)
+&rarr; [Composite Severity Regression: Fitting Body and Tail Separately](https://burning-cost.github.io/2026/03/23/insurance-composite/)
 
 ---
 
