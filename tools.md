@@ -179,6 +179,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-dro",
+      "description": "Distributionally robust rate optimisation using Wasserstein ambiguity sets. Produces a price-of-robustness curve for pricing committee papers.",
+      "codeRepository": "https://github.com/burning-cost/insurance-dro",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-fairness",
       "description": "Proxy discrimination auditing and FCA Consumer Duty documentation support.",
       "codeRepository": "https://github.com/burning-cost/insurance-fairness",
@@ -605,6 +613,11 @@ Constrained rate change optimisation with an efficient frontier between loss rat
 SLSQP portfolio rate optimisation with analytical Jacobians for large factor spaces. When the number of factors makes linear programming too slow.
 `uv add insurance-optimise`
 &rarr; [Portfolio rate optimisation with insurance-optimise](https://burning-cost.github.io/2026/03/07/insurance-optimise/)
+
+**[insurance-dro](https://github.com/burning-cost/insurance-dro)**
+Distributionally robust rate optimisation using Wasserstein ambiguity sets. Instead of optimising against a point-estimate demand model, optimises against the worst-case distribution within a calibrated ball around your empirical samples. Produces a price-of-robustness curve for pricing committee papers. CVXPY + CLARABEL backend, FCA ENBP as hard constraint, 137 tests.
+`pip install insurance-dro`
+&rarr; [Your Rate Optimiser Has No Safety Margin](https://burning-cost.github.io/2026/03/25/insurance-dro/)
 
 ---
 
