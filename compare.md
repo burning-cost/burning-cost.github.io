@@ -23,7 +23,7 @@ permalink: /compare/
       "name": "Can I use Python for insurance pricing instead of Emblem or Radar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, and a growing number of UK pricing teams are doing exactly this. Python with statsmodels or scikit-learn covers GLMs and GBMs. The gap has historically been in the actuarial-specific tooling: walk-forward cross-validation that respects IBNR, SHAP-based factor tables, constrained rate optimisation, PRA SS1/23 validation reports, and FCA Consumer Duty fairness auditing. Burning Cost fills those gaps with 35 focused Python libraries. Databricks provides the compute environment most UK insurers are already using."
+        "text": "Yes, and a growing number of UK pricing teams are doing exactly this. Python with statsmodels or scikit-learn covers GLMs and GBMs. The gap has historically been in the actuarial-specific tooling: walk-forward cross-validation that respects IBNR, SHAP-based factor tables, constrained rate optimisation, PRA SS1/23 validation reports, and FCA Consumer Duty fairness auditing. Burning Cost fills those gaps with 36 focused Python libraries. Databricks provides the compute environment most UK insurers are already using."
       }
     },
     {
