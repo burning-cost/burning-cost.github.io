@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "43 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "44 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -307,6 +307,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-fairness-ldp",
+      "description": "Discrimination-free pricing under GDPR Article 9 — k-ary Randomised Response LDP mechanism, correction matrix T^{-1} for group distribution recovery, and discrimination-free price computation without ever processing the true sensitive attribute. Zhang/Liu/Shi (arXiv:2504.11775). 214 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-fairness-ldp",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-trend",
       "description": "Loss cost trend analysis with structural break detection, ONS API integration, and bootstrap confidence intervals. Frequency, severity, and combined loss cost fitters.",
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
@@ -357,7 +365,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 43 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 44 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -550,6 +558,11 @@ Optimal transport discrimination-free pricing. Computes corrected premiums via L
 Proxy discrimination diagnostics. Quantifies how much proxy discrimination a fitted model contains (D_proxy scalar, LRTW 2026) and which rating factors are responsible (Owen 2014 Shapley effects). Per-policyholder vulnerability scores (Côté-Charpentier 2025). HTML/JSON audit reports for FCA EP25/2 and Consumer Duty evidence. The diagnostic layer before you decide whether to correct.
 `uv add insurance-fairness-diag`
 &rarr; [Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It.](https://burning-cost.github.io/2026/03/10/insurance-fairness-diag/)
+
+**[insurance-fairness-ldp](https://github.com/burning-cost/insurance-fairness-ldp)**
+Discrimination-free pricing without ever holding the sensitive attribute. k-ary Randomised Response LDP mechanism allows a policyholder or trusted third party to privatise ethnicity/gender before transmission; correction matrix T^{-1} recovers unbiased group distributions from the noisy data; discrimination-free prices via Zhang/Liu/Shi (arXiv:2504.11775, 2025) and Lindholm (2022). The GDPR Article 9 layer of the fairness stack. 214 tests.
+`uv add insurance-fairness-ldp`
+&rarr; [You Can Prove Your Pricing Isn't Discriminatory Without Ever Seeing the Sensitive Attribute](https://burning-cost.github.io/2026/03/11/insurance-fairness-ldp/)
 
 **[insurance-validation](https://github.com/burning-cost/insurance-validation)**
 Structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON. Designed around the actual regulatory standard, not a generic model card.
