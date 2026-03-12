@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "74 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "75 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
