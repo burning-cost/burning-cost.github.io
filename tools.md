@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "57 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "64 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -520,12 +520,28 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-transfer",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-jlm",
+      "description": "Joint longitudinal-survival models for insurance telematics repricing. Wulfsohn-Tsiatis SREM with EM-GHQ estimation, DynamicPredictor for mid-term risk updates as new telematics readings arrive, attenuation-corrected association parameter. 120 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-jlm",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-nflow",
+      "description": "Normalizing flows for insurance claim severity. Neural Spline Flow with Student-t CDF tail transform (Hickling-Prangle ICML 2025), conditional severity by rating factor, ILF curves, TVaR, reinsurance layer pricing. No parametric family assumption. 200 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-nflow",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 57 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 64 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -691,6 +707,12 @@ Composite severity regression — spliced body/tail distributions with covariate
 [![PyPI](https://img.shields.io/pypi/v/insurance-composite)](https://pypi.org/project/insurance-composite/)
 &rarr; [Composite Severity Regression: Fitting Body and Tail Separately](https://burning-cost.github.io/2026/03/23/insurance-composite/)
 
+**[insurance-nflow](https://github.com/burning-cost/insurance-nflow)**
+Normalizing flows for insurance claim severity modelling. UK motor bodily injury severity is bimodal — soft-tissue claims cluster around GBP 3–5k, catastrophic injury follows a power law from GBP 100k upward. A lognormal cannot represent this shape. SeverityFlow wraps zuko's Neural Spline Flow with a Student-t CDF tail transform (Hickling & Prangle, ICML 2025) that learns heavy-tail weight from data rather than assuming it. ConditionalSeverityFlow conditions the full distribution on rating factors, capturing shape changes across segments that a mean-only GLM misses. ILF curves, TVaR, reinsurance layer pricing from flow samples. Benchmark comparisons against lognormal, gamma, and composite models. 200 tests.
+`pip install insurance-nflow`
+[![PyPI](https://img.shields.io/pypi/v/insurance-nflow)](https://pypi.org/project/insurance-nflow/)
+&rarr; [Beyond Lognormal: Normalizing Flows for Insurance Severity Modelling](https://burning-cost.github.io/2026/03/12/insurance-nflow/)
+
 **[insurance-evt](https://github.com/burning-cost/insurance-evt)**
 Extreme Value Theory for catastrophic claim severity. GPD fitting with censored MLE for open TPBI claims (Poudyal & Brazauskas 2023), profile likelihood confidence intervals, return levels for Solvency II SCR, and the first Python implementation of ExcessGPD for XL layer pure premium pricing. GEV for block maxima (subsidence, portfolio catastrophe). Five UK peril presets: TPBI, flood, subsidence, large fire, storm.
 `uv add insurance-evt`
@@ -831,6 +853,11 @@ Nested GLM with neural network entity embeddings for high-cardinality categorica
 End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. TripSimulator generates synthetic fleets (Ornstein-Uhlenbeck speed processes, Dirichlet regime mixtures) so teams without raw data can build and test immediately. DrivingStateHMM and ContinuousTimeHMM classify driving into cautious/normal/aggressive states. Bühlmann-Straub credibility aggregation to driver level. Poisson GLM pipeline.
 `uv add insurance-telematics`
 &rarr; [HMM-Based Telematics Risk Scoring for Insurance Pricing](https://burning-cost.github.io/2026/03/10/insurance-telematics/)
+
+**[insurance-jlm](https://github.com/burning-cost/insurance-jlm)**
+Joint longitudinal-survival models for telematics mid-term repricing. The Wulfsohn-Tsiatis (1997) shared random effects model links individual telematics score trajectories to claim hazard. Two drivers at the same score but different trajectories — one improving, one declining — present different risks; the standard GLM cannot tell them apart. EM-GHQ estimation corrects Berkson attenuation bias from score measurement error. DynamicPredictor updates P(claim | history) at each monthly reading without refitting. 120 tests.
+`pip install insurance-jlm`
+&rarr; [The Telematics Score That Forgets Where It's Been](https://burning-cost.github.io/2026/03/12/insurance-jlm/)
 
 ---
 
