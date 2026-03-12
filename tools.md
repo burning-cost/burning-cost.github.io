@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "64 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "71 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -536,12 +536,76 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-nflow",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-rdd",
+      "description": "Regression Discontinuity Design for insurance rating thresholds. Sharp/fuzzy RD, Poisson/Gamma outcomes, geographic territory boundary RDD, McCrary density test, FCA Consumer Duty output. 194 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-rdd",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-garch",
+      "description": "GARCH volatility models for claims inflation. GJR-GARCH with exposure weighting, BoE fan chart scenario generation, Christoffersen backtest, GARCHReport HTML output. 92 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-garch",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-frequency-severity",
+      "description": "Sarmanov copula joint frequency-severity modelling with GLM marginals. IFM estimation, analytical premium correction, Garrido conditional method, dependence tests. 80+ tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-frequency-severity",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-tmle",
+      "description": "Targeted Maximum Likelihood Estimation for doubly robust causal inference. Poisson TMLE with exposure offset, SuperLearner ensemble, CV-TMLE, EIF standard errors, TMLEReport.",
+      "codeRepository": "https://github.com/burning-cost/insurance-tmle",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-online",
+      "description": "Bandit algorithms for GIPP-compliant price experimentation. UCB1, Thompson Sampling, LinUCB, ENBP constraints, fairness constraints, SQLite audit log, ComplianceReport. 168 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-online",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-conformal-ts",
+      "description": "Conformal prediction for non-exchangeable claims time series. ACI, EnbPI, SPCI, Conformal PID, MSCP multi-step intervals, Poisson/NB scores, exposure weighting. 150 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-conformal-ts",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-competing-risks",
+      "description": "Fine-Gray subdistribution hazard for competing peril modelling. CIF estimation, Gray test, IPCW calibration metrics, peril-labelled insurance API. 150 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-competing-risks",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-recurrent",
+      "description": "Shared and joint frailty models for recurrent claim events. Gamma EM shared frailty, lognormal joint frailty with terminal lapse event, Bühlmann credibility connection, FrailtyReport HTML. 128 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-recurrent",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 64 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 71 libraries are on PyPI and MIT-licensed.
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -568,6 +632,12 @@ Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson 
 `uv add insurance-whittaker`
 &rarr; [Whittaker-Henderson smoothing for insurance pricing](https://burning-cost.github.io/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/)
 
+**[insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts)**
+Conformal prediction for non-exchangeable claims time series. Standard conformal prediction (insurance-conformal) assumes exchangeability — an assumption violated by every time series. insurance-conformal-ts implements ACI (Zaffran et al. 2022 ICML) for adaptive coverage under distribution shift, EnbPI (Xu & Xie 2021 ICML) for online prediction intervals with ensemble residuals, SPCI for non-exchangeable data with covariate shift, Conformal PID controller for target coverage maintenance, and MSCP multi-step-ahead for quarterly pricing review horizons. Poisson and Negative Binomial nonconformity scores with exposure weighting. 150 tests.
+`uv add insurance-conformal-ts`
+[![PyPI](https://img.shields.io/pypi/v/insurance-conformal-ts)](https://pypi.org/project/insurance-conformal-ts/)
+&rarr; [Your Claim Frequency Forecast Has No Honest Error Bars](https://burning-cost.github.io/2026/03/12/insurance-conformal-ts/)
+
 ---
 
 ## Model Building
@@ -576,6 +646,18 @@ Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson 
 Loss cost trend analysis with structural break detection. Frequency/severity/loss cost fitters, ONS API integration for index deflation, superimposed inflation decomposition, and 1,000-replicate bootstrap confidence intervals. Regime-aware trend selection with ruptures.
 `uv add insurance-trend`
 &rarr; [Trend selection is not actuarial judgment](https://burning-cost.github.io/2026/03/13/insurance-trend/)
+
+**[insurance-garch](https://github.com/burning-cost/insurance-garch)**
+GARCH volatility models for claims inflation uncertainty quantification. The UK motor and home inflation episode of 2021–2024 exposed a familiar failure: actuaries presenting single-number trend assumptions into a regime where the variance of inflation was itself time-varying. ClaimsInflationGARCH wraps the arch library with GJR-GARCH as the default (asymmetric response to inflationary shocks), BIC-based model selection, VolatilityScenarioGenerator for BoE fan-chart-style scenario paths, Christoffersen conditional coverage backtest, and GARCHReport HTML output with exceedance tables. 92 tests.
+`uv add insurance-garch`
+[![PyPI](https://img.shields.io/pypi/v/insurance-garch)](https://pypi.org/project/insurance-garch/)
+&rarr; [Your Trend Line Has No Error Bars](https://burning-cost.github.io/2026/03/12/insurance-garch/)
+
+**[insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity)**
+Sarmanov copula joint frequency-severity modelling. Every UK personal lines pricing model makes the same assumption: frequency and severity are independent, conditional on rating factors. The empirical evidence — Boudreault et al. 2006 (CAS), Boucher & Denuit 2008, Garrido et al. 2016 (IME) — uniformly rejects this assumption. SarmanovCopula provides the tractable parametric solution: mixed discrete-continuous margins, IFM estimation with profile-likelihood optimisation, analytical MGF-based premium correction, and Garrido conditional severity given claim count. FGM and Gaussian copula alternatives for comparison. DependenceTest (Pearson, Kendall, Hoeffding D) and CopulaGOF for model selection. JointModelReport HTML. 80+ tests.
+`pip install insurance-frequency-severity`
+[![PyPI](https://img.shields.io/pypi/v/insurance-frequency-severity)](https://pypi.org/project/insurance-frequency-severity/)
+&rarr; [Two GLMs, One Unjustified Assumption](https://burning-cost.github.io/2026/03/12/insurance-frequency-severity/)
 
 **[insurance-gas](https://github.com/burning-cost/insurance-gas)**
 GAS (Generalised Autoregressive Score) models for dynamic insurance pricing — the first maintained Python implementation. Exposure-weighted Poisson frequency, Gamma/log-normal severity, Beta loss ratio, and negative binomial variants. GAS(1,1) MLE via L-BFGS-B, `trend_index` in the development factor format, panel data across rating cells, and formal diagnostics (PIT, Ljung-Box). Sits between changepoint detection and static trend projection: continuous adaptive estimation updated at each period.
@@ -748,6 +830,18 @@ Lei & Candès 2021 weighted conformal inference for individual ENBP counterfactu
 `pip install insurance-counterfactual-sets`
 &rarr; [The ENBP Counterfactual Problem Has a Statistical Answer](https://burning-cost.github.io/2026/03/11/conformal-counterfactual-sets/)
 
+**[insurance-rdd](https://github.com/burning-cost/insurance-rdd)**
+Regression Discontinuity Design for insurance rating thresholds. UK motor insurers charge under-25s three times the premium of 25-30 drivers — but the causal discontinuity at age 25 is assumed, not tested. RDDesign wraps rdrobust with Poisson and Gamma outcome families, exposure weighting, and McCrary density test for running variable manipulation. GeographicRDD extends the framework to territory boundaries using spatial regression with bandwidth-controlled local samples. FCA Consumer Duty output. 194 tests.
+`uv add insurance-rdd`
+[![PyPI](https://img.shields.io/pypi/v/insurance-rdd)](https://pypi.org/project/insurance-rdd/)
+&rarr; [Your Age-25 Premium Cliff Has No Causal Evidence](https://burning-cost.github.io/2026/03/11/insurance-rdd/)
+
+**[insurance-tmle](https://github.com/burning-cost/insurance-tmle)**
+Targeted Maximum Likelihood Estimation for doubly robust causal inference. TMLE is consistent if either the outcome model or the propensity score is correctly specified — not both. PoissonTMLE with exposure offset handles the insurance claim frequency case directly. SuperLearner ensemble learner with cross-validated meta-learning. CV-TMLE for low-sample-size bias correction. EIF-based standard errors with influence function diagnostics. StratumTMLE for subgroup heterogeneity. TMLEReport HTML output with one-step estimator comparison.
+`uv add insurance-tmle`
+[![PyPI](https://img.shields.io/pypi/v/insurance-tmle)](https://pypi.org/project/insurance-tmle/)
+&rarr; [Your Propensity Model Is Wrong. TMLE Doesn't Mind.](https://burning-cost.github.io/2026/03/12/insurance-tmle/)
+
 **[insurance-demand](https://github.com/burning-cost/insurance-demand)**
 Conversion, retention, and DML price elasticity modelling integrated with rate optimisation. Demand curves feed directly into constrained optimisation.
 `uv add insurance-demand`
@@ -777,6 +871,12 @@ SLSQP portfolio rate optimisation with analytical Jacobians for large factor spa
 Distributionally robust rate optimisation using Wasserstein ambiguity sets. Instead of optimising against a point-estimate demand model, optimises against the worst-case distribution within a calibrated ball around your empirical samples. Produces a price-of-robustness curve for pricing committee papers. CVXPY + CLARABEL backend, FCA ENBP as hard constraint, 137 tests.
 `pip install insurance-dro`
 &rarr; [Your Rate Optimiser Has No Safety Margin](https://burning-cost.github.io/2026/03/25/insurance-dro/)
+
+**[insurance-online](https://github.com/burning-cost/insurance-online)**
+Bandit algorithms for GIPP-compliant price experimentation. The FCA found 28 firms non-compliant with PS21/5 price differentiation rules in 2023–24. The problem is not intent — it is the absence of a principled, documented framework for the rate adjustments that happen at quotation time. UCB1 and ThompsonPolicy (Beta-Bernoulli and Gamma-Poisson conjugate) for conversion/retention experiments. LinUCB (Sherman-Morrison rank-1 update) for contextual bandits with customer covariates. GIPPConstraint enforces the ENBP ceiling as a hard constraint on every arm pull. FairnessConstraint uses chi-squared equalisation across protected groups. AuditLog uses SQLite WAL with SHA-256 arm fingerprints for tamper-evident records. ComplianceReport HTML/JSON for FCA evidence. 168 tests.
+`uv add insurance-online`
+[![PyPI](https://img.shields.io/pypi/v/insurance-online)](https://pypi.org/project/insurance-online/)
+&rarr; [Bandit Algorithms for GIPP-Compliant Price Experimentation](https://burning-cost.github.io/2026/03/12/insurance-online/)
 
 ---
 
@@ -877,6 +977,18 @@ Mixture cure models for insurance non-claimer scoring. Separates structurally im
 HTE uplift modelling for retention. CausalForestDML heterogeneous treatment effects identify which customers are genuinely persuadable — positive responders — rather than treating the whole book as equally retention-sensitive. Qini coefficient and AUUC for model evaluation, four-quadrant customer taxonomy (persuadables, sure things, lost causes, sleeping dogs), PolicyTree for interpretable uplift rules, expected net benefit per policyholder (ENBP) profit constraint, and a Consumer Duty fairness audit checking that retention effort does not disadvantage vulnerable customers. 127 tests.
 `uv add insurance-uplift`
 &rarr; [Uplift Modelling for Insurance Retention: Finding Who to Save](https://burning-cost.github.io/2026/03/11/insurance-uplift/)
+
+**[insurance-competing-risks](https://github.com/burning-cost/insurance-competing-risks)**
+Fine-Gray subdistribution hazard for competing peril and competing event modelling. Standard survival analysis treats competing events as censored — which produces cumulative incidence functions that sum to more than one and biased cause-specific estimates. Fine-Gray (1999 JASA) is the correct model. InsuranceCompetingRisks wraps the Fine-Gray estimator with peril-labelled insurance APIs: home perils (fire, flood, escape-of-water, subsidence), retention events (lapse, MTC, NTU, renewal). CIF curves, Gray test for covariate significance, IPCW Brier score for calibration. 150 tests.
+`uv add insurance-competing-risks`
+[![PyPI](https://img.shields.io/pypi/v/insurance-competing-risks)](https://pypi.org/project/insurance-competing-risks/)
+&rarr; [Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing](https://burning-cost.github.io/2026/03/12/insurance-competing-risks/)
+
+**[insurance-recurrent](https://github.com/burning-cost/insurance-recurrent)**
+Shared and joint frailty models for recurrent claim events. A standard GLM models annual claim frequency as a Poisson count. That treats each policy-year as independent — ignoring that policyholders with two claims last year are more likely to claim again than the baseline frequency implies. SharedFrailtyModel uses gamma EM estimation (Nelson-Aalen baseline hazard, Powell-symmetric marginalisation) to separate population heterogeneity from true recurrence risk. JointFrailtyModel adds a terminal lapse event — the informative censoring problem where high-frequency customers churn. Bühlmann-Straub credibility factor output connects frailty estimates to the classical actuarial framework. RecurrentEventSimulator for synthetic validation. FrailtyReport HTML. 128 tests.
+`uv add insurance-recurrent`
+[![PyPI](https://img.shields.io/pypi/v/insurance-recurrent)](https://pypi.org/project/insurance-recurrent/)
+&rarr; [Your Frequency Model Treats Every Policy-Year as Independent](https://burning-cost.github.io/2026/03/12/insurance-recurrent/)
 
 ---
 
