@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "55 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "56 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -419,6 +419,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-copula",
+      "description": "Vine copulas for multi-peril home insurance pricing. PerilVine wraps pyvinecopulib with exposure-weighted fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and aggregate PML simulation. 174 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-copula",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-dispersion",
       "description": "Double GLM (DGLM) for joint modelling of mean and dispersion in non-life insurance pricing. Adds a separate regression for the dispersion parameter so volatility varies by risk segment, not just the mean.",
       "codeRepository": "https://github.com/burning-cost/insurance-dispersion",
@@ -509,7 +517,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 54 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 56 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -674,6 +682,12 @@ Composite severity regression — spliced body/tail distributions with covariate
 Extreme Value Theory for catastrophic claim severity. GPD fitting with censored MLE for open TPBI claims (Poudyal & Brazauskas 2023), profile likelihood confidence intervals, return levels for Solvency II SCR, and the first Python implementation of ExcessGPD for XL layer pure premium pricing. GEV for block maxima (subsidence, portfolio catastrophe). Five UK peril presets: TPBI, flood, subsidence, large fire, storm.
 `uv add insurance-evt`
 &rarr; [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/25/insurance-evt/)
+
+**[insurance-copula](https://github.com/burning-cost/insurance-copula)**
+Vine copulas for multi-peril home insurance pricing. UK home insurers price perils additively — the independence assumption costs around 9% in mispriced revenue in clay-soil postcodes where flood and subsidence are correlated. PerilVine wraps pyvinecopulib with exposure-weighted fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo (E[Y|X>threshold]), and aggregate PML simulation. 174 tests, JSON serialisation for model governance.
+`pip install insurance-copula[vine]`
+[\![PyPI](https://img.shields.io/pypi/v/insurance-copula)](https://pypi.org/project/insurance-copula/)
+&rarr; [Your Multi-Peril Home Pricing Is Wrong: The Flood-Subsidence Correlation You Are Ignoring](https://burning-cost.github.io/2026/03/12/insurance-copula/)
 
 ---
 
