@@ -115,6 +115,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-multivariate-conformal",
+      "description": "Joint multi-output conformal prediction for insurance models. Fan & Sesia (arXiv:2512.15383) coordinate-wise standardization gives P(frequency in interval AND severity in interval) >= 1-alpha. LWC method 20-35% more efficient than Bonferroni. SolvencyCapitalEstimator for Solvency II SCR at 99.5%. 198 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-multivariate-conformal",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-quantile",
       "description": "Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors.",
       "codeRepository": "https://github.com/burning-cost/insurance-quantile",
@@ -765,6 +773,11 @@ Distribution-free prediction intervals with finite-sample coverage guarantees. v
 Conformal Risk Control (Angelopoulos et al. ICLR 2024) for UK insurance pricing. Controls expected monetary loss directly — not coverage probability. PremiumSufficiencyController finds the smallest loading factor λ* guaranteeing E[max(claim - λ·premium, 0)/premium] ≤ α. IntervalWidthController minimises interval width within a risk budget. SelectiveRiskController (SCRC-I, arXiv:2512.12844) bounds expected loss on an accepted underwriting book with DKW correction on selection rate. 121 tests.
 `pip install insurance-conformal-risk`
 &rarr; [Coverage Is the Wrong Guarantee for Pricing Actuaries](https://burning-cost.github.io/2026/03/25/insurance-conformal-risk/)
+
+**[insurance-multivariate-conformal](https://github.com/burning-cost/insurance-multivariate-conformal)**
+Joint multi-output conformal prediction for insurance pricing models. Separate frequency and severity GLMs give marginal prediction intervals — no joint coverage guarantee. insurance-multivariate-conformal implements Fan & Sesia (arXiv:2512.15383) coordinate-wise standardization to produce a single prediction set where P(frequency &isin; interval AND severity &isin; interval) &ge; 1&minus;&alpha;. LWC method is 20&ndash;35% more efficient than Bonferroni. SolvencyCapitalEstimator constructs one-sided joint upper bounds for Solvency II SCR at 99.5% with finite-sample guarantee. 198 tests.
+`pip install insurance-multivariate-conformal`
+&rarr; [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](https://burning-cost.github.io/2026/03/26/insurance-multivariate-conformal/)
 
 **[insurance-conformal-fraud](https://github.com/burning-cost/insurance-conformal-fraud)**
 Conformal p-values for claims fraud detection with provable FDR-controlled SIU referral. Wraps any sklearn anomaly detector. Mondrian stratification by claim type (TPBI, AD, Theft), integrative conformal from SIU case files (Lemos et al. 2024, JRSS-B), Fisher combination for IFB consortium detection without sharing claim data. 133 tests.
