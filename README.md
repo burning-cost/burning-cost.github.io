@@ -21,6 +21,7 @@ The site at [burning-cost.github.io](https://burning-cost.github.io) publishes w
 | Library | Description |
 |---------|-------------|
 | [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for Tweedie models |
+| [insurance-conformal-risk](https://github.com/burning-cost/insurance-conformal-risk) | Conformal risk control — bounds expected monetary loss, not just miscoverage rate |
 | [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data segments |
 | [credibility](https://github.com/burning-cost/credibility) | Bühlmann-Straub credibility weighting |
 

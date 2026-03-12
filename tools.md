@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "56 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "57 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -102,6 +102,14 @@ permalink: /tools/
       "name": "insurance-conformal",
       "description": "Distribution-free prediction intervals for insurance GBMs. v0.2 adds locally-weighted intervals (~24% narrower via CatBoost spread model), model-free conformal (Hong 2025), and SCRReport for Solvency II 99.5% upper bounds with coverage validation tables.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-conformal-risk",
+      "description": "Conformal Risk Control (Angelopoulos et al. ICLR 2024) for UK insurance pricing. Controls expected monetary loss directly. PremiumSufficiencyController bounds E[shortfall/premium] <= alpha. SelectiveRiskController (SCRC-I, arXiv:2512.12844) bounds expected loss on accepted underwriting book with DKW correction. 121 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-conformal-risk",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -517,7 +525,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 56 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 57 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -632,6 +640,11 @@ Transfer learning for thin-segment insurance pricing. Tian-Feng two-step GLM tra
 Distribution-free prediction intervals with finite-sample coverage guarantees. v0.2 adds locally-weighted intervals (~24% narrower, CatBoost spread model), model-free conformal (Hong 2025, no point predictor needed), SCRReport for Solvency II 99.5% upper bounds with multi-alpha coverage validation tables, and ERT diagnostics for conditional coverage by rating segment. 186 tests.
 `uv add "insurance-conformal[catboost]"`
 &rarr; [Distribution-free solvency capital from conformal prediction](https://burning-cost.github.io/2026/03/11/conformal-scr-solvency/) · [Why your prediction intervals are lying to you](https://burning-cost.github.io/2026/03/06/why-your-prediction-intervals-are-lying-to-you/)
+
+**[insurance-conformal-risk](https://github.com/burning-cost/insurance-conformal-risk)**
+Conformal Risk Control (Angelopoulos et al. ICLR 2024) for UK insurance pricing. Controls expected monetary loss directly — not coverage probability. PremiumSufficiencyController finds the smallest loading factor λ* guaranteeing E[max(claim - λ·premium, 0)/premium] ≤ α. IntervalWidthController minimises interval width within a risk budget. SelectiveRiskController (SCRC-I, arXiv:2512.12844) bounds expected loss on an accepted underwriting book with DKW correction on selection rate. 121 tests.
+`pip install insurance-conformal-risk`
+&rarr; [Coverage Is the Wrong Guarantee for Pricing Actuaries](https://burning-cost.github.io/2026/03/25/insurance-conformal-risk/)
 
 **[insurance-conformal-fraud](https://github.com/burning-cost/insurance-conformal-fraud)**
 Conformal p-values for claims fraud detection with provable FDR-controlled SIU referral. Wraps any sklearn anomaly detector. Mondrian stratification by claim type (TPBI, AD, Theft), integrative conformal from SIU case files (Lemos et al. 2024, JRSS-B), Fisher combination for IFB consortium detection without sharing claim data. 133 tests.
