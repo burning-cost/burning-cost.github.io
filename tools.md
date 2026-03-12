@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "71 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "74 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -576,6 +576,54 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-recurrent",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-rdd",
+      "description": "Regression Discontinuity Design for insurance rating thresholds. Sharp/fuzzy RD via rdrobust, PoissonRD/GammaRD with bootstrap CIs, geographic territory boundary analysis, McCrary density test, FCA Consumer Duty threshold reports. 194 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-rdd",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-garch",
+      "description": "GARCH volatility models for claims inflation. Exposure-weighted ClaimsInflationModel wrapping arch. GJR-GARCH for asymmetric shocks. Bootstrap CIs for trend projections. First insurance-native GARCH Python implementation. 92 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-garch",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-frequency-severity",
+      "description": "Sarmanov copula joint frequency-severity modelling for UK personal lines. IFM estimation, analytical premium correction, dependence tests, JointModelReport. Challenges the independence assumption in the standard two-model GLM pricing framework. 80+ tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-frequency-severity",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-tmle",
+      "description": "TMLE (Targeted Maximum Likelihood Estimation) for insurance causal inference. First Python library with Poisson TMLE and exposure offsets. Doubly robust: valid if either outcome or propensity model is correctly specified. SuperLearner, CVTMLE, heterogeneous CATE. 6 modules.",
+      "codeRepository": "https://github.com/burning-cost/insurance-tmle",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-bcf",
+      "description": "Bayesian Causal Forests for heterogeneous rate change elasticity. stochtree BCFModel wrapper with RIC correction, propensity diagnostics, segment CATE with credible intervals, FCA EP25/2 BCFAuditReport. 149 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-bcf",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-recourse",
+      "description": "Algorithmic recourse for FCA Consumer Duty in UK personal lines insurance. DiCE/alibi/FOCUS backends with insurance-native actionability constraints, causal propagation, and RecourseReport audit hashing. SHAP tells you why. Recourse tells you what to change. 177 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-recourse",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
@@ -621,6 +669,16 @@ Loss cost trend analysis with structural break detection. Frequency/severity/los
 GAS (Generalised Autoregressive Score) models for dynamic insurance pricing — the first maintained Python implementation. Exposure-weighted Poisson frequency, Gamma/log-normal severity, Beta loss ratio, and negative binomial variants. GAS(1,1) MLE via L-BFGS-B, `trend_index` in the development factor format, panel data across rating cells, and formal diagnostics (PIT, Ljung-Box). Sits between changepoint detection and static trend projection: continuous adaptive estimation updated at each period.
 `uv add insurance-gas`
 &rarr; [Your Trend Estimate Has No Likelihood](https://burning-cost.github.io/2026/03/25/insurance-gas/)
+
+**[insurance-garch](https://github.com/burning-cost/insurance-garch)**
+GARCH volatility models for claims inflation time series. The 2021-2024 motor/home inflation episode produced time-varying variance that a static trend projection cannot represent. ClaimsInflationModel wraps the arch library with exposure weighting, GJR-GARCH for asymmetric volatility shocks, bootstrap confidence intervals for trend projections, and a VolatilityReport in the format pricing committees expect. First Python implementation with insurance-native defaults. 92 tests.
+`pip install insurance-garch`
+&rarr; [Your Trend Line Has No Error Bars](https://burning-cost.github.io/2026/03/12/insurance-garch/)
+
+**[insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity)**
+Sarmanov copula joint frequency-severity modelling. Every personal lines pricing model assumes frequency and severity are independent, conditional on rating factors. Insurance-frequency-severity tests that assumption and corrects for it. SarmanovCopula with Poisson/NB and Gamma/Lognormal margins, IFM estimation, analytical premium correction factor, Kendall tau and Spearman rho dependence tests, and a JointModelReport. 80+ tests.
+`pip install insurance-frequency-severity`
+&rarr; [Two GLMs, One Unjustified Assumption](https://burning-cost.github.io/2026/03/12/insurance-frequency-severity/)
 
 **[shap-relativities](https://github.com/burning-cost/shap-relativities)**
 Multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM. Exports to Excel and Radar-compatible CSV.
@@ -814,6 +872,22 @@ Uplift modelling for UK personal lines retention targeting. Estimates per-custom
 `uv add insurance-uplift`
 [![PyPI](https://img.shields.io/pypi/v/insurance-uplift)](https://pypi.org/project/insurance-uplift/)
 &rarr; [Your Retention Campaign Has No Targeting Rule](https://burning-cost.github.io/2026/03/11/insurance-uplift/)
+
+**[insurance-rdd](https://github.com/burning-cost/insurance-rdd)**
+Regression Discontinuity Design for insurance rating thresholds. UK motor insurers assume a claims discontinuity at age 25 — insurance-rdd tests whether the evidence supports the tariff. Sharp and fuzzy RD via rdrobust, PoissonRD and GammaRD with exposure weighting and bootstrap CIs, multicutoff analysis for NCD steps, McCrary density test for threshold manipulation, geographic territory boundary RDD. FCA Consumer Duty threshold reports with formal LATE estimates. 194 tests.
+`pip install insurance-rdd`
+&rarr; [Your Age-25 Premium Cliff Has No Causal Evidence](https://burning-cost.github.io/2026/03/11/insurance-rdd/)
+
+**[insurance-tmle](https://github.com/burning-cost/insurance-tmle)**
+TMLE (Targeted Maximum Likelihood Estimation) for insurance causal inference. Doubly robust: gives valid causal estimates if either your outcome model or your propensity model is correctly specified. For insurance pricing, where the treatment mechanism (competitor quotes, PCW ranking, risk appetite rules) is structurally unobservable, this is the practical advantage over DML. First Python implementation with Poisson TMLE, exposure offsets, and Poisson-specific efficient influence function. SuperLearner ensemble, CVTMLE, stratified heterogeneous CATE, DMLvsTMLE comparison. 6 modules.
+`pip install insurance-tmle`
+&rarr; [Your Propensity Model Is Wrong. TMLE Doesn't Mind.](https://burning-cost.github.io/2026/03/12/insurance-tmle/)
+
+**[insurance-bcf](https://github.com/burning-cost/insurance-bcf)**
+Bayesian Causal Forests for heterogeneous rate change elasticity. The GLM gives you an average lapse elasticity. BCF gives you per-policy posterior CATE with credible intervals. BayesianCausalForest wraps stochtree 0.4.0 BCFModel with RIC correction, positivity diagnostics, and probit link for binary outcomes. ElasticityEstimator aggregates segment CATE with credible intervals, partial dependence, and optimal rate adjustment. BCFAuditReport outputs FCA EP25/2 HTML with protected characteristic moderation check. 149 tests.
+`pip install insurance-bcf`
+&rarr; [Your Rate Change Analysis Is Averaging Over the Wrong Thing](https://burning-cost.github.io/2026/03/12/insurance-bcf/)
+
 ---
 
 ## Optimisation
@@ -880,6 +954,11 @@ Exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for
 Model risk management: ModelCard, ModelInventory, and GovernanceReport generation. Replaces the spreadsheet model risk register with a structured, versioned artefact.
 `uv add insurance-mrm`
 &rarr; [Your model risk register is a spreadsheet](https://burning-cost.github.io/2026/03/19/your-model-risk-register-is-a-spreadsheet/)
+
+**[insurance-recourse](https://github.com/burning-cost/insurance-recourse)**
+Algorithmic recourse for FCA Consumer Duty in UK personal lines insurance. SHAP attribution tells a policyholder which features drove their premium. That is not the same as telling them what they can change. RecourseGenerator wraps DiCE, alibi, and FOCUS backends with insurance-native ActionabilityGraph constraints (immutable features, causal propagation between correlated factors), InsuranceCostFunction for effort-weighted recommendations, and RecourseReport with FCA Consumer Duty JSON/HTML and SHA-256 audit hash. 177 tests.
+`pip install insurance-recourse`
+&rarr; [SHAP Tells You Why Your Premium Is High. It Doesn't Tell You What to Do About It.](https://burning-cost.github.io/2026/03/26/insurance-recourse/)
 
 **[insurance-deploy](https://github.com/burning-cost/insurance-deploy)**
 Champion/challenger framework with shadow mode, rollback, and full audit trail. Structured deployment for pricing models that need a sign-off process.
