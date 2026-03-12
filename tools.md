@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "64 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "68 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -536,12 +536,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-nflow",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-online",
+      "description": "Multi-armed bandit algorithms for GIPP-compliant loading optimisation on direct insurance channels. Thompson Sampling, UCB1, and LinUCB with ENBP constraints and FCA PS21/5 documentation.",
+      "codeRepository": "https://github.com/burning-cost/insurance-online",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 64 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 68 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -777,6 +785,11 @@ SLSQP portfolio rate optimisation with analytical Jacobians for large factor spa
 Distributionally robust rate optimisation using Wasserstein ambiguity sets. Instead of optimising against a point-estimate demand model, optimises against the worst-case distribution within a calibrated ball around your empirical samples. Produces a price-of-robustness curve for pricing committee papers. CVXPY + CLARABEL backend, FCA ENBP as hard constraint, 137 tests.
 `pip install insurance-dro`
 &rarr; [Your Rate Optimiser Has No Safety Margin](https://burning-cost.github.io/2026/03/25/insurance-dro/)
+
+**[insurance-online](https://github.com/burning-cost/insurance-online)**
+Multi-armed bandit algorithms for GIPP-compliant loading optimisation. Thompson Sampling, UCB1, and LinUCB apply to the discretionary loading band — the slice of pricing that every UK insurer operates but almost none has documented as an optimised decision. ENBP constraint prevents loadings that would breach FCA PS21/5 price walking limits. FCA Consumer Duty audit report included. Beats static A/B testing by routing quotes to superior arms while learning: after 500 quotes with arm B at 8% conversion and arm A at 12%, you are no longer allocating 50/50.
+`pip install insurance-online`
+&rarr; [Bandit Algorithms for GIPP-Compliant Price Experimentation](https://burning-cost.github.io/2026/03/12/insurance-online/)
 
 ---
 
