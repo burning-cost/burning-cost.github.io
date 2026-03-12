@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-Fifty Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+Seventy-one Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
@@ -35,6 +35,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-trend`](https://github.com/burning-cost/insurance-trend) - loss cost trend analysis with structural break detection and regime-aware projections
 - [`insurance-anam`](https://github.com/burning-cost/insurance-anam) - actuarial neural additive model in PyTorch: interpretable deep learning for pricing
 - [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - automated GLM interaction detection using CANN, NID, and SHAP-based methods
+- [`insurance-recurrent`](https://github.com/burning-cost/insurance-recurrent) - shared frailty models for recurrent insurance claims; frailty posterior is the Buehlmann-Straub credibility premium
 
 **Interpretation**
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "70 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "71 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -560,12 +560,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-conformal-ts",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-recurrent",
+      "description": "Shared frailty models for recurrent insurance claims. AndersenGillFrailty (gamma/lognormal), PWPModel, JointFrailtyModel for informative censoring, NelsonAalenFrailty. Frailty posterior is the Buehlmann-Straub credibility premium.",
+      "codeRepository": "https://github.com/burning-cost/insurance-recurrent",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 70 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 71 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -657,6 +665,12 @@ Individual policy-level Bayesian posterior experience rating. Four model tiers: 
 `uv add insurance-experience`
 [![PyPI](https://img.shields.io/pypi/v/insurance-experience)](https://pypi.org/project/insurance-experience/)
 &rarr; [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](https://burning-cost.github.io/2026/03/11/insurance-experience/)
+
+**[insurance-recurrent](https://github.com/burning-cost/insurance-recurrent)**
+Shared frailty models for recurrent insurance claims. The frailty posterior mean is the Bühlmann-Straub credibility premium, connecting counting process survival analysis to classical actuarial credibility theory. AndersenGillFrailty (gamma and lognormal, EM algorithm), PWPModel (Prentice-Williams-Peterson, stratified by event number), JointFrailtyModel for informative censoring when high-risk policyholders lapse, and NelsonAalenFrailty for non-parametric heterogeneity estimation. Use cases: fleet motor (no NCD), pet insurance (breed propensity), home (subsidence repeat claims).
+`pip install insurance-recurrent`
+&rarr; [Shared Frailty for Repeat Claimers: When the Poisson GLM Gets the Wrong Answer](https://burning-cost.github.io/2026/03/12/insurance-recurrent/)
+
 
 **[insurance-credibility-transformer](https://github.com/burning-cost/insurance-credibility-transformer)**
 Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing, base/deep/ICL variants (85 tests). The CLS token's self-attention weight IS the credibility weight — mathematically identical to Bühlmann-Straub, not an analogy. 1,746 parameters, beats CAFTT (27K parameters). ICL extension enables zero-shot pricing for unseen categorical levels (new vehicle models, new regions) without retraining.
