@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "68 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "69 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -544,12 +544,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-online",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-conformal-ts",
+      "description": "Conformal prediction for non-exchangeable claims time series. ACI, EnbPI, SPCI, Conformal PID, MSCP multi-step intervals, Poisson/NB nonconformity scores, exposure weighting.",
+      "codeRepository": "https://github.com/burning-cost/insurance-conformal-ts",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 68 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 69 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -674,6 +682,10 @@ Conformal Risk Control (Angelopoulos et al. ICLR 2024) for UK insurance pricing.
 Conformal p-values for claims fraud detection with provable FDR-controlled SIU referral. Wraps any sklearn anomaly detector. Mondrian stratification by claim type (TPBI, AD, Theft), integrative conformal from SIU case files (Lemos et al. 2024, JRSS-B), Fisher combination for IFB consortium detection without sharing claim data. 133 tests.
 `pip install insurance-conformal-fraud`
 &rarr; [Your SIU Referral Threshold Is Arbitrary. Here Is How to Fix It.](https://burning-cost.github.io/2026/03/11/insurance-conformal-fraud/)
+
+**[insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts)**
+Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Conformal PID, MSCP multi-step intervals, Poisson/NB nonconformity scores, exposure weighting. Standard split conformal assumes exchangeability; claims frequency data violates it. All five sequential methods adapt the coverage threshold online as distribution shift occurs. 150 tests.
+
 
 **[insurance-quantile](https://github.com/burning-cost/insurance-quantile)**
 Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors. When the mean is not the right risk measure.
