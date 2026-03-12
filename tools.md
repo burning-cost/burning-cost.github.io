@@ -427,6 +427,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-eqrn",
+      "description": "Extreme Quantile Regression Neural Networks for covariate-dependent GPD tail modelling. First Python implementation of Pasche & Engelke (2024, AoAS). PyTorch GPDNet estimates xi(x) and sigma(x) per risk profile for per-risk XL pricing, TPBI segment VaR, and Solvency II internal models. 119 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-eqrn",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-sensitivity",
       "description": "Shapley effects for rating factor variance decomposition — Song (2016) random permutation estimator, Rabitti-Tzougas (2025) CLH subsampling, exposure weighting, correlated categoricals. Answers which rating factor drives the most premium variance.",
       "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
@@ -759,6 +767,11 @@ Normalizing flows for insurance claim severity modelling. UK motor bodily injury
 Extreme Value Theory for catastrophic claim severity. GPD fitting with censored MLE for open TPBI claims (Poudyal & Brazauskas 2023), profile likelihood confidence intervals, return levels for Solvency II SCR, and the first Python implementation of ExcessGPD for XL layer pure premium pricing. GEV for block maxima (subsidence, portfolio catastrophe). Five UK peril presets: TPBI, flood, subsidence, large fire, storm.
 `uv add insurance-evt`
 &rarr; [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/25/insurance-evt/)
+
+**[insurance-eqrn](https://github.com/burning-cost/insurance-eqrn)**
+Extreme Quantile Regression Neural Networks for covariate-dependent GPD tail modelling. Standard EVT gives you one shape parameter for the whole portfolio. EQRN gives you xi(x) and sigma(x) per risk profile — the first Python implementation of Pasche & Engelke (2024, Annals of Applied Statistics). PyTorch GPDNet with orthogonal reparameterisation for stable training, K-fold out-of-fold intermediate quantile estimation via LightGBM, conditional VaR and TVaR at arbitrary levels, per-risk XL layer pricing. Applications: motor TPBI by driver profile, commercial property large loss by construction class, per-risk XL burn cost, Solvency II segment-level 99.5th percentile. 119 tests.
+`pip install insurance-eqrn`
+&rarr; [Your EVT Model Has One Tail. EQRN Has One Per Risk.](https://burning-cost.github.io/2026/03/12/insurance-eqrn/)
 
 **[insurance-copula](https://github.com/burning-cost/insurance-copula)**
 Vine copulas for multi-peril home insurance pricing. UK home insurers price perils additively — the independence assumption costs around 9% in mispriced revenue in clay-soil postcodes where flood and subsidence are correlated. PerilVine wraps pyvinecopulib with exposure-weighted fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo (E[Y|X>threshold]), and aggregate PML simulation. 174 tests, JSON serialisation for model governance.
