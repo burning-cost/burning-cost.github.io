@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "53 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "54 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -496,12 +496,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-tabpfn",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-transfer",
+      "description": "Transfer learning for thin-segment insurance pricing. Tian-Feng two-step GLM transfer (first Python implementation, adds Poisson/Gamma), CatBoost source-as-offset GBM transfer, and CANN pre-train/fine-tune. MMD covariate shift test and negative transfer diagnostic included — run both before and after fitting.",
+      "codeRepository": "https://github.com/burning-cost/insurance-transfer",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 53 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 54 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -603,6 +611,10 @@ Credibility Transformer — CLS token attention as Bühlmann-Straub credibility,
 TabPFN v2 and TabICLv2 foundation model wrappers for thin-data insurance pricing. When a segment has under 2,000 policies and GLM MLE is unstable, in-context learning from pretraining on millions of synthetic datasets outperforms tuned XGBoost by 3–8 Gini points. GLMBenchmark (Gini/deviance/RMSE/double-lift), split conformal prediction intervals, PDP-based RelativitiesExtractor, and CommitteeReport with five mandatory disclosure fields. Not a GLM replacement — a thin-segment specialist. 72 tests.
 `uv add insurance-tabpfn`
 &rarr; [Your Thin Segment Has 200 Policies. Your GLM Has No Idea What to Do With Them.](https://burning-cost.github.io/2026/03/25/insurance-tabpfn/)
+**[insurance-transfer](https://github.com/burning-cost/insurance-transfer)**
+Transfer learning for thin-segment insurance pricing. Tian-Feng two-step GLM transfer (first Python implementation with Poisson and Gamma families for frequency/severity), CatBoost source-as-offset GBM transfer, and CANN pre-train/fine-tune. `CovariateShiftTest` (MMD, mixed-kernel for continuous and categorical) and `NegativeTransferDiagnostic` (deviance comparison on held-out target data) are mandatory workflow steps, not optional extras.
+`uv add insurance-transfer`
+&rarr; [Borrowing Experience You Don't Have](https://burning-cost.github.io/2026/03/12/borrowing-experience-you-dont-have/)
 
 ---
 
