@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "69 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "70 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -283,6 +283,14 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
+      "name": "insurance-competing-risks",
+      "description": "Fine-Gray subdistribution hazard regression for competing risks in insurance. AalenJohansenFitter, FineGrayFitter with IPCW, Gray's test, competing-risks Brier score and C-index. For retention lapse/MTC/NTU modelling and home insurance peril CIF estimation.",
+      "codeRepository": "https://github.com/burning-cost/insurance-competing-risks",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
       "name": "insurance-whittaker",
       "description": "Whittaker-Henderson smoothing for experience rating tables with REML lambda selection and Bayesian CIs.",
       "codeRepository": "https://github.com/burning-cost/insurance-whittaker",
@@ -557,7 +565,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 69 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 70 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -897,6 +905,11 @@ Cure models, customer lifetime value, lapse tables, and MLflow wrapper for reten
 Mixture cure models for insurance non-claimer scoring. Separates structurally immune policyholders from susceptibles using a two-component mixture: logistic incidence sub-model (cure fraction) and survival latency (time-to-claim for susceptibles). WeibullMCM, LogNormalMCM, and CoxMCM for parametric and semiparametric latency. Maller-Zhou Qn test for sufficient follow-up before fitting. CureScorecard decile validation. First Python implementation with covariate-aware MCMs. 158 tests.
 `uv add insurance-cure`
 &rarr; [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](https://burning-cost.github.io/2026/03/11/insurance-cure/)
+
+**[insurance-competing-risks](https://github.com/burning-cost/insurance-competing-risks)**
+Fine-Gray subdistribution hazard regression for competing risks in insurance. Treats lapse, MTC, and NTU as distinct competing events rather than censoring — gives calibrated CIF estimates directly usable in technical premium calculations. AalenJohansenFitter for non-parametric CIF, FineGrayFitter with IPCW for covariate regression, Gray's test for CIF equality, competing-risks Brier score and C-index. Covers retention (lapse/MTC/NTU) and home insurance peril-level first-claim modelling (fire/EoW/flood/subsidence). 150 tests.
+`uv add insurance-competing-risks`
+&rarr; [Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing](https://burning-cost.github.io/2026/03/12/insurance-competing-risks/)
 
 **[insurance-uplift](https://github.com/burning-cost/insurance-uplift)**
 HTE uplift modelling for retention. CausalForestDML heterogeneous treatment effects identify which customers are genuinely persuadable — positive responders — rather than treating the whole book as equally retention-sensitive. Qini coefficient and AUUC for model evaluation, four-quadrant customer taxonomy (persuadables, sure things, lost causes, sleeping dogs), PolicyTree for interpretable uplift rules, expected net benefit per policyholder (ENBP) profit constraint, and a Consumer Duty fairness audit checking that retention effort does not disadvantage vulnerable customers. 127 tests.
