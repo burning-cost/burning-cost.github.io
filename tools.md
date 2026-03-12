@@ -1011,6 +1011,12 @@ Joint longitudinal-survival models for telematics mid-term repricing. The Wulfso
 `pip install insurance-jlm`
 &rarr; [The Telematics Score That Forgets Where It's Been](https://burning-cost.github.io/2026/03/12/insurance-jlm/)
 
+**[insurance-poisson-mixture-nn](https://github.com/burning-cost/insurance-poisson-mixture-nn)**
+Neural Poisson mixture model for structural vs stochastic zero decomposition in motor claim frequency. Two-component Poisson mixture with end-to-end gradient training — EM fails for neural networks with large parameter counts. Separate sub-networks for pi(x) (at-risk probability), lambda_0 (safe group rate), lambda_1 (risky group rate). Softplus reparameterisation enforces lambda_0 < lambda_1 without projection. Log-sum-exp stable NLL loss. predict_pi() per policy and classify_zero() structural/stochastic labelling. 14x pricing difference between identical-demographic telematics zero-claimers. Based on NAAJ 2025 PM-DNN paper (DOI: 10.1080/10920277.2025.2570289). 110 tests.
+`uv add insurance-poisson-mixture-nn`
+&rarr; [Not All Zero-Claimers Are Equal](https://burning-cost.github.io/2026/03/27/insurance-poisson-mixture-nn/)
+
+
 ---
 
 ## Retention
