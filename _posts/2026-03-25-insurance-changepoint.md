@@ -3,8 +3,8 @@ layout: post
 title: "When Did Your Loss Ratio Actually Change?"
 date: 2026-03-25
 categories: [libraries, pricing, monitoring]
-tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-changepoint, python]
-description: "Pricing actuaries spot regime shifts by eye, six months late and with no audit trail. insurance-changepoint implements Bayesian Online Changepoint Detection with exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, and a Consumer Duty evidence pack. Adams & MacKay (2007), extended for insurance exposure."
+tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-dynamics, python]
+description: "Pricing actuaries spot regime shifts by eye, six months late and with no audit trail. insurance-dynamics implements Bayesian Online Changepoint Detection with exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, and a Consumer Duty evidence pack. Adams & MacKay (2007), extended for insurance exposure."
 ---
 
 There is a conversation that happens in almost every UK personal lines pricing team, usually in a quarterly experience review. Someone puts up the monthly frequency chart. There is a clear kink, somewhere around Q2 of last year. One actuary says it looks like something changed around April. Another says maybe June. A third points out that the storms in February could have influenced it. The team agrees that the trend has probably shifted, applies a judgement-based adjustment to the rate filing, and documents it as "technical pricing review, Q2 inflection noted."
@@ -13,10 +13,10 @@ This is the entire monitoring methodology for detecting regime changes at most U
 
 The problem is not that actuaries are bad at spotting patterns — they are not. The problem is that eyeballing gives you no posterior probability, no uncertainty on the break location, no formal detection threshold, and no audit trail that satisfies an FCA reviewer. Under Consumer Duty (PRIN 2A.9, effective July 2023), firms must evidence that pricing models are being monitored for continued fair value delivery. "We looked at the chart and it seemed fine" is not evidence in any meaningful sense.
 
-[`insurance-changepoint`](https://github.com/burning-cost/insurance-changepoint) implements formal Bayesian change-point detection for insurance pricing time series. MIT-licensed, on PyPI.
+[`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) implements formal Bayesian change-point detection for insurance pricing time series. MIT-licensed, on PyPI.
 
 ```bash
-pip install insurance-changepoint
+pip install insurance-dynamics
 ```
 
 ---
@@ -41,7 +41,7 @@ This matters for a specific reason. Insurance frequency data is not a sequence o
 
 The natural conjugate model for insurance frequency data is Poisson-Gamma: claim counts are Poisson with rate λ × exposure, where λ is drawn from a Gamma prior. Under this model, the conjugate update at each time step is analytic — you update the Gamma shape and rate parameters from the observed claims and exposure without MCMC. The BOCPD algorithm extends to this conjugate structure straightforwardly, and the exposure weight enters the Poisson likelihood directly.
 
-`insurance-changepoint` implements the exposure-weighted Poisson-Gamma BOCPD. To our knowledge, no existing Python package handles this. `ruptures` is minimum-description-length based and does not have a Poisson-Gamma cost model. `changepoint-online` implements the exponential family BOCPD but without insurance-aware exposure weighting or UK-specific priors. The gap is real, and it is not a packaging gap — it is a modelling gap.
+`insurance-dynamics` implements the exposure-weighted Poisson-Gamma BOCPD. To our knowledge, no existing Python package handles this. `ruptures` is minimum-description-length based and does not have a Poisson-Gamma cost model. `changepoint-online` implements the exponential family BOCPD but without insurance-aware exposure weighting or UK-specific priors. The gap is real, and it is not a packaging gap — it is a modelling gap.
 
 ---
 
@@ -50,7 +50,7 @@ The natural conjugate model for insurance frequency data is Poisson-Gamma: claim
 The `FrequencyChangeDetector` is the main class for claims frequency monitoring. You supply claim counts, exposure (vehicle-years or policy-years), and optionally period labels.
 
 ```python
-from insurance_changepoint import FrequencyChangeDetector
+from insurance_dynamics.changepoint import FrequencyChangeDetector
 import numpy as np
 
 detector = FrequencyChangeDetector(
@@ -90,7 +90,7 @@ Bayesian change-point detection is more powerful when you have prior knowledge a
 `UKEventPrior` encodes ten known break dates as a hazard function multiplier. In the base BOCPD model, the hazard is a constant: P(changepoint at t) = h for all t. With event priors, the hazard spikes at known break dates. The algorithm becomes more sensitive at those dates and retains its standard sensitivity elsewhere.
 
 ```python
-from insurance_changepoint import FrequencyChangeDetector, UKEventPrior
+from insurance_dynamics.changepoint import FrequencyChangeDetector, UKEventPrior
 
 prior = UKEventPrior(
     events=["whiplash_reform", "ogden_2017", "ogden_2021",
@@ -150,10 +150,10 @@ Online BOCPD tells you when something changed as it happens. `RetrospectiveBreak
 
 The algorithm is PELT (Penalised Exact Linear Time) from Killick, Fearnhead & Eckley (2012), JASA 107(500). PELT finds the globally optimal segmentation of a time series into piecewise homogeneous segments in O(n) time — faster than the O(n²) naive search and exact rather than approximate. The penalty parameter controls the trade-off between model fit and number of segments.
 
-The `insurance-changepoint` enhancement is bootstrap confidence intervals on break locations. PELT gives you a point estimate: "the break was at period 14." The bootstrap CI tells you the uncertainty: "95% CI is [12, 16]." This is important when break timing matters for decisions — for example, determining which data falls into the new regime for a model refit.
+The `insurance-dynamics` enhancement is bootstrap confidence intervals on break locations. PELT gives you a point estimate: "the break was at period 14." The bootstrap CI tells you the uncertainty: "95% CI is [12, 16]." This is important when break timing matters for decisions — for example, determining which data falls into the new regime for a model refit.
 
 ```python
-from insurance_changepoint import RetrospectiveBreakFinder
+from insurance_dynamics.changepoint import RetrospectiveBreakFinder
 
 finder = RetrospectiveBreakFinder(
     penalty=3.0,        # BIC-style penalty; higher -> fewer breaks
@@ -187,7 +187,7 @@ A loss ratio regime change is usually driven by either frequency, severity, or b
 `LossRatioMonitor` runs `FrequencyChangeDetector` and `SeverityChangeDetector` in parallel and combines the posterior probabilities into a single monitoring signal.
 
 ```python
-from insurance_changepoint import LossRatioMonitor
+from insurance_dynamics.changepoint import LossRatioMonitor
 
 monitor = LossRatioMonitor(
     frequency_hazard=0.1,
@@ -222,7 +222,7 @@ PRIN 2A.9 requires firms to monitor customer outcomes on an ongoing basis and re
 `ConsumerDutyReport` generates a structured evidence pack from a `ChangeResult` or `MonitorResult`. The report includes: the full posterior probability time series; detected breaks with probabilities; the event priors applied and their rationale; the detection threshold and its justification; and a recommendation with the evidential basis.
 
 ```python
-from insurance_changepoint import ConsumerDutyReport
+from insurance_dynamics.changepoint import ConsumerDutyReport
 
 report = ConsumerDutyReport(
     result=monitor_result,
@@ -255,11 +255,11 @@ The third is audit. Informal monitoring leaves no reproducible record. If you ar
 
 ## The library
 
-[`insurance-changepoint`](https://github.com/burning-cost/insurance-changepoint) implements the full detection stack described above.
+[`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) implements the full detection stack described above.
 
 The main classes are `FrequencyChangeDetector` (online BOCPD with exposure-weighted Poisson-Gamma conjugate), `SeverityChangeDetector` (online BOCPD with Normal-InverseGamma conjugate for log-transformed severities), `RetrospectiveBreakFinder` (PELT with bootstrap CIs), `LossRatioMonitor` (combined frequency and severity monitoring with recommendation), `UKEventPrior` (ten encoded UK insurance events as hazard-function priors), and `ConsumerDutyReport` (PRIN 2A.9 evidence pack generation).
 
-Install with `pip install insurance-changepoint` or `uv add insurance-changepoint`.
+Install with `pip install insurance-dynamics` or `uv add insurance-dynamics`.
 
 The only genuine limitation to document: BOCPD is a univariate method. It operates on a single time series — claim frequency, severity, or loss ratio — not on the multivariate joint distribution of all your rating factors simultaneously. For detecting whether a specific rating factor's effect has changed (concept drift in the P(Y|X) relationship), the correct tool is the Gini drift test in [`insurance-monitoring`](/2026/03/03/your-pricing-model-is-drifting/). Change-point detection and model monitoring solve adjacent but distinct problems: the former asks "has the data-generating process changed?", the latter asks "is my model still accurate?". In a well-run pricing function, both are running in parallel.
 

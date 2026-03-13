@@ -13,7 +13,7 @@ The technical premium tells you what a risk costs. It does not tell you whether 
 
 The result is pricing decisions that leave money on the table in both directions. Overpriced risks convert at rates lower than they should. Underpriced risks convert well but generate inadequate margins. Without a demand model, you cannot tell which situation you are in, or by how much.
 
-We built [`insurance-demand`](https://github.com/burning-cost/insurance-demand) to close this gap.
+We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to close this gap.
 
 ---
 
@@ -34,15 +34,15 @@ The library handles both with separate classes. Use `ConversionModel` for new bu
 ## Conversion modelling
 
 ```bash
-uv add insurance-demand
+uv add insurance-optimise
 ```
 
 The conversion model wraps a logistic GLM or CatBoost classifier, depending on how much data you have and what you want to do with the output. Logistic GLM for interpretability and regulatory documentation. CatBoost when the data is large enough (50k+ quotes) and you want better predictive accuracy.
 
 ```python
 import polars as pl
-from insurance_demand import ConversionModel
-from insurance_demand.datasets import load_motor_quotes
+from insurance_optimise.demand import ConversionModel
+from insurance_optimise.demand.datasets import load_motor_quotes
 
 df = load_motor_quotes()  # 200k synthetic quotes with known DGP
 
@@ -93,8 +93,8 @@ The retention problem has a survival analysis dimension that conversion does not
 For renewal probability at next anniversary, the logistic model is sufficient:
 
 ```python
-from insurance_demand import RetentionModel
-from insurance_demand.datasets import load_motor_renewals
+from insurance_optimise.demand import RetentionModel
+from insurance_optimise.demand.datasets import load_motor_renewals
 
 df_renewals = load_motor_renewals()  # 100k synthetic renewal records
 
@@ -154,7 +154,7 @@ This matters for pricing decisions. A renewal optimiser built on an overstated p
 The `ElasticityEstimator` class implements Double Machine Learning (DML), from Chernozhukov et al.'s 2018 paper in *The Econometrics Journal*. DML removes confounding bias by partialling out confounders from both the outcome and the treatment using flexible ML models. For the full mathematical procedure and why this produces a valid confidence interval, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
 
 ```python
-from insurance_demand import ElasticityEstimator
+from insurance_optimise.demand import ElasticityEstimator
 
 est = ElasticityEstimator(
     outcome_col="converted",
@@ -207,7 +207,7 @@ The DML approach requires volume: minimum 50,000 quotes with meaningful price va
 Once you have elasticity estimates, the `DemandCurve` class converts them into callable price-to-probability functions. These are the inputs a rate optimiser needs to compute the expected volume consequence of any given price change.
 
 ```python
-from insurance_demand import DemandCurve
+from insurance_optimise.demand import DemandCurve
 
 curve = DemandCurve.from_estimator(
     estimator=est,
@@ -225,7 +225,7 @@ print(curve.predict(prices))
 For single-segment profit maximisation:
 
 ```python
-from insurance_demand import OptimalPrice
+from insurance_optimise.demand import OptimalPrice
 
 opt = OptimalPrice(
     demand_curve=curve,
@@ -254,7 +254,7 @@ result = opt.solve()
 # result.optimal_price will never exceed 710.0
 ```
 
-The `OptimalPrice` class maximises expected profit per policy, where expected profit = (price - technical premium - cost) x P(conversion or renewal). This is a simple but correct single-policy formulation. For portfolio-level optimisation with factor-level constraints, use `rate-optimiser` and feed the demand curves in as inputs.
+The `OptimalPrice` class maximises expected profit per policy, where expected profit = (price - technical premium - cost) x P(conversion or renewal). This is a simple but correct single-policy formulation. For portfolio-level optimisation with factor-level constraints, use `insurance-optimise` and feed the demand curves in as inputs.
 
 ---
 
@@ -265,7 +265,7 @@ PS21/11 requires that renewal prices do not exceed the Equivalent New Business P
 The `ENBPChecker` audits a renewal portfolio against a new business price table:
 
 ```python
-from insurance_demand.compliance import ENBPChecker
+from insurance_optimise.demand.compliance import ENBPChecker
 
 checker = ENBPChecker(
     new_business_price_col="nb_price",
@@ -301,25 +301,25 @@ Three honest limitations.
 ## Getting started
 
 ```bash
-uv add insurance-demand
+uv add insurance-optimise
 
 # For DML elasticity estimation:
-uv add "insurance-demand[dml]"
+uv add "insurance-optimise[dml]"
 
 # For survival-based retention models:
-uv add "insurance-demand[survival]"
+uv add "insurance-optimise[survival]"
 
 # Everything:
-uv add "insurance-demand[dml,survival]"
+uv add "insurance-optimise[dml,survival]"
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-demand).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise).
 
 The minimum viable starting point: fit a `ConversionModel` on your quote data and run `model.predict_proba()` on your current book. Plot predicted conversion against the actual bind rate by price decile. If they match, your GLM is adequate. If they diverge above the 7th or 8th decile, you have a non-linearity that a logistic GLM is not capturing and CatBoost will.
 
 After that: run `ElasticityEstimator` on a year of PCW quote data. Compare the DML estimate with `ConversionModel.marginal_effect()`. If they are materially different - and they often are - the difference is the confounding bias you have been pricing with. That number, concretely, is how wrong your current pricing assumption is.
 
-The libraries that commercial platforms sell for significant annual fees are doing the same maths. The methodology is not proprietary. What they sell is the integration, the UI, and the professional services. `insurance-demand` is the methodology in an auditable Python package with no vendor lock-in and an API that reads like sklearn.
+The libraries that commercial platforms sell for significant annual fees are doing the same maths. The methodology is not proprietary. What they sell is the integration, the UI, and the professional services. `insurance-optimise` is the methodology in an auditable Python package with no vendor lock-in and an API that reads like sklearn.
 
 ---
 

@@ -12,7 +12,7 @@ UK motor insurers all have NCD systems. Almost none of them has a clean implemen
 
 This matters more than it sounds. The spreadsheet contains the ABI scale in a tab someone built in 2017. You cannot call it from your pricing pipeline. You cannot ask it "at what claim amount should a customer at 65% NCD absorb the loss rather than claim?" with any precision, because the answer depends on that customer's actual premium, the exact transition rules, and how many years of NCD cost you're projecting - and the spreadsheet doesn't connect those things. Someone in pricing does the arithmetic by hand and gives a rule of thumb. The rule of thumb is wrong for a meaningful fraction of the portfolio.
 
-We built [`experience-rating`](https://github.com/burning-cost/experience-rating) to replace the spreadsheet. This post works through the NCD system as a Markov chain and then gets to the non-obvious result buried in the claiming threshold analysis.
+We built [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) to replace the spreadsheet. This post works through the NCD system as a Markov chain and then gets to the non-obvious result buried in the claiming threshold analysis.
 
 ---
 
@@ -21,7 +21,7 @@ We built [`experience-rating`](https://github.com/burning-cost/experience-rating
 The UK standard motor NCD system is a Markov chain. Ten levels (0% to 65% NCD, premium factors 1.00 to 0.35). One claim-free year moves a policyholder up one level. One claim drops them back two. Two or more claims in a year reset them to level 0. The `BonusMalusScale` class represents exactly this structure.
 
 ```python
-from experience_rating import BonusMalusScale, BonusMalusSimulator
+from insurance_credibility.experience import BonusMalusScale, BonusMalusSimulator
 
 scale = BonusMalusScale.from_uk_standard()
 print(scale.summary())
@@ -84,7 +84,7 @@ It is not quite right.
 `ClaimThreshold` computes the break-even claim amount using NPV arithmetic: the cost of a claim is the discounted value of the additional premiums you'll pay over the recovery horizon, compared to the claim-free trajectory. No utility theory. Just financial arithmetic that can be explained to a customer.
 
 ```python
-from experience_rating import ClaimThreshold
+from insurance_credibility.experience import ClaimThreshold
 
 ct = ClaimThreshold(scale, discount_rate=0.05)
 
@@ -149,13 +149,13 @@ curve = ct.threshold_curve(current_level=9, annual_premium=280.0, max_horizon=7)
 ## Installing and running
 
 ```bash
-uv add experience-rating
+uv add insurance-credibility
 ```
 
 Dependencies are numpy, polars, and scipy only. No ML dependencies in v0.1 - the library is deliberately lightweight.
 
 ```python
-from experience_rating import (
+from insurance_credibility.experience import (
     BonusMalusScale,
     BonusMalusSimulator,
     ClaimThreshold,
@@ -172,7 +172,7 @@ v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's Credibili
 
 The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? Currently `BonusMalusScale` takes a scale you specify; it does not fit one from data. That requires a GLM pipeline and iterative estimation. It is not in v0.1 because we wanted the analysis tools to ship without coupling them to a training framework.
 
-Source and issue tracker at [github.com/burning-cost/experience-rating](https://github.com/burning-cost/experience-rating).
+Source and issue tracker at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility).
 
 ---
 

@@ -240,7 +240,7 @@ The domain of attraction test checks whether the data is consistent with Frechet
 
 ## Where it fits in the toolkit
 
-`insurance-evt` sits at the extreme end of the severity distribution. It models the part of the distribution that determines capital requirements and reinsurance costs. For the bulk of the severity distribution — the part that drives the average claim and GLM pricing factors — the better tools are [`insurance-composite`](https://github.com/burning-cost/insurance-composite) (spliced body/tail with covariate-dependent thresholds) and [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) (increased limits factors with bootstrap confidence intervals).
+`insurance-evt` sits at the extreme end of the severity distribution. It models the part of the distribution that determines capital requirements and reinsurance costs. For the bulk of the severity distribution — the part that drives the average claim and GLM pricing factors — the better tools are [`insurance-severity`](https://github.com/burning-cost/insurance-severity) (spliced body/tail with covariate-dependent thresholds) and [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) (increased limits factors with bootstrap confidence intervals).
 
 The typical large loss workflow we would use:
 
@@ -260,6 +260,6 @@ The key thing the library does not do: non-stationary EVT. For flood and subside
 
 ## See Also
 
-- **[insurance-composite](https://burning-cost.github.io/2026/03/23/insurance-composite/)** — Composite severity regression for the full distribution, with covariate-dependent thresholds and TVaR
+- **[insurance-severity](https://burning-cost.github.io/2026/03/23/insurance-composite/)** — Composite severity regression for the full distribution, with covariate-dependent thresholds and TVaR
 - **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)** — Increased limits factors from severity distributions with bootstrap CIs; use alongside EVT for excess layer rating factor benchmarks
 - **[insurance-quantile](https://burning-cost.github.io/2026/03/07/insurance-quantile/)** — Quantile GBMs for tail risk, when you want covariate-dependent tail modelling rather than unconditional EVT

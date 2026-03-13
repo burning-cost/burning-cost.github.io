@@ -260,12 +260,12 @@ DoWhy (Microsoft Research) has basic mediation functionality. Its mediation anal
 `insurance-mediation` completes a set of five libraries for causal fairness analysis in UK personal lines:
 
 - **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — baseline proxy discrimination audit, quantifies indirect discrimination risk
-- **[insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag)** — D_proxy scalar, which rating factors are responsible, per-policyholder vulnerability
-- **[insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot)** — optimal transport correction, discrimination-free premium computation
+- **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — D_proxy scalar, which rating factors are responsible, per-policyholder vulnerability
+- **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — optimal transport correction, discrimination-free premium computation
 - **[insurance-counterfactual-sets](https://github.com/burning-cost/insurance-counterfactual-sets)** — policyholder-level counterfactual sets for individual fairness
 - **[insurance-mediation](https://github.com/burning-cost/insurance-mediation)** — causal pathway decomposition, separates legitimate from illegitimate effects
 
-The diagnostic workflow is: `insurance-fairness-diag` first (does your model discriminate, and through which factors?). If postcode is identified as a discrimination channel, `insurance-mediation` to decompose how much of the postcode effect is defensible. If correction is needed, `insurance-fairness-ot` for the premium adjustment. If FCA audit requires individual-level evidence, `insurance-counterfactual-sets`.
+The diagnostic workflow is: `insurance-fairness` first (does your model discriminate, and through which factors?). If postcode is identified as a discrimination channel, `insurance-mediation` to decompose how much of the postcode effect is defensible. If correction is needed, `insurance-fairness` for the premium adjustment. If FCA audit requires individual-level evidence, `insurance-counterfactual-sets`.
 
 These are not alternatives. They answer different questions at different levels of causal specificity.
 

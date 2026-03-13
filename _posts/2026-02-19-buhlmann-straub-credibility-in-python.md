@@ -112,17 +112,17 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 
 ## Python implementation
 
-The `credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
+The `insurance-credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
 
 ```bash
-uv add credibility
+uv add insurance-credibility
 ```
 
 The core class is `BuhlmannStraub`. It expects a long-format DataFrame: one row per group-period, with columns for the group identifier, time period, loss rate, and exposure. The library uses Polars throughout; examples below reflect that.
 
 ```python
 import polars as pl
-from credibility import BuhlmannStraub
+from insurance_credibility.classical import BuhlmannStraub
 
 bs = BuhlmannStraub()
 bs.fit(
@@ -162,7 +162,7 @@ We'll work through a realistic example: a UK motor book with 12 geographic regio
 ```python
 import numpy as np
 import polars as pl
-from credibility import BuhlmannStraub
+from insurance_credibility.classical import BuhlmannStraub
 
 rng = np.random.default_rng(42)
 

@@ -27,7 +27,7 @@ The usual responses to this problem are wrong in instructive ways.
 
 **Full retraining** on the acquired book is the right answer eventually, but it requires target labels -- actual claims experience from the acquired portfolio. That takes 12 to 18 months to accumulate post-acquisition. You cannot wait that long to have valid predictions. You are pricing renewals at month three.
 
-**Transfer learning** (our `insurance-transfer` library) is a different tool: it adapts model parameters using some labeled target data. Useful when you have six months of experience and want to fine-tune. Not useful when you have zero claims from the acquired book and need to price now.
+**Transfer learning** (our `insurance-thin-data` library) is a different tool: it adapts model parameters using some labeled target data. Useful when you have six months of experience and want to fine-tune. Not useful when you have zero claims from the acquired book and need to price now.
 
 The gap this library fills is correction from covariates alone, before any target labels exist.
 

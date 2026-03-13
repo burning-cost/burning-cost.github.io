@@ -3,20 +3,20 @@ layout: post
 title: "Nested GLMs and Neural Embeddings for Territory Ratemaking"
 date: 2026-03-20
 categories: [libraries, pricing]
-tags: [nested-GLM, entity-embeddings, territory, SKATER, postcode, high-cardinality, insurance-nested-glm, spatial-clustering, neural-network, statsmodels, geopandas, motor, python]
-description: "1,800 UK postcode sectors cannot go into a GLM as dummies. insurance-nested-glm implements the Wang, Shi, Cao (NAAJ 2025) four-phase pipeline: base GLM, neural embedding of high-cardinality categoricals, SKATER spatially constrained clustering for territory bands, and a readable outer GLM with a full relativities table."
+tags: [nested-GLM, entity-embeddings, territory, SKATER, postcode, high-cardinality, insurance-glm-tools, spatial-clustering, neural-network, statsmodels, geopandas, motor, python]
+description: "1,800 UK postcode sectors cannot go into a GLM as dummies. insurance-glm-tools implements the Wang, Shi, Cao (NAAJ 2025) four-phase pipeline: base GLM, neural embedding of high-cardinality categoricals, SKATER spatially constrained clustering for territory bands, and a readable outer GLM with a full relativities table."
 ---
 
 The standard territory problem in UK motor pricing is this: you have around 1,800 postcode sectors. A GLM cannot take 1,800 dummies - you do not have the degrees of freedom, the standard errors will be useless, and the resulting factor table cannot be filed. So you band them. You cluster on observed loss ratios, apply a five-group k-means, get five territory bands, and move on.
 
 The problem with this approach is well understood but rarely fixed. K-means on loss ratios ignores geography. You end up with territories that are not contiguous - a band containing patches of central London, outer Leeds, and a suburb of Birmingham is not a territory in any meaningful sense. The credibility of individual sectors is ignored: a sector with 120 policies has the same weight in the clustering as one with 6,000. And the cluster features (raw loss ratios) conflate the territory effect with all the other rating factors in the mix - vehicle group, driver age, NCD - because you have not controlled for them.
 
-[`insurance-nested-glm`](https://github.com/burning-cost/insurance-nested-glm) solves all three problems in a single pipeline.
+[`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools) solves all three problems in a single pipeline.
 
 ```bash
-uv add insurance-nested-glm
+uv add insurance-glm-tools
 # With spatial clustering:
-uv add "insurance-nested-glm[spatial]"
+uv add "insurance-glm-tools[spatial]"
 ```
 
 ---
@@ -56,7 +56,7 @@ The library handles UK island geography automatically. Channel Islands, Isle of 
 ```python
 import pandas as pd
 import numpy as np
-from insurance_nested_glm import NestedGLMPipeline
+from insurance_glm_tools.nested import NestedGLMPipeline
 
 df = pd.read_parquet("policies.parquet")
 y = df["claim_count"].to_numpy()
@@ -118,7 +118,7 @@ The postcode sector polygons are available from the ONS Open Geography Portal (p
 If you want the embedding layer without the full pipeline - for example, to feed vehicle make/model embeddings into an EBM or CatBoost model - `EmbeddingTrainer` is available separately:
 
 ```python
-from insurance_nested_glm import EmbeddingTrainer
+from insurance_glm_tools.nested import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
     cat_cols=["vehicle_make_model"],
@@ -146,7 +146,7 @@ The `offset` parameter is critical. Pass the base GLM log-prediction as the offs
 `TerritoryClusterer` can also be used standalone, feeding in any embedding coordinates:
 
 ```python
-from insurance_nested_glm import TerritoryClusterer
+from insurance_glm_tools.nested import TerritoryClusterer
 
 tc = TerritoryClusterer(n_clusters=200, min_exposure=500, method="skater")
 tc.fit(geo_gdf, feature_cols=["emb_0", "emb_1", "emb_2"], exposure=unit_exposure)
@@ -184,13 +184,13 @@ The pipeline currently supports Poisson (frequency) and Gamma (severity) familie
 ## Installation
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[spatial]"   # geopandas, libpysal, spopt
-uv add "insurance-nested-glm[plot]"       # matplotlib territory maps
-uv add "insurance-nested-glm[all]"        # everything
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[spatial]"   # geopandas, libpysal, spopt
+uv add "insurance-glm-tools[plot]"       # matplotlib territory maps
+uv add "insurance-glm-tools[all]"        # everything
 ```
 
-Requires PyTorch (for the embedding network) and statsmodels (for the outer GLM). Python 3.10+. Source at [github.com/burning-cost/insurance-nested-glm](https://github.com/burning-cost/insurance-nested-glm).
+Requires PyTorch (for the embedding network) and statsmodels (for the outer GLM). Python 3.10+. Source at [github.com/burning-cost/insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools).
 
 ---
 

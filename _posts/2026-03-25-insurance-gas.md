@@ -3,18 +3,18 @@ layout: post
 title: "Your Trend Estimate Has No Likelihood"
 date: 2026-03-25
 categories: [libraries, pricing, trends]
-tags: [GAS, generalised-autoregressive-score, trend, frequency, severity, loss-ratio, Poisson, Gamma, Beta, time-series, observation-driven, MLE, PRA, claims-inflation, insurance-gas, python]
-description: "The PRA's June 2023 Dear Chief Actuary letter found personal lines claims inflation allowances ranging from 0.6% to 9% — a 15× spread that can't be explained by genuine portfolio differences. insurance-gas brings GAS models to Python for the first time, giving pricing actuaries a statistically grounded alternative to moving averages."
+tags: [GAS, generalised-autoregressive-score, trend, frequency, severity, loss-ratio, Poisson, Gamma, Beta, time-series, observation-driven, MLE, PRA, claims-inflation, insurance-dynamics, python]
+description: "The PRA's June 2023 Dear Chief Actuary letter found personal lines claims inflation allowances ranging from 0.6% to 9% — a 15× spread that can't be explained by genuine portfolio differences. insurance-dynamics brings GAS models to Python for the first time, giving pricing actuaries a statistically grounded alternative to moving averages."
 ---
 
 The PRA's June 2023 Dear Chief Actuary letter on motor and home claims inflation did not mince its words. Across the personal lines firms surveyed, claims inflation allowances ranged from 0.6% to 9%. That is not analytical disagreement. That is fifteen different firms applying fifteen different informal judgements to the same underlying problem, and the spread is so wide it tells you something structural: the profession does not have an agreed analytical method.
 
 The typical process is: take a moving average over some window (12 months? 24?), eyeball whether the recent trend looks like an outlier, apply a judgement adjustment, document it as "management overlay", get it signed off. No likelihood. No standard error. No formal way to distinguish signal from noise.
 
-[`insurance-gas`](https://github.com/burning-cost/insurance-gas) is our response to this. It brings Generalised Autoregressive Score (GAS) models to Python for the first time — the first maintained Python implementation anywhere. The equivalent R library, `gasmodel`, has supported 36 distributions since 2022. Python has had nothing but an abandoned PyFlux (last commit 2018) and a statsmodels GitHub issue open since 2016.
+[`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) is our response to this. It brings Generalised Autoregressive Score (GAS) models to Python for the first time — the first maintained Python implementation anywhere. The equivalent R library, `gasmodel`, has supported 36 distributions since 2022. Python has had nothing but an abandoned PyFlux (last commit 2018) and a statsmodels GitHub issue open since 2016.
 
 ```bash
-uv add insurance-gas
+uv add insurance-dynamics
 ```
 
 ---
@@ -53,7 +53,7 @@ We are not claiming GAS models are new. The Creal, Koopman, Lucas (2013) paper h
 
 Python has nothing. PyFlux implemented GAS in 2017 and has not had a meaningful commit since 2018. It is incompatible with modern NumPy and fails to install on Python 3.10+. The statsmodels issue requesting GAS support has been open since 2016 with no resolution.
 
-Every Python pricing actuary who wanted GAS models has had three options: use R, port the equations themselves, or settle for moving averages. `insurance-gas` closes that gap.
+Every Python pricing actuary who wanted GAS models has had three options: use R, port the equations themselves, or settle for moving averages. `insurance-dynamics` closes that gap.
 
 ---
 
@@ -62,8 +62,8 @@ Every Python pricing actuary who wanted GAS models has had three options: use R,
 The quickest path for a pricing team is Poisson frequency monitoring with exposure:
 
 ```python
-from insurance_gas import GASModel
-from insurance_gas.datasets import load_motor_frequency
+from insurance_dynamics.gas import GASModel
+from insurance_dynamics.gas.datasets import load_motor_frequency
 
 # 60 monthly periods with a trend break at period 40
 data = load_motor_frequency(T=60, trend_break=True)
@@ -106,7 +106,7 @@ result = model.fit(data.loss_ratio)  # must be in (0,1)
 Panel data — tracking multiple rating cells simultaneously — uses `GASPanel`:
 
 ```python
-from insurance_gas import GASPanel
+from insurance_dynamics.gas import GASPanel
 
 panel = GASPanel("poisson")
 panel_result = panel.fit(
@@ -138,13 +138,13 @@ If the Ljung-Box is significant, the filter is not fully capturing the autocorre
 
 We think of trend analysis as having three distinct problems:
 
-1. **Has a structural break occurred?** That is [`insurance-changepoint`](https://github.com/burning-cost/insurance-changepoint) — PELT and window-based detection with actuarial output formats.
+1. **Has a structural break occurred?** That is [`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) — PELT and window-based detection with actuarial output formats.
 
-2. **What is the current rate of change?** That is `insurance-gas` — continuous adaptive estimation of the time-varying parameter, updated at each period.
+2. **What is the current rate of change?** That is `insurance-dynamics` — continuous adaptive estimation of the time-varying parameter, updated at each period.
 
 3. **What is the projected trend to apply to future periods?** That is [`insurance-trend`](https://github.com/burning-cost/insurance-trend) — GLM-based trend fitting with bootstrap confidence intervals for use in pricing sign-off.
 
-These are not competitors. The rational workflow is: use `insurance-changepoint` to identify regime boundaries, fit `insurance-gas` within each regime to get the adaptive trend path, then use `insurance-trend` to project the current regime forward with formal uncertainty bounds.
+These are not competitors. The rational workflow is: use `insurance-dynamics` to identify regime boundaries, fit `insurance-dynamics` within each regime to get the adaptive trend path, then use `insurance-trend` to project the current regime forward with formal uncertainty bounds.
 
 ---
 
@@ -160,4 +160,4 @@ That is what a likelihood buys you. A moving average does not have one.
 
 ---
 
-**[insurance-gas on GitHub](https://github.com/burning-cost/insurance-gas)** — MIT-licensed, PyPI. The first maintained Python GAS library.
+**[insurance-dynamics on GitHub](https://github.com/burning-cost/insurance-dynamics)** — MIT-licensed, PyPI. The first maintained Python GAS library.

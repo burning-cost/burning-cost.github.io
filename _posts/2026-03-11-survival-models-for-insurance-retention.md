@@ -235,12 +235,12 @@ On Databricks specifically, the recommended pattern is to run `ExposureTransform
 
 ## Connecting to rate optimisation
 
-The CLV output from `SurvivalCLV` is the natural input to CLV-based discount targeting in [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser). The pattern is:
+The CLV output from `SurvivalCLV` is the natural input to CLV-based discount targeting in [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise). The pattern is:
 
 1. Fit the cure model on the retention book.
 2. Run `SurvivalCLV.discount_sensitivity()` with a range of discount amounts.
-3. Pass the `discount_justified` segmentation to `rate-optimiser` as the set of policies eligible for a loyalty discount.
-4. Let `rate-optimiser` find the factor adjustments that hit the LR target while maximising the discount budget allocated to CLV-positive policies.
+3. Pass the `discount_justified` segmentation to `insurance-optimise` as the set of policies eligible for a loyalty discount.
+4. Let `insurance-optimise` find the factor adjustments that hit the LR target while maximising the discount budget allocated to CLV-positive policies.
 
 Without the CLV analysis, a rate optimiser will spread discounts across the renewal book as though all retained customers have equal value. They do not. The PCW-sourced NCD-0 customer retained by a £50 discount has a low cure probability and a short expected tenure. The direct NCD-5 customer who receives the same discount has a much higher expected lifetime value.
 

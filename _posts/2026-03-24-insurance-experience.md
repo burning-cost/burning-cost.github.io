@@ -199,9 +199,9 @@ The evaluator produces Gini coefficients (lift of the posterior factor over no e
 
 ## What is not in this library
 
-This library does not implement NCD transition matrices or bonus-malus Markov chains. That is [`experience-rating`](https://github.com/burning-cost/experience-rating). The two libraries are complementary: `experience-rating` for the contractual NCD mechanism, `insurance-experience` for the Bayesian posterior that should sit alongside or eventually replace it.
+This library does not implement NCD transition matrices or bonus-malus Markov chains. That is [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility). The two libraries are complementary: `insurance-credibility` for the contractual NCD mechanism, `insurance-experience` for the Bayesian posterior that should sit alongside or eventually replace it.
 
-This library does not implement group-level credibility (Bühlmann at broker or scheme level). That is [`credibility`](https://github.com/burning-cost/credibility). Again, complementary: `credibility` for group-level partial pooling, `insurance-experience` for individual-level posterior inference.
+This library does not implement group-level credibility (Bühlmann at broker or scheme level). That is [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility). Again, complementary: `insurance-credibility` for group-level partial pooling, `insurance-experience` for individual-level posterior inference.
 
 ---
 

@@ -3,18 +3,18 @@ layout: post
 title: "Your Thin Segment Has 200 Policies. Your GLM Has No Idea What to Do With Them."
 date: 2026-03-25
 categories: [libraries, pricing, foundation-models]
-tags: [TabPFN, TabICLv2, foundation-model, thin-data, in-context-learning, GLM, conformal-prediction, relativities, benchmark, Gini, python, insurance-tabpfn]
-description: "When MLE doesn't converge, the standard response is credibility blending — which is a polite way of saying 'borrow from somewhere else and hope'. TabPFN and TabICLv2 are foundation models pretrained on millions of synthetic datasets. They do in-context learning at inference time, no gradient descent required. insurance-tabpfn wraps them for insurance pricing workflows."
+tags: [TabPFN, TabICLv2, foundation-model, thin-data, in-context-learning, GLM, conformal-prediction, relativities, benchmark, Gini, python, insurance-thin-data]
+description: "When MLE doesn't converge, the standard response is credibility blending — which is a polite way of saying 'borrow from somewhere else and hope'. TabPFN and TabICLv2 are foundation models pretrained on millions of synthetic datasets. They do in-context learning at inference time, no gradient descent required. insurance-thin-data wraps them for insurance pricing workflows."
 ---
 
 When your home insurance team prices thatched properties, new-build flats in a specific postcode cluster, or a freshly launched e-bike product, they are almost always working from fewer than a thousand policy-years. Often fewer than two hundred. At that data volume, a Poisson GLM's MLE has not converged. The confidence intervals on your rating factors are so wide they are informative about almost nothing. The standard response is credibility blending — shrink toward the overall book mean, apply a judgement overlay, call it done. That is not a method. It is a controlled way of saying "we do not have enough data."
 
 The question worth asking in 2026 is whether there is something better.
 
-[`insurance-tabpfn`](https://github.com/burning-cost/insurance-tabpfn) is our answer. It wraps TabPFN v2 and TabICLv2 in an insurance actuarial workflow: sklearn-compatible fit/predict, GLM benchmark with proper actuarial metrics, PDP-based relativities extraction, split conformal prediction intervals, and a committee-ready report with mandatory disclosure of limitations.
+[`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) is our answer. It wraps TabPFN v2 and TabICLv2 in an insurance actuarial workflow: sklearn-compatible fit/predict, GLM benchmark with proper actuarial metrics, PDP-based relativities extraction, split conformal prediction intervals, and a committee-ready report with mandatory disclosure of limitations.
 
 ```bash
-uv add insurance-tabpfn
+uv add insurance-thin-data
 ```
 
 ---
@@ -29,7 +29,7 @@ This is in-context learning. The same mechanism that lets a large language model
 
 The performance claims in the Nature paper are not modest. On datasets under 10,000 samples, TabPFN v2 outperforms XGBoost, LightGBM, and tuned neural networks across 300+ benchmarks. The margin is meaningful — Gini improvements of 3–8 points in the regimes where these models have genuinely thin data. Hollmann et al. attribute this to the synthetic pretraining: the model has effectively been regularised by an enormous implicit prior over tabular data-generating processes.
 
-In February 2026, TabICLv2 from INRIA's SODA team superseded TabPFN v2.5 on the same benchmarks. It is Apache 2.0-licensed and available on PyPI. `insurance-tabpfn` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI — no GPU, no API key, no cost.
+In February 2026, TabICLv2 from INRIA's SODA team superseded TabPFN v2.5 on the same benchmarks. It is Apache 2.0-licensed and available on PyPI. `insurance-thin-data` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI — no GPU, no API key, no cost.
 
 ---
 
@@ -56,7 +56,7 @@ TabPFN's pretraining prior is broad enough that it does not borrow from any one 
 The API is sklearn-compatible:
 
 ```python
-from insurance_tabpfn import InsuranceTabPFN
+from insurance_thin_data.tabpfn import InsuranceTabPFN
 
 model = InsuranceTabPFN(
     backend="tabicl",          # or "tabpfn" for v2
@@ -80,10 +80,10 @@ The prediction intervals use split conformal prediction — the same approach as
 
 ## Benchmarking against your GLM
 
-`insurance-tabpfn` ships a `GLMBenchmark` class. Pass it your fitted GLM and the foundation model and it produces a proper actuarial comparison:
+`insurance-thin-data` ships a `GLMBenchmark` class. Pass it your fitted GLM and the foundation model and it produces a proper actuarial comparison:
 
 ```python
-from insurance_tabpfn import GLMBenchmark
+from insurance_thin_data.tabpfn import GLMBenchmark
 from sklearn.linear_model import TweedieRegressor
 
 glm = TweedieRegressor(power=1, alpha=0.01, link="log")
@@ -117,7 +117,7 @@ A foundation model is not interpretable in the GLM sense. There is no `coef_` ve
 `RelativitiesExtractor` addresses this via partial dependence profiles (PDPs). For each feature, it sweeps the feature over a grid while marginalising over other features, computes the predicted rate at each grid point, and normalises to a base value to produce a multiplicative relativity:
 
 ```python
-from insurance_tabpfn import RelativitiesExtractor
+from insurance_thin_data.tabpfn import RelativitiesExtractor
 
 extractor = RelativitiesExtractor(model, exposure_col="earned_years")
 rels = extractor.extract(X_train, features=["vehicle_age", "driver_age", "ncd_years"])
@@ -141,10 +141,10 @@ We fixed a bug in the PDP computation during build: exposure weighting was not b
 
 ## The committee report
 
-Every use of `insurance-tabpfn` in a pricing process needs sign-off. The `CommitteeReport` class generates an HTML or JSON report that includes five mandatory disclosures:
+Every use of `insurance-thin-data` in a pricing process needs sign-off. The `CommitteeReport` class generates an HTML or JSON report that includes five mandatory disclosures:
 
 ```python
-from insurance_tabpfn import CommitteeReport
+from insurance_thin_data.tabpfn import CommitteeReport
 
 report = CommitteeReport(model, bench_results, rels)
 report.generate("tabpfn_review.html")
@@ -172,7 +172,7 @@ We want to be specific about the position of this library in a pricing toolkit.
 
 **It is not a GLM replacement.** The GLM is the right tool for a portfolio with 50,000+ policies and a reasonably standard risk structure. It is interpretable, it handles exposure natively, it has a principled likelihood, and every reinsurer in London knows how to read its output. We are not trying to replace it.
 
-**It is not a GBM replacement.** For portfolios with 10,000+ policies and complex non-linear structure, a tuned CatBoost with SHAP relativities is probably the right model. GBMs can also handle exposure offsets natively. `insurance-tabpfn` tops out at ~10K rows and regression only.
+**It is not a GBM replacement.** For portfolios with 10,000+ policies and complex non-linear structure, a tuned CatBoost with SHAP relativities is probably the right model. GBMs can also handle exposure offsets natively. `insurance-thin-data` tops out at ~10K rows and regression only.
 
 **It is a thin-segment specialist.** When you have 200–2,000 policies, no natural parent segment to borrow from, and a GLM that is either flat or unstable, TabPFN or TabICLv2 in-context learning is the best tool we have seen. The pretraining acts as a prior that is broader and less committal than anything you would elicit from your book.
 
@@ -184,8 +184,8 @@ The BUILD score we assigned during development was 16/20. The four missing point
 
 The Nature paper — Hollmann, Müller, Purucker, Krishnakumar, Körfer, Hoo, Shen, Hutter (2025), "TabPFN v2: Improved In-Context Learning for Tabular Data", Nature 637:319–326 — is not a typical ML conference paper. Nature peer review is substantially more rigorous, and the 300-dataset benchmark leaves less room for cherry-picking than single-paper results. The actuarial credibility of the method is grounded in that publication, not in our endorsement.
 
-TabICLv2, the INRIA/SODA release from February 2026, does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-tabpfn` is deliberately designed so that when the next generation of foundation models for tabular data arrives — and there will be a next generation — swapping backends requires changing one string.
+TabICLv2, the INRIA/SODA release from February 2026, does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-thin-data` is deliberately designed so that when the next generation of foundation models for tabular data arrives — and there will be a next generation — swapping backends requires changing one string.
 
 ---
 
-**[insurance-tabpfn on GitHub](https://github.com/burning-cost/insurance-tabpfn)** — MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.
+**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.

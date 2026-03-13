@@ -4,7 +4,7 @@ title: "DML for Insurance: Practical Benchmarks and Pitfalls"
 date: 2026-03-09
 author: Burning Cost
 categories: [techniques, causal-inference]
-tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-elasticity, motor, benchmarks, python]
+tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal, motor, benchmarks, python]
 description: "Where double machine learning outperforms naive regression in insurance pricing -- and where it doesn't. Practical benchmarks on synthetic motor data."
 ---
 
@@ -186,7 +186,7 @@ Our practice: start with 6-10 well-understood confounders. Confirm that adding f
 
 **When the question is predictive, not causal.** A model identifying which customers will lapse for retention call triage does not need DML. Prediction of lapse probability is well served by CatBoost directly. DML is for causal questions: what would happen if we changed the price? The SE from DML is wider than from a well-tuned GBM, which matters for prediction accuracy but is exactly the right property for causal inference.
 
-**When n is below 10,000.** With 5-fold cross-fitting, each training fold has 8,000 observations. Enough for a GBM on a modest feature set, but the CI on theta will be wide. On small books, stratification with a carefully chosen stratum variable gives more useful guidance. For heterogeneous treatment effects with `insurance-elasticity`'s `RenewalElasticityEstimator`, the minimum is closer to 20,000-30,000 per segment -- causal forests fitted on fewer observations produce CATEs that effectively average to the portfolio ATE anyway.
+**When n is below 10,000.** With 5-fold cross-fitting, each training fold has 8,000 observations. Enough for a GBM on a modest feature set, but the CI on theta will be wide. On small books, stratification with a carefully chosen stratum variable gives more useful guidance. For heterogeneous treatment effects with `insurance-causal`'s `RenewalElasticityEstimator`, the minimum is closer to 20,000-30,000 per segment -- causal forests fitted on fewer observations produce CATEs that effectively average to the portfolio ATE anyway.
 
 ---
 
@@ -221,7 +221,7 @@ Work through this before running DML on real portfolio data.
 
 **Heterogeneous effects**
 
-- For segment-level elasticities, use `RenewalElasticityEstimator` with `cate_model="causal_forest"` from `insurance-elasticity` rather than running separate `CausalPricingModel` instances per segment. The causal forest shares information across segments.
+- For segment-level elasticities, use `RenewalElasticityEstimator` with `cate_model="causal_forest"` from `insurance-causal` rather than running separate `CausalPricingModel` instances per segment. The causal forest shares information across segments.
 - Check that the ATE from the causal forest (`est.ate()`) is consistent with the ATE from `CausalPricingModel`. Divergence above 15% is a specification inconsistency to diagnose.
 - Do not use segment-level CATE estimates for segments with fewer than 2,000 observations.
 
@@ -241,7 +241,7 @@ The benchmark above -- 6x lower RMSE than naive GLM on synthetic data with treat
 
 The practical bar for using DML in pricing is not "does it perform better than the GLM in a simulation?" It is: do we have enough exogenous treatment variation, are our confounders well-specified, and are we prepared to run and report the sensitivity analysis? If the answer to any of those is uncertain, invest in the diagnostics first. A DML estimate with a wide CI or fragile sensitivity analysis is not better than a naive GLM -- it is just slower to produce and harder to explain.
 
-`insurance-causal` and `insurance-elasticity` are both on GitHub and installable via `uv add`. Start with the confounding bias report on data you already understand. If the DML estimate and the GLM coefficient agree within 10%, confounding is not material and your GLM was adequate. If they diverge materially, you have the starting point for the conversation about which number to use and why.
+`insurance-causal` and `insurance-causal` are both on GitHub and installable via `uv add`. Start with the confounding bias report on data you already understand. If the DML estimate and the GLM coefficient agree within 10%, confounding is not material and your GLM was adequate. If they diverge materially, you have the starting point for the conversation about which number to use and why.
 
 ---
 

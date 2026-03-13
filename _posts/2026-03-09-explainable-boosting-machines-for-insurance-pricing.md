@@ -4,8 +4,8 @@ title: "EBMs for Insurance Pricing: Better Than a GLM, Readable by a Pricing Com
 date: 2026-03-09
 author: Burning Cost
 categories: [pricing, machine-learning, libraries]
-tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relativities, Gini, double-lift, explainability, FCA, PRA, python, insurance-ebm]
-description: "interpretML's ExplainableBoostingMachine already handles Poisson/Gamma/Tweedie loss and exposure offsets natively. What it doesn't do is wrap those capabilities in the workflow a UK pricing team actually uses. insurance-ebm does that: RelativitiesTable, MonotonicityEditor, GLMComparison, and a full actuarial diagnostics suite."
+tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relativities, Gini, double-lift, explainability, FCA, PRA, python, insurance-gam]
+description: "interpretML's ExplainableBoostingMachine already handles Poisson/Gamma/Tweedie loss and exposure offsets natively. What it doesn't do is wrap those capabilities in the workflow a UK pricing team actually uses. insurance-gam does that: RelativitiesTable, MonotonicityEditor, GLMComparison, and a full actuarial diagnostics suite."
 ---
 
 The two questions that come up in every conversation about replacing a GLM with something more powerful are: can you explain it to the pricing committee, and can you explain it to the regulator?
@@ -20,20 +20,20 @@ What interpretML already gives you is substantial: Poisson, Gamma, and Tweedie d
 
 What it does not give you is the insurance workflow layer. The output format a UK pricing team expects is a relativity table, not a raw score array. The validation process involves Gini coefficients, double-lift charts, and A/E by segment - not sklearn's R² scorer. The regulatory documentation requires plotted shape functions with base levels clearly identified. And the business constraint process involves editing shape functions after the fit, not before.
 
-[`insurance-ebm`](https://github.com/burning-cost/insurance-ebm) adds that layer.
+[`insurance-gam`](https://github.com/burning-cost/insurance-gam) adds that layer.
 
 ---
 
 ## Installation
 
 ```bash
-uv add insurance-ebm[interpret]
+uv add insurance-gam[interpret]
 ```
 
 The `[interpret]` extra pulls in interpretML, which has a C++ backend and takes a moment to compile on first install. If you already have interpretML installed and want only the diagnostics and analysis tools:
 
 ```bash
-uv add insurance-ebm
+uv add insurance-gam
 ```
 
 ---
@@ -44,8 +44,8 @@ The `InsuranceEBM` class wraps `ExplainableBoostingRegressor` and adds exposure-
 
 ```python
 import polars as pl
-from insurance_ebm import InsuranceEBM, RelativitiesTable
-from insurance_ebm import gini, double_lift
+from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
+from insurance_gam.ebm import gini, double_lift
 
 # X_train: polars or pandas DataFrame of rating factors
 # y_train: claim counts (for Poisson frequency)
@@ -118,7 +118,7 @@ print(rt.summary())
 Exportable to Excel with one line:
 
 ```python
-rt.export_excel('relativities_v3.xlsx')  # requires uv add insurance-ebm[excel]
+rt.export_excel('relativities_v3.xlsx')  # requires uv add insurance-gam[excel]
 ```
 
 One sheet per rating factor, one row per bin. This is what goes to the pricing committee before sign-off.
@@ -132,7 +132,7 @@ Monotonicity constraints can be set at fit time (the interpretML native API). Bu
 The `MonotonicityEditor` applies isotonic regression to the stored shape function scores after fitting. This is a soft enforcement: it modifies the term scores in the fitted model, not the boosting trees themselves. The result is monotone on the data range, which is what matters for your rating engine, but the underlying model structure is not altered.
 
 ```python
-from insurance_ebm import MonotonicityEditor
+from insurance_gam.ebm import MonotonicityEditor
 
 me = MonotonicityEditor(model)
 
@@ -155,7 +155,7 @@ Use this to clean up tail noise, not to override systematic model signals. If th
 When migrating from a GLM or running models in parallel for validation, the `GLMComparison` class overlays the EBM's continuous shape function against your existing GLM factor table.
 
 ```python
-from insurance_ebm import GLMComparison
+from insurance_gam.ebm import GLMComparison
 
 # Supply pre-computed GLM relativities as a polars DataFrame
 glm_vehicle_group = pl.DataFrame({
@@ -192,7 +192,7 @@ The diagnostics module covers the standard actuarial validation toolkit, all han
 **Gini coefficient.** The normalised Gini measures ordering power: how well the model separates high-risk from low-risk policies. Normalised by the oracle Gini (sort by actuals), so it is bounded [-1, 1] and interpretable across datasets.
 
 ```python
-from insurance_ebm import gini, lorenz_curve
+from insurance_gam.ebm import gini, lorenz_curve
 
 g = gini(y_test['claim_count'], preds, exposure=y_test['exposure'])
 print(f"Gini: {g:.3f}")
@@ -207,7 +207,7 @@ An unweighted Gini on count data is almost meaningless when exposure varies acro
 **Double-lift chart.** Policies sorted by predicted risk, grouped into equal-exposure deciles. Within each decile: mean actual, mean predicted, A/E ratio.
 
 ```python
-from insurance_ebm import double_lift
+from insurance_gam.ebm import double_lift
 
 lift = double_lift(y_test['claim_count'], preds, exposure=y_test['exposure'],
                    n_bands=10)
@@ -220,7 +220,7 @@ Monotone A/E deviation across bands indicates a calibration problem (model over-
 **Calibration table.** Actual vs expected by segment - the standard A/E table for presenting validation results to a pricing committee or a model validation function.
 
 ```python
-from insurance_ebm import calibration_table
+from insurance_gam.ebm import calibration_table
 
 # By risk band
 tbl = calibration_table(
@@ -236,7 +236,7 @@ print(tbl)
 **Residual plots.** Deviance residuals by feature bin, useful for diagnosing systematic mis-estimation of features that are in the model.
 
 ```python
-from insurance_ebm import residual_plot
+from insurance_gam.ebm import residual_plot
 
 residual_plot(model, X_test, y_test['claim_count'],
               feature='driver_age', exposure=y_test['exposure'])
@@ -266,7 +266,7 @@ Three limitations worth stating plainly.
 
 The EBM's shape functions are per-feature and pairwise. They cannot capture three-way or higher-order interactions without explicit specification. For telematics data or other high-dimensional signals where complex multiway interactions are the whole point, this is a real limitation.
 
-Post-fit monotonicity editing via isotonic regression is not re-fitting. The edited model's shape function is monotone, but the model has not been re-trained with the constraint. If you need guaranteed monotonicity that is architecturally enforced rather than post-hoc corrected, consider [insurance-anam](https://github.com/burning-cost/insurance-anam), which uses Dykstra projection to guarantee monotonicity during training.
+Post-fit monotonicity editing via isotonic regression is not re-fitting. The edited model's shape function is monotone, but the model has not been re-trained with the constraint. If you need guaranteed monotonicity that is architecturally enforced rather than post-hoc corrected, consider [insurance-gam](https://github.com/burning-cost/insurance-gam), which uses Dykstra projection to guarantee monotonicity during training.
 
 The library is v0.1. Edge cases in categorical handling with rare levels, and behaviour under extreme class imbalance, have not all been characterised. Inspect shape functions and calibration tables before putting any model in production.
 
@@ -275,17 +275,17 @@ The library is v0.1. Edge cases in categorical handling with rare levels, and be
 ## Getting started
 
 ```bash
-uv add insurance-ebm[interpret]
+uv add insurance-gam[interpret]
 # or with all optional extras:
-uv add insurance-ebm[interpret,excel,glm]
+uv add insurance-gam[interpret,excel,glm]
 ```
 
 Python 3.9 or later. The `[interpret]` extra installs interpretML >= 0.7.0, which provides the EBM engine. Polars >= 0.20, NumPy >= 1.21, Matplotlib >= 3.4, and scikit-learn >= 1.0 (for isotonic regression in `MonotonicityEditor`) are required in all variants.
 
-The full workflow demo is in `notebooks/insurance_ebm_demo.py`. It runs a Poisson frequency model on a synthetic motor dataset, produces relativity tables, plots the double-lift chart, and exports everything to Excel. On a standard laptop it completes in a few minutes.
+The full workflow demo is in `notebooks/insurance_gam_demo.py`. It runs a Poisson frequency model on a synthetic motor dataset, produces relativity tables, plots the double-lift chart, and exports everything to Excel. On a standard laptop it completes in a few minutes.
 
-Source: [github.com/burning-cost/insurance-ebm](https://github.com/burning-cost/insurance-ebm)
-PyPI: [pypi.org/project/insurance-ebm](https://pypi.org/project/insurance-ebm)
+Source: [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam)
+PyPI: [pypi.org/project/insurance-gam](https://pypi.org/project/insurance-gam)
 
 The architecture builds on interpretML's `ExplainableBoostingMachine` (Nori et al., arXiv:1909.09223, 2019), which in turn builds on the GA2M framework of Lou et al. (KDD 2012). The actuarial workflow layer - relativities, diagnostics, GLM comparison - is specific to this library.
 

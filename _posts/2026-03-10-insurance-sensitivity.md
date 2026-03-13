@@ -210,7 +210,7 @@ The three tools answer different questions:
 
 **SHAP** on a GBM: which features pushed *this prediction* above or below the average, and by how much? Useful for single-policy explainability, outlier investigation, and monitoring for individual predictions that have shifted.
 
-**ANAM shape functions** ([`insurance-anam`](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)): what is the model's exact learned relationship between a feature and the log-linear predictor? The shape function is a property of the model architecture, not a post-hoc approximation.
+**ANAM shape functions** ([`insurance-gam`](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)): what is the model's exact learned relationship between a feature and the log-linear predictor? The shape function is a property of the model architecture, not a post-hoc approximation.
 
 **Shapley effects** (`insurance-sensitivity`): which factors account for the most variance in predicted premiums across the portfolio? This is a population-level statement, model-agnostic, valid for GLMs, GBMs, EBMs, or anything else with a predict method.
 

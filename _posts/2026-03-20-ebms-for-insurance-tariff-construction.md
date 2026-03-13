@@ -3,18 +3,18 @@ layout: post
 title: "EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency"
 date: 2026-03-20
 categories: [libraries, pricing]
-tags: [EBM, explainable-boosting-machine, interpretML, GLM, GAM, relativity-tables, monotonicity, gini, poisson, tweedie, gamma, insurance-ebm, tariff, motor, python]
-description: "Explainable Boosting Machines give you additive shape functions like a GAM but with GBM-level predictive accuracy. insurance-ebm wraps interpretML's EBM in the workflow a UK pricing team actually uses: multiplicative relativity tables, monotonicity editing, and GLM comparison diagnostics."
+tags: [EBM, explainable-boosting-machine, interpretML, GLM, GAM, relativity-tables, monotonicity, gini, poisson, tweedie, gamma, insurance-gam, tariff, motor, python]
+description: "Explainable Boosting Machines give you additive shape functions like a GAM but with GBM-level predictive accuracy. insurance-gam wraps interpretML's EBM in the workflow a UK pricing team actually uses: multiplicative relativity tables, monotonicity editing, and GLM comparison diagnostics."
 ---
 
 The standard UK pricing workflow has a fault line running through it. The GLM goes to production because actuaries can read the factor tables, challenge the relativities, and explain them to a pricing committee or regulator. The GBM sits in a notebook because it is more accurate but produces nothing a pricing committee can review. The team loses the lift and carries on.
 
 There is a third option that most UK pricing teams have not tried: Explainable Boosting Machines.
 
-[`insurance-ebm`](https://github.com/burning-cost/insurance-ebm) wraps interpretML's `ExplainableBoostingRegressor` in the workflow a UK pricing team actually uses: exposure-aware fitting, multiplicative relativity tables normalised to the modal risk, post-fit monotonicity editing, and GLM comparison diagnostics. The model is transparent enough to review factor by factor, accurate enough to outperform a standard GLM on most datasets, and fast enough to fit on a laptop.
+[`insurance-gam`](https://github.com/burning-cost/insurance-gam) wraps interpretML's `ExplainableBoostingRegressor` in the workflow a UK pricing team actually uses: exposure-aware fitting, multiplicative relativity tables normalised to the modal risk, post-fit monotonicity editing, and GLM comparison diagnostics. The model is transparent enough to review factor by factor, accurate enough to outperform a standard GLM on most datasets, and fast enough to fit on a laptop.
 
 ```bash
-uv add insurance-ebm
+uv add insurance-gam
 ```
 
 ---
@@ -55,8 +55,8 @@ interpretML already handles Poisson/Tweedie/Gamma loss, exposure as an init_scor
 
 ```python
 import polars as pl
-from insurance_ebm import InsuranceEBM, RelativitiesTable
-from insurance_ebm import gini, double_lift
+from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
+from insurance_gam.ebm import gini, double_lift
 
 # Fit a Poisson frequency model
 model = InsuranceEBM(loss='poisson', interactions='3x')
@@ -100,7 +100,7 @@ The constraint is enforced by the EBM's internal boosting algorithm. The shape f
 **Post-fit**, use `MonotonicityEditor`:
 
 ```python
-from insurance_ebm import MonotonicityEditor
+from insurance_gam.ebm import MonotonicityEditor
 
 me = MonotonicityEditor(model)
 scores_before = me.get_scores('ncd')
@@ -117,7 +117,7 @@ Post-fit enforcement applies isotonic regression to the stored shape function sc
 When running EBMs alongside an existing GLM - either as a challenger or as a migration check - `GLMComparison` plots the EBM shape functions against your GLM's factor table:
 
 ```python
-from insurance_ebm import GLMComparison
+from insurance_gam.ebm import GLMComparison
 import polars as pl
 
 glm_rel = pl.DataFrame({
@@ -145,7 +145,7 @@ print(cmp.divergence_summary(glm_relativities_by_feature=by_feature))
 
 **Use an EBM** when you want the accuracy gain of a boosted model and the transparency of a factor table without a distillation step. EBMs are the natural choice when you are building a new pricing model from scratch, have the time to review shape functions feature by feature, and want to take the output directly to a rating engine. They fit faster than CatBoost on the same dataset, produce directly readable factor tables, and handle monotonicity constraints natively.
 
-The one place EBMs are weaker than GBMs is high-cardinality categoricals. A GBM with target encoding handles `vehicle_make_model` with 3,000 levels naturally. An EBM's binning strategy will struggle without pre-processing. For those features you either encode externally, use entity embeddings via [insurance-nested-glm](https://github.com/burning-cost/insurance-nested-glm), or drop to SHAP extraction from a GBM.
+The one place EBMs are weaker than GBMs is high-cardinality categoricals. A GBM with target encoding handles `vehicle_make_model` with 3,000 levels naturally. An EBM's binning strategy will struggle without pre-processing. For those features you either encode externally, use entity embeddings via [insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools), or drop to SHAP extraction from a GBM.
 
 ---
 
@@ -165,14 +165,14 @@ Whether this beats a frequency x severity approach depends on your data. The sep
 ## Installation
 
 ```bash
-uv add insurance-ebm
+uv add insurance-gam
 # With Excel export:
-uv add "insurance-ebm[excel]"
+uv add "insurance-gam[excel]"
 # With statsmodels GLM integration for GLMComparison:
-uv add "insurance-ebm[glm]"
+uv add "insurance-gam[glm]"
 ```
 
-Python 3.10+. Requires `interpret >= 0.7.0`, `polars >= 0.20`, `numpy >= 1.21`. A full workflow notebook is in `notebooks/insurance_ebm_demo.py`. Source at [github.com/burning-cost/insurance-ebm](https://github.com/burning-cost/insurance-ebm).
+Python 3.10+. Requires `interpret >= 0.7.0`, `polars >= 0.20`, `numpy >= 1.21`. A full workflow notebook is in `notebooks/insurance_gam_demo.py`. Source at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam).
 
 ---
 

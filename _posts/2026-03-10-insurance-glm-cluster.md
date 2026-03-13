@@ -3,18 +3,18 @@ layout: post
 title: "500 Vehicle Makes, One Afternoon, Zero Reproducibility"
 date: 2026-03-10
 categories: [libraries, pricing, glm]
-tags: [GLM, factor-clustering, fused-lasso, r2vf, regularisation, poisson, gamma, tweedie, vehicle-make, occupation, motor, python, insurance-glm-cluster, bic, credibility]
-description: "Factor level collapsing is the highest-labour, lowest-reproducibility activity in GLM development. insurance-glm-cluster automates it using the R2VF algorithm (Ben Dror, arXiv:2503.01521) — ridge-regularised ranking followed by fused lasso fusion, with BIC lambda selection and min-exposure enforcement. No cvxpy required."
+tags: [GLM, factor-clustering, fused-lasso, r2vf, regularisation, poisson, gamma, tweedie, vehicle-make, occupation, motor, python, insurance-glm-tools, bic, credibility]
+description: "Factor level collapsing is the highest-labour, lowest-reproducibility activity in GLM development. insurance-glm-tools automates it using the R2VF algorithm (Ben Dror, arXiv:2503.01521) — ridge-regularised ranking followed by fused lasso fusion, with BIC lambda selection and min-exposure enforcement. No cvxpy required."
 ---
 
 Ask any motor pricing actuary what they spent last Tuesday doing. Somewhere in the answer you will find: collapsing vehicle makes. Taking the 500 raw categories from the policy admin system, running the one-way relativities, identifying which makes cluster at similar risk levels, and drawing the grouping boundaries by hand. Then arguing about whether Alfa Romeo should sit with Audi or BMW. Then doing it again when the data extract changes.
 
 This is the highest-labour activity in GLM development, and it produces results that vary by analyst, are difficult to audit, and cannot be reproduced without the analyst's notes. Every pricing team does it. No open-source Python tool helps with it.
 
-[`insurance-glm-cluster`](https://github.com/burning-cost/insurance-glm-cluster) automates factor level collapsing for Poisson, Gamma, and Tweedie GLMs. It implements the R2VF algorithm (Ben Dror, Earnix, arXiv:2503.01521, March 2025) — the same method that powers Earnix's proprietary Auto-GLM "Smart Grouping" feature, now available in Python under MIT licence.
+[`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools) automates factor level collapsing for Poisson, Gamma, and Tweedie GLMs. It implements the R2VF algorithm (Ben Dror, Earnix, arXiv:2503.01521, March 2025) — the same method that powers Earnix's proprietary Auto-GLM "Smart Grouping" feature, now available in Python under MIT licence.
 
 ```bash
-uv add insurance-glm-cluster
+uv add insurance-glm-tools
 ```
 
 ---
@@ -50,7 +50,7 @@ The refit step is straightforward: once the merged groupings are established, fi
 ## Using it
 
 ```python
-from insurance_glm_cluster import FactorClusterer
+from insurance_glm_tools.cluster import FactorClusterer
 
 clusterer = FactorClusterer(
     family='poisson',
@@ -161,7 +161,7 @@ The paper does not include Python code. This library is the first open-source im
 
 ---
 
-**[insurance-glm-cluster on GitHub](https://github.com/burning-cost/insurance-glm-cluster)** — MIT-licensed, PyPI.
+**[insurance-glm-tools on GitHub](https://github.com/burning-cost/insurance-glm-tools)** — MIT-licensed, PyPI.
 
 **See also:**
 - [Finding the interactions your GLM missed](/2026/02/27/finding-the-interactions-your-glm-missed/) — interaction detection after factor collapsing is done

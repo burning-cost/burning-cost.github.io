@@ -3,18 +3,18 @@ layout: post
 title: "Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing"
 date: 2026-03-11
 categories: [libraries, pricing, frequency, survival]
-tags: [mixture-cure-models, MCM, non-claimer-scoring, survival-analysis, EM-algorithm, Weibull-AFT, Maller-Zhou, incidence-latency, structural-zeros, motor, pet, home, flood, insurance-cure, python, Farewell-1982, Peng-Dear-2000]
-description: "In UK motor, roughly 40% of policyholders will never make a claim regardless of how long you observe them. Standard frequency GLMs treat them as low-risk claimers. They are not claimers at all. insurance-cure is the first Python library to fit covariate-aware mixture cure models — separating structurally immune non-claimers from susceptibles — and score the cure fraction per policyholder."
+tags: [mixture-cure-models, MCM, non-claimer-scoring, survival-analysis, EM-algorithm, Weibull-AFT, Maller-Zhou, incidence-latency, structural-zeros, motor, pet, home, flood, insurance-survival, python, Farewell-1982, Peng-Dear-2000]
+description: "In UK motor, roughly 40% of policyholders will never make a claim regardless of how long you observe them. Standard frequency GLMs treat them as low-risk claimers. They are not claimers at all. insurance-survival is the first Python library to fit covariate-aware mixture cure models — separating structurally immune non-claimers from susceptibles — and score the cure fraction per policyholder."
 ---
 
 A UK motor book typically has an observed claims frequency of around 8% per year. Run a Kaplan-Meier curve on policyholder tenure against first-claim indicator and watch what happens to the survival curve after year three: it levels off. The plateau never reaches zero. A substantial fraction of the portfolio will never claim regardless of how long you keep watching them. Standard survival models — exponential, Weibull, Cox — cannot fit a non-zero asymptote. They assume everyone eventually claims, given enough time. On a long-retention motor book, this assumption is demonstrably wrong.
 
 The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival — the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.
 
-[`insurance-cure`](https://github.com/burning-cost/insurance-cure) fills that gap.
+[`insurance-survival`](https://github.com/burning-cost/insurance-survival) fills that gap.
 
 ```bash
-pip install insurance-cure
+pip install insurance-survival
 ```
 
 ---
@@ -46,7 +46,7 @@ The MCM has an identifiability problem. If your observation window is short rela
 Maller and Zhou (1996) proposed the Qn statistic to test for sufficient follow-up before trusting any cure fraction estimate. The statistic measures the proportion of censored observations whose tenure exceeds the final event time. Under the null hypothesis of no cure fraction (standard exponential tail), this proportion converges to zero. A significant Qn provides evidence that the observed plateau reflects a genuine immune fraction.
 
 ```python
-from insurance_cure.diagnostics import sufficient_followup_test
+from insurance_survival.cure.diagnostics import sufficient_followup_test
 
 qn = sufficient_followup_test(df["tenure_months"], df["claimed"])
 print(qn.summary())
@@ -76,9 +76,9 @@ The primary workhorse is `WeibullMixtureCure`. The Weibull AFT latency is the ri
 
 ```python
 import pandas as pd
-from insurance_cure import WeibullMixtureCure
-from insurance_cure.diagnostics import sufficient_followup_test, CureScorecard
-from insurance_cure.simulate import simulate_motor_panel
+from insurance_survival.cure import WeibullMixtureCure
+from insurance_survival.cure.diagnostics import sufficient_followup_test, CureScorecard
+from insurance_survival.cure.simulate import simulate_motor_panel
 
 # Synthetic motor panel: 3000 policies, 5-year window, 40% true cure fraction
 df = simulate_motor_panel(n_policies=3000, cure_fraction=0.40, seed=42)
@@ -219,7 +219,7 @@ The `result_.summary()` output then includes SE columns for each coefficient. Th
 
 ## Where this fits the wider toolkit
 
-`insurance-cure` is not a replacement for a frequency GLM. It is a feature factory. The cure score from a fitted MCM is a new predictor you feed into your existing pricing model alongside the usual rating factors. The MCM does one thing — estimate the immune fraction — and it does it with the right statistical machinery.
+`insurance-survival` is not a replacement for a frequency GLM. It is a feature factory. The cure score from a fitted MCM is a new predictor you feed into your existing pricing model alongside the usual rating factors. The MCM does one thing — estimate the immune fraction — and it does it with the right statistical machinery.
 
 The natural place for it is in a two-stage pricing stack. Stage one: fit the MCM to the historical book. Stage two: use `predict_cure_fraction()` as a feature in your main frequency GLM or GBM, alongside NCB, driver age, vehicle age, and the other standard factors. The MCM has already extracted the structural non-claimer signal; the downstream model then blends it with the remaining frequency predictors.
 
@@ -227,7 +227,7 @@ For lines where structural zeros are the main story — UK flood home insurance,
 
 ---
 
-**[insurance-cure on GitHub](https://github.com/burning-cost/insurance-cure)** — MIT-licensed, PyPI. 158 tests, 8 modules.
+**[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)** — MIT-licensed, PyPI. 158 tests, 8 modules.
 
 ---
 
@@ -235,4 +235,4 @@ For lines where structural zeros are the main story — UK flood home insurance,
 
 - **[insurance-survival](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/)** — Retention and lapse modelling with competing risks; the customer lifetime value counterpart to the pricing-focused MCM
 - **[insurance-experience](https://github.com/burning-cost/insurance-experience)** — Individual policy-level Bayesian posterior experience rating; use alongside cure scores for policyholders with observed claim history
-- **[insurance-glm-cluster](https://github.com/burning-cost/insurance-glm-cluster)** — GLM with cluster-robust standard errors; relevant when you introduce cure scores as new features and need correct inference on their coefficients
+- **[insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools)** — GLM with cluster-robust standard errors; relevant when you introduce cure scores as new features and need correct inference on their coefficients

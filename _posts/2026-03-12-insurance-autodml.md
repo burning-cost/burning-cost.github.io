@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Continuous Treatment Causal Inference for Insurance Pricing: insurance-autodml"
+title: "Continuous Treatment Causal Inference for Insurance Pricing: insurance-causal"
 date: 2026-03-12
 categories: [techniques, libraries]
 tags: [causal-inference, double-machine-learning, price-elasticity, riesz-representer, continuous-treatment, debiased-ml, dml, fca, motor, home, retention, python]
-description: "Standard DML libraries handle binary treatments. Premium is continuous. insurance-autodml implements Automatic Debiased ML via Riesz Representers to estimate price elasticity without the GPS density estimation that explodes at the tails."
+description: "Standard DML libraries handle binary treatments. Premium is continuous. insurance-causal implements Automatic Debiased ML via Riesz Representers to estimate price elasticity without the GPS density estimation that explodes at the tails."
 ---
 
 Your pricing team has a demand model. It says retention drops as premium rises. What it almost certainly cannot tell you is: by exactly how much, with what uncertainty, and whether that effect is the same for young drivers in postcodes with thin data as it is for your core 40-year-old motor book.
@@ -13,7 +13,7 @@ The standard approaches break down here in a predictable way. Binary treatment D
 
 The generalised propensity score (GPS) approach handles continuous treatments correctly in theory. In practice, GPS requires estimating the density of the premium distribution conditional on covariates — and then dividing by it. At the tails of the premium distribution, where renewal rates are 20–30% and your high-risk book is concentrated, those density values are small. You are dividing by small numbers. The resulting weights blow up, the variance explodes, and the confidence intervals become too wide to be actionable.
 
-We built [`insurance-autodml`](https://github.com/burning-cost/insurance-autodml) — library 77 in the Burning Cost portfolio — to handle this correctly. It implements Automatic Debiased Machine Learning via Riesz Representers for continuous treatment causal inference. No density estimation. No arbitrary discretisation. Sqrt(n) inference with double robustness.
+We built [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — library 77 in the Burning Cost portfolio — to handle this correctly. It implements Automatic Debiased Machine Learning via Riesz Representers for continuous treatment causal inference. No density estimation. No arbitrary discretisation. Sqrt(n) inference with double robustness.
 
 ---
 
@@ -48,7 +48,7 @@ Any ML model can learn this — it is a regression problem. No density estimatio
 ## Three estimands
 
 ```bash
-pip install insurance-autodml
+pip install insurance-causal
 ```
 
 The library provides three estimands for continuous treatment pricing questions.
@@ -58,7 +58,7 @@ The library provides three estimands for continuous treatment pricing questions.
 The AME answers: how does a £1 premium increase affect claims or retention, on average across the portfolio?
 
 ```python
-from insurance_autodml import PremiumElasticity
+from insurance_causal.autodml import PremiumElasticity
 
 model = PremiumElasticity(
     outcome_family="poisson",   # "tweedie" for pure premium, "gaussian" for log-transformed
@@ -95,7 +95,7 @@ The dose-response curve answers a different question: what would the average cla
 This uses the Colangelo-Lee kernel-DML approach (JBES 2025, arXiv:2004.03036), which wraps kernel-weighted doubly-robust scores around the cross-fitted nuisance:
 
 ```python
-from insurance_autodml import DoseResponseCurve
+from insurance_causal.autodml import DoseResponseCurve
 import numpy as np
 
 drc = DoseResponseCurve(
@@ -127,7 +127,7 @@ The bandwidth matters for the dose-response curve in a way it does not for the A
 The policy shift estimand answers the question pricing teams actually ask before an annual renewal cycle: if we increase all premiums by 5%, what happens to aggregate claims or retention?
 
 ```python
-from insurance_autodml import PolicyShiftEffect
+from insurance_causal.autodml import PolicyShiftEffect
 
 pse = PolicyShiftEffect(outcome_family="gaussian")
 pse.fit(X, D, Y)
@@ -161,7 +161,7 @@ This is the partial derivative of E[Y|D,X] with respect to D, evaluated at the o
 The default hyperparameters — 200 trees, max_depth=6, min_samples_leaf=10 — work well on motor and home renewal books in the 50k–500k policy range. For smaller books:
 
 ```python
-from insurance_autodml import PremiumElasticity
+from insurance_causal.autodml import PremiumElasticity
 
 model = PremiumElasticity(
     outcome_family="poisson",
@@ -198,7 +198,7 @@ If you estimate the AME naively on renewals, you understate the true causal effe
 `SelectionCorrectedElasticity` handles this. The identification follows the recent extension of the Riesz framework to missing outcomes (arXiv:2601.08643). A selection model P(S=1 | X, D) is estimated jointly with the outcome nuisance, and the EIF score is IPW-corrected:
 
 ```python
-from insurance_autodml import SelectionCorrectedElasticity
+from insurance_causal.autodml import SelectionCorrectedElasticity
 
 # S: renewal indicator (1 = renewed, 0 = lapsed)
 # Y: claims — for S=0 observations, Y is ignored (can be 0 or NaN)
@@ -239,7 +239,7 @@ If the estimate is stable across Gamma=1 through Gamma=2, you have evidence that
 The `ElasticityReport` class generates HTML reports suitable for inclusion in a pricing review submission:
 
 ```python
-from insurance_autodml.report import ElasticityReport
+from insurance_causal.autodml.report import ElasticityReport
 
 report = ElasticityReport(
     model=model,
@@ -270,19 +270,19 @@ Under FCA pricing review, insurers need to demonstrate that pricing differential
 
 ## Library details
 
-`insurance-autodml` has 199 tests across all estimators, nuisance backends, and inference modes. Dependencies: numpy, pandas, scikit-learn. Optional: catboost for `nuisance_backend="catboost"`, matplotlib for `drc.plot()`.
+`insurance-causal` has 199 tests across all estimators, nuisance backends, and inference modes. Dependencies: numpy, pandas, scikit-learn. Optional: catboost for `nuisance_backend="catboost"`, matplotlib for `drc.plot()`.
 
 ```bash
-pip install insurance-autodml
+pip install insurance-causal
 
 # With CatBoost nuisance backend:
-pip install "insurance-autodml[catboost]"
+pip install "insurance-causal[catboost]"
 
 # With plotting:
-pip install "insurance-autodml[plots]"
+pip install "insurance-causal[plots]"
 ```
 
-Source and tests: [github.com/burning-cost/insurance-autodml](https://github.com/burning-cost/insurance-autodml).
+Source and tests: [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal).
 
 The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local Average Treatment Effects in the Frequentist and Bayesian Settings*, *Annals of Statistics*; the ForestRiesz construction and the missing-outcome extension are from arXiv:2601.08643; the dose-response curve implementation follows Colangelo & Lee, *Journal of Business & Economic Statistics* (2025), arXiv:2004.03036.
 

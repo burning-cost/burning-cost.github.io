@@ -3,8 +3,8 @@ layout: post
 title: "Frequency and Severity Are Two Outputs. You Have One Prediction Interval."
 date: 2026-03-26
 categories: [libraries, pricing, uncertainty]
-tags: [conformal-prediction, multivariate, joint-prediction, frequency-severity, Solvency-II, SCR, Fan-Sesia, LWC, coordinate-wise-standardization, Consumer-Duty, FCA, GLM, GBM, Poisson, Gamma, python, motor, home, insurance-multivariate-conformal]
-description: "Every UK pricing team runs separate GLMs for frequency and severity. They have marginal prediction intervals for each — 95% coverage on frequency, 95% on severity — and no guarantee whatsoever about the joint outcome. insurance-multivariate-conformal implements Fan & Sesia's coordinate-wise standardization to give you a single prediction set covering both simultaneously."
+tags: [conformal-prediction, multivariate, joint-prediction, frequency-severity, Solvency-II, SCR, Fan-Sesia, LWC, coordinate-wise-standardization, Consumer-Duty, FCA, GLM, GBM, Poisson, Gamma, python, motor, home, insurance-conformal]
+description: "Every UK pricing team runs separate GLMs for frequency and severity. They have marginal prediction intervals for each — 95% coverage on frequency, 95% on severity — and no guarantee whatsoever about the joint outcome. insurance-conformal implements Fan & Sesia's coordinate-wise standardization to give you a single prediction set covering both simultaneously."
 ---
 
 Every UK motor pricing team runs a Poisson GLM for frequency and a Gamma GLM for severity. You get a point estimate from each: λ̂ = 0.09 claims per year, μ̂ = £2,400 per claim. The pure premium is £216 and it goes into your rating engine.
@@ -13,10 +13,10 @@ You might also have prediction intervals. If you use `insurance-conformal`, you 
 
 Their conjunction is not guaranteed. If frequency and severity each have 5% miscoverage probability, the probability that at least one of them fails could be as high as 10%. It depends on the dependence structure between the two errors — and you have no control over it.
 
-This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-multivariate-conformal`](https://github.com/burning-cost/insurance-multivariate-conformal) implements joint coverage control for multi-output insurance models.
+This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements joint coverage control for multi-output insurance models.
 
 ```bash
-pip install insurance-multivariate-conformal
+pip install insurance-conformal
 ```
 
 ---
@@ -99,7 +99,7 @@ Here is a realistic motor pricing workflow on a held-out calibration set of 3,00
 
 ```python
 import numpy as np
-from insurance_multivariate_conformal import JointConformalPredictor
+from insurance_conformal.multivariate import JointConformalPredictor
 
 # freq_glm: fitted statsmodels Poisson GLM with log link
 # sev_gbm: fitted LightGBM model on claims with severity > 0
@@ -153,7 +153,7 @@ print(joint_set.upper['severity'][:3])    # [7221.0, 6104.0, 4388.0]
 Validate on a test set:
 
 ```python
-from insurance_multivariate_conformal import coverage_report
+from insurance_conformal.multivariate import coverage_report
 
 report = coverage_report(predictor, X_test, Y_test, exposure=exposure_test)
 print(report)
@@ -204,7 +204,7 @@ For the three-dimensional case (flood, fire, subsidence), coordinate-wise standa
 To see how much LWC gains over Bonferroni on your specific portfolio:
 
 ```python
-from insurance_multivariate_conformal import compare_methods
+from insurance_conformal.multivariate import compare_methods
 
 results = compare_methods(
     models={'frequency': freq_glm, 'severity': sev_gbm},
@@ -238,7 +238,7 @@ Hong (arXiv:2503.03659, March 2025) demonstrated this gap explicitly: on persona
 `SolvencyCapitalEstimator` wraps `JointConformalPredictor` with `alpha=0.005` and `one_sided=True`. The joint prediction set becomes [0, U_freq] × [0, U_sev], and the conservative SCR per policy is U_freq × U_sev:
 
 ```python
-from insurance_multivariate_conformal import SolvencyCapitalEstimator, scr_report
+from insurance_conformal.multivariate import SolvencyCapitalEstimator, scr_report
 
 scr = SolvencyCapitalEstimator(
     models={'frequency': freq_glm, 'severity': sev_gbm},
@@ -306,15 +306,15 @@ Three bugs found during build are worth noting: a deviance-as-width units error 
 - 198 tests, MIT-licensed, Python 3.10+
 
 ```bash
-pip install insurance-multivariate-conformal
+pip install insurance-conformal
 ```
 
-Source at [github.com/burning-cost/insurance-multivariate-conformal](https://github.com/burning-cost/insurance-multivariate-conformal).
+Source at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).
 
 ---
 
 ## See also
 
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — univariate conformal prediction for single-output insurance models. If you have a Tweedie model or a single combined GBM, start here. [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
-- [`insurance-conformal-risk`](https://github.com/burning-cost/insurance-conformal-risk) — controls expected monetary loss rather than coverage probability. PremiumSufficiencyController bounds E[shortfall/premium] ≤ α. Composable with joint intervals: use `insurance-multivariate-conformal` for the joint set, then `PremiumSufficiencyController` on the upper severity bound. [Coverage Is the Wrong Guarantee for Pricing Actuaries](https://burning-cost.github.io/2026/03/25/insurance-conformal-risk/)
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — controls expected monetary loss rather than coverage probability. PremiumSufficiencyController bounds E[shortfall/premium] ≤ α. Composable with joint intervals: use `insurance-conformal` for the joint set, then `PremiumSufficiencyController` on the upper severity bound. [Coverage Is the Wrong Guarantee for Pricing Actuaries](https://burning-cost.github.io/2026/03/25/insurance-conformal-risk/)
 - [`insurance-evt`](https://github.com/burning-cost/insurance-evt) — when the tail is the point. Extreme value theory for XL layer pricing and return level estimation. EVT models the marginal tail; multivariate conformal quantifies joint uncertainty across outputs. [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/25/insurance-evt/)

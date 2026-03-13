@@ -199,11 +199,11 @@ One point on scope: BCF is a Bayesian black box. It is harder to audit under Sol
 
 ---
 
-## When to use this vs. insurance-elasticity
+## When to use this vs. insurance-causal
 
 These are not competing tools. They answer different questions.
 
-Use DML ([`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity)) when the treatment is the actual premium level — a continuous variable — and you have some exogenous price variation from an A/B test or the GIPP structural break as a natural experiment. DML gives you a scalar elasticity for the rate optimiser.
+Use DML ([`insurance-causal`](https://github.com/burning-cost/insurance-causal)) when the treatment is the actual premium level — a continuous variable — and you have some exogenous price variation from an A/B test or the GIPP structural break as a natural experiment. DML gives you a scalar elasticity for the rate optimiser.
 
 Use BCF (this library) when:
 
@@ -264,6 +264,6 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 
 ## See Also
 
-- **[insurance-elasticity](https://github.com/burning-cost/insurance-elasticity)** — DML price elasticity for continuous treatment (actual premium level). Use when you have exogenous price variation.
-- **[insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for FCA EP25/2 evidence packs.
-- **[insurance-changepoint](https://github.com/burning-cost/insurance-changepoint)** — Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.
+- **[insurance-causal](https://github.com/burning-cost/insurance-causal)** — DML price elasticity for continuous treatment (actual premium level). Use when you have exogenous price variation.
+- **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for FCA EP25/2 evidence packs.
+- **[insurance-dynamics](https://github.com/burning-cost/insurance-dynamics)** — Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.

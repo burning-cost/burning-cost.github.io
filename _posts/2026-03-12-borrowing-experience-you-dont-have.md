@@ -3,16 +3,16 @@ layout: post
 title: "Borrowing Experience You Don't Have"
 date: 2026-03-12
 categories: [libraries, pricing, transfer-learning]
-tags: [transfer-learning, GLMTransfer, GBMTransfer, CANNTransfer, thin-data, MMD, negative-transfer, CatBoost, Poisson, Gamma, CANN, Tian-Feng, python, insurance-transfer]
+tags: [transfer-learning, GLMTransfer, GBMTransfer, CANNTransfer, thin-data, MMD, negative-transfer, CatBoost, Poisson, Gamma, CANN, Tian-Feng, python, insurance-thin-data]
 description: "Transfer learning for thin-segment insurance pricing. The Tian-Feng two-step GLM algorithm, CatBoost source-as-offset GBM transfer, and CANN fine-tuning — with mandatory MMD covariate shift testing and a negative transfer diagnostic that tells you when to stop."
 ---
 
 Every pricing actuary has faced this problem. A segment exists — young drivers, exotic pets, a brand-new telematics portfolio — where the exposure is thin enough that fitting a standalone model produces something embarrassing. The confidence intervals are wide, the parameters are unstable, and you are essentially guessing. The standard response is to credibility-blend with the main book, which works up to a point, but credibility weighting is a blunt instrument when what you actually need is a model that borrows structure, not just a scalar adjustment.
 
-Transfer learning is the more principled answer. [`insurance-transfer`](https://github.com/burning-cost/insurance-transfer) implements three approaches drawn from the academic literature, wrapped in a consistent API.
+Transfer learning is the more principled answer. [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) implements three approaches drawn from the academic literature, wrapped in a consistent API.
 
 ```bash
-uv add insurance-transfer
+uv add insurance-thin-data
 ```
 
 ---
@@ -42,7 +42,7 @@ The effect is that where the target data is consistent with the source, the debi
 `GLMTransfer` is the first Python implementation. The R package `glmtrans` (on CRAN) covers the Gaussian and binomial families; this library adds Poisson and Gamma for frequency and severity modelling.
 
 ```python
-from insurance_transfer import GLMTransfer
+from insurance_thin_data.transfer import GLMTransfer
 
 # source = main book, target = young driver segment
 model = GLMTransfer(family="poisson", alpha=0.1)
@@ -65,7 +65,7 @@ The intuition: if your source model gives you a reasonable estimate of the basel
 This is something sophisticated actuaries already do informally — "start from the main book rate and fit adjustments for the young driver segment" — but `GBMTransfer` formalises it with CatBoost and makes the offset construction explicit.
 
 ```python
-from insurance_transfer import GBMTransfer
+from insurance_thin_data.transfer import GBMTransfer
 
 # pre-train on main book
 source_model = GBMTransfer()
@@ -89,7 +89,7 @@ Combined Actuarial Neural Networks (CANN, Schelldorfer and Wüthrich 2019) pair 
 This is closest in spirit to how transfer learning works in NLP — a large language model is pre-trained on a broad corpus, then fine-tuned on a small task-specific dataset. The difference is that insurance pricing has domain structure (the GLM embedding) that anchors the fine-tuning and keeps the model from drifting into implausible territory.
 
 ```python
-from insurance_transfer import CANNTransfer
+from insurance_thin_data.transfer import CANNTransfer
 
 model = CANNTransfer(hidden_layers=[64, 32], freeze_after="layer_2")
 model.fit_source(X_source, y_source, exposure_source)
@@ -105,12 +105,12 @@ predict = model.predict(X_new)
 
 Transfer learning can go wrong. If the source and target distributions are too different, pooling information from the source will hurt more than it helps — a failure mode called negative transfer.
 
-`insurance-transfer` includes two diagnostic tools that we consider mandatory parts of any transfer workflow.
+`insurance-thin-data` includes two diagnostic tools that we consider mandatory parts of any transfer workflow.
 
 **CovariateShiftTest** uses a mixed-kernel Maximum Mean Discrepancy (MMD) test to measure how different the source and target covariate distributions are. The kernel is RBF for continuous variables and indicator-based for categorical — this handles the typical insurance feature mix without pre-processing. A high MMD statistic is a warning: the source data may be misleading.
 
 ```python
-from insurance_transfer import CovariateShiftTest
+from insurance_thin_data.transfer import CovariateShiftTest
 
 test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
 result = test.fit(X_source, X_target)
@@ -121,7 +121,7 @@ print(result.p_value)         # test against permutation null
 **NegativeTransferDiagnostic** does the direct comparison: fit both a transfer model and a target-only model, then compare Poisson deviance on held-out target data. The NTG metric (negative transfer gain) is the deviance difference: negative means the transfer model is better, positive means target-only wins. If it is positive, use the target-only model.
 
 ```python
-from insurance_transfer import NegativeTransferDiagnostic
+from insurance_thin_data.transfer import NegativeTransferDiagnostic
 
 diag = NegativeTransferDiagnostic(transfer_model=glm_transfer, baseline_family="poisson")
 result = diag.evaluate(X_target_test, y_target_test, exposure_test)
@@ -137,7 +137,7 @@ This is not optional. We have seen cases — particularly in specialty lines whe
 ## TransferPipeline: putting it together
 
 ```python
-from insurance_transfer import TransferPipeline, GLMTransfer
+from insurance_thin_data.transfer import TransferPipeline, GLMTransfer
 
 pipeline = TransferPipeline(
     method=GLMTransfer(family="poisson"),
@@ -193,7 +193,7 @@ Tian and Feng (JASA, 2023, 118(544), 2684–2697) is the core reference for `GLM
 
 ---
 
-**[insurance-transfer on GitHub](https://github.com/burning-cost/insurance-transfer)** — MIT-licensed, PyPI. For the segments your main book has never seen.
+**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI. For the segments your main book has never seen.
 
 ---
 

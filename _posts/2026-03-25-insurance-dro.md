@@ -77,13 +77,13 @@ PS21/5 also tightened the link between ENBP and demand model quality. The demand
 
 ## Using insurance-dro
 
-The library connects directly to `insurance-elasticity` and `insurance-optimise` outputs. The key input is `demand_samples`: an `(N, S)` matrix of `S` bootstrap or posterior samples from your demand model across `N` policies. This matrix is the empirical distribution `P_N`. The Wasserstein ball is constructed around it.
+The library connects directly to `insurance-causal` and `insurance-optimise` outputs. The key input is `demand_samples`: an `(N, S)` matrix of `S` bootstrap or posterior samples from your demand model across `N` policies. This matrix is the empirical distribution `P_N`. The Wasserstein ball is constructed around it.
 
 ```python
 import numpy as np
 from insurance_dro import AmbiguitySet, RobustOptimiser
 
-# Inputs from insurance-elasticity / your demand model
+# Inputs from insurance-causal / your demand model
 rates          = np.array([...])           # current premiums, shape (N,)
 technical_price = np.array([...])          # technical cost, shape (N,)
 demand_samples  = np.array([...])          # bootstrap demand samples, shape (N, S)
@@ -152,7 +152,7 @@ The `worst_case_demand_plot()` diagnostic shows, for each policy, what the worst
 
 ## Calibrating the radius
 
-`from_elasticity_se()` is the recommended starting point. If you are using `insurance-elasticity` for DML elasticity estimation, the standard errors from that library flow directly into this factory with no manual tuning.
+`from_elasticity_se()` is the recommended starting point. If you are using `insurance-causal` for DML elasticity estimation, the standard errors from that library flow directly into this factory with no manual tuning.
 
 If you are not using DML standard errors, three alternative approaches:
 

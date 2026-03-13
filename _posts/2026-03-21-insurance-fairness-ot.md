@@ -3,8 +3,8 @@ layout: post
 title: "Optimal Transport for Discrimination-Free Insurance Pricing"
 date: 2026-03-21
 categories: [libraries, pricing, fairness]
-tags: [fairness, discrimination, optimal-transport, Wasserstein, Lindholm, marginalisation, FCA, EP25/2, consumer-duty, proxy-discrimination, insurance-fairness-ot, python, motor]
-description: "The FCA's EP25/2 consultation set out a coherent framework for discrimination-free pricing. The underlying mathematics — Lindholm marginalisation and Wasserstein barycenters — had no open-source Python implementation. insurance-fairness-ot fixes that."
+tags: [fairness, discrimination, optimal-transport, Wasserstein, Lindholm, marginalisation, FCA, EP25/2, consumer-duty, proxy-discrimination, insurance-fairness, python, motor]
+description: "The FCA's EP25/2 consultation set out a coherent framework for discrimination-free pricing. The underlying mathematics — Lindholm marginalisation and Wasserstein barycenters — had no open-source Python implementation. insurance-fairness fixes that."
 ---
 
 The FCA's CP23/22 and subsequent EP25/2 established that insurers must be able to demonstrate their pricing does not unfairly discriminate against protected characteristics — and that proxy discrimination through correlated variables counts. The regulatory intent is clear. The technical implementation is not.
@@ -13,10 +13,10 @@ The standard response from pricing teams is a variant of: remove the protected c
 
 The correct technical framework is well-established in the academic literature: Lindholm, Richman, Tsanakas, and Wüthrich (2022) provide the mathematical foundation in "Discrimination-Free Insurance Pricing" (ASTIN Bulletin). The core insight is that proxy discrimination is not about model inputs — it is about the causal structure between features, protected characteristics, and outcomes. Removing postcode does not remove gender discrimination if postcode correlates with gender and has a causal path through gender to claim frequency.
 
-[`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) implements the Lindholm et al. framework plus Wasserstein barycenter pricing: three methods for producing discrimination-free prices, with FCA EP25/2-aligned documentation output. 145 tests, MIT-licensed.
+[`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) implements the Lindholm et al. framework plus Wasserstein barycenter pricing: three methods for producing discrimination-free prices, with FCA EP25/2-aligned documentation output. 145 tests, MIT-licensed.
 
 ```bash
-uv add insurance-fairness-ot
+uv add insurance-fairness
 ```
 
 ---
@@ -44,7 +44,7 @@ The practical implementation requires constructing the marginal distribution. Th
 ## Usage
 
 ```python
-from insurance_fairness_ot import (
+from insurance_fairness.optimal_transport import (
     LindholmMarginaliser,
     CausalPathDecomposer,
     WassersteinBarycenterPricer,
@@ -110,8 +110,8 @@ This is not a theoretical concern. In thin segments — young male drivers, for 
 
 ## Relationship to insurance-fairness
 
-The existing [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) library handles proxy discrimination detection and audit documentation: it tells you whether your model discriminates. `insurance-fairness-ot` handles the adjustment: it produces discrimination-free prices. The two libraries are designed to be used in sequence — detect with `insurance-fairness`, adjust with `insurance-fairness-ot`.
+The `insurance_fairness.diagnostics` subpackage handles proxy discrimination detection and audit documentation: it tells you whether your model discriminates. This library — `insurance_fairness.optimal_transport` — handles the adjustment: it produces discrimination-free prices. The two are designed to be used in sequence — detect first, then adjust.
 
 ---
 
-**[insurance-fairness-ot on GitHub](https://github.com/burning-cost/insurance-fairness-ot)** — 145 tests, MIT-licensed, PyPI.
+**[insurance-fairness on GitHub](https://github.com/burning-cost/insurance-fairness)** — 145 tests, MIT-licensed, PyPI.

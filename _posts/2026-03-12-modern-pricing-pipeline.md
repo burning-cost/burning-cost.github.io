@@ -279,7 +279,7 @@ FCA PS21/5 imposes equivalent new business pricing (ENBP): a renewing customer c
 A linear programming formulation handles all of these simultaneously:
 
 ```python
-from rate_optimiser import RateOptimiser, ENBPConstraint, LossRatioConstraint
+from insurance_optimise import RateOptimiser, ENBPConstraint, LossRatioConstraint
 
 optimiser = RateOptimiser(
     technical_price=df["technical_price"],
@@ -313,7 +313,7 @@ PRA SS1/23 is currently formal guidance for banks and building societies on mode
 A validation report that will survive scrutiny needs to cover: discriminatory power (lifted Gini, by segment), calibration (A/E by decile and by rating factor), stability (Gini over time, PSI on feature distributions), sensitivity (coefficient stability under data perturbation), and a clear statement of model limitations and mitigants.
 
 ```python
-from insurance_validation import PricingModelValidator
+from insurance_governance.validation import PricingModelValidator
 
 validator = PricingModelValidator(
     model=production_model,
@@ -419,7 +419,7 @@ Model risk management for pricing means having a live inventory of all productio
 PRA SS1/23 defines a structured model lifecycle: development, validation, approval, ongoing monitoring, retirement. Each stage has documentation requirements. The documentation needs to be findable, not in someone's personal OneDrive, and version-controlled alongside the model artefacts.
 
 ```python
-from insurance_mrm import ModelInventory, ModelRiskTier
+from insurance_governance.mrm import ModelInventory, ModelRiskTier
 
 inventory = ModelInventory(db_path="/data/model_registry.db")
 
@@ -442,7 +442,7 @@ report.to_pdf("model_risk_exec_summary_Q1_2026.pdf")
 Fairness auditing sits alongside this. The FCA's Consumer Duty requires that pricing outcomes do not systematically disadvantage customers with protected characteristics as a proxy. The practical implementation is a structured audit against protected and proxy-protected features, with a documented rationale for any disparate impact that is present:
 
 ```python
-from insurance_mrm import FairnessAuditor
+from insurance_governance.mrm import FairnessAuditor
 
 auditor = FairnessAuditor(
     protected_features=["age_band", "postcode_deprivation_decile"],
@@ -510,14 +510,14 @@ The complete workflow, in order:
 4. SHAP relativities to make the GBM explainable (`shap-relativities`)
 5. Interaction detection to find what the GLM missed (`insurance-interactions`)
 6. Conformal intervals for prediction uncertainty (`insurance-conformal`)
-7. Calibration testing — balance test, auto-calibration, Murphy decomposition (`insurance-calibration`)
+7. Calibration testing — balance test, auto-calibration, Murphy decomposition (`insurance-monitoring`)
 8. Distributional models and quantile regression for tail risk (`insurance-distributional`, `insurance-quantile`)
 9. Causal elasticity for defensible demand modelling (`insurance-causal`)
-10. Constrained optimisation and the efficient frontier (`rate-optimiser`)
-11. Formal validation report for PRA SS1/23 (`insurance-validation`)
+10. Constrained optimisation and the efficient frontier (`insurance-optimise`)
+11. Formal validation report for PRA SS1/23 (`insurance-governance`)
 12. Drift monitoring with a three-layer framework (`insurance-monitoring`)
 13. Champion/challenger with SHA-256 routing and quote logging (`insurance-deploy`)
-14. Model inventory and fairness audit for Consumer Duty (`insurance-mrm`)
+14. Model inventory and fairness audit for Consumer Duty (`insurance-governance`)
 
 None of these steps is optional if you are pricing personal lines in the UK in 2026. Some can be implemented more lightly than others. But skipping the causal inference step means your demand model is producing confident estimates of the wrong quantity. Skipping the audit trail means you are exposed on ICOBS 6B. Skipping the drift monitoring means your model may be deteriorating for months before anyone notices.
 

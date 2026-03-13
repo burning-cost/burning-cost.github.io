@@ -195,7 +195,7 @@ The tooling gap this library addresses is real. Octo, CMT, and The Floow are dom
 
 The core methodology follows Jiang & Shi (2024, NAAJ 28(4):822-839), who applied a discrete-time HMM to classify trips by latent driving state and used the stationary distribution to estimate long-run loss frequency. Our continuous-time extension follows the generator matrix approach standard in survival analysis and, within insurance, in Markov chain NCD models. The combined actuarial-telematics neural network in Gao, Wang & Wüthrich (2021, Machine Learning 111:1787-1827) motivates treating telematics features as an additive GLM layer rather than a replacement for traditional factors. Wüthrich (2017, EAJ 7:89-108) established the foundational result that speed-acceleration feature spaces from GPS data predict claim frequency better than driver age alone — the result that made the entire field credible.
 
-The Bühlmann-Straub credibility aggregation follows the implementation in our [`credibility`](https://github.com/burning-cost/credibility) library, which was the natural dependency.
+The Bühlmann-Straub credibility aggregation follows the implementation in our [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) library, which was the natural dependency.
 
 ---
 

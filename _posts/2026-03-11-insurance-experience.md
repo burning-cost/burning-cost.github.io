@@ -272,9 +272,9 @@ This gap matters. UK pricing teams working in Python and Databricks need these m
 
 ## Related libraries
 
-**[`credibility`](https://github.com/burning-cost/credibility)** implements Bühlmann-Straub at group level — rating segment, broker group, vehicle class. It is the complement to `insurance-experience` at different granularity. If you want to blend a new model's relativities with incumbent rates in thin segments, use `credibility`. If you want to differentiate individual renewal premiums within a segment, use `insurance-experience`.
+**[`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)** implements Bühlmann-Straub at group level — rating segment, broker group, vehicle class. It is the complement to `insurance-experience` at different granularity. If you want to blend a new model's relativities with incumbent rates in thin segments, use `insurance-credibility`. If you want to differentiate individual renewal premiums within a segment, use `insurance-experience`.
 
-**[`experience-rating`](https://github.com/burning-cost/experience-rating)** covers the contractual NCD/bonus-malus structure — Markov chain transitions, stationary distributions, claiming threshold optimisation. It models what the NCD system *does*, not what an actuarially correct system *should* produce. The two libraries are complementary: `experience-rating` tells you how your NCD grid behaves; `insurance-experience` tells you what the grid *should* be doing if it were actuarially correct.
+**[`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)** covers the contractual NCD/bonus-malus structure — Markov chain transitions, stationary distributions, claiming threshold optimisation. It models what the NCD system *does*, not what an actuarially correct system *should* produce. The two libraries are complementary: `insurance-credibility` tells you how your NCD grid behaves; `insurance-experience` tells you what the grid *should* be doing if it were actuarially correct.
 
 ---
 

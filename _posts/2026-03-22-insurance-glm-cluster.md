@@ -3,18 +3,18 @@ layout: post
 title: "500 Vehicle Makes, One Afternoon, Zero Reproducibility"
 date: 2026-03-22
 categories: [libraries, pricing, glm]
-tags: [factor-clustering, GLM, fused-lasso, R2VF, vehicle-make, categorical-banding, insurance-glm-cluster, python, poisson, BIC, monotonicity]
-description: "Every UK motor pricing actuary has spent a week in Excel collapsing vehicle makes. The judgement calls stack up: which makes merge, on what basis, with what documentation. insurance-glm-cluster automates this with the R2VF algorithm — regularised regression ranking for nominal factors, split-coded fused lasso for fusion, unpenalised GLM refit. Poisson, Gamma, Tweedie. BIC lambda selection. Monotonicity enforcement. 156 tests."
+tags: [factor-clustering, GLM, fused-lasso, R2VF, vehicle-make, categorical-banding, insurance-glm-tools, python, poisson, BIC, monotonicity]
+description: "Every UK motor pricing actuary has spent a week in Excel collapsing vehicle makes. The judgement calls stack up: which makes merge, on what basis, with what documentation. insurance-glm-tools automates this with the R2VF algorithm — regularised regression ranking for nominal factors, split-coded fused lasso for fusion, unpenalised GLM refit. Poisson, Gamma, Tweedie. BIC lambda selection. Monotonicity enforcement. 156 tests."
 ---
 
 The problem is not that you have 500 vehicle makes. The problem is that you cannot fit 500 dummies reliably, so you need to collapse them, and collapsing them manually means one actuary's judgment about whether Skoda and SEAT should share a band is baked into the model, undocumented, and wrong in a way that will not be obvious until someone runs the analysis three years later and gets a different answer.
 
 UK motor pricing has hundreds of vehicle makes, over 350 occupation codes, and postcode districts that vary in claims frequency by a factor of four. Actuaries spend weeks at the start of every model cycle grouping these factors by hand. The groupings are sensible, but they are not reproducible, they are not statistically optimal, and they require re-doing every time the data changes.
 
-[`insurance-glm-cluster`](https://github.com/burning-cost/insurance-glm-cluster) automates factor level clustering for insurance GLMs. It implements the R2VF algorithm (Ben Dror, arXiv:2503.01521, 2025): a two-step regularised approach that works for both ordered factors (vehicle age, NCD) and unordered factors (vehicle make, occupation). 156 tests, MIT-licensed, on PyPI.
+[`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools) automates factor level clustering for insurance GLMs. It implements the R2VF algorithm (Ben Dror, arXiv:2503.01521, 2025): a two-step regularised approach that works for both ordered factors (vehicle age, NCD) and unordered factors (vehicle make, occupation). 156 tests, MIT-licensed, on PyPI.
 
 ```bash
-uv add insurance-glm-cluster
+uv add insurance-glm-tools
 ```
 
 ---
@@ -38,7 +38,7 @@ The computational advantage over generalised fused lasso is significant. All-pai
 ## Usage
 
 ```python
-from insurance_glm_cluster import FactorClusterer
+from insurance_glm_tools.cluster import FactorClusterer
 
 clusterer = FactorClusterer(
     family='poisson',
@@ -152,7 +152,7 @@ The Step 2 approximation — using sklearn Lasso on a transformed design matrix 
 
 The manual approach to factor grouping produces decisions that cannot be reconstructed. "SEAT and Skoda were merged because they have similar risk profiles in our book" is not a reproducible statement. The analyst who made that call may not be there in three years. The data generating that decision changes every model cycle. The grouping cannot be validated against alternative groupings.
 
-`insurance-glm-cluster` produces a documented, reproducible grouping. The level maps are serialisable. The lambda path is stored. The BIC criterion at each lambda is available for audit. Re-running the analysis on updated data produces a new grouping that follows the same procedure with no analyst judgment required.
+`insurance-glm-tools` produces a documented, reproducible grouping. The level maps are serialisable. The lambda path is stored. The BIC criterion at each lambda is available for audit. Re-running the analysis on updated data produces a new grouping that follows the same procedure with no analyst judgment required.
 
 This matters for model governance. PRA SS1/23 expects model risk documentation. FCA Consumer Duty expects fair value evidence. A factor grouping methodology that is statistically principled, documented, and reproducible is more defensible than one that is not — particularly when the Treating Customers Fairly implications of vehicle group relativities are being reviewed.
 
@@ -168,4 +168,4 @@ It does not implement the Henckaerts et al. (arXiv:1904.10890) tree-based groupi
 
 ---
 
-**[insurance-glm-cluster on GitHub](https://github.com/burning-cost/insurance-glm-cluster)** — 156 tests, MIT-licensed, PyPI.
+**[insurance-glm-tools on GitHub](https://github.com/burning-cost/insurance-glm-tools)** — 156 tests, MIT-licensed, PyPI.

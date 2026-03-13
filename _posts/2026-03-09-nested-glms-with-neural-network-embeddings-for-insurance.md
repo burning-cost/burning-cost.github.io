@@ -16,7 +16,7 @@ The same problem at postcode sector level is worse. Nine thousand-plus postcode 
 
 The academic solution exists. Wang, Shi and Cao published a nested GLM framework in the North American Actuarial Journal in 2025 that addresses exactly this. It builds on entity embedding work by Shi and Shi (NAAJ 2023) and Avanzi et al.'s GLMMNet (ASTIN 2024). Until now there has been no Python implementation.
 
-`insurance-nested-glm` is that implementation.
+`insurance-glm-tools` is that implementation.
 
 ---
 
@@ -39,30 +39,30 @@ The nesting is what makes this work. The embedding and territory steps extract s
 ## In practice
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[geo]"    # geopandas + spopt for territory clustering
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[geo]"    # geopandas + spopt for territory clustering
 ```
 
 The geo optional dependency pulls in geopandas and spopt (the spatial optimisation library that provides SKATER). This is the part with GDAL friction. If you do not have GDAL installed system-wide, the geopandas install will fail. On Ubuntu:
 
 ```bash
 sudo apt-get install gdal-bin libgdal-dev
-uv add "insurance-nested-glm[geo]"
+uv add "insurance-glm-tools[geo]"
 ```
 
 On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[geo]` works fine.
 
-The PyTorch dependency is real. `insurance-nested-glm` pulls in PyTorch for the embedding training. Expect 2GB or so of disk, depending on your platform. For CPU-only use:
+The PyTorch dependency is real. `insurance-glm-tools` pulls in PyTorch for the embedding training. Expect 2GB or so of disk, depending on your platform. For CPU-only use:
 
 ```bash
-uv add insurance-nested-glm --extra-index-url https://download.pytorch.org/whl/cpu
+uv add insurance-glm-tools --extra-index-url https://download.pytorch.org/whl/cpu
 ```
 
 ### Running the pipeline
 
 ```python
 import pandas as pd
-from insurance_nested_glm import NestedGLMPipeline
+from insurance_glm_tools.nested import NestedGLMPipeline
 
 # df: a DataFrame with one row per policy-year
 # Required columns: claims, exposure, plus your rating factors
@@ -130,7 +130,7 @@ The Phase 2 embedding is where the statistical novelty sits. It is worth underst
 The `EmbeddingTrainer` takes the Phase 1 GLM predictions as an offset and trains a neural network where the only learned parameters are the embedding vectors for the high-cardinality categoricals. The network architecture is intentionally minimal: an embedding lookup, a log-sum aggregation of the active embedding vectors, added to the log of the GLM offset. The loss is Poisson deviance.
 
 ```python
-from insurance_nested_glm import EmbeddingTrainer
+from insurance_glm_tools.nested import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
     categoricals=["vehicle_make", "postcode_sector"],
@@ -181,7 +181,7 @@ This is NP-hard in general. SKATER uses a heuristic that is fast in practice but
 The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with fewer than `min_claims` observed claims is merged into its spatially adjacent neighbour with the most similar embedding centroid.
 
 ```python
-from insurance_nested_glm import TerritoryClusterer
+from insurance_glm_tools.nested import TerritoryClusterer
 
 clusterer = TerritoryClusterer(
     n_territories=40,
@@ -242,11 +242,11 @@ This is also why the nested GLM is different from simply running a GLM on target
 ## Get the library
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[geo]"    # adds geopandas + spopt
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[geo]"    # adds geopandas + spopt
 ```
 
-Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
+Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
 
 ---
 

@@ -3,18 +3,18 @@ layout: post
 title: "Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing"
 date: 2026-03-12
 categories: [libraries, pricing, survival, retention, home-insurance]
-tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, Gray-test, IPCW, retention, lapse, home-insurance, motor, insurance-competing-risks, python]
-description: "Standard survival analysis treats competing events as censored observations. In insurance — where policies lapse, MTC, and NTU are distinct behaviours, and home claims can be fire, flood, EoW, or subsidence — this is wrong in a way that systematically biases your CIF estimates and misdirects your pricing. insurance-competing-risks brings Fine-Gray subdistribution hazard regression to Python for the first time."
+tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, Gray-test, IPCW, retention, lapse, home-insurance, motor, insurance-survival, python]
+description: "Standard survival analysis treats competing events as censored observations. In insurance — where policies lapse, MTC, and NTU are distinct behaviours, and home claims can be fire, flood, EoW, or subsidence — this is wrong in a way that systematically biases your CIF estimates and misdirects your pricing. insurance-survival brings Fine-Gray subdistribution hazard regression to Python for the first time."
 ---
 
 There is a mistake buried in most UK insurers' retention models. It is not exotic: it is a standard decision made in lifelines or scikit-survival when you set up a Cox proportional hazards model and treat every exit event the same way. When a policyholder leaves via mid-term cancellation rather than voluntary lapse, you mark them as censored for the lapse analysis and move on. The same pattern appears in home insurance peril modelling — fire claim analysis treats the policy that had an escape of water as censored. Motor claim models treat the windscreen claimant as censored for the own-damage analysis.
 
 This is the competing risks problem, and treating it as censoring biases your estimated event probabilities upward. The scale of the bias depends on how common the competing events are; in retention, where MTC, NTU, and lapse may each account for a quarter or more of exits, the effect is not small.
 
-The fix has existed since 1999 — Fine & Gray published their subdistribution hazard model in JASA that year — but until now there has been no pure-Python, pip-installable implementation. [`insurance-competing-risks`](https://github.com/burning-cost/insurance-competing-risks) is that implementation.
+The fix has existed since 1999 — Fine & Gray published their subdistribution hazard model in JASA that year — but until now there has been no pure-Python, pip-installable implementation. [`insurance-survival`](https://github.com/burning-cost/insurance-survival) is that implementation.
 
 ```bash
-uv add insurance-competing-risks
+uv add insurance-survival
 ```
 
 ---
@@ -34,7 +34,7 @@ $$F_k(t) = \sum_{t_i \le t} \frac{d_{k,i}}{n_i} \cdot S(t_{i-})$$
 where $d_{k,i}$ is the number of cause-$k$ events at time $t_i$, $n_i$ is the total risk set, and $S(t)$ is the Kaplan-Meier overall survival treating all event types as events. Unlike `1 - KM`, this properly partitions the total event probability across causes. It is available in the library:
 
 ```python
-from insurance_competing_risks import AalenJohansenFitter
+from insurance_survival.competing_risks import AalenJohansenFitter
 
 # E: 0=censored (active), 1=voluntary lapse, 2=MTC, 3=NTU
 aj_lapse = AalenJohansenFitter()
@@ -50,7 +50,7 @@ aj_mtc.plot(ax=ax)
 The stacked CIF view is often more informative than individual cause plots:
 
 ```python
-from insurance_competing_risks.cif import plot_stacked_cif
+from insurance_survival.competing_risks.cif import plot_stacked_cif
 
 plot_stacked_cif(
     df["policy_months"],
@@ -80,7 +80,7 @@ This is the quantity pricing actuaries actually want. Not a hazard rate, but a p
 The estimation wrinkle is that the subdistribution risk set is non-standard. Subjects who have experienced a competing event are kept in the risk set (whereas in standard Cox they would be censored out). This would break the partial likelihood unless they are downweighted using inverse probability of censoring weighting (IPCW). The library implements this correctly:
 
 ```python
-from insurance_competing_risks import FineGrayFitter
+from insurance_survival.competing_risks import FineGrayFitter
 
 fg = FineGrayFitter(penaliser=0.1)
 fg.fit(
@@ -137,7 +137,7 @@ where $F_k(t=12|x)$ is the Fine-Gray predicted probability of peril $k$ being th
 Before fitting separate Fine-Gray models per subgroup, it is worth asking whether the CIFs actually differ across groups. The log-rank test is wrong here — it tests equality of cause-specific hazards, not CIFs. Gray (1988) derived the correct test, and the library implements it:
 
 ```python
-from insurance_competing_risks import gray_test
+from insurance_survival.competing_risks import gray_test
 
 # Does voluntary lapse CIF differ between direct and broker policyholders?
 result = gray_test(
@@ -162,8 +162,8 @@ A competing-risks model needs competing-risks evaluation metrics. The standard s
 The library provides both, correctly implemented:
 
 ```python
-from insurance_competing_risks import competing_risks_brier_score, competing_risks_c_index
-from insurance_competing_risks.metrics import integrated_brier_score
+from insurance_survival.competing_risks import competing_risks_brier_score, competing_risks_c_index
+from insurance_survival.competing_risks.metrics import integrated_brier_score
 import numpy as np
 
 times = np.arange(1, 13)  # months 1-12
@@ -198,7 +198,7 @@ The Brier score benchmark: a model that always predicts $F_k(t) = 0.5$ scores 0.
 Calibration is assessed via `calibration_curve()`, which groups subjects by quantile of predicted probability and compares mean predicted CIF to the Aalen-Johansen empirical CIF within each group:
 
 ```python
-from insurance_competing_risks.metrics import calibration_curve, plot_calibration
+from insurance_survival.competing_risks.metrics import calibration_curve, plot_calibration
 
 cal = calibration_curve(
     cif_test,
@@ -217,7 +217,7 @@ plot_calibration(cal, title="Lapse CIF calibration at 12 months")
 
 Lifelines has had `AalenJohansenFitter` since v0.27 and it is perfectly adequate for non-parametric CIF estimation. It does not have Fine-Gray regression — this has been an open request since at least GitHub issue #539 (2018). scikit-survival added `cumulative_incidence_competing_risks()` in v0.24 (February 2025), but also has no Fine-Gray model. The `cmprsk` Python package wraps R's `cmprsk` via `rpy2` — which means it requires an R runtime installed at path, which is not an option for most production Python environments. `pydts` has Fine-Gray in discrete time, which is the wrong model class for continuous policy lifetime data.
 
-This is a genuine gap: no pure-Python, pip-installable library provides Fine-Gray regression with IPCW, proper Aalen-Johansen CIF with confidence bands, Gray's test, and competing-risks calibration metrics. `insurance-competing-risks` is 2,323 lines across seven modules, with 150 tests verifying numerical accuracy against the Klein & Moeschberger (1997) bone marrow transplant benchmark dataset and against simulated data with known coefficients.
+This is a genuine gap: no pure-Python, pip-installable library provides Fine-Gray regression with IPCW, proper Aalen-Johansen CIF with confidence bands, Gray's test, and competing-risks calibration metrics. `insurance-survival` is 2,323 lines across seven modules, with 150 tests verifying numerical accuracy against the Klein & Moeschberger (1997) bone marrow transplant benchmark dataset and against simulated data with known coefficients.
 
 ---
 
@@ -235,7 +235,7 @@ This is a genuine gap: no pure-Python, pip-installable library provides Fine-Gra
 
 ## When to use it
 
-Use `insurance-competing-risks` when:
+Use `insurance-survival` when:
 
 1. You are modelling retention and have at least two distinct exit types (lapse, MTC, NTU) that you want to price separately
 2. You are building a home insurance peril model and want to account for the fact that EoW, fire, and subsidence compete within a policy year
@@ -253,7 +253,7 @@ The Milhaud & Dutang (2018) paper is the clearest actuarial evidence that this m
 
 ---
 
-**[insurance-competing-risks on GitHub](https://github.com/burning-cost/insurance-competing-risks)** — MIT-licensed, PyPI. 2,323 lines, 150 tests, 7 modules.
+**[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)** — MIT-licensed, PyPI. 2,323 lines, 150 tests, 7 modules.
 
 ---
 

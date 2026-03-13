@@ -4,8 +4,8 @@ title: "Actuarial Neural Additive Models: Exact Interpretability with Tweedie Lo
 date: 2026-03-17
 author: Burning Cost
 categories: [pricing, machine-learning]
-tags: [ANAM, NAM, interpretability, monotonicity, GLM, Poisson, Tweedie, FCA, Consumer-Duty, PRA, python, insurance-anam]
-description: "SHAP is a post-hoc approximation. EBM has no native Tweedie loss and no guaranteed monotonicity. We built insurance-anam — the first pip-installable Actuarial Neural Additive Model — to give UK pricing actuaries exact interpretability with distributional losses and mathematically guaranteed constraints."
+tags: [ANAM, NAM, interpretability, monotonicity, GLM, Poisson, Tweedie, FCA, Consumer-Duty, PRA, python, insurance-gam]
+description: "SHAP is a post-hoc approximation. EBM has no native Tweedie loss and no guaranteed monotonicity. We built insurance-gam — the first pip-installable Actuarial Neural Additive Model — to give UK pricing actuaries exact interpretability with distributional losses and mathematically guaranteed constraints."
 ---
 
 Your GBM is not interpretable. You already know that. The SHAP values explain it approximately, after the fact, by attributing fractions of each prediction to each feature — a useful diagnostic, not a property of the model itself.
@@ -14,7 +14,7 @@ But here is the thing you may not have noticed: your "interpretable model" proba
 
 If your interpretable model is an Explainable Boosting Machine, its shape functions are exact, genuinely intrinsic to the architecture, but they can be jagged in ways that produce artificial pricing discontinuities, it has no native Tweedie or Gamma loss for severity modelling, and its monotonicity constraints are post-hoc edits that break the model's internal consistency the moment you apply them. If your interpretable model is a GAM fitted inside a commercial pricing tool, the interpretability is real but the fitting is proprietary and the model building block is locked to the vendor's platform.
 
-The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025), resolves all three problems. We have built [`insurance-anam`](https://github.com/burning-cost/insurance-anam), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
+The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025), resolves all three problems. We have built [`insurance-gam`](https://github.com/burning-cost/insurance-gam), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
 
 ---
 
@@ -44,7 +44,7 @@ The problem with soft monotonicity penalties (including the approach used in mos
 
 This is a real problem for UK pricing, not a theoretical one. Small monotonicity violations in low-exposure regions are hard to catch in validation. They create pricing anomalies that only surface when a broker or an aggregator finds the rate inversion and exploits it.
 
-`insurance-anam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. This is applied every gradient step via `model.project_monotone_weights()`. The result is not "very few violations" but zero violations, provable by inspection of the shape function curve.
+`insurance-gam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. This is applied every gradient step via `model.project_monotone_weights()`. The result is not "very few violations" but zero violations, provable by inspection of the shape function curve.
 
 ---
 
@@ -54,7 +54,7 @@ GLMs use Poisson deviance for claim frequency and Tweedie deviance for pure prem
 
 The EBM (InterpretML) supports Poisson and Gamma objectives but not native Tweedie loss for combined frequency-severity modelling. The original NAM paper (Agarwal et al. 2021, NeurIPS) uses MSE throughout — it was designed for regression and classification on general tabular data, not actuarial targets.
 
-`insurance-anam` implements:
+`insurance-gam` implements:
 - **Poisson deviance**: the standard actuarial frequency loss, with exposure as offset
 - **Tweedie deviance**: with configurable power parameter `p` (p=1 is Poisson, p=2 is Gamma, 1 < p < 2 is compound Poisson-Gamma)
 - **Gamma deviance**: for claim severity models
@@ -66,13 +66,13 @@ The exposure handling is identical to a GLM: `log(exposure)` is added as a fixed
 ## Using the library
 
 ```bash
-uv add insurance-anam
+uv add insurance-gam
 ```
 
 The sklearn-compatible API makes the transition from GLM or GBM straightforward:
 
 ```python
-from insurance_anam import ANAM
+from insurance_gam.anam import ANAM
 
 model = ANAM(
     loss="poisson",          # or "tweedie", "gamma"
@@ -142,7 +142,7 @@ For model validation under PRA SS1/23, the shape function is the primary documen
 One of the most practically useful features for a team migrating from a GLM is the GLM comparison overlay. The ANAM can show you where its shape functions agree with your existing GLM factors and where they diverge:
 
 ```python
-from insurance_anam import GLMComparison
+from insurance_gam.anam import GLMComparison
 
 # glm_params: dict of {feature_name: {level: log_relativity}}
 # in the format you'd get from statsmodels or a GLM fit
@@ -158,11 +158,11 @@ The overlay plots the ANAM continuous shape function against the GLM step functi
 
 The honest competitive picture:
 
-**EBM (InterpretML)** is more mature, faster to train (C++ backend, no PyTorch overhead), and the lookup-table prediction format is extremely fast at inference. Its two concrete gaps versus `insurance-anam`: no native Tweedie deviance for combined frequency-severity modelling, and monotonicity constraints are post-hoc edits rather than architectural guarantees.
+**EBM (InterpretML)** is more mature, faster to train (C++ backend, no PyTorch overhead), and the lookup-table prediction format is extremely fast at inference. Its two concrete gaps versus `insurance-gam`: no native Tweedie deviance for combined frequency-severity modelling, and monotonicity constraints are post-hoc edits rather than architectural guarantees.
 
 **SHAP on a GBM** gives you approximate post-hoc interpretability, useful for understanding which features drive specific predictions but not the same as a continuous shape function, and not equivalent to GLM parameters in log space without additional work.
 
-**Commercial GAM/GLM platforms** (Akur8 and equivalents) provide shape-function interpretability in a validated UI with audit trails. The model building block they expose is essentially what `insurance-anam` provides as open-source Python.
+**Commercial GAM/GLM platforms** (Akur8 and equivalents) provide shape-function interpretability in a validated UI with audit trails. The model building block they expose is essentially what `insurance-gam` provides as open-source Python.
 
 ---
 
@@ -195,12 +195,12 @@ Third, **151 tests is not the same as production battle-hardening.** The library
 ## Getting started
 
 ```bash
-uv add insurance-anam
+uv add insurance-gam
 ```
 
 Python 3.10 or later. Dependencies: PyTorch, scikit-learn, Polars, NumPy, Matplotlib.
 
-The source is at [github.com/burning-cost/insurance-anam](https://github.com/burning-cost/insurance-anam). The architecture is based on Laub, Pho and Wong, 'An Interpretable Deep Learning Model for General Insurance Pricing', arXiv:2509.08467, September 2025, with the distributional loss suite, monotonicity projection, and sklearn API added for production use.
+The source is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The architecture is based on Laub, Pho and Wong, 'An Interpretable Deep Learning Model for General Insurance Pricing', arXiv:2509.08467, September 2025, with the distributional loss suite, monotonicity projection, and sklearn API added for production use.
 
 Start with the `examples/` directory: the `frequency_model.py` script runs a Poisson ANAM on synthetic motor data and exports shape function plots and JSON tables. The `glm_comparison.py` script shows the overlay between an ANAM and a statsmodels GLM fit on the same data. Both run in under ten minutes on a laptop.
 

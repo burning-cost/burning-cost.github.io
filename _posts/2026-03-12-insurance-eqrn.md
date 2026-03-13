@@ -3,14 +3,14 @@ layout: post
 title: "Your EVT Model Has One Tail. EQRN Has One Per Risk."
 date: 2026-03-12
 categories: [libraries, pricing, severity, reinsurance]
-tags: [EVT, extreme-value-theory, GPD, neural-networks, extreme-quantile, EQRN, covariate-dependent, tail-modelling, XL-pricing, reinsurance, Solvency-II, TPBI, motor, insurance-eqrn, python, pytorch]
-description: "Standard GPD fitting gives you one shape parameter for the whole book. EQRN gives you xi(x) and sigma(x) per risk profile. insurance-eqrn is the first Python implementation of Pasche & Engelke (2024) — covariate-dependent GPD tail modelling via neural networks."
+tags: [EVT, extreme-value-theory, GPD, neural-networks, extreme-quantile, EQRN, covariate-dependent, tail-modelling, XL-pricing, reinsurance, Solvency-II, TPBI, motor, insurance-quantile, python, pytorch]
+description: "Standard GPD fitting gives you one shape parameter for the whole book. EQRN gives you xi(x) and sigma(x) per risk profile. insurance-quantile is the first Python implementation of Pasche & Engelke (2024) — covariate-dependent GPD tail modelling via neural networks."
 ---
 
-Standard GPD fitting gives you one shape parameter and one scale parameter for the whole book. That is fine for portfolio capital reporting. It is not fine for per-risk XL pricing, TPBI reserving by driver profile, or any use case where tail heaviness varies across your portfolio. EQRN — Extreme Quantile Regression Neural Networks, from Pasche & Engelke's 2024 paper in the *Annals of Applied Statistics* — solves this. [`insurance-eqrn`](https://github.com/burning-cost/insurance-eqrn) is the first Python implementation.
+Standard GPD fitting gives you one shape parameter and one scale parameter for the whole book. That is fine for portfolio capital reporting. It is not fine for per-risk XL pricing, TPBI reserving by driver profile, or any use case where tail heaviness varies across your portfolio. EQRN — Extreme Quantile Regression Neural Networks, from Pasche & Engelke's 2024 paper in the *Annals of Applied Statistics* — solves this. [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) is the first Python implementation.
 
 ```bash
-pip install insurance-eqrn
+pip install insurance-quantile
 ```
 
 ---
@@ -46,7 +46,7 @@ EQRN fits in two stages. Neither step can be skipped without breaking the other.
 Fit a quantile regression at a moderate level — tau_0 = 0.8 or 0.85 — using K-fold cross-validation. The critical requirement is that the intermediate quantile predictions used in Step 2 must be out-of-fold. In-sample predictions give artificially accurate thresholds, and the network in Step 2 then learns the wrong exceedance set.
 
 ```python
-from insurance_eqrn import EQRNModel
+from insurance_quantile.eqrn import EQRNModel
 
 model = EQRNModel(
     tau_0=0.85,
@@ -102,7 +102,7 @@ exceed_prob = model.predict_exceedance_prob(X_test, y_large=1_000_000)
 The three plots you need before trusting any EQRN output:
 
 ```python
-from insurance_eqrn import EQRNDiagnostics
+from insurance_quantile.eqrn import EQRNDiagnostics
 
 diag = EQRNDiagnostics(model)
 
@@ -181,7 +181,7 @@ The gap EQRN fills: covariate-dependent extrapolation to extreme quantile levels
 
 ## The Python gap this fills
 
-The CRAN EQRN package (Pasche, March 2025) is the only prior implementation. Four conditional EVT methods exist in the literature: EQRN (neural networks), GBEX (gradient boosted trees, Velthoen et al. 2023, *Extremes*), ERF (extremal random forests, Gnecco et al. 2024, *JASA*), and evgam (GAMs for extremes, Youngman 2019). All four are R-only. `insurance-eqrn` is the first Python implementation of any of them. The simulation study in Pasche & Engelke (2024) shows EQRN outperforms the other three methods in high-dimensional settings (p > 10 covariates), which is representative of most insurance rating factor sets.
+The CRAN EQRN package (Pasche, March 2025) is the only prior implementation. Four conditional EVT methods exist in the literature: EQRN (neural networks), GBEX (gradient boosted trees, Velthoen et al. 2023, *Extremes*), ERF (extremal random forests, Gnecco et al. 2024, *JASA*), and evgam (GAMs for extremes, Youngman 2019). All four are R-only. `insurance-quantile` is the first Python implementation of any of them. The simulation study in Pasche & Engelke (2024) shows EQRN outperforms the other three methods in high-dimensional settings (p > 10 covariates), which is representative of most insurance rating factor sets.
 
 ---
 
@@ -195,7 +195,7 @@ The CRAN EQRN package (Pasche, March 2025) is the only prior implementation. Fou
 
 ---
 
-**[insurance-eqrn on GitHub](https://github.com/burning-cost/insurance-eqrn)** — MIT-licensed, PyPI. PyTorch GPDNet, 119 tests.
+**[insurance-quantile on GitHub](https://github.com/burning-cost/insurance-quantile)** — MIT-licensed, PyPI. PyTorch GPDNet, 119 tests.
 
 ---
 

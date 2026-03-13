@@ -3,18 +3,18 @@ layout: post
 title: "Composite Severity Regression: Getting the Tail Right Without Throwing Away the Body"
 date: 2026-03-23
 categories: [libraries, pricing, severity]
-tags: [composite-models, spliced-distributions, severity, heavy-tail, GPD, Burr, mode-matching, ILF, motor-BI, EL, reinsurance, python, insurance-composite, lognormal, gamma, MLE]
-description: "A Gamma GLM systematically underestimates large motor BI claims because no single parametric family fits both the £5k bulk of claims and the £500k+ tail. insurance-composite implements spliced severity models — lognormal or gamma body below a threshold, GPD or Burr XII above — with the threshold varying by policyholder covariates via mode-matching. 2,818 lines, 106 tests."
+tags: [composite-models, spliced-distributions, severity, heavy-tail, GPD, Burr, mode-matching, ILF, motor-BI, EL, reinsurance, python, insurance-severity, lognormal, gamma, MLE]
+description: "A Gamma GLM systematically underestimates large motor BI claims because no single parametric family fits both the £5k bulk of claims and the £500k+ tail. insurance-severity implements spliced severity models — lognormal or gamma body below a threshold, GPD or Burr XII above — with the threshold varying by policyholder covariates via mode-matching. 2,818 lines, 106 tests."
 ---
 
 Every UK motor BI pricing model has the same structural problem. The Gamma GLM fits the body of the claim distribution well — the £3k–50k range where 90% of claims live. Then a £400k claim appears, and the Gamma's thin tail gives it a probability mass that is off by an order of magnitude. You know this, so you apply an aggregate large loss loading, maybe 15% or 18%, derived from some tail factor that your predecessor calibrated three years ago on a different book of business. The loading does not condition on vehicle group, driver age, or region. It is the same for a young driver in a modified VW as for a fleet manager in a mid-range saloon.
 
 This is how large loss misallocation compounds. The young driver is underpriced at high limits. The fleet account is overpriced. The aggregate is approximately right, but the cross-subsidy is not visible until you lose the fleet account to a competitor who priced it better.
 
-[`insurance-composite`](https://github.com/burning-cost/insurance-composite) takes a different approach: fit a composite (spliced) severity model that treats the body and tail as genuinely different distributions, connected at a threshold. The body is lognormal or gamma. The tail is GPD or Burr XII. The threshold can vary by policyholder. 2,818 lines of source, 106 tests passing. MIT-licensed, on PyPI.
+[`insurance-severity`](https://github.com/burning-cost/insurance-severity) takes a different approach: fit a composite (spliced) severity model that treats the body and tail as genuinely different distributions, connected at a threshold. The body is lognormal or gamma. The tail is GPD or Burr XII. The threshold can vary by policyholder. 2,818 lines of source, 106 tests passing. MIT-licensed, on PyPI.
 
 ```bash
-uv add insurance-composite
+uv add insurance-severity
 ```
 
 ---
@@ -78,7 +78,7 @@ The main model for covariate-dependent threshold pricing:
 
 ```python
 import numpy as np
-from insurance_composite import LognormalBurrComposite
+from insurance_severity.composite import LognormalBurrComposite
 
 # y: 1-D array of positive claim amounts (e.g. motor BI in £)
 model = LognormalBurrComposite(threshold_method="mode_matching", n_starts=5)
@@ -111,7 +111,7 @@ The threshold of £87k emerged from the data via mode-matching — we did not sp
 When you have a natural threshold from the treaty structure — the XL attachment at £250k, or the deductible at £100k — use fixed threshold with GPD:
 
 ```python
-from insurance_composite import LognormalGPDComposite
+from insurance_severity.composite import LognormalGPDComposite
 
 model = LognormalGPDComposite(
     threshold=250_000,
@@ -159,7 +159,7 @@ where h(α, δ) is a shape-parameter-only function. The threshold is proportiona
 
 ```python
 import pandas as pd
-from insurance_composite import CompositeSeverityRegressor, LognormalBurrComposite
+from insurance_severity.composite import CompositeSeverityRegressor, LognormalBurrComposite
 
 # X_train: DataFrame with covariates
 # Columns here: vehicle_group (0/1 encoded), driver_age_std, region_north
@@ -194,7 +194,7 @@ The regression coefficient of 0.421 on vehicle_group means the tail scale parame
 For GPD regression with a fixed global threshold:
 
 ```python
-from insurance_composite import CompositeSeverityRegressor, LognormalGPDComposite
+from insurance_severity.composite import CompositeSeverityRegressor, LognormalGPDComposite
 
 reg_gpd = CompositeSeverityRegressor(
     composite=LognormalGPDComposite(
@@ -242,7 +242,7 @@ The ILF at the basic limit is by definition 1.000. Below the basic limit the ILF
 Before fitting, check whether a composite structure is warranted. A mean excess plot that curves upward at some threshold and then flattens (or continues linearly) is evidence of a heavy tail:
 
 ```python
-from insurance_composite import LognormalBurrComposite
+from insurance_severity.composite import LognormalBurrComposite
 
 model = LognormalBurrComposite(threshold_method="mode_matching")
 model.fit(y)
@@ -277,7 +277,7 @@ Heavy tails in the residuals above the threshold indicate the tail distribution 
 ### AIC/BIC comparison
 
 ```python
-from insurance_composite import (
+from insurance_severity.composite import (
     LognormalBurrComposite,
     LognormalGPDComposite,
     GammaGPDComposite,
@@ -336,4 +336,4 @@ Neither group has published a Python implementation. The R packages (evmix, ReIn
 
 ---
 
-**[insurance-composite on GitHub](https://github.com/burning-cost/insurance-composite)** — 106 tests, MIT-licensed, PyPI. Library #47.
+**[insurance-severity on GitHub](https://github.com/burning-cost/insurance-severity)** — 106 tests, MIT-licensed, PyPI. Library #47.
