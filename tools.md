@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tools
 title: "Open-Source Python Libraries for Insurance Pricing"
 description: "58 Python libraries for UK non-life pricing — from SHAP relativities and Bayesian credibility to causal inference, conformal prediction, and FCA Consumer Duty compliance."
 permalink: /tools/
@@ -477,15 +477,111 @@ permalink: /tools/
 }
 </script>
 
-58 active Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.
-
-All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is [burning-cost](https://github.com/burning-cost).
+<div class="tools-intro">
+  <p>59 active Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
+  <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
+</div>
 
 ---
 
-## Core Modelling
+## Essential Libraries
+
+If you're new here, these ten are the best place to start. They solve problems most UK pricing teams hit first, have clear documentation, and work without needing to understand the full stack first.
+
+<div class="essential-grid" id="essential-grid">
+
+<div class="essential-card" data-name="shap-relativities" data-desc="Extract multiplicative rating factor tables from CatBoost models using SHAP values">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/shap-relativities" target="_blank">shap-relativities</a></div>
+  <div class="essential-card-desc">Extract multiplicative rating factor tables from CatBoost models. Same output format as exp(&beta;) from a GLM: factor tables, confidence intervals, exposure weighting.</div>
+  <div class="essential-card-tag">Model interpretation</div>
+</div>
+
+<div class="essential-card" data-name="insurance-cv" data-desc="Temporally correct cross-validation for insurance models with IBNR buffers">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-cv" target="_blank">insurance-cv</a></div>
+  <div class="essential-card-desc">Walk-forward cross-validation that respects policy time structure. IBNR buffers prevent immature periods from contaminating validation folds. sklearn-compatible.</div>
+  <div class="essential-card-tag">Validation</div>
+</div>
+
+<div class="essential-card" data-name="insurance-monitoring" data-desc="Model drift detection PSI CSI actual vs expected Gini z-test">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-monitoring" target="_blank">insurance-monitoring</a></div>
+  <div class="essential-card-desc">Three-layer monitoring for deployed pricing models. Exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, Gini z-test to distinguish recalibration from refit signals.</div>
+  <div class="essential-card-tag">Monitoring</div>
+</div>
+
+<div class="essential-card" data-name="insurance-governance" data-desc="Model validation reports PRA SS1/23 Gini calibration double-lift">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-governance" target="_blank">insurance-governance</a></div>
+  <div class="essential-card-desc">PRA SS1/23-compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test. HTML/JSON output for model governance committees.</div>
+  <div class="essential-card-tag">Governance</div>
+</div>
+
+<div class="essential-card" data-name="credibility" data-desc="Buhlmann-Straub credibility weighting Python CatBoost Polars">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/credibility" target="_blank">credibility</a></div>
+  <div class="essential-card-desc">Bühlmann-Straub credibility in Python with CatBoost and Polars. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</div>
+  <div class="essential-card-tag">Credibility</div>
+</div>
+
+<div class="essential-card" data-name="insurance-interactions" data-desc="Automated GLM interaction detection CANN NID SHAP interaction values">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-interactions" target="_blank">insurance-interactions</a></div>
+  <div class="essential-card-desc">Detect, quantify, and present interaction effects that a main-effects-only GLM misses. CANN neural test, NID scoring, and SHAP interaction values.</div>
+  <div class="essential-card-tag">Model building</div>
+</div>
+
+<div class="essential-card" data-name="insurance-causal" data-desc="Double machine learning causal inference deconfounding rating factors">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a></div>
+  <div class="essential-card-desc">Double machine learning for deconfounding rating factors. Separates genuine risk signal from correlated association — relevant wherever factors correlate with distribution channel or policyholder behaviour.</div>
+  <div class="essential-card-tag">Causal inference</div>
+</div>
+
+<div class="essential-card" data-name="insurance-fairness" data-desc="Proxy discrimination auditing FCA EP25/2 Consumer Duty bias metrics">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></div>
+  <div class="essential-card-desc">Proxy discrimination auditing for insurance pricing. FCA EP25/2-aligned, Consumer Duty compliant. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics.</div>
+  <div class="essential-card-tag">Regulatory</div>
+</div>
+
+<div class="essential-card" data-name="insurance-conformal" data-desc="Distribution-free prediction intervals GBM GLM Solvency II SCR">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a></div>
+  <div class="essential-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce tighter intervals. Solvency II SCR bounds included.</div>
+  <div class="essential-card-tag">Uncertainty</div>
+</div>
+
+<div class="essential-card" data-name="insurance-optimise" data-desc="Constrained portfolio rate optimisation SLSQP FCA ENBP efficient frontier">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-optimise" target="_blank">insurance-optimise</a></div>
+  <div class="essential-card-desc">Constrained portfolio rate optimisation via SLSQP. Enforces FCA ENBP constraints, movement caps per segment. Outputs the efficient frontier as a rate change recommendation with a JSON audit trail.</div>
+  <div class="essential-card-tag">Optimisation</div>
+</div>
+
+</div>
+
+---
+
+## Search and Filter
+
+<div class="tools-search-row">
+  <input type="search" id="tools-search" class="tools-search-box" placeholder="Search libraries by name or description&hellip;" autocomplete="off">
+  <div class="tools-filter-btns" id="cat-filters">
+    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn" data-cat="model-building">Model Building</button>
+    <button class="cat-btn" data-cat="validation-monitoring">Validation &amp; Monitoring</button>
+    <button class="cat-btn" data-cat="causal-inference">Causal Inference</button>
+    <button class="cat-btn" data-cat="fairness-regulation">Fairness &amp; Regulation</button>
+    <button class="cat-btn" data-cat="credibility-thin-data">Credibility &amp; Thin Data</button>
+    <button class="cat-btn" data-cat="distributional-tail">Distributional &amp; Tail Risk</button>
+    <button class="cat-btn" data-cat="optimisation-strategy">Optimisation &amp; Strategy</button>
+    <button class="cat-btn" data-cat="time-series-trends">Time Series &amp; Trends</button>
+    <button class="cat-btn" data-cat="other">Other</button>
+  </div>
+  <div class="tools-search-count" id="tools-search-count"></div>
+</div>
+
+<div id="tools-no-results" class="tools-no-results" style="display:none">No libraries match that search.</div>
+
+---
+
+## Model Building
 
 Tools for building and interpreting pricing models.
+
+<div class="tool-group" data-cat="model-building">
 
 | Library | What it does |
 |---|---|
@@ -498,12 +594,17 @@ Tools for building and interpreting pricing models.
 | [insurance-poisson-mixture-nn](https://github.com/burning-cost/insurance-poisson-mixture-nn) | Neural Poisson mixture for structural zero-claimers — PM-DNN, pi(x) at-risk score |
 | [insurance-copula](https://github.com/burning-cost/insurance-copula) | Copula models — D-vine temporal dependence, two-part occurrence/severity |
 | [insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity) | Global sensitivity analysis — Song 2016 Shapley effects, exposure-weighted variance decomposition |
+| [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics |
+
+</div>
 
 ---
 
 ## Distributional & Tail Risk
 
 Beyond point estimates: full distribution modelling and tail risk quantification.
+
+<div class="tool-group" data-cat="distributional-tail">
 
 | Library | What it does |
 |---|---|
@@ -517,11 +618,15 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-ilf](https://github.com/burning-cost/insurance-ilf) | MBBEFD exposure curves, Swiss Re families, ILF tables, per-risk XL pricing |
 | [insurance-nflow](https://github.com/burning-cost/insurance-nflow) | Normalising flows for severity — NSF with Student-t tail transform, TVaR, ILF, conditional factor flow |
 
+</div>
+
 ---
 
 ## Credibility & Thin Data
 
 When you don't have enough data to trust a standard GLM.
+
+<div class="tool-group" data-cat="credibility-thin-data">
 
 | Library | What it does |
 |---|---|
@@ -533,11 +638,15 @@ When you don't have enough data to trust a standard GLM.
 | [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) | Pricing techniques for low-volume segments where standard GLM fitting is unreliable |
 | [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) | Whittaker-Henderson 1D/2D smoothing with REML lambda selection, Bayesian CIs, Poisson PIRLS |
 
+</div>
+
 ---
 
 ## Causal Inference
 
 Separating what causes what from what correlates with what.
+
+<div class="tool-group" data-cat="causal-inference">
 
 | Library | What it does |
 |---|---|
@@ -550,11 +659,15 @@ Separating what causes what from what correlates with what.
 | [insurance-counterfactual-sets](https://github.com/burning-cost/insurance-counterfactual-sets) | Weighted conformal ITE for individual counterfactuals — Lei & Candès 2021, FCA ENBP harm reports |
 | [insurance-uplift](https://github.com/burning-cost/insurance-uplift) | Heterogeneous treatment effects for retention — CausalForestDML CATE, Qini/AUUC, PolicyTree, ENBP constraint |
 
+</div>
+
 ---
 
-## Regulatory & Fairness
+## Fairness & Regulation
 
 Proxy discrimination, Consumer Duty, and FCA evidence packs.
+
+<div class="tool-group" data-cat="fairness-regulation">
 
 | Library | What it does |
 |---|---|
@@ -563,59 +676,52 @@ Proxy discrimination, Consumer Duty, and FCA evidence packs.
 | [insurance-recourse](https://github.com/burning-cost/insurance-recourse) | Algorithmic recourse for FCA Consumer Duty in UK personal lines insurance |
 | [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift) | Density ratio correction for book shifts — CatBoost/RuLSIF/KLIEP, LR-QR conformal, FCA SUP 15.3 diagnostics |
 
+</div>
+
 ---
 
-## Uncertainty Quantification
+## Validation & Monitoring
 
-Prediction intervals and conformal methods that come with coverage guarantees.
+Prediction intervals, conformal methods, and post-deployment monitoring.
+
+<div class="tool-group" data-cat="validation-monitoring">
 
 | Library | What it does |
 |---|---|
+| [insurance-cv](https://github.com/burning-cost/insurance-cv) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers |
 | [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds |
 | [insurance-conformal-fraud](https://github.com/burning-cost/insurance-conformal-fraud) | Conformal anomaly detection for claims fraud — BH FDR control, integrative conformal p-values, Mondrian stratification |
 | [insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts) | Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Poisson/NB scores |
+| [insurance-deploy](https://github.com/burning-cost/insurance-deploy) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test |
+| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test |
+| [insurance-governance](https://github.com/burning-cost/insurance-governance) | Model governance — PRA SS1/23 validation reports, model risk management, risk tier scoring |
+
+</div>
 
 ---
 
-## Rate Optimisation & Pricing Strategy
+## Optimisation & Pricing Strategy
 
 From rate change recommendations to live price experimentation.
+
+<div class="tool-group" data-cat="optimisation-strategy">
 
 | Library | What it does |
 |---|---|
 | [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier |
 | [insurance-dro](https://github.com/burning-cost/insurance-dro) | Distributionally robust rate optimisation — Wasserstein/KL/chi2 ambiguity sets, price-of-robustness frontier |
 | [insurance-online](https://github.com/burning-cost/insurance-online) | Bandit algorithms for GIPP-compliant price experimentation — UCB1, Thompson Sampling, LinUCB, ENBP constraints |
-
----
-
-## Geography & Spatial
-
-Postcode and territory pricing.
-
-| Library | What it does |
-|---|---|
-| [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics |
-
----
-
-## Deployment & Monitoring
-
-Putting models into production and keeping them there.
-
-| Library | What it does |
-|---|---|
-| [insurance-cv](https://github.com/burning-cost/insurance-cv) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers |
-| [insurance-deploy](https://github.com/burning-cost/insurance-deploy) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test |
-| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test |
-| [insurance-governance](https://github.com/burning-cost/insurance-governance) | Model governance — PRA SS1/23 validation reports, model risk management, risk tier scoring |
 | [insurance-reconcile](https://github.com/burning-cost/insurance-reconcile) | Hierarchical forecast reconciliation — PremiumWeightedMinTrace, LossRatioReconciler, FreqSevReconciler |
 
+</div>
+
 ---
 
-## Trend & Time Series
+## Time Series & Trends
 
 Inflation, reporting delays, and dynamic pricing.
+
+<div class="tool-group" data-cat="time-series-trends">
 
 | Library | What it does |
 |---|---|
@@ -624,33 +730,109 @@ Inflation, reporting delays, and dynamic pricing.
 | [insurance-garch](https://github.com/burning-cost/insurance-garch) | GARCH volatility for claims inflation — GJR-GARCH, BoE fan charts, Christoffersen backtest |
 | [insurance-dynamics](https://github.com/burning-cost/insurance-dynamics) | Dynamic pricing models — GAS score-driven filters, Bayesian changepoint detection (BOCPD/PELT) |
 
+</div>
+
 ---
 
-## Retention & Survival
+## Other Libraries
 
-Lapse, lifetime value, and telematics risk scoring.
+<div class="tool-group" data-cat="other">
 
 | Library | What it does |
 |---|---|
 | [insurance-survival](https://github.com/burning-cost/insurance-survival) | Survival models — cure models, customer lifetime value, lapse tables, MLflow wrapper |
 | [insurance-jlm](https://github.com/burning-cost/insurance-jlm) | Joint longitudinal-survival models — Wulfsohn-Tsiatis SREM, EM+GHQ, DynamicPredictor for mid-term repricing |
 | [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data |
-
----
-
-## Portfolio Analytics
-
-Segmentation, profiling, and synthetic data.
-
-| Library | What it does |
-|---|---|
 | [insurance-lda-risk](https://github.com/burning-cost/insurance-lda-risk) | LDA probabilistic risk profiling — latent risk archetypes, portfolio mix drift, book-transfer segmentation |
 | [insurance-synthetic](https://github.com/burning-cost/insurance-synthetic) | Vine copula synthetic portfolio generation — exposure-aware, preserves multivariate dependence |
-
----
-
-## Data
-
-| Library | What it does |
-|---|---|
 | [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor data with a known data-generating process, for testing and teaching |
+
+</div>
+
+<script>
+(function() {
+  var searchBox = document.getElementById('tools-search');
+  var catBtns = document.querySelectorAll('.cat-btn');
+  var toolGroups = document.querySelectorAll('.tool-group');
+  var essentialCards = document.querySelectorAll('.essential-card');
+  var noResults = document.getElementById('tools-no-results');
+  var countEl = document.getElementById('tools-search-count');
+  var activecat = 'all';
+
+  // Build flat list of all table rows for searching
+  function allRows() {
+    var rows = [];
+    toolGroups.forEach(function(group) {
+      group.querySelectorAll('tbody tr').forEach(function(row) {
+        rows.push({ el: row, group: group });
+      });
+    });
+    return rows;
+  }
+
+  function applyFilters() {
+    var q = searchBox ? searchBox.value.trim().toLowerCase() : '';
+    var cat = activecat;
+    var shown = 0;
+
+    toolGroups.forEach(function(group) {
+      var groupCat = group.getAttribute('data-cat') || '';
+      var catMatch = cat === 'all' || groupCat === cat;
+
+      if (!q) {
+        // No search: just show/hide groups by category
+        group.style.display = catMatch ? '' : 'none';
+        if (catMatch) {
+          group.querySelectorAll('tbody tr').forEach(function(r) { r.style.display = ''; shown++; });
+        }
+      } else {
+        // With search: filter rows regardless of category (unless category filter active)
+        var anyVisible = false;
+        group.querySelectorAll('tbody tr').forEach(function(row) {
+          var text = row.textContent.toLowerCase();
+          var matchSearch = text.indexOf(q) > -1;
+          var matchCat = cat === 'all' || groupCat === cat;
+          var visible = matchSearch && matchCat;
+          row.style.display = visible ? '' : 'none';
+          if (visible) { anyVisible = true; shown++; }
+        });
+        group.style.display = anyVisible ? '' : 'none';
+      }
+    });
+
+    // Essential cards: filter by search only (always shown on category filter)
+    essentialCards.forEach(function(card) {
+      if (!q) {
+        card.style.display = '';
+      } else {
+        var name = (card.getAttribute('data-name') || '').toLowerCase();
+        var desc = (card.getAttribute('data-desc') || '').toLowerCase();
+        card.style.display = (name.indexOf(q) > -1 || desc.indexOf(q) > -1) ? '' : 'none';
+      }
+    });
+
+    if (countEl && q) {
+      countEl.textContent = shown + ' librar' + (shown === 1 ? 'y' : 'ies') + ' match';
+    } else if (countEl) {
+      countEl.textContent = '';
+    }
+
+    if (noResults) {
+      noResults.style.display = (shown === 0 && q) ? 'block' : 'none';
+    }
+  }
+
+  if (searchBox) {
+    searchBox.addEventListener('input', applyFilters);
+  }
+
+  catBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      catBtns.forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      activecat = this.getAttribute('data-cat');
+      applyFilters();
+    });
+  });
+})();
+</script>

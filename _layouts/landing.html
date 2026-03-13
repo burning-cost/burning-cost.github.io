@@ -839,6 +839,132 @@
       line-height: 1.62;
     }
 
+    /* ── Getting started section ────────────────────────────────── */
+
+    .getting-started {
+      background: var(--surface-alt);
+      padding: 5rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .getting-started-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .getting-started-inner h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #1a1d2e;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .getting-started-inner > p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: 2rem;
+    }
+
+    .gs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .gs-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+
+    .gs-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(79,126,248,0.1);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .gs-card-name {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1d2e;
+    }
+
+    .gs-card:hover .gs-card-name { color: var(--accent); }
+
+    .gs-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .gs-card-arrow {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .gs-card:hover .gs-card-arrow { opacity: 1; }
+
+    .gs-cta-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .btn-outline {
+      border: 1.5px solid var(--border-dark);
+      color: #1a1d2e;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .getting-started { padding: 3rem 1.25rem; }
+      .gs-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── Libraries section ───────────────────────────────────────── */
 
     .libraries {
@@ -1440,8 +1566,9 @@
       <ul class="nav-links">
         <li><a href="/" class="active">Home</a></li>
         <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tools/">Tools</a></li>
+        <li><a href="/tags/">Tags</a></li>
         <li><a href="/about/">About</a></li>
-        <li><a href="/compare/">Compare</a></li>
       </ul>
     </div>
   <script>
