@@ -1017,7 +1017,7 @@ Balance property testing, auto-calibration curves, Murphy score decomposition. D
 **[insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)**
 Exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for deployed models. Scheduled monitoring with alert thresholds, not one-off validation.
 `uv add insurance-monitoring`
-&rarr; [Your pricing model is drifting](https://burning-cost.github.io/2026/03/03/your-pricing-model-is-drifting/)
+&rarr; [Your Pricing Model is Drifting (and You Probably Can't Tell)](https://burning-cost.github.io/2026/03/31/insurance-monitoring/)
 
 **[insurance-mrm](https://github.com/burning-cost/insurance-mrm)**
 Model risk management: ModelCard, ModelInventory, and GovernanceReport generation. Replaces the spreadsheet model risk register with a structured, versioned artefact.
