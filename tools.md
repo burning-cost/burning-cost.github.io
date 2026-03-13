@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "80 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "81 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -632,12 +632,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-recurrent",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-zit-dglm",
+      "description": "Zero-inflated Tweedie with covariate-driven dispersion via three-headed EM gradient boosting. Separates structural non-claimers from stochastic Poisson zeros. CatBoost custom objectives for mu, phi, and q heads. Vuong test for ZIT vs Tweedie model selection. Balance property check and Delong-Wuthrich recalibration. 177 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-zit-dglm",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 80 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 81 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -1055,6 +1063,11 @@ Joint longitudinal-survival models for telematics mid-term repricing. The Wulfso
 Neural Poisson mixture model for structural vs stochastic zero decomposition in motor claim frequency. Two-component Poisson mixture with end-to-end gradient training — EM fails for neural networks with large parameter counts. Separate sub-networks for pi(x) (at-risk probability), lambda_0 (safe group rate), lambda_1 (risky group rate). Softplus reparameterisation enforces lambda_0 < lambda_1 without projection. Log-sum-exp stable NLL loss. predict_pi() per policy and classify_zero() structural/stochastic labelling. 14x pricing difference between identical-demographic telematics zero-claimers. Based on NAAJ 2025 PM-DNN paper (DOI: 10.1080/10920277.2025.2570289). 110 tests.
 `uv add insurance-poisson-mixture-nn`
 &rarr; [Not All Zero-Claimers Are Equal](https://burning-cost.github.io/2026/03/27/insurance-poisson-mixture-nn/)
+
+**[insurance-zit-dglm](https://github.com/burning-cost/insurance-zit-dglm)**
+Zero-inflated Tweedie with covariate-driven dispersion — three-headed gradient boosting (mu, phi, q) via generalised EM. Based on Gu (arXiv:2405.14990) and So & Valdez (NAAJ Vol 29(4):887-904, 2025, ASTIN Best Paper 2024). The phi head is not optional: phi appears inside the E-step exponential that weights structural vs stochastic zeros, so fixed-phi ZIT produces cascading bias in both mu and q. Vuong test for ZIT vs standard Tweedie model selection. `check_balance()` and Delong-Wuthrich recalibration. UK personal lines use cases: motor AD (unprotected NCD), home AD, subsidence, fleet seasonal. 177 tests.
+`uv add insurance-zit-dglm`
+&rarr; [Your Tweedie Model Doesn't Know About Strategic Non-Claimers](https://burning-cost.github.io/2026/03/30/insurance-zit-dglm/)
 
 
 ---
