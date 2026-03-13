@@ -648,12 +648,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-dependent-fs",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-pin",
+      "description": "Neural GA2M with exact pairwise interaction surfaces. Decomposes prediction into named main effects and pairwise terms — each printable as a 2D rating factor table. Best published Poisson deviance on freMTPL2freq (23.63) with 4,147 parameters. PyTorch. 136 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-pin",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 82 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 83 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -742,6 +750,12 @@ GLM factor level clustering via R2VF (Ben Dror, arXiv:2503.01521). Collapses hig
 Actuarial neural additive model in PyTorch: interpretable deep learning for pricing with per-feature shape functions a pricing committee can inspect.
 `uv add insurance-anam`
 &rarr; [Your interpretable model isn't interpretable enough](https://burning-cost.github.io/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)
+
+**[insurance-pin](https://github.com/burning-cost/insurance-pin)**
+Neural GA2M with exact pairwise interaction surfaces. Decomposes prediction into named main effects and 2D pairwise terms — each printable as a multiplicative rating factor table. Best published Poisson deviance on freMTPL2freq (23.63) with 4,147 parameters. CANN-level performance with full additive decomposition. PINForwardSelector for sparse interaction models. PyTorch. 136 tests.
+`uv add insurance-pin`
+[![PyPI](https://img.shields.io/pypi/v/insurance-pin)](https://pypi.org/project/insurance-pin/)
+&rarr; [Your Actuarial Committee Can't Review a GBM. It Can Review This.](https://burning-cost.github.io/2026/04/06/insurance-pin/)
 
 **[insurance-ebm](https://github.com/burning-cost/insurance-ebm)**
 Insurance workflow layer on top of interpretML's ExplainableBoostingMachine. RelativitiesTable, MonotonicityEditor, GLMComparison, and actuarial diagnostics (Gini, double-lift, calibration). EBMs are GAMs fitted by gradient boosting - the shape functions are the model, not a post-hoc summary.
