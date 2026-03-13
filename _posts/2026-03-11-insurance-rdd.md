@@ -267,3 +267,13 @@ Run them together on the same threshold.
 ---
 
 **[insurance-rdd on GitHub](https://github.com/burning-cost/insurance-rdd)** — MIT-licensed, PyPI. The first Python implementation of geographic RDD and the first RDD library with insurance-specific exposure, Poisson, and FCA Consumer Duty output.
+
+---
+
+
+---
+
+**Related reading:**
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/) — the broader confounding problem in GLM rating factors; RDD is the tool when there is a sharp threshold in the running variable
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) — DML as the alternative causal method when no threshold discontinuity exists
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — SDID for evaluating rate changes when RDD is not applicable; the prospective complement to RDD's retrospective diagnosis

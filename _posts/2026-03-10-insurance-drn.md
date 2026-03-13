@@ -116,7 +116,7 @@ The distributional insurance modelling space has several existing approaches. We
 
 **CANN (Schelldorfer & Wüthrich, 2019)** refines the GLM mean via a neural network skip connection. This is the right philosophical approach: augment, do not replace. But CANN only refines the mean. You get a better point estimate; you still have no distributional output.
 
-**[`insurance-distributional`](/2026/03/08/insurance-distributional/)** (our CatBoost-based distributional GBM) models the distribution parameters directly, mean and dispersion simultaneously. It is fast (no neural network training), works well for operational pricing, and produces quantile estimates. It can produce quantile crossing at the extremes, and beyond the training data range the tails are undefined. We use `insurance-distributional` for fast quantile estimates in pricing; we use `insurance-severity` when distributional correctness matters: capital, reinsurance, reserve uncertainty.
+**[`insurance-distributional`](/2026/03/05/insurance-distributional/)** (our CatBoost-based distributional GBM) models the distribution parameters directly, mean and dispersion simultaneously. It is fast (no neural network training), works well for operational pricing, and produces quantile estimates. It can produce quantile crossing at the extremes, and beyond the training data range the tails are undefined. We use `insurance-distributional` for fast quantile estimates in pricing; we use `insurance-severity` when distributional correctness matters: capital, reinsurance, reserve uncertainty.
 
 The honest comparison:
 
@@ -171,6 +171,6 @@ Full API documentation and worked examples at [github.com/burning-cost/insurance
 
 ## See also
 
-- [**insurance-distributional**: Distributional GBM for operational pricing](/2026/03/08/insurance-distributional/) — CatBoost-based joint modelling of mean and dispersion. Faster than DRN for pricing; use DRN when tail correctness is non-negotiable.
-- [**insurance-gam**: Additive Neural Attention Models for pricing](/2026/03/09/insurance-anam/) — interpretable neural network that can serve as a DRN baseline when you need more covariate flexibility than a GLM but more interpretability than a GBM.
+- [**insurance-distributional**: Distributional GBM for operational pricing](/2026/03/05/insurance-distributional/) — CatBoost-based joint modelling of mean and dispersion. Faster than DRN for pricing; use DRN when tail correctness is non-negotiable.
+- [**insurance-gam**: Additive Neural Attention Models for pricing](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/) — interpretable neural network that can serve as a DRN baseline when you need more covariate flexibility than a GLM but more interpretability than a GBM.
 - [**insurance-monitoring**: Calibration diagnostics for distributional models](/2026/03/07/insurance-calibration/) — reliability diagrams, CRPS decomposition, and coverage testing. Run these on DRN output before presenting distributional results to capital or reinsurance teams.

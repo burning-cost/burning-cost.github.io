@@ -337,3 +337,10 @@ Neither group has published a Python implementation. The R packages (evmix, ReIn
 ---
 
 **[insurance-severity on GitHub](https://github.com/burning-cost/insurance-severity)** — 106 tests, MIT-licensed, PyPI. Library #47.
+
+---
+
+**Related reading:**
+- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) — when only the tail matters: GPD/GEV for XL layer pricing and return levels, without modelling the body of the distribution
+- [Beyond Lognormal: Normalizing Flows for Insurance Severity Modelling](/2026/03/12/insurance-nflow/) — fully flexible conditional density estimation when neither the body nor the tail fits a parametric family
+- [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) — the dispersion side of severity: modelling heteroscedasticity explicitly rather than assuming constant phi

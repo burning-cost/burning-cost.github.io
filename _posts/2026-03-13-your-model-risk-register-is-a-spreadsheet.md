@@ -295,3 +295,10 @@ If your team is already using `insurance-governance` and `insurance-monitoring`,
 ---
 
 `insurance-governance` is open source under the MIT licence at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-governance` and `insurance-monitoring` are optional — the library works standalone but produces richer reports when they are available.
+
+---
+
+**Related reading:**
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/) — the documentation output that supports what the register is supposed to track
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — structured model deployment with the audit trail that a register entry needs to reference
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring layer that feeds post-deployment evidence back into the register

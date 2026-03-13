@@ -189,3 +189,10 @@ TabICLv2, the INRIA/SODA release from February 2026, does not yet have a compara
 ---
 
 **[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.
+
+---
+
+**Related reading:**
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — partial pooling across segments using MCMC; the full Bayesian alternative for when interpretability and uncertainty quantification matter more than raw accuracy
+- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — frequentist credibility for thin segments; simpler and faster than TabPFN, appropriate when the segment structure is one-dimensional
+- [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/) — transfer learning for thin-segment pricing; three approaches for adapting a model trained on a related, data-rich segment

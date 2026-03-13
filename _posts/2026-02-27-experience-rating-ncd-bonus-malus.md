@@ -190,4 +190,4 @@ Source and issue tracker at [github.com/burning-cost/insurance-credibility](http
 **Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/)
-- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/)

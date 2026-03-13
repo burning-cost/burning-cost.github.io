@@ -184,7 +184,7 @@ Source and issue tracker: [github.com/burning-cost/insurance-jlm](https://github
 
 ## See also
 
-- [HMM-Based Telematics Risk Scoring](https://burning-cost.github.io/2026/03/10/insurance-telematics/) — insurance-telematics produces the driving score time series that feeds into insurance-jlm as the longitudinal marker
+- [HMM-Based Telematics Risk Scoring](https://burning-cost.github.io/2026/03/13/insurance-telematics/) — insurance-telematics produces the driving score time series that feeds into insurance-jlm as the longitudinal marker
 - [Survival Models for Insurance Retention](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/) — insurance-survival handles standard time-to-event modelling without the longitudinal component
 - [Borrowing Experience You Don't Have](https://burning-cost.github.io/2026/03/12/borrowing-experience-you-dont-have/) — insurance-thin-data for thin-segment pricing when your telematics book lacks enough claims for stable JLM estimation
 - [Mixture Cure Models](https://burning-cost.github.io/2026/03/11/insurance-cure/) — insurance-survival for the non-claimer subpopulation; can be combined with JLM for a full latent class model

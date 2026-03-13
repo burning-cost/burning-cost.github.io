@@ -213,3 +213,10 @@ uv add insurance-zit-dglm
 ---
 
 *Papers: Gu (2024) arXiv:2405.14990 — So & Valdez (2024) arXiv:2406.16206 — So & Valdez (2025) NAAJ Vol 29(4):887-904 — Delong & Wuthrich (2021) arXiv:2103.03635, IME 2021*
+
+---
+
+**Related reading:**
+- [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](/2026/03/11/insurance-cure/) — mixture cure models as an alternative: parametric separation of the zero-inflation probability from the severity model, with the cure fraction having a structural interpretation
+- [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) — joint modelling of mean and dispersion; the DGLM precursor to the full zero-inflated DGLM, for data without structural zeros but with heterogeneous variance
+- [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the broader framework: every distributional parameter, including the zero-inflation probability, as a function of covariates; GAMLSS generalises both DGLM and the ZI-DGLM

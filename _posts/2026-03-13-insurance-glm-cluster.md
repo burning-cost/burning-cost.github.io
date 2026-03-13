@@ -169,3 +169,10 @@ It does not implement the Henckaerts et al. (arXiv:1904.10890) tree-based groupi
 ---
 
 **[insurance-glm-tools on GitHub](https://github.com/burning-cost/insurance-glm-tools)** — 156 tests, MIT-licensed, PyPI.
+
+---
+
+**Related reading:**
+- [Nested GLMs with Neural Network Embeddings for Insurance Ratemaking](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/) — neural embeddings for high-cardinality categoricals as an alternative to fused lasso factor collapsing; different trade-off between flexibility and interpretability
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — SHAP-based GLM distillation from a GBM; the complement to GLM factor collapsing when you want to start from a non-parametric model
+- [EBMs for Insurance Pricing: Better Than a GLM, Readable by a Pricing Committee](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/) — additive models that handle high-cardinality features without the collapsing step; the alternative when factor interpretability is the primary constraint

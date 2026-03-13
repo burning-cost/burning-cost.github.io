@@ -187,3 +187,10 @@ pip install insurance-dro
 ```
 
 Source at [github.com/burning-cost/insurance-dro](https://github.com/burning-cost/insurance-dro).
+
+---
+
+**Related reading:**
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) — the base optimiser that DRO extends with distributional robustness; use insurance-optimise first, then wrap with DRO when demand model uncertainty is material
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control for the claims side; DRO protects against demand model misspecification, CRC protects against claims model error
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the demand model whose uncertainty DRO is designed to handle; better elasticity estimates shrink the ambiguity set

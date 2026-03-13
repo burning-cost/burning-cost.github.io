@@ -238,3 +238,10 @@ Read Hong (2025) alongside it. The paper is twelve pages and Table 7 is worth th
 ---
 
 *Papers: Hong (2025) arXiv:2503.03659 - Hong (2026) arXiv:2601.21153 - Manna et al. (2025) ASMBI doi:10.1002/asmb.70045*
+
+---
+
+**Related reading:**
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the base library and the theory behind split conformal and locally weighted conformal for GLMs and GBMs
+- [Distribution-Free Solvency Capital from Conformal Prediction](/2026/03/11/conformal-scr-solvency/) — applying conformal prediction to Solvency II capital requirements; the SCR upper bound interpretation of the same methodology
+- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the evaluation problem that makes nominal prediction intervals unreliable; conformal methods are the principled fix

@@ -197,4 +197,4 @@ Requires PyTorch (for the embedding network) and statsmodels (for the outer GLM)
 **See also:**
 - [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/) - the Bayesian alternative for territory smoothing, works well when you want posterior uncertainty on territory effects rather than a fixed effect in a GLM
 - [Getting Spatial Territory Factors Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/) - how to get BYM2 territory factors into Emblem or Radar once fitted
-- [EBMs for Insurance Tariff Construction](/2026/03/20/ebms-for-insurance-tariff-construction/) - if you want a non-parametric main effects model rather than a GLM for the outer layer
+- [EBMs for Insurance Tariff Construction](/2026/03/13/ebms-for-insurance-tariff-construction/) - if you want a non-parametric main effects model rather than a GLM for the outer layer

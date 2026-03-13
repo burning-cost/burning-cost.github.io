@@ -13,7 +13,7 @@ We have seen what this looks like in practice. A pricing actuary opens a folder 
 
 This is not a PRA-compliant model validation. It is a collection of artefacts that gives the appearance of validation without the substance.
 
-SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring, structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. On the enforcement side, FCA TR24/2 (August 2024) confirmed that documentation failures are the primary trigger; for the full regulatory context on SS1/23 scope and direction of travel, see [Model Risk Governance for UK Insurers](/2026/03/19/your-model-risk-register-is-a-spreadsheet/).
+SS1/23 (May 2023, effective May 2024) is unambiguous on what independent validation must produce: documented coverage of conceptual soundness, data quality, outcome analysis, sensitivity testing, and ongoing monitoring, structured such that "a party unfamiliar with the model can understand its operation." For AI-based models, the PRA explicitly adds: testing for data transparency, bias, and fairness beyond accuracy metrics. On the enforcement side, FCA TR24/2 (August 2024) confirmed that documentation failures are the primary trigger; for the full regulatory context on SS1/23 scope and direction of travel, see [Model Risk Governance for UK Insurers](/2026/03/13/your-model-risk-register-is-a-spreadsheet/).
 
 A PowerPoint deck does not meet this bar. [`insurance-governance`](https://github.com/burning-cost/insurance-governance) does.
 
@@ -178,4 +178,4 @@ The test suite was validated on Databricks serverless (Python 3.11). The library
 **Related articles from Burning Cost:**
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

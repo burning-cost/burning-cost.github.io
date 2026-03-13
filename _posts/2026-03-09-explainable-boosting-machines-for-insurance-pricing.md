@@ -293,6 +293,6 @@ The architecture builds on interpretML's `ExplainableBoostingMachine` (Nori et a
 
 **Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
-- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)
+- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)

@@ -149,3 +149,10 @@ The independence assumption has been sitting unchecked at the centre of UK perso
 **install:** `pip install insurance-frequency-severity`
 **source:** [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity)
 **key refs:** Garrido, Genest & Schulz (2016 IME) · Lee & Shi (2019 IME) · Vernic, Bolancé & Alemany (2022 IME) · Blier-Wong (2026 arXiv)
+
+---
+
+**Related reading:**
+- [Your Frequency × Severity Model Is Multiplying the Wrong Things](/2026/03/13/insurance-dependent-fs/) — when frequency and severity are correlated and independence is the wrong assumption to bake into the architecture
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the alternative: model the full distribution jointly rather than splitting into two GLMs
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free coverage guarantees on the pure premium, regardless of whether your frequency-severity factorisation is correct

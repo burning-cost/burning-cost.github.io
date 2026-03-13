@@ -256,3 +256,10 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 ---
 
 *Paper: Brauer, Menzel, and Wüthrich (2025) arXiv:2510.04556*
+
+---
+
+**Related reading:**
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the conceptual framework for what to measure and when to act
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/) — the documentation standard that monitoring evidence needs to support
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the statistical tests that monitoring uses to detect prediction bias, explained in detail

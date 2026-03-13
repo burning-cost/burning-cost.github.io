@@ -174,3 +174,10 @@ uv add "insurance-covariate-shift[diagnostics]"
 Adds matplotlib and the report plotting methods.
 
 The library is on GitHub at [burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). The LR-QR implementation is the part we expect the most interest in -- it is a 2025 method with no prior Python implementation and direct applicability to anyone running conformal intervals on a shifted distribution.
+
+---
+
+**Related reading:**
+- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the related problem of temporal leakage in model evaluation; covariate shift and temporal leakage are the two main reasons a model's training accuracy exceeds its live accuracy
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals; the LR-QR method in insurance-covariate-shift extends this to the shifted-distribution case
+- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/13/insurance-monitoring/) — ongoing monitoring for the performance degradation that covariate shift causes in deployed models

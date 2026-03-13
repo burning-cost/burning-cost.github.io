@@ -128,3 +128,10 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 ---
 
 **[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** — 84 tests, MIT-licensed, PyPI.
+
+---
+
+**Related reading:**
+- [The Telematics Score That Forgets Where It's Been](/2026/03/12/insurance-jlm/) — joint longitudinal models that use the telematics risk score trajectory as a marker to predict time-to-claim; the downstream model that insurance-telematics feeds into
+- [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) — time-to-lapse modelling; pairing retention survival analysis with telematics risk segmentation to identify the customers worth retaining
+- [Your NCD System Throws Away 95% of the Information in a Policyholder's Claim History](/2026/03/13/insurance-vine-longitudinal/) — longitudinal vine copulas for claim history; the alternative to NCD for capturing full claim history dependence across renewals

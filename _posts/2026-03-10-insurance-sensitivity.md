@@ -210,7 +210,7 @@ The three tools answer different questions:
 
 **SHAP** on a GBM: which features pushed *this prediction* above or below the average, and by how much? Useful for single-policy explainability, outlier investigation, and monitoring for individual predictions that have shifted.
 
-**ANAM shape functions** ([`insurance-gam`](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)): what is the model's exact learned relationship between a feature and the log-linear predictor? The shape function is a property of the model architecture, not a post-hoc approximation.
+**ANAM shape functions** ([`insurance-gam`](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)): what is the model's exact learned relationship between a feature and the log-linear predictor? The shape function is a property of the model architecture, not a post-hoc approximation.
 
 **Shapley effects** (`insurance-sensitivity`): which factors account for the most variance in predicted premiums across the portfolio? This is a population-level statement, model-agnostic, valid for GLMs, GBMs, EBMs, or anything else with a predict method.
 
@@ -247,7 +247,7 @@ SHAP tells you why the model said what it said about one policy. Shapley effects
 ---
 
 **Related articles:**
-- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/) — intrinsic shape functions, for when you want to know what the model learned rather than what it's doing to variance
+- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/) — intrinsic shape functions, for when you want to know what the model learned rather than what it's doing to variance
 - [Your Rating Factor Might Be Confounded](/2026/03/05/your-rating-factor-might-be-confounded/) — why variance decomposition is not the same as causal attribution
-- [EBMs for Insurance Tariff Construction](/2026/03/20/ebms-for-insurance-tariff-construction/) — Explainable Boosting Machines as an alternative to GLMs with additive shape functions
+- [EBMs for Insurance Tariff Construction](/2026/03/13/ebms-for-insurance-tariff-construction/) — Explainable Boosting Machines as an alternative to GLMs with additive shape functions
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — using SHAP for a different question: per-policy explainability and relativity extraction

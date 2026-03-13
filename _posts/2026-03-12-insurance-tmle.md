@@ -294,3 +294,10 @@ TMLE is not strictly better than DML in all cases. For large portfolios with wel
 ---
 
 **[insurance-tmle on GitHub](https://github.com/burning-cost/insurance-tmle)** — MIT-licensed, PyPI, 120 tests. For the causal analyses where your propensity model is structurally wrong and you know it.
+
+---
+
+**Related reading:**
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) — DML-based causal elasticity estimation; the right tool when your outcome model is well-specified and the propensity model is less critical
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/) — the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
+- [Your Rate Change Analysis Is Averaging Over the Wrong Thing](/2026/03/12/insurance-bcf/) — Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect

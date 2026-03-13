@@ -200,4 +200,4 @@ Python 3.10+. Requires `polars >= 0.20`, `numpy >= 1.21`, `scikit-learn >= 1.3`.
 **See also:**
 - [Discrimination-Free Pricing with Optimal Transport](/2026/03/10/insurance-fairness-ot/) — once you know which factors are leaking, this is how to correct the price
 - [Your pricing model might be discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library for direct Lindholm marginalisation and FCA documentation
-- [Your model risk register is a spreadsheet](/2026/03/19/your-model-risk-register-is-a-spreadsheet/) — the JSON audit report from this library integrates with `insurance-governance`'s governance workflow
+- [Your model risk register is a spreadsheet](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the JSON audit report from this library integrates with `insurance-governance`'s governance workflow

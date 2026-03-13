@@ -236,7 +236,7 @@ For Solvency II capital modelling, tail risk loading, or anywhere you need the 9
 
 ## See also
 
-- [Distributional GBMs for insurance pricing](/2026/03/08/distributional-gbms-insurance-pricing/)
-- [Actuarial Neural Additive Models](/2026/03/09/actuarial-neural-additive-models/)
-- [Calibration testing: beyond the residual plot](/2026/03/09/calibration-testing-beyond-residual-plot/)
-- [Conformal prediction intervals for insurance](/2026/03/06/conformal-prediction-intervals-insurance/)
+- [Distributional GBMs for insurance pricing](/2026/03/05/insurance-distributional/)
+- [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
+- [Calibration testing: beyond the residual plot](/2026/03/09/insurance-calibration/)
+- [Conformal prediction intervals for insurance](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

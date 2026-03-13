@@ -263,4 +263,4 @@ Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-go
 **Related articles from Burning Cost:**
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

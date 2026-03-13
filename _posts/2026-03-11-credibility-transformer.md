@@ -216,3 +216,10 @@ What the CT gives you, uniquely, is a principled prior/posterior decomposition a
 ---
 
 **[insurance-credibility-transformer on GitHub](https://github.com/burning-cost/insurance-credibility-transformer)** — 85 tests, MIT-licensed, PyPI. Library #45.
+
+---
+
+**Related reading:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the frequentist baseline: moment-based credibility without MCMC or neural networks
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — full posterior inference across hierarchy levels; the Bayesian alternative to the attention-based approach
+- [Individual Experience Rating Beyond NCD](/2026/03/13/insurance-experience/) — individual-level Bayesian a posteriori rating; complements the Credibility Transformer's group-level approach with policy-level posterior updating

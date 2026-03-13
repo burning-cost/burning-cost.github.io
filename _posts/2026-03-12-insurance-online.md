@@ -167,3 +167,10 @@ The third is segment-level loading optimisation using `LinUCBPolicy`. If you bel
 ---
 
 **[insurance-online on GitHub](https://github.com/burning-cost/insurance-online)** — MIT-licensed, PyPI. Bandit algorithms for UK general insurance pricing, with GIPP constraints and compliance reporting built in.
+
+---
+
+**Related reading:**
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) — the optimisation layer that bandit experiments inform: once you have unbiased loading estimates from online learning, this is how to translate them into portfolio-level rate recommendations
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — SDID for evaluating the causal impact of a concluded experiment rather than running a live bandit
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — structural elasticity estimation as an alternative to experimental methods when you need a retrospective causal estimate

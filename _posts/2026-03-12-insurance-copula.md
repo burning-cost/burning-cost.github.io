@@ -233,6 +233,6 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ## See Also
 
-- **[insurance-severity](https://burning-cost.github.io/2026/03/23/insurance-composite/)** — Composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
-- **[insurance-evt](https://burning-cost.github.io/2026/03/25/insurance-evt/)** — When the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
+- **[insurance-severity](https://burning-cost.github.io/2026/03/13/insurance-composite/)** — Composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
+- **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)** — When the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
 - **[insurance-synthetic](https://burning-cost.github.io/2026/03/09/insurance-synthetic/)** — Vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow

@@ -206,3 +206,10 @@ This library does not implement group-level credibility (Bühlmann at broker or 
 ---
 
 **[insurance-experience on GitHub](https://github.com/burning-cost/insurance-experience)** — 125 tests, MIT-licensed, PyPI. Library #43.
+
+---
+
+**Related reading:**
+- [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/) — the contractual NCD mechanism; insurance-experience extends individual-level posterior rating beyond the NCD scale
+- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — group-level credibility for broker, scheme, or territory blending; complements individual experience rating at the portfolio level
+- [The Attention Head That Is Also a Credibility Weight](/2026/03/11/credibility-transformer/) — neural credibility weighting as an alternative to the classical Bühlmann posterior; relevant when the credibility structure is complex or non-linear
