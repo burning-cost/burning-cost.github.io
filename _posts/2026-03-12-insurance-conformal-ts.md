@@ -1,156 +1,121 @@
 ---
 layout: post
-title: "Your Claim Frequency Forecast Has No Honest Error Bars"
+title: "Your Claims Forecast Interval Is Wrong. Here Is Why."
 date: 2026-03-12
-categories: [libraries, pricing, uncertainty]
-tags: [conformal-prediction, time-series, ACI, EnbPI, SPCI, claims-forecasting, Poisson, non-exchangeable, insurance-conformal-ts, python]
-description: "Standard conformal prediction assumes exchangeability — an assumption violated by every time series. insurance-conformal-ts implements ACI, EnbPI, SPCI, and Conformal PID for insurance claims time series with Poisson/NB nonconformity scores and exposure weighting."
-post_number: 76
+categories: [libraries, pricing, conformal-prediction]
+tags: [conformal-prediction, time-series, claims-forecasting, ARIMA, MSCP, ACI, SPCI, PID, EnbPI, Poisson, pricing, insurance-conformal-ts]
+description: "ARIMA intervals assume Gaussian residuals and stationarity. Insurance claims data violates both by construction. insurance-conformal-ts implements five distribution-free methods for sequential prediction intervals, including MSCP — the only method that clearly met the 90% coverage target in the 2026 benchmark."
 ---
 
-Every claims forecasting workflow produces a point estimate. Most produce confidence intervals. Almost none of those intervals are valid in the statistical sense — they do not contain the true value at the stated frequency.
+When you present those intervals at a pricing committee without mentioning either assumption, you are not being precise. You are being precisely wrong.
 
-The problem is exchangeability. Standard conformal prediction produces finite-sample valid prediction intervals under one assumption: the calibration data and test data are exchangeable. In insurance time series — monthly claim counts, quarterly frequency development — that assumption is always violated. Yesterday's data is not exchangeable with today's. The distribution shifts seasonally, with macroeconomic conditions, with underwriting mix changes.
+Go to a quarterly pricing review at any UK insurer and ask where the uncertainty band around the claims forecast comes from. You will get one of three answers. First: "It's an ARIMA interval." Second: "We widened the ARIMA interval by judgement." Third, less common but honest: "We don't really have one."
 
-[`insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts) implements the conformal prediction methods designed for non-exchangeable data.
+The ARIMA interval is the interesting case. It is not worthless — it does reflect something about forecast uncertainty — but it rests on two assumptions that insurance data violates by construction. First, it assumes Gaussian residuals. Motor claims severity is not Gaussian; it is right-skewed, fat-tailed, and was running at 20% year-on-year inflation in late 2022. Second, it assumes stationarity. A series with claims inflation trend, exposure changes, NCD mix drift, and the occasional Ogden rate ruling is not stationary.
 
-```bash
-uv add insurance-conformal-ts
+We built [`insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts) to provide a rigorous alternative.
+
+## The exchangeability problem
+
+Our earlier library `insurance-conformal` gives distribution-free prediction intervals for cross-sectional pricing models: fit a Poisson GBM, calibrate non-conformity scores, get valid coverage without assuming anything about the residual distribution. It works because split conformal prediction's coverage guarantee holds whenever the calibration set and the test point are *exchangeable* — drawn from the same distribution, in any order.
+
+A time series is exchangeable in exactly no meaningful sense. The residual from quarter t correlates with the residual from quarter t-1. The variance in 2022 was higher than the variance in 2020. The mean shifted when the Ogden rate changed. Swapping observations in time changes the problem.
+
+Apply standard conformal prediction to a time series anyway, and the coverage guarantee disappears. You still get an interval, but you have no mathematical assurance it contains the true value at any particular frequency.
+
+This is not a theoretical concern. A 2026 benchmark (Sabashvili, arXiv:2601.18509) tested several methods on a large monthly sales dataset. Standard split conformal intervals failed to meet the 90% coverage target. So did EnbPI. The methods that actually work have different theoretical foundations.
+
+## Five methods, one insurance workflow
+
+`insurance-conformal-ts` implements five methods for sequential prediction intervals, each solving a different failure mode of exchangeability.
+
+**ACI (Gibbs and Candès, 2021)** is the simplest. It treats the coverage level as a dynamic variable, updated by online gradient descent. If the last interval missed the true value, alpha tightens slightly (wider intervals next time). If it covered, alpha relaxes. After a claims inflation shock — the post-COVID used car repricing that hit motor severity in 2021–22, for instance — ACI's intervals widen automatically over the following months as coverage failures accumulate. It is not a perfect alarm, but it is a real one.
+
+**EnbPI (Xu and Xie, 2021 ICML)** trains a bootstrap ensemble of forecasters and maintains a sliding window of recent residuals for calibration. No model re-fitting. The coverage guarantee relaxes the iid requirement to *strongly mixing* errors, which is reasonable for most stationary series. Its weakness: it failed the 90% coverage benchmark in 2026. We include it as the baseline and because it is in MAPIE; for regulatory use, it is not the first choice.
+
+**SPCI (Xu and Xie, 2023 ICML)** fits a quantile regression on lagged residuals to predict the next residual's quantile conditional on recent history. The result is *conditional* coverage — intervals calibrated to current market conditions, not just averaged over all time. For a Poisson GLM without ARIMA residual whitening, which is the standard pricing setup, SPCI exploits the autocorrelation left in the residuals. This is where it earns its keep.
+
+**Conformal PID (Angelopoulos, Candès and Tibshirani, NeurIPS 2023)** reframes interval calibration as a control theory problem. ACI is proportional control: corrects coverage error proportionally each step. PID adds integral control. If a Poisson GLM fitted in 2022 is systematically underpredicting because claims inflation has run above the model's trend assumption, the coverage shortfall accumulates over time. The integral term detects the systematic bias and applies a permanent offset correction — directly analogous to applying a claims trend adjustment. Best theoretical guarantees of the five methods.
+
+**MSCP (arXiv:2601.18509, January 2026)** is the benchmark winner and the reason we built this library. Multi-Step Split Conformal Prediction handles the multi-horizon forecasting case that every quarterly pricing review actually needs. For each forecast horizon h = 1, 2, ..., H, it calibrates a separate quantile from residuals at that specific horizon. 3-step-ahead forecast errors are larger than 1-step-ahead errors — always — and pooling them into a single calibration set conflates this. MSCP gives calibrated, horizon-specific intervals, and it clearly met the 90% coverage target in the 2026 benchmark.
+
+None of EnbPI, SPCI, or MSCP existed in any pip-installable library as of March 2026. MAPIE v1.3.0 has EnbPI and ACI; GitHub issues requesting SPCI (#370) have been in the backlog since 2023 with no delivery date. PID's reference code is conda-only. MSCP is not packaged anywhere.
+
+## The insurance workflow that is actually missing
+
+The algorithmic gap is real, but it is not the whole gap. None of the academic implementations know what a Poisson GLM is.
+
+Standard conformal uses absolute residuals: |y_t - ŷ_t|. For count data, this is exposure-dependent. A portfolio with 10,000 policies has higher absolute claim count variance than one with 1,000 at the same underlying frequency. Use absolute residuals as your non-conformity score, and high-exposure periods dominate the calibration quantile — making intervals too wide for small portfolios and too narrow for large ones.
+
+The correct score is the Pearson residual:
+
+```
+s_t = (y_t - mu_t) / sqrt(mu_t)                     [Poisson]
+s_t = (y_t - mu_t) / sqrt(mu_t * (1 + mu_t/phi))    [Negative Binomial]
 ```
 
-## Why exchangeability fails in insurance time series
+where mu_t = lambda_t * E_t (rate times exposure). These are asymptotically N(0,1) under a correctly specified model, so the quantiles are well-calibrated and exposure-adjusted automatically. The library also implements exposure-adjusted scores (y/E - mu/E) for direct rate comparison.
 
-Consider a monthly claims frequency series for a motor portfolio. You want a prediction interval for next month's frequency. You calibrate conformal prediction on the last 24 months. But:
+None of the time series conformal papers use these score types. They are defined in the insurance-conformal literature (Manna et al., ASMBI 2025) for cross-sectional models. `insurance-conformal-ts` ports them into the sequential calibration framework.
 
-- Claims frequency in 2021-2023 had a different level than 2024-2025 due to post-COVID frequency normalisation
-- Seasonal patterns (higher frequency in Q4) mean calibration residuals from summer months are not exchangeable with winter months
-- Changes in underwriting appetite shift the risk mix over time
+## Code
 
-Standard split conformal prediction ignores all of this and produces intervals that undercover in distributional shift periods.
-
-## ACI: adaptive conformal inference
-
-Adaptive Conformal Inference (Zaffran et al. 2022 ICML) maintains coverage by adjusting the quantile level adaptively based on recent coverage misses. If your intervals have been missing the last few observations, ACI widens them. If coverage is above target, it narrows them.
+The primary use case is multi-step quarterly forecasting:
 
 ```python
-from insurance_conformal_ts import ACI
+from insurance_conformal_ts import PoissonTimeSeriesConformal
 
-aci = ACI(
-    base_model=fitted_frequency_model,
-    target_coverage=0.90,
-    gamma=0.005,  # adaptation rate
-    score="poisson"  # Poisson nonconformity score
-)
-aci.calibrate(X_cal, y_cal, exposure=exposure_cal)
+# y: claim counts per quarter, e: earned exposure per quarter
+model = PoissonTimeSeriesConformal(y_train, exposure_train, method="mscp")
+model.fit()
 
-intervals = aci.predict_interval(X_test, exposure=exposure_test)
+# Forecast 4 quarters ahead
+forecast = model.predict(X_future, exposure_future, horizon=4)
+
+# Fan chart for the underwriting committee
+forecast.plot_fan()
+
+# Horizon-specific coverage summary
+print(forecast.coverage_summary())
 ```
 
-The adaptation rate `gamma` controls the speed of adaptation. Higher gamma responds faster to distribution shift but produces more variable interval widths.
+`ClaimsCountConformal` is a higher-level wrapper that handles the full pipeline: Poisson GLM with offset via statsmodels, Pearson residual calibration, and a `SequentialCoverageReport` including a Kupiec test. For loss ratio work, `LossRatioConformal` accepts earned premium as the exposure denominator.
 
-## EnbPI: ensemble prediction intervals for online learning
+The `SequentialCoverageReport` is the deliverable for model documentation. It shows rolling coverage by window, Kupiec test result, interval width series, and a flag if coverage has drifted more than 5 percentage points from nominal. The point is not just to produce intervals — it is to give you something auditable.
 
-EnbPI (Xu & Xie 2021 ICML) maintains an ensemble of base models and uses leave-one-out residuals to construct online prediction intervals. It updates as new observations arrive without needing to refetch historical data.
+## What to use when
 
-```python
-from insurance_conformal_ts import EnbPI
+For a quarterly pricing review with 40–80 quarters of data:
 
-enbpi = EnbPI(
-    base_learners=[model1, model2, model3],
-    n_bootstrap=50,
-    score="negative_binomial",
-    exposure_col="earned_exposure"
-)
-enbpi.fit(X_train, y_train, exposure=exposure_train)
+- **Multi-step fan chart (h=1..4):** MSCP. It met the benchmark. It is the simplest of the five methods for multi-horizon use.
+- **Loss ratio trend with automatic inflation adaptation:** ACI or PID. ACI is simpler; PID is better if the model has a known systematic trend error.
+- **Conditional intervals that respect autocorrelation:** SPCI. Better interval width than MSCP, but requires T > 50 observations and performs best when residuals are autocorrelated (Poisson GLM without ARIMA whitening).
+- **Solvency II reserve uncertainty:** MSCP at 99.5% level. The discrete Poisson distribution makes conformal intervals slightly conservative, which is acceptable for regulatory use.
 
-# Online update as new months arrive
-for month_X, month_y, month_exposure in new_data:
-    interval = enbpi.predict_interval(month_X, month_exposure)
-    enbpi.update(month_X, month_y, month_exposure)
-```
+Do not use SPCI or EnbPI for regulatory deliverables if your series is shorter than 50 observations. At T = 30, the quantile regressor in SPCI does not have enough data to stabilise. MSCP is the most robust to short series.
 
-## SPCI for covariate-conditional coverage
+## Honest limitations
 
-SPCI (Xu & Xie 2022) produces prediction intervals with conditional coverage guarantees — coverage is valid not just marginally but conditional on the covariates. For insurance, this means intervals that are valid for each risk segment, not just on average.
+The 2026 benchmark tested AutoARIMA as the base forecaster. SPCI failed there because AutoARIMA whitens residuals, leaving nothing for SPCI's quantile regressor to exploit. For insurance: a Poisson GLM without explicit AR terms will typically have autocorrelated residuals, which is better for SPCI. But we cannot guarantee this from first principles — run the `SequentialCoverageReport` and check.
 
-```python
-from insurance_conformal_ts import SPCI
+For Poisson data with small expected counts (mu < 10), prediction interval lower bounds may be negative after back-transformation. The library clips at zero and documents the conservative bias. For very large portfolios (mu > 500), the Poisson approximation is good; for small commercial books, consider whether a discrete distribution wrapper is appropriate.
 
-spci = SPCI(
-    base_model=fitted_model,
-    conditional_model="random_forest",
-    target_coverage=0.90,
-    score="poisson"
-)
-spci.calibrate(X_cal, y_cal, exposure=exposure_cal)
-intervals = spci.predict_interval(X_test, exposure=exposure_test)
-```
+MSCP's coverage guarantee is per-horizon. It does not guarantee that all four horizons are simultaneously covered. If you need joint coverage across all forecast steps — the full fan chart inside the envelope — use the `JointMSCP` variant, which applies a Bonferroni correction and is correspondingly wider.
 
-## Conformal PID controller
+None of this replaces knowing your data. Conformal methods are distribution-free but not assumption-free. They assume the future distribution is not too different from the calibration window. If you are launching a new product line or entering a class affected by a structural regulatory change, recalibrate before presenting intervals.
 
-The Conformal PID controller (Angelopoulos et al. 2024) treats prediction interval width as a control variable and applies PID feedback to maintain the target coverage. It handles distribution shift more smoothly than ACI — no discrete adaptation events, just continuous feedback.
+## How it fits the stack
 
-```python
-from insurance_conformal_ts import ConformalPID
+`insurance-conformal-ts` sits alongside, not replacing, `insurance-conformal`. That library handles cross-sectional intervals: given 50,000 policies in a pricing model, what is the prediction interval for each individual policy's claims? This library handles sequential intervals: given 80 quarters of aggregate claims, what is the interval around each of the next four quarters' totals?
 
-pid = ConformalPID(
-    base_model=fitted_model,
-    target_coverage=0.90,
-    Kp=0.1, Ki=0.01, Kd=0.001,
-    score="poisson"
-)
-pid.calibrate(X_cal, y_cal)
-intervals = pid.predict_interval(X_test)
-```
-
-## Multi-step-ahead intervals for quarterly reviews
-
-Insurance pricing reviews operate quarterly — you need valid intervals over a 3-month horizon, not just one step ahead.
-
-```python
-from insurance_conformal_ts import MSCP
-
-mscp = MSCP(
-    base_model=fitted_model,
-    max_horizon=3,
-    score="poisson",
-    joint=True  # simultaneous coverage over all horizons
-)
-mscp.calibrate(X_cal, y_cal, exposure=exposure_cal)
-
-intervals = mscp.predict_interval(X_test, horizon=3)
-# Returns: [(lower_h1, upper_h1), (lower_h2, upper_h2), (lower_h3, upper_h3)]
-```
-
-With `joint=True`, the intervals are constructed to cover all three horizons simultaneously at the stated level — the correct interpretation for a quarterly forecast review.
-
-## Poisson and Negative Binomial scores
-
-The choice of nonconformity score matters. For claim count data:
-
-```python
-from insurance_conformal_ts import PoissonScore, NegativeBinomialScore
-
-# Poisson score: (y - mu) / sqrt(mu) — appropriate for low counts
-score = PoissonScore(exposure_weighted=True)
-
-# NB score: accounts for overdispersion — better for volatile claim series
-score = NegativeBinomialScore(theta=2.0, exposure_weighted=True)
-```
-
-Exposure weighting adjusts the score by earned exposure — a month with more policies contributes proportionally more to calibration.
-
-## Relationship to insurance-conformal
-
-[`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) handles cross-sectional Tweedie/Poisson models where the exchangeability assumption holds. That's the right tool for cross-sectional validation of a fitted pricing model.
-
-`insurance-conformal-ts` handles the temporal case. Use it for:
-- Monthly frequency forecasts for experience rate monitoring
-- Quarterly loss ratio projections for pricing committee
-- Trend uncertainty quantification beyond bootstrap resampling
+The two libraries share non-conformity score design. They do not share methods.
 
 ---
 
-`insurance-conformal-ts` is available on [PyPI](https://pypi.org/project/insurance-conformal-ts/) and [GitHub](https://github.com/burning-cost/insurance-conformal-ts). 150 tests. Databricks notebook included.
+The library is at [`github.com/burning-cost/insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts). The notebook `notebooks/01_mscp_motor_quarterly.py` runs the full MSCP workflow on synthetic UK motor data with claims inflation regime shifts. Five modules, 150 tests.
 
-Related: [insurance-conformal](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) for cross-sectional conformal prediction, [insurance-trend](https://burning-cost.github.io/2026/03/13/insurance-trend/) for trend analysis, [insurance-monitoring](https://burning-cost.github.io/2026/03/03/your-pricing-model-is-drifting/) for deployed model drift detection.
+The committee slide with the ARIMA interval will exist for a while yet. But now the interval next to it can be labelled "conformal, 90%, Kupiec: pass" — and if someone asks where the error bars come from, you have an answer.
+
+---
+
+*insurance-conformal-ts is part of the Burning Cost open-source stack. Related libraries: [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (cross-sectional prediction intervals), [insurance-garch](https://github.com/burning-cost/insurance-garch) (claims inflation volatility modelling), [insurance-trend](https://github.com/burning-cost/insurance-trend) (severity and frequency trend analysis).*

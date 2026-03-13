@@ -336,6 +336,15 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">loading factor</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-multivariate-conformal" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-multivariate-conformal</span>
+        <span class="lib-card-desc">Joint multi-output conformal prediction for insurance pricing models. Fan &amp; Sesia (arXiv:2512.15383) coordinate-wise standardization resolves the Poisson/Gamma scale mismatch. P(frequency &isin; interval AND severity &isin; interval) &ge; 1&minus;&alpha;. LWC method is 20&ndash;35% more efficient than Bonferroni. SolvencyCapitalEstimator for Solvency II SCR at 99.5% with finite-sample guarantee. 198 tests.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">joint coverage</span>
+          <span class="lib-tag">frequency-severity</span>
+          <span class="lib-tag">Solvency II</span>
+        </span>
+      </a>
       <a href="https://github.com/burning-cost/insurance-monitoring" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-monitoring</span>
         <span class="lib-card-desc">Three-layer model monitoring for deployed pricing models. Exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, and a formal Gini z-test to distinguish recalibration from refit signals.</span>
@@ -458,15 +467,6 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">loss cost</span>
         </span>
       </a>
-      <a href="https://github.com/burning-cost/insurance-garch" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-garch</span>
-        <span class="lib-card-desc">GARCH models for claims inflation uncertainty. GJR-GARCH with Student-t errors (the PRA-era default), BIC model selection across 12 specs, bootstrap fan charts with base/stressed/shocked paths, Kupiec and Christoffersen backtests. Chains directly with insurance-trend residuals.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">GARCH</span>
-          <span class="lib-tag">claims inflation</span>
-          <span class="lib-tag">volatility</span>
-        </span>
-      </a>
       <a href="https://github.com/burning-cost/insurance-anam" target="_blank" class="lib-card">
         <span class="lib-card-name">insurance-anam</span>
         <span class="lib-card-desc">Actuarial Neural Additive Model for interpretable deep learning in insurance pricing. Shape functions per rating factor give the transparency of a GLM with the predictive power of a neural network.</span>
@@ -573,6 +573,24 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">EM algorithm</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-competing-risks" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-competing-risks</span>
+        <span class="lib-card-desc">Fine-Gray subdistribution hazard regression for competing risks. AalenJohansenFitter, FineGrayFitter with IPCW, Gray's test. Correctly models lapse/MTC/NTU in retention and fire/EoW/flood/subsidence in home insurance. 150 tests.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">competing risks</span>
+          <span class="lib-tag">Fine-Gray</span>
+          <span class="lib-tag">retention</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-online" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-online</span>
+        <span class="lib-card-desc">Multi-armed bandit algorithms for GIPP-compliant loading optimisation on direct channels. Thompson Sampling, UCB1, and LinUCB with ENBP constraints, FCA PS21/5 documentation, and Consumer Duty audit reporting. Stops allocating quotes to inferior loading arms while you are still learning.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">bandit algorithms</span>
+          <span class="lib-tag">GIPP</span>
+          <span class="lib-tag">loading optimisation</span>
+        </span>
+      </a>
     </div>
   </div>
 
@@ -664,15 +682,6 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">tail risk</span>
         </span>
       </a>
-      <a href="https://github.com/burning-cost/insurance-frequency-severity" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-frequency-severity</span>
-        <span class="lib-card-desc">Sarmanov copula joint freq-sev — analytical premium correction, IFM estimation, Garrido conditional. Tests the independence assumption at the heart of every two-GLM pricing model and quantifies the premium bias when it fails. DependenceTest, JointFreqSev, ConditionalFreqSev, compare_copulas.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">Sarmanov copula</span>
-          <span class="lib-tag">frequency-severity</span>
-          <span class="lib-tag">IFM</span>
-        </span>
-      </a>
     </div>
   </div>
 
@@ -762,6 +771,16 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">dynamic prediction</span>
         </span>
       </a>
+      <a href="https://github.com/burning-cost/insurance-poisson-mixture-nn" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-poisson-mixture-nn</span>
+        <span class="lib-card-desc">Neural Poisson mixture model for structural vs stochastic zero decomposition in claim frequency. Two-component Poisson mixture with neural network estimation of per-policy at-risk probability pi(x). Softplus reparameterisation enforces lambda_0 < lambda_1 without projection. Log-sum-exp stable NLL loss. 14x pricing difference demonstrated between identical-demographic telematics zero-claimers. Based on NAAJ 2025 PM-DNN paper. 110 tests.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">Poisson mixture</span>
+          <span class="lib-tag">zero-inflation</span>
+          <span class="lib-tag">telematics</span>
+          <span class="lib-tag">structural zeros</span>
+        </span>
+      </a>
     </div>
   </div>
 
@@ -797,6 +816,17 @@ description: "On the forefront of machine learning and data science research in 
           <span class="lib-tag">IBNR</span>
           <span class="lib-tag">nowcasting</span>
           <span class="lib-tag">EM algorithm</span>
+        </span>
+      </a>
+      <a href="https://github.com/burning-cost/insurance-bcf" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-bcf</span>
+        <span class="lib-card-desc">Bayesian Causal Forests for UK insurance pricing. BayesianCausalForest wraps stochtree 0.4.0 BCFModel with RIC correction, insurance defaults, and probit routing for binary outcomes. ElasticityEstimator produces segment-level CATE with posterior credible intervals. BCFAuditReport generates FCA EP25/2 HTML documentation. 149 tests.</span>
+        <span class="lib-card-tags">
+          <span class="lib-tag">BCF</span>
+          <span class="lib-tag">CATE</span>
+          <span class="lib-tag">causal inference</span>
+          <span class="lib-tag">FCA EP25/2</span>
+          <span class="lib-tag">MCMC</span>
         </span>
       </a>
     </div>
