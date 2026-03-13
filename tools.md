@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "75 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "78 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -637,7 +637,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 71 libraries are on PyPI and MIT-licensed.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 78 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
