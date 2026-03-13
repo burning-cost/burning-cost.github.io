@@ -1,7 +1,7 @@
 ---
 layout: tools
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "58 Python libraries for UK non-life pricing — from SHAP relativities and Bayesian credibility to causal inference, conformal prediction, and FCA Consumer Duty compliance."
+description: "Open-source Python libraries for UK non-life pricing — from SHAP relativities and Bayesian credibility to causal inference, conformal prediction, and FCA Consumer Duty compliance."
 permalink: /tools/
 ---
 
@@ -478,7 +478,7 @@ permalink: /tools/
 </script>
 
 <div class="tools-intro">
-  <p>59 active Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
+  <p>50+ open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
