@@ -156,8 +156,6 @@ pip install rate-optimiser
 
 The [full library index](/tools/) lists every library with pip install commands, links to GitHub repos, and links to relevant blog posts. Each library ships with a Databricks notebook demo on synthetic UK motor data.
 
-If you are moving from Emblem to Python, the [training course](/course/) covers the transition — GLMs in Python, GBM pricing, SHAP relativities, conformal prediction intervals, and constrained rate optimisation. Twelve modules, free and open, written for pricing actuaries who already know what they are doing.
-
 ---
 
 ## Frequently asked questions
