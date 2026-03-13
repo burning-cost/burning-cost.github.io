@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "71 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "77 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -166,6 +166,14 @@ permalink: /tools/
       "name": "insurance-demand",
       "description": "Conversion, retention, and DML price elasticity modelling integrated with rate optimisation.",
       "codeRepository": "https://github.com/burning-cost/insurance-demand",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-autodml",
+      "description": "Automatic Debiased ML via Riesz Representers for continuous treatment causal inference. PremiumElasticity (AME), DoseResponseCurve, PolicyShiftEffect, SelectionCorrectedElasticity with Gamma sensitivity bounds.",
+      "codeRepository": "https://github.com/burning-cost/insurance-autodml",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -846,6 +854,10 @@ Targeted Maximum Likelihood Estimation for doubly robust causal inference. TMLE 
 Conversion, retention, and DML price elasticity modelling integrated with rate optimisation. Demand curves feed directly into constrained optimisation.
 `uv add insurance-demand`
 &rarr; [Demand modelling for insurance pricing](https://burning-cost.github.io/2026/02/25/demand-modelling-for-insurance-pricing/)
+**[insurance-autodml](https://github.com/burning-cost/insurance-autodml)**
+Automatic Debiased ML via Riesz Representers for continuous treatment causal inference. Price elasticity estimation without the GPS density instability that plagues IPW methods at the tails of the premium distribution. PremiumElasticity (AME), DoseResponseCurve (kernel-DML, Colangelo-Lee JBES 2025), PolicyShiftEffect (counterfactual portfolio shifts), and SelectionCorrectedElasticity with Gamma sensitivity bounds for renewal selection bias. ForestRiesz avoids GPS density estimation entirely. FCA evidence HTML reports. 199 tests.
+`pip install insurance-autodml`
+&rarr; [Continuous Treatment Causal Inference for Insurance Pricing: insurance-autodml](https://burning-cost.github.io/2026/03/12/insurance-autodml/)
 
 
 **[insurance-uplift](https://github.com/burning-cost/insurance-uplift)**
