@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "When Did Your Loss Ratio Actually Change?"
-date: 2026-03-25
+date: 2026-03-13
 categories: [libraries, pricing, monitoring]
 tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-dynamics, python]
 description: "Pricing actuaries spot regime shifts by eye, six months late and with no audit trail. insurance-dynamics implements Bayesian Online Changepoint Detection with exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, and a Consumer Duty evidence pack. Adams & MacKay (2007), extended for insurance exposure."

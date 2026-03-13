@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Trend Estimate Has No Likelihood"
-date: 2026-03-25
+date: 2026-03-13
 categories: [libraries, pricing, trends]
 tags: [GAS, generalised-autoregressive-score, trend, frequency, severity, loss-ratio, Poisson, Gamma, Beta, time-series, observation-driven, MLE, PRA, claims-inflation, insurance-dynamics, python]
 description: "The PRA's June 2023 Dear Chief Actuary letter found personal lines claims inflation allowances ranging from 0.6% to 9% — a 15× spread that can't be explained by genuine portfolio differences. insurance-dynamics brings GAS models to Python for the first time, giving pricing actuaries a statistically grounded alternative to moving averages."

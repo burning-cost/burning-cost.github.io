@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Portfolio Segments Are Lying to You"
-date: 2026-03-28
+date: 2026-03-13
 categories: [libraries, segmentation, portfolio-management]
 tags: [lda, topic-modelling, soft-clustering, portfolio-drift, adverse-selection, python]
 description: "Hard clustering assigns every motor policy to exactly one risk group. LDA gives each policy a membership vector across K risk archetypes — and the difference matters enormously when you are trying to detect adverse selection after a rate change."

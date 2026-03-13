@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Frequency and Severity Are Two Outputs. You Have One Prediction Interval."
-date: 2026-03-26
+date: 2026-03-13
 categories: [libraries, pricing, uncertainty]
 tags: [conformal-prediction, multivariate, joint-prediction, frequency-severity, Solvency-II, SCR, Fan-Sesia, LWC, coordinate-wise-standardization, Consumer-Duty, FCA, GLM, GBM, Poisson, Gamma, python, motor, home, insurance-conformal]
 description: "Every UK pricing team runs separate GLMs for frequency and severity. They have marginal prediction intervals for each — 95% coverage on frequency, 95% on severity — and no guarantee whatsoever about the joint outcome. insurance-conformal implements Fan & Sesia's coordinate-wise standardization to give you a single prediction set covering both simultaneously."

@@ -8,7 +8,7 @@
 
 Everything you have built across Modules 1–7 — Delta tables, walk-forward cross-validation, CatBoost GBMs, conformal prediction intervals, constrained rate optimisation — runs in isolation in its own notebook. This module ties it together into a single reproducible pipeline: one notebook, one MLflow experiment, one Unity Catalog schema, one audit record that lets you reproduce any output at any future date.
 
-The pipeline covers every stage of a UK personal lines rate review: loading 200,000 synthetic motor policies across four accident years, feature engineering with a shared transform layer (the same functions used at training time and scoring time), walk-forward cross-validation with a six-month IBNR buffer using the `insurance-cv` library, Optuna hyperparameter tuning, final CatBoost Poisson frequency and Tweedie severity models logged to MLflow, conformal prediction intervals calibrated and validated using `insurance-conformal`, a constrained rate optimisation using `rate-optimiser`, and a pipeline audit record that ties every Delta table version and every MLflow run ID to the same run date.
+The pipeline covers every stage of a UK personal lines rate review: loading 200,000 synthetic motor policies across four accident years, feature engineering with a shared transform layer (the same functions used at training time and scoring time), walk-forward cross-validation with a six-month IBNR buffer using the `insurance-cv` library, Optuna hyperparameter tuning, final CatBoost Poisson frequency and Tweedie severity models logged to MLflow, conformal prediction intervals calibrated and validated using `insurance-conformal`, a constrained rate optimisation using `insurance-optimise`, and a pipeline audit record that ties every Delta table version and every MLflow run ID to the same run date.
 
 The audit record is not an afterthought. Consumer Duty (PS 22/9, effective July 2023) and PS 21/5 together require that pricing teams can reproduce the model, the inputs, and the decision trail for any price charged in the past three years. The pipeline is designed so that this is automatic: every table write carries the MLflow run ID; every MLflow run carries the Delta table version used for training; the audit record captures all of this in a single queryable row. To reproduce any historical output, you query the audit table, read the Delta table at the logged version, and load the MLflow model at the logged run ID.
 
@@ -25,7 +25,7 @@ The feature engineering discipline — all transforms defined as pure functions 
   - Module 4: SHAP relativities (helpful but not required for the pipeline itself)
   - Module 5: Conformal prediction intervals with `insurance-conformal`
   - Module 6: Credibility and Bayesian pricing (context, not a code dependency)
-  - Module 7: Constrained rate optimisation with `rate-optimiser`
+  - Module 7: Constrained rate optimisation with `insurance-optimise`
 - A Databricks workspace with a cluster running DBR 14.0 ML or later
 - Unity Catalog enabled on your workspace (required for the Delta table writes)
 
@@ -56,7 +56,7 @@ pip install \
   catboost \
   "insurance-conformal[catboost]" \
   insurance-cv \
-  rate-optimiser \
+  insurance-optimise \
   polars \
   optuna \
   mlflow \
@@ -66,7 +66,7 @@ pip install \
 Sources:
 - [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 - [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
-- [github.com/burning-cost/rate-optimiser](https://github.com/burning-cost/rate-optimiser)
+- [github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 
 ---
 

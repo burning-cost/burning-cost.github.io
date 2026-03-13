@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Optimal Transport for Discrimination-Free Insurance Pricing"
-date: 2026-03-21
+date: 2026-03-13
 categories: [libraries, pricing, fairness]
 tags: [fairness, discrimination, optimal-transport, Wasserstein, Lindholm, marginalisation, FCA, EP25/2, consumer-duty, proxy-discrimination, insurance-fairness, python, motor]
 description: "The FCA's EP25/2 consultation set out a coherent framework for discrimination-free pricing. The underlying mathematics — Lindholm marginalisation and Wasserstein barycenters — had no open-source Python implementation. insurance-fairness fixes that."

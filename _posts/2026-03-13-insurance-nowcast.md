@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Most Recent Experience Data Is Wrong, and Aggregate Factors Won't Fix It"
-date: 2026-03-23
+date: 2026-03-13
 categories: [libraries, pricing, reserving]
 tags: [nowcasting, IBNR, EM-algorithm, XGBoost, reporting-delay, completion-factors, frequency-GLM, insurance-nowcast, python, poisson, multinomial]
 description: "The last 6–24 months of claims data is partially developed. Standard practice applies aggregate development factors from the reserving triangle — factors that don't condition on your actual risk mix. insurance-nowcast implements the Wilsens/Antonio/Claeskens ML-EM algorithm to produce completion factors by risk segment. 3,023 lines, 171 tests."

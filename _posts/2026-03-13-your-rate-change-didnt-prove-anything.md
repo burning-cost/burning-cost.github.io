@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Synthetic Difference-in-Differences for Rate Change Evaluation"
-date: 2026-03-19
+date: 2026-03-13
 categories: [regulation, libraries, causal-inference]
 tags: [sdid, causal-inference, difference-in-differences, fca-tr242, fca-ep252, rate-change-evaluation, python, insurance-causal-policy]
 description: "TR24/2 found 28 firms failing to causally attribute rate changes to outcomes. Correlation of loss ratios post-rate-change is not evidence. We built insurance-causal-policy — SDID + CS21 + HonestDiD in one Python package — to produce the kind of evidence that actually holds up."

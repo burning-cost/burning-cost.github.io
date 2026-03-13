@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Actuarial Committee Can't Review a GBM. It Can Review This."
-date: 2026-04-06
+date: 2026-03-13
 categories: [libraries, pricing, interpretability]
 tags: [insurance-pin, neural-ga2m, interpretability, fca-consumer-duty, pairwise-interactions, pytorch, french-mtpl]
 description: "Pairwise Interaction Networks produce exact, tabulatable 2D rating factor surfaces — not SHAP approximations. They also beat GLMs, GBMs, and transformers on the French MTPL benchmark. We've built the Python implementation."
@@ -19,7 +19,7 @@ Richman, Scognamiglio, and Wuthrich (arXiv:2508.15678, August 2025) have a diffe
 
 It also produces the best published out-of-sample Poisson deviance on the French MTPL benchmark (freMTPL2freq, n=678,007). Better than GLMs, GBMs, CANNs, and the Credibility Transformer. With 4,147 parameters.
 
-We have built [`insurance-pin`](https://github.com/burning-cost/insurance-pin).
+We have built [`insurance-pin`](https://github.com/burning-cost/insurance-gam).
 
 ---
 
@@ -145,7 +145,7 @@ Do not use PIN as a first model. Start with a GLM to understand your main effect
 
 The library is PyTorch throughout. The authors released a ZIP archive at github.com/wueth/Tree-Like-PIN that appears to be Keras/TensorFlow -- consistent with Wuthrich group conventions. We have re-implemented from the paper equations in PyTorch, tested against the reference parameter count of 4,147 as a regression anchor.
 
-The repository is at [github.com/burning-cost/insurance-pin](https://github.com/burning-cost/insurance-pin).
+The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam).
 
 ---
 

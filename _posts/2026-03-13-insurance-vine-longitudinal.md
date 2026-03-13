@@ -13,7 +13,7 @@ Not when they claimed. Not how much. Not whether they had a single severe claim 
 
 Yang and Czado (2022, *Scandinavian Journal of Statistics*, 49(4):1534–1561) built a model that uses all of that. It captures the full joint distribution of a policyholder's claim history across years — the temporal dependence structure — and conditions on it to predict next year's claim probability and severity distribution. The model is a two-part D-vine copula. The technique has existed for four years. There was no Python implementation.
 
-We have built [`insurance-vine-longitudinal`](https://github.com/burning-cost/insurance-vine-longitudinal).
+We have built [`insurance-vine-longitudinal`](https://github.com/burning-cost/insurance-copula).
 
 ---
 
@@ -273,7 +273,7 @@ pyvinecopulib 0.7.5 provides the engine: the `DVineStructure` class, stationary 
 pip install insurance-vine-longitudinal
 ```
 
-Source: [github.com/burning-cost/insurance-vine-longitudinal](https://github.com/burning-cost/insurance-vine-longitudinal)
+Source: [github.com/burning-cost/insurance-copula](https://github.com/burning-cost/insurance-copula)
 
 ---
 

@@ -8,7 +8,7 @@
 
 Many UK personal lines pricing teams run a version of the same Excel exercise at each renewal cycle: a spreadsheet with proposed factor adjustments, a loss ratio calculation in one tab, a volume impact estimate in another, and a sensitivity table stitched together manually. The tool is the pricing actuary's judgment, applied iteratively. The problem is not that this produces wrong answers — an experienced actuary working through the spreadsheet usually arrives at a reasonable rate action. The problem is that it is not a formally stated problem. The constraints are implicit. The optimality criterion is undefined. The trade-off between LR improvement and volume retention is explored by hand, not systematically.
 
-This module replaces the Excel exercise with a formally stated constrained optimisation problem. We use the open-source `rate-optimiser` library (github.com/burning-cost/rate-optimiser) to solve for the factor adjustment multipliers that minimise dislocation subject to four constraints: a loss ratio target, a volume floor, per-factor movement caps, and the FCA's equivalent new business pricing (ENBP) requirement introduced under PS 21/5.
+This module replaces the Excel exercise with a formally stated constrained optimisation problem. We use the open-source `insurance-optimise` library (github.com/burning-cost/insurance-optimise) to solve for the factor adjustment multipliers that minimise dislocation subject to four constraints: a loss ratio target, a volume floor, per-factor movement caps, and the FCA's equivalent new business pricing (ENBP) requirement introduced under PS 21/5.
 
 The ENBP constraint is not optional. PS 21/5 (effective January 2022) prohibits charging renewal customers more than they would be quoted as new business on the same risk. In a multiplicative tariff, this means the product of your renewal-only factors (tenure discounts, NCB-at-renewal adjustments) cannot increase the renewal premium above the new business equivalent. Getting this wrong is a regulatory breach, not a pricing judgement call. The library encodes ENBP correctly so you cannot accidentally violate it.
 
@@ -44,13 +44,13 @@ Beyond the single-solve result, we cover the efficient frontier: the full trade-
 
 ## Library
 
-The `rate-optimiser` library is available on GitHub.
+The `insurance-optimise` library is available on GitHub.
 
 ```bash
-pip install rate-optimiser polars --quiet
+pip install insurance-optimise polars --quiet
 ```
 
-Source: [github.com/burning-cost/rate-optimiser](https://github.com/burning-cost/rate-optimiser)
+Source: [github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 
 The library depends on SciPy (for SLSQP), NumPy, and Polars. No additional solvers required — SLSQP is bundled with SciPy.
 

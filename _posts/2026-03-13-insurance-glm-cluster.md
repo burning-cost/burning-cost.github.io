@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "500 Vehicle Makes, One Afternoon, Zero Reproducibility"
-date: 2026-03-22
+date: 2026-03-13
 categories: [libraries, pricing, glm]
 tags: [factor-clustering, GLM, fused-lasso, R2VF, vehicle-make, categorical-banding, insurance-glm-tools, python, poisson, BIC, monotonicity]
 description: "Every UK motor pricing actuary has spent a week in Excel collapsing vehicle makes. The judgement calls stack up: which makes merge, on what basis, with what documentation. insurance-glm-tools automates this with the R2VF algorithm — regularised regression ranking for nominal factors, split-coded fused lasso for fusion, unpenalised GLM refit. Poisson, Gamma, Tweedie. BIC lambda selection. Monotonicity enforcement. 156 tests."

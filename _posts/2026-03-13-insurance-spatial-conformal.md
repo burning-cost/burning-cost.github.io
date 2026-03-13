@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Prediction Intervals Are Right Nationally. They Are Wrong in Hackney."
-date: 2026-03-29
+date: 2026-03-13
 categories: [libraries, conformal-prediction, geospatial]
 tags: [conformal-prediction, spatial-statistics, uncertainty-quantification, home-insurance, fca-consumer-duty, python]
 description: "Standard conformal prediction gives you 90% national coverage. In flood-prone inner-city postcodes it gives you 73%. In rural Devon it gives you 96%. This is not a statistical technicality — it is a pricing and regulatory problem. insurance-spatial fixes it."

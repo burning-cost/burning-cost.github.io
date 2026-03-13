@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency"
-date: 2026-03-20
+date: 2026-03-13
 categories: [libraries, pricing]
 tags: [EBM, explainable-boosting-machine, interpretML, GLM, GAM, relativity-tables, monotonicity, gini, poisson, tweedie, gamma, insurance-gam, tariff, motor, python]
 description: "Explainable Boosting Machines give you additive shape functions like a GAM but with GBM-level predictive accuracy. insurance-gam wraps interpretML's EBM in the workflow a UK pricing team actually uses: multiplicative relativity tables, monotonicity editing, and GLM comparison diagnostics."

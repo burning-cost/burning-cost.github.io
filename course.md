@@ -533,7 +533,7 @@ permalink: /course/
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burning-cost/rate-optimiser" target="_blank">rate-optimiser</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-optimise" target="_blank">insurance-optimise</a></div>
             <div class="proof-lib-desc">Constrained rate change optimisation</div>
           </div>
         </div>
@@ -551,7 +551,7 @@ permalink: /course/
         </div>
         <div class="proof-lib-item">
           <div>
-            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-demand" target="_blank">insurance-demand</a></div>
+            <div class="proof-lib-name"><a href="https://github.com/burning-cost/insurance-optimise" target="_blank">insurance-optimise</a></div>
             <div class="proof-lib-desc">Conversion and retention demand modelling</div>
           </div>
         </div>

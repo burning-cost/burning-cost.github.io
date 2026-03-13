@@ -24,7 +24,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic) - vine copula synthetic portfolio generation preserving multivariate dependence structure
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs with finite-sample coverage guarantees
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) - exposure-weighted PSI/CSI, actual-vs-expected ratios, and Gini drift z-tests for deployed models
-- [`insurance-validation`](https://github.com/burning-cost/insurance-validation) - structured PRA SS1/23 model validation reports covering nine required sections, output as HTML and JSON
+- [`insurance-governance`](https://github.com/burning-cost/insurance-governance) - structured PRA SS1/23 model validation reports and model risk management, output as HTML and JSON
 
 **Model Building**
 
@@ -33,9 +33,9 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking, borrowing strength from neighbours
 - [`insurance-multilevel`](https://github.com/burning-cost/insurance-multilevel) - CatBoost combined with REML random effects for high-cardinality categorical groups
 - [`insurance-trend`](https://github.com/burning-cost/insurance-trend) - loss cost trend analysis with structural break detection and regime-aware projections
-- [`insurance-anam`](https://github.com/burning-cost/insurance-anam) - actuarial neural additive model in PyTorch: interpretable deep learning for pricing
+- [`insurance-gam`](https://github.com/burning-cost/insurance-gam) - interpretable GAM models: EBM tariffs, actuarial NAM, and pairwise interaction networks with exact Shapley values
 - [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - automated GLM interaction detection using CANN, NID, and SHAP-based methods
-- [`insurance-recurrent`](https://github.com/burning-cost/insurance-recurrent) - shared frailty models for recurrent insurance claims; frailty posterior is the Buehlmann-Straub credibility premium
+- [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - shared frailty models for recurrent claims, cure models, competing risks, and retention modelling
 
 **Interpretation**
 
@@ -45,25 +45,22 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 **Tail Risk & Distributions**
 
 - [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) - GAMLSS for Python: model ALL distribution parameters as functions of covariates, seven families, RS algorithm
-- [`insurance-drn`](https://github.com/burning-cost/insurance-drn) - Distributional Refinement Networks: refine a GLM/GBM baseline distribution covariate-by-covariate using a neural network
+- [`insurance-severity`](https://github.com/burning-cost/insurance-severity) - Distributional Refinement Networks and composite spliced severity models: full predictive distributions per risk
 - [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) - quantile and expectile GBMs for tail risk, TVaR, and increased limit factors
 - [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) - distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives
 
 **Commercial**
 
-- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints
-- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - conversion, retention, and DML price elasticity modelling integrated with rate optimisation
-- [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML and DR-Learner
-- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - SLSQP portfolio rate optimisation with analytical Jacobians for large factor spaces
-- [`experience-rating`](https://github.com/burning-cost/experience-rating) - NCD and bonus-malus systems for UK motor, including claiming threshold optimisation
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints; includes demand modelling subpackage
+- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal price elasticity estimation via CausalForestDML, DR-Learner, and Automatic Debiased ML
+- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) - NCD and bonus-malus systems for UK motor, including claiming threshold optimisation
 - [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling
 
 **Compliance & Governance**
 
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination auditing and FCA Consumer Duty documentation support
-- [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) - optimal transport discrimination-free pricing via Lindholm marginalisation, causal path decomposition, and Wasserstein barycenter and FCA Consumer Duty documentation support
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination auditing, optimal transport discrimination-free pricing, and FCA Consumer Duty documentation support
 - [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) - synthetic difference-in-differences for causal rate change evaluation and FCA evidence packs
-- [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) - model risk management: ModelCard, ModelInventory, and GovernanceReport generation
+- [`insurance-governance`](https://github.com/burning-cost/insurance-governance) - model risk management: ModelCard, ModelInventory, and GovernanceReport generation
 - [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) - champion/challenger framework with shadow mode, rollback, and full audit trail
 
 **Infrastructure**

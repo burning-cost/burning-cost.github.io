@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Whittaker-Henderson Smoothing for Insurance Pricing: A Python Library"
-date: 2026-03-20
+date: 2026-03-13
 categories: [techniques, libraries, pricing]
 tags: [smoothing, whittaker-henderson, graduation, driver-age, ncd, vehicle-group, penalised-least-squares, REML, bayesian, credible-intervals, python, insurance-whittaker]
 description: "Every pricing actuary smooths experience rating tables. Most do it with ad hoc moving averages in Excel. insurance-whittaker brings Whittaker-Henderson penalised least squares — with REML lambda selection, Bayesian credible intervals, and 2D cross-table support — to Python."

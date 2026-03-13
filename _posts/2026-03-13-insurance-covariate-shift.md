@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Model Doesn't Know What Book It's On"
-date: 2026-03-30
+date: 2026-03-13
 categories: [libraries, model-validation, pricing]
 tags: [covariate-shift, density-ratio, conformal-prediction, catboost, m-and-a, fca, python]
 description: "When a UK motor insurer acquires an MGA book, the pricing model trained on the acquirer's portfolio has never seen the acquired distribution. It doesn't fail loudly. It misprices quietly, segment by segment."

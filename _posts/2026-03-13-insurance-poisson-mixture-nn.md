@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Not All Zero-Claimers Are Equal"
-date: 2026-03-27
+date: 2026-03-13
 categories: [frequency-modelling, neural-networks, telematics]
 tags: [poisson-mixture, zero-inflation, structural-zeros, telematics, python]
 description: "ZIP models treat all zero-claimers identically. The PM-DNN decomposes them into structural zeros (will never claim) and stochastic zeros (got lucky this year), and shows a 14x pricing difference between the two types."

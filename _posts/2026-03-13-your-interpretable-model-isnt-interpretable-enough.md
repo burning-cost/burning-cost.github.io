@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss"
-date: 2026-03-17
+date: 2026-03-13
 author: Burning Cost
 categories: [pricing, machine-learning]
 tags: [ANAM, NAM, interpretability, monotonicity, GLM, Poisson, Tweedie, FCA, Consumer-Duty, PRA, python, insurance-gam]

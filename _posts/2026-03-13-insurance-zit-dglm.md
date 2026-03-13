@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Tweedie Model Doesn't Know About Strategic Non-Claimers"
-date: 2026-03-30
+date: 2026-03-13
 categories: [libraries, tweedie, zero-inflation, pricing]
 tags: [tweedie, zero-inflation, catboost, gradient-boosting, ncd, dispersion, em-algorithm, python]
 description: "Standard compound Poisson Tweedie treats every zero as a Poisson draw. In UK motor, some zeros are policyholders who had incidents and chose not to claim — NCD protection, excess arithmetic. Conflating them biases both mean and zero probability. ZIT-DGLM separates the two with three-headed gradient boosting via EM."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Nested GLMs and Neural Embeddings for Territory Ratemaking"
-date: 2026-03-20
+date: 2026-03-13
 categories: [libraries, pricing]
 tags: [nested-GLM, entity-embeddings, territory, SKATER, postcode, high-cardinality, insurance-glm-tools, spatial-clustering, neural-network, statsmodels, geopandas, motor, python]
 description: "1,800 UK postcode sectors cannot go into a GLM as dummies. insurance-glm-tools implements the Wang, Shi, Cao (NAAJ 2025) four-phase pipeline: base GLM, neural embedding of high-cardinality categoricals, SKATER spatially constrained clustering for territory bands, and a readable outer GLM with a full relativities table."

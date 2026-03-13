@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Champion/Challenger Testing with ICOBS 6B.2.51R Compliance"
-date: 2026-03-15
+date: 2026-03-13
 categories: [pricing, libraries, regulation]
 tags: [champion-challenger, enbp, icobs-6b, fca-ps21-5, shadow-mode, python, insurance-deploy, model-governance, bootstrap, power-analysis]
 description: "83% of UK insurers failed FCA record-keeping requirements for ENBP in 2023. Running a champion/challenger test without an audit trail is the same problem wearing different clothes. insurance-deploy is our 25th open-source library: SHA-256 routing, SQLite quote logging, bootstrap LR tests, power analysis, and an ICOBS 6B.2.51R report that an SMF holder can actually sign."

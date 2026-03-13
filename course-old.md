@@ -181,7 +181,7 @@ Prediction intervals for insurance models that are statistically honest - not co
 
 #### Module 7: Constrained Rate Optimisation
 
-Building a rate change that meets a target loss ratio, respects a maximum movement cap per cell, and minimises cross-subsidy across rating factors simultaneously. Linear programming formulation, `scipy.optimize` and `PuLP` in Databricks, and how to structure the constraints so that the optimiser produces something a pricing actuary and a commercial director will both accept. Uses our open-source [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) library. This is the module most courses do not have.
+Building a rate change that meets a target loss ratio, respects a maximum movement cap per cell, and minimises cross-subsidy across rating factors simultaneously. Linear programming formulation, `scipy.optimize` and `PuLP` in Databricks, and how to structure the constraints so that the optimiser produces something a pricing actuary and a commercial director will both accept. Uses our open-source [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) library. This is the module most courses do not have.
 
 #### Module 8: End-to-End Pipeline (Capstone)
 
@@ -211,7 +211,7 @@ We have written open-source tools for every topic this course covers.
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals for insurance GBMs, implementing the variance-weighted non-conformity score from Manna et al. (2025).
 - [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - SHAP values aggregated into multiplicative relativities tables in the format actuarial reviewers expect.
 - [`credibility`](https://github.com/burning-cost/credibility) - Buhlmann-Straub credibility in Python, with mixed-model equivalence checks.
-- [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) - constrained rate change optimisation for UK personal lines.
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation for UK personal lines.
 - [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data segments, with Buhlmann-Straub credibility factor output.
 
 We have also written at length about [why standard k-fold cross-validation is wrong for insurance data](/2026/03/06/why-your-cross-validation-is-lying-to-you.html) - the kind of detail that only comes from having had to fix it in production.

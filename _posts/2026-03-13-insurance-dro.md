@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Rate Optimiser Has No Safety Margin"
-date: 2026-03-25
+date: 2026-03-13
 categories: [libraries, pricing, optimisation]
 tags: [dro, distributionally-robust-optimisation, wasserstein, ambiguity-set, price-of-robustness, rate-optimisation, demand-model, FCA, PS21/5, ENBP, cvxpy, insurance-dro, python, motor, home, renewal-pricing]
 description: "Every rate optimiser is a point estimate machine. Feed it a demand model, get back optimal rates. Feed it a wrong demand model, get back confidently wrong rates. insurance-dro adds a safety margin: it optimises against the worst-case demand distribution within a calibrated Wasserstein ball around your empirical samples, producing a price-of-robustness curve for pricing committee papers."

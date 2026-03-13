@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Composite Severity Regression: Getting the Tail Right Without Throwing Away the Body"
-date: 2026-03-23
+date: 2026-03-13
 categories: [libraries, pricing, severity]
 tags: [composite-models, spliced-distributions, severity, heavy-tail, GPD, Burr, mode-matching, ILF, motor-BI, EL, reinsurance, python, insurance-severity, lognormal, gamma, MLE]
 description: "A Gamma GLM systematically underestimates large motor BI claims because no single parametric family fits both the £5k bulk of claims and the £500k+ tail. insurance-severity implements spliced severity models — lognormal or gamma body below a threshold, GPD or Burr XII above — with the threshold varying by policyholder covariates via mode-matching. 2,818 lines, 106 tests."

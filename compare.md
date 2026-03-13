@@ -88,17 +88,17 @@ The table below maps pricing workflow areas to Burning Cost libraries and notes 
 |---|---|---|
 | **GLM modelling** | statsmodels, scikit-learn TweedieRegressor with [`insurance-cv`](https://github.com/burning-cost/insurance-cv) for correct temporal splits | GUI-driven GLM with built-in one-way/two-way analysis and factor sign-off workflow |
 | **GBM modelling** | CatBoost, LightGBM, XGBoost with [`shap-relativities`](https://github.com/burning-cost/shap-relativities) for factor table output | Varies — Akur8 and DataRobot offer GBM with GUI review; Emblem GBM support has historically been limited |
-| **Interpretable deep learning** | [`insurance-anam`](https://github.com/burning-cost/insurance-anam) — actuarial neural additive model with per-feature shape functions | Limited native support; typically requires custom integration |
+| **Interpretable deep learning** | [`insurance-gam`](https://github.com/burning-cost/insurance-gam) — interpretable GAM models including actuarial NAM, EBM tariffs, and pairwise interaction networks | Limited native support; typically requires custom integration |
 | **Cross-validation** | [`insurance-cv`](https://github.com/burning-cost/insurance-cv) — walk-forward splits with configurable IBNR buffers, sklearn-compatible scorers | Some platforms implement temporal splits; IBNR handling varies |
 | **Prediction intervals** | [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free finite-sample coverage guarantees; [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) — quantile and expectile GBMs | Typically point predictions; interval estimation not standard |
-| **Rate optimisation** | [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) — LP efficient frontier with movement caps and GIPP constraints; [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — SLSQP for large factor spaces | Radar/Earnix specifically targets rate optimisation with integrated demand modelling; Emblem has optimisation add-ons |
-| **Demand and price elasticity** | [`insurance-demand`](https://github.com/burning-cost/insurance-demand) — conversion and retention modelling; [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) — causal DML elasticity estimation | Typically available as part of commercial optimisation modules; methodology often opaque |
-| **Model validation** | [`insurance-validation`](https://github.com/burning-cost/insurance-validation) — structured PRA SS1/23 reports covering nine sections, HTML and JSON output | Validation reporting features vary; PRA SS1/23 alignment is not typically an explicit feature |
+| **Rate optimisation** | [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — constrained rate optimisation with efficient frontier, movement caps, and GIPP constraints; [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — SLSQP for large factor spaces | Radar/Earnix specifically targets rate optimisation with integrated demand modelling; Emblem has optimisation add-ons |
+| **Demand and price elasticity** | [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — demand modelling subpackage for conversion and retention; [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — causal DML elasticity estimation | Typically available as part of commercial optimisation modules; methodology often opaque |
+| **Model validation** | [`insurance-governance`](https://github.com/burning-cost/insurance-governance) — structured PRA SS1/23 reports covering nine sections, HTML and JSON output | Validation reporting features vary; PRA SS1/23 alignment is not typically an explicit feature |
 | **Model monitoring** | [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — exposure-weighted PSI/CSI, A/E ratios, Gini drift z-tests with scheduled alerts | Monitoring dashboards are common in enterprise platforms; insurance-specific metrics vary |
-| **Causal inference** | [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — double machine learning for deconfounding; [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) — CausalForestDML price elasticity | Not typically offered natively; DataRobot has some causal tooling |
+| **Causal inference** | [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — double machine learning for deconfounding; [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — CausalForestDML price elasticity | Not typically offered natively; DataRobot has some causal tooling |
 | **Spatial rating** | [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) — BYM2 postcode-level models borrowing strength from neighbouring areas | GIS and spatial smoothing tools exist in some platforms; BYM2 specifically is uncommon |
 | **Fairness / discrimination** | [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — proxy discrimination auditing mapped to FCA Consumer Duty requirements | Fairness tooling is an emerging area; FCA-specific mapping is generally not standard |
-| **Model governance** | [`insurance-mrm`](https://github.com/burning-cost/insurance-mrm) — ModelCard, ModelInventory, GovernanceReport for PRA SS1/23 compliance | Enterprise platforms typically include governance workflows; PRA SS1/23 alignment varies |
+| **Model governance** | [`insurance-governance`](https://github.com/burning-cost/insurance-governance) — ModelCard, ModelInventory, GovernanceReport for PRA SS1/23 compliance | Enterprise platforms typically include governance workflows; PRA SS1/23 alignment varies |
 | **Deployment** | [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) — champion/challenger with shadow mode, rollback, and ICOBS 6B.2 audit trail | Enterprise deployment and A/B testing frameworks are standard in larger platforms |
 | **Thin-data segments** | [`credibility`](https://github.com/burning-cost/credibility) — Buhlmann-Straub; [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) — hierarchical Bayes with PyMC 5 | Credibility weighting is standard in Emblem; Bayesian methods less common |
 | **Interaction detection** | [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) — CANN, NID, and SHAP-based interaction tests | Two-way analysis standard in GLM platforms; automated detection less common |
@@ -151,7 +151,7 @@ All 43 libraries are on PyPI. Install any of them individually:
 ```
 pip install shap-relativities
 pip install insurance-cv
-pip install rate-optimiser
+pip install insurance-optimise
 ```
 
 The [full library index](/tools/) lists every library with pip install commands, links to GitHub repos, and links to relevant blog posts. Each library ships with a Databricks notebook demo on synthetic UK motor data.
@@ -166,11 +166,11 @@ Yes, with caveats. Burning Cost covers the statistical modelling workflow that E
 
 **Is there a free alternative to Radar for rate optimisation?**
 
-[`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) and [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) cover constrained rate change optimisation — efficient frontier between loss ratio targets and movement caps, with GIPP constraints. What Radar/Earnix specifically offers around demand integration and rating engine connectivity is harder to replicate without custom work.
+[`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) covers constrained rate change optimisation — efficient frontier between loss ratio targets and movement caps, with GIPP constraints. What Radar/Earnix specifically offers around demand integration and rating engine connectivity is harder to replicate without custom work.
 
 **Can Python replace Akur8?**
 
-For the modelling part, yes. [`shap-relativities`](https://github.com/burning-cost/shap-relativities) gives you GBM factor tables in GLM format. [`insurance-anam`](https://github.com/burning-cost/insurance-anam) gives you interpretable shape functions per rating factor. The difference is that Akur8 provides a GUI where non-technical actuaries can interact with the model outputs without writing code. If your team can work in Jupyter or Databricks notebooks, Python is a reasonable substitute. If you need the GUI, it is not.
+For the modelling part, yes. [`shap-relativities`](https://github.com/burning-cost/shap-relativities) gives you GBM factor tables in GLM format. [`insurance-gam`](https://github.com/burning-cost/insurance-gam) gives you interpretable shape functions per rating factor. The difference is that Akur8 provides a GUI where non-technical actuaries can interact with the model outputs without writing code. If your team can work in Jupyter or Databricks notebooks, Python is a reasonable substitute. If you need the GUI, it is not.
 
 **What about DataRobot?**
 

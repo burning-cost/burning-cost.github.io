@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Shapley Effects for Rating Factor Variance Decomposition"
-date: 2026-03-22
+date: 2026-03-13
 categories: [libraries, pricing, sensitivity]
 tags: [global-sensitivity-analysis, shapley-effects, variance-decomposition, rating-factors, sobol, insurance-sensitivity, python, GLM, GBM, correlated-inputs, FCA, consumer-duty]
 description: "Which rating factor drives the most premium variance in your motor book? The honest answer requires Shapley effects — not SHAP values, not R², not sequential deviance. insurance-sensitivity implements the Song 2016 random permutation estimator with Rabitti-Tzougas 2025 CLH subsampling, exposure weighting, and support for correlated categoricals. Sobol indices included for completeness, but Shapley effects are what you should be reporting."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your GLM's Prediction Intervals Are Wrong (and We Can Prove It)"
-date: 2026-03-29
+date: 2026-03-13
 categories: [libraries, conformal-prediction, solvency]
 tags: [conformal-prediction, glm, tweedie, solvency-ii, scr, insurance-claims, python, catboost]
 description: "Hong (2025) showed a parametric GLM produced 57.8% actual coverage against a 99.5% nominal prediction interval. Conformal prediction held at 99.6% with no distributional assumption. For Solvency UK SCR, this difference is material. We've built the first Python implementation."
@@ -19,7 +19,7 @@ You set your Solvency UK SCR at 99.5% VaR. Your prediction interval achieves 57.
 
 Conformal prediction, under the same misspecification, held at 99.6%. And it does this with no distributional assumption whatsoever.
 
-We have built [`insurance-conformal-claims`](https://github.com/burning-cost/insurance-conformal-claims) - the first Python implementation of Hong's order-statistic shortcut, the h-transformation extension, and insurance-specific Tweedie nonconformity scores from Manna et al. (2025, ASMBI asmb.70045).
+We have built [`insurance-conformal-claims`](https://github.com/burning-cost/insurance-conformal) - the first Python implementation of Hong's order-statistic shortcut, the h-transformation extension, and insurance-specific Tweedie nonconformity scores from Manna et al. (2025, ASMBI asmb.70045).
 
 ---
 
@@ -227,7 +227,7 @@ There was no Python implementation of any of this. Hong's papers have no accompa
 
 `insurance-conformal-claims` fills all of these gaps: Hong's O(n log n) order-statistic shortcut, h-transformation with any sklearn-compatible model, three Tweedie nonconformity scores, two-stage locally weighted conformal with auto-fitted spread model, and an `SCRReport` class that extracts and formats the 99.5% VaR in the form a Solvency UK filing expects.
 
-The library is at [github.com/burning-cost/insurance-conformal-claims](https://github.com/burning-cost/insurance-conformal-claims).
+The library is at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).
 
 ```bash
 pip install insurance-conformal-claims

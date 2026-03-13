@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Pricing Model is Drifting (and You Probably Can't Tell)"
-date: 2026-03-31
+date: 2026-03-13
 categories: [libraries, pricing, model-monitoring]
 tags: [drift, PSI, CSI, Gini, A-E-ratio, model-monitoring, concept-drift, motor, insurance-monitoring, python, polars]
 description: "PSI plus an aggregate A/E ratio is the standard monitoring setup. It is also insufficient. PSI does not tell you whether the model still correctly describes reality. A/E can mask severe segment-level miscalibration. And neither tells you whether the model's rank ordering has degraded. insurance-monitoring implements the three-layer check that catches what the standard approach misses."

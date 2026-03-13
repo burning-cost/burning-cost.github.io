@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SHAP Tells You Why Your Premium Is High. It Doesn't Tell You What to Do About It."
-date: 2026-03-26
+date: 2026-03-13
 categories: [libraries, pricing, explainability]
 tags: [algorithmic-recourse, counterfactual, DiCE, alibi, FOCUS, FCA, Consumer-Duty, PRIN-2A, SHAP, GLM, GBM, CatBoost, XGBoost, insurance-recourse, python, motor, home, Wachter, Ustun, Karimi, Mothilal]
 description: "SHAP attribution tells a policyholder which features drove their premium. That is not the same as telling them what they can change. insurance-recourse wraps DiCE and alibi with insurance-native constraints, causal propagation, and FCA Consumer Duty reporting to generate actionable premium-reduction recommendations."
