@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "59 Python libraries for UK non-life pricing — from SHAP relativities and Bayesian credibility to causal inference, conformal prediction, and FCA Consumer Duty compliance."
+description: "58 Python libraries for UK non-life pricing — from SHAP relativities and Bayesian credibility to causal inference, conformal prediction, and FCA Consumer Duty compliance."
 permalink: /tools/
 ---
 
@@ -150,14 +150,6 @@ permalink: /tools/
       "name": "bayesian-pricing",
       "description": "Hierarchical Bayesian models for insurance pricing — PyMC 5, thin-data segments, credibility factors.",
       "codeRepository": "https://github.com/burning-cost/bayesian-pricing",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "credibility",
-      "description": "Bühlmann-Straub credibility weighting in Python with CatBoost and Polars.",
-      "codeRepository": "https://github.com/burning-cost/credibility",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -485,7 +477,7 @@ permalink: /tools/
 }
 </script>
 
-59 active Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.
+58 active Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.
 
 All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is [burning-cost](https://github.com/burning-cost).
 
@@ -533,7 +525,6 @@ When you don't have enough data to trust a standard GLM.
 
 | Library | What it does |
 |---|---|
-| [credibility](https://github.com/burning-cost/credibility) | Bühlmann-Straub credibility weighting in Python with CatBoost and Polars |
 | [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | Credibility models for UK non-life pricing: Bühlmann-Straub and Bayesian experience rating |
 | [insurance-credibility-transformer](https://github.com/burning-cost/insurance-credibility-transformer) | Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing |
 | [insurance-multilevel](https://github.com/burning-cost/insurance-multilevel) | Two-stage CatBoost + REML random effects for high-cardinality group factors — ICC diagnostics |

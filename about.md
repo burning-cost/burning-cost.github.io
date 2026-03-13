@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-59 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+58 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
@@ -28,7 +28,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 **Model Building**
 
-- [`credibility`](https://github.com/burning-cost/credibility) - Buhlmann-Straub credibility in Python with mixed-model equivalence checks
+- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) - Buhlmann-Straub credibility in Python with mixed-model equivalence checks
 - [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) - hierarchical Bayesian models for thin-data pricing segments using PyMC 5
 - [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) - BYM2 spatial models for postcode-level territory ratemaking, borrowing strength from neighbours
 - [`insurance-multilevel`](https://github.com/burning-cost/insurance-multilevel) - CatBoost combined with REML random effects for high-cardinality categorical groups

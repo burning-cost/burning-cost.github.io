@@ -23,7 +23,7 @@ permalink: /compare/
       "name": "Can I use Python for insurance pricing instead of Emblem or Radar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, and a growing number of UK pricing teams are doing exactly this. Python with statsmodels or scikit-learn covers GLMs and GBMs. The gap has historically been in the actuarial-specific tooling: walk-forward cross-validation that respects IBNR, SHAP-based factor tables, constrained rate optimisation, PRA SS1/23 validation reports, and FCA Consumer Duty fairness auditing. Burning Cost fills those gaps with 59 focused Python libraries. Databricks provides the compute environment most UK insurers are already using."
+        "text": "Yes, and a growing number of UK pricing teams are doing exactly this. Python with statsmodels or scikit-learn covers GLMs and GBMs. The gap has historically been in the actuarial-specific tooling: walk-forward cross-validation that respects IBNR, SHAP-based factor tables, constrained rate optimisation, PRA SS1/23 validation reports, and FCA Consumer Duty fairness auditing. Burning Cost fills those gaps with 58 focused Python libraries. Databricks provides the compute environment most UK insurers are already using."
       }
     },
     {
@@ -31,7 +31,7 @@ permalink: /compare/
       "name": "What open-source tools exist for actuarial pricing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Burning Cost publishes 59 open-source Python libraries for UK personal lines pricing. They cover: temporal cross-validation (insurance-cv), GBM factor tables (shap-relativities), prediction intervals (insurance-conformal, insurance-quantile), rate optimisation (rate-optimiser, insurance-optimise), causal inference (insurance-causal, insurance-elasticity), spatial rating (insurance-spatial), fairness auditing (insurance-fairness), model validation (insurance-validation), model monitoring (insurance-monitoring), and model governance (insurance-mrm). The chainladder-python project covers reserving. Meaningful open-source tooling for commercial pricing and rate filing is less developed."
+        "text": "Burning Cost publishes 58 open-source Python libraries for UK personal lines pricing. They cover: temporal cross-validation (insurance-cv), GBM factor tables (shap-relativities), prediction intervals (insurance-conformal, insurance-quantile), rate optimisation (insurance-optimise), causal inference (insurance-causal), spatial rating (insurance-spatial), fairness auditing (insurance-fairness), model validation (insurance-governance), model monitoring (insurance-monitoring), and model governance (insurance-governance). The chainladder-python project covers reserving. Meaningful open-source tooling for commercial pricing and rate filing is less developed."
       }
     },
     {
@@ -47,7 +47,7 @@ permalink: /compare/
       "name": "What is the best Python library for insurance GLM pricing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For GLMs, statsmodels and scikit-learn (TweedieRegressor) are the standard base. Burning Cost adds the actuarial layer: insurance-cv for correct cross-validation, shap-relativities for GBM factor tables that match GLM output formats, insurance-interactions for interaction detection, credibility for thin-cell blending, and insurance-validation for PRA SS1/23 model reports. Together these give you a complete GLM and GBM pricing workflow in Python."
+        "text": "For GLMs, statsmodels and scikit-learn (TweedieRegressor) are the standard base. Burning Cost adds the actuarial layer: insurance-cv for correct cross-validation, shap-relativities for GBM factor tables that match GLM output formats, insurance-interactions for interaction detection, insurance-credibility for thin-cell blending, and insurance-governance for PRA SS1/23 model reports. Together these give you a complete GLM and GBM pricing workflow in Python."
       }
     }
   ]
@@ -56,7 +56,7 @@ permalink: /compare/
 
 This page exists because pricing actuaries searching for open-source insurance pricing tools deserve a straight answer, not marketing.
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help teams adopt best practice, best-in-class tooling, and Databricks — 59 open-source Python libraries covering the full pricing workflow. We are not trying to compete with Emblem, Radar, Akur8, or DataRobot. Those tools have real strengths: polished UIs, enterprise support contracts, integration with downstream systems, and regulatory track records with insurers who do not want to maintain Python infrastructure.
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help teams adopt best practice, best-in-class tooling, and Databricks — 58 open-source Python libraries covering the full pricing workflow. We are not trying to compete with Emblem, Radar, Akur8, or DataRobot. Those tools have real strengths: polished UIs, enterprise support contracts, integration with downstream systems, and regulatory track records with insurers who do not want to maintain Python infrastructure.
 
 What we offer is different: research-backed methodology, transparent implementations, version-controllable outputs, and specific focus on UK regulatory requirements. If you are a pricing team working in Python or Databricks, Burning Cost covers the actuarial gaps that general ML libraries do not.
 
@@ -100,7 +100,7 @@ The table below maps pricing workflow areas to Burning Cost libraries and notes 
 | **Fairness / discrimination** | [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — proxy discrimination auditing mapped to FCA Consumer Duty requirements | Fairness tooling is an emerging area; FCA-specific mapping is generally not standard |
 | **Model governance** | [`insurance-governance`](https://github.com/burning-cost/insurance-governance) — ModelCard, ModelInventory, GovernanceReport for PRA SS1/23 compliance | Enterprise platforms typically include governance workflows; PRA SS1/23 alignment varies |
 | **Deployment** | [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) — champion/challenger with shadow mode, rollback, and ICOBS 6B.2 audit trail | Enterprise deployment and A/B testing frameworks are standard in larger platforms |
-| **Thin-data segments** | [`credibility`](https://github.com/burning-cost/credibility) — Buhlmann-Straub; [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) — hierarchical Bayes with PyMC 5 | Credibility weighting is standard in Emblem; Bayesian methods less common |
+| **Thin-data segments** | [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) — Buhlmann-Straub; [`bayesian-pricing`](https://github.com/burning-cost/bayesian-pricing) — hierarchical Bayes with PyMC 5 | Credibility weighting is standard in Emblem; Bayesian methods less common |
 | **Interaction detection** | [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) — CANN, NID, and SHAP-based interaction tests | Two-way analysis standard in GLM platforms; automated detection less common |
 | **Synthetic data** | [`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic) — vine copula portfolio generation; [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) — UK motor synthetic data | Not typically included; usually requires separate data management tooling |
 | **Licence cost** | Free. MIT licence. No usage caps. | Typically five- to six-figure annual licence costs; pricing is negotiated per contract |
@@ -146,7 +146,7 @@ It probably is not the right choice if:
 
 ## Getting started
 
-All 59 libraries are on PyPI. Install any of them individually:
+All 58 libraries are on PyPI. Install any of them individually:
 
 ```
 pip install shap-relativities

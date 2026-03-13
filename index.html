@@ -39,7 +39,7 @@ description: "On the forefront of machine learning and data science research in 
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat">
-      <span class="stat-number">59</span>
+      <span class="stat-number">58</span>
       <span class="stat-label">Libraries</span>
     </div>
     <div class="stat">
@@ -82,7 +82,7 @@ description: "On the forefront of machine learning and data science research in 
       <div class="code-tabs">
         <button class="code-tab active" data-tab="shap">shap-relativities</button>
         <button class="code-tab" data-tab="cv">insurance-cv</button>
-        <button class="code-tab" data-tab="rate">rate-optimiser</button>
+        <button class="code-tab" data-tab="rate">insurance-optimise</button>
       </div>
 
       <div id="panel-shap" class="code-panel active">
@@ -129,7 +129,7 @@ description: "On the forefront of machine learning and data science research in 
 
       <div id="panel-rate" class="code-panel">
         <div class="code-block-single">
-          <div class="code-block-single-body"><span class="tok-kw">from</span> <span class="tok-cls">rate_optimiser</span> <span class="tok-kw">import</span> <span class="tok-cls">RateOptimiser</span>
+          <div class="code-block-single-body"><span class="tok-kw">from</span> <span class="tok-cls">insurance_optimise</span> <span class="tok-kw">import</span> <span class="tok-cls">RateOptimiser</span>
 
 <span class="tok-var">opt</span> <span class="tok-op">=</span> <span class="tok-cls">RateOptimiser</span><span class="tok-pn">(</span>
     <span class="tok-var">current_rates</span><span class="tok-pn">,</span>
@@ -220,7 +220,7 @@ description: "On the forefront of machine learning and data science research in 
           <div class="workflow-node-name">Model</div>
         </div>
         <div class="workflow-lib-labels">
-          <span class="workflow-lib">credibility</span>
+          <span class="workflow-lib">ins-credibility</span>
           <span class="workflow-lib">bayesian-pricing</span>
           <span class="workflow-lib">ins-multilevel</span>
           <span class="workflow-lib">ins-spatial</span>
@@ -249,7 +249,7 @@ description: "On the forefront of machine learning and data science research in 
           <div class="workflow-node-name">Validate</div>
         </div>
         <div class="workflow-lib-labels">
-          <span class="workflow-lib">ins-validation</span>
+          <span class="workflow-lib">ins-governance</span>
           <span class="workflow-lib">ins-conformal</span>
           <span class="workflow-lib">ins-monitoring</span>
         </div>
@@ -263,7 +263,7 @@ description: "On the forefront of machine learning and data science research in 
         <div class="workflow-lib-labels">
           <span class="workflow-lib">ins-fairness</span>
           <span class="workflow-lib">ins-causal-policy</span>
-          <span class="workflow-lib">ins-mrm</span>
+          <span class="workflow-lib">ins-governance</span>
         </div>
       </div>
       <div class="workflow-arrow">&#8594;</div>
@@ -273,8 +273,8 @@ description: "On the forefront of machine learning and data science research in 
           <div class="workflow-node-name">Deploy</div>
         </div>
         <div class="workflow-lib-labels">
-          <span class="workflow-lib">rate-optimiser</span>
-          <span class="workflow-lib">ins-elasticity</span>
+          <span class="workflow-lib">ins-optimise</span>
+          <span class="workflow-lib">ins-causal</span>
           <span class="workflow-lib">ins-deploy</span>
         </div>
       </div>
@@ -385,8 +385,8 @@ description: "On the forefront of machine learning and data science research in 
       <span class="lib-group-label">Techniques</span>
     </div>
     <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/credibility" target="_blank" class="lib-card">
-        <span class="lib-card-name">credibility</span>
+      <a href="https://github.com/burning-cost/insurance-credibility" target="_blank" class="lib-card">
+        <span class="lib-card-name">insurance-credibility</span>
         <span class="lib-card-desc">Buhlmann-Straub credibility in Python, with mixed-model equivalence checks. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</span>
         <span class="lib-card-tags">
           <span class="lib-tag">Buhlmann-Straub</span>
