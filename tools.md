@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "79 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "80 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -637,7 +637,7 @@ permalink: /tools/
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 79 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 80 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -768,6 +768,11 @@ Shared frailty models for recurrent insurance claims. The frailty posterior mean
 Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing, base/deep/ICL variants (85 tests). The CLS token's self-attention weight IS the credibility weight — mathematically identical to Bühlmann-Straub, not an analogy. 1,746 parameters, beats CAFTT (27K parameters). ICL extension enables zero-shot pricing for unseen categorical levels (new vehicle models, new regions) without retraining.
 `pip install insurance-credibility-transformer`
 &rarr; [The Attention Head That Is Also a Credibility Weight](https://burning-cost.github.io/2026/03/11/credibility-transformer/)
+
+**[insurance-vine-longitudinal](https://github.com/burning-cost/insurance-vine-longitudinal)**
+D-vine copula for multi-year policyholder claim modelling. Yang & Czado (2022) two-part framework: separate occurrence and severity D-vines with stationary pair copulas and BIC truncation selection. Captures temporal claim dependence that NCD discards — claim timing, severity patterns, and correlation structure across policy years. Pure Python copula implementation (Gaussian, Frank, Clayton), GLM marginals, h-function conditional prediction, experience relativity tables. 135 tests.
+`pip install insurance-vine-longitudinal`
+&rarr; [Your NCD System Throws Away 95% of the Information in a Policyholder's Claim History](https://burning-cost.github.io/2026/03/13/insurance-vine-longitudinal/)
 
 **[insurance-tabpfn](https://github.com/burning-cost/insurance-tabpfn)**
 TabPFN v2 and TabICLv2 foundation model wrappers for thin-data insurance pricing. When a segment has under 2,000 policies and GLM MLE is unstable, in-context learning from pretraining on millions of synthetic datasets outperforms tuned XGBoost by 3–8 Gini points. GLMBenchmark (Gini/deviance/RMSE/double-lift), split conformal prediction intervals, PDP-based RelativitiesExtractor, and CommitteeReport with five mandatory disclosure fields. Not a GLM replacement — a thin-segment specialist. 72 tests.
