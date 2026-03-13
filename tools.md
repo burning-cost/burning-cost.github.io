@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Open-Source Python Libraries for Insurance Pricing"
-description: "81 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
+description: "82 production-ready Python libraries for UK personal lines pricing. From SHAP relativities and Bayesian credibility to causal inference and regulatory compliance."
 permalink: /tools/
 ---
 
@@ -640,12 +640,20 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-zit-dglm",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-dependent-fs",
+      "description": "Dependent frequency-severity neural two-part model with shared encoder trunk. Poisson/Gamma joint loss, explicit gamma dependence testing (LRT), MC pure premium estimation. 137 tests.",
+      "codeRepository": "https://github.com/burning-cost/insurance-dependent-fs",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 81 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
+Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. These libraries are the practical output of that research — each one solving a specific problem in the pricing workflow, built to run on Databricks, tested against actuarial standards. All 82 libraries are on PyPI and MIT-licensed (PyPI pending for insurance-fairness-ot).
 
 The 10 most useful notebooks are collected in the [Databricks Notebook Archive](/notebooks/). Download the full set as a zip and import directly into Databricks — no cluster setup needed beyond the `%pip install` in the first cell.
 
@@ -1069,6 +1077,10 @@ Zero-inflated Tweedie with covariate-driven dispersion — three-headed gradient
 `uv add insurance-zit-dglm`
 &rarr; [Your Tweedie Model Doesn't Know About Strategic Non-Claimers](https://burning-cost.github.io/2026/03/30/insurance-zit-dglm/)
 
+**[insurance-dependent-fs](https://github.com/burning-cost/insurance-dependent-fs)**
+Dependent frequency-severity neural two-part model. Shared encoder trunk learns latent features jointly informative for Poisson frequency and Gamma severity — multi-task learning applied to the two-part model. DependentFSDiagnostics runs an LRT for H₀: γ=0 before you commit to the dependence correction. MC and semi-analytical pure premium estimation. Post-2021 UK motor: the Civil Liability Act whiplash cap strengthens the negative frequency-severity correlation; ignoring it misprices high-frequency risks by 2–4%. 137 tests.
+`uv add insurance-dependent-fs`
+&rarr; [Your Frequency &times; Severity Model Is Multiplying the Wrong Things](https://burning-cost.github.io/2026/03/13/insurance-dependent-fs/)
 
 ---
 
