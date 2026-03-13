@@ -29,7 +29,7 @@ Hjort, Jullum, and Loland formalised this in arXiv:2312.06531 (published in the 
 
 ## The library
 
-[`insurance-spatial-conformal`](https://github.com/burning-cost/insurance-spatial-conformal) implements spatially weighted conformal prediction for insurance pricing models. Install it:
+[`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) implements spatially weighted conformal prediction for insurance pricing models. Install it:
 
 ```bash
 pip install insurance-spatial-conformal
@@ -201,10 +201,10 @@ The actuarial argument for this is the same argument actuaries have always made 
 
 ## The library
 
-[`insurance-spatial-conformal`](https://github.com/burning-cost/insurance-spatial-conformal) implements Hjort et al. (arXiv:2312.06531, IJDSA 2025) in Python, with Tweedie non-conformity scores from Manna et al. (arXiv:2507.06921, 2025) and the weighted conformal framework of Tibshirani et al. (arXiv:1904.06019, NeurIPS 2019). 150 tests passing. Dependencies: scikit-learn, numpy, pandas, scipy, pgeocode, matplotlib.
+[`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) implements Hjort et al. (arXiv:2312.06531, IJDSA 2025) in Python, with Tweedie non-conformity scores from Manna et al. (arXiv:2507.06921, 2025) and the weighted conformal framework of Tibshirani et al. (arXiv:1904.06019, NeurIPS 2019). 150 tests passing. Dependencies: scikit-learn, numpy, pandas, scipy, pgeocode, matplotlib.
 
 ```bash
 pip install insurance-spatial-conformal
 ```
 
-Source: [github.com/burning-cost/insurance-spatial-conformal](https://github.com/burning-cost/insurance-spatial-conformal)
+Source: [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
