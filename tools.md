@@ -302,7 +302,7 @@ permalink: /tools/
 </script>
 
 <div class="tools-intro">
-  <p>35 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
+  <p>36 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
