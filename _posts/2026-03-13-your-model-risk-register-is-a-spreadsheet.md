@@ -7,6 +7,8 @@ tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory
 description: "PRA SS1/23 is expected to extend to insurers by 2026-2027. Most UK pricing teams will face that review with a Word template and an Excel model register. insurance-governance is our governance layer: model inventory, risk tier scoring, and executive committee reports — built on top of insurance-monitoring."
 ---
 
+*This post covers the governance workflow: model inventory, risk tier scoring, and executive committee reporting via `insurance-governance`. For the release note explaining why we merged `insurance-validation` and `insurance-mrm` into a single package, see [One Package, One Install](/2026/03/14/insurance-governance-unified-pra-ss123-validation/).*
+
 If the PRA asked you today for your model inventory, what would you send them?
 
 In our experience, the answer is likely a shared Excel workbook with a tab called "Model Register." Forty or fifty rows. Columns for model name, owner, last review date, status. The last review date column has blanks in it. The status column says "Live" for everything. There is no link to the validation report, no change log. The person who set it up left eighteen months ago.
