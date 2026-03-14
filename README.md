@@ -20,8 +20,7 @@ The site at [burning-cost.github.io](https://burning-cost.github.io) publishes w
 
 | Library | Description |
 |---------|-------------|
-| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for Tweedie models |
-| [insurance-conformal-risk](https://github.com/burning-cost/insurance-conformal-risk) | Conformal risk control — bounds expected monetary loss, not just miscoverage rate |
+| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for Tweedie models — includes conformal risk control subpackage |
 | [insurance-garch](https://github.com/burning-cost/insurance-garch) | GARCH models for claims inflation uncertainty — GJR-GARCH, BIC model selection, bootstrap fan charts, VaR backtesting |
 | [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data segments |
 | [credibility](https://github.com/burning-cost/credibility) | Bühlmann-Straub credibility weighting |
@@ -30,8 +29,7 @@ The site at [burning-cost.github.io](https://burning-cost.github.io) publishes w
 
 | Library | Description |
 |---------|-------------|
-| [rate-optimiser](https://github.com/burning-cost/rate-optimiser) | Constrained rate change optimisation with FCA PS21/5 compliance |
-| [insurance-demand](https://github.com/burning-cost/insurance-demand) | Conversion, retention, and price elasticity modelling |
+| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained rate change optimisation with FCA PS21/5 compliance — includes demand modelling subpackage |
 
 **Governance**
 

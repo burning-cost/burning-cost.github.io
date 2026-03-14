@@ -28,7 +28,7 @@ Notebooks are tested on Databricks Runtime 14.x+ with serverless SQL compute. Th
 
 **[01 — End-to-end motor pricing workflow](/assets/notebooks/01_end_to_end_motor_pricing.py)**
 The full pipeline in one script: synthetic portfolio generation, CatBoost frequency model, SHAP relativities, PRA validation report, and champion/challenger deployment. Start here if you want to see how the libraries connect.
-Uses: `insurance-synthetic`, `catboost`, `shap-relativities`, `insurance-validation`, `insurance-deploy`
+Uses: `insurance-synthetic`, `catboost`, `shap-relativities`, `insurance-governance`, `insurance-deploy`
 
 **[02 — Synthetic portfolio generation](/assets/notebooks/02_synthetic_portfolio_generation.py)**
 Build a realistic UK motor book using vine copulas that preserve multivariate dependence structure. Fit the synthesizer, generate 50k policies, and assess fidelity with `SyntheticFidelityReport`. Useful for sharing data with vendors without moving real policyholder records.

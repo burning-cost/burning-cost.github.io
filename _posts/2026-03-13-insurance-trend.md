@@ -318,6 +318,6 @@ The ONS integration removes the last reason to do this manually. The HPTH series
 ---
 
 **Related articles from Burning Cost:**
-- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/19/your-rate-change-didnt-prove-anything/)
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)

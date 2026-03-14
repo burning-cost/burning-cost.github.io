@@ -3,15 +3,15 @@ layout: post
 title: "Double Machine Learning for Insurance Price Elasticity"
 date: 2026-03-01
 categories: [techniques]
-tags: [demand, elasticity, DML, double-machine-learning, conversion, retention, FCA, GIPP, PS21-11, ENBP, insurance-demand, python, motor, catboost, polars]
-description: "Naive price elasticity estimates from insurance quote data are biased - risk drives both premium and lapse. The insurance-demand library implements Double Machine Learning to fix this, covering the full conversion, retention, elasticity, and demand curve pipeline with FCA GIPP compliance built in."
+tags: [demand, elasticity, DML, double-machine-learning, conversion, retention, FCA, GIPP, PS21-11, ENBP, insurance-optimise, python, motor, catboost, polars]
+description: "Naive price elasticity estimates from insurance quote data are biased - risk drives both premium and lapse. The insurance-optimise library implements Double Machine Learning to fix this, covering the full conversion, retention, elasticity, and demand curve pipeline with FCA GIPP compliance built in."
 ---
 
 Your renewal pricing model has a price elasticity coefficient. Your team uses it. It is wrong.
 
 Not wrong as in: someone made an arithmetic error. Wrong as in: the quantity it estimates is not the quantity you need for sound pricing decisions. It measures the association between price change and lapse, and it embeds a confound that naive regression cannot remove. In observational insurance data, this confound can materially overstate true price sensitivity. A renewal optimiser built on an overstated elasticity gives back margin to customers who would have renewed anyway.
 
-We built [`insurance-demand`](https://github.com/burning-cost/insurance-demand) to fix this. This post explains the problem in detail and shows how the library addresses it.
+We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to fix this. This post explains the problem in detail and shows how the library addresses it.
 
 ---
 
@@ -51,14 +51,14 @@ The practical upshot: the residualised treatment `D_tilde` is the part of the pr
 
 ## The full pipeline: conversion, retention, elasticity, demand curve
 
-`insurance-demand` implements this as four connected components. For the full `ConversionModel` and `RetentionModel` setup — including the `price_transform="log_ratio"` choice, the PCW rank position features, and CLV survival modelling — see [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/). What follows here is the causal estimation layer that sits on top of those base models.
+`insurance-optimise` implements this as four connected components. For the full `ConversionModel` and `RetentionModel` setup — including the `price_transform="log_ratio"` choice, the PCW rank position features, and CLV survival modelling — see [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/). What follows here is the causal estimation layer that sits on top of those base models.
 
 ### Debiased elasticity estimation
 
 The conversion and retention models give you naive marginal effects. The `ElasticityEstimator` gives you the causal estimate:
 
 ```python
-from insurance_demand import ElasticityEstimator
+from insurance_optimise.demand import ElasticityEstimator
 
 est = ElasticityEstimator(
     outcome_col="converted",
@@ -111,7 +111,7 @@ The DML approach has practical data requirements. Minimum 50,000 quotes with mea
 Once you have an elasticity estimate, `DemandCurve` converts it into a callable price-to-probability function:
 
 ```python
-from insurance_demand import DemandCurve, OptimalPrice
+from insurance_optimise.demand import DemandCurve, OptimalPrice
 
 curve = DemandCurve.from_estimator(
     estimator=est,
@@ -152,7 +152,7 @@ opt = OptimalPrice(
 )
 ```
 
-For portfolio-level optimisation with factor-structure constraints, `insurance-demand` feeds its demand curves into `rate-optimiser`. The demand library's job is to supply the price-to-probability functions; the rate optimiser's job is to find the factor-level adjustments that satisfy LR, volume, and ENBP constraints simultaneously.
+For portfolio-level optimisation with factor-structure constraints, `insurance-optimise` feeds its demand curves into `insurance-optimise`. The demand library's job is to supply the price-to-probability functions; the rate optimiser's job is to find the factor-level adjustments that satisfy LR, volume, and ENBP constraints simultaneously.
 
 ---
 
@@ -163,7 +163,7 @@ PS21/11 is direct on this: renewal prices must not exceed the Equivalent New Bus
 The ENBP calculation is channel-specific. A customer who originally came via Confused.com has an ENBP calculated from your Confused.com new business price for that risk, not your direct price. If you quote differently across channels, the calculation must reflect that. Cash-equivalent incentives offered to new customers (cashback via PCW, first-month-free) must be reflected in the ENBP - the effective new business price is net of those incentives.
 
 ```python
-from insurance_demand.compliance import ENBPChecker
+from insurance_optimise.demand.compliance import ENBPChecker
 
 checker = ENBPChecker(
     new_business_price_col="nb_price",
@@ -200,25 +200,25 @@ Three limitations to be explicit about.
 
 ```bash
 # Core library
-uv add insurance-demand
+uv add insurance-optimise
 
 # With DML elasticity estimation (requires doubleml, econml):
-uv add "insurance-demand[dml]"
+uv add "insurance-optimise[dml]"
 
 # With survival-based retention models (requires lifelines):
-uv add "insurance-demand[survival]"
+uv add "insurance-optimise[survival]"
 
 # Everything:
-uv add "insurance-demand[dml,survival]"
+uv add "insurance-optimise[dml,survival]"
 ```
 
 The recommended starting point is the confounding bias check. Fit a `ConversionModel` on a year of PCW quote data, compute `model.marginal_effect()`, then run `ElasticityEstimator` on the same data and compare `est.summary()` against the naive marginal effect. The difference is the confounding bias in your current elasticity assumption.
 
 On motor PCW datasets, the DML estimate is commonly lower in absolute magnitude than the naive estimate. The naive estimate includes risk-driven demand variation; the DML estimate strips it out. If your renewal pricing strategy was built on the naive number, you may have been discounting more than necessary.
 
-Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodology in their demand modules. The methodology is not proprietary. The `insurance-demand` library is the same maths in an auditable Python package with no vendor lock-in, a clean sklearn-compatible API, and a data structure that your existing Polars and CatBoost workflow already understands.
+Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodology in their demand modules. The methodology is not proprietary. The `insurance-optimise` library is the same maths in an auditable Python package with no vendor lock-in, a clean sklearn-compatible API, and a data structure that your existing Polars and CatBoost workflow already understands.
 
-Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-demand).
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise).
 
 ---
 

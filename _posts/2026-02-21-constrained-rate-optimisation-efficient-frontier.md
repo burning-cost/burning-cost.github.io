@@ -17,7 +17,7 @@ The Excel scenario is a single point. The team has picked one combination of fac
 
 The shadow prices on constraints are never known either. How much volume would you lose if you tightened the LR target by one percentage point? Which constraint is actually binding? What is the regulatory cost of FCA PS21/5 ENBP compliance, in dislocation terms? These are answerable questions. Nobody is answering them.
 
-We built [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) to answer them formally.
+We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to answer them formally.
 
 ---
 
@@ -49,13 +49,13 @@ The decision variables `m_k` are multiplicative adjustments to each rating facto
 
 ```python
 import polars as pl
-from rate_optimiser import (
+from insurance_optimise import (
     PolicyData, FactorStructure, DemandModel,
     RateChangeOptimiser, EfficientFrontier,
     LossRatioConstraint, VolumeConstraint,
     ENBPConstraint, FactorBoundsConstraint,
 )
-from rate_optimiser.demand import make_logistic_demand, LogisticDemandParams
+from insurance_optimise.demand import make_logistic_demand, LogisticDemandParams
 
 # Load GLM outputs: policy_id, channel, renewal_flag,
 # technical_premium, current_premium
@@ -152,7 +152,7 @@ E[LR] + z_α × σ[LR] ≤ target
 where σ[LR] comes from the variance estimates in your GLM. For a Tweedie claims model you pass the dispersion parameter and power; the library derives the policy-level variance and aggregates.
 
 ```python
-from rate_optimiser.stochastic import ClaimsVarianceModel, StochasticRateOptimiser
+from insurance_optimise.stochastic import ClaimsVarianceModel, StochasticRateOptimiser
 
 variance_model = ClaimsVarianceModel.from_tweedie(
     mean_claims=data.df["technical_premium"].values,
@@ -182,13 +182,13 @@ The library consumes GLM outputs; it does not fit them. Use statsmodels, CatBoos
 ## Getting started
 
 ```bash
-uv add rate-optimiser
+uv add insurance-optimise
 
 # With stochastic module (requires cvxpy):
-uv add "rate-optimiser[stochastic]"
+uv add "insurance-optimise[stochastic]"
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burning-cost/rate-optimiser). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
 
 The `feasibility_report()` method is the first thing to run before any solve. If your constraints are infeasible at current rates, the solver will tell you - and that is itself useful information about the portfolio.
 

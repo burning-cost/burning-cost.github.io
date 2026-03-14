@@ -1,21 +1,20 @@
 ---
 layout: post
-title: "Distributional Refinement Networks for Insurance Pricing: insurance-drn"
+title: "Distributional Refinement Networks for Insurance Pricing: insurance-severity"
 date: 2026-03-10
 categories: [libraries, pricing, capital]
-tags: [distributional-regression, neural-networks, GLM, DRN, tail-risk, solvency-ii, ifrs-17, reinsurance, crps, python, insurance-drn]
-description: "Your GLM predicts a mean. DRN refines it into a full predictive distribution — per risk, per policy, with parametric tails for the extremes that matter for capital and reinsurance. insurance-drn implements Avanzi et al. (2024) with production training, vectorised inference, and actuarial validation tooling."
-canonical_url: "https://burning-cost.github.io/2026/03/10/distributional-refinement-network-insurance/"
+tags: [distributional-regression, neural-networks, GLM, DRN, tail-risk, solvency-ii, ifrs-17, reinsurance, crps, python, insurance-severity]
+description: "Your GLM predicts a mean. DRN refines it into a full predictive distribution — per risk, per policy, with parametric tails for the extremes that matter for capital and reinsurance. insurance-severity implements Avanzi et al. (2024) with production training, vectorised inference, and actuarial validation tooling."
 ---
 
 Your GLM predicts that a young driver with a sports car has an expected annual severity of £4,200. It predicts that a 45-year-old driving a family saloon has an expected severity of £2,100. The mean is 2:1. Fine. That is what GLMs are built to estimate.
 
 What the GLM does not tell you is whether the young driver's 99th percentile loss is 4x higher, 8x higher, or 15x higher than the family saloon driver's, even after adjusting for the mean difference. For premium pricing, the mean is enough. For capital allocation, reinsurance treaty pricing, and IFRS 17 risk adjustments, the tail is everything.
 
-[`insurance-drn`](https://github.com/burning-cost/insurance-drn) is a Python library implementing Distributional Refinement Networks (Avanzi, Dong, Laub & Wong, arXiv:2406.00998, 2024). It takes any fitted baseline model (a statsmodels Gamma GLM, a CatBoost model) and refines it into a full predictive distribution. The result: per-risk quantiles, CRPS scoring, and adjustment factors that show exactly where the distribution deviates from the baseline and why.
+[`insurance-severity`](https://github.com/burning-cost/insurance-severity) is a Python library implementing Distributional Refinement Networks (Avanzi, Dong, Laub & Wong, arXiv:2406.00998, 2024). It takes any fitted baseline model (a statsmodels Gamma GLM, a CatBoost model) and refines it into a full predictive distribution. The result: per-risk quantiles, CRPS scoring, and adjustment factors that show exactly where the distribution deviates from the baseline and why.
 
 ```bash
-uv add insurance-drn
+uv add insurance-severity
 ```
 
 137 tests. No Lightning dependency. Vectorised inference throughout.
@@ -68,7 +67,7 @@ Training uses Joint Binary Cross-Entropy (JBCE) loss rather than standard NLL. F
 The workflow is three steps: fit a baseline, wrap it, fit the DRN.
 
 ```python
-from insurance_drn import DRN, GLMBaseline
+from insurance_severity.drn import DRN, GLMBaseline
 import statsmodels.api as sm
 
 # Fit a baseline GLM
@@ -117,11 +116,11 @@ The distributional insurance modelling space has several existing approaches. We
 
 **CANN (Schelldorfer & Wüthrich, 2019)** refines the GLM mean via a neural network skip connection. This is the right philosophical approach: augment, do not replace. But CANN only refines the mean. You get a better point estimate; you still have no distributional output.
 
-**[`insurance-distributional`](/2026/03/08/insurance-distributional/)** (our CatBoost-based distributional GBM) models the distribution parameters directly, mean and dispersion simultaneously. It is fast (no neural network training), works well for operational pricing, and produces quantile estimates. It can produce quantile crossing at the extremes, and beyond the training data range the tails are undefined. We use `insurance-distributional` for fast quantile estimates in pricing; we use `insurance-drn` when distributional correctness matters: capital, reinsurance, reserve uncertainty.
+**[`insurance-distributional`](/2026/03/05/insurance-distributional/)** (our CatBoost-based distributional GBM) models the distribution parameters directly, mean and dispersion simultaneously. It is fast (no neural network training), works well for operational pricing, and produces quantile estimates. It can produce quantile crossing at the extremes, and beyond the training data range the tails are undefined. We use `insurance-distributional` for fast quantile estimates in pricing; we use `insurance-severity` when distributional correctness matters: capital, reinsurance, reserve uncertainty.
 
 The honest comparison:
 
-| | `insurance-distributional` | `insurance-drn` |
+| | `insurance-distributional` | `insurance-severity` |
 |---|---|---|
 | Training time | Minutes | 30 min (100k obs, CPU) |
 | Quantile crossing | Possible | Impossible (softmax guarantee) |
@@ -140,7 +139,7 @@ The improvement is largest at the 95th and 99th percentiles — precisely the re
 
 The paper was presented at the Insurance Data Science Conference at Bayes Business School, London, in June 2025, by Tian Dong (UNSW). The research code exists as `pip install drn` (v0.0.1, github.com/EricTianDong/drn).
 
-Our `insurance-drn` takes that research implementation and adds what production use requires: external baseline integration (any fitted model, not just the library's own GLM class), a raw PyTorch training loop without Lightning (dropping a ~100MB dependency), vectorised histogram CDF inference using `torch.searchsorted` (O(n log K) versus the original's O(n*K) Python loop), fixed cutpoint count at 100-200 regardless of dataset size (the original scales with n, producing 10,000 cutpoints at n=100k), and full model serialisation that saves GLM coefficients alongside network weights.
+Our `insurance-severity` takes that research implementation and adds what production use requires: external baseline integration (any fitted model, not just the library's own GLM class), a raw PyTorch training loop without Lightning (dropping a ~100MB dependency), vectorised histogram CDF inference using `torch.searchsorted` (O(n log K) versus the original's O(n*K) Python loop), fixed cutpoint count at 100-200 regardless of dataset size (the original scales with n, producing 10,000 cutpoints at n=100k), and full model serialisation that saves GLM coefficients alongside network weights.
 
 ---
 
@@ -159,19 +158,19 @@ Our `insurance-drn` takes that research implementation and adds what production 
 ## Getting started
 
 ```bash
-uv add insurance-drn
+uv add insurance-severity
 ```
 
 Dependencies: `torch>=2.0`, `numpy`, `scipy`, `statsmodels`. No Lightning. No SHAP in v1. Gamma and LogNormal baseline families are supported; Inverse Gaussian and Tweedie are in v2.
 
 The library has 137 tests covering baseline integration, training stability, distributional output, and serialisation. The training loop includes gradient clipping, early stopping with configurable patience, and `baseline_start=True` by default. The DRN initialises as the GLM and refines from there, so training instability cannot regress below the baseline.
 
-Full API documentation and worked examples at [github.com/burning-cost/insurance-drn](https://github.com/burning-cost/insurance-drn).
+Full API documentation and worked examples at [github.com/burning-cost/insurance-severity](https://github.com/burning-cost/insurance-severity).
 
 ---
 
 ## See also
 
-- [**insurance-distributional**: Distributional GBM for operational pricing](/2026/03/08/insurance-distributional/) — CatBoost-based joint modelling of mean and dispersion. Faster than DRN for pricing; use DRN when tail correctness is non-negotiable.
-- [**insurance-anam**: Additive Neural Attention Models for pricing](/2026/03/09/insurance-anam/) — interpretable neural network that can serve as a DRN baseline when you need more covariate flexibility than a GLM but more interpretability than a GBM.
-- [**insurance-calibration**: Calibration diagnostics for distributional models](/2026/03/07/insurance-calibration/) — reliability diagrams, CRPS decomposition, and coverage testing. Run these on DRN output before presenting distributional results to capital or reinsurance teams.
+- [**insurance-distributional**: Distributional GBM for operational pricing](/2026/03/05/insurance-distributional/) — CatBoost-based joint modelling of mean and dispersion. Faster than DRN for pricing; use DRN when tail correctness is non-negotiable.
+- [**insurance-gam**: Additive Neural Attention Models for pricing](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/) — interpretable neural network that can serve as a DRN baseline when you need more covariate flexibility than a GLM but more interpretability than a GBM.
+- [**insurance-monitoring**: Calibration diagnostics for distributional models](/2026/03/07/insurance-calibration/) — reliability diagrams, CRPS decomposition, and coverage testing. Run these on DRN output before presenting distributional results to capital or reinsurance teams.

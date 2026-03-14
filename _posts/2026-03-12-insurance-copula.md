@@ -126,7 +126,7 @@ print(cond_loss)
 
 The implementation is accept-reject Monte Carlo: simulate from the joint copula, keep the samples where the flood uniform exceeds the threshold quantile, apply marginal inverse CDFs, compute the mean. This is computationally heavier than the closed-form D-vine approach (Kraus and Czado 2017), but it works for any vine structure without requiring the response to be a leaf node in tree 1.
 
-The `marginals_dict` specifies the marginal distributions per peril: `{"flood": scipy.stats.lognorm(s=1.2, scale=3400), ...}`. These should come from your GLM-fitted marginal severity models — ideally from [`insurance-composite`](https://github.com/burning-cost/insurance-composite), which fits spliced body/tail distributions with covariate-dependent thresholds. The correct statistical flow is: fit marginal GLMs per peril, compute GLM residuals, fit the vine to PIT-transformed residuals, then use the GLM predictions as the marginals for conditional pricing. The vine captures residual dependence after the systematic effects are removed.
+The `marginals_dict` specifies the marginal distributions per peril: `{"flood": scipy.stats.lognorm(s=1.2, scale=3400), ...}`. These should come from your GLM-fitted marginal severity models — ideally from [`insurance-severity`](https://github.com/burning-cost/insurance-severity), which fits spliced body/tail distributions with covariate-dependent thresholds. The correct statistical flow is: fit marginal GLMs per peril, compute GLM residuals, fit the vine to PIT-transformed residuals, then use the GLM predictions as the marginals for conditional pricing. The vine captures residual dependence after the systematic effects are removed.
 
 ---
 
@@ -188,7 +188,7 @@ The intended workflow connects three libraries:
 
 2. **`insurance-copula`** then fits a separate vine to peril-level losses, conditioned on policy covariates. These are two different vines modelling two different dependence structures: feature space versus loss space.
 
-3. **[`insurance-composite`](https://github.com/burning-cost/insurance-composite)** provides the marginal severity distributions per peril that `ConditionalPricer` needs. The composite spliced model gives you a proper heavy-tailed severity per peril; the vine copula gives you the dependence between perils.
+3. **[`insurance-severity`](https://github.com/burning-cost/insurance-severity)** provides the marginal severity distributions per peril that `ConditionalPricer` needs. The composite spliced model gives you a proper heavy-tailed severity per peril; the vine copula gives you the dependence between perils.
 
 The full technical premium has the form:
 
@@ -233,6 +233,6 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ## See Also
 
-- **[insurance-composite](https://burning-cost.github.io/2026/03/23/insurance-composite/)** — Composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
-- **[insurance-evt](https://burning-cost.github.io/2026/03/25/insurance-evt/)** — When the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
+- **[insurance-severity](https://burning-cost.github.io/2026/03/13/insurance-composite/)** — Composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
+- **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)** — When the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
 - **[insurance-synthetic](https://burning-cost.github.io/2026/03/09/insurance-synthetic/)** — Vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow

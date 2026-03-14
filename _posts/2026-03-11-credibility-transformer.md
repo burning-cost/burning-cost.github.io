@@ -199,7 +199,7 @@ mu_new = icl_ct.predict(df_new, reference_pool=df_train)
 
 **ICL-CT** is worth adding when you have recurring new-to-market risks. New vehicle models launch every quarter. Geographic expansion into new postcodes. Commercial lines where a new scheme has no history but similar existing schemes do. The three-phase training is more involved and requires building and maintaining a FAISS index on the training set, but the zero-shot capability is the only approach in the academic literature that handles unseen categorical levels without retraining.
 
-**What it is not**: a replacement for Bühlmann-Straub credibility on aggregated scheme data. Bühlmann-Straub operates on group × year panels — broker adjustments, scheme differentials, fleet pricing. It is fully auditable and requires no GPU. The CT operates at individual policy level on raw covariates. These are different problems. Our [`credibility`](https://github.com/burning-cost/credibility) library handles the aggregated use case.
+**What it is not**: a replacement for Bühlmann-Straub credibility on aggregated scheme data. Bühlmann-Straub operates on group × year panels — broker adjustments, scheme differentials, fleet pricing. It is fully auditable and requires no GPU. The CT operates at individual policy level on raw covariates. These are different problems. Our [`credibility`](https://github.com/burning-cost/insurance-credibility) library handles the aggregated use case.
 
 **Deep CT** (320K parameters, multi-head attention, SwiGLU gating, differentiable PLE for continuous features) achieves Poisson deviance of 23.577 — a meaningful improvement over the base. It is marked as experimental in v0.1. It requires a GPU (about 7 minutes per run on an L4) and the performance gain over the base is only visible at larger dataset sizes. We are building the infrastructure around it first.
 
@@ -219,7 +219,7 @@ What the CT gives you, uniquely, is a principled prior/posterior decomposition a
 
 ---
 
-**Related articles from Burning Cost:**
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
-- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
-- [Hierarchical Bayesian Models for Thin Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+**Related reading:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the frequentist baseline: moment-based credibility without MCMC or neural networks
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — full posterior inference across hierarchy levels; the Bayesian alternative to the attention-based approach
+- [Individual Experience Rating Beyond NCD](/2026/03/13/insurance-experience/) — individual-level Bayesian a posteriori rating; complements the Credibility Transformer's group-level approach with policy-level posterior updating

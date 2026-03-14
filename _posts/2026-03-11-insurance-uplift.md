@@ -289,10 +289,10 @@ The ROI calculation links the statistical CATE estimates to business outcomes. T
 The three Burning Cost causal inference libraries address adjacent questions on the same renewal dataset:
 
 - **insurance-causal:** "What is the average causal effect of a price change on retention?" Output: scalar ATE with CIs.
-- **insurance-elasticity:** "How does price sensitivity vary by customer segment?" Output: CATE surface, elasticity heatmap by rating factor.
+- **insurance-causal:** "How does price sensitivity vary by customer segment?" Output: CATE surface, elasticity heatmap by rating factor.
 - **insurance-uplift:** "Which customers should receive a discount, how many incremental renewals will that produce, and what is the ROI?" Output: targeting recommendation, Qini curve, ROI report, fairness audit.
 
-The natural handoff: use insurance-elasticity to understand the elasticity landscape, then bring the CATE estimates into insurance-uplift to build the campaign decision.
+The natural handoff: use insurance-causal to understand the elasticity landscape, then bring the CATE estimates into insurance-uplift to build the campaign decision.
 
 The ENBP constraint and FairnessAudit are not optional add-ons. FCA EP25/2 (December 2025) confirmed that GIPP remedies are working as intended: the motor price walking market has been largely eliminated, and ENBP is now the accepted floor. Consumer Duty vulnerability reviews in 2025 found persistent gaps for customers with multiple vulnerability characteristics. Any retention targeting tool deployed in the UK must address both.
 

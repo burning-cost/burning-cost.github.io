@@ -171,7 +171,7 @@ The Burning Cost portfolio now covers four severity modelling approaches, each a
 
 **insurance-gamlss**: penalised splines for distribution parameters (mu, sigma, nu, tau of a flexible family). More flexible than GLM, still parametric, still interpretable. Use when the family assumption is approximately right but the shape parameters vary by rating factor.
 
-**insurance-drn**: distributional regression network — neural network for all distribution parameters, still parametric family. Use when GLM linearity is the binding constraint but you can still commit to a family.
+**insurance-severity**: distributional regression network — neural network for all distribution parameters, still parametric family. Use when GLM linearity is the binding constraint but you can still commit to a family.
 
 **insurance-nflow**: no family assumption. Full conditional distribution learned nonparametrically from data. Use when the family is wrong — bimodal severity, shape changes across rating factors, catastrophic tail that lognormal misrepresents.
 
@@ -193,9 +193,9 @@ Source and issue tracker: [github.com/burning-cost/insurance-nflow](https://gith
 ## See also
 
 - [Distributional Regression Networks for Insurance Pricing](https://burning-cost.github.io/2026/03/10/distributional-refinement-network-insurance/) — when you need nonlinear rating factor effects but can commit to a parametric family; faster and more interpretable than a flow
-- [Spliced Severity Models with insurance-composite](https://burning-cost.github.io/2026/03/23/insurance-composite/) — parametric alternative to flows for heavy-tailed severity; lower compute cost, manual threshold selection required
-- [Borrowing Experience You Don't Have: insurance-transfer](https://burning-cost.github.io/2026/03/12/borrowing-experience-you-dont-have/) — transfer learning for thin-segment pricing; relevant when your BI book lacks enough catastrophic injury claims for stable tail estimation
-- [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/25/insurance-evt/) — if you only care about the tail (XL pricing), EVT targets the tail directly without modelling the body
+- [Spliced Severity Models with insurance-severity](https://burning-cost.github.io/2026/03/13/insurance-composite/) — parametric alternative to flows for heavy-tailed severity; lower compute cost, manual threshold selection required
+- [Borrowing Experience You Don't Have: insurance-thin-data](https://burning-cost.github.io/2026/03/12/borrowing-experience-you-dont-have/) — transfer learning for thin-segment pricing; relevant when your BI book lacks enough catastrophic injury claims for stable tail estimation
+- [Extreme Value Theory for UK Motor Large Loss Pricing](https://burning-cost.github.io/2026/03/13/insurance-evt/) — if you only care about the tail (XL pricing), EVT targets the tail directly without modelling the body
 
 ---
 

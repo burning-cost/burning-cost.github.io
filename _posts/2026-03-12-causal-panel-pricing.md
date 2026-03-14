@@ -129,4 +129,4 @@ For the average treatment effect on the full renewal book, the ATE from CFFE wit
 
 `causalfe` is available on [PyPI](https://pypi.org/project/causalfe/). No wrapper library needed — the original package is well-designed for direct use.
 
-Related: [insurance-causal-policy](https://burning-cost.github.io/2026/03/19/your-rate-change-didnt-prove-anything/) for SDID rate change evaluation, [insurance-elasticity](https://burning-cost.github.io/2026/03/05/your-rating-factor-might-be-confounded/) for causal price elasticity, [insurance-online](https://burning-cost.github.io/2026/03/12/insurance-online/) for GIPP-compliant price experimentation.
+Related: [insurance-causal-policy](https://burning-cost.github.io/2026/03/13/your-rate-change-didnt-prove-anything/) for SDID rate change evaluation, [insurance-causal](https://burning-cost.github.io/2026/03/05/your-rating-factor-might-be-confounded/) for causal price elasticity, [insurance-online](https://burning-cost.github.io/2026/03/12/insurance-online/) for GIPP-compliant price experimentation.

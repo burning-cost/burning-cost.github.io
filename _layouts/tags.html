@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: "Tags" }} | {{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  {% feed_meta %}
+  {% seo %}
+  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.png">{% endif %}
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1117;
+      --navy-mid: #161b27;
+      --navy-border: #1e2535;
+      --accent: #4f7ef8;
+      --accent-hover: #6690f9;
+      --accent-dim: rgba(79,126,248,0.12);
+      --text-primary: #f0f2f7;
+      --text-secondary: #8b92a8;
+      --text-muted: #5a6278;
+      --white: #ffffff;
+      --surface: #ffffff;
+      --surface-alt: #f7f8fc;
+      --border: #e4e7ef;
+      --border-dark: #d0d5e2;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --mono: 'JetBrains Mono', 'Courier New', monospace;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: var(--sans); color: #1a1d2e; background: var(--surface); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(15,17,23,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--navy-border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .nav-logo { font-weight: 700; font-size: 1rem; color: var(--text-primary); letter-spacing: -0.01em; text-decoration: none; }
+    .nav-logo:hover { text-decoration: none; color: var(--white); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+    .nav-links a { color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; padding: 0.4rem 0.75rem; border-radius: 6px; transition: color 0.15s, background 0.15s; text-decoration: none; }
+    .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); text-decoration: none; }
+    .nav-links a.active { color: var(--text-primary); }
+    .nav-hamburger { display: none; }
+
+    /* Page header */
+    .page-header { background: linear-gradient(160deg, #0f1117 0%, #131928 55%, #0d1520 100%); padding: 3rem 1.5rem 2.5rem; position: relative; overflow: hidden; }
+    .page-header::before { content: ''; position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(79,126,248,0.10) 0%, transparent 70%); pointer-events: none; }
+    .page-header-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+    .page-header-label { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(79,126,248,0.25); padding: 0.25rem 0.65rem; border-radius: 100px; margin-bottom: 1rem; }
+    .page-header h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; color: var(--white); line-height: 1.2; margin-bottom: 0.75rem; }
+    .page-header-desc { font-size: 1rem; color: var(--text-secondary); max-width: 600px; line-height: 1.65; }
+
+    /* Tags body */
+    .tags-body { background: var(--surface); padding: 3rem 1.5rem 4rem; }
+    .tags-inner { max-width: 1100px; margin: 0 auto; }
+
+    /* Tag cloud */
+    .tag-cloud-section { margin-bottom: 3rem; }
+    .section-heading { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tag-cloud-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #2d3148;
+      background: var(--surface-alt);
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .tag-cloud-item:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .tag-cloud-item .tag-count {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+    }
+
+    .tag-cloud-item:hover .tag-count { color: var(--accent); }
+
+    /* Tag sections */
+    .tag-section {
+      margin-bottom: 2.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .tag-section:first-child { border-top: none; }
+
+    .tag-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag-section-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1d2e;
+      letter-spacing: -0.01em;
+    }
+
+    .tag-section-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tag-post-list { list-style: none; }
+
+    .tag-post-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--surface-alt);
+    }
+
+    .tag-post-item:last-child { border-bottom: none; }
+
+    .tag-post-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      white-space: nowrap;
+      padding-top: 0.15rem;
+    }
+
+    .tag-post-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #1a1d2e;
+    }
+
+    .tag-post-title a { color: inherit; }
+    .tag-post-title a:hover { color: var(--accent); text-decoration: none; }
+
+    /* Search within tags */
+    .tags-search-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tags-search-box {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      color: #1a1d2e;
+      background: var(--surface-alt);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 280px;
+    }
+
+    .tags-search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    .tags-search-box::placeholder { color: var(--text-muted); }
+
+    /* Footer */
+    .footer { background: var(--navy); border-top: 1px solid var(--navy-border); padding: 2.5rem 1.5rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { font-weight: 700; color: var(--text-secondary); font-size: 0.9rem; }
+    .footer-brand span { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--text-secondary); text-decoration: none; }
+    .footer-copy { color: var(--text-muted); font-size: 0.8rem; width: 100%; text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--navy-border); }
+
+    @media (max-width: 768px) {
+      .page-header { padding: 2.5rem 1.25rem 2rem; }
+      .tag-post-item { grid-template-columns: 1fr; gap: 0.1rem; }
+      .tag-post-date { display: inline; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(15,17,23,0.98); border-bottom: 1px solid #1e2535; padding: 0.75rem 1rem; gap: 0; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-links a { display: block; padding: 0.6rem 0.75rem; }
+      .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
+      .tags-search-box { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Burning<span>Cost</span></a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/getting-started/" class="nav-cta">Get Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tools/">Tools</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  <script>
+    (function() {
+      var btn = document.getElementById('nav-hamburger');
+      var links = document.querySelector('.nav-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    })();
+  </script>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="page-header-label">Browse by topic</div>
+      <h1>{{ page.title | default: "Tags" }}</h1>
+      {% if page.description %}
+      <p class="page-header-desc">{{ page.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="tags-body">
+    <div class="tags-inner">
+
+      {% assign all_tags = "" | split: "" %}
+      {% for post in site.posts %}
+        {% for tag in post.tags %}
+          {% unless all_tags contains tag %}
+            {% assign all_tags = all_tags | push: tag %}
+          {% endunless %}
+        {% endfor %}
+      {% endfor %}
+      {% assign sorted_tags = all_tags | sort %}
+
+      <!-- Tag cloud overview -->
+      <div class="tag-cloud-section">
+        <div class="section-heading">All tags</div>
+        <div class="tag-cloud">
+          {% for tag in sorted_tags %}
+            {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+            <a href="#tag-{{ tag | downcase | replace: ' ', '-' | replace: '/', '-' }}" class="tag-cloud-item">
+              {{ tag }}<span class="tag-count">{{ tag_posts | size }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="tags-search-row">
+        <input type="search" class="tags-search-box" id="tags-search" placeholder="Search tags&hellip;" autocomplete="off">
+      </div>
+
+      <!-- Per-tag sections -->
+      <div id="tag-sections">
+        {% for tag in sorted_tags %}
+          {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+          {% if tag_posts.size > 0 %}
+          <div class="tag-section" id="tag-{{ tag | downcase | replace: ' ', '-' | replace: '/', '-' }}" data-tag-section data-tag-name="{{ tag | downcase }}">
+            <div class="tag-section-header">
+              <span class="tag-section-name">{{ tag }}</span>
+              <span class="tag-section-count">{{ tag_posts | size }} {% if tag_posts.size == 1 %}article{% else %}articles{% endif %}</span>
+            </div>
+            <ul class="tag-post-list">
+              {% for post in tag_posts %}
+              <li class="tag-post-item">
+                <div class="tag-post-date">{{ post.date | date: "%d %b %Y" }}</div>
+                <div class="tag-post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">Burning<span>Cost</span></div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tools/">Tools</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
+      </ul>
+      <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var searchBox = document.getElementById('tags-search');
+    var sections = document.querySelectorAll('[data-tag-section]');
+    searchBox.addEventListener('input', function() {
+      var q = this.value.trim().toLowerCase();
+      sections.forEach(function(sec) {
+        var name = sec.getAttribute('data-tag-name') || '';
+        sec.style.display = (!q || name.indexOf(q) > -1) ? '' : 'none';
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

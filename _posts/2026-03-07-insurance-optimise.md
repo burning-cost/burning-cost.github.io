@@ -52,7 +52,7 @@ Install with uv:
 uv add insurance-optimise
 ```
 
-The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) feeds directly in.
+The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-causal`](https://github.com/burning-cost/insurance-causal) feeds directly in.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
@@ -224,7 +224,7 @@ For the efficient frontier across 15 retention targets, `n_jobs=-1` parallelises
 `insurance-optimise` is the 19th library in our suite and completes what we think of as the renewal pricing stack:
 
 1. **Technical model**: GLM or GBM producing expected loss cost per risk
-2. **[`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity)**: Double Machine Learning to estimate causal price elasticity, removing the confound between risk deterioration and demand response
+2. **[`insurance-causal`](https://github.com/burning-cost/insurance-causal)**: Double Machine Learning to estimate causal price elasticity, removing the confound between risk deterioration and demand response
 3. **`insurance-optimise`**: constrained portfolio optimisation taking both outputs and finding the profit-maximising rate changes subject to regulatory and business constraints
 
 Each step is individually useful. The three together replace the Excel-based manual reconciliation process that, based on the pricing teams we have spoken to, is still the dominant approach in UK personal lines. The Excel approach cannot enforce FCA constraints algebraically, cannot compute shadow prices, and cannot produce an efficient frontier. It produces a reasonable answer with no guarantee of optimality and no audit trail.

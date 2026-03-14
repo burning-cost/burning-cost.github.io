@@ -22,7 +22,6 @@ minima:
   skin: classic
 
 header_pages:
-  - course.md
   - tools.md
   - notebooks.md
   - about.md

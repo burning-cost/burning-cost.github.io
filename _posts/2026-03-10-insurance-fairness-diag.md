@@ -3,18 +3,18 @@ layout: post
 title: "Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It."
 date: 2026-03-10
 categories: [libraries, compliance]
-tags: [fairness, proxy-discrimination, D-proxy, Shapley, FCA, Consumer-Duty, EP25/2, Equality-Act, LRTW, Owen, Côté, Charpentier, insurance-fairness-diag, motor, python]
-description: "insurance-fairness-diag implements D_proxy (LRTW 2026, SSRN 4897265), Owen (2014) Shapley attribution, and Côté-Charpentier (2025) local vulnerability scores. It tells you how much proxy discrimination your pricing model contains and which rating factors are responsible — the diagnostic layer before you decide whether to correct it."
+tags: [fairness, proxy-discrimination, D-proxy, Shapley, FCA, Consumer-Duty, EP25/2, Equality-Act, LRTW, Owen, Côté, Charpentier, insurance-fairness, motor, python]
+description: "insurance-fairness implements D_proxy (LRTW 2026, SSRN 4897265), Owen (2014) Shapley attribution, and Côté-Charpentier (2025) local vulnerability scores. It tells you how much proxy discrimination your pricing model contains and which rating factors are responsible — the diagnostic layer before you decide whether to correct it."
 ---
 
 The FCA's EP25/2 (July 2025) evaluation of the general insurance pricing practices remedies made one thing clear: the regulator is no longer satisfied with high-level fair value assertions. The firms that handled the supervisory round well were the ones who could name the specific factors driving differential pricing outcomes across protected characteristic groups, quantify how much each factor contributed, and explain why the contribution was or was not actuarially justified.
 
 Most UK pricing teams cannot do this. They can tell you whether their model uses a protected characteristic directly (it doesn't). They cannot tell you which of their twelve rating factors is leaking protected attribute information into the premium, or how much of the total discriminatory signal each factor accounts for.
 
-[`insurance-fairness-diag`](https://github.com/burning-cost/insurance-fairness-diag) answers that question. It is the diagnostic layer for proxy discrimination: it measures how much discrimination your model contains and decomposes it to individual factors. It does not correct the discrimination — for that, see [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) or [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot). But before you can correct a problem, you need to know its size and its source.
+[`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) answers that question. It is the diagnostic layer for proxy discrimination: it measures how much discrimination your model contains and decomposes it to individual factors. It does not correct the discrimination — for correction, see [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) and its `insurance_fairness.optimal_transport` subpackage. But before you can correct a problem, you need to know its size and its source.
 
 ```bash
-uv add insurance-fairness-diag
+uv add insurance-fairness
 ```
 
 ---
@@ -59,7 +59,7 @@ Each factor gets a phi value in [0, 1], normalised so they sum to 1 across all f
 
 ```python
 import polars as pl
-from insurance_fairness_diag import ProxyDiscriminationAudit
+from insurance_fairness.diagnostics import ProxyDiscriminationAudit
 
 audit = ProxyDiscriminationAudit(
     model=my_glm,           # fitted sklearn-compatible model
@@ -148,7 +148,7 @@ print(f"Aware mean: {bm.aware_mean:.2f}")
 
 ## Generating the audit report
 
-The `to_html()` and `to_json()` methods produce self-contained audit documents for FCA EP25/2 compliance purposes. The HTML report includes the D_proxy value with confidence interval, RAG status, factor-level Shapley attribution table, local score distribution, and the unaware/aware benchmark comparison. The JSON report contains the same data in machine-readable form for integration with `insurance-mrm`'s governance workflow.
+The `to_html()` and `to_json()` methods produce self-contained audit documents for FCA EP25/2 compliance purposes. The HTML report includes the D_proxy value with confidence interval, RAG status, factor-level Shapley attribution table, local score distribution, and the unaware/aware benchmark comparison. The JSON report contains the same data in machine-readable form for integration with `insurance-governance`'s governance workflow.
 
 ```python
 result.to_html("proxy_discrimination_audit.html")
@@ -165,9 +165,9 @@ We now have three fairness-related libraries and it is worth being clear about w
 
 **`insurance-fairness`** detects and corrects discrimination. It applies Lindholm (2022) marginalisation to produce discrimination-free prices, runs counterfactual tests, and generates FCA documentation. It answers: "what should we charge instead?"
 
-**`insurance-fairness-ot`** corrects discrimination using optimal transport. The Wasserstein barycenter approach handles multi-attribute cases (adjusting for gender and disability simultaneously) and the causal path decomposition from Côté-Genest-Abdallah (2025) preserves actuarially justified effects. It answers: "what is the mathematically correct price correction?"
+**`insurance-fairness`** corrects discrimination using optimal transport. The Wasserstein barycenter approach handles multi-attribute cases (adjusting for gender and disability simultaneously) and the causal path decomposition from Côté-Genest-Abdallah (2025) preserves actuarially justified effects. It answers: "what is the mathematically correct price correction?"
 
-**`insurance-fairness-diag`** diagnoses discrimination without correcting it. It tells you how much you have (D_proxy), which factors are responsible (Shapley effects), who is most affected (local scores), and how you compare to naive benchmarks. It answers: "what exactly is going on in this model, and where?"
+**`insurance-fairness`** diagnoses discrimination without correcting it. It tells you how much you have (D_proxy), which factors are responsible (Shapley effects), who is most affected (local scores), and how you compare to naive benchmarks. It answers: "what exactly is going on in this model, and where?"
 
 The diagnostic library is the right starting point. Before deciding whether to correct, you need to understand the magnitude and source of the problem. A D_proxy of 0.03 (green) on a model where one factor accounts for 80% of it is a different situation from a D_proxy of 0.11 (amber) spread evenly across eight factors. The remediation path, the proportionate justification analysis, and the Consumer Duty documentation requirements are all different.
 
@@ -188,16 +188,16 @@ The Shapley attribution is the part most UK pricing teams do not have. Knowing D
 ## Installation
 
 ```bash
-uv add insurance-fairness-diag
+uv add insurance-fairness
 # or
-uv add insurance-fairness-diag
+uv add insurance-fairness
 ```
 
-Python 3.10+. Requires `polars >= 0.20`, `numpy >= 1.21`, `scikit-learn >= 1.3`. 1,911 lines of source, 137 tests. MIT licence. Source and notebooks at [github.com/burning-cost/insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag).
+Python 3.10+. Requires `polars >= 0.20`, `numpy >= 1.21`, `scikit-learn >= 1.3`. 1,911 lines of source, 137 tests. MIT licence. Source and notebooks at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).
 
 ---
 
 **See also:**
 - [Discrimination-Free Pricing with Optimal Transport](/2026/03/10/insurance-fairness-ot/) — once you know which factors are leaking, this is how to correct the price
 - [Your pricing model might be discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library for direct Lindholm marginalisation and FCA documentation
-- [Your model risk register is a spreadsheet](/2026/03/19/your-model-risk-register-is-a-spreadsheet/) — the JSON audit report from this library integrates with `insurance-mrm`'s governance workflow
+- [Your model risk register is a spreadsheet](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the JSON audit report from this library integrates with `insurance-governance`'s governance workflow

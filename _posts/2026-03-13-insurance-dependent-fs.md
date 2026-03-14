@@ -12,7 +12,7 @@ Your pricing model multiplies frequency by severity. It does this because that i
 
 The problem is not that actuaries are unaware of this. It is that the standard toolkit makes it hard to do anything about it. The copula approach is theoretically clean but computationally painful for mixed discrete-continuous distributions. Encoding the dependence parametrically via a single scalar works, but only captures the simplest possible dependence structure. And most off-the-shelf neural two-part models — including the NeurFS architecture from arXiv:2106.10770 — fit two separate networks and then link them with a scalar correction. That is better than independence, but it still leaves structure on the table.
 
-We built [`insurance-dependent-fs`](https://github.com/burning-cost/insurance-dependent-fs) to do this properly. The core architecture is a shared encoder trunk — a single set of neural network weights that learns features informative for both frequency and severity simultaneously. The dependence is not a correction applied after training. It is encoded in the representation the model learns.
+We built [`insurance-dependent-fs`](https://github.com/burning-cost/insurance-frequency-severity) to do this properly. The core architecture is a shared encoder trunk — a single set of neural network weights that learns features informative for both frequency and severity simultaneously. The dependence is not a correction applied after training. It is encoded in the representation the model learns.
 
 ---
 
@@ -162,7 +162,7 @@ Python 3.10 or later. Dependencies: PyTorch, NumPy, SciPy, scikit-learn, Pandas.
 
 The library ships two benchmark datasets: the French MTPL dataset (the standard actuarial neural network benchmark) and a synthetic dataset with known dependence parameter γ = −0.15. The synthetic dataset is the right place to start — fit the model, check that the estimated γ̂ is close to −0.15, and verify that `dependence_test()` rejects γ = 0. If the library cannot recover the known γ on synthetic data, it is not ready for your real book.
 
-Source at [github.com/burning-cost/insurance-dependent-fs](https://github.com/burning-cost/insurance-dependent-fs). 2,150 lines of code across model, training, wrapper, premium estimation, diagnostics, and data modules. 170+ tests.
+Source at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). 2,150 lines of code across model, training, wrapper, premium estimation, diagnostics, and data modules. 170+ tests.
 
 ---
 
@@ -174,6 +174,6 @@ Start with the diagnostic. If `dependence_test()` does not reject γ = 0 and `vs
 
 **Related articles from Burning Cost:**
 - [Sarmanov Copulas for Frequency-Severity Dependence](/insurance-frequency-severity/)
-- [Your Tweedie Model Doesn't Know About Strategic Non-Claimers](/2026/03/30/insurance-zit-dglm/)
+- [Your Tweedie Model Doesn't Know About Strategic Non-Claimers](/2026/03/13/insurance-zit-dglm/)
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
-- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/17/your-interpretable-model-isnt-interpretable-enough/)
+- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)

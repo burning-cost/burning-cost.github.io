@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | escape }} | {{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  {% feed_meta %}
+  {% seo %}
+  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% else %}<meta property="og:image" content="{{ site.url }}/assets/og-image.png">{% endif %}
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1117;
+      --navy-mid: #161b27;
+      --navy-border: #1e2535;
+      --accent: #4f7ef8;
+      --accent-hover: #6690f9;
+      --accent-dim: rgba(79,126,248,0.12);
+      --text-primary: #f0f2f7;
+      --text-secondary: #8b92a8;
+      --text-muted: #5a6278;
+      --white: #ffffff;
+      --surface: #ffffff;
+      --surface-alt: #f7f8fc;
+      --border: #e4e7ef;
+      --border-dark: #d0d5e2;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --mono: 'JetBrains Mono', 'Courier New', monospace;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      color: #1a1d2e;
+      background: var(--surface);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navigation ──────────────────────────────────────────────── */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .nav-logo:hover { text-decoration: none; color: var(--white); }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+      text-decoration: none;
+    }
+
+    .nav-links a.active { color: var(--text-primary); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--white) !important;
+      padding: 0.4rem 0.9rem !important;
+    }
+
+    .nav-cta:hover { background: var(--accent-hover) !important; }
+    .nav-hamburger { display: none; }
+
+    /* ── Page header ─────────────────────────────────────────────── */
+
+    .page-header {
+      background: linear-gradient(160deg, #0f1117 0%, #131928 55%, #0d1520 100%);
+      padding: 3rem 1.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(79,126,248,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 700px;
+    }
+
+    /* ── Page body ───────────────────────────────────────────────── */
+
+    .page-body {
+      padding: 3rem 1.5rem 4rem;
+      background: var(--surface);
+    }
+
+    .page-content {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Prose typography */
+
+    .page-content p {
+      font-size: 1.0rem;
+      line-height: 1.8;
+      color: #2d3148;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-content h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1a1d2e;
+      margin: 2.5rem 0 0.35rem;
+      line-height: 1.3;
+    }
+
+    .page-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #1a1d2e;
+      margin: 2rem 0 0.75rem;
+      line-height: 1.4;
+    }
+
+    .page-content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 1.5rem;
+    }
+
+    .page-content > p:first-child,
+    .tools-intro p {
+      font-size: 1.0rem;
+      line-height: 1.8;
+      color: #2d3148;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Tables */
+    .page-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .page-content th {
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.55rem 0.85rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .page-content td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--surface-alt);
+      color: #3d4463;
+      vertical-align: top;
+    }
+
+    .page-content tr:last-child td { border-bottom: none; }
+
+    .page-content td:first-child a {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .page-content tbody tr:hover td { background: var(--surface-alt); }
+
+    /* ── Essential libraries grid ─────────────────────────────────── */
+
+    .essential-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0 0;
+    }
+
+    .essential-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.25rem 1rem;
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .essential-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(79,126,248,0.1);
+      transform: translateY(-2px);
+    }
+
+    .essential-card-name {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .essential-card-name a {
+      color: #1a1d2e;
+    }
+
+    .essential-card-name a:hover { color: var(--accent); text-decoration: none; }
+
+    .essential-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .essential-card-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,126,248,0.2);
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+      align-self: flex-start;
+    }
+
+    /* ── Tools search ─────────────────────────────────────────────── */
+
+    .tools-search-row {
+      margin: 0.5rem 0 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .tools-search-box {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      color: #1a1d2e;
+      background: var(--surface-alt);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 320px;
+      max-width: 100%;
+    }
+
+    .tools-search-box:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .tools-search-box::placeholder { color: var(--text-muted); }
+
+    .tools-filter-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .cat-btn {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--surface-alt);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .cat-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .cat-btn.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .tools-search-count {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      align-self: center;
+    }
+
+    .tools-no-results {
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .tools-intro { margin-bottom: 0.5rem; }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+
+    .footer {
+      background: var(--navy);
+      border-top: 1px solid var(--navy-border);
+      padding: 2.5rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand { font-weight: 700; color: var(--text-secondary); font-size: 0.9rem; }
+    .footer-brand span { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--text-secondary); text-decoration: none; }
+    .footer-copy { color: var(--text-muted); font-size: 0.8rem; width: 100%; text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--navy-border); }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .page-header { padding: 2.5rem 1.25rem 2rem; }
+      .essential-grid { grid-template-columns: 1fr; }
+      .tools-search-box { width: 100%; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(15,17,23,0.98); border-bottom: 1px solid #1e2535; padding: 0.75rem 1rem; gap: 0; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-links a { display: block; padding: 0.6rem 0.75rem; }
+      .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
+      .page-body { padding: 2rem 1.25rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Burning<span>Cost</span></a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/getting-started/" class="nav-cta">Get Started</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tools/" class="active">Tools</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  <script>
+    (function() {
+      var btn = document.getElementById('nav-hamburger');
+      var links = document.querySelector('.nav-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    })();
+  </script>
+  </nav>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}
+      <p class="page-header-desc">{{ page.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Page body -->
+  <div class="page-body">
+    <div class="page-content">
+      {{ content }}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">Burning<span>Cost</span></div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tags/">Tags</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
+      </ul>
+      <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

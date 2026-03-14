@@ -112,17 +112,17 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 
 ## Python implementation
 
-The `credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
+The `insurance-credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
 
 ```bash
-uv add credibility
+uv add insurance-credibility
 ```
 
 The core class is `BuhlmannStraub`. It expects a long-format DataFrame: one row per group-period, with columns for the group identifier, time period, loss rate, and exposure. The library uses Polars throughout; examples below reflect that.
 
 ```python
 import polars as pl
-from credibility import BuhlmannStraub
+from insurance_credibility.classical import BuhlmannStraub
 
 bs = BuhlmannStraub()
 bs.fit(
@@ -162,7 +162,7 @@ We'll work through a realistic example: a UK motor book with 12 geographic regio
 ```python
 import numpy as np
 import polars as pl
-from credibility import BuhlmannStraub
+from insurance_credibility.classical import BuhlmannStraub
 
 rng = np.random.default_rng(42)
 
@@ -326,11 +326,11 @@ We built this because UK pricing teams should not be doing credibility in Excel.
 
 Bühlmann-Straub is the right tool when you have multiple groups with multi-period exposure data, need an explicit K parameter and Z factors for each group, and want an auditable credibility premium table your underwriters can read. It is the simplest approach and the easiest to explain to a pricing committee.
 
-For multi-dimensional crossed effects (vehicle group and driver age and postcode simultaneously) with full posterior distributions rather than point estimates, use [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — it is more powerful but requires MCMC. For post-GBM residual adjustment at group level (broker, scheme, territory effects), where REML composes cleanly with CatBoost output and the data may be unbalanced, see [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/).
+For multi-dimensional crossed effects (vehicle group and driver age and postcode simultaneously) with full posterior distributions rather than point estimates, use [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — it is more powerful but requires MCMC. For post-GBM residual adjustment at group level (broker, scheme, territory effects), where REML composes cleanly with CatBoost output and the data may be unbalanced, see [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/).
 
 ---
 
 **Related articles from Burning Cost:**
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

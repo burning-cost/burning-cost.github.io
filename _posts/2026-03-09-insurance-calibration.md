@@ -3,8 +3,8 @@ layout: post
 title: "Calibration Testing That Goes Beyond the Residual Plot"
 date: 2026-03-09
 categories: [techniques, libraries, pricing]
-tags: [calibration, balance-property, murphy-decomposition, auto-calibration, glm, gbm, poisson, python, insurance-calibration]
-description: "A Poisson z-test tells you if your totals balance. An auto-calibration test tells you if each price cohort is self-financing. The Murphy decomposition tells you whether miscalibration is a levelling error or a structural one. insurance-calibration v0.1.0 implements all three."
+tags: [calibration, balance-property, murphy-decomposition, auto-calibration, glm, gbm, poisson, python, insurance-monitoring]
+description: "A Poisson z-test tells you if your totals balance. An auto-calibration test tells you if each price cohort is self-financing. The Murphy decomposition tells you whether miscalibration is a levelling error or a structural one. insurance-monitoring v0.1.0 implements all three."
 ---
 
 There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.
@@ -13,10 +13,10 @@ This happens because most validation pipelines stop at discrimination. Gini, lif
 
 The balance property, the requirement that sum(predicted claims) = sum(actual claims) across the portfolio, is the minimal calibration requirement. It is also the one most commonly omitted from validation frameworks, partly because scikit-learn's calibration module handles binary classification only, and partly because the actuarial tools that do exist (R's `actuaRE`, for instance) are tightly coupled to their own model objects. There has been no Python library that took raw prediction arrays, handled exposure weighting, and ran the Poisson/Gamma/Tweedie deviance framework that insurance data requires.
 
-[`insurance-calibration`](https://github.com/burning-cost/insurance-calibration) is that library. Based on Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, 2025). Seven modules, 99 tests, v0.1.0 on PyPI.
+[`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) is that library. Based on Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, 2025). Seven modules, 99 tests, v0.1.0 on PyPI.
 
 ```bash
-uv add insurance-calibration
+uv add insurance-monitoring
 ```
 
 ---
@@ -39,7 +39,7 @@ The answers drive different remediation responses. Getting the question right sa
 
 ```python
 import numpy as np
-from insurance_calibration import check_balance
+from insurance_monitoring.calibration import check_balance
 
 # Synthetic motor frequency data
 rng = np.random.default_rng(42)
@@ -73,7 +73,7 @@ Global balance can be satisfied even when the model is systematically wrong with
 Auto-calibration requires E[Y | mu_hat(X)] = mu_hat(X) at every level of the prediction distribution, not just in aggregate. GLMs with canonical links satisfy this on training data by construction — the score equations enforce it. GBMs and neural networks do not. If you have switched from GLM to GBM without adding a recalibration step, you should run this test.
 
 ```python
-from insurance_calibration import check_auto_calibration
+from insurance_monitoring.calibration import check_auto_calibration
 
 result = check_auto_calibration(
     y, y_hat, exposure,
@@ -126,7 +126,7 @@ MCB splits further:
 - **LMCB** (Local MCB): residual miscalibration after balance correction. Requires model refit or isotonic recalibration.
 
 ```python
-from insurance_calibration import murphy_decomposition
+from insurance_monitoring.calibration import murphy_decomposition
 
 murphy = murphy_decomposition(y, y_hat, exposure, distribution='poisson')
 
@@ -156,7 +156,7 @@ Once you know the type of miscalibration, the library applies the correction.
 **Multiplicative correction** (the RECALIBRATE case):
 
 ```python
-from insurance_calibration import rectify_balance
+from insurance_monitoring.calibration import rectify_balance
 
 # Simple: multiply all predictions by sum(v*y) / sum(v*y_hat)
 y_hat_corrected = rectify_balance(y_hat, y, exposure, method='multiplicative')
@@ -177,7 +177,7 @@ Affine correction is the more general form from Lindholm & Wüthrich (2025). If 
 **Isotonic recalibration**: for the REFIT case when a full refit is not yet possible:
 
 ```python
-from insurance_calibration import isotonic_recalibrate
+from insurance_monitoring.calibration import isotonic_recalibrate
 
 # Preserves ranking; corrects price levels empirically
 # Only meaningful on holdout data — trivially achieves in-sample calibration
@@ -193,7 +193,7 @@ Isotonic recalibration finds the order-preserving function that minimises the we
 The `CalibrationChecker` class wraps the three tests into a fit/check monitoring workflow:
 
 ```python
-from insurance_calibration import CalibrationChecker
+from insurance_monitoring.calibration import CalibrationChecker
 
 checker = CalibrationChecker(
     distribution='poisson',
@@ -232,7 +232,7 @@ A canonical GLM that passes into a GBM pipeline without calibration checking at 
 
 The standard alternative is a residual plot: actual versus predicted, often in deciles, checked visually. This catches gross failures but is insensitive to modest systematic miscalibration. A 7% global balance error is unambiguous in the data; it is often invisible in a decile residual plot because the axis scale is set by the prediction range, not the residual range.
 
-The Hosmer-Lemeshow test (already in `insurance-validation`) catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
+The Hosmer-Lemeshow test (already in `insurance-governance`) catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
 
 The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), published October 2024. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
 
@@ -241,14 +241,14 @@ The Murphy decomposition is the piece that was missing from Python tooling for i
 ## Install
 
 ```bash
-uv add insurance-calibration
+uv add insurance-monitoring
 ```
 
 Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-learn required; isotonic regression uses scipy.stats.isotonic_regression (scipy >= 1.12) with a pure numpy PAVA fallback.
 
-[`insurance-calibration` on GitHub](https://github.com/burning-cost/insurance-calibration) — MIT licence. 99 tests, 7 modules.
+[`insurance-monitoring` on GitHub](https://github.com/burning-cost/insurance-monitoring) — MIT licence. 99 tests, 7 modules.
 
-Pairs with [`insurance-validation`](https://github.com/burning-cost/insurance-validation) for the discrimination side: Gini, double lift, Lorenz curve, PRA SS1/23 report generation. The two libraries answer different questions. Validation tells you whether the model ranks risks correctly. Calibration tells you whether it prices them at the right level. You need both.
+Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-governance) for the discrimination side: Gini, double lift, Lorenz curve, PRA SS1/23 report generation. The two libraries answer different questions. Validation tells you whether the model ranks risks correctly. Calibration tells you whether it prices them at the right level. You need both.
 
 ---
 
@@ -263,4 +263,4 @@ Pairs with [`insurance-validation`](https://github.com/burning-cost/insurance-va
 **Related articles from Burning Cost:**
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

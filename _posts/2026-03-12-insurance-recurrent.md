@@ -3,8 +3,8 @@ layout: post
 title: "Shared Frailty for Repeat Claimers: When the Poisson GLM Gets the Wrong Answer"
 date: 2026-03-12
 categories: [libraries, pricing, credibility]
-tags: [frailty, recurrent-events, Bühlmann-Straub, credibility, Poisson-GLM, repeat-claims, fleet-motor, pet-insurance, home-insurance, EM-algorithm, survival-analysis, python, insurance-recurrent]
-description: "Standard Poisson GLMs treat each policy-year as conditionally independent. That assumption is wrong for repeat claimers, and the consequences are biased frequency estimates and missed credibility signals. insurance-recurrent implements shared frailty models for recurrent insurance claims — and the frailty posterior is exactly the Bühlmann-Straub credibility estimate."
+tags: [frailty, recurrent-events, Bühlmann-Straub, credibility, Poisson-GLM, repeat-claims, fleet-motor, pet-insurance, home-insurance, EM-algorithm, survival-analysis, python, insurance-survival]
+description: "Standard Poisson GLMs treat each policy-year as conditionally independent. That assumption is wrong for repeat claimers, and the consequences are biased frequency estimates and missed credibility signals. insurance-survival implements shared frailty models for recurrent insurance claims — and the frailty posterior is exactly the Bühlmann-Straub credibility estimate."
 ---
 
 Most personal lines policies produce at most one claim per year, and most produce none. The standard Poisson GLM is built for this regime. Conditional on your age, vehicle, region, and all the other rating factors, the number of claims follows a Poisson distribution with rate lambda, independent across policy-years. Fit it by MLE, extract the relativities, done.
@@ -13,10 +13,10 @@ The independence assumption fails in two common settings. The first is any comme
 
 When independence fails, the GLM's coefficient estimates are still unbiased for the average, but you are throwing away information. The claims history of each individual policyholder contains a signal about their latent risk level that the rating factors do not capture. A reckless driver who happens to be 35, in a Ford Fiesta, in Manchester, looks average on paper. If they have claimed twice in three years, you know something the GLM does not.
 
-Frailty models formalise this. [`insurance-recurrent`](https://github.com/burning-cost/insurance-recurrent) implements shared frailty for recurrent insurance claims, with a direct connection to classical credibility theory.
+Frailty models formalise this. [`insurance-survival`](https://github.com/burning-cost/insurance-survival) implements shared frailty for recurrent insurance claims, with a direct connection to classical credibility theory.
 
 ```bash
-pip install insurance-recurrent
+pip install insurance-survival
 ```
 
 ---
@@ -51,7 +51,7 @@ E[z_i | data] = Z_i * (n_i / Lambda_i) + (1 - Z_i) * 1.0
 
 where `Z_i = Lambda_i / (Lambda_i + theta)` is the credibility weight and `1.0` is the portfolio mean frailty. The frailty parameter theta is the classical credibility parameter k: when theta is large (low portfolio heterogeneity), credibility builds slowly; when theta is small (high heterogeneity), even a short claims history shifts the estimate substantially.
 
-The frailty literature and credibility theory arrived at the same formula from different directions. In [`insurance-experience`](https://github.com/burning-cost/insurance-experience) we implement Bühlmann-Straub directly at the policyholder level for NCD-style experience rating. In `insurance-recurrent` we get there from the survival/counting process route, which handles the time structure of recurrent events correctly.
+The frailty literature and credibility theory arrived at the same formula from different directions. In [`insurance-experience`](https://github.com/burning-cost/insurance-experience) we implement Bühlmann-Straub directly at the policyholder level for NCD-style experience rating. In `insurance-survival` we get there from the survival/counting process route, which handles the time structure of recurrent events correctly.
 
 ---
 
@@ -64,7 +64,7 @@ Fleet motor policies do not carry individual NCD. A fleet of 50 vehicles might h
 The frailty theta here represents fleet-level heterogeneity. A fleet that claimed 12 times when the model expected 6 has a frailty posterior concentrated above 1. The next year's technical premium should load for this. Without frailty, the renewal premium is set on observable characteristics only, and the fleet's claims history is either ignored or adjusted by ad hoc rule.
 
 ```python
-from insurance_recurrent import RecurrentEventData, AndersenGillFrailty, FrailtyReport
+from insurance_survival.recurrent import RecurrentEventData, AndersenGillFrailty, FrailtyReport
 
 # data: one row per vehicle-claim-interval
 # each fleet_id groups its vehicles across multiple claim periods
@@ -86,10 +86,10 @@ Pet insurance has high claim frequencies for certain breeds. A French Bulldog ha
 
 The informative censoring problem is acute here: policyholders whose pets have high cumulative health costs may lapse. This is not random censoring. The standard GLM treats lapsed policies as simply leaving the at-risk set. In fact, if the high-risk pets are more likely to have their policies cancelled, the observed claims data from continuing policies is biased downward.
 
-[`insurance-recurrent`](https://github.com/burning-cost/insurance-recurrent) handles this with `JointFrailtyModel`, which models the claims process and the lapse process jointly with a shared frailty:
+[`insurance-survival`](https://github.com/burning-cost/insurance-survival) handles this with `JointFrailtyModel`, which models the claims process and the lapse process jointly with a shared frailty:
 
 ```python
-from insurance_recurrent import JointData, JointFrailtyModel, simulate_joint
+from insurance_survival.recurrent import JointData, JointFrailtyModel, simulate_joint
 
 jd = JointData(
     recurrent=claims_long,       # (start, stop, event) per claim interval
@@ -111,7 +111,7 @@ Subsidence claims are the canonical example of a non-independent outcome in home
 The PWPModel (Prentice-Williams-Peterson) is appropriate here. It fits a separate baseline hazard for the first, second, and third-plus claims, allowing the claim intensity to change after each event:
 
 ```python
-from insurance_recurrent import PWPModel
+from insurance_survival.recurrent import PWPModel
 
 model = PWPModel(time_scale="gap", max_stratum=3).fit(data)
 
@@ -144,7 +144,7 @@ Where the GLM falls short:
 ## Fitting and interpreting the model
 
 ```python
-from insurance_recurrent import (
+from insurance_survival.recurrent import (
     simulate_ag_frailty, SimulationParams,
     AndersenGillFrailty, FrailtyReport
 )
@@ -196,7 +196,7 @@ The decile table is a calibration check: if the frailty estimates are well-calib
 ## Comparing gamma and lognormal frailty
 
 ```python
-from insurance_recurrent import compare_models
+from insurance_survival.recurrent import compare_models
 
 m_gamma = AndersenGillFrailty(frailty="gamma").fit(data)
 m_lognorm = AndersenGillFrailty(frailty="lognormal").fit(data)
@@ -223,7 +223,7 @@ Gamma frailty is the natural choice for insurance because the conjugacy gives an
 
 **The balance property.** The frailty posterior means do not automatically sum to 1.0 at portfolio level - unlike the explicit Bühlmann-Straub implementation in [`insurance-experience`](https://github.com/burning-cost/insurance-experience) which enforces the balance property by construction. If you are using the frailty scores as a multiplicative loading in a rating engine, you need to normalise them against the portfolio mean or the aggregate expected loss will shift. `FrailtyReport.normalised_scores()` does this.
 
-**The parallel tracks.** [`insurance-experience`](https://github.com/burning-cost/insurance-experience) handles individual experience rating in the Bühlmann-Straub framework directly, with four model tiers and explicit balance property enforcement. It is the better choice when you are building an NCD-style individual rating mechanism, or when you have panel data in the standard exposure/claims format. Use `insurance-recurrent` when your data is in counting process format with time-stamped events, when you have informative censoring from lapse, or when you want to model how claim intensity changes across multiple events (PWP) rather than pooling all claims to a rate.
+**The parallel tracks.** [`insurance-experience`](https://github.com/burning-cost/insurance-experience) handles individual experience rating in the Bühlmann-Straub framework directly, with four model tiers and explicit balance property enforcement. It is the better choice when you are building an NCD-style individual rating mechanism, or when you have panel data in the standard exposure/claims format. Use `insurance-survival` when your data is in counting process format with time-stamped events, when you have informative censoring from lapse, or when you want to model how claim intensity changes across multiple events (PWP) rather than pooling all claims to a rate.
 
 [`insurance-jlm`](https://github.com/burning-cost/insurance-jlm) handles a related but different problem: when you have a longitudinal score (a telematics safety score, a credit score) that is measured with error and you want to link its trajectory to claim hazard. The Wulfsohn-Tsiatis model there shares the joint modelling philosophy with `JointFrailtyModel` here, but the measurement error correction and the dynamic score trajectory are specific to that setting.
 
@@ -234,7 +234,7 @@ Gamma frailty is the natural choice for insurance because the conjugacy gives an
 Install from PyPI and run the simulated fleet motor example first:
 
 ```python
-from insurance_recurrent import simulate_ag_frailty, SimulationParams, AndersenGillFrailty, FrailtyReport
+from insurance_survival.recurrent import simulate_ag_frailty, SimulationParams, AndersenGillFrailty, FrailtyReport
 
 data = simulate_ag_frailty(SimulationParams(n_subjects=500, theta=2.0))
 model = AndersenGillFrailty(frailty="gamma").fit(data)
@@ -252,9 +252,9 @@ The standard Poisson GLM is not wrong for most personal lines products. For prod
 
 ---
 
-*`insurance-recurrent` is available via `pip install insurance-recurrent`. For NCD-style individual experience rating with explicit balance property enforcement, see [`insurance-experience`](https://github.com/burning-cost/insurance-experience). For joint longitudinal-survival modelling of telematics scores, see [`insurance-jlm`](https://github.com/burning-cost/insurance-jlm).*
+*`insurance-survival` is available via `pip install insurance-survival`. For NCD-style individual experience rating with explicit balance property enforcement, see [`insurance-experience`](https://github.com/burning-cost/insurance-experience). For joint longitudinal-survival modelling of telematics scores, see [`insurance-jlm`](https://github.com/burning-cost/insurance-jlm).*
 
 **Related articles from Burning Cost:**
-- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/13/insurance-experience/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [D-Vine Copulas for Longitudinal Claim Histories](/2026/03/13/insurance-vine-longitudinal/)

@@ -3,18 +3,18 @@ layout: post
 title: "Constrained GLM Optimisation for Rate Adequacy"
 date: 2026-03-09
 categories: [pricing, techniques, libraries]
-tags: [glm, rate-optimisation, slsqp, enbp, fca-ps215, shadow-prices, efficient-frontier, scipy, python, rate-optimiser, constrained-optimisation, loss-ratio]
-description: "A GLM gives you technically adequate prices. Constrained optimisation finds the factor adjustments that hit your LR target, satisfy FCA PS21/5 ENBP, respect movement bounds, and minimise cross-subsidy simultaneously. This is the implementation guide for rate-optimiser v0.2.0."
+tags: [glm, rate-optimisation, slsqp, enbp, fca-ps215, shadow-prices, efficient-frontier, scipy, python, insurance-optimise, constrained-optimisation, loss-ratio]
+description: "A GLM gives you technically adequate prices. Constrained optimisation finds the factor adjustments that hit your LR target, satisfy FCA PS21/5 ENBP, respect movement bounds, and minimise cross-subsidy simultaneously. This is the implementation guide for insurance-optimise v0.2.0."
 ---
 
 A GLM gives you technically adequate prices at the risk level. The business problem is different: take the GLM relativities you have, apply a set of multiplicative factor adjustments across your tariff, and find the combination that satisfies four simultaneous requirements - portfolio loss ratio target, FCA PS21/5 ENBP constraint, volume floor, and factor movement guardrails - while minimising customer dislocation.
 
 That problem cannot be solved by scenario analysis in Excel. It requires constrained nonlinear optimisation. This post covers how to formulate it correctly, why SLSQP with analytical Jacobians is the right solver, what shadow prices tell you about your constraint structure, and how to trace the efficient frontier to make the LR/volume tradeoff explicit.
 
-The code uses [`rate-optimiser`](https://github.com/burning-cost/rate-optimiser) v0.2.0, MIT licence. Install with:
+The code uses [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) v0.2.0, MIT licence. Install with:
 
 ```bash
-uv add rate-optimiser
+uv add insurance-optimise
 ```
 
 ---
@@ -85,7 +85,7 @@ d(E[LR])/d(m_k) = [sum_i(dp_i/dm_k * c_i) * D - sum_i(p_i * c_i) * dD/dm_k] / D^
 
 where D = sum_i(p_i * pi_i(m)) is the expected premium, and dp_i/dm_k = p_i * (1 - p_i) * beta / m_k (from the chain rule through the logistic). Computing this analytically at each iteration is what makes the solver fast enough for production use.
 
-The rate-optimiser library computes these gradients numerically when you use the default `DemandModel` interface. For books of up to 10,000 policy rows, the numerical gradients via scipy's finite differencing are acceptable - SLSQP handles them well. For larger books or frequent re-solving (e.g., frontier tracing), the logistic demand form supports closed-form gradients.
+The insurance-optimise library computes these gradients numerically when you use the default `DemandModel` interface. For books of up to 10,000 policy rows, the numerical gradients via scipy's finite differencing are acceptable - SLSQP handles them well. For larger books or frequent re-solving (e.g., frontier tracing), the logistic demand form supports closed-form gradients.
 
 ### Volume floor
 
@@ -112,7 +112,7 @@ In a multiplicative tariff, the NB-equivalent premium is the premium the custome
 The `ENBPConstraint` handles this through the `renewal_factor_names` field of `FactorStructure`. Declare which factors are renewal-only:
 
 ```python
-from rate_optimiser import FactorStructure
+from insurance_optimise import FactorStructure
 
 fs = FactorStructure(
     factor_names=["f_age_band", "f_ncb", "f_vehicle_group", "f_region", "f_tenure_discount"],
@@ -126,7 +126,7 @@ When the factor adjustment vector applies uniformly to both renewal and NB facto
 The regulatory implementation detail: PS21/5 is channel-specific. A PCW renewal premium must not exceed the PCW new business price; a direct renewal must not exceed the direct new business price. Cross-channel comparison is not required.
 
 ```python
-from rate_optimiser import ENBPConstraint
+from insurance_optimise import ENBPConstraint
 
 opt.add_constraint(ENBPConstraint(channels=["PCW", "direct"]))
 ```
@@ -136,7 +136,7 @@ opt.add_constraint(ENBPConstraint(channels=["PCW", "direct"]))
 Factor bounds prevent the solver from making unreasonably large adjustments that would destabilise the tariff or shock customers beyond acceptable limits. They are implemented as box constraints - the `bounds` argument to `scipy.optimize.minimize` - rather than as SLSQP inequality constraints. The distinction matters: SLSQP handles box constraints via projection, which is more numerically stable than adding them as additional rows to the constraint Jacobian.
 
 ```python
-from rate_optimiser import FactorBoundsConstraint
+from insurance_optimise import FactorBoundsConstraint
 
 # Uniform bounds: all factors can move -10% to +15%
 opt.add_constraint(FactorBoundsConstraint(lower=0.90, upper=1.15, n_factors=fs.n_factors))
@@ -158,13 +158,13 @@ The complete setup from GLM outputs to optimised factor adjustments:
 import polars as pl
 import numpy as np
 
-from rate_optimiser import (
+from insurance_optimise import (
     PolicyData, FactorStructure, DemandModel,
     RateChangeOptimiser, EfficientFrontier,
     LossRatioConstraint, VolumeConstraint,
     ENBPConstraint, FactorBoundsConstraint,
 )
-from rate_optimiser.demand import make_logistic_demand, LogisticDemandParams
+from insurance_optimise.demand import make_logistic_demand, LogisticDemandParams
 
 # 1. Policy data - one row per in-force policy
 #    technical_premium: GLM-fitted expected loss cost (frequency * severity)
@@ -304,7 +304,7 @@ E[LR(m)] + z_alpha * sqrt(Var[LR(m)]) <= LR_target
 For alpha = 0.95, z_alpha = 1.645. The variance term is a function of the GLM dispersion parameter:
 
 ```python
-from rate_optimiser.stochastic import ClaimsVarianceModel, StochasticRateOptimiser
+from insurance_optimise.stochastic import ClaimsVarianceModel, StochasticRateOptimiser
 
 # Dispersion from your Tweedie GLM summary
 # In statsmodels: result.scale (the dispersion parameter phi)
@@ -408,13 +408,13 @@ The optimiser sees the segment-level LR and volume statistics. The resulting fac
 
 ## Connecting to the broader pipeline
 
-The rate-optimiser takes two upstream inputs: GLM-fitted technical premiums, and demand model renewal probabilities.
+The insurance-optimise takes two upstream inputs: GLM-fitted technical premiums, and demand model renewal probabilities.
 
 For the technical premium, any GLM or GBM fitted to your claims experience feeds in directly. The `technical_premium` column is simply the model's predicted expected loss cost per policy - frequency * severity for a frequency-severity model, or the aggregate cost prediction for a combined model. If you are using GBM outputs, [`shap-relativities`](https://github.com/burning-cost/shap-relativities) can extract factor-structured relativities from the GBM that the optimiser can then adjust.
 
-For the demand model, the renewal probability at current pricing goes in the `renewal_prob` column, and the demand model callable is passed to the optimiser so it can re-evaluate probabilities at each candidate rate change. The [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) library uses Double Machine Learning to estimate causal price elasticity from historic quote data; the resulting logistic model feeds directly into the `DemandModel` wrapper.
+For the demand model, the renewal probability at current pricing goes in the `renewal_prob` column, and the demand model callable is passed to the optimiser so it can re-evaluate probabilities at each candidate rate change. The [`insurance-causal`](https://github.com/burning-cost/insurance-causal) library uses Double Machine Learning to estimate causal price elasticity from historic quote data; the resulting logistic model feeds directly into the `DemandModel` wrapper.
 
-After the optimisation, the downstream step is ratebook update and deployment. The `factor_adjustments` dict maps factor name to multiplicative adjustment. Applying these to your existing GLM factor tables produces the revised relativities that go into your rating system. That step - from adjusted relativities to rating engine update - is outside the scope of this library but is described in the rate-optimiser repository's examples directory.
+After the optimisation, the downstream step is ratebook update and deployment. The `factor_adjustments` dict maps factor name to multiplicative adjustment. Applying these to your existing GLM factor tables produces the revised relativities that go into your rating system. That step - from adjusted relativities to rating engine update - is outside the scope of this library but is described in the insurance-optimise repository's examples directory.
 
 For monitoring after the rate change is live: the question "did the rate change actually deliver the targeted LR improvement?" is a causal inference problem, not a simple comparison. [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) implements the SDID estimator for exactly this use case.
 

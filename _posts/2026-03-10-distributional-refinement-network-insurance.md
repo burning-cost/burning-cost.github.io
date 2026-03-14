@@ -3,8 +3,8 @@ layout: post
 title: "GLMs Predict Means. DRN Predicts Everything Else."
 date: 2026-03-10
 categories: [techniques, libraries]
-tags: [drn, distributional, neural-network, glm, quantile, solvency-ii, scr, crps, pytorch, insurance-drn]
-description: "A GLM that prices your motor book correctly on average will still misprice the tail. insurance-drn wraps any baseline model with a neural network that refines the entire predictive distribution — bin by bin, covariate by covariate."
+tags: [drn, distributional, neural-network, glm, quantile, solvency-ii, scr, crps, pytorch, insurance-severity]
+description: "A GLM that prices your motor book correctly on average will still misprice the tail. insurance-severity wraps any baseline model with a neural network that refines the entire predictive distribution — bin by bin, covariate by covariate."
 ---
 
 Here is the problem with GLMs: they are correct on average. That is not a backhanded compliment. It is a precise statement of what a GLM does. Given a set of covariates, it predicts the conditional mean of the response. If your Gamma GLM is well-specified, the mean prediction for a 19-year-old male driving a modified hatchback will be accurate in expectation. The mean is fine.
@@ -15,10 +15,10 @@ A young driver shifts the 99th percentile of claim severity far more than the me
 
 Distributional GBMs go further. CatBoost's quantile and expectile modes let you target different parts of the distribution, and our [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) library fits full parametric distributional families (Tweedie, Gamma) via gradient boosting. But neither approach builds on a GLM baseline - they start from scratch, which means discarding the actuarial calibration that took years to embed.
 
-[`insurance-drn`](https://github.com/burning-cost/insurance-drn) takes a different path. It wraps any baseline model - GLM, GBM, whatever you have - with a neural network that refines the entire predictive distribution without discarding the baseline. The baseline's calibration is preserved exactly when the neural network has nothing useful to add. When it does have something to add, it adjusts the distribution bin by bin, differently for each covariate profile. 2,835 lines, 137 tests, v0.1.0.
+[`insurance-severity`](https://github.com/burning-cost/insurance-severity) takes a different path. It wraps any baseline model - GLM, GBM, whatever you have - with a neural network that refines the entire predictive distribution without discarding the baseline. The baseline's calibration is preserved exactly when the neural network has nothing useful to add. When it does have something to add, it adjusts the distribution bin by bin, differently for each covariate profile. 2,835 lines, 137 tests, v0.1.0.
 
 ```bash
-uv add insurance-drn
+uv add insurance-severity
 ```
 
 ---
@@ -52,7 +52,7 @@ The tails - outcomes below the lowest cutpoint or above the highest - use the ba
 ```python
 import pandas as pd
 import numpy as np
-from insurance_drn import DRN, GLMBaseline
+from insurance_severity.drn import DRN, GLMBaseline
 
 # Fit a Gamma GLM baseline
 baseline = GLMBaseline(family='gamma', link='log')
@@ -171,7 +171,7 @@ The CANN architecture (Schelldorfer and Wuthrich, 2019) gave actuaries an interp
 The `DRNDiagnostics` class provides the three checks we run on every model before sign-off.
 
 ```python
-from insurance_drn import DRNDiagnostics
+from insurance_severity.drn import DRNDiagnostics
 
 diag = DRNDiagnostics(drn)
 
@@ -236,7 +236,7 @@ For Solvency II capital modelling, tail risk loading, or anywhere you need the 9
 
 ## See also
 
-- [Distributional GBMs for insurance pricing](/2026/03/08/distributional-gbms-insurance-pricing/)
-- [Actuarial Neural Additive Models](/2026/03/09/actuarial-neural-additive-models/)
-- [Calibration testing: beyond the residual plot](/2026/03/09/calibration-testing-beyond-residual-plot/)
-- [Conformal prediction intervals for insurance](/2026/03/06/conformal-prediction-intervals-insurance/)
+- [Distributional GBMs for insurance pricing](/2026/03/05/insurance-distributional/)
+- [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
+- [Calibration testing: beyond the residual plot](/2026/03/09/insurance-calibration/)
+- [Conformal prediction intervals for insurance](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

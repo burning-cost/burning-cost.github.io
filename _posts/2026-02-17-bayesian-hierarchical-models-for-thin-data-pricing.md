@@ -259,11 +259,11 @@ The thin-cell problem is not going away. If anything it is getting worse as pers
 
 This library is the right tool when you need full posterior distributions, multiple crossed random effects (driver age and vehicle group and postcode area simultaneously), or Poisson/Gamma likelihoods. It is the most powerful option and the most computationally demanding.
 
-For simpler one-dimensional segment blending in scheme or affinity pricing — where you have multiple groups with multi-period loss experience and need an audit-friendly credibility premium table — the frequentist moment-based approach in [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) is faster and requires no MCMC. For post-GBM residual adjustment at group level (broker effects, scheme effects) using REML rather than full Bayes, see [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/).
+For simpler one-dimensional segment blending in scheme or affinity pricing — where you have multiple groups with multi-period loss experience and need an audit-friendly credibility premium table — the frequentist moment-based approach in [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) is faster and requires no MCMC. For post-GBM residual adjustment at group level (broker effects, scheme effects) using REML rather than full Bayes, see [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/).
 
 ---
 
 **Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
-- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/15/your-broker-adjustments-are-guesswork/)
+- [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

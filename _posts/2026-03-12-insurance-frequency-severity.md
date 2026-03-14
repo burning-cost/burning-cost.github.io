@@ -152,7 +152,7 @@ The independence assumption has been sitting unchecked at the centre of UK perso
 
 ---
 
-**Related articles from Burning Cost:**
-- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
-- [Vine Copulas for Correlated Peril Pricing](/2026/03/12/insurance-copula/)
-- [Synthetic Insurance Portfolios with Actuarial Fidelity](/2026/03/09/insurance-synthetic/)
+**Related reading:**
+- [Your Frequency × Severity Model Is Multiplying the Wrong Things](/2026/03/13/insurance-dependent-fs/) — when frequency and severity are correlated and independence is the wrong assumption to bake into the architecture
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the alternative: model the full distribution jointly rather than splitting into two GLMs
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free coverage guarantees on the pure premium, regardless of whether your frequency-severity factorisation is correct

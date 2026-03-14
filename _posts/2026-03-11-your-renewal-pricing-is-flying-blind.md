@@ -45,12 +45,12 @@ For heterogeneous elasticity (the question of which customers are more or less p
 
 ## Using the Library
 
-The `insurance-elasticity` library wraps EconML's DML implementations with insurance-specific defaults: CatBoost nuisance models (which handle categorical features like region, vehicle group, and occupation without encoding), binary outcome correction, and diagnostics tuned for the UK personal lines data structure.
+The `insurance-causal` library wraps EconML's DML implementations with insurance-specific defaults: CatBoost nuisance models (which handle categorical features like region, vehicle group, and occupation without encoding), binary outcome correction, and diagnostics tuned for the UK personal lines data structure.
 
 Fitting the average treatment effect:
 
 ```python
-from insurance_elasticity import RenewalElasticityEstimator
+from insurance_causal.elasticity import RenewalElasticityEstimator
 
 estimator = RenewalElasticityEstimator(cate_model='causal_forest')
 estimator.fit(df, outcome='renewed', treatment='log_price_change',
@@ -82,7 +82,7 @@ A single average elasticity is not actionable. Renewal pricing operates at the i
 The per-customer elasticity from CausalForestDML feeds directly into the renewal optimisation problem:
 
 ```python
-from insurance_elasticity import RenewalPricingOptimiser
+from insurance_causal.elasticity import RenewalPricingOptimiser
 
 optimiser = RenewalPricingOptimiser(
     elasticity_model=estimator,
@@ -157,13 +157,13 @@ A causal elasticity model with an explicit audit trail (treatment variation diag
 
 Standard demand models produce biased elasticity estimates. We think this is widely understood at a theoretical level in UK actuarial functions and almost never fixed at a practical level.
 
-That is what `insurance-elasticity` is for: DML estimation with the insurance-specific corrections applied by default, connected directly to an ENBP-constrained optimiser, with diagnostics that tell you honestly when the data cannot support reliable estimates.
+That is what `insurance-causal` is for: DML estimation with the insurance-specific corrections applied by default, connected directly to an ENBP-constrained optimiser, with diagnostics that tell you honestly when the data cannot support reliable estimates.
 
 If your renewal demand model gives you a single price sensitivity parameter and a confidence interval that your team treats as decoration, the model is flying blind. Usually better data and a better model are both needed, but the better model at least tells you which.
 
 ---
 
-*The `insurance-elasticity` library is open source under MIT licence. The ENBP optimiser, heterogeneous elasticity surface, and compliance audit tools are covered in the [library documentation](#).*
+*The `insurance-causal` library is open source under MIT licence. The ENBP optimiser, heterogeneous elasticity surface, and compliance audit tools are covered in the [library documentation](#).*
 
 ---
 
