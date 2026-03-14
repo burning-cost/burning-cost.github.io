@@ -146,6 +146,98 @@ permalink: /getting-started/
   text-decoration: none;
 }
 
+.gs-examples {
+  border: 1px solid #e2e6f0;
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  background: #f9fafc;
+}
+
+.gs-examples h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f1117;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.gs-examples-intro {
+  font-size: 0.9rem;
+  color: #5a6278;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.gs-examples-intro a {
+  color: #4f7ef8;
+  text-decoration: none;
+}
+
+.gs-examples-intro a:hover {
+  text-decoration: underline;
+}
+
+.gs-examples-note {
+  font-size: 0.82rem;
+  color: #5a6278;
+  margin-top: 1.25rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.gs-example-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.gs-example-table thead tr {
+  border-bottom: 2px solid #e2e6f0;
+}
+
+.gs-example-table th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8892a4;
+  padding: 0.5rem 0.75rem 0.6rem;
+}
+
+.gs-example-table td {
+  padding: 0.65rem 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid #e2e6f0;
+  color: #4a4f66;
+  line-height: 1.5;
+}
+
+.gs-example-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gs-example-table td:first-child {
+  font-weight: 600;
+  color: #0f1117;
+  white-space: nowrap;
+  padding-right: 1.25rem;
+}
+
+.gs-example-table a {
+  color: #4f7ef8;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.gs-example-table a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   .gs-lib-item {
     grid-template-columns: 1fr;
@@ -153,6 +245,12 @@ permalink: /getting-started/
   }
   .gs-path {
     padding: 1.25rem 1.25rem;
+  }
+  .gs-examples {
+    padding: 1.25rem 1.25rem;
+  }
+  .gs-example-table td:first-child {
+    white-space: normal;
   }
 }
 </style>
@@ -241,6 +339,48 @@ permalink: /getting-started/
       <span class="gs-lib-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Relevant wherever a model needs a principled uncertainty bound for Solvency II or internal capital.</span>
     </li>
   </ul>
+</div>
+
+<div class="gs-examples">
+  <h2>Worked Examples</h2>
+  <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains full worked examples that go beyond the quick-start.</p>
+  <table class="gs-example-table">
+    <thead>
+      <tr>
+        <th>Example</th>
+        <th>What it covers</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Causal Rate Change Evaluation</td>
+        <td>SDID workflow for measuring the causal impact of a rate change</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/causal_rate_change_evaluation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>Price Elasticity Optimisation</td>
+        <td>DML elasticity estimation and ENBP-constrained renewal pricing</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/price_elasticity_optimisation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>Conformal Prediction Intervals</td>
+        <td>Distribution-free prediction intervals for Tweedie models</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/conformal_prediction_intervals.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>Champion/Challenger Deployment</td>
+        <td>Shadow mode, quote logging, bootstrap LR test, ENBP audit</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/champion_challenger_deployment.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>Model Drift Monitoring</td>
+        <td>Exposure-weighted PSI/CSI, Gini drift z-test, quarterly governance</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/model_drift_monitoring.py" target="_blank">view</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="gs-examples-note">Each example generates synthetic data inline — no external files needed. Install the relevant library and run.</p>
 </div>
 
 <div class="gs-next">
