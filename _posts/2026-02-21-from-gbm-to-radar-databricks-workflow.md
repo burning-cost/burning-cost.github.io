@@ -428,4 +428,4 @@ The full notebook set - `01_data_prep`, `02_train_extract`, `03_export` - and th
 **Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

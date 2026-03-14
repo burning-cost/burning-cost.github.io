@@ -243,7 +243,7 @@ The repository is at [github.com/burning-cost/insurance-gam](https://github.com/
 ---
 
 **Related articles from Burning Cost:**
-- [EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency](/2026/03/13/ebms-for-insurance-tariff-construction/)
+- [EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)

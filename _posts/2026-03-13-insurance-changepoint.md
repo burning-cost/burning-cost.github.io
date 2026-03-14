@@ -279,4 +279,4 @@ The only genuine limitation to document: BOCPD is a univariate method. It operat
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the PSI/A-E/Gini framework for detecting whether your model is still accurate
 - [Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book](/2026/03/13/insurance-nowcast/) — covariate-conditioned completion factors for immature accident periods
 - [Bayesian Trend Models for Insurance Frequency and Severity](/2026/03/11/insurance-trend/) — fitting piecewise trend models after a regime change is detected
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

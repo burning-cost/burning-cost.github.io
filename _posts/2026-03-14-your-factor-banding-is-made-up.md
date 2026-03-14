@@ -200,5 +200,3 @@ The tools do not replace actuarial judgment. The minimum exposure constraint, th
 **Related articles from Burning Cost:**
 - [Nested GLMs with Neural Network Embeddings for Insurance](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/)
 - [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/)
-- [Two GLMs, One Unjustified Assumption](/2026/03/12/insurance-frequency-severity/)
-- [Constrained GLM Optimisation for Rate Adequacy](/2026/03/09/constrained-glm-optimisation-rate-adequacy/)

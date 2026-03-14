@@ -196,5 +196,4 @@ The `feasibility_report()` method is the first thing to run before any solve. If
 
 **Related articles from Burning Cost:**
 - [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)
-- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)

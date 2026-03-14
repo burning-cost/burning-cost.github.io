@@ -38,7 +38,7 @@ from insurance_governance import (
 )
 ```
 
-Both were covered in earlier posts — `insurance-validation` [here](/2026/03/13/insurance-validation/) and the MRM tooling [here](/2026/03/13/your-model-risk-register-is-a-spreadsheet/). What follows covers the unified package and the integration behaviour that only works when both sides live together.
+The MRM tooling is covered in depth at [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/). What follows covers the unified package and the integration behaviour that only works when both sides live together.
 
 ---
 
@@ -203,6 +203,5 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 ---
 
 **Related articles from Burning Cost:**
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/) — the original validation library, now the `insurance_governance.validation` subpackage
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring layer that feeds post-deployment evidence back into the inventory
