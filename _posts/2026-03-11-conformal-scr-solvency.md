@@ -3,15 +3,17 @@ layout: post
 title: "Distribution-Free Solvency Capital from Conformal Prediction"
 date: 2026-03-11
 categories: [libraries, pricing, risk, solvency]
-tags: [conformal-prediction, solvency-ii, scr, catboost, locally-weighted, hong, ert, coverage, insurance-conformal, python, capital-modelling]
-description: "insurance-conformal v0.2 adds SCRReport for distribution-free 99.5% upper bounds, LocallyWeightedConformal for intervals ~24% narrower than standard split conformal, model-free prediction via Hong (2025), and extended diagnostics for checking conditional coverage by rating segment."
+tags: [conformal-prediction, solvency-ii, solvency-uk, scr, catboost, locally-weighted, hong, ert, coverage, insurance-conformal, python, capital-modelling, pra-ps924]
+description: "Hong (2025) showed a parametric GLM achieves 57.8% actual coverage at 99.5% nominal — the SCR quantile. Conformal prediction held at 99.6% with no distributional assumption. insurance-conformal v0.2 builds on this: SCRReport, LocallyWeightedConformal (~24% narrower intervals), HongModelFree, and extended conditional coverage diagnostics."
 ---
 
-The standard Solvency II SCR calculation requires you to estimate the 99.5th percentile of your loss distribution — the 1-in-200-year event. Every major internal model uses parametric assumptions to get there: fit residuals to a distribution, compute the quantile analytically. The distribution assumption is not tested. It is chosen to be tractable.
+Your internal model sets the SCR at 99.5% VaR. Hong (2025, arXiv:2503.03659) tested what a parametric GLM actually achieves at that quantile on personal injury claims data: 22,036 settled UK claims, realistic distributional misspecification. The empirical coverage was 57.8%.
 
-Conformal prediction offers a different path. Given a calibration set, it produces an upper bound at any specified quantile — including 99.5% — with a finite-sample, distribution-free coverage guarantee. No assumed distribution. The only requirement is that calibration and test data are exchangeable.
+You set capital for a 1-in-200 event. Your model is protecting against roughly a 1-in-1.7 event.
 
-[`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) v0.2 builds on the split conformal machinery from v0.1 to add SCR reporting, locally-weighted intervals that are roughly 24% narrower, model-free prediction for situations where you have no existing regression model, and extended diagnostics for checking coverage by rating segment.
+Conformal prediction, under the same misspecification, held at 99.6%. And it does this with no distributional assumption whatsoever — only the exchangeability of calibration and future data.
+
+[`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) v0.2 builds the full SCR workflow around this: distribution-free 99.5% upper bounds with regulatory-format output, locally-weighted intervals roughly 24% narrower than standard split conformal, model-free prediction when you have no fitted model, and extended diagnostics for conditional coverage by rating segment.
 
 ```bash
 uv add "insurance-conformal[catboost]"
@@ -19,15 +21,33 @@ uv add "insurance-conformal[catboost]"
 
 ---
 
-## The SCR problem
+## Why parametric intervals fail at the tail
 
-A Solvency II Standard Formula insurer computes the non-life underwriting risk SCR from volatility factors applied to net written premium. An internal model insurer computes the 99.5th percentile of the aggregate loss distribution directly. Both approaches produce a number. The question is whether that number is honest.
+A GLM prediction interval is derived from the assumed error distribution. At the 95th or 99th percentile, moderate distributional misspecification produces moderate coverage loss. At 99.5% — where the SCR lives — the same misspecification is catastrophic. The tail is precisely where distributional assumptions are least tested by data and most consequential for solvency.
 
-The Standard Formula approach is calibrated from industry data and systematically wrong for any insurer whose book differs from the industry average. Internal models use parametric assumptions — log-normal, gamma, Pareto tails — that are tractable but not validated at the extremes where the regulation cares most.
+Hong's Table 2 shows the mechanism: the GLM interval at 99.5% coverage has width ratio 0.07 relative to the conformal interval. The parametric interval is seven times narrower than the distribution-free interval — and achieves 57.8% actual coverage. The GLM is not being precise; it is overconfident in the wrong direction. A random forest does better at 98.8% coverage, but still falls short of nominal.
 
-Conformal prediction does not replace your actuarial model. It wraps it. You fit your Tweedie GBM or GLM as normal, calibrate the conformal predictor on a held-out period, and then extract 99.5% upper bounds with a theoretical guarantee: at least 99.5% of future losses will fall below this bound, across the population of calibration-and-test pairs drawn from the same distribution.
+The Standard Formula approach has a related problem: it is calibrated from industry data and systematically wrong for any insurer whose book differs from the industry average. Internal models use parametric assumptions — log-normal, gamma, Pareto tails — that are tractable but not validated at the extremes where the regulation cares most.
+
+Conformal prediction does not replace your actuarial model. It wraps it. You fit your Tweedie GBM or GLM as normal, calibrate the conformal predictor on a held-out period, and extract 99.5% upper bounds with a theoretical guarantee: at least 99.5% of future losses will fall below this bound, across the population of calibration-and-test pairs drawn from the same distribution.
 
 The guarantee is marginal — it is a population-level statement, not a conditional one — but it is genuine, finite-sample, and requires no distributional assumptions. That is a different quality of claim to what parametric models offer.
+
+---
+
+## The Solvency UK angle: PRA PS9/24
+
+Under Solvency UK (PRA PS9/24, which replaces Solvency II post-Brexit for UK insurers), the SCR is computed at 99.5% VaR over a one-year horizon. The standard approach derives this from a fitted model's distributional assumption. If that assumption is wrong — which Hong demonstrates it can be, badly — the SCR is understated.
+
+The conformal approach is not a replacement for actuarial models. It is a validation layer. Run your GLM, compute your parametric SCR. Then run `HongModelFree` on the same data, extract the conformal SCR, and compare. If they diverge materially, your distributional assumption is doing serious work. You should know that before your internal model validation team asks.
+
+Three limitations are worth stating plainly.
+
+**Marginal, not conditional, coverage.** The 99.5% guarantee is averaged over the covariate distribution. For portfolio-level SCR, this is appropriate. For per-policy capital allocation, you need mondrian conformal or conformalized quantile regression.
+
+**Exchangeability.** The guarantee requires that training and test observations are exchangeable — drawn from the same distribution. UK personal injury claims from 1989 to 1999 are not exchangeable with 2025 claims. Restrict calibration data to recent years. We recommend no more than five years for motor and three years for lines with faster mix shift.
+
+**Scaling.** `HongConformal.predict_interval()` computes a matrix of shape (n_new, n_train). For n_train = 50,000 and n_new = 10,000, this is 500 million floats. The library uses chunked batching with a configurable `batch_size` parameter (default: 1,000 new observations per batch).
 
 ---
 
@@ -81,80 +101,40 @@ One point to be explicit about: conformal gives marginal coverage. Whether that 
 
 ---
 
-## Locally-weighted intervals: ~24% narrower
+## Model-free SCR: Hong's order-statistic shortcut
 
-v0.1 split conformal with Pearson-weighted scores already produces substantially narrower intervals than naive conformal. v0.2's `LocallyWeightedConformal` goes further.
+Hong (2025) identified a property of a specific nonconformity measure that eliminates the grid search of standard full conformal entirely. The measure is linear in the new observation's value — so the prediction region is always an interval with an upper bound at a single order statistic. O(n log n): a sort and an index lookup.
 
-The idea, from Manna et al. (ASMBI 2025), is to fit a secondary model that predicts the expected absolute residual for each observation. Where the secondary model predicts a large residual, the observation is hard to predict and gets a wide interval. Where it predicts a small residual, the interval tightens. The coverage guarantee is maintained — the secondary model just allocates the width budget more efficiently across the risk distribution.
-
-```python
-from insurance_conformal import LocallyWeightedConformal
-
-# Two-stage fit: base model + spread model
-lwc = LocallyWeightedConformal(
-    model=catboost_gbm,        # your fitted base predictor
-    tweedie_power=1.5,
-)
-
-# fit() trains the CatBoost spread model on training data
-# (spread model must not see calibration data)
-lwc.fit(X_train, y_train)
-lwc.calibrate(X_cal, y_cal)
-
-# Intervals include a 'spread' diagnostic column
-intervals = lwc.predict_interval(X_test, alpha=0.10)
-print(intervals.head())
-#        lower   point    upper   spread
-# 0     0.0283  0.1134   0.3891   0.847
-# 1     0.0091  0.0365   0.1251   0.762
-# 2     0.3140  1.2560   3.8420   1.423
-```
-
-The `spread` column is the secondary model's prediction for each observation — a relative measure of how hard the point is to predict. A spread of 1.42 means this observation is predicted to have 42% higher residual magnitude than the average calibration point. The interval for that risk is correspondingly wider.
-
-The 24% width reduction relative to standard `TweedieConformal` comes from the benchmark in the Manna et al. paper on held-out motor claims data (n=15,000, Tweedie p=1.5, CatBoost base model). On your data, the reduction will vary. The diagnostic to check is `width_efficiency_comparison()`:
-
-```python
-from insurance_conformal.diagnostics_ext import width_efficiency_comparison
-
-comparison = width_efficiency_comparison(
-    predictors={"split": standard_conformal, "locally_weighted": lwc},
-    X=X_test,
-    alpha=0.10,
-)
-# Returns mean interval width and empirical coverage for each predictor
-```
-
-Run this before committing to the two-stage approach. If your base model is already well-calibrated and your calibration set is small, the spread model may not have enough signal to beat the simpler approach.
-
----
-
-## Model-free prediction: no regression model required
-
-Hong (2025, arXiv:2503.03659) showed that conformal prediction does not require a regression model at all. You can construct prediction intervals directly from historical data using an h-transformation framework.
-
-`HongModelFree` implements this:
+`HongModelFree` implements this. No regression model needed:
 
 ```python
 from insurance_conformal.hong import HongModelFree
+from insurance_conformal.scr import SCRReport
 
-# No model required — learns directly from data
-mf = HongModelFree()
-mf.fit(X_train, y_train)   # stores training data
-mf.calibrate(X_cal, y_cal)
+hong = HongModelFree()
+hong.fit(X_train, y_train)
 
-intervals = mf.predict_interval(X_new, alpha=0.10)
+scr = SCRReport(hong)
+capital = scr.solvency_capital_requirement(X_train, alpha=0.005)
+print(f"SCR upper bound: £{capital:,.0f}")
+
+# Full coverage table across alpha values
+print(scr.coverage_table(X_test, y_test))
+#    alpha  nominal_coverage  actual_coverage  mean_width  n_test
+# 0  0.005             0.995            0.996  544093.0    4408
+# 1  0.010             0.990            0.991  498721.0    4408
+# 2  0.050             0.950            0.951  312440.0    4408
 ```
 
-The intervals are wider than model-based conformal — sometimes substantially so. That is expected: without a regression model, you have less information to work with.
+Hong's paper computed an SCR upper bound of £544,093 for the personal injury dataset (Table 7). That number required no distributional assumption about injury claims — only that the 22,036 training claims and the new claim were drawn from the same generating process.
 
-Where this is useful:
+Where this is useful beyond direct SCR estimation:
 
-**New book pricing.** You have acquired a new scheme or portfolio with 18 months of loss data and no fitted model. You need SCR-style bounds quickly, before you have run full model development. `HongModelFree` gives you defensible bounds with what you have.
+**New book pricing.** You have acquired a portfolio with 18 months of loss data and no fitted model. `HongModelFree` gives you defensible bounds before full model development.
 
-**Benchmark validation.** If your model-based intervals are narrower than `HongModelFree` intervals, that is reassuring — the model is adding genuine predictive information. If they are wider, something is wrong with your score function.
+**Benchmark validation.** If your model-based intervals are narrower than `HongModelFree` intervals, the model is adding genuine predictive information. If they are wider, something is wrong with your score function.
 
-**Auditing third-party models.** `HongTransformConformal` accepts any callable as the h-transformation, not just sklearn-compatible models:
+**Auditing third-party models.** `HongTransformConformal` accepts any callable as the h-transformation:
 
 ```python
 from insurance_conformal.hong import HongTransformConformal
@@ -165,21 +145,60 @@ htc.calibrate(X_cal, y_cal)
 intervals = htc.predict_interval(X_new, alpha=0.10)
 ```
 
-This is useful when your pricing model does not have a clean sklearn API — a Radar export, a vendor model, an in-house pricing engine. You pass the predict function directly and the conformal machinery wraps it.
+This is useful when your pricing model does not have a clean sklearn API — a Radar export, a vendor model, an in-house pricing engine.
 
-One caveat on `HongModelFree`: the construction assumes an additive relationship between covariates and outcomes. Insurance pricing models are multiplicative (log-linear). The model-free intervals are conservative for log-linear data and should be used as benchmarks rather than production intervals. The warning in the library is explicit about this.
+One caveat: `HongModelFree` assumes an additive relationship between covariates and outcomes. Insurance pricing models are multiplicative (log-linear). The model-free intervals are conservative for log-linear data and should be used as benchmarks rather than production intervals.
 
 ---
 
-## Extended diagnostics: where your intervals are lying
+## Locally-weighted intervals: ~24% narrower
+
+v0.2's `LocallyWeightedConformal` fits a secondary CatBoost model that predicts the expected absolute residual for each observation. Where the secondary model predicts a large residual, the interval widens. Where it predicts small, the interval tightens. The coverage guarantee is maintained — the secondary model allocates the width budget more efficiently across the risk distribution.
+
+```python
+from insurance_conformal import LocallyWeightedConformal
+
+lwc = LocallyWeightedConformal(
+    model=catboost_gbm,        # your fitted base predictor
+    tweedie_power=1.5,
+)
+
+# fit() trains the CatBoost spread model on training data
+# (spread model must not see calibration data)
+lwc.fit(X_train, y_train)
+lwc.calibrate(X_cal, y_cal)
+
+intervals = lwc.predict_interval(X_test, alpha=0.10)
+print(intervals.head())
+#        lower   point    upper   spread
+# 0     0.0283  0.1134   0.3891   0.847
+# 1     0.0091  0.0365   0.1251   0.762
+# 2     0.3140  1.2560   3.8420   1.423
+```
+
+The `spread` column is the secondary model's prediction for each observation. A spread of 1.42 means this observation is predicted to have 42% higher residual magnitude than the average calibration point.
+
+The 24% width reduction relative to standard `TweedieConformal` comes from the Manna et al. (ASMBI 2025) benchmark on motor claims data (n=15,000, Tweedie p=1.5, CatBoost base model). Check whether it holds on your data with `width_efficiency_comparison()`:
+
+```python
+from insurance_conformal.diagnostics_ext import width_efficiency_comparison
+
+comparison = width_efficiency_comparison(
+    predictors={"split": standard_conformal, "locally_weighted": lwc},
+    X=X_test,
+    alpha=0.10,
+)
+```
+
+Run this before committing to the two-stage approach. If your calibration set is small, the spread model may not have enough signal to beat the simpler approach.
+
+---
+
+## Extended diagnostics: conditional coverage by segment
 
 Marginal coverage — overall 90.x% on a holdout — tells you little. What you need is conditional coverage: do your intervals cover correctly for motor liability vs. comprehensive, for new drivers vs. experienced, for London vs. rural?
 
-v0.2 adds two diagnostics for this.
-
 ### ERT coverage gap
-
-The Expected Ranking Test (ERT) coverage gap bins observations by predicted value and checks coverage in each bin against the target:
 
 ```python
 from insurance_conformal.diagnostics_ext import ert_coverage_gap
@@ -195,16 +214,13 @@ print(gaps)
 #     -1       NaN   2200    0.901   0.900   0.001   False  (overall)
 ```
 
-Bins flagged `True` have coverage gaps more than 2 standard errors from zero. The summary row (bin = -1) gives overall mean absolute error of the coverage gap across bins. An MAE above 0.01 is worth investigating. Above 0.03 and you have a systematic conditional coverage problem that the marginal figure is hiding.
+Bins flagged `True` have coverage gaps more than 2 standard errors from zero. MAE above 0.03 and you have a systematic conditional coverage problem that the marginal figure is hiding.
 
 ### Subgroup coverage
-
-For segment-level checks — by vehicle class, by region, by distribution channel:
 
 ```python
 from insurance_conformal.diagnostics_ext import subgroup_coverage
 
-# vehicle_class is a categorical array aligned with X_test
 results = subgroup_coverage(
     predictor, X_test, y_test,
     groups=vehicle_class_array,
@@ -218,9 +234,7 @@ print(results)
 #   commercial     420    0.874   0.900  -0.026   True  *
 ```
 
-Motorbikes and commercial vehicles are flagged here. Those are exactly the segments where parametric approaches tend to fail — small volumes, heavy tails, distribution shapes that don't match the majority class. Conformal should handle them better than parametric if your score function is correctly specified. If the subgroup diagnostic flags them, your score is not transferring well across segments.
-
-The fix: recalibrate with a segment-specific calibration set, or switch to `LocallyWeightedConformal` where the spread model can learn segment-specific difficulty.
+Motorbikes and commercial vehicles — exactly the segments where parametric approaches tend to fail. The fix: recalibrate with a segment-specific calibration set, or switch to `LocallyWeightedConformal`.
 
 ---
 
@@ -239,6 +253,10 @@ v0.1 shipped with SplitConformal, CVPlusConformal, CQR, TweedieConformal, Poisso
 | `width_efficiency_comparison` | Side-by-side interval width comparison across predictors |
 
 136 new tests, 186 total. All v0.1 tests pass unchanged.
+
+There was no Python implementation of any of this before v0.2. Hong's papers have no accompanying code. The Manna et al. R code at `alokesh17/conformal_LightGBM_tweedie` is research scripts — not installable, no tests, does not implement Hong's method. MAPIE and crepes provide generic split conformal but with no Tweedie scores and no SCR reporting.
+
+Read Hong (2025) alongside this library. The paper is twelve pages and Table 7 is worth the whole thing.
 
 ---
 

@@ -7,6 +7,9 @@ tags: [gam, ebm, nam, anam, pin, interpretability, GLM, GBM, tweedie, poisson, m
 description: "GLMs are readable but leave predictive performance on the table. GBMs recover that performance but lose the factor tables. insurance-gam wraps three architectures — EBM, ANAM, and PIN — that refuse the trade-off. Here is how to pick the right one."
 ---
 
+*This post is the comparison guide: when to use EBM, ANAM, or PIN, and what insurance-gam now contains. For EBM workflow details, read [EBMs for Insurance Pricing](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/). For the ANAM architecture and neural additive model theory, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/).*
+
+
 The pricing committee has seen this presentation before. The GBM outperforms the production GLM by 5 Gini points on the holdout set. The SHAP plots look sensible. The double-lift chart is clean. And then someone asks: "What is the model doing with drivers aged 19 to 21 in the South East?" and the answer is a waterfall chart of approximate feature contributions, not a factor table, and the model stays in the notebook for another quarter.
 
 The standard response to this dynamic is: build an EBM, or use a GAM, or extract SHAP relativities from the GBM. Each of these is a reasonable answer to a slightly different version of the problem. The difficulty is knowing which version of the problem you are actually solving.
