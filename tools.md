@@ -75,14 +75,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-scmoe",
-      "description": "Spatially Clustered Mixture of Experts for joint frequency-severity insurance pricing (NAAJ 2025).",
-      "codeRepository": "https://github.com/burning-cost/insurance-scmoe",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-severity",
       "description": "Severity modelling toolkit for UK non-life insurance.",
       "codeRepository": "https://github.com/burning-cost/insurance-severity",
@@ -91,41 +83,9 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-evt",
-      "description": "Extreme Value Theory for catastrophic claim severity — GPD/GEV, censored MLE, ExcessGPD reinsurance pricing, Solvency II 1-in-200.",
-      "codeRepository": "https://github.com/burning-cost/insurance-evt",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-ilf",
-      "description": "MBBEFD exposure curves, Swiss Re families, ILF tables, and per-risk XL pricing.",
-      "codeRepository": "https://github.com/burning-cost/insurance-ilf",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-nflow",
-      "description": "Normalising flows for severity modelling — NSF with Student-t tail transform, TVaR, ILF, conditional rating factor flow.",
-      "codeRepository": "https://github.com/burning-cost/insurance-nflow",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-quantile",
       "description": "Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors.",
       "codeRepository": "https://github.com/burning-cost/insurance-quantile",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-copula",
-      "description": "Copula models for insurance pricing — D-vine temporal dependence, two-part occurrence/severity.",
-      "codeRepository": "https://github.com/burning-cost/insurance-copula",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -147,25 +107,9 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-credibility-transformer",
-      "description": "Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing.",
-      "codeRepository": "https://github.com/burning-cost/insurance-credibility-transformer",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-multilevel",
       "description": "Two-stage CatBoost + REML random effects for high-cardinality group factors — Bühlmann-Straub credibility, ICC diagnostics.",
       "codeRepository": "https://github.com/burning-cost/insurance-multilevel",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-experience",
-      "description": "Individual policy Bayesian posterior experience rating — static Bühlmann-Straub, dynamic state-space, surrogate IS posteriors, and deep attention credibility.",
-      "codeRepository": "https://github.com/burning-cost/insurance-experience",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -211,46 +155,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-bcf",
-      "description": "Bayesian Causal Forests — stochtree BCF wrapper, segment CATE estimation, ElasticityEstimator, FCA EP25/2 audit report.",
-      "codeRepository": "https://github.com/burning-cost/insurance-bcf",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-tmle",
-      "description": "Targeted Maximum Likelihood Estimation — doubly robust causal inference, Poisson TMLE with exposure offset, SuperLearner, CV-TMLE.",
-      "codeRepository": "https://github.com/burning-cost/insurance-tmle",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-rdd",
-      "description": "Regression discontinuity for rating thresholds — sharp/fuzzy RD, Poisson/Gamma outcomes, geographic RDD, McCrary test, FCA reports.",
-      "codeRepository": "https://github.com/burning-cost/insurance-rdd",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-bunching",
-      "description": "Bunching estimators for rating threshold gaming — mileage declaration fraud, adverse deductible selection, BH FDR-corrected scanning.",
-      "codeRepository": "https://github.com/burning-cost/insurance-bunching",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-counterfactual-sets",
-      "description": "Weighted conformal ITE for individual counterfactuals — Lei & Candès 2021, sensitivity analysis, FCA ENBP harm reports.",
-      "codeRepository": "https://github.com/burning-cost/insurance-counterfactual-sets",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-covariate-shift",
       "description": "Density ratio correction for book shifts — CatBoost/RuLSIF/KLIEP, LR-QR conformal, FCA SUP 15.3 diagnostics.",
       "codeRepository": "https://github.com/burning-cost/insurance-covariate-shift",
@@ -267,33 +171,9 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-mediation",
-      "description": "Causal mediation for FCA proxy discrimination — CDE/NDE/NIE decomposition, Poisson/Gamma/Tweedie GLMs, Imai sensitivity, FCA HTML report.",
-      "codeRepository": "https://github.com/burning-cost/insurance-mediation",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-recourse",
-      "description": "Algorithmic recourse for FCA Consumer Duty in UK personal lines insurance pricing.",
-      "codeRepository": "https://github.com/burning-cost/insurance-recourse",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-conformal",
       "description": "Distribution-free prediction intervals for insurance GBM and GLM models — locally-weighted Pearson residuals, Solvency II SCR bounds.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-conformal-fraud",
-      "description": "Conformal anomaly detection for claims fraud — BH FDR control, integrative conformal p-values, IFB Fisher combination, Mondrian stratification.",
-      "codeRepository": "https://github.com/burning-cost/insurance-conformal-fraud",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -310,22 +190,6 @@ permalink: /tools/
       "name": "insurance-optimise",
       "description": "Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier, JSON audit trail.",
       "codeRepository": "https://github.com/burning-cost/insurance-optimise",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-dro",
-      "description": "Distributionally robust rate optimisation — Wasserstein/KL/chi2 ambiguity sets, CVXPY+CLARABEL, price-of-robustness frontier.",
-      "codeRepository": "https://github.com/burning-cost/insurance-dro",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-online",
-      "description": "Bandit algorithms for GIPP-compliant price experimentation — UCB1, Thompson Sampling, LinUCB, ENBP constraints, FCA audit trail.",
-      "codeRepository": "https://github.com/burning-cost/insurance-online",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -363,33 +227,9 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-reconcile",
-      "description": "Hierarchical forecast reconciliation — PremiumWeightedMinTrace, LossRatioReconciler, FreqSevReconciler, InsuranceHierarchy DSL.",
-      "codeRepository": "https://github.com/burning-cost/insurance-reconcile",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-trend",
       "description": "Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection.",
       "codeRepository": "https://github.com/burning-cost/insurance-trend",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-nowcast",
-      "description": "ML-EM nowcasting for claims reporting delays — covariate-conditioned completion factors and IBNR counts by risk segment.",
-      "codeRepository": "https://github.com/burning-cost/insurance-nowcast",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-garch",
-      "description": "GARCH volatility for claims inflation — GJR-GARCH, BoE fan charts, Christoffersen backtest.",
-      "codeRepository": "https://github.com/burning-cost/insurance-garch",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -411,25 +251,9 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-jlm",
-      "description": "Joint longitudinal-survival models — Wulfsohn-Tsiatis SREM, EM+GHQ, DynamicPredictor for telematics mid-term repricing.",
-      "codeRepository": "https://github.com/burning-cost/insurance-jlm",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-telematics",
       "description": "HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data.",
       "codeRepository": "https://github.com/burning-cost/insurance-telematics",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-lda-risk",
-      "description": "LDA probabilistic risk profiling — latent risk archetypes, portfolio mix drift, book-transfer segmentation.",
-      "codeRepository": "https://github.com/burning-cost/insurance-lda-risk",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -440,13 +264,45 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-synthetic",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-datasets",
+      "description": "Synthetic UK motor data with a known data-generating process, for testing and teaching.",
+      "codeRepository": "https://github.com/burning-cost/insurance-datasets",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "experience-rating",
+      "description": "Individual policy Bayesian posterior experience rating — static Bühlmann-Straub, dynamic state-space, surrogate IS posteriors, and deep attention credibility.",
+      "codeRepository": "https://github.com/burning-cost/experience-rating",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-demand",
+      "description": "Demand modelling for insurance pricing — conversion and retention elasticity, price response curves.",
+      "codeRepository": "https://github.com/burning-cost/insurance-demand",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-elasticity",
+      "description": "Price elasticity estimation for insurance — CausalForestDML, DR-Learner, and Automatic Debiased ML.",
+      "codeRepository": "https://github.com/burning-cost/insurance-elasticity",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
 </script>
 
 <div class="tools-intro">
-  <p>33 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
+  <p>35 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
@@ -482,9 +338,9 @@ If you're new here, these ten are the best place to start. They solve problems m
   <div class="essential-card-tag">Governance</div>
 </div>
 
-<div class="essential-card" data-name="credibility" data-desc="Buhlmann-Straub credibility weighting Python CatBoost Polars">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/credibility" target="_blank">credibility</a></div>
-  <div class="essential-card-desc">Bühlmann-Straub credibility in Python with CatBoost and Polars. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</div>
+<div class="essential-card" data-name="insurance-credibility" data-desc="Buhlmann-Straub credibility weighting Python CatBoost">
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a></div>
+  <div class="essential-card-desc">Bühlmann-Straub credibility in Python. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</div>
   <div class="essential-card-tag">Credibility</div>
 </div>
 
@@ -558,8 +414,6 @@ Tools for building and interpreting pricing models.
 | [insurance-gam](https://github.com/burning-cost/insurance-gam) | Interpretable GAMs — EBM tariffs, Actuarial NAM, Pairwise Interaction Networks, exact Shapley values |
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values |
 | [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation |
-| [insurance-scmoe](https://github.com/burning-cost/insurance-scmoe) | Spatially Clustered Mixture of Experts for joint frequency-severity pricing (NAAJ 2025) |
-| [insurance-copula](https://github.com/burning-cost/insurance-copula) | Copula models — D-vine temporal dependence, two-part occurrence/severity |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics |
 
 </div>
@@ -579,9 +433,6 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-dispersion](https://github.com/burning-cost/insurance-dispersion) | Double GLM for joint mean-dispersion modelling — alternating IRLS, REML, actuarial factor tables |
 | [insurance-quantile](https://github.com/burning-cost/insurance-quantile) | Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors |
 | [insurance-severity](https://github.com/burning-cost/insurance-severity) | Severity modelling toolkit for UK non-life insurance |
-| [insurance-evt](https://github.com/burning-cost/insurance-evt) | Extreme Value Theory for catastrophic claim severity — GPD/GEV, censored MLE, ExcessGPD reinsurance, Solvency II 1-in-200 |
-| [insurance-ilf](https://github.com/burning-cost/insurance-ilf) | MBBEFD exposure curves, Swiss Re families, ILF tables, per-risk XL pricing |
-| [insurance-nflow](https://github.com/burning-cost/insurance-nflow) | Normalising flows for severity — NSF with Student-t tail transform, TVaR, ILF, conditional factor flow |
 
 </div>
 
@@ -596,9 +447,8 @@ When you don't have enough data to trust a standard GLM.
 | Library | What it does |
 |---|---|
 | [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | Credibility models for UK non-life pricing: Bühlmann-Straub and Bayesian experience rating |
-| [insurance-credibility-transformer](https://github.com/burning-cost/insurance-credibility-transformer) | Credibility Transformer — CLS token attention as Bühlmann-Straub credibility, ICL zero-shot pricing |
 | [insurance-multilevel](https://github.com/burning-cost/insurance-multilevel) | Two-stage CatBoost + REML random effects for high-cardinality group factors — ICC diagnostics |
-| [insurance-experience](https://github.com/burning-cost/insurance-experience) | Individual policy Bayesian posterior experience rating — static, dynamic, surrogate, and deep attention credibility |
+| [experience-rating](https://github.com/burning-cost/experience-rating) | Individual policy Bayesian posterior experience rating — static, dynamic, surrogate, and deep attention credibility |
 | [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data pricing segments using PyMC 5 |
 | [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) | Pricing techniques for low-volume segments where standard GLM fitting is unreliable |
 | [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) | Whittaker-Henderson 1D/2D smoothing with REML lambda selection, Bayesian CIs, Poisson PIRLS |
@@ -617,11 +467,7 @@ Separating what causes what from what correlates with what.
 |---|---|
 | [insurance-causal](https://github.com/burning-cost/insurance-causal) | Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports |
 | [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity |
-| [insurance-bcf](https://github.com/burning-cost/insurance-bcf) | Bayesian Causal Forests — stochtree BCF wrapper, segment CATE estimation, FCA EP25/2 audit report |
-| [insurance-tmle](https://github.com/burning-cost/insurance-tmle) | Targeted Maximum Likelihood Estimation — doubly robust causal inference, Poisson TMLE with exposure offset |
-| [insurance-rdd](https://github.com/burning-cost/insurance-rdd) | Regression discontinuity for rating thresholds — sharp/fuzzy RD, Poisson/Gamma outcomes, geographic RDD |
-| [insurance-bunching](https://github.com/burning-cost/insurance-bunching) | Bunching estimators for rating threshold gaming — mileage fraud detection, adverse selection, BH FDR scanning |
-| [insurance-counterfactual-sets](https://github.com/burning-cost/insurance-counterfactual-sets) | Weighted conformal ITE for individual counterfactuals — Lei & Candès 2021, FCA ENBP harm reports |
+| [insurance-elasticity](https://github.com/burning-cost/insurance-elasticity) | Price elasticity estimation — CausalForestDML, DR-Learner, and Automatic Debiased ML |
 
 </div>
 
@@ -636,8 +482,6 @@ Proxy discrimination, Consumer Duty, and FCA evidence packs.
 | Library | What it does |
 |---|---|
 | [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | Proxy discrimination auditing — FCA EP25/2, Consumer Duty, bias metrics |
-| [insurance-mediation](https://github.com/burning-cost/insurance-mediation) | Causal mediation for FCA proxy discrimination — CDE/NDE/NIE decomposition, Imai sensitivity, FCA HTML report |
-| [insurance-recourse](https://github.com/burning-cost/insurance-recourse) | Algorithmic recourse for FCA Consumer Duty in UK personal lines insurance |
 | [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift) | Density ratio correction for book shifts — CatBoost/RuLSIF/KLIEP, LR-QR conformal, FCA SUP 15.3 diagnostics |
 
 </div>
@@ -654,7 +498,6 @@ Prediction intervals, conformal methods, and post-deployment monitoring.
 |---|---|
 | [insurance-cv](https://github.com/burning-cost/insurance-cv) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers |
 | [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds |
-| [insurance-conformal-fraud](https://github.com/burning-cost/insurance-conformal-fraud) | Conformal anomaly detection for claims fraud — BH FDR control, integrative conformal p-values, Mondrian stratification |
 | [insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts) | Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Poisson/NB scores |
 | [insurance-deploy](https://github.com/burning-cost/insurance-deploy) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test |
 | [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test |
@@ -673,9 +516,7 @@ From rate change recommendations to live price experimentation.
 | Library | What it does |
 |---|---|
 | [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier |
-| [insurance-dro](https://github.com/burning-cost/insurance-dro) | Distributionally robust rate optimisation — Wasserstein/KL/chi2 ambiguity sets, price-of-robustness frontier |
-| [insurance-online](https://github.com/burning-cost/insurance-online) | Bandit algorithms for GIPP-compliant price experimentation — UCB1, Thompson Sampling, LinUCB, ENBP constraints |
-| [insurance-reconcile](https://github.com/burning-cost/insurance-reconcile) | Hierarchical forecast reconciliation — PremiumWeightedMinTrace, LossRatioReconciler, FreqSevReconciler |
+| [insurance-demand](https://github.com/burning-cost/insurance-demand) | Demand modelling — conversion and retention elasticity, price response curves |
 
 </div>
 
@@ -690,8 +531,6 @@ Inflation, reporting delays, and dynamic pricing.
 | Library | What it does |
 |---|---|
 | [insurance-trend](https://github.com/burning-cost/insurance-trend) | Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection |
-| [insurance-nowcast](https://github.com/burning-cost/insurance-nowcast) | ML-EM nowcasting for claims reporting delays — covariate-conditioned completion factors, IBNR by risk segment |
-| [insurance-garch](https://github.com/burning-cost/insurance-garch) | GARCH volatility for claims inflation — GJR-GARCH, BoE fan charts, Christoffersen backtest |
 | [insurance-dynamics](https://github.com/burning-cost/insurance-dynamics) | Dynamic pricing models — GAS score-driven filters, Bayesian changepoint detection (BOCPD/PELT) |
 
 </div>
@@ -705,9 +544,7 @@ Inflation, reporting delays, and dynamic pricing.
 | Library | What it does |
 |---|---|
 | [insurance-survival](https://github.com/burning-cost/insurance-survival) | Survival models — cure models, customer lifetime value, lapse tables, MLflow wrapper |
-| [insurance-jlm](https://github.com/burning-cost/insurance-jlm) | Joint longitudinal-survival models — Wulfsohn-Tsiatis SREM, EM+GHQ, DynamicPredictor for mid-term repricing |
 | [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data |
-| [insurance-lda-risk](https://github.com/burning-cost/insurance-lda-risk) | LDA probabilistic risk profiling — latent risk archetypes, portfolio mix drift, book-transfer segmentation |
 | [insurance-synthetic](https://github.com/burning-cost/insurance-synthetic) | Vine copula synthetic portfolio generation — exposure-aware, preserves multivariate dependence |
 | [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor data with a known data-generating process, for testing and teaching |
 

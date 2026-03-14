@@ -181,7 +181,7 @@ permalink: /getting-started/
       <span class="gs-lib-desc">PRA SS1/23-aligned model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test. HTML/JSON output for model risk committees.</span>
     </li>
     <li class="gs-lib-item">
-      <span class="gs-lib-name"><a href="https://github.com/burning-cost/credibility" target="_blank">credibility</a></span>
+      <span class="gs-lib-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a></span>
       <span class="gs-lib-desc">Bühlmann-Straub credibility in Python. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</span>
     </li>
   </ul>

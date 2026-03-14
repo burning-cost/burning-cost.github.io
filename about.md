@@ -13,7 +13,7 @@ The name comes from a basic actuarial concept: burning cost is claims incurred d
 
 ## What we have built
 
-33 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+35 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
@@ -45,14 +45,15 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 **Tail Risk & Distributions**
 
 - [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) - GAMLSS for Python: model ALL distribution parameters as functions of covariates, seven families, RS algorithm
-- [`insurance-severity`](https://github.com/burning-cost/insurance-severity) - Distributional Refinement Networks and composite spliced severity models: full predictive distributions per risk
+- [`insurance-severity`](https://github.com/burning-cost/insurance-severity) - severity modelling toolkit for UK non-life insurance: full predictive distributions per risk
 - [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) - quantile and expectile GBMs for tail risk, TVaR, and increased limit factors
 - [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) - distributional GBMs with Tweedie, Gamma, ZIP, and negative binomial objectives
 
 **Commercial**
 
-- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints; includes demand modelling subpackage
-- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal price elasticity estimation via CausalForestDML, DR-Learner, and Automatic Debiased ML
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints
+- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - demand modelling for conversion and retention, price response curves
+- [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML, DR-Learner, and Automatic Debiased ML
 - [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) - NCD and bonus-malus systems for UK motor, including claiming threshold optimisation
 - [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling
 
