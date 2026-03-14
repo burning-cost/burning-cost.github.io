@@ -8,6 +8,9 @@ tags: [ANAM, NAM, interpretability, monotonicity, GLM, Poisson, Tweedie, FCA, Co
 description: "SHAP is a post-hoc approximation. EBM has no native Tweedie loss and no guaranteed monotonicity. We built insurance-gam — the first pip-installable Actuarial Neural Additive Model — to give UK pricing actuaries exact interpretability with distributional losses and mathematically guaranteed constraints."
 ---
 
+*This post is an ANAM deep-dive: the Actuarial Neural Additive Model architecture, why it gives mathematically guaranteed monotonicity where EBMs do not, and how to use the insurance-gam implementation with Tweedie/Gamma/Poisson losses. If you want the EBM workflow, read [EBMs for Insurance Pricing](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
+
+
 Your GBM is not interpretable. You already know that. The SHAP values explain it approximately, after the fact, by attributing fractions of each prediction to each feature — a useful diagnostic, not a property of the model itself.
 
 But here is the thing you may not have noticed: your "interpretable model" probably is not interpretable either.

@@ -7,6 +7,9 @@ tags: [databricks, catboost, shap, radar, pricing, motor, unity-catalog, mlflow,
 description: "A complete Databricks workflow for UK pricing actuaries: CatBoost training with MLflow tracking, SHAP relativities extraction, and export to Radar. End-to-end motor pricing in Python."
 ---
 
+*This post is Databricks-specific: a complete Databricks Jobs workflow using Unity Catalog, MLflow, and Delta tables to produce Radar-loadable relativities from CatBoost models on a scheduled monthly basis. If you want a vendor-agnostic Python pipeline overview, read [Building a Modern Insurance Pricing Pipeline in Python](/2026/03/12/modern-pricing-pipeline/).*
+
+
 A growing number of UK pricing teams are running Databricks. Almost none of them are running it well.
 
 The workflow we see most often: load a claims extract into a notebook, fit a CatBoost model in a single cell, pickle the model, hand-extract some PDPs, and email a CSV to whoever has Radar access. Unity Catalog sits unused. MLflow has one run in it from a proof-of-concept someone did in 2023. The Jobs scheduler has never been touched.

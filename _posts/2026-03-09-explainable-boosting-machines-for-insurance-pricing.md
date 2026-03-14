@@ -8,6 +8,9 @@ tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relati
 description: "interpretML's ExplainableBoostingMachine already handles Poisson/Gamma/Tweedie loss and exposure offsets natively. What it doesn't do is wrap those capabilities in the workflow a UK pricing team actually uses. insurance-gam does that: RelativitiesTable, MonotonicityEditor, GLMComparison, and a full actuarial diagnostics suite."
 ---
 
+*This post is an EBM deep-dive: how Explainable Boosting Machines work, how to fit them for Poisson/Gamma/Tweedie insurance targets, and the full actuarial workflow — relativity tables, monotonicity editing, GLM comparison, Gini diagnostics. If you want to understand the ANAM architecture, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
+
+
 The two questions that come up in every conversation about replacing a GLM with something more powerful are: can you explain it to the pricing committee, and can you explain it to the regulator?
 
 GLMs pass both tests. The factor table is the explanation. Each row says exactly how much a rating factor moves the rate, and every actuary in the room has been reading tables like that for their entire career. The downside is that GLMs leave predictive performance on the table. They cannot capture nonlinear within-factor effects without manual bucketing decisions, and they cannot detect interactions without being told where to look.
