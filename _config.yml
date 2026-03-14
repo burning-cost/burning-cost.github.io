@@ -23,6 +23,7 @@ minima:
 
 header_pages:
   - tools.md
+  - guide.md
   - notebooks.md
   - about.md
   - compare.md

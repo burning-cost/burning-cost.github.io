@@ -480,6 +480,7 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
   <h2>Ready to go deeper?</h2>
   <div class="gs-cta-row">
     <a href="/tools/" class="btn-primary-sm">Browse all libraries</a>
+    <a href="/guide/" class="btn-outline-sm">Which library do I need?</a>
     <a href="/blog/" class="btn-outline-sm">Read the articles</a>
     <a href="https://github.com/burning-cost" target="_blank" class="btn-outline-sm">View on GitHub</a>
   </div>
