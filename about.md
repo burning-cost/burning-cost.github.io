@@ -9,6 +9,8 @@ Burning Cost is on the forefront of machine learning and data science research i
 
 The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. Simple, direct, no mystification. That is how we think about tooling.
 
+Built by pricing practitioners who have worked across UK personal lines motor and home books.
+
 ---
 
 ## What we have built
@@ -54,8 +56,6 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints
 - [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - demand modelling for conversion and retention, price response curves
 - [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML, DR-Learner, and Automatic Debiased ML
-- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) - NCD and bonus-malus systems for UK motor, including claiming threshold optimisation
-- [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - cure models, customer lifetime value, lapse tables, and MLflow wrapper for retention modelling
 
 **Compliance & Governance**
 
