@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "The Python Insurance Pricing Stack: 33 Libraries for Everything Emblem Can't Do"
+title: "The Python Insurance Pricing Stack: 35 Libraries for Everything Emblem Can't Do"
 date: 2026-03-14
 categories: [guides]
 tags: [python, insurance-pricing, machine-learning, glm, gbm, pricing-tools]
-description: "33 open-source Python libraries for UK insurance pricing: GBM-to-GLM distillation, temporal CV, causal inference, FCA fairness auditing, rate optimisation, and PRA SS1/23 governance."
+description: "35 open-source Python libraries for UK insurance pricing: GBM-to-GLM distillation, temporal CV, causal inference, FCA fairness auditing, rate optimisation, and PRA SS1/23 governance."
 ---
 
 Every UK pricing team has the same gap. The GBM outperforms the GLM by 4-6 Gini points on the holdout set. Everyone knows it. Nobody in production is running it, because nobody can explain it, govern it, or get it into Radar in a form the head of pricing will sign off on. Emblem and ReMetrica are excellent tools for managing multiplicative rating factor structures. They were not built for gradient boosting, causal inference, or conformal prediction intervals.
 
-This stack was. It is 33 Python libraries, built specifically for UK personal lines pricing workflows. They are not wrappers around generic ML tools with "insurance" added to the name. Each one solves a specific problem that appeared repeatedly across actual pricing projects: the factor table a regulator wanted that a SHAP notebook could not produce, the cross-validation that was inflating GBM performance by 7 Gini points due to temporal leakage, the rate change that the model said was working but which was confounded from the start.
+This stack was. It is 35 Python libraries, built specifically for UK personal lines pricing workflows. They are not wrappers around generic ML tools with "insurance" added to the name. Each one solves a specific problem that appeared repeatedly across actual pricing projects: the factor table a regulator wanted that a SHAP notebook could not produce, the cross-validation that was inflating GBM performance by 7 Gini points due to temporal leakage, the rate change that the model said was working but which was confounded from the start.
 
 Below is the full stack, organised by where in the pricing workflow each library sits. If you only implement one section, start with the Core Stack. Everything else is additive.
 
@@ -513,4 +513,4 @@ If you are installing for the first time, the order matters:
 
 Everything else is additive depending on your specific problem. Thin segments? Add `bayesian-pricing`. Territory banding? Add `insurance-spatial`. Going to production with a challenger? Add `insurance-deploy`.
 
-All 33 libraries are MIT-licensed, installable via `pip` or `uv`, and maintained under [github.com/burning-cost](https://github.com/burning-cost). Each ships with synthetic data generators so you can run the examples without needing a live portfolio.
+All 35 libraries are MIT-licensed, installable via `pip` or `uv`, and maintained under [github.com/burning-cost](https://github.com/burning-cost). Each ships with synthetic data generators so you can run the examples without needing a live portfolio.
