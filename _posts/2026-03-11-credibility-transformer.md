@@ -216,3 +216,10 @@ What the CT gives you, uniquely, is a principled prior/posterior decomposition a
 ---
 
 **[insurance-credibility-transformer on GitHub](https://github.com/burning-cost/insurance-credibility-transformer)** — 85 tests, MIT-licensed, PyPI. Library #45.
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Hierarchical Bayesian Models for Thin Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)

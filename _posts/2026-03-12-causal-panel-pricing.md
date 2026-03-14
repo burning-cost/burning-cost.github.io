@@ -6,6 +6,7 @@ categories: [tutorials, pricing, causal-inference]
 tags: [panel-data, causal-forest, fixed-effects, causalfe, heterogeneous-treatment-effects, rate-change, CFFE, FCA, DML, insurance]
 description: "causalfe (arXiv:2601.10555, Jan 2026) implements Causal Forest Fixed Effects for panel data — the method for estimating heterogeneous treatment effects controlling for unobserved policyholder effects. This post shows how to use it for insurance rate change evaluation, where the unobserved factor is individual risk appetite."
 post_number: 81
+canonical_url: "https://burning-cost.github.io/2026/03/12/insurance-causal-panel/"
 ---
 
 Rate change evaluation in insurance has a problem that neither standard A/B tests nor synthetic difference-in-differences fully solves: heterogeneous response.

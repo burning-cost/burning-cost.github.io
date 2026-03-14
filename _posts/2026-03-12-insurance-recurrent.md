@@ -253,3 +253,8 @@ The standard Poisson GLM is not wrong for most personal lines products. For prod
 ---
 
 *`insurance-recurrent` is available via `pip install insurance-recurrent`. For NCD-style individual experience rating with explicit balance property enforcement, see [`insurance-experience`](https://github.com/burning-cost/insurance-experience). For joint longitudinal-survival modelling of telematics scores, see [`insurance-jlm`](https://github.com/burning-cost/insurance-jlm).*
+
+**Related articles from Burning Cost:**
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [D-Vine Copulas for Longitudinal Claim Histories](/2026/03/13/insurance-vine-longitudinal/)

@@ -337,3 +337,10 @@ Neither group has published a Python implementation. The R packages (evmix, ReIn
 ---
 
 **[insurance-composite on GitHub](https://github.com/burning-cost/insurance-composite)** — 106 tests, MIT-licensed, PyPI. Library #47.
+
+---
+
+**Related articles from Burning Cost:**
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
+- [Extreme Value Theory for Insurance Large Losses](/2026/03/25/insurance-evt/)
+- [Actuarial Quantile Regression for Insurance Tail Risk](/2026/03/07/insurance-quantile/)

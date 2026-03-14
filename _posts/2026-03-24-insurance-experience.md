@@ -5,6 +5,7 @@ date: 2026-03-24
 categories: [libraries, pricing, credibility]
 tags: [experience-rating, credibility, Bühlmann-Straub, Bayesian, posterior, Poisson-Gamma, GBM, attention, NCD, FCA, PS21-5, insurance-experience, python, pytorch]
 description: "NCD is a contractual mechanism, not a Bayesian posterior. insurance-experience implements four-tier individual experience rating: static Bühlmann-Straub, dynamic Poisson-Gamma state-space, surrogate GBM with IS-based posteriors, and deep attention credibility. Policy-level multiplicative factors with the balance property. 125 tests."
+canonical_url: "https://burning-cost.github.io/2026/03/11/insurance-experience/"
 ---
 
 NCD has a clean actuarial logic behind it: your claims history tells us something about your risk level that the rating factors don't fully capture, and we want to adjust for it. The implementation, though, is not Bayesian posterior inference. It is a contractual mechanism with a transition matrix. The factor you get depends on how many claims you made last year and which NCD level you started at. The transition rules are chosen to be commercially sensible and regulatorily defensible, not to minimise posterior expected loss.
@@ -206,3 +207,10 @@ This library does not implement group-level credibility (Bühlmann at broker or 
 ---
 
 **[insurance-experience on GitHub](https://github.com/burning-cost/insurance-experience)** — 125 tests, MIT-licensed, PyPI. Library #43.
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Experience Rating: NCD and Bonus-Malus Systems in UK Motor](/2026/02/27/experience-rating-ncd-bonus-malus/)
+- [The Credibility Transformer: Attention as Bühlmann-Straub](/2026/03/11/credibility-transformer/)

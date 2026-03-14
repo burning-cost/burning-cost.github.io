@@ -221,3 +221,10 @@ pip install insurance-lda-risk
 ```
 
 Source: [github.com/burning-cost/insurance-lda-risk](https://github.com/burning-cost/insurance-lda-risk)
+
+---
+
+**Related articles from Burning Cost:**
+- [Synthetic Insurance Portfolios with Actuarial Fidelity](/2026/03/09/insurance-synthetic/)
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
+- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)

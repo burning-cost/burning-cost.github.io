@@ -187,3 +187,10 @@ pip install insurance-dro
 ```
 
 Source at [github.com/burning-cost/insurance-dro](https://github.com/burning-cost/insurance-dro).
+
+---
+
+**Related articles from Burning Cost:**
+- [Portfolio Rate Optimisation with Demand Constraints](/2026/03/07/insurance-optimise/)
+- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)
+- [Constrained GLM Optimisation with FCA PS21/5 ENBP](/2026/03/09/constrained-glm-optimisation/)

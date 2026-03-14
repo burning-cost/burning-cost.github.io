@@ -386,3 +386,10 @@ The 29-month timeline to LR significance is real and worth knowing about. Teams 
 ---
 
 `insurance-deploy` is open source under the MIT licence at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). Install with `uv add insurance-deploy`. 146 tests passing. Requires Python 3.10+, NumPy, SciPy, and joblib.
+
+---
+
+**Related articles from Burning Cost:**
+- [Model Validation for Insurance Pricing](/2026/03/13/insurance-validation/)
+- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
+- [Constrained GLM Optimisation with FCA PS21/5 ENBP](/2026/03/09/constrained-glm-optimisation/)

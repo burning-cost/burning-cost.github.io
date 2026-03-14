@@ -167,3 +167,10 @@ The third is segment-level loading optimisation using `LinUCBPolicy`. If you bel
 ---
 
 **[insurance-online on GitHub](https://github.com/burning-cost/insurance-online)** — MIT-licensed, PyPI. Bandit algorithms for UK general insurance pricing, with GIPP constraints and compliance reporting built in.
+
+---
+
+**Related articles from Burning Cost:**
+- [Constrained Portfolio Rate Optimisation: Efficient Frontier for UK Personal Lines](/2026/02/21/constrained-rate-optimisation-efficient-frontier/)
+- [Constrained GLM Optimisation with FCA PS21/5 ENBP](/2026/03/09/constrained-glm-optimisation/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)

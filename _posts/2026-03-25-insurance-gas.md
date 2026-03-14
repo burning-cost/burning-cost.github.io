@@ -161,3 +161,8 @@ That is what a likelihood buys you. A moving average does not have one.
 ---
 
 **[insurance-gas on GitHub](https://github.com/burning-cost/insurance-gas)** — MIT-licensed, PyPI. The first maintained Python GAS library.
+
+**Related articles from Burning Cost:**
+- [Trend Analysis for Insurance Pricing](/2026/03/13/insurance-trend/)
+- [GARCH Modelling for Insurance Inflation Uncertainty](/2026/03/12/insurance-garch/)
+- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)

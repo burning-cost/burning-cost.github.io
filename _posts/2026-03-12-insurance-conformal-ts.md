@@ -119,3 +119,10 @@ The committee slide with the ARIMA interval will exist for a while yet. But now 
 ---
 
 *insurance-conformal-ts is part of the Burning Cost open-source stack. Related libraries: [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (cross-sectional prediction intervals), [insurance-garch](https://github.com/burning-cost/insurance-garch) (claims inflation volatility modelling), [insurance-trend](https://github.com/burning-cost/insurance-trend) (severity and frequency trend analysis).*
+
+---
+
+**Related articles from Burning Cost:**
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [GARCH Modelling for Insurance Inflation Uncertainty](/2026/03/25/insurance-gas/)
+- [Trend Analysis for Insurance Pricing](/2026/03/13/insurance-trend/)

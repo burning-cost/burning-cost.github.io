@@ -5,6 +5,7 @@ date: 2026-03-22
 categories: [libraries, pricing, sensitivity]
 tags: [global-sensitivity-analysis, shapley-effects, variance-decomposition, rating-factors, sobol, insurance-sensitivity, python, GLM, GBM, correlated-inputs, FCA, consumer-duty]
 description: "Which rating factor drives the most premium variance in your motor book? The honest answer requires Shapley effects — not SHAP values, not R², not sequential deviance. insurance-sensitivity implements the Song 2016 random permutation estimator with Rabitti-Tzougas 2025 CLH subsampling, exposure weighting, and support for correlated categoricals. Sobol indices included for completeness, but Shapley effects are what you should be reporting."
+canonical_url: "https://burning-cost.github.io/2026/03/10/insurance-sensitivity/"
 ---
 
 Every pricing team has had this argument. Someone from actuarial says driver age accounts for 40% of premium variability. Someone from pricing says vehicle group matters more. Both are working from GLM coefficients, p-values, and intuition. None of those answer the question being asked.
@@ -166,3 +167,10 @@ Deviance-based decomposition (the connection to `anova.glm` in R, which gives se
 ---
 
 **[insurance-sensitivity on GitHub](https://github.com/burning-cost/insurance-sensitivity)** — 112 tests, MIT-licensed, PyPI.
+
+---
+
+**Related articles from Burning Cost:**
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)

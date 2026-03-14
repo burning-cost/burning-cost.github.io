@@ -213,3 +213,10 @@ uv add insurance-zit-dglm
 ---
 
 *Papers: Gu (2024) arXiv:2405.14990 — So & Valdez (2024) arXiv:2406.16206 — So & Valdez (2025) NAAJ Vol 29(4):887-904 — Delong & Wuthrich (2021) arXiv:2103.03635, IME 2021*
+
+---
+
+**Related articles from Burning Cost:**
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
+- [Double GLM for Insurance: Policy-Level Dispersion Modelling](/2026/03/11/insurance-dispersion/)
+- [Mixture Cure Models for Insurance Frequency](/2026/03/11/insurance-cure/)

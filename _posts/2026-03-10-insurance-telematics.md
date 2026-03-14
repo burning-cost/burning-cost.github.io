@@ -210,3 +210,10 @@ Dependencies: NumPy, SciPy, pandas, hmmlearn, statsmodels. No GPU required. All 
 The Databricks notebook demo is at `/notebooks/telematics_demo.py` in the repository — a worked example on simulated data covering the full pipeline from `TripSimulator` through `TelematicsScoringPipeline` with visualisation of state sequences and relativity tables.
 
 **[github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics)**
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

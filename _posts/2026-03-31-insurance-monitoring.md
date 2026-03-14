@@ -256,3 +256,10 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 ---
 
 *Paper: Brauer, Menzel, and Wüthrich (2025) arXiv:2510.04556*
+
+---
+
+**Related articles from Burning Cost:**
+- [Model Validation for Insurance Pricing](/2026/03/13/insurance-validation/)
+- [Your Model Risk Register Is a Spreadsheet](/2026/03/19/your-model-risk-register-is-a-spreadsheet/)
+- [Calibration Testing for Insurance Pricing Models](/2026/03/09/insurance-calibration/)

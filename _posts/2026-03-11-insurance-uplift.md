@@ -299,3 +299,10 @@ The ENBP constraint and FairnessAudit are not optional add-ons. FCA EP25/2 (Dece
 ---
 
 **[insurance-uplift on GitHub](https://github.com/burning-cost/insurance-uplift)** — 127 tests, MIT-licensed, PyPI. Library #46.
+
+---
+
+**Related articles from Burning Cost:**
+- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)
+- [Your Renewal Pricing Is Flying Blind](/2026/03/11/your-renewal-pricing-is-flying-blind/)
+- [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)

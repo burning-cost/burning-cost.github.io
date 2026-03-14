@@ -279,3 +279,10 @@ This gap matters. UK pricing teams working in Python and Databricks need these m
 ---
 
 **[insurance-experience on GitHub](https://github.com/burning-cost/insurance-experience)** — MIT-licensed, PyPI. Library #43.
+
+---
+
+**Related articles from Burning Cost:**
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Experience Rating: NCD and Bonus-Malus Systems in UK Motor](/2026/02/27/experience-rating-ncd-bonus-malus/)
+- [The Credibility Transformer: Attention as Bühlmann-Straub](/2026/03/11/credibility-transformer/)

@@ -295,3 +295,10 @@ If your team is already using `insurance-validation` and `insurance-monitoring`,
 ---
 
 `insurance-mrm` is open source under the MIT licence at [github.com/burning-cost/insurance-mrm](https://github.com/burning-cost/insurance-mrm). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-validation` and `insurance-monitoring` are optional — the library works standalone but produces richer reports when they are available.
+
+---
+
+**Related articles from Burning Cost:**
+- [Model Validation for Insurance Pricing](/2026/03/13/insurance-validation/)
+- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/15/your-champion-challenger-test-has-no-audit-trail/)

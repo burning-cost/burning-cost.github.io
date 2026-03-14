@@ -267,3 +267,10 @@ Run them together on the same threshold.
 ---
 
 **[insurance-rdd on GitHub](https://github.com/burning-cost/insurance-rdd)** — MIT-licensed, PyPI. The first Python implementation of geographic RDD and the first RDD library with insurance-specific exposure, Poisson, and FCA Consumer Duty output.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [Insurance Bunching: Detecting Threshold Gaming in Declared Variables](/2026/03/11/insurance-bunching/)

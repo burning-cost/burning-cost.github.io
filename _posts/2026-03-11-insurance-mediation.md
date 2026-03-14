@@ -272,3 +272,9 @@ These are not alternatives. They answer different questions at different levels 
 ---
 
 **[insurance-mediation on GitHub](https://github.com/burning-cost/insurance-mediation)** — MIT-licensed, PyPI, 121 tests, 8 modules. Decomposes the postcode penalty you already knew was there.
+---
+
+**Related articles from Burning Cost:**
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [Regression Discontinuity Design for Insurance Pricing](/2026/03/11/insurance-rdd/)

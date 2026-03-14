@@ -189,3 +189,10 @@ TabICLv2, the INRIA/SODA release from February 2026, does not yet have a compara
 ---
 
 **[insurance-tabpfn on GitHub](https://github.com/burning-cost/insurance-tabpfn)** — MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.
+
+---
+
+**Related articles from Burning Cost:**
+- [Hierarchical Bayesian Models for Thin Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Synthetic Insurance Portfolios with Actuarial Fidelity](/2026/03/09/insurance-synthetic/)

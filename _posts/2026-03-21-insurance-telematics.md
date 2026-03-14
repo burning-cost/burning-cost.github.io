@@ -5,6 +5,7 @@ date: 2026-03-21
 categories: [libraries, pricing, telematics]
 tags: [telematics, UBI, HMM, hidden-markov-model, driving-risk, GLM, insurance-telematics, motor, python, GPS, accelerometer, CTHMM]
 description: "Most telematics scores are just event counts: harsh brakes per mile, hard corners per trip. That is not a risk model — it is a heuristic. insurance-telematics uses a continuous-time Hidden Markov Model to identify latent driving regimes from raw GPS and accelerometer data, then extracts actuarially interpretable features that plug directly into a Poisson frequency GLM."
+canonical_url: "https://burning-cost.github.io/2026/03/10/insurance-telematics/"
 ---
 
 Most telematics scores are event counts. Harsh braking events per kilometre. Hard cornering rate. Night driving percentage. These are cheap to compute, easy to explain, and wrong in a specific way: they treat every kilometre of driving as exchangeable. A harsh braking event on an urban road at 30 km/h is not the same as one at 110 km/h on a motorway. The denominator matters. The driving context matters.
@@ -128,3 +129,10 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 ---
 
 **[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** — 84 tests, MIT-licensed, PyPI.
+
+---
+
+**Related articles from Burning Cost:**
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/10/insurance-telematics/)
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)

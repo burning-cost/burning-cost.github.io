@@ -6,6 +6,7 @@ author: Burning Cost
 categories: [techniques]
 tags: [glm, neural-network, embeddings, territory, clustering, ratemaking, motor, python, pytorch, spopt, skater, high-cardinality]
 description: "How to handle 800+ vehicle makes and 9,000+ postcode sectors in a standard GLM without sacrificing interpretability. A four-phase pipeline that uses neural network embeddings and spatially constrained clustering to produce a fully auditable multiplicative model."
+canonical_url: "https://burning-cost.github.io/2026/03/20/nested-glms-neural-embeddings-territory/"
 ---
 
 Every UK motor pricing team has a version of this problem. The base GLM is running vehicle make, driver age, NCD, vehicle age. It handles those well. Then someone asks: can we get more out of vehicle make? We have 800-plus levels. Can we use postcode sector properly instead of banding into 12 crude territories?

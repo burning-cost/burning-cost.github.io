@@ -5,6 +5,7 @@ date: 2026-03-10
 categories: [libraries, pricing, glm]
 tags: [GLM, factor-clustering, fused-lasso, r2vf, regularisation, poisson, gamma, tweedie, vehicle-make, occupation, motor, python, insurance-glm-cluster, bic, credibility]
 description: "Factor level collapsing is the highest-labour, lowest-reproducibility activity in GLM development. insurance-glm-cluster automates it using the R2VF algorithm (Ben Dror, arXiv:2503.01521) — ridge-regularised ranking followed by fused lasso fusion, with BIC lambda selection and min-exposure enforcement. No cvxpy required."
+canonical_url: "https://burning-cost.github.io/2026/03/22/insurance-glm-cluster/"
 ---
 
 Ask any motor pricing actuary what they spent last Tuesday doing. Somewhere in the answer you will find: collapsing vehicle makes. Taking the 500 raw categories from the policy admin system, running the one-way relativities, identifying which makes cluster at similar risk levels, and drawing the grouping boundaries by hand. Then arguing about whether Alfa Romeo should sit with Audi or BMW. Then doing it again when the data extract changes.

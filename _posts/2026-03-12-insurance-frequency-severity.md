@@ -149,3 +149,10 @@ The independence assumption has been sitting unchecked at the centre of UK perso
 **install:** `pip install insurance-frequency-severity`
 **source:** [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity)
 **key refs:** Garrido, Genest & Schulz (2016 IME) · Lee & Shi (2019 IME) · Vernic, Bolancé & Alemany (2022 IME) · Blier-Wong (2026 arXiv)
+
+---
+
+**Related articles from Burning Cost:**
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
+- [Vine Copulas for Correlated Peril Pricing](/2026/03/12/insurance-copula/)
+- [Synthetic Insurance Portfolios with Actuarial Fidelity](/2026/03/09/insurance-synthetic/)

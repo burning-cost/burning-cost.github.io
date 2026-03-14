@@ -267,3 +267,10 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 - **[insurance-elasticity](https://github.com/burning-cost/insurance-elasticity)** — DML price elasticity for continuous treatment (actual premium level). Use when you have exogenous price variation.
 - **[insurance-fairness-diag](https://github.com/burning-cost/insurance-fairness-diag)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for FCA EP25/2 evidence packs.
 - **[insurance-changepoint](https://github.com/burning-cost/insurance-changepoint)** — Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.
+
+---
+
+**Related articles from Burning Cost:**
+- [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)
+- [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)

@@ -157,3 +157,10 @@ One caveat worth stating plainly: if `pi(x)` acts as a proxy for a protected cha
 The paper: Poisson Mixture Deep Learning Neural Network Models for the Prediction of Drivers' Claims with Excessive Zero Claims Using Telematics Data, NAAJ 2025. DOI: 10.1080/10920277.2025.2570289
 
 The precursor: Boucher, Denuit & Guillen (2007), NAAJ 11(4):110-131 - the foundational zero-inflated count model comparison for motor insurance.
+
+---
+
+**Related articles from Burning Cost:**
+- [Mixture Cure Models for Insurance Frequency](/2026/03/11/insurance-cure/)
+- [Full Predictive Distributions for Insurance Pricing](/2026/03/05/insurance-distributional/)
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/10/insurance-telematics/)

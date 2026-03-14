@@ -278,3 +278,7 @@ Source: [github.com/burning-cost/insurance-vine-longitudinal](https://github.com
 ---
 
 *Papers: Yang & Czado (2022) Scandinavian Journal of Statistics doi:10.1111/sjos.12566 — Shi & Zhao (2024) Journal of Econometrics doi:10.1016/j.jeconom.2024.105676*
+**Related articles from Burning Cost:**
+- [Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility](/2026/03/24/insurance-experience/)
+- [Vine Copulas for Correlated Peril Pricing](/2026/03/12/insurance-copula/)
+- [Shared Frailty Models for Recurrent Insurance Claims](/2026/03/12/insurance-recurrent/)

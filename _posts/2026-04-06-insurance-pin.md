@@ -154,3 +154,10 @@ The repository is at [github.com/burning-cost/insurance-pin](https://github.com/
 Richman, R., Scognamiglio, S., and Wuthrich, M.V. "Tree-like Pairwise Interaction Networks." arXiv:2508.15678, August 2025.
 
 Lou, Y., Caruana, R., Gehrke, J., and Hooker, G. "Accurate Intelligible Models with Pairwise Interactions." KDD 2013.
+
+---
+
+**Related articles from Burning Cost:**
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [Explainable Boosting Machines for Insurance Tariff Construction](/2026/03/20/ebms-for-insurance-tariff-construction/)
+- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)

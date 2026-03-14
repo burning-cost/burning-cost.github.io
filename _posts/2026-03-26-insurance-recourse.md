@@ -220,3 +220,10 @@ The other gap is no native handling of Tweedie GLMs: the `model` argument accept
 Both limitations are documented. Neither makes the library unsuitable for its primary purpose.
 
 **[insurance-recourse on GitHub](https://github.com/burning-cost/insurance-recourse)** — MIT-licensed, PyPI, 177 tests. For the question your policyholders are actually asking.
+
+---
+
+**Related articles from Burning Cost:**
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Regression Discontinuity Design for Insurance Pricing](/2026/03/11/insurance-rdd/)
+- [Insurance Bunching: Detecting Threshold Gaming in Declared Variables](/2026/03/11/insurance-bunching/)

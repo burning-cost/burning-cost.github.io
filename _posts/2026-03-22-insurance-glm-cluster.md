@@ -169,3 +169,10 @@ It does not implement the Henckaerts et al. (arXiv:1904.10890) tree-based groupi
 ---
 
 **[insurance-glm-cluster on GitHub](https://github.com/burning-cost/insurance-glm-cluster)** — 156 tests, MIT-licensed, PyPI.
+
+---
+
+**Related articles from Burning Cost:**
+- [Nested GLMs with Neural Network Embeddings for Insurance](/2026/03/20/nested-glms-neural-embeddings-territory/)
+- [Whittaker-Henderson Smoothing for Insurance Pricing: A Python Library](/2026/03/20/whittaker-henderson-smoothing-for-insurance-pricing/)
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)

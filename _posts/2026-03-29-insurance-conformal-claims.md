@@ -238,3 +238,10 @@ Read Hong (2025) alongside it. The paper is twelve pages and Table 7 is worth th
 ---
 
 *Papers: Hong (2025) arXiv:2503.03659 - Hong (2026) arXiv:2601.21153 - Manna et al. (2025) ASMBI doi:10.1002/asmb.70045*
+
+---
+
+**Related articles from Burning Cost:**
+- [Conformal Prediction for Insurance Solvency Capital Requirements](/2026/03/11/conformal-scr-solvency/)
+- [Conformal Time-Series Prediction Intervals for Insurance](/2026/03/12/insurance-conformal-ts/)
+- [Calibration Testing for Insurance Pricing Models](/2026/03/09/insurance-calibration/)
