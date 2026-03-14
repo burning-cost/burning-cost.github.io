@@ -4,7 +4,7 @@ title: "Experience Rating: NCD and Bonus-Malus"
 date: 2026-02-27
 categories: [techniques]
 tags: [experience-rating, ncd, bonus-malus, motor, python]
-description: "A Python library for NCD/bonus-malus systems in UK motor insurance. Includes the non-obvious finding that optimal NCD claiming thresholds peak at 20% NCD, not 65%."
+description: "Python library for NCD and bonus-malus in UK motor insurance. Optimal claiming thresholds peak at 20% NCD discount, not 65% - derived mathematically."
 author: Burning Cost
 ---
 

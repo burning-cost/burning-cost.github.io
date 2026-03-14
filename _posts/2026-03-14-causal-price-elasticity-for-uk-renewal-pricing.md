@@ -4,7 +4,7 @@ title: "OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing"
 date: 2026-03-14
 categories: [libraries, pricing, causal-inference]
 tags: [elasticity, causal-forest, DML, double-machine-learning, FCA, PS21-5, ENBP, renewal, CausalForestDML, insurance-elasticity, python, motor, econml, catboost]
-description: "In a formula-rated book, OLS renewal elasticity measures the correlation between risk level and lapse propensity — not the causal price effect. insurance-elasticity uses CausalForestDML to separate them, with a near-deterministic price diagnostic, per-customer CATE, and an FCA PS21/5-compliant ENBP-constrained optimiser."
+description: "CausalForestDML separates causal price effect from risk-lapse correlation in UK motor renewal. insurance-elasticity - per-customer CATE and ENBP optimiser."
 ---
 
 A UK motor renewal book has a structural problem that corrupts every naive price elasticity estimate. Your pricing model re-rates every customer using risk factors. Those same risk factors drive the renewal decision independently of price — higher-risk customers are harder to retain for reasons that have nothing to do with what you charge them. When you regress renewal indicator on log price change, you are picking up both effects simultaneously and cannot separate them from within the regression.

@@ -4,7 +4,7 @@ title: "Bandit Algorithms for GIPP-Compliant Price Experimentation"
 date: 2026-03-12
 categories: [libraries, pricing, experimentation]
 tags: [bandit, Thompson-Sampling, UCB1, LinUCB, GIPP, PS21-5, ICOBS, ENBP, FCA, Consumer-Duty, insurance-online, python, direct-channel, motor, home]
-description: "The FCA's 2023-24 multi-firm GIPP review found 28 firms with insufficient documentation of pricing controls. insurance-online brings bandit algorithms to UK general insurance loading optimisation, with ENBP constraints and compliance reporting built in."
+description: "Bandit algorithms for FCA GIPP-compliant price experimentation in UK general insurance. ENBP constraints and compliance reporting built in - insurance-online."
 ---
 
 The PRA's Dear Chief Actuary letter on claims inflation gets all the attention. The FCA's GIPP multi-firm review — 28 firms found with insufficient documentation of pricing controls in their 2023-24 cycle — gets treated as a compliance checkbox. What both regulators are circling around, without ever quite saying it directly, is that UK pricing teams operate a significant slice of their pricing on undocumented discretion.

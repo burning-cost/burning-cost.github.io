@@ -4,7 +4,7 @@ title: "Detecting Threshold Gaming in Insurance Portfolios"
 date: 2026-03-11
 categories: [libraries, pricing, fraud]
 tags: [bunching, threshold-gaming, NCD, adverse-selection, mileage-fraud, public-economics, Saez, Kleven, FCA-Consumer-Duty, insurance-bunching, python, WLS, bootstrap, BH-correction]
-description: "Policyholders game rating thresholds. Mileage declarations cluster just below 10,000. Claimed ages spike just above 25. Declared sums bunch at £100k, £200k, £300k. insurance-bunching is the first Python implementation of bunching estimators — adapted from public economics (Saez 2010, Kleven 2016) to detect exactly this."
+description: "Detect threshold gaming in UK insurance using bunching estimators (Saez 2010, Kleven 2016). Mileage declarations, age spikes, sum-insured clustering - Python."
 ---
 
 Public economists have known since Saez (2010) that people bunch at tax thresholds. When a taxpayer crosses an income bracket boundary, their marginal tax rate jumps, and the distribution of taxable income develops a spike just below that boundary. The density is not continuous at the kink: there is excess mass on one side, a deficit on the other, and the ratio of excess to counterfactual tells you how strongly people are responding.

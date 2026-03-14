@@ -4,7 +4,7 @@ title: "Correcting for Covariate Shift When You Acquire an MGA Book"
 date: 2026-03-13
 categories: [libraries, model-validation, pricing]
 tags: [covariate-shift, density-ratio, conformal-prediction, catboost, m-and-a, fca, python]
-description: "When a UK motor insurer acquires an MGA book, the pricing model trained on the acquirer's portfolio has never seen the acquired distribution. It doesn't fail loudly. It misprices quietly, segment by segment."
+description: "Correct covariate shift when acquiring an MGA book for UK motor pricing. Importance weighting, density ratio estimation, segment-level diagnostics - Python."
 ---
 
 When a UK motor insurer acquires an MGA book, something predictable happens to the pricing model. Nobody notices immediately. The GBM loads without error. Predictions come out. Premiums get issued. Then, six months later, the loss ratio on the acquired cohort is 12 points worse than expected, and someone starts asking questions.

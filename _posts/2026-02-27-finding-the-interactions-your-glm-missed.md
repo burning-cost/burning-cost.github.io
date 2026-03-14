@@ -4,7 +4,7 @@ title: "Finding the Interactions Your GLM Missed"
 date: 2026-02-27
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, catboost, polars, pricing, python, motor]
-description: "UK motor GLMs test a handful of interactions out of hundreds of possible pairs. insurance-interactions automates the search using CANN residual modelling, Neural Interaction Detection, and likelihood-ratio tests — giving pricing actuaries a ranked, Bonferroni-corrected shortlist before any manual testing."
+description: "Automated interaction search for UK motor GLMs using CANN residuals and NID. Bonferroni-corrected shortlist before manual testing - insurance-interactions."
 published: true
 ---
 

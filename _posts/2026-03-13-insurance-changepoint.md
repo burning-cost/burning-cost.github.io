@@ -4,7 +4,7 @@ title: "When Did Your Loss Ratio Actually Change?"
 date: 2026-03-13
 categories: [libraries, pricing, monitoring]
 tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-dynamics, python]
-description: "Pricing actuaries spot regime shifts by eye, six months late and with no audit trail. insurance-dynamics implements Bayesian Online Changepoint Detection with exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, and a Consumer Duty evidence pack. Adams & MacKay (2007), extended for insurance exposure."
+description: "Bayesian Online Changepoint Detection for UK insurance loss ratios. Poisson-Gamma conjugates, regulatory event priors, Consumer Duty evidence pack - Python."
 ---
 
 There is a conversation that happens in almost every UK personal lines pricing team, usually in a quarterly experience review. Someone puts up the monthly frequency chart. There is a clear kink, somewhere around Q2 of last year. One actuary says it looks like something changed around April. Another says maybe June. A third points out that the storms in February could have influenced it. The team agrees that the trend has probably shifted, applies a judgement-based adjustment to the rate filing, and documents it as "technical pricing review, Q2 inflection noted."

@@ -4,7 +4,7 @@ title: "Causal Fixed Effects for Rate Change Evaluation: Using causalfe on Insur
 date: 2026-03-12
 categories: [libraries, pricing, causal-inference]
 tags: [causalfe, CFFE, panel-data, causal-inference, rate-changes, fixed-effects, DiD, heterogeneous-treatment-effects, pricing, UK, python, polars]
-description: "Before-and-after loss ratio comparisons are the most common form of rate change evaluation in UK personal lines. They are also the most misleading. causalfe implements Causal Forests with Fixed Effects (CFFE) for heterogeneous treatment effect estimation on panel data — identifying which segments absorbed a rate increase and which triggered adverse selection."
+description: "Causal Forests with Fixed Effects for UK insurance panel data. Rate change evaluation by segment - beyond before-and-after loss ratios. causalfe Python."
 ---
 
 Before-and-after comparisons of loss ratios are the most common form of rate change evaluation in UK personal lines. They are also the most misleading. The treated group was selected for treatment - you raised rates where you thought risk was deteriorating. The macro environment shifted between observation periods. Policyholders who left after the rate increase were not a random draw from the book. Each of these factors biases a naive before-after comparison in a different direction, and they do not cancel out.

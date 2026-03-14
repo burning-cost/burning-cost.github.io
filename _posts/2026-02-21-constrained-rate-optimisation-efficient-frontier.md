@@ -4,7 +4,7 @@ title: "Constrained Rate Optimisation and the Efficient Frontier"
 date: 2026-02-21
 categories: [techniques]
 tags: [rate-optimisation, efficient-frontier, pricing, python, FCA]
-description: "How to build a rate change that meets a target loss ratio, respects movement caps, and minimises cross-subsidy simultaneously. Linear programming for UK personal lines pricing teams."
+description: "Rate changes that meet a target loss ratio, respect movement caps, and minimise cross-subsidy. Linear programming for UK personal lines pricing teams."
 ---
 
 This post covers **factor-level** tariff optimisation — adjusting multiplicative rating factor relativities subject to constraints. For policy-level optimisation that finds the optimal price multiplier per individual risk, see [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/).

@@ -4,7 +4,7 @@ title: "MinTrace Reconciliation for Insurance Pricing Hierarchies"
 date: 2026-03-11
 categories: [libraries, pricing, forecasting]
 tags: [reconciliation, MinTrace, hierarchical-forecasting, loss-cost, earned-premium, frequency-severity, coherence, Wickramasuriya, GLS, WLS, insurance-reconcile, python, motor, home, peril-tree]
-description: "Every insurance pricing team has the same conversation: the portfolio GLM says +8%, the peril models aggregate to +6%, and someone picks one or blends them in a spreadsheet. MinTrace reconciliation (Wickramasuriya et al. 2019 JASA) finds the optimal adjustment simultaneously. insurance-reconcile adds the insurance semantics that generic implementations miss: earned premium weighting, loss cost transforms, and frequency×severity decomposition."
+description: "MinTrace reconciliation for insurance pricing hierarchies: optimal joint adjustment across peril models and portfolio GLM. Exposure-weighted, Python."
 ---
 
 There is a meeting that happens in virtually every UK pricing team at rate review time. Someone puts up a slide showing the portfolio loss cost trend. It says +8%. Someone else puts up the peril-level models — Fire, Escape of Water, Subsidence, Flood, Storm. Weighted together, they aggregate to +6%. The room looks at both numbers. Nobody is obviously wrong. And then someone makes a spreadsheet adjustment.

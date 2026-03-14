@@ -4,7 +4,7 @@ title: "Three-Layer Drift Detection: What PSI and A&E Ratios Miss"
 date: 2026-03-03
 categories: [monitoring]
 tags: [insurance-monitoring, drift, PSI, Gini, calibration, motor, FCA, python]
-description: "PSI and aggregate A/E are not enough. A three-layer monitoring framework - feature drift, segmented calibration, and a formal Gini test - that tells you whether to recalibrate or refit."
+description: "Three-layer drift detection: feature drift, segmented calibration, Gini test. Tells you whether to recalibrate or refit - beyond PSI and A/E ratios."
 ---
 
 Picture a motor pricing team in late 2022. Their BI frequency model was trained on 2018-2020 data and deployed in early 2021. Eighteen months on, the portfolio stability dashboard is green: PSI on the model score is 0.08, comfortably below the 0.10 threshold. The aggregate A/E ratio is 1.02 - essentially perfect. Nobody is losing sleep.

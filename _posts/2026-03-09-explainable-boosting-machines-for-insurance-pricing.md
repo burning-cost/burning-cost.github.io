@@ -5,7 +5,7 @@ date: 2026-03-09
 author: Burning Cost
 categories: [pricing, machine-learning, libraries]
 tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relativities, Gini, double-lift, explainability, FCA, PRA, python, insurance-gam]
-description: "interpretML's ExplainableBoostingMachine already handles Poisson/Gamma/Tweedie loss and exposure offsets natively. What it doesn't do is wrap those capabilities in the workflow a UK pricing team actually uses. insurance-gam does that: RelativitiesTable, MonotonicityEditor, GLMComparison, and a full actuarial diagnostics suite."
+description: "insurance-gam wraps EBM for UK pricing teams: Poisson/Tweedie loss, exposure offsets, RelativitiesTable, MonotonicityEditor, GLM comparison diagnostics."
 ---
 
 *This post is an EBM deep-dive: how Explainable Boosting Machines work, how to fit them for Poisson/Gamma/Tweedie insurance targets, and the full actuarial workflow — relativity tables, monotonicity editing, GLM comparison, Gini diagnostics. If you want to understand the ANAM architecture, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*

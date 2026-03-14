@@ -2,7 +2,7 @@
 layout: post
 title: "Building a Modern Insurance Pricing Pipeline in Python"
 date: 2026-03-12
-description: "A complete walkthrough of the modern pricing workflow — from data preparation through model deployment — using open-source Python tools."
+description: "Complete UK insurance pricing pipeline in Python: CatBoost GLM distillation, causal inference, FCA fairness auditing, rate optimisation, PRA SS1/23 governance."
 tags: [pricing, python, pipeline, tutorial, databricks]
 ---
 

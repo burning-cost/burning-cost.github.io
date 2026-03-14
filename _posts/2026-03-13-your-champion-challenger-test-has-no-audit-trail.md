@@ -4,7 +4,7 @@ title: "Champion/Challenger Testing with ICOBS 6B.2.51R Compliance"
 date: 2026-03-13
 categories: [pricing, libraries, regulation]
 tags: [champion-challenger, enbp, icobs-6b, fca-ps21-5, shadow-mode, python, insurance-deploy, model-governance, bootstrap, power-analysis]
-description: "83% of UK insurers failed FCA record-keeping requirements for ENBP in 2023. Running a champion/challenger test without an audit trail is the same problem wearing different clothes. insurance-deploy is our 25th open-source library: SHA-256 routing, SQLite quote logging, bootstrap LR tests, power analysis, and an ICOBS 6B.2.51R report that an SMF holder can actually sign."
+description: "Champion/challenger with ICOBS 6B.2.51R compliance for UK insurers. SHA-256 routing, SQLite logging, bootstrap LR tests, SMF-signable report - insurance-deploy."
 ---
 
 You have built a better pricing model. You want to test it against the current one in production. You run quotes through both, compare the outputs, and eventually decide the new model is better. Then you promote it.

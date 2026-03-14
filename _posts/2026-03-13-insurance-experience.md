@@ -4,7 +4,7 @@ title: "Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural
 date: 2026-03-13
 categories: [libraries, pricing, credibility]
 tags: [experience-rating, credibility, Bühlmann-Straub, Bayesian, posterior, Poisson-Gamma, GBM, attention, NCD, FCA, PS21-5, insurance-experience, python, pytorch]
-description: "NCD is a contractual mechanism, not a Bayesian posterior. insurance-experience implements four-tier individual experience rating: static Bühlmann-Straub, dynamic Poisson-Gamma state-space, surrogate GBM with IS-based posteriors, and deep attention credibility. Policy-level multiplicative factors with the balance property. 125 tests."
+description: "Four-tier experience rating in Python: Buhlmann-Straub, Poisson-Gamma state-space, GBM surrogate, attention credibility. Policy-level multiplicative factors."
 ---
 
 NCD has a clean actuarial logic behind it: your claims history tells us something about your risk level that the rating factors don't fully capture, and we want to adjust for it. The implementation, though, is not Bayesian posterior inference. It is a contractual mechanism with a transition matrix. The factor you get depends on how many claims you made last year and which NCD level you started at. The transition rules are chosen to be commercially sensible and regulatorily defensible, not to minimise posterior expected loss.

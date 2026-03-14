@@ -4,7 +4,7 @@ title: "Why Your Cross-Validation is Lying to You"
 date: 2026-02-23
 categories: [pricing, python, libraries]
 tags: [cross-validation, temporal-leakage, ibnr, walk-forward, insurance-cv, sklearn, catboost]
-description: "Standard k-fold cross-validation is wrong for insurance pricing models. How temporal leakage and IBNR contamination inflate CV scores, and how walk-forward validation fixes both problems."
+description: "Standard k-fold CV is wrong for insurance pricing. Temporal leakage and IBNR contamination inflate scores. Walk-forward validation fixes both - Python."
 ---
 
 Your GBM is tuned. CV loss looks good across five folds. You commit the hyperparameters, run prospective monitoring, and six months into the rating year the modelled-to-actual ratio is drifting. The loss ratio is worse than the CV results suggested it would be. You open a ticket. Someone says "overfitting." Everyone nods.

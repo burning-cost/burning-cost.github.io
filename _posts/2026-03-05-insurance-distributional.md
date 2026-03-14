@@ -4,7 +4,7 @@ title: "Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean"
 date: 2026-03-05
 categories: [techniques, libraries]
 tags: [distributional-regression, tweedie, catboost, gbm, dispersion, volatility, motor, pet, zip, zero-inflation, python, astin]
-description: "Two risks with identical expected loss can have wildly different variance. Standard Tweedie GBMs cannot tell them apart. insurance-distributional — the first open-source implementation of the ASTIN 2024 Best Paper approach — gives you both the mean and the full conditional distribution."
+description: "insurance-distributional models the full conditional loss distribution, not just the mean. First open-source Python implementation of the ASTIN 2024 Best Paper."
 ---
 
 Your Tweedie GBM produces one number per risk: the expected loss. That is what you price off. That is what goes into the technical premium. And for two risks sitting at the same expected loss, it treats them identically.

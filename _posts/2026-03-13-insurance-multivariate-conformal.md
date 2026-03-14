@@ -4,7 +4,7 @@ title: "Frequency and Severity Are Two Outputs. You Have One Prediction Interval
 date: 2026-03-13
 categories: [libraries, pricing, uncertainty]
 tags: [conformal-prediction, multivariate, joint-prediction, frequency-severity, Solvency-II, SCR, Fan-Sesia, LWC, coordinate-wise-standardization, Consumer-Duty, FCA, GLM, GBM, Poisson, Gamma, python, motor, home, insurance-conformal]
-description: "Every UK pricing team runs separate GLMs for frequency and severity. They have marginal prediction intervals for each — 95% coverage on frequency, 95% on severity — and no guarantee whatsoever about the joint outcome. insurance-conformal implements Fan & Sesia's coordinate-wise standardization to give you a single prediction set covering both simultaneously."
+description: "Joint conformal prediction sets for frequency and severity in UK insurance. Fan and Sesia coordinate-wise standardization - simultaneous coverage across both."
 ---
 
 Every UK motor pricing team runs a Poisson GLM for frequency and a Gamma GLM for severity. You get a point estimate from each: λ̂ = 0.09 claims per year, μ̂ = £2,400 per claim. The pure premium is £216 and it goes into your rating engine.

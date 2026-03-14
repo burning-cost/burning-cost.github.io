@@ -4,7 +4,7 @@ title: "Continuous Treatment Causal Inference for Insurance Pricing: insurance-c
 date: 2026-03-12
 categories: [techniques, libraries]
 tags: [causal-inference, double-machine-learning, price-elasticity, riesz-representer, continuous-treatment, debiased-ml, dml, fca, motor, home, retention, python]
-description: "Standard DML libraries handle binary treatments. Premium is continuous. insurance-causal implements Automatic Debiased ML via Riesz Representers to estimate price elasticity without the GPS density estimation that explodes at the tails."
+description: "Automatic Debiased ML via Riesz Representers for continuous price elasticity. insurance-causal - no GPS density blow-up at tails. UK personal lines Python."
 ---
 
 Your pricing team has a demand model. It says retention drops as premium rises. What it almost certainly cannot tell you is: by exactly how much, with what uncertainty, and whether that effect is the same for young drivers in postcodes with thin data as it is for your core 40-year-old motor book.

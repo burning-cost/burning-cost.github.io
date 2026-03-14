@@ -4,7 +4,7 @@ title: "Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pr
 date: 2026-03-13
 categories: [libraries, pricing, foundation-models]
 tags: [TabPFN, TabICLv2, foundation-model, thin-data, in-context-learning, GLM, conformal-prediction, relativities, benchmark, Gini, python, insurance-thin-data]
-description: "When MLE doesn't converge, the standard response is credibility blending — which is a polite way of saying 'borrow from somewhere else and hope'. TabPFN and TabICLv2 are foundation models pretrained on millions of synthetic datasets. They do in-context learning at inference time, no gradient descent required. insurance-thin-data wraps them for insurance pricing workflows."
+description: "TabPFN and TabICLv2 for thin-segment UK insurance pricing. In-context learning at inference, no gradient descent. insurance-thin-data wraps both for actuaries."
 ---
 
 When your home insurance team prices thatched properties, new-build flats in a specific postcode cluster, or a freshly launched e-bike product, they are almost always working from fewer than a thousand policy-years. Often fewer than two hundred. At that data volume, a Poisson GLM's MLE has not converged. The confidence intervals on your rating factors are so wide they are informative about almost nothing. The standard response is credibility blending — shrink toward the overall book mean, apply a judgement overlay, call it done. That is not a method. It is a controlled way of saying "we do not have enough data."

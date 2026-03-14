@@ -4,7 +4,7 @@ title: "Double Machine Learning for Insurance Price Elasticity"
 date: 2026-03-01
 categories: [techniques]
 tags: [demand, elasticity, DML, double-machine-learning, conversion, retention, FCA, GIPP, PS21-11, ENBP, insurance-optimise, python, motor, catboost, polars]
-description: "Naive price elasticity estimates from insurance quote data are biased - risk drives both premium and lapse. The insurance-optimise library implements Double Machine Learning to fix this, covering the full conversion, retention, elasticity, and demand curve pipeline with FCA GIPP compliance built in."
+description: "Double Machine Learning fixes biased price elasticity in insurance quote data. insurance-optimise: conversion, retention, elasticity, demand curves, FCA GIPP."
 ---
 
 Your renewal pricing model has a price elasticity coefficient. Your team uses it. It is wrong.

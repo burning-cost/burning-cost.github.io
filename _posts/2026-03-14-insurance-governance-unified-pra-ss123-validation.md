@@ -4,7 +4,7 @@ title: "One Package, One Install: PRA SS1/23 Validation and MRM Governance Unifi
 date: 2026-03-14
 categories: [libraries, regulation]
 tags: [model-validation, model-risk-management, mrm, pra-ss123, fca-consumer-duty, gini, calibration, python, insurance-governance]
-description: "We shipped two packages separately — insurance-validation for statistical reports, insurance-mrm for governance workflows. Teams were installing both, pinning them separately, and occasionally running them out of sync. insurance-governance merges both into one install."
+description: "insurance-governance merges insurance-validation and insurance-mrm. PRA SS1/23 statistical validation and MRM governance in one install - no version conflicts."
 ---
 
 *This post is the release note for the `insurance-governance` package merge. For a full walkthrough of the governance workflow — model inventory, risk tier scoring, and PRA SS1/23 executive reports — see [Model Risk Governance for UK Insurers](/2026/03/13/your-model-risk-register-is-a-spreadsheet/).*

@@ -4,7 +4,7 @@ title: "GLMs Predict Means. DRN Predicts Everything Else."
 date: 2026-03-10
 categories: [techniques, libraries]
 tags: [drn, distributional, neural-network, glm, quantile, solvency-ii, scr, crps, pytorch, insurance-severity]
-description: "A GLM that prices your motor book correctly on average will still misprice the tail. insurance-severity wraps any baseline model with a neural network that refines the entire predictive distribution — bin by bin, covariate by covariate."
+description: "Distributional Refinement Networks wrap any GLM to produce a full predictive distribution. insurance-severity - neural severity modelling for UK motor pricing."
 ---
 
 Here is the problem with GLMs: they are correct on average. That is not a backhanded compliment. It is a precise statement of what a GLM does. Given a set of covariates, it predicts the conditional mean of the response. If your Gamma GLM is well-specified, the mean prediction for a 19-year-old male driving a modified hatchback will be accurate in expectation. The mean is fine.

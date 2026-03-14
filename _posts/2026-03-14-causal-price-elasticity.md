@@ -4,7 +4,7 @@ title: "Causal Price Elasticity for UK Motor Renewal: CausalForestDML with an EN
 date: 2026-03-14
 categories: [libraries, pricing, elasticity]
 tags: [price-elasticity, causal-inference, DML, causal-forest, CATE, ENBP, FCA, PS21-5, renewal, motor, python, catboost, econml, insurance-elasticity]
-description: "OLS elasticity on UK renewal data is biased by 20–80% in synthetic benchmarks. insurance-elasticity wraps CausalForestDML and LinearDML to recover the causal semi-elasticity, then feeds it into an ENBP-constrained profit optimiser. This post covers what makes it different from a generic DML library."
+description: "OLS renewal elasticity is biased 20-80% on formula-rated UK motor books. insurance-elasticity wraps CausalForestDML with an ENBP-constrained profit optimiser."
 ---
 
 *This post covers `insurance-elasticity`, which is specifically about causal renewal price elasticity and FCA PS21/5-compliant pricing optimisation. For a more general treatment of confounding in GLM rating factors (age, telematics, vehicle group), see [When exp(beta) Lies](/2026/03/05/your-rating-factor-might-be-confounded/). For DML applied to conversion and demand curves more broadly, see [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/).*

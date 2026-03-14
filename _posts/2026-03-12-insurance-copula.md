@@ -4,7 +4,7 @@ title: "Vine Copulas for Multi-Peril Home: The Flood-Subsidence Correlation That
 date: 2026-03-12
 categories: [libraries, pricing, dependence, home-insurance]
 tags: [vine-copula, pyvinecopulib, multi-peril, flood, subsidence, escape-of-water, correlation, PML, copula, dependence, home-insurance, clay-soil, pair-copula, insurance-copula, python, BIC, conditional-pricing, monte-carlo]
-description: "UK home insurers price perils additively. The additive model assumes flood and subsidence are independent — which is wrong in clay-soil postcodes and costs around 9% in mispriced revenue. insurance-copula wraps pyvinecopulib with an insurance workflow: exposure-weighted vine fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and aggregate PML simulation."
+description: "Vine copulas for multi-peril UK home pricing. Flood-subsidence correlation costs ~9% in mispriced revenue. insurance-copula: BIC selection, PML simulation."
 ---
 
 UK home insurance is a bundle: fire, flood, subsidence, theft, escape of water, storm. The standard pricing workflow prices each peril independently, using a GLM per peril, then adds the expected losses. Total technical premium = flood loading + subsidence loading + storm loading + everything else. Simple, auditable, defensible to the regulator.

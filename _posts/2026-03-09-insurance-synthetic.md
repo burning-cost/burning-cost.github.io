@@ -4,7 +4,7 @@ title: "Why Generic Synthetic Data Fails Actuarial Fidelity Tests"
 date: 2026-03-09
 categories: [techniques, libraries]
 tags: [synthetic-data, insurance-synthetic, vine-copula, exposure, fidelity, FCA, Consumer-Duty, privacy, python, motor]
-description: "Generic synthetic data tools — SDV, CTGAN, TVAE — produce portfolios that look plausible column-by-column and break down as soon as you run a pricing model on them. Exposure weighting, Poisson frequency semantics, and tail behaviour are all wrong. insurance-synthetic fixes this with vine copulas, AIC-based marginal selection, and a three-layer fidelity report that actually tests whether your synthetic data is fit for actuarial use."
+description: "Actuarially faithful synthetic data via vine copulas and AIC-selected marginals. insurance-synthetic fixes Poisson semantics and tail behaviour SDV gets wrong."
 ---
 
 If you have tried to use SDV or CTGAN to generate synthetic insurance data, you have probably noticed something: it looks fine until it doesn't. Marginal distributions seem reasonable. The age column doesn't produce negative numbers. Run a frequency model on the output, though, and the estimated claim rate doesn't match the real portfolio. More precisely, it doesn't match *for any given exposure level*, because SDV treated exposure as just another numeric column and generated it independently of the claim count column sitting next to it.

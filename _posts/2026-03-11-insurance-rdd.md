@@ -4,7 +4,7 @@ title: "Does the Risk Actually Drop at 25? Using Regression Discontinuity to Tes
 date: 2026-03-11
 categories: [libraries, pricing, causal-inference]
 tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, postcode, FCA, Consumer-Duty, Poisson, GLM, geographic-RDD, insurance-rdd, python]
-description: "UK motor insurers charge under-25s roughly three times the premium of 25-30 drivers. The risk discontinuity at age 25 is assumed, not demonstrated. insurance-rdd brings Regression Discontinuity Design to Python for the first time with insurance-specific defaults: exposure weighting, Poisson outcomes, geographic territory boundaries, and FCA Consumer Duty output."
+description: "Regression Discontinuity Design tests if UK motor risk drops at age 25. Exposure-weighted Poisson outcomes, geographic boundaries, Consumer Duty output."
 ---
 
 UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm — and what pricing teams almost never formally test — is whether the observed claims risk drops by the same factor at age 25, or whether the pricing premium far exceeds the causal risk change.

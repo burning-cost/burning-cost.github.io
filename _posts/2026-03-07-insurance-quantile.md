@@ -4,7 +4,7 @@ title: "Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings"
 date: 2026-03-07
 categories: [techniques, libraries]
 tags: [quantile-regression, tail-risk, tvar, large-loss-loading, ilf, catboost, gbm, motor, python]
-description: "CatBoost's MultiQuantile loss gives you quantile predictions. It does not give you TVaR, large loss loadings, ILF curves, or exceedance probabilities. insurance-quantile closes that gap with an actuarial output layer on top of the GBM."
+description: "CatBoost MultiQuantile plus actuarial output layer: TVaR, ILFs, large loss loadings, exceedance probabilities for UK insurance pricing. insurance-quantile."
 ---
 
 Your Tweedie GBM gives you an expected loss. That expected loss is one number. It summarises the centre of a conditional distribution that, for most insurance lines, has a right tail that will periodically destroy your loss ratio.
