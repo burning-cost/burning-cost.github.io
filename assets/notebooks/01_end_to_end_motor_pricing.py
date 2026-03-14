@@ -7,7 +7,7 @@ pipeline using the Burning Cost open-source library stack:
     insurance-synthetic  — generate a realistic synthetic UK motor portfolio
     catboost             — train a Poisson GBM frequency model
     shap-relativities   — extract multiplicative rating factor relativities
-    insurance-validation — PRA-compliant model validation report (if installed)
+    insurance-governance — PRA SS1/23-compliant model validation report (if installed)
     insurance-deploy     — register models and run champion/challenger in shadow mode
 
 The data generated here is entirely synthetic. In production you would replace
@@ -348,10 +348,10 @@ for check_name, result in checks.items():
 # Section 4: Model validation report
 # ---------------------------------------------------------------------------
 #
-# insurance-validation is a planned library in the Burning Cost stack that will
-# produce PRA SS1/23-compliant model validation documentation. It is not yet
-# published. This section shows where it will fit and runs a manual validation
-# in the meantime.
+# insurance-governance provides PRA SS1/23-compliant model validation
+# documentation via its insurance_governance.validation subpackage. It merges
+# the former insurance-validation (statistical reports) and insurance-mrm
+# (governance workflows) into a single install.
 #
 # The manual checks below are the minimum a UK insurer should document for any
 # frequency model submitted to actuarial function review:
@@ -360,9 +360,9 @@ for check_name, result in checks.items():
 #   - Calibration: ratio of predicted to observed claim frequency
 #   - Gini coefficient on holdout (concentration of predictive power)
 #
-# When insurance-validation is released, replace the manual block with:
+# To replace the manual block with the full library:
 #
-#   from insurance_validation import ValidationReport
+#   from insurance_governance.validation import ValidationReport
 #   report = ValidationReport(model_v2, holdout_df, target="claim_count",
 #                             exposure="exposure", features=feature_cols)
 #   report.run_all()
@@ -373,17 +373,17 @@ print("\n" + "=" * 70)
 print("Step 4: Model validation")
 print("=" * 70)
 
-# Attempt to import insurance-validation if available
+# Attempt to import insurance-governance if available
 _validation_available = False
 try:
-    import insurance_validation  # noqa: F401
+    from insurance_governance.validation import ValidationReport  # noqa: F401
     _validation_available = True
-    print("insurance-validation detected — using full validation suite")
+    print("insurance-governance detected — using full validation suite")
 except ImportError:
     print(
-        "insurance-validation not installed (not yet released). "
+        "insurance-governance not installed. "
         "Running manual validation checks.\n"
-        "Install when available: uv add insurance-validation"
+        "Install: uv add insurance-governance"
     )
 
 if not _validation_available:
@@ -446,7 +446,7 @@ if not _validation_available:
     print(
         "\n  Note: a full PRA SS1/23-compliant validation would also include "
         "out-of-time tests, stress tests, and sensitivity analysis. "
-        "This is covered by the insurance-validation library when released."
+        "This is covered by the insurance-governance library (uv add insurance-governance)."
     )
 
 
@@ -792,6 +792,6 @@ Next steps in a real deployment:
   5. Present ModelComparison results to actuarial function for promotion decision
   6. Call registry.set_champion("motor_frequency", "2.0") once approved
 
-For PRA SS1/23 documentation, see the insurance-validation library (forthcoming).
+For PRA SS1/23 documentation, see the insurance-governance library (uv add insurance-governance).
 For blog posts on methodology: https://burning-cost.github.io
 """)
