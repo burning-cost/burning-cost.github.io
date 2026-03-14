@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [techniques, libraries, pricing]
 tags: [smoothing, experience-rating, whittaker-henderson, p-splines, credibility, rating-tables, age-curves, ncd, python, insurance-whittaker]
 description: "Raw experience rating tables are noisy at the edges -- young drivers, high-mileage vehicles, rare postcodes. Whittaker-Henderson smoothing is the actuarial standard for this problem, and insurance-whittaker brings it to Python with REML lambda selection, Bayesian confidence intervals, and 2D surface smoothing."
-canonical_url: "https://burning-cost.github.io/2026/03/20/whittaker-henderson-smoothing-for-insurance-pricing/"
 ---
 
 Every experience rating table has the same shape problem at the edges. The middle of the age curve -- drivers aged 25 to 55 -- is well-behaved: high exposure, stable relativities, small year-on-year movement. The extremes are not. Drivers aged 17 to 20 have low exposure, high claim frequency, and relativities that bounce around from year to year in ways that have nothing to do with the underlying risk. At age 70 and above, the same thing happens: volumes thin out, the raw relativities become noisy, and you start making manual overrides to stop the table from doing something actuarially implausible.

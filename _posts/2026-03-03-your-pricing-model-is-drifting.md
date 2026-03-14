@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Three-Layer Drift Detection for Deployed Pricing Models"
+title: "Three-Layer Drift Detection: What PSI and A&E Ratios Miss"
 date: 2026-03-03
 categories: [monitoring]
 tags: [insurance-monitoring, drift, PSI, Gini, calibration, motor, FCA, python]

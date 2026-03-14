@@ -102,7 +102,7 @@ audit.run().save_report("fairness_audit_2026Q1.md")
 
 ### insurance-datasets — synthetic test data
 
-Every code example in this stack uses `insurance-datasets`. It generates realistic synthetic UK personal lines portfolios with configurable size, rating factor distributions, and known ground truth parameters — so you can test your code before your data is available and verify your implementations produce the right answer.
+Every code example in this stack uses `insurance-datasets`. It generates realistic synthetic UK personal lines portfolios with configurable size, rating factor distributions, and known ground truth parameters. You can test your code before your data is available and verify your implementations produce the right answer.
 
 ```python
 from insurance_datasets import MotorPortfolio
@@ -217,7 +217,7 @@ ebm.plot_shape("driver_age_band")  # shows the learned age curve
 
 ### insurance-frequency-severity — frequency/severity dependence
 
-The standard two-model GLM multiplies `E[N|x]` by `E[S|x]` and assumes independence. The assumption is wrong in UK motor. The NCD structure suppresses borderline claims — policyholders near the NCD threshold do not report small incidents. The result is a systematic negative dependence between claim count and average severity.
+The standard two-model GLM multiplies `E[N|x]` by `E[S|x]` and assumes independence. The assumption is wrong in UK motor. The NCD structure suppresses borderline claims. Policyholders near the NCD threshold do not report small incidents. The result is a systematic negative dependence between claim count and average severity.
 
 Vernic, Bolancé and Alemany (2022) found this mismeasurement runs at €5-55 per policyholder on a Spanish auto book. The UK direction is the same. `insurance-frequency-severity` fits a Sarmanov copula over your existing frequency and severity GLMs, estimates the dependence parameter, and corrects the joint prediction.
 
@@ -353,7 +353,7 @@ For the mechanism and a worked motor example, see [Your Rating Factor Might Be C
 
 ### insurance-causal-policy — rate change evaluation
 
-You applied a 15% rate increase to a segment six months ago. The loss ratio on that segment has improved. Did the rate change work? Or did the rate increase attract better risks (adverse selection reversing), or did claims inflation happen to cool in that period? The naive comparison — before/after loss ratio — conflates all three.
+You applied a 15% rate increase to a segment six months ago. The loss ratio on that segment has improved. Did the rate change work? Or did the rate increase attract better risks (adverse selection reversing), or did claims inflation happen to cool in that period? The naive before/after loss ratio comparison conflates all three.
 
 `insurance-causal-policy` implements difference-in-differences and synthetic control designs for insurance rate changes, using adjacent unexposed segments as controls and adjusting for exposure-period mix changes.
 
@@ -395,7 +395,7 @@ Getting from a technical price to an implemented rate change.
 
 The standard pricing cycle applies rate changes manually: technical model produces adequate prices, demand model produces elasticity estimates, someone reconciles the two in a spreadsheet while watching the loss ratio. This manual process is not optimising anything. It is approximating a joint optimisation problem with sequential heuristics.
 
-`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/11 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails — simultaneously, with analytical Jacobians that make it fast enough for N=10,000 policies in seconds.
+`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/11 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails. Analytical Jacobians make this fast enough for N=10,000 policies in seconds.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
@@ -418,7 +418,7 @@ For the full treatment of the constrained rate optimisation problem and the effi
 
 Before you can run `insurance-optimise`, you need elasticity estimates. `insurance-demand` fits price elasticity models on renewal and new business data, with the confounding correction that naive logistic regression omits: risk factors drive both the price charged and the renewal decision, so OLS conflates the causal price effect with risk-driven selection.
 
-The library wraps CausalForestDML for the causal component, with treatment variation diagnostics that flag the near-deterministic price problem before you fit — because if your pricing grid leaves no residual variation in price after conditioning on risk factors, the elasticity estimate is noise.
+The library wraps CausalForestDML for the causal component, with treatment variation diagnostics that flag the near-deterministic price problem before you fit. If your pricing grid leaves no residual variation in price after conditioning on risk factors, the elasticity estimate is noise.
 
 ```python
 from insurance_demand import RenewalElasticityModel
@@ -461,7 +461,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 **Loss development and trend**
 
-- [insurance-trend](https://github.com/burning-cost/insurance-trend): Log-linear trend fitting for frequency and severity, with structural break detection (COVID lockdown, Ogden rate changes), ONS index integration for severity deflation, and piecewise refit on detected breaks. UK motor claims inflation ran 34% from 2019 to 2023 versus CPI of 21% — a 13-point superimposed component that CPI alone will not capture.
+- [insurance-trend](https://github.com/burning-cost/insurance-trend): Log-linear trend fitting for frequency and severity, with structural break detection (COVID lockdown, Ogden rate changes), ONS index integration for severity deflation, and piecewise refit on detected breaks. UK motor claims inflation ran 34% from 2019 to 2023 versus CPI of 21%. That is a 13-point superimposed component that CPI alone will not capture.
 
 - [insurance-changepoint](https://github.com/burning-cost/insurance-changepoint): Bayesian change-point detection for pricing time series. When you need to know whether a shift in your loss ratio is structural or noise, before you take rate.
 
@@ -475,7 +475,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 - [insurance-nflow](https://github.com/burning-cost/insurance-nflow): Normalising flows for severity distribution modelling. When a Pareto or Lognormal tail does not fit your large loss data and you need a more flexible parametric form.
 
-- [insurance-eqrn](https://github.com/burning-cost/insurance-eqrn): Extreme quantile regression neural networks. For when you care about the 99th percentile of the severity distribution, not just the mean — relevant for excess of loss treaty pricing and capital allocation.
+- [insurance-eqrn](https://github.com/burning-cost/insurance-eqrn): Extreme quantile regression neural networks. For when you care about the 99th percentile of the severity distribution, not just the mean. That matters for excess of loss treaty pricing and capital allocation.
 
 **Survival and lapse**
 
@@ -487,7 +487,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 **Robustness and portability**
 
-- [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift): Density ratio correction when deploying a model trained on one portfolio to a different book distribution — acquisition via a new channel, a transferred portfolio, or a book that has shifted materially since the model was trained.
+- [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift): Density ratio correction when deploying a model trained on one portfolio to a different book distribution: via a new channel, a transferred portfolio, or a book that has shifted materially since the model was trained.
 
 - [insurance-dro](https://github.com/burning-cost/insurance-dro): Distributionally robust optimisation for premium setting under model uncertainty. Sets premia that remain adequate under worst-case distributional perturbations within a Wasserstein ball around the empirical distribution.
 
@@ -495,7 +495,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 **Multivariate and joint**
 
-- [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (`insurance_conformal.multivariate`): Joint conformal prediction intervals for multi-output models — when you need simultaneous coverage for frequency and severity, not just marginal intervals for each. The multivariate functionality is part of `insurance-conformal` v0.4.0+.
+- [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (`insurance_conformal.multivariate`): Joint conformal prediction intervals for multi-output models. Use it when you need simultaneous coverage for frequency and severity, not just marginal intervals for each. The multivariate functionality is part of `insurance-conformal` v0.4.0+.
 
 - [insurance-copula](https://github.com/burning-cost/insurance-copula): D-vine temporal dependence and two-part occurrence/severity copula models for cases where the Sarmanov structure in `insurance-frequency-severity` is insufficient.
 
