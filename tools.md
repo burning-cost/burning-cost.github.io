@@ -83,22 +83,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-poisson-mixture-nn",
-      "description": "Neural Poisson mixture for structural zero-claimers — PM-DNN, reparameterised constraint, pi(x) at-risk score.",
-      "codeRepository": "https://github.com/burning-cost/insurance-poisson-mixture-nn",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-zit-dglm",
-      "description": "Zero-Inflated Tweedie Double GLM — three-head CatBoost EM for mean, dispersion, and zero-inflation jointly.",
-      "codeRepository": "https://github.com/burning-cost/insurance-zit-dglm",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-severity",
       "description": "Severity modelling toolkit for UK non-life insurance.",
       "codeRepository": "https://github.com/burning-cost/insurance-severity",
@@ -275,14 +259,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "insurance-uplift",
-      "description": "Heterogeneous treatment effects for retention targeting — CausalForestDML CATE, Qini/AUUC, PolicyTree, ENBP constraint, Consumer Duty fairness audit.",
-      "codeRepository": "https://github.com/burning-cost/insurance-uplift",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-fairness",
       "description": "Proxy discrimination auditing for insurance pricing — FCA EP25/2, Consumer Duty, bias metrics.",
       "codeRepository": "https://github.com/burning-cost/insurance-fairness",
@@ -326,14 +302,6 @@ permalink: /tools/
       "name": "insurance-conformal-ts",
       "description": "Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, MSCP, Poisson/NB scores.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal-ts",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-sensitivity",
-      "description": "Global sensitivity analysis — Song 2016 Shapley effects, Rabitti-Tzougas 2025 CLH subsampling, exposure-weighted variance decomposition.",
-      "codeRepository": "https://github.com/burning-cost/insurance-sensitivity",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
     },
@@ -591,9 +559,7 @@ Tools for building and interpreting pricing models.
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values |
 | [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation |
 | [insurance-scmoe](https://github.com/burning-cost/insurance-scmoe) | Spatially Clustered Mixture of Experts for joint frequency-severity pricing (NAAJ 2025) |
-| [insurance-poisson-mixture-nn](https://github.com/burning-cost/insurance-poisson-mixture-nn) | Neural Poisson mixture for structural zero-claimers — PM-DNN, pi(x) at-risk score |
 | [insurance-copula](https://github.com/burning-cost/insurance-copula) | Copula models — D-vine temporal dependence, two-part occurrence/severity |
-| [insurance-sensitivity](https://github.com/burning-cost/insurance-sensitivity) | Global sensitivity analysis — Song 2016 Shapley effects, exposure-weighted variance decomposition |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics |
 
 </div>
@@ -611,7 +577,6 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-distributional](https://github.com/burning-cost/insurance-distributional) | Distributional GBMs — Tweedie, Gamma, ZIP, NegBin objectives with per-risk volatility scoring |
 | [insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm) | GAMLSS for Python — model all distribution parameters as functions of covariates, seven families |
 | [insurance-dispersion](https://github.com/burning-cost/insurance-dispersion) | Double GLM for joint mean-dispersion modelling — alternating IRLS, REML, actuarial factor tables |
-| [insurance-zit-dglm](https://github.com/burning-cost/insurance-zit-dglm) | Zero-Inflated Tweedie Double GLM — three-head CatBoost EM for mean, dispersion, and zero-inflation |
 | [insurance-quantile](https://github.com/burning-cost/insurance-quantile) | Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors |
 | [insurance-severity](https://github.com/burning-cost/insurance-severity) | Severity modelling toolkit for UK non-life insurance |
 | [insurance-evt](https://github.com/burning-cost/insurance-evt) | Extreme Value Theory for catastrophic claim severity — GPD/GEV, censored MLE, ExcessGPD reinsurance, Solvency II 1-in-200 |
@@ -657,7 +622,6 @@ Separating what causes what from what correlates with what.
 | [insurance-rdd](https://github.com/burning-cost/insurance-rdd) | Regression discontinuity for rating thresholds — sharp/fuzzy RD, Poisson/Gamma outcomes, geographic RDD |
 | [insurance-bunching](https://github.com/burning-cost/insurance-bunching) | Bunching estimators for rating threshold gaming — mileage fraud detection, adverse selection, BH FDR scanning |
 | [insurance-counterfactual-sets](https://github.com/burning-cost/insurance-counterfactual-sets) | Weighted conformal ITE for individual counterfactuals — Lei & Candès 2021, FCA ENBP harm reports |
-| [insurance-uplift](https://github.com/burning-cost/insurance-uplift) | Heterogeneous treatment effects for retention — CausalForestDML CATE, Qini/AUUC, PolicyTree, ENBP constraint |
 
 </div>
 
