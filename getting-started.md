@@ -146,6 +146,139 @@ permalink: /getting-started/
   text-decoration: none;
 }
 
+/* Quick install cheat sheet */
+.gs-install {
+  margin-bottom: 3rem;
+}
+
+.gs-install h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f1117;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.gs-install-sub {
+  font-size: 0.9rem;
+  color: #5a6278;
+  margin-bottom: 1.25rem;
+}
+
+.gs-install-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 0.75rem;
+}
+
+.gs-install-card {
+  background: #fff;
+  border: 1px solid #e2e6f0;
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+
+.gs-install-card-name {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #4f7ef8;
+  margin-bottom: 0.5rem;
+}
+
+.gs-install-card-name a {
+  color: #4f7ef8;
+  text-decoration: none;
+}
+
+.gs-install-card-name a:hover {
+  text-decoration: underline;
+}
+
+.gs-install-cmds {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.gs-install-cmd {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+  background: #f4f6fb;
+  border: 1px solid #e2e6f0;
+  border-radius: 5px;
+  padding: 0.3rem 0.6rem;
+  color: #1a1d2e;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.gs-install-cmd .cmd-prefix {
+  color: #8892b0;
+  user-select: none;
+}
+
+/* First 5 minutes section */
+.gs-five-min {
+  margin-bottom: 3rem;
+  border: 1px solid #e2e6f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gs-five-min-header {
+  padding: 1.25rem 1.75rem;
+  background: #f9fafc;
+  border-bottom: 1px solid #e2e6f0;
+}
+
+.gs-five-min-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f1117;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.02em;
+}
+
+.gs-five-min-header p {
+  font-size: 0.88rem;
+  color: #5a6278;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.gs-five-min-body {
+  padding: 1.5rem 1.75rem;
+  background: #fff;
+}
+
+.gs-five-min-code {
+  background: #0f1117;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #cdd6f4;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.gs-five-min-code .c-kw  { color: #89b4fa; }  /* keyword */
+.gs-five-min-code .c-cls { color: #a6e3a1; }  /* class */
+.gs-five-min-code .c-fn  { color: #89dceb; }  /* function */
+.gs-five-min-code .c-str { color: #f9e2af; }  /* string */
+.gs-five-min-code .c-num { color: #fab387; }  /* number */
+.gs-five-min-code .c-cm  { color: #6c7086; font-style: italic; } /* comment */
+
+.gs-five-min-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #5a6278;
+  line-height: 1.6;
+}
+
+/* Worked examples section */
 .gs-examples {
   border: 1px solid #e2e6f0;
   border-radius: 12px;
@@ -246,6 +379,15 @@ permalink: /getting-started/
   .gs-path {
     padding: 1.25rem 1.25rem;
   }
+  .gs-install-grid {
+    grid-template-columns: 1fr;
+  }
+  .gs-five-min-body {
+    padding: 1.25rem;
+  }
+  .gs-five-min-header {
+    padding: 1rem 1.25rem;
+  }
   .gs-examples {
     padding: 1.25rem 1.25rem;
   }
@@ -256,6 +398,98 @@ permalink: /getting-started/
 </style>
 
 <p class="gs-intro">Most people coming to Burning Cost have one of three starting points. Pick the path closest to yours — each one recommends three to five libraries that solve problems you will encounter first, in an order that makes sense.</p>
+
+<!-- Quick install cheat sheet -->
+<div class="gs-install">
+  <h2>Quick install</h2>
+  <p class="gs-install-sub">The six libraries most teams reach for first. Copy the command that matches your setup.</p>
+  <div class="gs-install-grid">
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/shap-relativities" target="_blank">shap-relativities</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install shap-relativities</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add shap-relativities</div>
+      </div>
+    </div>
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/insurance-cv" target="_blank">insurance-cv</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install insurance-cv</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add insurance-cv</div>
+      </div>
+    </div>
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install insurance-fairness</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add insurance-fairness</div>
+      </div>
+    </div>
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/insurance-monitoring" target="_blank">insurance-monitoring</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install insurance-monitoring</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add insurance-monitoring</div>
+      </div>
+    </div>
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/insurance-distributional" target="_blank">insurance-distributional</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install insurance-distributional</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add insurance-distributional</div>
+      </div>
+    </div>
+
+    <div class="gs-install-card">
+      <div class="gs-install-card-name"><a href="https://github.com/burning-cost/insurance-glm-tools" target="_blank">insurance-glm-tools</a></div>
+      <div class="gs-install-cmds">
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>pip install insurance-glm-tools</div>
+        <div class="gs-install-cmd"><span class="cmd-prefix">$ </span>uv add insurance-glm-tools</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Your first 5 minutes -->
+<div class="gs-five-min">
+  <div class="gs-five-min-header">
+    <h2>Your first 5 minutes</h2>
+    <p>A minimal working example using shap-relativities. Fits a CatBoost model on synthetic motor data and extracts a multiplicative factor table — the same output format as exp(&beta;) from a GLM. No data download required.</p>
+  </div>
+  <div class="gs-five-min-body">
+    <div class="gs-five-min-code"><span class="c-kw">import</span> numpy <span class="c-kw">as</span> np
+<span class="c-kw">from</span> <span class="c-cls">catboost</span> <span class="c-kw">import</span> <span class="c-cls">CatBoostRegressor</span>
+<span class="c-kw">from</span> <span class="c-cls">shap_relativities</span> <span class="c-kw">import</span> <span class="c-cls">SHAPRelativities</span>
+
+<span class="c-cm"># Synthetic motor portfolio: vehicle_age, driver_age, annual_mileage</span>
+rng = np.<span class="c-fn">random</span>.<span class="c-cls">default_rng</span>(<span class="c-num">42</span>)
+X = np.<span class="c-fn">column_stack</span>([
+    rng.<span class="c-fn">integers</span>(<span class="c-num">0</span>, <span class="c-num">15</span>, <span class="c-num">2000</span>),   <span class="c-cm"># vehicle_age</span>
+    rng.<span class="c-fn">integers</span>(<span class="c-num">18</span>, <span class="c-num">80</span>, <span class="c-num">2000</span>),   <span class="c-cm"># driver_age</span>
+    rng.<span class="c-fn">integers</span>(<span class="c-num">5000</span>, <span class="c-num">30000</span>, <span class="c-num">2000</span>),  <span class="c-cm"># annual_mileage</span>
+])
+y = <span class="c-num">0.08</span> + <span class="c-num">0.005</span> * X[:, <span class="c-num">0</span>] - <span class="c-num">0.001</span> * X[:, <span class="c-num">1</span>] + rng.<span class="c-fn">exponential</span>(<span class="c-num">0.02</span>, <span class="c-num">2000</span>)
+
+model = <span class="c-cls">CatBoostRegressor</span>(iterations=<span class="c-num">200</span>, verbose=<span class="c-num">0</span>)
+model.<span class="c-fn">fit</span>(X, y)
+
+sr = <span class="c-cls">SHAPRelativities</span>(model, feature_names=[<span class="c-str">"vehicle_age"</span>, <span class="c-str">"driver_age"</span>, <span class="c-str">"annual_mileage"</span>])
+factors = sr.<span class="c-fn">fit_transform</span>(X)
+
+<span class="c-fn">print</span>(factors[<span class="c-str">"vehicle_age"</span>].head())
+<span class="c-cm">#    level  relativity  ci_lower  ci_upper</span>
+<span class="c-cm">#    0      1.000       0.981     1.019</span>
+<span class="c-cm">#    1      1.043       1.028     1.058</span>
+<span class="c-fn">print</span>(<span class="c-str">f"Reconstruction R² = {sr.reconstruction_r2:.4f}"</span>)</div>
+    <p class="gs-five-min-note">The <code>factors</code> dict maps each feature name to a DataFrame with one row per level. <code>relativity</code> is the multiplicative factor — the same structure as a GLM output from Emblem or Radar. <code>reconstruction_r2</code> tells you how much of the model's variance the factor table explains; above 0.95 is production-usable.</p>
+  </div>
+</div>
 
 <div class="gs-path">
   <div class="gs-path-label">Path 1</div>
@@ -341,6 +575,7 @@ permalink: /getting-started/
   </ul>
 </div>
 
+<!-- Worked examples -->
 <div class="gs-examples">
   <h2>Worked Examples</h2>
   <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains full worked examples that go beyond the quick-start.</p>
@@ -387,6 +622,7 @@ permalink: /getting-started/
   <h2>Ready to go deeper?</h2>
   <div class="gs-cta-row">
     <a href="/tools/" class="btn-primary-sm">Browse all libraries</a>
+    <a href="/guide/" class="btn-outline-sm">Which library do I need?</a>
     <a href="/blog/" class="btn-outline-sm">Read the articles</a>
     <a href="https://github.com/burning-cost" target="_blank" class="btn-outline-sm">View on GitHub</a>
   </div>
