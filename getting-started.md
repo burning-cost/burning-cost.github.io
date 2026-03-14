@@ -615,6 +615,7 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
       </tr>
     </tbody>
   </table>
+  <p class="gs-examples-note" style="font-style: normal;"><strong>Databricks notebooks:</strong> Import-ready versions of these examples are available in the <a href="https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks">notebooks/</a> directory. They use <code>%pip install</code> and run on Databricks Free Edition serverless compute.</p>
   <p class="gs-examples-note">Each example generates synthetic data inline — no external files needed. Install the relevant library and run.</p>
 </div>
 
