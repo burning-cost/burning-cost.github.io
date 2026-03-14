@@ -4,7 +4,7 @@ title: "The Telematics Score That Forgets Where It's Been"
 date: 2026-03-12
 categories: [libraries]
 tags: [joint-models, longitudinal, survival, telematics, dynamic-prediction, Wulfsohn-Tsiatis, EM-algorithm, Python, motor, repricing, insurance-jlm]
-description: "Your telematics GLM uses the latest score as a static covariate. Two drivers at the same score — one improving, one deteriorating — get the same premium. A joint longitudinal-survival model sees the trajectory. insurance-jlm implements Wulfsohn-Tsiatis SREM with dynamic mid-term repricing in Python."
+description: "Joint longitudinal-survival model for telematics: driving trajectory not current score. insurance-jlm - Wulfsohn-Tsiatis SREM with mid-term repricing in Python."
 post_number: 71
 ---
 

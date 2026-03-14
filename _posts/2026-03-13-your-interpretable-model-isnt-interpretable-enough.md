@@ -5,7 +5,7 @@ date: 2026-03-13
 author: Burning Cost
 categories: [pricing, machine-learning]
 tags: [ANAM, NAM, interpretability, monotonicity, GLM, Poisson, Tweedie, FCA, Consumer-Duty, PRA, python, insurance-gam]
-description: "SHAP is a post-hoc approximation. EBM has no native Tweedie loss and no guaranteed monotonicity. We built insurance-gam — the first pip-installable Actuarial Neural Additive Model — to give UK pricing actuaries exact interpretability with distributional losses and mathematically guaranteed constraints."
+description: "Actuarial Neural Additive Models for UK pricing: exact interpretability, Tweedie loss, guaranteed monotonicity. insurance-gam - beyond SHAP and EBM limitations."
 ---
 
 *This post is an ANAM deep-dive: the Actuarial Neural Additive Model architecture, why it gives mathematically guaranteed monotonicity where EBMs do not, and how to use the insurance-gam implementation with Tweedie/Gamma/Poisson losses. If you want the EBM workflow, read [EBMs for Insurance Pricing](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*

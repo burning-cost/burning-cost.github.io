@@ -4,7 +4,7 @@ title: "BYM2 Spatial Smoothing for Territory Ratemaking"
 date: 2026-02-23
 categories: [techniques]
 tags: [spatial, territory, BYM2, ICAR, pymc, credibility, ratemaking, motor, python, bayesian]
-description: "Why postcode sector k-means banding is statistically wrong for territory ratemaking, and how to use the BYM2 spatial model in PyMC to borrow strength across neighbouring areas."
+description: "BYM2 spatial model in PyMC for UK territory ratemaking. Borrows strength across neighbouring postcode sectors - statistically correct vs k-means banding."
 ---
 
 Many UK motor insurers run some version of the same process: take postcode sector loss ratios, run k-means, assign sectors to bands, file the bands with your actuarial peer reviewer, move on. The territory model is a solved problem. You have 12 bands. Your Gini is fine.

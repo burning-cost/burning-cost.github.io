@@ -4,7 +4,7 @@ title: "Extreme Value Theory for UK Motor Large Loss Pricing"
 date: 2026-03-13
 categories: [libraries, pricing, severity, reinsurance]
 tags: [EVT, extreme-value-theory, GPD, GEV, threshold-selection, censored-MLE, profile-likelihood, return-levels, XL-pricing, reinsurance, Solvency-II, TPBI, motor, subsidence, flood, insurance-evt, python]
-description: "Every UK motor insurer with a large loss register is sitting on data that standard severity models cannot use properly. insurance-evt is the first Python library to handle censored GPD fitting for open TPBI claims, profile likelihood confidence intervals, and excess layer pure premiums from first principles."
+description: "EVT for UK motor large loss pricing: censored GPD for open TPBI claims, profile likelihood CIs, excess layer pure premiums. insurance-evt Python library."
 ---
 
 Large bodily injury claims do not behave like ordinary claims. A TPBI settlement for a catastrophic spinal injury can take fifteen years and run to tens of millions. The claim sits open on the register, its ultimate development unknown, while the actuary is expected to estimate the 1-in-200 year return level for the Solvency II internal model. Standard severity distributions fail at both ends of this problem: they cannot handle the censoring and they have no principled basis for extrapolation to return periods far outside the observed data.

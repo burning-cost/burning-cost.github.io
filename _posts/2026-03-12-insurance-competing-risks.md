@@ -4,7 +4,7 @@ title: "Treating Competing Risks as Censored Is Biasing Your Retention and Home 
 date: 2026-03-12
 categories: [libraries, pricing, survival, retention, home-insurance]
 tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, Gray-test, IPCW, retention, lapse, home-insurance, motor, insurance-survival, python]
-description: "Standard survival analysis treats competing events as censored observations. In insurance — where policies lapse, MTC, and NTU are distinct behaviours, and home claims can be fire, flood, EoW, or subsidence — this is wrong in a way that systematically biases your CIF estimates and misdirects your pricing. insurance-survival brings Fine-Gray subdistribution hazard regression to Python for the first time."
+description: "Fine-Gray subdistribution hazard for UK insurance competing risks. Separates lapse, MTC, and NTU correctly - insurance-survival Python, not naive censoring."
 ---
 
 There is a mistake buried in most UK insurers' retention models. It is not exotic: it is a standard decision made in lifelines or scikit-survival when you set up a Cox proportional hazards model and treat every exit event the same way. When a policyholder leaves via mid-term cancellation rather than voluntary lapse, you mark them as censored for the lapse analysis and move on. The same pattern appears in home insurance peril modelling — fire claim analysis treats the policy that had an escape of water as censored. Motor claim models treat the windscreen claimant as censored for the own-damage analysis.

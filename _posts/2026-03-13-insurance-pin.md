@@ -4,7 +4,7 @@ title: "Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a
 date: 2026-03-13
 categories: [libraries, pricing, interpretability]
 tags: [insurance-pin, neural-ga2m, interpretability, fca-consumer-duty, pairwise-interactions, pytorch, french-mtpl]
-description: "Pairwise Interaction Networks produce exact, tabulatable 2D rating factor surfaces — not SHAP approximations. They also beat GLMs, GBMs, and transformers on the French MTPL benchmark. We've built the Python implementation."
+description: "Pairwise Interaction Networks produce exact tabulatable 2D rating factor surfaces, not SHAP approximations. Beats GBMs on French MTPL benchmark. Python."
 ---
 
 Post #102 | insurance-pin v0.1.0

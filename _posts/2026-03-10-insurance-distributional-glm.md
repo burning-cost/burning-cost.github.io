@@ -4,7 +4,7 @@ title: "GAMLSS in Python, Finally"
 date: 2026-03-10
 categories: [techniques, libraries]
 tags: [gamlss, glm, distributional, gamma, lognormal, tweedie, zip, negative-binomial, inverse-gaussian, rs-algorithm, numpy, scipy, insurance-distributional-glm]
-description: "GLMs model the mean. GAMLSS models everything. insurance-distributional-glm is the first production-ready Python implementation of Generalised Additive Models for Location, Scale and Shape — seven distribution families, the RS algorithm, and the only Python library that lets you model variance as a function of covariates the way actuaries actually need."
+description: "GAMLSS in Python: seven families, RS algorithm, variance as function of covariates. insurance-distributional-glm - the actuarial implementation Python lacked."
 ---
 
 R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work — both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are distributional GBMs, quantile regression libraries, and various partial implementations. None of them are GAMLSS.

@@ -4,7 +4,7 @@ title: "Separating Structural Non-Claimers from Risk: Mixture Cure Models for In
 date: 2026-03-11
 categories: [libraries, pricing, frequency, survival]
 tags: [mixture-cure-models, MCM, non-claimer-scoring, survival-analysis, EM-algorithm, Weibull-AFT, Maller-Zhou, incidence-latency, structural-zeros, motor, pet, home, flood, insurance-survival, python, Farewell-1982, Peng-Dear-2000]
-description: "In UK motor, roughly 40% of policyholders will never make a claim regardless of how long you observe them. Standard frequency GLMs treat them as low-risk claimers. They are not claimers at all. insurance-survival is the first Python library to fit covariate-aware mixture cure models — separating structurally immune non-claimers from susceptibles — and score the cure fraction per policyholder."
+description: "Mixture cure models for UK motor: separates non-claimers from susceptibles. Per-policyholder cure fraction scoring - insurance-survival Python library."
 ---
 
 A UK motor book typically has an observed claims frequency of around 8% per year. Run a Kaplan-Meier curve on policyholder tenure against first-claim indicator and watch what happens to the survival curve after year three: it levels off. The plateau never reaches zero. A substantial fraction of the portfolio will never claim regardless of how long you keep watching them. Standard survival models — exponential, Weibull, Cox — cannot fit a non-zero asymptote. They assume everyone eventually claims, given enough time. On a long-retention motor book, this assumption is demonstrably wrong.

@@ -4,7 +4,7 @@ title: "Borrowing Experience You Don't Have"
 date: 2026-03-12
 categories: [libraries, pricing, transfer-learning]
 tags: [transfer-learning, GLMTransfer, GBMTransfer, CANNTransfer, thin-data, MMD, negative-transfer, CatBoost, Poisson, Gamma, CANN, Tian-Feng, python, insurance-thin-data]
-description: "Transfer learning for thin-segment insurance pricing. The Tian-Feng two-step GLM algorithm, CatBoost source-as-offset GBM transfer, and CANN fine-tuning — with mandatory MMD covariate shift testing and a negative transfer diagnostic that tells you when to stop."
+description: "Transfer learning for thin-segment UK insurance pricing: Tian-Feng GLM algorithm, CatBoost source-as-offset, CANN fine-tuning, negative transfer diagnostics."
 ---
 
 Every pricing actuary has faced this problem. A segment exists — young drivers, exotic pets, a brand-new telematics portfolio — where the exposure is thin enough that fitting a standalone model produces something embarrassing. The confidence intervals are wide, the parameters are unstable, and you are essentially guessing. The standard response is to credibility-blend with the main book, which works up to a point, but credibility weighting is a blunt instrument when what you actually need is a model that borrows structure, not just a scalar adjustment.

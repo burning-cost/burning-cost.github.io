@@ -4,7 +4,7 @@ title: "Getting Spatial Territory Factors Into Production"
 date: 2026-03-09
 categories: [techniques]
 tags: [spatial, territory, BYM2, ICAR, pymc, insurance-spatial, motor, python, catboost, polars, radar, emblem]
-description: "How to go from a fitted CatBoost frequency model to BYM2 spatial territory factors for Emblem or Radar - with the actual data engineering, convergence checks, and Polars joins."
+description: "From CatBoost frequency model to BYM2 spatial territory factors for Emblem or Radar. Data engineering, MCMC convergence checks, Polars joins - Python."
 ---
 
 We [wrote previously]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory-ratemaking-with-bym2 %}) about why k-means territory banding is statistically wrong and what the BYM2 model does instead. That post covers the theory. This one covers the plumbing.

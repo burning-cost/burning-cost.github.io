@@ -5,7 +5,7 @@ date: 2026-03-13
 author: Burning Cost
 categories: [pricing, machine-learning, libraries]
 tags: [frequency-severity, dependence, neural-networks, two-part-model, shared-trunk, multi-task-learning, GLM, Poisson, Gamma, pure-premium, python, insurance-dependent-fs]
-description: "Standard two-part models multiply frequency and severity as if they were independent. They are not. We built insurance-dependent-fs — a shared-trunk neural model with explicit dependence testing — to price the interaction correctly."
+description: "Shared-trunk neural model for frequency-severity dependence in UK motor pricing. Explicit dependence testing where two-part GLMs assume independence - Python."
 ---
 
 Your pricing model multiplies frequency by severity. It does this because that is the actuarial convention, and the convention is mathematically justified if frequency and severity are independent conditional on the covariates. In most UK personal lines books, they are not.

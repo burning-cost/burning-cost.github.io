@@ -5,7 +5,7 @@ date: 2026-03-10
 author: Burning Cost
 categories: [techniques, compliance, libraries]
 tags: [fairness, discrimination-free-pricing, optimal-transport, causal-inference, FCA, Consumer-Duty, Equality-Act, Lindholm, Wasserstein, LRTW, motor, python, insurance-fairness]
-description: "insurance-fairness implements discrimination-free insurance pricing via Lindholm (2022) marginalisation, Côté-Genest-Abdallah (2025) causal path decomposition, and Wasserstein barycenter correction for multi-attribute fairness. Built for UK personal lines and FCA EP25/2 compliance."
+description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. insurance-fairness-ot for FCA EP25/2 compliance in Python."
 ---
 
 Detecting proxy discrimination in your pricing model is the first problem. Fixing it is harder.

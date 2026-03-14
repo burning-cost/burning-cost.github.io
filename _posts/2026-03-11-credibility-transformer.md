@@ -4,7 +4,7 @@ title: "The Attention Head That Is Also a Credibility Weight"
 date: 2026-03-11
 categories: [libraries, pricing, credibility]
 tags: [credibility-transformer, Bühlmann-Straub, attention, transformer, CLS-token, Wüthrich, ICL, zero-shot, PyTorch, MTPL, frequency, insurance-credibility-transformer, python]
-description: "The CLS token's self-attention weight in the Credibility Transformer is not an analogy for Bühlmann-Straub credibility — it is mathematically identical to it. insurance-credibility-transformer implements base CT and ICL-CT in PyTorch. 1,746 parameters. Beats CAFTT (27K parameters). 85 tests."
+description: "Credibility Transformer attention is mathematically identical to Buhlmann-Straub credibility. PyTorch, 1,746 parameters, beats CAFTT (27K). 85 tests."
 ---
 
 There is a common pattern in machine learning papers applied to insurance. The authors train a neural network, show it beats a GLM on a benchmark, and then add a section titled "Interpretability" where they note that some internal representation "resembles" a credibility weight, or "can be interpreted as" a posterior probability, or "is analogous to" a Bühlmann parameter. The resemblance is gesturing at something real but the connection is always approximate, always informal, always one level of abstraction away from actually being true.

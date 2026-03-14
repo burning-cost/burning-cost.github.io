@@ -4,7 +4,7 @@ title: "Credibility-Weighted Broker and Scheme Effects with REML"
 date: 2026-03-13
 categories: [pricing, libraries]
 tags: [multilevel-models, random-effects, credibility, catboost, reml, broker, scheme, high-cardinality, python]
-description: "Most pricing teams handle broker, scheme, and territory effects with ad-hoc loadings or ignore them entirely. insurance-multilevel implements two-stage CatBoost + REML random effects with full Bühlmann-Straub credibility weighting — so the adjustments are derived, not guessed."
+description: "Two-stage CatBoost plus REML random effects for UK insurance broker adjustments. insurance-multilevel - Buhlmann-Straub credibility weighting, not guesswork."
 ---
 
 There is a specific conversation that happens in most UK personal lines pricing teams, usually during model validation, and usually when someone pulls a double-lift chart broken down by broker.

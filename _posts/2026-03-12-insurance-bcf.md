@@ -4,7 +4,7 @@ title: "Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Ave
 date: 2026-03-12
 categories: [libraries, pricing, causal-inference]
 tags: [BCF, bayesian-causal-forest, BART, CATE, heterogeneous-treatment-effects, stochtree, price-elasticity, FCA, EP25-2, RIC, MCMC, propensity, observational-data, UK-motor, insurance-bcf, python]
-description: "The GLM tells you the average lapse effect of your rate increase. BCF tells you the effect for each segment, with a posterior distribution. Young PCW customers may be lapsing at 7x the rate of mature direct customers under the same rate increase. insurance-bcf wraps stochtree's Bayesian Causal Forests for UK insurance pricing teams."
+description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insurance pricing. Segment-level elasticity with posteriors - insurance-bcf wrapping stochtree."
 ---
 
 Your motor book took an 8% rate increase last October. Aggregate lapse rose 1.8 percentage points. The GLM returned an elasticity of −0.22. The pricing team noted it in the experience review and moved on.

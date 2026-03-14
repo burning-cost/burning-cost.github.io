@@ -4,7 +4,7 @@ title: "HMM-Based Telematics Risk Scoring for Insurance Pricing"
 date: 2026-03-13
 categories: [libraries, pricing, telematics]
 tags: [telematics, UBI, HMM, hidden-markov-model, driving-risk, GLM, insurance-telematics, motor, python, GPS, accelerometer, CTHMM]
-description: "Most telematics scores are just event counts: harsh brakes per mile, hard corners per trip. That is not a risk model — it is a heuristic. insurance-telematics uses a continuous-time Hidden Markov Model to identify latent driving regimes from raw GPS and accelerometer data, then extracts actuarially interpretable features that plug directly into a Poisson frequency GLM."
+description: "Continuous-time HMM for telematics risk scoring in UK motor pricing. Latent driving regimes from GPS data - actuarially interpretable features for Poisson GLM."
 ---
 
 Most telematics scores are event counts. Harsh braking events per kilometre. Hard cornering rate. Night driving percentage. These are cheap to compute, easy to explain, and wrong in a specific way: they treat every kilometre of driving as exchangeable. A harsh braking event on an urban road at 30 km/h is not the same as one at 110 km/h on a motorway. The denominator matters. The driving context matters.

@@ -4,7 +4,7 @@ title: "The Python Insurance Pricing Stack: 35 Libraries for Everything Emblem C
 date: 2026-03-14
 categories: [guides]
 tags: [python, insurance-pricing, machine-learning, glm, gbm, pricing-tools]
-description: "35 open-source Python libraries for UK insurance pricing: GBM-to-GLM distillation, temporal CV, causal inference, FCA fairness auditing, rate optimisation, and PRA SS1/23 governance."
+description: "35 open-source Python libraries for UK insurance pricing: GBM-to-GLM distillation, causal inference, FCA fairness auditing, rate optimisation, PRA SS1/23."
 ---
 
 Every UK pricing team has the same gap. The GBM outperforms the GLM by 4-6 Gini points on the holdout set. Everyone knows it. Nobody in production is running it, because nobody can explain it, govern it, or get it into Radar in a form the head of pricing will sign off on. Emblem and ReMetrica are excellent tools for managing multiplicative rating factor structures. They were not built for gradient boosting, causal inference, or conformal prediction intervals.

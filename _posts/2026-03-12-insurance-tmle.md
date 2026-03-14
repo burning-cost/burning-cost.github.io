@@ -4,7 +4,7 @@ title: "Doubly Robust Causal Inference for Insurance: TMLE With Poisson Outcomes
 date: 2026-03-12
 categories: [libraries, causal-inference, pricing]
 tags: [TMLE, targeted-learning, doubly-robust, SuperLearner, EIF, Poisson, causal-inference, DML, price-elasticity, insurance-tmle, python, motor, telematics]
-description: "TMLE is doubly robust: it gives valid causal estimates if either your outcome model or your propensity model is correctly specified — you do not need both. For insurance pricing, where the treatment mechanism (competitor quotes, PCW ranking, risk appetite rules) is structurally unobservable, this is not a technicality. It is the entire ballgame. insurance-tmle is the first Python library with Poisson TMLE and exposure offsets — the implementation that insurance causal inference has been missing."
+description: "Doubly robust TMLE for insurance pricing with Poisson outcomes and exposure offsets. insurance-tmle - first Python library with the implementation AIPW lacks."
 ---
 
 You ran a causal inference analysis on your telematics trial. You used Double Machine Learning, as you should. The DML pipeline gave you an ATE estimate of −0.031 with a tight 95% CI: [−0.048, −0.014]. Telematics devices reduce claim frequency by 3.1 claims per hundred policy-years. The result went into the business case.

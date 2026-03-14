@@ -4,7 +4,7 @@ title: "Coverage Is the Wrong Guarantee for Pricing Actuaries"
 date: 2026-03-13
 categories: [libraries, pricing, uncertainty]
 tags: [conformal-prediction, conformal-risk-control, premium-sufficiency, loading-factor, underwriting, selective-risk, CRC, Angelopoulos, ICLR-2024, interval-width, python, motor, polars, insurance-conformal]
-description: "Your conformal prediction interval covers 90% of outcomes. A 10% miscoverage could be 500 policies paying £200 each or 3 policies with a £50,000 shortfall. Standard coverage control cannot tell the difference. Conformal risk control can — and insurance-conformal implements it for pricing teams."
+description: "Conformal risk control for UK insurance: coverage calibrated to financial shortfall, not miscoverage rate. insurance-conformal - beyond standard intervals."
 ---
 
 Your conformal prediction interval covers 90% of outcomes. Standard conformal prediction guarantees that. The guarantee is finite-sample valid, distribution-free, and entirely appropriate for many applications.

@@ -4,7 +4,7 @@ title: "Your Model Is Either Interpretable or Accurate. insurance-gam Refuses Th
 date: 2026-03-14
 categories: [libraries, pricing, interpretability]
 tags: [gam, ebm, nam, anam, pin, interpretability, GLM, GBM, tweedie, poisson, monotonicity, shapley, insurance-gam, french-mtpl, python]
-description: "GLMs are readable but leave predictive performance on the table. GBMs recover that performance but lose the factor tables. insurance-gam wraps three architectures — EBM, ANAM, and PIN — that refuse the trade-off. Here is how to pick the right one."
+description: "Three interpretable architectures for UK insurance pricing: EBM, ANAM, and PIN via insurance-gam. Refuse the GLM-vs-GBM accuracy trade-off with factor tables."
 ---
 
 *This post is the comparison guide: when to use EBM, ANAM, or PIN, and what insurance-gam now contains. For EBM workflow details, read [EBMs for Insurance Pricing](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/). For the ANAM architecture and neural additive model theory, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/).*

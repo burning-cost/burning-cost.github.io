@@ -4,7 +4,7 @@ title: "Double GLM for Insurance: Every Risk Gets Its Own Dispersion"
 date: 2026-03-11
 categories: [techniques, libraries]
 tags: [glm, dglm, dispersion, tweedie, gamma, inverse-gaussian, poisson, negative-binomial, irls, reml, solvency-ii, margin-loading, python, insurance-dispersion]
-description: "R has had the dglm package since 1998. Python has had nothing. insurance-dispersion is a Double GLM implementation that gives every policy its own dispersion parameter — enabling risk-adequate margin loading, Solvency II variance at policy level, and Tweedie segments that move independently."
+description: "Double GLM gives every UK insurance policy its own dispersion parameter. insurance-dispersion - policy-level Solvency II variance and risk-adequate loading."
 ---
 
 R actuaries have had access to the `dglm` package since Smyth and Dunn wrote it in the late 1990s. It gets around 12,000 CRAN downloads a month. The paper behind it — Smyth (1989), *JRSS-B* 51:47-60 — is one of the more cited pieces of statistical methodology in the actuarial literature.

@@ -4,7 +4,7 @@ title: "Calibration Testing That Goes Beyond the Residual Plot"
 date: 2026-03-09
 categories: [techniques, libraries, pricing]
 tags: [calibration, balance-property, murphy-decomposition, auto-calibration, glm, gbm, poisson, python, insurance-monitoring]
-description: "A Poisson z-test tells you if your totals balance. An auto-calibration test tells you if each price cohort is self-financing. The Murphy decomposition tells you whether miscalibration is a levelling error or a structural one. insurance-monitoring v0.1.0 implements all three."
+description: "Poisson z-test, auto-calibration by price cohort, Murphy decomposition in Python. insurance-monitoring v0.1.0 - beyond residual plots for UK pricing actuaries."
 ---
 
 There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.

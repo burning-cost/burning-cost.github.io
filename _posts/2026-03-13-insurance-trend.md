@@ -4,7 +4,7 @@ title: "Trend Selection Is Not Actuarial Judgment: A Python Approach"
 date: 2026-03-13
 categories: [techniques, libraries, pricing]
 tags: [trend, frequency, severity, loss-cost, superimposed-inflation, ons-api, structural-breaks, ruptures, statsmodels, python, insurance-trend]
-description: "A single trend rate can swing a commercial motor premium by 15 points. Most actuaries pick it from a judgment table and move on. insurance-trend brings log-linear OLS, WLS, bootstrap CIs, ONS index deflation, superimposed inflation, and automatic structural break detection to Python — in one composable library."
+description: "Python insurance trend library: log-linear OLS/WLS, bootstrap CIs, ONS deflation, superimposed inflation, structural break detection - insurance-trend."
 ---
 
 Every rate filing contains a trend selection. It sits somewhere between the loss development section and the credibility section, usually a table with three columns: component, selected rate, source. Frequency: -2.0%, selected. Severity: +7.5%, selected. Loss cost: +5.4%, calculated.

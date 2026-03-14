@@ -4,7 +4,7 @@ title: "GARCH for Claims Inflation: Modelling Volatility That Clusters"
 date: 2026-03-12
 categories: [libraries, pricing, uncertainty]
 tags: [GARCH, GJR-GARCH, claims-inflation, volatility, PRA, motor, home, time-series, bootstrap, backtesting, python, insurance-garch]
-description: "The UK motor and home inflation episode of 2021–2024 exposed a familiar failure: actuaries presenting single-number trend assumptions into a regime where the variance of inflation was itself time-varying. Robert Engle solved this problem in 1982 on UK RPI data. insurance-garch brings GARCH to insurance pricing teams."
+description: "GARCH for UK insurance claims inflation: time-varying variance in trend analysis. insurance-garch - Engle (1982) applied to actuarial trend and pricing models."
 ---
 
 Every pricing committee in the UK has seen the same slide. A chart with claims inflation on the y-axis, time on the x-axis, and a straight trend line drawn through the last twelve quarters. Maybe a dotted extension into the future. Maybe a label that says "3.8% p.a." Someone in the room asks about uncertainty. The actuary says something like "we think plus or minus a point is reasonable." Nobody writes it down. The committee nods and moves on.

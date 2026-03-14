@@ -4,7 +4,7 @@ title: "From CatBoost to Radar in 50 Lines of Python"
 date: 2026-03-01
 categories: [techniques]
 tags: [insurance-distill, catboost, glm, radar, emblem, distillation, surrogate, factor-tables, uk-personal-lines]
-description: "An open-source Python library that distils GBM models into multiplicative GLM factor tables for Radar, Emblem, and other rating engines. The first open-source solution for the most common deployment problem in UK pricing."
+description: "Python library distilling CatBoost GBMs into multiplicative GLM factor tables for Radar and Emblem. Open-source GBM-to-GLM distillation for UK pricing teams."
 author: Burning Cost
 ---
 

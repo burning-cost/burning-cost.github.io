@@ -4,7 +4,7 @@ title: "Beyond Lognormal: Normalizing Flows for Insurance Severity Modelling"
 date: 2026-03-12
 categories: [libraries]
 tags: [normalizing-flows, severity, neural-spline-flow, tail-transform, student-t, ILF, TVaR, reinsurance, zuko, Hickling-Prangle, motor-BI, Python, insurance-nflow]
-description: "UK motor bodily injury severity is bimodal. A lognormal cannot represent this shape. insurance-nflow drops the family assumption entirely — Neural Spline Flows with a Student-t tail transform, built on zuko, with an actuarial API producing TVaR, ILF curves, and reinsurance layer costs."
+description: "Neural Spline Flows for bimodal UK motor BI severity - no family assumption. insurance-nflow: TVaR, ILF curves, reinsurance layer costs, fat-tail transform."
 post_number: 72
 ---
 

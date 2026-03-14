@@ -4,7 +4,7 @@ title: "Survival Models for Insurance Retention"
 date: 2026-03-11
 categories: [techniques, libraries]
 tags: [survival, retention, CLV, lifelines, cure-models, Consumer-Duty, GIPP, python, motor, home]
-description: "Why standard churn models fail for UK personal lines, and what to do instead. Introducing insurance-survival: covariate-adjusted cure models, survival-adjusted CLV, actuarial lapse tables, and MLflow deployment — the four things lifelines does not do for insurance."
+description: "Survival models for UK personal lines retention: cure models, survival-adjusted CLV, actuarial lapse tables, MLflow deployment. What lifelines does not do."
 ---
 
 The standard retention model for UK personal lines is a logistic GLM. Target variable: did the customer renew at their next anniversary, 1 or 0. Features: NCD level, tenure, premium change, payment method. Fit it, validate on a holdout set, read off renewal probabilities. Done.

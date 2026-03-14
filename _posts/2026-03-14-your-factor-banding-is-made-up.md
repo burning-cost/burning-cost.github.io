@@ -4,7 +4,7 @@ title: "Your Factor Banding Is Made Up"
 date: 2026-03-14
 categories: [pricing, libraries]
 tags: [GLM, factor-banding, R2VF, fused-lasso, territory, SKATER, embeddings, poisson, BIC, insurance-glm-tools, python]
-description: "Most actuaries band GLM factors by eye or quintile split, with no statistical justification. insurance-glm-tools automates this with R2VF fused lasso (BIC-selected), neural embeddings for high-cardinality categoricals, and SKATER spatial clustering for postcode territory grouping."
+description: "Automated GLM factor banding for UK insurance pricing: R2VF fused lasso, neural embeddings for high-cardinality categoricals, SKATER spatial clustering."
 ---
 
 Ask a pricing actuary how they grouped vehicle age into bands and the honest answer is usually: "We tried a few splits, looked at the fitted relativities, and picked something that looked reasonable." That is not a method. That is pattern-matching after the fact, and it produces factor tables that are neither statistically optimal nor reproducible.
