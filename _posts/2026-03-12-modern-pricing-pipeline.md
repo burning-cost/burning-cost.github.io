@@ -6,7 +6,7 @@ description: "A complete walkthrough of the modern pricing workflow — from dat
 tags: [pricing, python, pipeline, tutorial, databricks]
 ---
 
-*This post is vendor-agnostic: the decisions behind a modern Python pricing pipeline — from raw claims data to deployed model — using open-source tools that work on any infrastructure. If you are running on Databricks and want a Databricks-specific implementation with Unity Catalog, MLflow, and Radar export, read [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/).*
+*This post is the vendor-agnostic pipeline overview: decisions and tooling that apply regardless of compute environment. For a complete worked example on Databricks specifically — Unity Catalog, MLflow tracking, scheduled Jobs, and Radar export — see [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/).*
 
 
 The UK pricing team's standard toolkit has been largely unchanged for two decades: Emblem or Radar for GLMs, Excel for scenario management, SAS or bespoke R scripts for data manipulation, and periodic exports to whatever catastrophe model the reinsurer mandates. It works. But it has structural limits that become more painful as model complexity increases.

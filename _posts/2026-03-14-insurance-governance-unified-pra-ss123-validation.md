@@ -7,7 +7,7 @@ tags: [model-validation, model-risk-management, mrm, pra-ss123, fca-consumer-dut
 description: "We shipped two packages separately — insurance-validation for statistical reports, insurance-mrm for governance workflows. Teams were installing both, pinning them separately, and occasionally running them out of sync. insurance-governance merges both into one install."
 ---
 
-*This is a packaging announcement. We merged two previously separate packages — insurance-validation and insurance-mrm — into insurance-governance. If you want the full MRM methodology and PRA SS1/23 context, read [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/). This post covers what changed, why, and the integration behaviour that only works in the unified package.*
+*This post is the release note for the `insurance-governance` package merge. For a full walkthrough of the governance workflow — model inventory, risk tier scoring, and PRA SS1/23 executive reports — see [Model Risk Governance for UK Insurers](/2026/03/13/your-model-risk-register-is-a-spreadsheet/).*
 
 
 We made a mistake with our initial packaging.
