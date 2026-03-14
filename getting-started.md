@@ -578,45 +578,195 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
 <!-- Worked examples -->
 <div class="gs-examples">
   <h2>Worked Examples</h2>
-  <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains full worked examples that go beyond the quick-start.</p>
+  <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains 35 Databricks notebooks covering the full ecosystem. Each one installs its own dependencies, generates synthetic data, fits models, and benchmarks against a standard actuarial baseline. Browse the <a href="https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks" target="_blank">notebooks/ directory</a> or pick from the table below — sorted by library name.</p>
   <table class="gs-example-table">
     <thead>
       <tr>
-        <th>Example</th>
-        <th>What it covers</th>
+        <th>Library</th>
+        <th>What it shows</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Causal Rate Change Evaluation</td>
-        <td>SDID workflow for measuring the causal impact of a rate change</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/causal_rate_change_evaluation.py" target="_blank">view</a></td>
+        <td>bayesian-pricing</td>
+        <td>Hierarchical Bayesian vs raw experience on thin segments</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/bayesian_pricing_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>Price Elasticity Optimisation</td>
-        <td>DML elasticity estimation and ENBP-constrained renewal pricing</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/price_elasticity_optimisation.py" target="_blank">view</a></td>
+        <td>experience-rating</td>
+        <td>NCD stationary distribution, optimal claim threshold</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/experience_rating_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>Conformal Prediction Intervals</td>
-        <td>Distribution-free prediction intervals for Tweedie models</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/conformal_prediction_intervals.py" target="_blank">view</a></td>
+        <td>insurance-causal</td>
+        <td>DML causal effect vs naive Poisson GLM on confounded data</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_causal_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>Champion/Challenger Deployment</td>
+        <td>insurance-causal-policy</td>
+        <td>SDID rate change evaluation with event study and HonestDiD</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/causal_rate_change_evaluation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-conformal</td>
+        <td>Tweedie conformal intervals vs bootstrap on 50k motor</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/conformal_prediction_intervals.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-conformal-ts</td>
+        <td>ACI/SPCI vs split conformal on non-exchangeable time series</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_conformal_ts_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-covariate-shift</td>
+        <td>Importance-weighted evaluation after distribution shift</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_covariate_shift_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-credibility</td>
+        <td>Bühlmann-Straub credibility vs raw experience on 30 segments</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_credibility_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-cv</td>
+        <td>Random CV vs temporal CV vs true OOT holdout</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/temporal_cross_validation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-demand</td>
+        <td>Conversion/retention, DML elasticity, GIPP-constrained optimiser</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_demand_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-deploy</td>
         <td>Shadow mode, quote logging, bootstrap LR test, ENBP audit</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/champion_challenger_deployment.py" target="_blank">view</a></td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/champion_challenger_deployment.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>Model Drift Monitoring</td>
-        <td>Exposure-weighted PSI/CSI, Gini drift z-test, quarterly governance</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/examples/model_drift_monitoring.py" target="_blank">view</a></td>
+        <td>insurance-dispersion</td>
+        <td>DGLM vs constant-phi Gamma GLM, per-risk volatility scoring</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_dispersion_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-distributional</td>
+        <td>Distributional GBM (TweedieGBM) vs standard point predictions</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distributional_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-distributional-glm</td>
+        <td>GAMLSS vs standard Gamma GLM on heterogeneous-variance data</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distributional_glm_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-dynamics</td>
+        <td>GAS Poisson filter vs static GLM, BOCPD changepoint detection</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_dynamics_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-elasticity</td>
+        <td>DML elasticity, ENBP-constrained optimiser, efficient frontier</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/price_elasticity_optimisation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-fairness</td>
+        <td>Proxy discrimination audit, bias metrics, Lindholm correction</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/fairness_audit_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-frequency-severity</td>
+        <td>Sarmanov copula joint freq-sev vs independence assumption</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_frequency_severity_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-gam</td>
+        <td>EBM/ANAM vs Poisson GLM with planted non-linear effects</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_gam_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-glm-tools</td>
+        <td>Nested GLM embeddings for 500 vehicle makes vs dummy-coded GLM</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_glm_tools_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-governance</td>
+        <td>PRA SS1/23 validation workflow, MRM risk tiering, HTML report</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_governance_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-interactions</td>
+        <td>CANN/NID interaction detection vs exhaustive pairwise GLM search</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_interactions_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-monitoring</td>
+        <td>Exposure-weighted PSI/CSI, A/E ratios, Gini drift z-test</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-multilevel</td>
+        <td>CatBoost + REML random effects vs one-hot encoding</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_multilevel_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-optimise</td>
+        <td>SLSQP constrained optimisation, efficient frontier, FCA audit</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_optimise_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-quantile</td>
+        <td>CatBoost quantile regression vs lognormal, TVaR, ILF curves</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_quantile_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-severity</td>
+        <td>Spliced Lognormal-GPD + DRN vs Gamma GLM, tail quantiles</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_severity_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-spatial</td>
+        <td>BYM2 territory factors vs postcode grouping, Moran's I</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/spatial_territory_ratemaking.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-survival</td>
+        <td>Cure models vs KM/Cox PH, CLV bias by cure band</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_survival_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-synthetic</td>
+        <td>Vine copula generation, fidelity report, TSTR benchmarks</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/synthetic_portfolio_generation.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-telematics</td>
+        <td>HMM latent-state features vs raw trip aggregates</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_telematics_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-thin-data</td>
+        <td>GLMTransfer + TabPFN vs raw GLM on thin segments</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_thin_data_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-trend</td>
+        <td>Automated trend selection vs naive OLS, structural breaks</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_trend_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-whittaker</td>
+        <td>W-H smoothing with REML lambda vs manual step smoothing</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_whittaker_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>shap-relativities</td>
+        <td>CatBoost relativities vs GLM vs true DGP on synthetic motor</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/shap_relativities_demo.py" target="_blank">view</a></td>
       </tr>
     </tbody>
   </table>
-  <p class="gs-examples-note" style="font-style: normal;"><strong>Databricks notebooks:</strong> Import-ready versions of these examples are available in the <a href="https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks">notebooks/</a> directory. They use <code>%pip install</code> and run on Databricks Free Edition serverless compute.</p>
-  <p class="gs-examples-note">Each example generates synthetic data inline — no external files needed. Install the relevant library and run.</p>
+  <p class="gs-examples-note" style="font-style: normal;"><strong>How to run:</strong> Import any notebook into Databricks via <code>databricks workspace import notebooks/&lt;name&gt;.py /Workspace/Users/you@example.com/&lt;name&gt; --language PYTHON --overwrite</code>, or drag-and-drop the <code>.py</code> file in the Databricks UI. Notebooks use <code>%pip install</code> cells and run on Databricks Free Edition serverless compute — no cluster setup needed.</p>
+  <p class="gs-examples-note">Each notebook generates synthetic data inline — no external files needed. Install the relevant library and run.</p>
 </div>
 
 <div class="gs-next">
