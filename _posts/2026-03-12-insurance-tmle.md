@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Propensity Model Is Wrong. TMLE Doesn't Mind."
+title: "Doubly Robust Causal Inference for Insurance: TMLE With Poisson Outcomes"
 date: 2026-03-12
 categories: [libraries, causal-inference, pricing]
 tags: [TMLE, targeted-learning, doubly-robust, SuperLearner, EIF, Poisson, causal-inference, DML, price-elasticity, insurance-tmle, python, motor, telematics]
@@ -300,4 +300,4 @@ TMLE is not strictly better than DML in all cases. For large portfolios with wel
 **Related reading:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) — DML-based causal elasticity estimation; the right tool when your outcome model is well-specified and the propensity model is less critical
 - [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/) — the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
-- [Your Rate Change Analysis Is Averaging Over the Wrong Thing](/2026/03/12/insurance-bcf/) — Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect
+- [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect

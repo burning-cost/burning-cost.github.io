@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Model Doesn't Know What Book It's On"
+title: "Correcting for Covariate Shift When You Acquire an MGA Book"
 date: 2026-03-13
 categories: [libraries, model-validation, pricing]
 tags: [covariate-shift, density-ratio, conformal-prediction, catboost, m-and-a, fca, python]
@@ -180,4 +180,4 @@ The library is on GitHub at [burning-cost/insurance-covariate-shift](https://git
 **Related reading:**
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the related problem of temporal leakage in model evaluation; covariate shift and temporal leakage are the two main reasons a model's training accuracy exceeds its live accuracy
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals; the LR-QR method in insurance-covariate-shift extends this to the shifted-distribution case
-- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/13/insurance-monitoring/) — ongoing monitoring for the performance degradation that covariate shift causes in deployed models
+- [Three-Layer Pricing Model Monitoring: What PSI and A/E Ratios Miss](/2026/03/13/insurance-monitoring/) — ongoing monitoring for the performance degradation that covariate shift causes in deployed models

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Trend Line Has No Error Bars"
+title: "GARCH for Claims Inflation: Modelling Volatility That Clusters"
 date: 2026-03-12
 categories: [libraries, pricing, uncertainty]
 tags: [GARCH, GJR-GARCH, claims-inflation, volatility, PRA, motor, home, time-series, bootstrap, backtesting, python, insurance-garch]
@@ -108,5 +108,5 @@ The pricing committee slide with a single trend line is still going to exist. Bu
 
 **Related reading:**
 - [Trend Selection Is Not Actuarial Judgment: A Python Approach](/2026/03/13/insurance-trend/) — GLM-based trend models for the structural component; GARCH captures the volatility around that trend
-- [Your Trend Estimate Has No Likelihood](/2026/03/13/insurance-gas/) — GAS models as an alternative to GARCH when you want a score-driven filter rather than a conditional variance model
+- [GAS Models for Claims Inflation: Trend Estimation With a Likelihood](/2026/03/13/insurance-gas/) — GAS models as an alternative to GARCH when you want a score-driven filter rather than a conditional variance model
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — before fitting any trend or volatility model, test whether the series has had a structural break that invalidates the stationarity assumption

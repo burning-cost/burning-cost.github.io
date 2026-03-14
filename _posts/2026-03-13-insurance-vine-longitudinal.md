@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your NCD System Throws Away 95% of the Information in a Policyholder's Claim History"
+title: "D-Vine Copulas for Longitudinal Claim Histories: What NCD Discards"
 date: 2026-03-13
 categories: [libraries, experience-rating, copula]
 tags: [d-vine-copula, ncd, experience-rating, longitudinal, temporal-dependence, python, pyvinecopulib]

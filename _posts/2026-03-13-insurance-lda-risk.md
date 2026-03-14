@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Portfolio Segments Are Lying to You"
+title: "Soft Portfolio Segmentation with LDA: Detecting Adverse Selection After a Rate Change"
 date: 2026-03-13
 categories: [libraries, segmentation, portfolio-management]
 tags: [lda, topic-modelling, soft-clustering, portfolio-drift, adverse-selection, python]

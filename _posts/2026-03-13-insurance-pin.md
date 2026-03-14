@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Actuarial Committee Can't Review a GBM. It Can Review This."
+title: "Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table"
 date: 2026-03-13
 categories: [libraries, pricing, interpretability]
 tags: [insurance-pin, neural-ga2m, interpretability, fca-consumer-duty, pairwise-interactions, pytorch, french-mtpl]

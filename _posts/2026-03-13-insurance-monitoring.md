@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Pricing Model is Drifting (and You Probably Can't Tell)"
+title: "Three-Layer Pricing Model Monitoring: What PSI and A/E Ratios Miss"
 date: 2026-03-13
 categories: [libraries, pricing, model-monitoring]
 tags: [drift, PSI, CSI, Gini, A-E-ratio, model-monitoring, concept-drift, motor, insurance-monitoring, python, polars]

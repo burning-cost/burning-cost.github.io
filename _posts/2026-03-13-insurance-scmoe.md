@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Postcode Factor Is Hiding Risk Types, Not Just Risk Levels"
+title: "SC-MoE: Spatially Coherent Risk Type Discovery for Geographic Motor Pricing"
 date: 2026-03-13
 author: Burning Cost
 categories: [libraries]

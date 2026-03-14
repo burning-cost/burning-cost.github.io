@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your GLM's Prediction Intervals Are Wrong (and We Can Prove It)"
+title: "Conformal Prediction Intervals for Claims: Why the GLM Achieves 57.8% at the 99.5th Percentile"
 date: 2026-03-13
 categories: [libraries, conformal-prediction, solvency]
 tags: [conformal-prediction, glm, tweedie, solvency-ii, scr, insurance-claims, python, catboost]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Most Recent Experience Data Is Wrong, and Aggregate Factors Won't Fix It"
+title: "Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book"
 date: 2026-03-13
 categories: [libraries, pricing, reserving]
 tags: [nowcasting, IBNR, EM-algorithm, XGBoost, reporting-delay, completion-factors, frequency-GLM, insurance-nowcast, python, poisson, multinomial]

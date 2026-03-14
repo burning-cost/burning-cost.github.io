@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Multi-Peril Home Pricing Is Wrong: The Flood-Subsidence Correlation You Are Ignoring"
+title: "Vine Copulas for Multi-Peril Home: The Flood-Subsidence Correlation That Costs 9% in Mispriced Revenue"
 date: 2026-03-12
 categories: [libraries, pricing, dependence, home-insurance]
 tags: [vine-copula, pyvinecopulib, multi-peril, flood, subsidence, escape-of-water, correlation, PML, copula, dependence, home-insurance, clay-soil, pair-copula, insurance-copula, python, BIC, conditional-pricing, monte-carlo]

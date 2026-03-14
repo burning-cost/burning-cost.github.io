@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Claims Forecast Interval Is Wrong. Here Is Why."
+title: "Distribution-Free Forecast Intervals for Claims Time Series: Five Methods, One That Works"
 date: 2026-03-12
 categories: [libraries, pricing, conformal-prediction]
 tags: [conformal-prediction, time-series, claims-forecasting, ARIMA, MSCP, ACI, SPCI, PID, EnbPI, Poisson, pricing, insurance-conformal-ts]

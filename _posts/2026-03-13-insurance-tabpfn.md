@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Thin Segment Has 200 Policies. Your GLM Has No Idea What to Do With Them."
+title: "Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing"
 date: 2026-03-13
 categories: [libraries, pricing, foundation-models]
 tags: [TabPFN, TabICLv2, foundation-model, thin-data, in-context-learning, GLM, conformal-prediction, relativities, benchmark, Gini, python, insurance-thin-data]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Prediction Intervals Are Right Nationally. They Are Wrong in Hackney."
+title: "Spatially Weighted Conformal Prediction: National Coverage Hides the Problem in Hackney"
 date: 2026-03-29
 categories: [libraries, conformal-prediction, geospatial]
 tags: [conformal-prediction, spatial-statistics, uncertainty-quantification, home-insurance, fca-consumer-duty, python]

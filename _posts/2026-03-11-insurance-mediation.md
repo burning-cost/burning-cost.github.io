@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Postcode Premium Isn't Discriminatory. Probably. Can You Prove It?"
+title: "Causal Mediation Analysis for Postcode Pricing: Separating Legitimate Risk from Proxy Discrimination"
 date: 2026-03-11
 categories: [libraries, pricing, fairness, causal-inference]
 tags: [mediation-analysis, CDE, NDE, NIE, causal-fairness, FCA, CP22-9, proxy-discrimination, IMD, postcode, Imai, VanderWeele, E-value, sensitivity-analysis, Poisson, Gamma, Tweedie, GLM, insurance-mediation, python]

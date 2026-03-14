@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Retention Campaign Has No Targeting Rule"
+title: "Uplift Modelling for Renewal Pricing: Who Actually Responds to a Discount"
 date: 2026-03-11
 categories: [libraries, pricing, causal]
 tags: [uplift-modelling, HTE, CATE, retention, renewal, CausalForestDML, Qini, AUUC, Consumer-Duty, ENBP, GIPP, PS21-5, insurance-uplift, python, EconML]

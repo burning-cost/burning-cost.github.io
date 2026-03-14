@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Pricing Model Is Discriminating. Here's Which Factor Is Doing It."
+title: "Quantifying Proxy Discrimination in Your Tariff: D_proxy, Shapley, and the FCA's Actual Question"
 date: 2026-03-10
 categories: [libraries, compliance]
 tags: [fairness, proxy-discrimination, D-proxy, Shapley, FCA, Consumer-Duty, EP25/2, Equality-Act, LRTW, Owen, Côté, Charpentier, insurance-fairness, motor, python]

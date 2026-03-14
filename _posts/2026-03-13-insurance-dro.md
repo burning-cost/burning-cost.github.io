@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Rate Optimiser Has No Safety Margin"
+title: "Robust Rate Optimisation: Pricing Against Demand Model Misspecification"
 date: 2026-03-13
 categories: [libraries, pricing, optimisation]
 tags: [dro, distributionally-robust-optimisation, wasserstein, ambiguity-set, price-of-robustness, rate-optimisation, demand-model, FCA, PS21/5, ENBP, cvxpy, insurance-dro, python, motor, home, renewal-pricing]

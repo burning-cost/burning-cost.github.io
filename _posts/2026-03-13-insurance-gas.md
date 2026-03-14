@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Trend Estimate Has No Likelihood"
+title: "GAS Models for Claims Inflation: Trend Estimation With a Likelihood"
 date: 2026-03-13
 categories: [libraries, pricing, trends]
 tags: [GAS, generalised-autoregressive-score, trend, frequency, severity, loss-ratio, Poisson, Gamma, Beta, time-series, observation-driven, MLE, PRA, claims-inflation, insurance-dynamics, python]
@@ -167,4 +167,4 @@ That is what a likelihood buys you. A moving average does not have one.
 **Related reading:**
 - [Trend Selection Is Not Actuarial Judgment: A Python Approach](/2026/03/13/insurance-trend/) — GLM-based trend fitting with bootstrap confidence intervals for use in pricing sign-off; the complement to GAS for the structural trend component
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — Bayesian change-point detection for identifying when the regime shifted before fitting any trend model
-- [Your Peril Forecasts Don't Add Up](/2026/03/11/your-peril-forecasts-dont-add-up/) — hierarchical reconciliation of frequency and severity trends across perils; the forecasting layer that GAS estimates feed into
+- [MinTrace Reconciliation for Insurance Pricing Hierarchies](/2026/03/11/your-peril-forecasts-dont-add-up/) — hierarchical reconciliation of frequency and severity trends across perils; the forecasting layer that GAS estimates feed into

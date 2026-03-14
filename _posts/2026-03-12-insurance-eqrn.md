@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your EVT Model Has One Tail. EQRN Has One Per Risk."
+title: "EQRN: Covariate-Dependent Extreme Value Modelling for XL Pricing and Tail Reserving"
 date: 2026-03-12
 categories: [libraries, pricing, severity, reinsurance]
 tags: [EVT, extreme-value-theory, GPD, neural-networks, extreme-quantile, EQRN, covariate-dependent, tail-modelling, XL-pricing, reinsurance, Solvency-II, TPBI, motor, insurance-quantile, python, pytorch]

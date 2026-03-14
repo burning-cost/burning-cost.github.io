@@ -199,6 +199,6 @@ Tian and Feng (JASA, 2023, 118(544), 2684–2697) is the core reference for `GLM
 
 **Related articles from Burning Cost:**
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Thin Segment Has 200 Policies. Your GLM Has No Idea What to Do With Them.](/2026/03/13/insurance-tabpfn/)
+- [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/)

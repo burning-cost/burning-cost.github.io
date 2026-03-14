@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Peril Forecasts Don't Add Up"
+title: "MinTrace Reconciliation for Insurance Pricing Hierarchies"
 date: 2026-03-11
 categories: [libraries, pricing, forecasting]
 tags: [reconciliation, MinTrace, hierarchical-forecasting, loss-cost, earned-premium, frequency-severity, coherence, Wickramasuriya, GLS, WLS, insurance-reconcile, python, motor, home, peril-tree]
@@ -349,7 +349,7 @@ pip install 'insurance-reconcile[mintrace]'
 ---
 
 **Related articles from Burning Cost:**
-- [Your Trend Estimate Has No Likelihood](/2026/03/13/insurance-gas/) — GAS models for adaptive frequency and severity trend estimation
+- [GAS Models for Claims Inflation: Trend Estimation With a Likelihood](/2026/03/13/insurance-gas/) — GAS models for adaptive frequency and severity trend estimation
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
 - [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/) — GLM-based trend with structural break detection and ONS index integration
 

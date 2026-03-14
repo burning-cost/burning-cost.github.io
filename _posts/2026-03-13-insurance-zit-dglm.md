@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Tweedie Model Doesn't Know About Strategic Non-Claimers"
+title: "Strategic Non-Claimers and the Zero-Inflation Problem in UK Motor: ZIT-DGLM"
 date: 2026-03-13
 categories: [libraries, tweedie, zero-inflation, pricing]
 tags: [tweedie, zero-inflation, catboost, gradient-boosting, ncd, dispersion, em-algorithm, python]

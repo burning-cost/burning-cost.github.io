@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Frequency × Severity Model Is Multiplying the Wrong Things"
+title: "Frequency-Severity Dependence in UK Motor: A Shared-Trunk Neural Architecture"
 date: 2026-03-13
 author: Burning Cost
 categories: [pricing, machine-learning, libraries]
@@ -174,6 +174,6 @@ Start with the diagnostic. If `dependence_test()` does not reject γ = 0 and `vs
 
 **Related articles from Burning Cost:**
 - [Sarmanov Copulas for Frequency-Severity Dependence](/insurance-frequency-severity/)
-- [Your Tweedie Model Doesn't Know About Strategic Non-Claimers](/2026/03/13/insurance-zit-dglm/)
+- [Strategic Non-Claimers and the Zero-Inflation Problem in UK Motor: ZIT-DGLM](/2026/03/13/insurance-zit-dglm/)
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Rate Change Analysis Is Averaging Over the Wrong Thing"
+title: "Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity"
 date: 2026-03-12
 categories: [libraries, pricing, causal-inference]
 tags: [BCF, bayesian-causal-forest, BART, CATE, heterogeneous-treatment-effects, stochtree, price-elasticity, FCA, EP25-2, RIC, MCMC, propensity, observational-data, UK-motor, insurance-bcf, python]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Age-25 Premium Cliff Has No Causal Evidence"
+title: "Does the Risk Actually Drop at 25? Using Regression Discontinuity to Test Your Age Threshold"
 date: 2026-03-11
 categories: [libraries, pricing, causal-inference]
 tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, postcode, FCA, Consumer-Duty, Poisson, GLM, geographic-RDD, insurance-rdd, python]
