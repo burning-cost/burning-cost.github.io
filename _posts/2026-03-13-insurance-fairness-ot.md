@@ -5,6 +5,7 @@ date: 2026-03-13
 categories: [libraries, pricing, fairness]
 tags: [fairness, discrimination, optimal-transport, Wasserstein, Lindholm, marginalisation, FCA, EP25/2, consumer-duty, proxy-discrimination, insurance-fairness, python, motor]
 description: "The FCA's EP25/2 consultation set out a coherent framework for discrimination-free pricing. The underlying mathematics — Lindholm marginalisation and Wasserstein barycenters — had no open-source Python implementation. insurance-fairness fixes that."
+canonical_url: "https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/"
 ---
 
 The FCA's CP23/22 and subsequent EP25/2 established that insurers must be able to demonstrate their pricing does not unfairly discriminate against protected characteristics — and that proxy discrimination through correlated variables counts. The regulatory intent is clear. The technical implementation is not.

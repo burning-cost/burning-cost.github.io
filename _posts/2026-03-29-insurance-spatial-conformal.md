@@ -208,3 +208,10 @@ pip install insurance-spatial-conformal
 ```
 
 Source: [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
+
+---
+
+**Related articles from Burning Cost:**
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [Spatial Territory Ratemaking with BYM2: Getting It Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/)
+- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/)

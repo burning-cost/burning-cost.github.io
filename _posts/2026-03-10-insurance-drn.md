@@ -5,6 +5,7 @@ date: 2026-03-10
 categories: [libraries, pricing, capital]
 tags: [distributional-regression, neural-networks, GLM, DRN, tail-risk, solvency-ii, ifrs-17, reinsurance, crps, python, insurance-severity]
 description: "Your GLM predicts a mean. DRN refines it into a full predictive distribution — per risk, per policy, with parametric tails for the extremes that matter for capital and reinsurance. insurance-severity implements Avanzi et al. (2024) with production training, vectorised inference, and actuarial validation tooling."
+canonical_url: "https://burning-cost.github.io/2026/03/10/distributional-refinement-network-insurance/"
 ---
 
 Your GLM predicts that a young driver with a sports car has an expected annual severity of £4,200. It predicts that a 45-year-old driving a family saloon has an expected severity of £2,100. The mean is 2:1. Fine. That is what GLMs are built to estimate.
