@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Spatially Weighted Conformal Prediction: National Coverage Hides the Problem in Hackney"
-date: 2026-03-29
+date: 2026-03-13
 categories: [libraries, conformal-prediction, geospatial]
 tags: [conformal-prediction, spatial-statistics, uncertainty-quantification, home-insurance, fca-consumer-duty, python]
-description: "Standard conformal prediction gives you 90% national coverage. In flood-prone inner-city postcodes it gives you 73%. In rural Devon it gives you 96%. This is not a statistical technicality — it is a pricing and regulatory problem. insurance-spatial-conformal fixes it."
+description: "Standard conformal prediction gives you 90% national coverage. In flood-prone inner-city postcodes it gives you 73%. In rural Devon it gives you 96%. This is not a statistical technicality — it is a pricing and regulatory problem. insurance-spatial fixes it."
 ---
 
 There is a standard answer in the prediction interval literature to the question "are your intervals calibrated?" The answer involves computing empirical coverage on a hold-out set, confirming it is near the nominal level, and declaring the job done.
@@ -32,9 +32,9 @@ Hjort, Jullum, and Loland formalised this in arXiv:2312.06531 (published in the 
 [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) implements spatially weighted conformal prediction for insurance pricing models. Install it:
 
 ```bash
-pip install insurance-spatial-conformal
+pip install insurance-spatial
 # or
-uv add insurance-spatial-conformal
+uv add insurance-spatial
 ```
 
 Four components do the work:
@@ -57,7 +57,7 @@ Suppose you have a home insurance claims model — a GBM with log-link fitted on
 
 ```python
 import pandas as pd
-from insurance_spatial_conformal import (
+from insurance_spatial.conformal import (
     SpatialConformalPredictor,
     TweediePearsonScore,
     BandwidthSelector,
@@ -173,7 +173,7 @@ MAPIE (v1.x, 2024) is the standard Python library for conformal prediction. It h
 
 For a home insurance model, feature-space weighting and geographic weighting are related but not identical. Two properties in different flood zones might have identical feature vectors (same age, same sum insured, same construction type) but very different residual variances because one is in a river valley and one is not. Geographic weighting captures this; feature-space weighting cannot.
 
-MAPIE also has no insurance-specific non-conformity scores. `TweediePearsonScore` is not available there. You could implement it manually in MAPIE's `ConformityScore` interface, but you would then still need to add geographic weighting on top. `insurance-spatial-conformal` combines both.
+MAPIE also has no insurance-specific non-conformity scores. `TweediePearsonScore` is not available there. You could implement it manually in MAPIE's `ConformityScore` interface, but you would then still need to add geographic weighting on top. `insurance-spatial` combines both.
 
 ---
 
@@ -204,7 +204,7 @@ The actuarial argument for this is the same argument actuaries have always made 
 [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) implements Hjort et al. (arXiv:2312.06531, IJDSA 2025) in Python, with Tweedie non-conformity scores from Manna et al. (arXiv:2507.06921, 2025) and the weighted conformal framework of Tibshirani et al. (arXiv:1904.06019, NeurIPS 2019). 150 tests passing. Dependencies: scikit-learn, numpy, pandas, scipy, pgeocode, matplotlib.
 
 ```bash
-pip install insurance-spatial-conformal
+pip install insurance-spatial
 ```
 
 Source: [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
