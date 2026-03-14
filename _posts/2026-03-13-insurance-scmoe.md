@@ -265,7 +265,7 @@ We have now built several libraries that touch on related problems, and the dist
 
 [`insurance-nested-glm`](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/) handles high-cardinality categorical variables — vehicle make, postcode sector — by learning embeddings and then fitting a standard GLM. The output is a GLM relativity table. SC-MoE produces class membership probabilities and class-specific distributional parameters. They are solving different problems.
 
-[`insurance-glm-cluster`](/2026/03/13/insurance-glm-cluster/) collapses factor levels within an existing GLM framework. It is not a mixture model and does not discover latent types.
+[`insurance-glm-tools`](/2026/03/13/insurance-glm-cluster/) collapses factor levels within an existing GLM framework. It is not a mixture model and does not discover latent types.
 
 [`insurance-frequency-severity`](/2026/03/12/insurance-frequency-severity/) captures frequency-severity dependency via a global Sarmanov copula: one copula structure, one correlation parameter, across the whole book. SC-MoE captures it locally — within each of K classes — which allows the dependency structure to vary by risk type. Both are improvements on the standard two-GLM approach that assumes independence. They are not direct substitutes: Sarmanov is faster, simpler, and more auditable; SC-MoE is more flexible but substantially harder to explain to a pricing committee.
 
