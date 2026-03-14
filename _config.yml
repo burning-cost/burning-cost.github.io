@@ -1,5 +1,5 @@
 title: "Burning Cost"
-description: "On the forefront of machine learning and data science research in UK personal lines insurance. Helping teams adopt best practice, best-in-class tooling, and Databricks."
+description: "Open-source Python libraries for UK personal lines insurance pricing - SHAP relativities, causal inference, conformal prediction, spatial ratemaking, FCA compliance tools, PRA SS1/23 validation. 36 packages on PyPI with Databricks notebooks."
 baseurl: ""
 url: "https://burning-cost.github.io"
 
