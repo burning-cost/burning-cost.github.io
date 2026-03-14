@@ -76,7 +76,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-severity",
-      "description": "Severity modelling toolkit for UK non-life insurance.",
+      "description": "Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling.",
       "codeRepository": "https://github.com/burning-cost/insurance-severity",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -268,7 +268,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-datasets",
-      "description": "Synthetic UK motor data with a known data-generating process, for testing and teaching.",
+      "description": "Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data.",
       "codeRepository": "https://github.com/burning-cost/insurance-datasets",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -302,7 +302,7 @@ permalink: /tools/
 </script>
 
 <div class="tools-intro">
-  <p>35 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
+  <p>36 open-source Python libraries covering the full pricing stack — from GLM tooling and severity modelling through to causal inference, conformal prediction, and FCA regulatory compliance.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
@@ -432,7 +432,7 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm) | GAMLSS for Python — model all distribution parameters as functions of covariates, seven families |
 | [insurance-dispersion](https://github.com/burning-cost/insurance-dispersion) | Double GLM for joint mean-dispersion modelling — alternating IRLS, REML, actuarial factor tables |
 | [insurance-quantile](https://github.com/burning-cost/insurance-quantile) | Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors |
-| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Severity modelling toolkit for UK non-life insurance |
+| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling |
 
 </div>
 
@@ -546,7 +546,7 @@ Inflation, reporting delays, and dynamic pricing.
 | [insurance-survival](https://github.com/burning-cost/insurance-survival) | Survival models — cure models, customer lifetime value, lapse tables, MLflow wrapper |
 | [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data |
 | [insurance-synthetic](https://github.com/burning-cost/insurance-synthetic) | Vine copula synthetic portfolio generation — exposure-aware, preserves multivariate dependence |
-| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor data with a known data-generating process, for testing and teaching |
+| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data |
 
 </div>
 

@@ -349,7 +349,6 @@ pip install 'insurance-reconcile[mintrace]'
 ---
 
 **Related articles from Burning Cost:**
-- [GAS Models for Claims Inflation: Trend Estimation With a Likelihood](/2026/03/13/insurance-gas/) — GAS models for adaptive frequency and severity trend estimation
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
 - [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/) — GLM-based trend with structural break detection and ONS index integration
 

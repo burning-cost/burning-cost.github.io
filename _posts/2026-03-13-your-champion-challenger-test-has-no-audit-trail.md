@@ -391,5 +391,5 @@ The 29-month timeline to LR significance is real and worth knowing about. Teams 
 
 **Related reading:**
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the governance layer that a champion/challenger result needs to feed into
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/13/insurance-validation/) — the independent validation documentation that sits alongside deployment records
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the independent validation documentation that sits alongside deployment records
 - [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — once the challenger is promoted and rates change, this is how to measure whether the change delivered the intended effect

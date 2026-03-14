@@ -207,6 +207,4 @@ We think there is real signal in UK motor and household data. If your pricing te
 
 ## See also
 
-- [500 Vehicle Makes, One Afternoon, Zero Reproducibility](/2026/03/13/insurance-glm-cluster/) — `insurance-glm-tools` for factor level banding: the complement to threshold analysis when the problem is too many levels rather than gaming at the boundaries between them.
-- [Quantifying Proxy Discrimination in Your Tariff: D_proxy, Shapley, and the FCA's Actual Question](/2026/03/10/insurance-fairness-diag/) — `insurance-fairness` for proxy discrimination diagnostics: where bunching detects gaming at pricing thresholds, fairness diagnostics detect when those same factors act as proxies for protected characteristics.
 - [Your champion/challenger test has no audit trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — `insurance-deploy` for structured model deployment: once you have identified and corrected for threshold gaming, getting the updated model into production with sign-off and rollback.

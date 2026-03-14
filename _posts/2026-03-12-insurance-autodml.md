@@ -292,4 +292,3 @@ The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)
 - [Your Rating Factor Might Be Confounded](/2026/03/05/your-rating-factor-might-be-confounded/)
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
-- [Uplift Modelling for Insurance Retention: Finding Who to Save](/2026/03/11/insurance-uplift/)

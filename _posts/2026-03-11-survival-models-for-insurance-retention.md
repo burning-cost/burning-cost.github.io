@@ -266,6 +266,4 @@ The R survival community has had covariate-adjusted cure models in `flexsurvcure
 ---
 
 **Related articles from Burning Cost:**
-- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/11/your-renewal-pricing-is-flying-blind/)
-- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

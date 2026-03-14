@@ -51,7 +51,7 @@ The practical upshot: the residualised treatment `D_tilde` is the part of the pr
 
 ## The full pipeline: conversion, retention, elasticity, demand curve
 
-`insurance-optimise` implements this as four connected components. For the full `ConversionModel` and `RetentionModel` setup — including the `price_transform="log_ratio"` choice, the PCW rank position features, and CLV survival modelling — see [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/). What follows here is the causal estimation layer that sits on top of those base models.
+`insurance-optimise` implements this as four connected components. For the full `ConversionModel` and `RetentionModel` setup. What follows here is the causal estimation layer that sits on top of those base models.
 
 ### Debiased elasticity estimation
 
@@ -224,5 +224,3 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-o
 
 **Related articles from Burning Cost:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
-- [Causal Elasticity Estimation for Renewal Pricing](/2026/03/11/your-renewal-pricing-is-flying-blind/)
-- [Demand Modelling for Insurance Pricing](/2026/02/25/demand-modelling-for-insurance-pricing/)

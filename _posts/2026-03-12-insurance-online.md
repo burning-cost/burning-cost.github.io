@@ -90,7 +90,7 @@ arm = exp.select_arm(
 # arm is 0, 1, or 2 — apply the loading from config.arm_loadings[arm]
 ```
 
-When the outcome is known — typically at bind, or at renewal for a frequency experiment:
+When the outcome is known (typically at bind, or at renewal for a frequency experiment):
 
 ```python
 exp.record_outcome(
@@ -108,7 +108,7 @@ report = ComplianceReport(exp, audit_log=audit)
 report.to_html("motor_nb_load_001_compliance.html")
 ```
 
-The HTML report is deliberately conservative in styling — it will print cleanly and survive being emailed to your compliance team as an attachment.
+The HTML report is deliberately conservative in styling. It will print cleanly and survive being emailed to your compliance team as an attachment.
 
 ---
 
@@ -116,15 +116,15 @@ The HTML report is deliberately conservative in styling — it will print cleanl
 
 Three policies cover the practical range of needs.
 
-**Thompson Sampling** is our recommendation for most experiments. It uses conjugate priors — Beta-Bernoulli for conversion rate, Gamma-Poisson for claim frequency. At each selection, it samples from each arm's current posterior distribution and picks the arm with the highest sampled value. Arms with wide posteriors (few observations) get explored; arms with narrow posteriors that are clearly worse get de-prioritised. It is Bayesian in the right sense: uncertainty drives exploration, and exploration reduces as evidence accumulates.
+**Thompson Sampling** is our recommendation for most experiments. It uses conjugate priors: Beta-Bernoulli for conversion rate, Gamma-Poisson for claim frequency. At each selection, it samples from each arm's current posterior distribution and picks the arm with the highest sampled value. Arms with wide posteriors (few observations) get explored; arms with narrow posteriors that are clearly worse get de-prioritised. It is Bayesian in the right sense: uncertainty drives exploration, and exploration reduces as evidence accumulates.
 
 The Beta-Bernoulli update is the simplest. A bind is `alpha += 1`; a no-bind is `beta += 1`. After 200 quotes on an arm that's been converting at 15%, the posterior is approximately Beta(31, 171). Sampling from that distribution rarely produces values above 0.2, so the algorithm won't waste quotes on arms that have clearly lost.
 
-The Gamma-Poisson model is for frequency experiments. You're not trying to maximise conversion — you're trying to identify the loading band that attracts the best-risk business. After observing `n` claims over `e` policy years on an arm, the posterior rate becomes Gamma(alpha_0 + n, beta_0 + e). For frequency, Thompson Sampling picks the arm with the *minimum* sampled rate — the arm that looks like it attracts lower-frequency risk.
+The Gamma-Poisson model is for frequency experiments. You're not trying to maximise conversion. You're trying to identify the loading band that attracts the best-risk business. After observing `n` claims over `e` policy years on an arm, the posterior rate becomes Gamma(alpha_0 + n, beta_0 + e). For frequency, Thompson Sampling picks the arm with the *minimum* sampled rate — the arm that looks like it attracts lower-frequency risk.
 
 **UCB1** (Auer, Cesa-Bianchi & Fischer 2002) is the deterministic alternative. It scores each arm as `mu_hat(a) + alpha * sqrt(2 * ln(t) / n(a))` — empirical mean plus an exploration bonus that shrinks as the arm accumulates observations. It is easier to explain to a compliance team because it is deterministic: given the same data, it always makes the same selection. The default `alpha=1.0` is the theoretically motivated choice.
 
-**Epsilon-greedy** exists as a sanity-check baseline. Before committing to Thompson or UCB, run epsilon-greedy for a few weeks to verify that your reward signal is sensible. If epsilon-greedy cannot identify a best arm after 500 observations, the reward definition needs revisiting — not the algorithm.
+**Epsilon-greedy** exists as a sanity-check baseline. Before committing to Thompson or UCB, run epsilon-greedy for a few weeks to verify that your reward signal is sensible. If epsilon-greedy cannot identify a best arm after 500 observations, the reward definition needs revisiting. Not the algorithm.
 
 ---
 
@@ -148,7 +148,7 @@ Setting `max_enbp_ratio=1.0` is the correct value for full ICOBS 6B.2.51R compli
 
 **Cold start.** In the first few observations on each arm, the posteriors are wide and the algorithm explores roughly uniformly. For a typical personal lines product on a mid-tier direct channel — 200-500 quotes per day — you will have meaningful differentiation between arms after roughly two to three weeks. If your volume is lower than that, the experiment runs slowly.
 
-**Annual policy lifecycle.** Conversion is a fast signal. A customer either binds or doesn't, within hours of the quote. Claim frequency is a slow signal — you need policy years of exposure to observe it reliably. For frequency experiments, `record_outcome_with_exposure()` accepts partial-year exposure so you can update the model as claims emerge rather than waiting for full policy expiry. But you cannot shortcut the fundamental problem: a loading that attracts better-risk business will take 12+ months to confirm at the claim frequency level.
+**Annual policy lifecycle.** Conversion is a fast signal. A customer either binds or doesn't, within hours of the quote. Claim frequency is a slow signal. You need policy years of exposure to observe it reliably. For frequency experiments, `record_outcome_with_exposure()` accepts partial-year exposure so you can update the model as claims emerge rather than waiting for full policy expiry. But you cannot shortcut the fundamental problem: a loading that attracts better-risk business will take 12+ months to confirm at the claim frequency level.
 
 **State is in-process.** `BanditExperiment` is not thread-safe. In production, use one process per experiment and use the `AuditLog`'s WAL-mode SQLite for concurrent reads. The `to_dict()` / `from_dict()` serialisation allows you to checkpoint state and restore it across process restarts.
 

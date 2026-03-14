@@ -27,7 +27,7 @@ For the age-25 boundary: driver age is externally verified by DVLA records and c
 
 The formal assumption is continuity of potential outcomes at the cutoff: absent the threshold treatment, the outcome trend would be smooth through the cutoff. For driver age, this is highly credible. For NCD level, where policyholders actively suppress claims near the maximum step boundary, it requires explicit caveats — and the library handles both cases.
 
-The estimate is a Local Average Treatment Effect: the causal effect at the cutoff, for drivers right at the threshold. It is not an average over the full portfolio. That is a feature, not a limitation — the cutoff boundary is precisely where your tariff decision is most contestable.
+The estimate is a Local Average Treatment Effect: the causal effect at the cutoff, for drivers right at the threshold. It is not an average over the full portfolio. That is a feature, not a limitation. The cutoff boundary is precisely where your tariff decision is most contestable.
 
 ---
 
@@ -38,7 +38,7 @@ The core estimation methodology for RDD — the Cattaneo-Calonico-Titiunik (CCT)
 What `rdrobust` does not provide:
 
 - **Exposure weighting**: Insurance policies have variable exposure (45-day MTA, cancelled mid-term). Claim frequency is Y/t, not Y. Standard packages treat a 45-day policy identically to a 365-day policy.
-- **Poisson and Gamma outcomes**: Claim counts are not Gaussian. Local polynomial regression on log-transformed counts is biased. The correct approach is local Poisson GLM with log link and log-exposure offset — a separate likelihood, not a transformation.
+- **Poisson and Gamma outcomes**: Claim counts are not Gaussian. Local polynomial regression on log-transformed counts is biased. The correct approach is local Poisson GLM with log link and log-exposure offset: a separate likelihood, not a transformation.
 - **Geographic RDD**: Territory boundary analysis requires computing signed distance from each postcode centroid to the boundary line, then running RDD on that distance. SpatialRDD implements this in R (Lehner 2020). No Python equivalent exists.
 - **Insurance presets**: Practical defaults for the age-25 donut radius (3 months, because age is reported in integer years and heaps at round numbers), the NCD manipulation warning, the FCA framing.
 
@@ -100,7 +100,7 @@ print(result.rate_ratio())
 
 The local polynomial here is the Poisson score function — fitted separately on each side of the cutoff, with a kernel-weighted likelihood objective via `scipy.optimize`. The treatment effect `tau` is the difference in intercepts on the log scale; `exp(tau)` is the rate ratio at the boundary. This maps directly to the log-link GLM relativity framework pricing actuaries already use. The output is a number you can put next to your tariff factor on the same scale.
 
-Bootstrap CIs are used throughout in v0.1.0 — the analytical bias correction for non-Gaussian local regression requires the full CCT derivation adapted to the GLM score, which is non-trivial and is deferred to v0.2.
+Bootstrap CIs are used throughout in v0.1.0. The analytical bias correction for non-Gaussian local regression requires the full CCT derivation adapted to the GLM score, which is non-trivial and is deferred to v0.2.
 
 ---
 
@@ -149,7 +149,7 @@ print(placebo.summary())
 # No significant effects at any placebo cutoff
 ```
 
-The McCrary test will pass cleanly for driver age (date of birth is externally verified and biologically impossible to manipulate). For NCD level at the maximum step, the test will fail — Artis et al. (2002) documented claim withholding to preserve NCD, and the library knows this. The `NCD_MAX` preset flags the expected density failure and instructs you to interpret the estimate as a lower bound on the true causal effect, for non-manipulators only.
+The McCrary test will pass cleanly for driver age (date of birth is externally verified and biologically impossible to manipulate). For NCD level at the maximum step, the test will fail. Artis et al. (2002) documented claim withholding to preserve NCD, and the library knows this. The `NCD_MAX` preset flags the expected density failure and instructs you to interpret the estimate as a lower bound on the true causal effect, for non-manipulators only.
 
 ---
 
@@ -182,7 +182,7 @@ print(mc_result.cutoff_effects())
 # NCD 4→5:  rate ratio 0.93, p=0.14 [density failure — manipulation expected]
 ```
 
-Our prior is that NCD level has weak causal effects on subsequent claims frequency, once you compare policies right at each step boundary. NCD captures selection — lower-risk drivers accumulate steps — rather than a moral hazard effect of the discount itself. If the pooled effect comes back at 0.94 and not significant, your NCD pricing factor is valid from an adverse selection standpoint (lower NCD genuinely predicts higher risk), but the mechanism is not causal in the way a naive reading of the relativity implies. That distinction matters when you are explaining the factor under Consumer Duty: you are pricing observable risk correlation, not a causal intervention.
+Our prior is that NCD level has weak causal effects on subsequent claims frequency, once you compare policies right at each step boundary. NCD captures selection rather than a moral hazard effect of the discount itself. If the pooled effect comes back at 0.94 and not significant, your NCD pricing factor is valid from an adverse selection standpoint (lower NCD genuinely predicts higher risk), but the mechanism is not causal in the way a naive reading of the relativity implies. That distinction matters when you are explaining the factor under Consumer Duty: you are pricing observable risk correlation, not a causal intervention.
 
 ---
 
@@ -252,7 +252,7 @@ print(ThresholdReport(report_data).markdown())
 
 The output is a Markdown section with the causal rate ratio, the tariff relativity, and a verdict: CONSISTENT, OVER-PRICED, or UNDER-PRICED. OVER-PRICED is flagged as a potential Consumer Duty concern. The report includes the formal statistical framing — bandwidth, effective sample size, CCT bias correction — that you would need in an actuarial sign-off document.
 
-We are explicit about what this is not: it is not a full actuarial review of a rating factor. It is one causal diagnostic, local to the threshold, for policies right at the boundary. A pricing team would combine this with portfolio-wide GLM analysis, market benchmarking, and claims data review. What RDD uniquely provides is the causal identification — something a GLM relativity alone cannot claim.
+We are explicit about what this is not: it is not a full actuarial review of a rating factor. It is one causal diagnostic, local to the threshold, for policies right at the boundary. A pricing team would combine this with portfolio-wide GLM analysis, market benchmarking, and claims data review. What RDD uniquely provides is the causal identification. A GLM relativity alone cannot claim that.
 
 ---
 
@@ -260,7 +260,7 @@ We are explicit about what this is not: it is not a full actuarial review of a r
 
 The insurance-rdd library addresses a specific question: at a rating threshold where your tariff changes discontinuously, does the underlying claims risk change by the same amount? This is a question pricing teams should be asking routinely and almost never do formally.
 
-The complementary tool is [`insurance-bunching`](https://github.com/burning-cost/insurance-bunching) — which asks not whether the threshold causes a risk change, but whether policyholders are bunching to game it. Bunching says: is the distribution of the running variable distorted at the threshold? RDD says: does crossing the threshold cause the outcome to change? The two are different questions with different implications. If you see bunching at NCD step 4 but no causal claims effect at that step, policyholders are optimising premium rather than risk — a different regulatory exposure than if bunching and risk both jump at the same point.
+The complementary tool is [`insurance-bunching`](https://github.com/burning-cost/insurance-bunching) — which asks not whether the threshold causes a risk change, but whether policyholders are bunching to game it. Bunching says: is the distribution of the running variable distorted at the threshold? RDD says: does crossing the threshold cause the outcome to change? The two are different questions with different implications. If you see bunching at NCD step 4 but no causal claims effect at that step, policyholders are optimising premium rather than risk. That is a different regulatory exposure than if bunching and risk both jump at the same point.
 
 Run them together on the same threshold.
 
