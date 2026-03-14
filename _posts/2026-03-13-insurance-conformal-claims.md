@@ -125,23 +125,23 @@ The best performer in Manna et al. is locally weighted Pearson - a two-stage pro
 R*_Pear = R_Pear / rho_hat(X)
 ```
 
-The `rho_hat` model is fitted on training Pearson residuals from the same data used to fit the mean model. `insurance-conformal-claims` implements this as `TwoStageLWConformal`, which auto-fits the spread model using LightGBM by default. You provide only the mean model and the Tweedie power p.
+The `rho_hat` model is fitted on training Pearson residuals from the same data used to fit the mean model. `insurance_conformal.claims` implements this as `TwoStageLWConformal`, which auto-fits the spread model using LightGBM by default. You provide only the mean model and the Tweedie power p.
 
 ---
 
 ## Using the library
 
 ```bash
-pip install insurance-conformal-claims
+pip install insurance-conformal
 # or
-uv add insurance-conformal-claims
+uv add insurance-conformal
 ```
 
 ### Model-free SCR from Hong's shortcut
 
 ```python
 import polars as pl
-from insurance_conformal_claims import HongConformal, SCRReport
+from insurance_conformal.claims import HongConformal, SCRReport
 
 df = pl.read_parquet("personal_injury_claims.parquet")
 X = df.select(["age", "region", "severity_band", "vehicle_type", "ncd_years"]).to_numpy()
@@ -167,7 +167,7 @@ print(scr.coverage_table(X_test, y_test))
 
 ```python
 from catboost import CatBoostRegressor
-from insurance_conformal_claims import TwoStageLWConformal
+from insurance_conformal.claims import TwoStageLWConformal
 
 # Fit your mean model first
 mean_model = CatBoostRegressor(
@@ -190,7 +190,7 @@ intervals = conf.predict_interval(X_test, alpha=0.005)
 ### h-transformation with CatBoost
 
 ```python
-from insurance_conformal_claims import HongTransformConformal
+from insurance_conformal.claims import HongTransformConformal
 
 # Use CatBoost as the h-function - narrows intervals vs model-free
 htc = HongTransformConformal(h_model=mean_model)
@@ -225,12 +225,12 @@ Three limitations are worth stating plainly.
 
 There was no Python implementation of any of this. Hong's papers have no accompanying code. The Manna et al. R code at `alokesh17/conformal_LightGBM_tweedie` is research scripts - not installable as a package, no tests, does not implement Hong's method. MAPIE and crepes provide generic split conformal but with no Tweedie scores and no SCR reporting.
 
-`insurance-conformal-claims` fills all of these gaps: Hong's O(n log n) order-statistic shortcut, h-transformation with any sklearn-compatible model, three Tweedie nonconformity scores, two-stage locally weighted conformal with auto-fitted spread model, and an `SCRReport` class that extracts and formats the 99.5% VaR in the form a Solvency UK filing expects.
+`insurance-conformal` (via the `claims` subpackage) fills all of these gaps: Hong's O(n log n) order-statistic shortcut, h-transformation with any sklearn-compatible model, three Tweedie nonconformity scores, two-stage locally weighted conformal with auto-fitted spread model, and an `SCRReport` class that extracts and formats the 99.5% VaR in the form a Solvency UK filing expects.
 
 The library is at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).
 
 ```bash
-pip install insurance-conformal-claims
+pip install insurance-conformal
 ```
 
 Read Hong (2025) alongside it. The paper is twelve pages and Table 7 is worth the whole thing.

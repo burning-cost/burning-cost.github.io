@@ -495,7 +495,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 **Multivariate and joint**
 
-- [insurance-multivariate-conformal](https://github.com/burning-cost/insurance-multivariate-conformal): Joint conformal prediction intervals for multi-output models — when you need simultaneous coverage for frequency and severity, not just marginal intervals for each.
+- [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (`insurance_conformal.multivariate`): Joint conformal prediction intervals for multi-output models — when you need simultaneous coverage for frequency and severity, not just marginal intervals for each. The multivariate functionality is part of `insurance-conformal` v0.4.0+.
 
 - [insurance-copula](https://github.com/burning-cost/insurance-copula): D-vine temporal dependence and two-part occurrence/severity copula models for cases where the Sarmanov structure in `insurance-frequency-severity` is insufficient.
 

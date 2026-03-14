@@ -259,4 +259,4 @@ The v0.1 post covers the score function theory and why the Pearson-weighted scor
 **Related reading:**
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational library: score functions, calibration sets, and split conformal for Tweedie models
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — when the constraint is on expected monetary shortfall rather than coverage probability
-- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction sets for multi-output models, with joint coverage rather than marginal coverage
+- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction sets for multi-output models via [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) (multivariate module), with joint coverage rather than marginal coverage

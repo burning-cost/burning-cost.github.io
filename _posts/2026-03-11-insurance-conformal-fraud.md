@@ -6,6 +6,8 @@ categories: [libraries, claims, fraud]
 tags: [conformal-prediction, fraud-detection, SIU, FDR, BH, anomaly-detection, isolation-forest, mondrian, IFB, consumer-duty, FCA, PRIN2A, insurance-conformal-fraud, python, motor, claims]
 description: "Every SIU referral threshold in UK motor insurance is arbitrary — 'refer the top 5%' or 'anything above 0.7'. Conformal p-values fix this by giving each claim a statistically valid p-value under the null hypothesis of genuine claim. Apply Benjamini-Hochberg and you get a referral list with a provable false discovery rate guarantee. insurance-conformal-fraud is the first Python library to do this for insurance, including Mondrian stratification by claim type, integrative p-values from SIU case files, and Fisher combination for IFB consortium detection."
 ---
+> **Note:** The `insurance-conformal-fraud` library referenced in this post has been archived. The code remains available at its [GitHub repository](https://github.com/burning-cost/insurance-conformal-fraud) for reference, but is no longer actively maintained.
+
 
 Every SIU manager in UK motor insurance has, at some point, been asked to justify a referral threshold. The answer is almost always some variant of: "We refer the top 5% by fraud score" or "anything above 0.7 from the model." If pushed, the answer becomes "that's what the team can handle" or "it's what we've always done."
 

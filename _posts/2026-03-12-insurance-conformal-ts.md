@@ -6,6 +6,8 @@ categories: [libraries, pricing, conformal-prediction]
 tags: [conformal-prediction, time-series, claims-forecasting, ARIMA, MSCP, ACI, SPCI, PID, EnbPI, Poisson, pricing, insurance-conformal-ts]
 description: "ARIMA intervals assume Gaussian residuals and stationarity. Insurance claims data violates both by construction. insurance-conformal-ts implements five distribution-free methods for sequential prediction intervals, including MSCP — the only method that clearly met the 90% coverage target in the 2026 benchmark."
 ---
+> **Note:** The `insurance-conformal-ts` library referenced in this post has been archived. The code remains available at its [GitHub repository](https://github.com/burning-cost/insurance-conformal-ts) for reference, but is no longer actively maintained.
+
 
 When you present those intervals at a pricing committee without mentioning either assumption, you are not being precise. You are being precisely wrong.
 

@@ -6,6 +6,8 @@ categories: [libraries, causal-inference, compliance]
 tags: [conformal-prediction, causal-inference, fca, consumer-duty, icobs-6b, lei-candes, weighted-conformal, propensity-score, sensitivity-analysis, python, insurance-counterfactual-sets]
 description: "FCA EP25/2 admitted that individual-level ENBP counterfactual analysis 'is unable to be conducted'. Lei & Candès 2021 weighted conformal inference says otherwise. insurance-counterfactual-sets brings finite-sample valid harm assessments to the policy level for the first time."
 ---
+> **Note:** The `insurance-counterfactual-sets` library referenced in this post has been archived. The code remains available at its [GitHub repository](https://github.com/burning-cost/insurance-counterfactual-sets) for reference, but is no longer actively maintained.
+
 
 In July 2025, the FCA published Evaluation Paper 25/2 — its assessment of the GIPP remedies three years on. Buried in the methodology section is a sentence that should unsettle every pricing actuary doing ICOBS 6B compliance:
 

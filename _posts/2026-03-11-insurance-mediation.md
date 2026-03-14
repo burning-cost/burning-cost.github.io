@@ -6,6 +6,8 @@ categories: [libraries, pricing, fairness, causal-inference]
 tags: [mediation-analysis, CDE, NDE, NIE, causal-fairness, FCA, CP22-9, proxy-discrimination, IMD, postcode, Imai, VanderWeele, E-value, sensitivity-analysis, Poisson, Gamma, Tweedie, GLM, insurance-mediation, python]
 description: "Postcode correlates with dozens of protected characteristics. If you charge more for E1 than SW1, how much of that differential runs through legitimate risk (flood risk, crime rates, IMD deprivation) and how much is a residual effect you cannot explain? insurance-mediation decomposes the answer using causal mediation analysis: CDE, NDE, NIE with GLM outcome models, Imai rho sensitivity, E-values, and FCA-ready audit reports."
 ---
+> **Note:** The `insurance-mediation` library referenced in this post has been archived. The code remains available at its [GitHub repository](https://github.com/burning-cost/insurance-mediation) for reference, but is no longer actively maintained.
+
 
 Postcode is legal to use in UK personal lines pricing. It correlates with flood risk, crime rates, subsidence susceptibility, repair costs — all legitimate actuarial variables. It also correlates with ethnicity, religion, and socioeconomic background — protected characteristics under the Equality Act 2010. When you charge more for E1 than SW1, you are doing both things simultaneously, and you probably cannot tell which is which.
 
