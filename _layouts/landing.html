@@ -1554,6 +1554,90 @@
       .hero-cta .btn { width: 100%; max-width: 280px; justify-content: center; }
     }
 
+
+    /* =====================================================
+       FLAGSHIP CARDS
+       Enhanced lib-card variant for top-10 grid
+       ===================================================== */
+
+    .lib-grid--flagship {
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .lib-card--flagship {
+      border-top: 3px solid var(--accent);
+      background: linear-gradient(180deg, rgba(79,126,248,0.03) 0%, var(--white) 60%);
+    }
+
+    .lib-card--flagship:hover {
+      border-top-color: var(--accent-hover);
+    }
+
+    .lib-card-badge {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c0392b;
+      background: rgba(192,57,43,0.08);
+      border: 1px solid rgba(192,57,43,0.2);
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+      margin-bottom: 0.6rem;
+    }
+
+    .lib-tag--accent {
+      color: var(--accent-2);
+      background: var(--purple-dim);
+      border-color: rgba(124,92,252,0.25);
+    }
+
+    /* =====================================================
+       FULL PORTFOLIO DETAILS/SUMMARY
+       Collapsible section for the remaining 26 libraries
+       ===================================================== */
+
+    .lib-portfolio-details {
+      margin-top: 1rem;
+    }
+
+    .lib-portfolio-summary {
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      padding: 0.75rem 1rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      list-style: none;
+      user-select: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .lib-portfolio-summary::-webkit-details-marker { display: none; }
+
+    .lib-portfolio-summary::before {
+      content: "+ ";
+    }
+
+    details[open] .lib-portfolio-summary::before {
+      content: "- ";
+    }
+
+    .lib-portfolio-summary:hover {
+      background: var(--surface-alt2);
+      color: var(--accent);
+    }
+
+    .lib-portfolio-details[open] .lib-portfolio-summary {
+      border-radius: var(--radius) var(--radius) 0 0;
+      border-bottom-color: transparent;
+    }
   </style>
 
   <!-- Structured data -->

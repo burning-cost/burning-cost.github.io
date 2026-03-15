@@ -1,7 +1,7 @@
 ---
 layout: landing
 title: "Burning Cost - ML and data science research in UK personal lines insurance"
-description: "36 open-source Python libraries for UK personal lines insurance pricing. SHAP relativities, conformal prediction, causal inference, credibility, spatial ratemaking, FCA Consumer Duty compliance, PRA SS1/23 validation, and Databricks workflows. sklearn-compatible, actuarially tested."
+description: "10 flagship Python libraries for UK personal lines insurance pricing. Proxy discrimination auditing (FCA EP25/2), PRA SS1/23 model validation, DML causal inference, conformal prediction, Whittaker-Henderson smoothing, telematics HMM, GAMLSS, and Bühlmann-Straub credibility. sklearn-compatible, actuarially tested."
 ---
 
 <!-- Hero -->
@@ -40,8 +40,12 @@ description: "36 open-source Python libraries for UK personal lines insurance pr
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat">
+      <span class="stat-number">10</span>
+      <span class="stat-label">Flagship Libraries</span>
+    </div>
+    <div class="stat">
       <span class="stat-number">36</span>
-      <span class="stat-label">Libraries</span>
+      <span class="stat-label">Total Libraries</span>
     </div>
     <div class="stat">
       <span class="stat-number">8,400+</span>
@@ -190,69 +194,133 @@ description: "36 open-source Python libraries for UK personal lines insurance pr
     </div>
   </div>
 </section>
-<!-- Where to start -->
-<section class="getting-started">
-  <div class="getting-started-inner fade-up">
-    <div class="section-label">Where to start</div>
-    <h2>New to Burning Cost?</h2>
-    <p>Pricing actuaries and data scientists joining an insurance team tend to hit the same six problems first. These libraries are the most practical starting points — each solves one well-defined problem, produces output a pricing committee will recognise, and installs with pip.</p>
-
-    <div class="gs-grid">
-
-      <a href="https://github.com/burning-cost/shap-relativities" target="_blank" class="gs-card">
-        <div class="gs-card-name">shap-relativities</div>
-        <div class="gs-card-desc">Turn a CatBoost GBM into a factor table. Same output as exp(&beta;) from a GLM, with confidence intervals and exposure weighting.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-      <a href="https://github.com/burning-cost/insurance-cv" target="_blank" class="gs-card">
-        <div class="gs-card-name">insurance-cv</div>
-        <div class="gs-card-desc">Walk-forward cross-validation with IBNR buffers. Stops future data leaking into training folds. Drop-in replacement for sklearn's KFold.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-      <a href="https://github.com/burning-cost/insurance-monitoring" target="_blank" class="gs-card">
-        <div class="gs-card-name">insurance-monitoring</div>
-        <div class="gs-card-desc">Three-layer post-deployment monitoring: exposure-weighted PSI/CSI, A/E ratios, and a Gini z-test that tells you whether to recalibrate or refit.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-      <a href="https://github.com/burning-cost/insurance-credibility" target="_blank" class="gs-card">
-        <div class="gs-card-name">credibility</div>
-        <div class="gs-card-desc">Bühlmann-Straub credibility in Python. Cap thin segments, stabilise NCD factors, blend a new model with an incumbent rate. Mixed-model equivalence included.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-      <a href="https://github.com/burning-cost/insurance-interactions" target="_blank" class="gs-card">
-        <div class="gs-card-name">insurance-interactions</div>
-        <div class="gs-card-desc">Find the interaction effects your main-effects GLM is missing. CANN neural test, NID scoring, and SHAP interaction decomposition.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-      <a href="https://github.com/burning-cost/insurance-causal" target="_blank" class="gs-card">
-        <div class="gs-card-name">insurance-causal</div>
-        <div class="gs-card-desc">Double machine learning for deconfounding rating factors. If your rating variables correlate with channel or policyholder behaviour, standard GLM coefficients are biased. This fixes it.</div>
-        <div class="gs-card-arrow">&rarr;</div>
-      </a>
-
-    </div>
-
-    <div class="gs-cta-row">
-      <a href="/tools/" class="btn btn-primary">View all libraries</a>
-      <a href="/guide/" class="btn btn-outline">Which library do I need?</a>
-      <a href="/blog/" class="btn btn-outline">Read the articles</a>
-    </div>
-
-  </div>
-</section>
 
 <!-- Libraries -->
 <section class="libraries">
 
   <div class="section-header fade-up">
-    <div class="section-label">Open-source libraries</div>
-    <h2>The full pricing workflow, covered</h2>
-    <p>Each library solves one well-defined problem. Actuarial tests included. sklearn-compatible where it matters.</p>
+    <div class="section-label">Flagship libraries</div>
+    <h2>Ten tools for the problems that matter most</h2>
+    <p>These are the libraries we think are genuinely differentiated. Each addresses a specific hard problem in UK pricing — regulatory compliance, causal inference, uncertainty quantification, smoothing — where no adequate open-source Python tooling existed before. The full portfolio of 36 libraries is below.</p>
+  </div>
+
+  <!-- Flagship grid -->
+  <div class="lib-grid lib-grid--flagship fade-up-children">
+
+    <a href="https://github.com/burning-cost/insurance-fairness" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-badge">FCA EP25/2</span>
+      <span class="lib-card-name">insurance-fairness</span>
+      <span class="lib-card-desc">Proxy discrimination auditing for insurance pricing models. Quantifies indirect discrimination from rating variables correlated with protected characteristics. FCA Consumer Duty documentation support built in.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">FCA Consumer Duty</span>
+        <span class="lib-tag">proxy discrimination</span>
+        <span class="lib-tag">bias metrics</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-governance" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-badge">PRA SS1/23</span>
+      <span class="lib-card-name">insurance-governance</span>
+      <span class="lib-card-desc">PRA SS1/23-compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test. 9-section HTML/JSON output ready for model risk committees and the PRA.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">PRA SS1/23</span>
+        <span class="lib-tag">model governance</span>
+        <span class="lib-tag">MRM</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-causal" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-causal</span>
+      <span class="lib-card-desc">Double machine learning for deconfounding rating factors. Standard GLM coefficients are biased wherever rating variables correlate with distribution channel or policyholder behaviour. DML fixes that bias without a structural model.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">causal inference</span>
+        <span class="lib-tag">DML</span>
+        <span class="lib-tag">deconfounding</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-whittaker" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-whittaker</span>
+      <span class="lib-card-desc">Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML lambda selection and Bayesian credible intervals. Smooths age curves, NCD scales, and vehicle group relativities. Pure NumPy/SciPy.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">REML</span>
+        <span class="lib-tag">smoothing</span>
+        <span class="lib-tag">experience rating</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-telematics" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-telematics</span>
+      <span class="lib-card-desc">End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. HMM driving state classification (cautious/normal/aggressive), Bühlmann-Straub credibility aggregation to driver level, Poisson GLM integration.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">HMM</span>
+        <span class="lib-tag">telematics</span>
+        <span class="lib-tag">UBI</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-conformal" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-conformal</span>
+      <span class="lib-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce tighter intervals than the naive approach with identical coverage. Solvency II SCR bounds included.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">conformal prediction</span>
+        <span class="lib-tag">uncertainty</span>
+        <span class="lib-tag">Solvency II</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-credibility" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-credibility</span>
+      <span class="lib-card-desc">Bühlmann-Straub credibility in Python with mixed-model equivalence checks. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate. The actuarial solution to the thin data problem.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">Bühlmann-Straub</span>
+        <span class="lib-tag">thin data</span>
+        <span class="lib-tag">NCD</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-frequency-severity" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-frequency-severity</span>
+      <span class="lib-card-desc">Sarmanov copula joint frequency-severity modelling with GLM marginals. IFM estimation, analytical premium correction, Garrido conditional severity, dependence tests. Tests the independence assumption every pricing model makes. 80+ tests.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">Sarmanov copula</span>
+        <span class="lib-tag">joint modelling</span>
+        <span class="lib-tag">dependence</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-gam" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-gam</span>
+      <span class="lib-card-desc">EBM and Neural Additive Model for interpretable deep learning in insurance pricing. Shape functions per rating factor give the transparency of a GLM with the predictive power of a neural network. Outputs factor tables for pricing committee review.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">EBM</span>
+        <span class="lib-tag">NAM</span>
+        <span class="lib-tag">interpretable ML</span>
+      </span>
+    </a>
+
+    <a href="https://github.com/burning-cost/insurance-distributional-glm" target="_blank" class="lib-card lib-card--flagship">
+      <span class="lib-card-name">insurance-distributional-glm</span>
+      <span class="lib-card-desc">GAMLSS for Python: model all distribution parameters as functions of covariates — mean, dispersion, shape, zero-inflation. Seven families, RS algorithm with backtracking. The standard GLM models the mean. This models the whole distribution.</span>
+      <span class="lib-card-tags">
+        <span class="lib-tag lib-tag--accent">GAMLSS</span>
+        <span class="lib-tag">distributional GLM</span>
+        <span class="lib-tag">NumPy/SciPy</span>
+      </span>
+    </a>
+
+  </div>
+
+  <div class="gs-cta-row fade-up">
+    <a href="/tools/" class="btn btn-primary">View all 36 libraries</a>
+    <a href="/guide/" class="btn btn-outline">Which library do I need?</a>
+  </div>
+
+  <!-- Full portfolio (collapsed) -->
+  <div class="section-header fade-up" style="margin-top: 3rem;">
+    <div class="section-label">Full library portfolio</div>
+    <h2>The complete pricing workflow, covered</h2>
+    <p>All 36 libraries. Each solves one well-defined problem. Actuarial tests included. sklearn-compatible where it matters.</p>
   </div>
 
   <!-- Workflow diagram -->
@@ -337,412 +405,417 @@ description: "36 open-source Python libraries for UK personal lines insurance pr
     </div>
   </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128269;</span>
-      <span class="lib-group-label">Model interpretation</span>
-    </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/shap-relativities" target="_blank" class="lib-card">
-        <span class="lib-card-name">shap-relativities</span>
-        <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(&beta;) from a GLM: factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">SHAP</span>
-          <span class="lib-tag">CatBoost</span>
-          <span class="lib-tag">factor tables</span>
-        </span>
-      </a>
-    </div>
-  </div>
+  <details class="lib-portfolio-details">
+    <summary class="lib-portfolio-summary">Show full portfolio (36 libraries)</summary>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#10003;</span>
-      <span class="lib-group-label">Validation &amp; deployment</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128269;</span>
+        <span class="lib-group-label">Model interpretation</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/shap-relativities" target="_blank" class="lib-card">
+          <span class="lib-card-name">shap-relativities</span>
+          <span class="lib-card-desc">Extract multiplicative rating factor tables from CatBoost models using SHAP values. Same output format as exp(&beta;) from a GLM: factor tables, confidence intervals, exposure weighting, reconstruction validation.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">SHAP</span>
+            <span class="lib-tag">CatBoost</span>
+            <span class="lib-tag">factor tables</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-cv" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-cv</span>
-        <span class="lib-card-desc">Temporally-correct cross-validation for insurance pricing models. Walk-forward splits with configurable IBNR buffers, Poisson and Gamma deviance scorers, sklearn-compatible API.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">walk-forward</span>
-          <span class="lib-tag">sklearn</span>
-          <span class="lib-tag">IBNR</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-conformal" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-conformal</span>
-        <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Variance-weighted non-conformity scores produce narrower intervals than the naive approach with identical coverage guarantees.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">conformal prediction</span>
-          <span class="lib-tag">GBM</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-conformal-ts" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-conformal-ts</span>
-        <span class="lib-card-desc">Conformal prediction for non-exchangeable claims time series. ACI, EnbPI, SPCI, and MSCP methods with Poisson and negative binomial non-conformity scores. Coverage guarantees without exchangeability.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">conformal prediction</span>
-          <span class="lib-tag">time series</span>
-          <span class="lib-tag">ACI</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-monitoring" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-monitoring</span>
-        <span class="lib-card-desc">Three-layer model monitoring for deployed pricing models. Exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, and a formal Gini z-test to distinguish recalibration from refit signals.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">PSI/CSI</span>
-          <span class="lib-tag">A/E ratios</span>
-          <span class="lib-tag">Gini z-test</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-governance" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-governance</span>
-        <span class="lib-card-desc">PRA SS1/23 compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test, 9-section HTML/JSON output ready for model governance.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">PRA SS1/23</span>
-          <span class="lib-tag">model governance</span>
-          <span class="lib-tag">HTML report</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-deploy" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-deploy</span>
-        <span class="lib-card-desc">Champion/challenger pricing framework. Shadow mode deployment, SHA-256 deterministic routing, SQLite quote log, bootstrap likelihood ratio comparison, ENBP audit trail for ICOBS 6B.2.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">champion/challenger</span>
-          <span class="lib-tag">shadow mode</span>
-          <span class="lib-tag">audit trail</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#9881;</span>
-      <span class="lib-group-label">Techniques</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#10003;</span>
+        <span class="lib-group-label">Validation &amp; deployment</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-cv" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-cv</span>
+          <span class="lib-card-desc">Temporally-correct cross-validation for insurance pricing models. Walk-forward splits with configurable IBNR buffers, Poisson and Gamma deviance scorers, sklearn-compatible API.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">walk-forward</span>
+            <span class="lib-tag">sklearn</span>
+            <span class="lib-tag">IBNR</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-conformal" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-conformal</span>
+          <span class="lib-card-desc">Distribution-free prediction intervals for insurance GBMs. Variance-weighted non-conformity scores produce narrower intervals than the naive approach with identical coverage guarantees.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">conformal prediction</span>
+            <span class="lib-tag">GBM</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-conformal-ts" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-conformal-ts</span>
+          <span class="lib-card-desc">Conformal prediction for non-exchangeable claims time series. ACI, EnbPI, SPCI, and MSCP methods with Poisson and negative binomial non-conformity scores. Coverage guarantees without exchangeability.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">conformal prediction</span>
+            <span class="lib-tag">time series</span>
+            <span class="lib-tag">ACI</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-monitoring" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-monitoring</span>
+          <span class="lib-card-desc">Three-layer model monitoring for deployed pricing models. Exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, and a formal Gini z-test to distinguish recalibration from refit signals.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">PSI/CSI</span>
+            <span class="lib-tag">A/E ratios</span>
+            <span class="lib-tag">Gini z-test</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-governance" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-governance</span>
+          <span class="lib-card-desc">PRA SS1/23 compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test, 9-section HTML/JSON output ready for model governance.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">PRA SS1/23</span>
+            <span class="lib-tag">model governance</span>
+            <span class="lib-tag">HTML report</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-deploy" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-deploy</span>
+          <span class="lib-card-desc">Champion/challenger pricing framework. Shadow mode deployment, SHA-256 deterministic routing, SQLite quote log, bootstrap likelihood ratio comparison, ENBP audit trail for ICOBS 6B.2.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">champion/challenger</span>
+            <span class="lib-tag">shadow mode</span>
+            <span class="lib-tag">audit trail</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-credibility" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-credibility</span>
-        <span class="lib-card-desc">Buhlmann-Straub credibility in Python, with mixed-model equivalence checks. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">Buhlmann-Straub</span>
-          <span class="lib-tag">Polars</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/experience-rating" target="_blank" class="lib-card">
-        <span class="lib-card-name">experience-rating</span>
-        <span class="lib-card-desc">NCD/bonus-malus systems and experience modification factors for insurance pricing. Actuarially correct transition matrices, credibility-weighted NCD scales, fleet experience mod calculation, and factor tables compatible with GLM rating engines.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">NCD</span>
-          <span class="lib-tag">bonus-malus</span>
-          <span class="lib-tag">experience rating</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/bayesian-pricing" target="_blank" class="lib-card">
-        <span class="lib-card-name">bayesian-pricing</span>
-        <span class="lib-card-desc">Hierarchical Bayesian models for thin-data pricing segments. Partial pooling across risk groups, with credibility factor output in a format that maps back to traditional actuarial review.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">hierarchical Bayes</span>
-          <span class="lib-tag">partial pooling</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-interactions" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-interactions</span>
-        <span class="lib-card-desc">Tools for detecting, quantifying, and presenting interaction effects in insurance pricing models: the effects a main-effects-only GLM cannot see.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">interaction effects</span>
-          <span class="lib-tag">GLM diagnostics</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-causal" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-causal</span>
-        <span class="lib-card-desc">Causal inference methods for insurance pricing. Separating genuine risk signal from confounded association, relevant wherever rating factors are correlated with distribution channel or policyholder behaviour.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">causal inference</span>
-          <span class="lib-tag">deconfounding</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-spatial" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-spatial</span>
-        <span class="lib-card-desc">Spatial territory ratemaking using BYM2 models. Geographically smoothed relativities that borrow strength across adjacent areas, particularly useful for postcode-level home and motor models with thin data.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">BYM2</span>
-          <span class="lib-tag">spatial smoothing</span>
-          <span class="lib-tag">postcode</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-multilevel" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-multilevel</span>
-        <span class="lib-card-desc">Two-stage CatBoost + REML random effects for high-cardinality group factors like broker, scheme, or fleet. Credibility-weighted adjustments with ICC diagnostics.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">mixed effects</span>
-          <span class="lib-tag">CatBoost</span>
-          <span class="lib-tag">credibility</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-survival" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-survival</span>
-        <span class="lib-card-desc">Survival models for insurance retention. Cure rate models, CLV, lapse tables, insurance exposure handling, MLflow wrapper. Wraps lifelines with insurance-specific gaps filled.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">lapse</span>
-          <span class="lib-tag">retention</span>
-          <span class="lib-tag">CLV</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-causal-policy" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-causal-policy</span>
-        <span class="lib-card-desc">Synthetic difference-in-differences for causal rate change evaluation. Event study, HonestDiD sensitivity, FCA evidence pack. Did your rate change actually cause the movement you see?</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">SDID</span>
-          <span class="lib-tag">causal inference</span>
-          <span class="lib-tag">rate change</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-trend" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-trend</span>
-        <span class="lib-card-desc">Loss cost trend analysis with structural break detection. Identifies regime changes in claims frequency and severity, producing annualised trend factors with confidence intervals for reserving and pricing review.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">trend analysis</span>
-          <span class="lib-tag">structural breaks</span>
-          <span class="lib-tag">loss cost</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-gam" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-gam</span>
-        <span class="lib-card-desc">Actuarial Neural Additive Model for interpretable deep learning in insurance pricing. Shape functions per rating factor give the transparency of a GLM with the predictive power of a neural network.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">neural additive model</span>
-          <span class="lib-tag">interpretable ML</span>
-          <span class="lib-tag">deep learning</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-glm-tools" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-glm-tools</span>
-        <span class="lib-card-desc">Automated GLM factor level clustering for insurance pricing. R2VF algorithm collapses 500 vehicle makes or 350 occupation codes into pricing bands. Ridge ranking for nominals, fused lasso for fusion, unpenalised GLM refit. BIC lambda selection. Monotonicity enforcement.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">fused lasso</span>
-          <span class="lib-tag">categorical banding</span>
-          <span class="lib-tag">GLM</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-thin-data" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-thin-data</span>
-        <span class="lib-card-desc">Foundation model pricing for thin segments. TabPFN v2 and TabICLv2 backend abstraction with a unified sklearn-compatible API, automated GLM benchmark, PDP relativities in standard factor table format, CommitteeReport output. When a segment has 200 policies, prior-fitted networks outperform GLMs without hyperparameter search. 72 tests.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">TabPFN</span>
-          <span class="lib-tag">thin data</span>
-          <span class="lib-tag">foundation model</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128200;</span>
-      <span class="lib-group-label">Commercial</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#9881;</span>
+        <span class="lib-group-label">Techniques</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-credibility" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-credibility</span>
+          <span class="lib-card-desc">Buhlmann-Straub credibility in Python, with mixed-model equivalence checks. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">Buhlmann-Straub</span>
+            <span class="lib-tag">Polars</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/experience-rating" target="_blank" class="lib-card">
+          <span class="lib-card-name">experience-rating</span>
+          <span class="lib-card-desc">NCD/bonus-malus systems and experience modification factors for insurance pricing. Actuarially correct transition matrices, credibility-weighted NCD scales, fleet experience mod calculation, and factor tables compatible with GLM rating engines.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">NCD</span>
+            <span class="lib-tag">bonus-malus</span>
+            <span class="lib-tag">experience rating</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/bayesian-pricing" target="_blank" class="lib-card">
+          <span class="lib-card-name">bayesian-pricing</span>
+          <span class="lib-card-desc">Hierarchical Bayesian models for thin-data pricing segments. Partial pooling across risk groups, with credibility factor output in a format that maps back to traditional actuarial review.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">hierarchical Bayes</span>
+            <span class="lib-tag">partial pooling</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-interactions" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-interactions</span>
+          <span class="lib-card-desc">Tools for detecting, quantifying, and presenting interaction effects in insurance pricing models: the effects a main-effects-only GLM cannot see.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">interaction effects</span>
+            <span class="lib-tag">GLM diagnostics</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-causal" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-causal</span>
+          <span class="lib-card-desc">Causal inference methods for insurance pricing. Separating genuine risk signal from confounded association, relevant wherever rating factors are correlated with distribution channel or policyholder behaviour.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">causal inference</span>
+            <span class="lib-tag">deconfounding</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-spatial" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-spatial</span>
+          <span class="lib-card-desc">Spatial territory ratemaking using BYM2 models. Geographically smoothed relativities that borrow strength across adjacent areas, particularly useful for postcode-level home and motor models with thin data.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">BYM2</span>
+            <span class="lib-tag">spatial smoothing</span>
+            <span class="lib-tag">postcode</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-multilevel" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-multilevel</span>
+          <span class="lib-card-desc">Two-stage CatBoost + REML random effects for high-cardinality group factors like broker, scheme, or fleet. Credibility-weighted adjustments with ICC diagnostics.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">mixed effects</span>
+            <span class="lib-tag">CatBoost</span>
+            <span class="lib-tag">credibility</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-survival" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-survival</span>
+          <span class="lib-card-desc">Survival models for insurance retention. Cure rate models, CLV, lapse tables, insurance exposure handling, MLflow wrapper. Wraps lifelines with insurance-specific gaps filled.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">lapse</span>
+            <span class="lib-tag">retention</span>
+            <span class="lib-tag">CLV</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-causal-policy" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-causal-policy</span>
+          <span class="lib-card-desc">Synthetic difference-in-differences for causal rate change evaluation. Event study, HonestDiD sensitivity, FCA evidence pack. Did your rate change actually cause the movement you see?</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">SDID</span>
+            <span class="lib-tag">causal inference</span>
+            <span class="lib-tag">rate change</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-trend" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-trend</span>
+          <span class="lib-card-desc">Loss cost trend analysis with structural break detection. Identifies regime changes in claims frequency and severity, producing annualised trend factors with confidence intervals for reserving and pricing review.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">trend analysis</span>
+            <span class="lib-tag">structural breaks</span>
+            <span class="lib-tag">loss cost</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-gam" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-gam</span>
+          <span class="lib-card-desc">Actuarial Neural Additive Model for interpretable deep learning in insurance pricing. Shape functions per rating factor give the transparency of a GLM with the predictive power of a neural network.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">neural additive model</span>
+            <span class="lib-tag">interpretable ML</span>
+            <span class="lib-tag">deep learning</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-glm-tools" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-glm-tools</span>
+          <span class="lib-card-desc">Automated GLM factor level clustering for insurance pricing. R2VF algorithm collapses 500 vehicle makes or 350 occupation codes into pricing bands. Ridge ranking for nominals, fused lasso for fusion, unpenalised GLM refit. BIC lambda selection. Monotonicity enforcement.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">fused lasso</span>
+            <span class="lib-tag">categorical banding</span>
+            <span class="lib-tag">GLM</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-thin-data" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-thin-data</span>
+          <span class="lib-card-desc">Foundation model pricing for thin segments. TabPFN v2 and TabICLv2 backend abstraction with a unified sklearn-compatible API, automated GLM benchmark, PDP relativities in standard factor table format, CommitteeReport output. When a segment has 200 policies, prior-fitted networks outperform GLMs without hyperparameter search. 72 tests.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">TabPFN</span>
+            <span class="lib-tag">thin data</span>
+            <span class="lib-tag">foundation model</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-optimise" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-optimise</span>
-        <span class="lib-card-desc">Constrained rate change optimisation for UK personal lines. Formulates the efficient frontier between loss ratio improvement and movement cap constraints as a linear programme.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">linear programming</span>
-          <span class="lib-tag">movement caps</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-demand" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-demand</span>
-        <span class="lib-card-desc">Insurance demand modelling covering conversion, retention, and DML price elasticity. Connects demand estimates to FCA GIPP-compliant rate optimisation — so your price change decisions are grounded in how customers actually respond.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">demand modelling</span>
-          <span class="lib-tag">price elasticity</span>
-          <span class="lib-tag">FCA GIPP</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-elasticity" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-elasticity</span>
-        <span class="lib-card-desc">Causal price elasticity estimation using CausalForestDML and DR-Learner. ENBP-constrained optimiser respects ICOBS 6B.2 non-discrimination requirements and produces a full audit trail for regulatory review.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">CausalForestDML</span>
-          <span class="lib-tag">ICOBS 6B.2</span>
-          <span class="lib-tag">audit trail</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128202;</span>
-      <span class="lib-group-label">Tail risk &amp; distributions</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128200;</span>
+        <span class="lib-group-label">Commercial</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-optimise" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-optimise</span>
+          <span class="lib-card-desc">Constrained rate change optimisation for UK personal lines. Formulates the efficient frontier between loss ratio improvement and movement cap constraints as a linear programme.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">linear programming</span>
+            <span class="lib-tag">movement caps</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-demand" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-demand</span>
+          <span class="lib-card-desc">Insurance demand modelling covering conversion, retention, and DML price elasticity. Connects demand estimates to FCA GIPP-compliant rate optimisation — so your price change decisions are grounded in how customers actually respond.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">demand modelling</span>
+            <span class="lib-tag">price elasticity</span>
+            <span class="lib-tag">FCA GIPP</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-elasticity" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-elasticity</span>
+          <span class="lib-card-desc">Causal price elasticity estimation using CausalForestDML and DR-Learner. ENBP-constrained optimiser respects ICOBS 6B.2 non-discrimination requirements and produces a full audit trail for regulatory review.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">CausalForestDML</span>
+            <span class="lib-tag">ICOBS 6B.2</span>
+            <span class="lib-tag">audit trail</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-quantile" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-quantile</span>
-        <span class="lib-card-desc">Actuarial tail risk quantile/expectile regression. QuantileGBM wrapping CatBoost MultiQuantile, per-risk TVaR, large loss loading, ILF tables, exceedance curves, isotonic crossing fix.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">quantile GBM</span>
-          <span class="lib-tag">TVaR</span>
-          <span class="lib-tag">tail risk</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-distributional" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-distributional</span>
-        <span class="lib-card-desc">Distributional GBMs for insurance. TweedieGBM, GammaGBM, ZIPGBM, NegBinomialGBM. Smyth-J&oslash;rgensen double GLM for dispersion. Per-risk volatility scoring.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">Tweedie</span>
-          <span class="lib-tag">distributional</span>
-          <span class="lib-tag">volatility</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-synthetic" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-synthetic</span>
-        <span class="lib-card-desc">Vine copula synthetic portfolio generation with insurance-specific marginals. Exposure-aware Poisson, constraint enforcement, fidelity reporting with TSTR Gini gap.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">vine copula</span>
-          <span class="lib-tag">synthetic data</span>
-          <span class="lib-tag">fidelity</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-datasets" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-datasets</span>
-        <span class="lib-card-desc">Synthetic UK motor insurance datasets with known data generating process. Useful for model validation benchmarks, library demos, and training exercises.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">synthetic data</span>
-          <span class="lib-tag">UK motor</span>
-          <span class="lib-tag">DGP</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-distributional-glm" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-distributional-glm</span>
-        <span class="lib-card-desc">GAMLSS for Python: model ALL distribution parameters as functions of covariates — mean, dispersion, shape, zero-inflation. Seven families, RS algorithm with backtracking. Pure NumPy/SciPy.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">GAMLSS</span>
-          <span class="lib-tag">distributional GLM</span>
-          <span class="lib-tag">NumPy/SciPy</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-dispersion" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-dispersion</span>
-        <span class="lib-card-desc">Double GLM for joint mean-dispersion modelling. Standard GLMs assign a single scalar phi to all observations — fleet brokers and personal lines get identical volatility assumptions. DGLM fits a second regression for phi so dispersion varies by risk segment. Alternating IRLS, REML correction, overdispersion LRT, actuarial factor tables. 79 tests.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">double GLM</span>
-          <span class="lib-tag">dispersion</span>
-          <span class="lib-tag">REML</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-severity" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-severity</span>
-        <span class="lib-card-desc">Composite severity regression with spliced body/tail distributions, covariate-dependent thresholds, ILF estimation, and TVaR. The body and tail obey different physics; this fits them separately while letting the threshold vary by covariate. 106 tests.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">spliced distributions</span>
-          <span class="lib-tag">ILF</span>
-          <span class="lib-tag">TVaR</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#9878;</span>
-      <span class="lib-group-label">Compliance</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128202;</span>
+        <span class="lib-group-label">Tail risk &amp; distributions</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-quantile" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-quantile</span>
+          <span class="lib-card-desc">Actuarial tail risk quantile/expectile regression. QuantileGBM wrapping CatBoost MultiQuantile, per-risk TVaR, large loss loading, ILF tables, exceedance curves, isotonic crossing fix.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">quantile GBM</span>
+            <span class="lib-tag">TVaR</span>
+            <span class="lib-tag">tail risk</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-distributional" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-distributional</span>
+          <span class="lib-card-desc">Distributional GBMs for insurance. TweedieGBM, GammaGBM, ZIPGBM, NegBinomialGBM. Smyth-J&oslash;rgensen double GLM for dispersion. Per-risk volatility scoring.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">Tweedie</span>
+            <span class="lib-tag">distributional</span>
+            <span class="lib-tag">volatility</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-synthetic" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-synthetic</span>
+          <span class="lib-card-desc">Vine copula synthetic portfolio generation with insurance-specific marginals. Exposure-aware Poisson, constraint enforcement, fidelity reporting with TSTR Gini gap.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">vine copula</span>
+            <span class="lib-tag">synthetic data</span>
+            <span class="lib-tag">fidelity</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-datasets" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-datasets</span>
+          <span class="lib-card-desc">Synthetic UK motor insurance datasets with known data generating process. Useful for model validation benchmarks, library demos, and training exercises.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">synthetic data</span>
+            <span class="lib-tag">UK motor</span>
+            <span class="lib-tag">DGP</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-distributional-glm" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-distributional-glm</span>
+          <span class="lib-card-desc">GAMLSS for Python: model ALL distribution parameters as functions of covariates — mean, dispersion, shape, zero-inflation. Seven families, RS algorithm with backtracking. Pure NumPy/SciPy.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">GAMLSS</span>
+            <span class="lib-tag">distributional GLM</span>
+            <span class="lib-tag">NumPy/SciPy</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-dispersion" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-dispersion</span>
+          <span class="lib-card-desc">Double GLM for joint mean-dispersion modelling. Standard GLMs assign a single scalar phi to all observations — fleet brokers and personal lines get identical volatility assumptions. DGLM fits a second regression for phi so dispersion varies by risk segment. Alternating IRLS, REML correction, overdispersion LRT, actuarial factor tables. 79 tests.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">double GLM</span>
+            <span class="lib-tag">dispersion</span>
+            <span class="lib-tag">REML</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-severity" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-severity</span>
+          <span class="lib-card-desc">Composite severity regression with spliced body/tail distributions, covariate-dependent thresholds, ILF estimation, and TVaR. The body and tail obey different physics; this fits them separately while letting the threshold vary by covariate. 106 tests.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">spliced distributions</span>
+            <span class="lib-tag">ILF</span>
+            <span class="lib-tag">TVaR</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-fairness" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-fairness</span>
-        <span class="lib-card-desc">Proxy discrimination detection for insurance pricing models. Measures of disparate impact, fairness-accuracy trade-off analysis, FCA Consumer Duty documentation support.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">FCA Consumer Duty</span>
-          <span class="lib-tag">proxy discrimination</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128663;</span>
-      <span class="lib-group-label">Telematics</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#9878;</span>
+        <span class="lib-group-label">Compliance</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-fairness" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-fairness</span>
+          <span class="lib-card-desc">Proxy discrimination detection for insurance pricing models. Measures of disparate impact, fairness-accuracy trade-off analysis, FCA Consumer Duty documentation support.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">FCA Consumer Duty</span>
+            <span class="lib-tag">proxy discrimination</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-telematics" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-telematics</span>
-        <span class="lib-card-desc">End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. HMM driving state classification (cautious/normal/aggressive), Buhlmann-Straub credibility aggregation to driver level, Poisson GLM integration. TripSimulator for synthetic fleet generation.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">HMM</span>
-          <span class="lib-tag">telematics</span>
-          <span class="lib-tag">UBI</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128202;</span>
-      <span class="lib-group-label">Trend &amp; time series</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128663;</span>
+        <span class="lib-group-label">Telematics</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-telematics" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-telematics</span>
+          <span class="lib-card-desc">End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. HMM driving state classification (cautious/normal/aggressive), Buhlmann-Straub credibility aggregation to driver level, Poisson GLM integration. TripSimulator for synthetic fleet generation.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">HMM</span>
+            <span class="lib-tag">telematics</span>
+            <span class="lib-tag">UBI</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-dynamics" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-dynamics</span>
-        <span class="lib-card-desc">GAS (Generalised Autoregressive Score) models for dynamic insurance pricing. Exposure-weighted Poisson, Gamma, Beta, and NegBin variants. GAS(1,1) MLE, trend_index output in development factor format, panel data across rating cells. First maintained Python GAS library.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">GAS models</span>
-          <span class="lib-tag">dynamic pricing</span>
-          <span class="lib-tag">trend</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128269;</span>
-      <span class="lib-group-label">Advanced modelling</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128202;</span>
+        <span class="lib-group-label">Trend &amp; time series</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-dynamics" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-dynamics</span>
+          <span class="lib-card-desc">GAS (Generalised Autoregressive Score) models for dynamic insurance pricing. Exposure-weighted Poisson, Gamma, Beta, and NegBin variants. GAS(1,1) MLE, trend_index output in development factor format, panel data across rating cells. First maintained Python GAS library.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">GAS models</span>
+            <span class="lib-tag">dynamic pricing</span>
+            <span class="lib-tag">trend</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-whittaker" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-whittaker</span>
-        <span class="lib-card-desc">Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML/GCV/AIC lambda selection and Bayesian CIs. Smooths noisy age curves, NCD scales, and vehicle group relativities. Pure NumPy/SciPy.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">smoothing</span>
-          <span class="lib-tag">experience rating</span>
-          <span class="lib-tag">REML</span>
-        </span>
-      </a>
-      <a href="https://github.com/burning-cost/insurance-frequency-severity" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-frequency-severity</span>
-        <span class="lib-card-desc">Sarmanov copula joint frequency-severity modelling with GLM marginals. IFM estimation, analytical premium correction, Garrido conditional severity, dependence tests. Tests the independence assumption every pricing model makes. 80+ tests.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">Sarmanov copula</span>
-          <span class="lib-tag">joint modelling</span>
-          <span class="lib-tag">dependence</span>
-        </span>
-      </a>
-    </div>
-  </div>
 
-  <div class="lib-group">
-    <div class="lib-group-header">
-      <span class="lib-group-icon">&#128203;</span>
-      <span class="lib-group-label">Covariate shift</span>
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128269;</span>
+        <span class="lib-group-label">Advanced modelling</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-whittaker" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-whittaker</span>
+          <span class="lib-card-desc">Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML/GCV/AIC lambda selection and Bayesian CIs. Smooths noisy age curves, NCD scales, and vehicle group relativities. Pure NumPy/SciPy.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">smoothing</span>
+            <span class="lib-tag">experience rating</span>
+            <span class="lib-tag">REML</span>
+          </span>
+        </a>
+        <a href="https://github.com/burning-cost/insurance-frequency-severity" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-frequency-severity</span>
+          <span class="lib-card-desc">Sarmanov copula joint frequency-severity modelling with GLM marginals. IFM estimation, analytical premium correction, Garrido conditional severity, dependence tests. Tests the independence assumption every pricing model makes. 80+ tests.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">Sarmanov copula</span>
+            <span class="lib-tag">joint modelling</span>
+            <span class="lib-tag">dependence</span>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="lib-grid fade-up-children">
-      <a href="https://github.com/burning-cost/insurance-covariate-shift" target="_blank" class="lib-card">
-        <span class="lib-card-name">insurance-covariate-shift</span>
-        <span class="lib-card-desc">Density ratio correction for insurance book shifts. CatBoost, RuLSIF, and KLIEP importance weighting, LR-QR conformal prediction under shift, FCA SUP 15.3 diagnostics. When your book mix changes, your model weights need to change too. 138 tests.</span>
-        <span class="lib-card-tags">
-          <span class="lib-tag">covariate shift</span>
-          <span class="lib-tag">density ratio</span>
-          <span class="lib-tag">importance weighting</span>
-        </span>
-      </a>
+
+    <div class="lib-group">
+      <div class="lib-group-header">
+        <span class="lib-group-icon">&#128203;</span>
+        <span class="lib-group-label">Covariate shift</span>
+      </div>
+      <div class="lib-grid fade-up-children">
+        <a href="https://github.com/burning-cost/insurance-covariate-shift" target="_blank" class="lib-card">
+          <span class="lib-card-name">insurance-covariate-shift</span>
+          <span class="lib-card-desc">Density ratio correction for insurance book shifts. CatBoost, RuLSIF, and KLIEP importance weighting, LR-QR conformal prediction under shift, FCA SUP 15.3 diagnostics. When your book mix changes, your model weights need to change too. 138 tests.</span>
+          <span class="lib-card-tags">
+            <span class="lib-tag">covariate shift</span>
+            <span class="lib-tag">density ratio</span>
+            <span class="lib-tag">importance weighting</span>
+          </span>
+        </a>
+      </div>
     </div>
-  </div>
+
+  </details>
 
 </section>
 
