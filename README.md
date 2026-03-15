@@ -6,44 +6,53 @@ Insurance pricing education and open-source tooling for UK actuaries and pricing
 
 The site at [burning-cost.github.io](https://burning-cost.github.io) publishes worked examples, methodology explainers, and links to all open-source libraries.
 
-## Libraries
+## Flagship Libraries
 
-**Model building**
+Ten libraries we consider genuinely differentiated — tools for hard problems in UK pricing where no adequate open-source Python solution existed before.
 
-| Library | Description |
-|---------|-------------|
-| [shap-relativities](https://github.com/burning-cost/shap-relativities) | Extract rating relativities from GBMs using SHAP |
-| [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection via CANN and NID scores |
-| [insurance-cv](https://github.com/burning-cost/insurance-cv) | Walk-forward cross-validation respecting IBNR structure |
+**Regulatory compliance**
+
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | Proxy discrimination auditing aligned to FCA EP25/2 and Consumer Duty |
+| [insurance-governance](https://github.com/burning-cost/insurance-governance) | PRA SS1/23 model validation reports: bootstrap Gini CI, A/E CI, double-lift, renewal cohort test |
+
+**Causal inference**
+
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-causal](https://github.com/burning-cost/insurance-causal) | Double machine learning to deconfound rating factors where channel and behaviour bias standard GLM coefficients |
 
 **Uncertainty quantification**
 
-| Library | Description |
-|---------|-------------|
-| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals for Tweedie models — includes conformal risk control subpackage |
-| [insurance-garch](https://github.com/burning-cost/insurance-garch) | GARCH models for claims inflation uncertainty — GJR-GARCH, BIC model selection, bootstrap fan charts, VaR backtesting |
-| [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data segments |
-| [credibility](https://github.com/burning-cost/credibility) | Bühlmann-Straub credibility weighting |
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | Distribution-free prediction intervals with finite-sample coverage guarantees; Solvency II SCR bounds |
+| [insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm) | GAMLSS for Python: model mean, dispersion, shape, and zero-inflation as functions of covariates |
 
-**Deployment and optimisation**
+**Smoothing and experience rating**
 
-| Library | Description |
-|---------|-------------|
-| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained rate change optimisation with FCA PS21/5 compliance — includes demand modelling subpackage |
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) | Whittaker-Henderson 1D/2D smoothing with REML lambda selection and Bayesian credible intervals |
+| [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | Bühlmann-Straub credibility in Python with mixed-model equivalence — caps thin segments, stabilises NCD factors |
 
-**Governance**
+**Telematics**
 
-| Library | Description |
-|---------|-------------|
-| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | Proxy discrimination auditing for UK insurance models |
-| [insurance-causal](https://github.com/burning-cost/insurance-causal) | Double Machine Learning for causal pricing inference |
-| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model monitoring: PSI, A/E ratios, Gini drift test |
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | HMM driving state classification from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores |
 
-**Spatial**
+**Advanced modelling**
 
-| Library | Description |
-|---------|-------------|
-| [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking for UK personal lines |
+| Library | Problem it solves |
+|---------|------------------|
+| [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | Sarmanov copula joint frequency-severity with analytical premium correction — tests the independence assumption every model makes |
+| [insurance-gam](https://github.com/burning-cost/insurance-gam) | EBM and Neural Additive Model: transparency of a GLM, predictive power of a neural network |
+
+## Full Library Portfolio
+
+36 libraries in total, covering the full pricing workflow from data validation through to deployment and monitoring. See [burning-cost.github.io/tools](https://burning-cost.github.io/tools/) for the complete list.
 
 ## Site structure
 
