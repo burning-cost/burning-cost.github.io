@@ -203,7 +203,9 @@ for lvl in (0.80, 0.90, 0.95):
 95%  scalar=0.927  distributional=0.948  target=0.950
 ```
 
-The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. The distributional model is 2-3 percentage points closer to nominal across all three thresholds.
+**Note:** These coverage figures are from a pre-bug-fix run. The current library has a known phi scale bug that causes coverage to collapse to near zero. See the benchmark table below and the library README.
+
+The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. When the phi bug is resolved, the distributional model is expected to be 2-3 percentage points closer to nominal across all three thresholds.
 
 The under-coverage is not uniform. Coverage for the scalar model in the highest-CoV quartile (old vehicles, young drivers) drops to around 0.81 at the 90% level -- a 9-point shortfall versus nominal. The distributional model holds at 0.89 in the same quartile. That gap is where your large claims live.
 
@@ -282,15 +284,17 @@ A 5% CRPS improvement on a 10,000-policy test set is material. The distributiona
 | Metric | Scalar-phi GBM | Distributional GBM | Notes |
 |--------|---------------|-------------------|-------|
 | Tweedie deviance | 0.4823 | 0.4819 | Mean prediction equivalent |
-| Coverage at 80% | 0.764 | 0.793 | +2.9pp closer to nominal |
-| Coverage at 90% | 0.872 | 0.897 | +2.5pp |
-| Coverage at 95% | 0.927 | 0.948 | +2.1pp |
-| PIT std dev | 0.261 | 0.283 | Closer to uniform (0.289) |
-| CRPS | 148.73 | 141.29 | 5.0% improvement |
-| Safety loading spread | 0.412 | 0.463 | 12.4% wider distribution |
+| Coverage at 80% | 0.764 | see note | phi scale bug affects current version |
+| Coverage at 90% | 0.872 | see note | phi scale bug affects current version |
+| Coverage at 95% | 0.927 | see note | phi scale bug affects current version |
+| PIT std dev | 0.261 | see note | phi scale bug affects current version |
+| CRPS | 148.73 | see note | phi scale bug affects current version |
+| Safety loading spread | 0.412 | see note | phi scale bug affects current version |
 | Fit time | 1x | ~1.6x | Dispersion model adds 60% |
 
-The pattern is consistent across all distribution-sensitive metrics and is zero on the one mean-prediction metric. That is the signature of a well-functioning distributional model: it improves variance estimation without touching mean estimation.
+**Note on coverage and CRPS numbers (March 2026):** The distributional GBM figures for coverage, PIT std dev, CRPS, and safety loading spread in this table are from a pre-bug-fix run. The current published PyPI version of `insurance-distributional` has a known phi scale bug: `pred.phi` values are returned on a scale approximately 1,000x too large, causing coverage intervals to collapse to zero. The mean prediction (`pred.mean`) is unaffected and the Tweedie deviance result is correct. The coverage and CRPS improvement numbers will be updated once the phi scale fix is published. See the [library README](https://github.com/burning-cost/insurance-distributional) for current status.
+
+The Tweedie deviance result (essentially identical between scalar and distributional) is confirmed by the post-fix benchmark and reflects the correct behaviour: the distributional model does not improve mean prediction.
 
 ---
 
