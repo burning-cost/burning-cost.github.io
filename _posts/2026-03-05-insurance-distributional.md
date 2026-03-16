@@ -177,7 +177,11 @@ tweedie_deviance(y_test, pred.mean, power=1.5)
 
 # Does the predicted 90% interval contain 90% of observations?
 cov = coverage(y_test, pred, levels=(0.80, 0.90, 0.95))
-# {'0.8': 0.803, '0.9': 0.891, '0.95': 0.946}
+# Note: as of March 2026 the published PyPI version has a known phi scale bug.
+# The pred.phi values are returned on an incorrect scale (~1000x too large),
+# causing coverage intervals to collapse to zero. Use pred.mean for pricing;
+# do not use pred.phi or coverage() until the scale bug is resolved.
+# See the library README for details.
 
 # PIT histogram — should be uniform for a well-calibrated model
 pit = pit_values(y_test, pred, n_samples=5000)
@@ -189,7 +193,7 @@ gini_vol  = gini_index(y_test, pred.volatility_score())
 
 The `gini_vol` figure is worth checking: it answers whether the dispersion model has genuine discriminating power. A volatility score with Gini near zero means the dispersion model is not adding information beyond the mean. In our experience on UK motor data, the Gini on CoV is typically 40–60% of the Gini on the mean: meaningful but not as strong as the mean model, which is what you would expect given that dispersion is noisier to estimate.
 
-The `coverage` function uses Monte Carlo sampling from the fitted distribution. For Tweedie, this is a compound Poisson-Gamma simulation using the standard Jørgensen (1987) parameterisation. If your coverage at the 90% level is systematically below 0.87, the dispersion model is understating uncertainty. Increase the depth or iterations for the phi model, or check whether the training data contains sufficient representation of high-variance risks.
+The `coverage` function uses Monte Carlo sampling from the fitted distribution. For Tweedie, this is a compound Poisson-Gamma simulation using the standard Jørgensen (1987) parameterisation. As of March 2026, the published version has a known phi scale bug: `pred.phi` values are returned on an incorrect scale, causing coverage intervals to collapse to zero. The mean prediction (`pred.mean`) is unaffected and reliable. Track the fix at the [library README](https://github.com/burning-cost/insurance-distributional).
 
 ---
 
