@@ -15,7 +15,7 @@ Built by pricing practitioners who have worked across UK personal lines motor an
 
 ## What we have built
 
-36 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+37 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
