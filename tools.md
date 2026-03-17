@@ -302,7 +302,7 @@ permalink: /tools/
 </script>
 
 <div class="tools-intro">
-  <p>36 open-source Python libraries covering the full pricing stack. Ten of them we consider genuinely differentiated — tools that address hard problems in UK pricing where no adequate Python solution existed before. The full portfolio is below the flagship section.</p>
+  <p>37 open-source Python libraries covering the full pricing stack. Ten of them we consider genuinely differentiated — tools that address hard problems in UK pricing where no adequate Python solution existed before. The full portfolio is below the flagship section.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
@@ -415,6 +415,7 @@ Tools for building and interpreting pricing models.
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values<br>_Benchmark: Production defaults recover both planted interactions; compact config less reliable_ | `pip install insurance-interactions` |
 | [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | `pip install insurance-frequency-severity` |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics<br>_Benchmark: BYM2 vs raw vs manual banding benchmarked on synthetic territory data_ | `pip install insurance-spatial` |
+| [insurance-distill](https://github.com/burning-cost/insurance-distill) | GBM-to-GLM distillation — fits a surrogate Poisson/Gamma GLM to CatBoost predictions, exports multiplicative factor tables for Radar/Emblem | `pip install insurance-distill` |
 
 </div>
 
