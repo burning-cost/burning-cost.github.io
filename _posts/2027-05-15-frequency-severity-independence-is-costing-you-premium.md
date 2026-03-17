@@ -223,7 +223,7 @@ Sarmanov wins on AIC for most UK motor data because it handles the discrete freq
 
 This is not a replacement for your frequency GLM or severity GLM. Both models fit exactly as before. The Sarmanov stage is a one-parameter correction to the pure premium calculation. Your GLM coefficients, goodness-of-fit diagnostics, and peer review documentation are unchanged.
 
-This is also not the same as the neural shared-trunk approach in `insurance-dependent-fs`. That library learns a joint representation from data, which captures more complex dependence structures but requires several thousand claiming policies to train reliably and produces a black-box that is harder to audit. The Sarmanov approach adds one interpretable parameter (omega) to your existing GLM pipeline. For most UK motor books that need to demonstrate the pricing logic to a committee or to the FCA, one interpretable parameter is the right answer.
+This is also not the same as the neural shared-trunk approach that was prototyped in `insurance-dependent-fs` (that repo is now archived). That approach learned a joint representation from data, which captures more complex dependence structures but requires several thousand claiming policies to train reliably and produces a black-box that is harder to audit. The Sarmanov approach adds one interpretable parameter (omega) to your existing GLM pipeline. For most UK motor books that need to demonstrate the pricing logic to a committee or to the FCA, one interpretable parameter is the right answer.
 
 Use the neural approach when you have 50,000+ claiming observations and genuinely complex dependence structure. Use the Sarmanov approach when you want to fix the independence assumption in your existing two-part GLM without rebuilding the pipeline.
 

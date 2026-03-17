@@ -371,19 +371,11 @@ print(result.att, result.p_value)  # average treatment effect on treated
 
 ### insurance-uplift — retention heterogeneous treatment effects
 
+*Note: the `insurance-uplift` repository has been archived and is no longer maintained. The approach is documented here for reference.*
+
 Not every customer responds equally to a price change. A 5% premium increase may have near-zero effect on a long-tenure, direct-debit paying customer and a large effect on a price-comparison website customer who shopped aggressively last year. Treating the whole book as one segment leaves retention profit on the table.
 
-`insurance-uplift` estimates heterogeneous treatment effects on renewal probability using causal forests (Wager and Athey 2018), segments the book by response profile, and constructs the optimal individualised retention intervention.
-
-```python
-from insurance_uplift import RetentionUpliftModel
-
-uplift = RetentionUpliftModel(confounders=["age", "ncd_years", "channel", "tenure"])
-uplift.fit(df, treatment="price_change_pct", outcome="renewed")
-df["cate"] = uplift.predict_cate(df)  # per-policy causal effect
-```
-
-[github.com/burning-cost/insurance-uplift](https://github.com/burning-cost/insurance-uplift)
+The archived library estimated heterogeneous treatment effects on renewal probability using causal forests (Wager and Athey 2018), segmented the book by response profile, and constructed the optimal individualised retention intervention. The same causal forest machinery is available via `insurance-demand` for the elasticity estimation use case.
 
 ---
 
