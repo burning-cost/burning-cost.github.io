@@ -132,5 +132,5 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 ---
 
 **Related reading:**
-- [The Telematics Score That Forgets Where It's Been](/2026/03/12/insurance-jlm/) — joint longitudinal models that use the telematics risk score trajectory as a marker to predict time-to-claim; the downstream model that insurance-telematics feeds into
+- [The Telematics Score That Forgets Where It's Been](/2026/03/12/insurance-jlm/) — joint longitudinal models that use the telematics risk score trajectory as a marker to predict time-to-claim; the downstream model that insurance-telematics feeds into (the associated `insurance-jlm` repository is archived; the post documents the approach)
 - [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) — time-to-lapse modelling; pairing retention survival analysis with telematics risk segmentation to identify the customers worth retaining
