@@ -634,6 +634,11 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/temporal_cross_validation.py" target="_blank">view</a></td>
       </tr>
       <tr>
+        <td>insurance-datasets</td>
+        <td>Synthetic UK motor portfolio with known DGP, parameter recovery</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_datasets_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
         <td>insurance-demand</td>
         <td>Conversion/retention, DML elasticity, GIPP-constrained optimiser</td>
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_demand_demo.py" target="_blank">view</a></td>
@@ -657,6 +662,11 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
         <td>insurance-distributional-glm</td>
         <td>GAMLSS vs standard Gamma GLM on heterogeneous-variance data</td>
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distributional_glm_demo.py" target="_blank">view</a></td>
+      </tr>
+      <tr>
+        <td>insurance-distill</td>
+        <td>GBM-to-GLM distillation, surrogate factor tables for rating engines</td>
+        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distill_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
         <td>insurance-dynamics</td>
