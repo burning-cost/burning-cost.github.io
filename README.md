@@ -14,7 +14,7 @@ Ten libraries we consider genuinely differentiated — tools for hard problems i
 
 | Library | Problem it solves |
 |---------|------------------|
-| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | Proxy discrimination auditing aligned to FCA EP25/2 and Consumer Duty |
+| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | Proxy discrimination auditing aligned to Consumer Duty (PS22/9) and Equality Act 2010 s.19 |
 | [insurance-governance](https://github.com/burning-cost/insurance-governance) | PRA SS1/23 model validation reports: bootstrap Gini CI, A/E CI, double-lift, renewal cohort test |
 
 **Causal inference**

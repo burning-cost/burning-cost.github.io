@@ -1,23 +1,24 @@
 ---
 layout: page
-title: "FCA EP25/2 Proxy Discrimination Audit Guide"
-description: "A step-by-step compliance guide for UK personal lines pricing actuaries. What EP25/2 requires, how to audit a pricing model for proxy discrimination, and what the board needs to see."
+title: "Proxy Discrimination Audit Guide"
+description: "A step-by-step compliance guide for UK personal lines pricing actuaries. What Consumer Duty and the Equality Act require, how to audit a pricing model for proxy discrimination, and what the board needs to see."
 permalink: /ep25-2-guide/
 ---
 
-Citizens Advice estimated in 2022 that the ethnicity penalty in UK motor insurance averages £280 per year — £213m annually across the market. The mechanism is not complicated: postcode drives price; postcode correlates with ethnicity; therefore price correlates with ethnicity. The FCA noticed. EP25/2 is the consequence.
+Citizens Advice estimated in 2022 that the ethnicity penalty in UK motor insurance averages £280 per year — £213m annually across the market. The mechanism is not complicated: postcode drives price; postcode correlates with ethnicity; therefore price correlates with ethnicity. The FCA noticed. Consumer Duty (PS22/9) and the Equality Act 2010 are the legal framework. The FCA's multi-firm review TR24/2 (2024) is the enforcement signal.
 
-This guide covers what EP25/2 actually requires, how to conduct a defensible proxy discrimination audit on a personal lines pricing model, and what "good" looks like when you put it in front of a board or a supervisor.
+This guide covers what Consumer Duty and the Equality Act 2010 actually require, how to conduct a defensible proxy discrimination audit on a personal lines pricing model, and what "good" looks like when you put it in front of a board or a supervisor.
 
 ---
 
-## What EP25/2 requires
+## The regulatory basis
 
-**FCA Evaluation Paper EP25/2** (published February 2025) reviews the outcomes of the FCA's 2022 general insurance pricing remedies and sets out what the regulator expects next. The relevant obligation sits at the intersection of three documents:
+The obligation to test for proxy discrimination rests on two independent bases:
 
-- **EP25/2** itself — sets out the FCA's current findings and forward expectations on pricing fairness
-- **Consumer Duty (PS22/9, PRIN 2A)** — requires firms to actively monitor whether products provide fair value for different groups of customers, including groups defined by protected characteristics
-- **Equality Act 2010, Section 19** — independently prohibits indirect discrimination: a practice that puts persons sharing a protected characteristic at a particular disadvantage, unless it is a proportionate means of achieving a legitimate aim
+- **Consumer Duty (PS22/9, PRIN 2A)** — requires firms to actively monitor whether products provide fair value for different groups of customers, including groups defined by protected characteristics. The FCA's multi-firm review FCA TR24/2 (August 2024) found that most fair value assessments lacked the granularity to evidence good outcomes across protected characteristic groups.
+- **Equality Act 2010, Section 19** — independently prohibits indirect discrimination: a practice that puts persons sharing a protected characteristic at a particular disadvantage, unless it is a proportionate means of achieving a legitimate aim.
+
+**FCA EP25/2** (published 22 July 2025) is a different document. It evaluates the outcomes of the GIPP price-walking remedies introduced in January 2022. It is relevant context — the FCA used conditional difference-in-differences methodology to evaluate distributional outcomes — but it does not impose proxy discrimination obligations. The proxy discrimination and fairness auditing requirements come from Consumer Duty and the Equality Act.
 
 The obligation is not to achieve equal prices across groups. It is to demonstrate that price differences reflect genuine risk differences rather than the rating model acting as a proxy for a characteristic it should not price on.
 
@@ -32,7 +33,7 @@ The obligation is not to achieve equal prices across groups. It is to demonstrat
 - Indirect proxy chains: vehicle group predicts theft; theft patterns correlate with area; area correlates with ethnicity
 - Model amplification: a factor with modest proxy correlation but high SHAP importance contributes more discriminatory variation to the final price than the raw correlation implies
 
-The FCA's 2024 multi-firm review found that most insurers were relying on exactly these inadequate manual checks. EP25/2 makes clear this is not sufficient.
+The FCA's 2024 multi-firm review (TR24/2) found that most insurers were relying on exactly these inadequate manual checks. TR24/2 makes clear this is not sufficient.
 
 ---
 
@@ -272,7 +273,7 @@ The report structure:
 - Methodology section: references to Lindholm et al. and the FCA regulatory mapping
 - Sign-off table: name, role, date, attestation statement
 
-File it. Keep it. The FCA's supervisory expectation under EP25/2 is that this documentation exists and is current — not just that the model passed a check at launch.
+File it. Keep it. Consumer Duty requires ongoing monitoring, not a one-off check at model launch. The supervisory expectation is that this documentation exists and is current.
 
 ---
 
@@ -311,10 +312,10 @@ These thresholds are ours, not the FCA's. The FCA has not published numerical th
 
 ## References
 
-- FCA Evaluation Paper EP25/2: Our General Insurance Pricing Practices Remedies (February 2025)
 - FCA Consumer Duty (PS22/9): Policy Statement and Final Rules (July 2022)
+- FCA Multi-Firm Review TR24/2: Outcomes Monitoring under the Consumer Duty (August 2024)
+- FCA Evaluation Paper EP25/2: Evaluation of General Insurance Pricing Practices Remedies (22 July 2025) — covers GIPP price-walking remedies, not proxy discrimination
 - PRIN 2A: Consumer Duty — FCA Handbook
-- FCA Multi-Firm Review: Outcomes Monitoring under the Consumer Duty (2024)
 - Equality Act 2010, Section 19: Indirect Discrimination
 - Lindholm, Richman, Tsanakas, Wüthrich (2022). Discrimination-Free Insurance Pricing. ASTIN Bulletin 52(1), 55–89.
 - Lindholm, Richman, Tsanakas, Wüthrich (2026). Sensitivity-Based Measures of Discrimination in Insurance Pricing. European Journal of Operational Research.

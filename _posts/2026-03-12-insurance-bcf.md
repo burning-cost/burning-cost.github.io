@@ -3,7 +3,7 @@ layout: post
 title: "Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity"
 date: 2026-03-12
 categories: [libraries, pricing, causal-inference]
-tags: [BCF, bayesian-causal-forest, BART, CATE, heterogeneous-treatment-effects, stochtree, price-elasticity, FCA, EP25-2, RIC, MCMC, propensity, observational-data, UK-motor, insurance-bcf, python]
+tags: [BCF, bayesian-causal-forest, BART, CATE, heterogeneous-treatment-effects, stochtree, price-elasticity, FCA, Consumer-Duty, RIC, MCMC, propensity, observational-data, UK-motor, insurance-bcf, python]
 description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insurance pricing. Segment-level elasticity with posteriors - insurance-bcf wrapping stochtree."
 ---
 
@@ -13,7 +13,7 @@ That number is probably wrong for most of your book — and wrong in ways that a
 
 The GLM cannot tell you this. It is built to estimate population-averaged effects. Segment interactions help, but they require you to specify in advance which interactions matter — and in a UK personal lines book with dozens of rating factors, you will miss the ones that matter most.
 
-[`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) wraps Bayesian Causal Forests for insurance pricing teams. It estimates the treatment effect for every policy in your portfolio — not an average — with a posterior distribution and credible intervals suitable for FCA EP25/2 audit documentation.
+[`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) wraps Bayesian Causal Forests for insurance pricing teams. It estimates the treatment effect for every policy in your portfolio — not an average — with a posterior distribution and credible intervals suitable for Consumer Duty audit documentation.
 
 ```bash
 pip install insurance-bcf
@@ -164,9 +164,9 @@ This is a tool, not a decision. The output gives you a direction and a confidenc
 
 ---
 
-## FCA EP25/2 compliance
+## Consumer Duty documentation
 
-The FCA's Evaluation Paper EP25/2, published in 2025, required firms to produce segment-level pricing fairness evidence. The credible interval structure of BCF — you get a posterior over the treatment effect for every protected characteristic group — is exactly what audit documentation needs.
+Consumer Duty (PS22/9, PRIN 2A) requires firms to produce segment-level evidence that pricing produces fair outcomes across protected characteristic groups. The credible interval structure of BCF — you get a posterior over the treatment effect for every protected characteristic group — is exactly what audit documentation needs.
 
 `BCFAuditReport` generates a structured HTML report. The `protected_characteristic_check` method tests whether the treatment effect for each protected group falls within the credible interval of the portfolio average:
 
@@ -265,7 +265,7 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 ## See Also
 
 - **[insurance-causal](https://github.com/burning-cost/insurance-causal)** — DML price elasticity for continuous treatment (actual premium level). Use when you have exogenous price variation.
-- **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for FCA EP25/2 evidence packs.
+- **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for Consumer Duty evidence packs.
 - **[insurance-dynamics](https://github.com/burning-cost/insurance-dynamics)** — Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.
 
 - [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
