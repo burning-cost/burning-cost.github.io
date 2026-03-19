@@ -4,7 +4,7 @@ title: "Your Territory Model Ignores Spatial Autocorrelation"
 date: 2028-04-15
 categories: [spatial, territory, pricing]
 tags: [spatial, territory, BYM2, ICAR, insurance-spatial, motor, python, uk-motor, postcode, consumer-duty]
-description: "Two things independent credibility cannot give you: a quantified uncertainty per sector, and stable factors year-on-year. BYM2 gives you both, and both matter for Consumer Duty."
+description: "Two things independent credibility cannot give you: a quantified uncertainty per sector, and stable factors year-on-year."
 ---
 
 We covered the theory behind BYM2 spatial smoothing in [2026](/2026/02/23/spatial-territory-ratemaking-with-bym2/) and the production pipeline shortly after. Two years in, with a few motor books now running quarterly BYM2 refreshes in place of independent credibility blending, there are two benefits worth documenting separately because they were not obvious from the theory post.

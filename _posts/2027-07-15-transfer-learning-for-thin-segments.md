@@ -4,7 +4,7 @@ title: "When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segmen
 date: 2027-07-15
 categories: [pricing, libraries, tutorials]
 tags: [transfer-learning, thin-data, GLMTransfer, MMD, covariate-shift, negative-transfer, poisson-glm, insurance-thin-data, uk-motor, electric-vehicles, python, JASA, Tian-Feng]
-description: "GLMTransfer borrows statistical strength from a related source book to price thin target segments. MMD shift test first, two-step penalised GLM second, negative transfer diagnostic last. insurance-thin-data tutorial for UK motor pricing teams."
+description: "GLMTransfer borrows statistical strength from a related source book to price thin target segments. Motor-to-fleet, home-to-landlord, and fleet roll-outs."
 ---
 
 Every UK motor pricing team has at least one segment they are pricing badly. Not because the actuaries are incompetent. Because the segment is too thin to estimate reliably on its own, and nobody has found a satisfying method for borrowing strength from elsewhere.

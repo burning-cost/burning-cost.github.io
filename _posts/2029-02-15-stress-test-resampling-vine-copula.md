@@ -4,7 +4,7 @@ title: "Your Stress Test Portfolio Was Made by Resampling"
 date: 2029-02-15
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
-description: "Resampling your real portfolio to generate stress test scenarios destroys the joint tail structure that capital models depend on. Vine copulas with Clayton and Gumbel families preserve tail dependence. The difference in Frobenius norm is 0.315 versus 0.880."
+description: "Resampling your real portfolio to generate stress test scenarios destroys the joint tail structure that capital models depend on."
 canonical_url: "https://burning-cost.github.io/2029/02/15/stress-test-resampling-vine-copula/"
 tags: [vine-copula, synthetic-data, stress-testing, capital-modelling, solvency-ii, tail-dependence, tvar, internal-model, insurance-synthetic, python, resampling, diversification]
 ---

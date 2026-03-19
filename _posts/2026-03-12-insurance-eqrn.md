@@ -204,3 +204,11 @@ The CRAN EQRN package (Pasche, March 2025) is the only prior implementation. Fou
 - **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)** — Marginal GPD/GEV for portfolio-level EVT, with censored MLE for open TPBI claims and ExcessGPD layer pricing
 - **[insurance-quantile](https://burning-cost.github.io/2026/03/07/insurance-quantile/)** — Quantile GBMs for covariate-dependent tail modelling, without EVT extrapolation
 - **[insurance-nflow](https://burning-cost.github.io/2026/03/12/insurance-nflow/)** — Normalizing flows for the full conditional severity distribution
+
+---
+
+## Related articles
+
+- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)

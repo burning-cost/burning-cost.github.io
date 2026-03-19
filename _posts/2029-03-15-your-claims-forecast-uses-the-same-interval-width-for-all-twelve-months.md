@@ -4,7 +4,7 @@ title: "Your 12-Month Claims Forecast Uses the Same Interval Width for All Twelv
 date: 2029-03-15
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
-description: "Single-quantile conformal methods apply one interval width across all forecast horizons. At 12 months ahead the interval is too narrow; at 1 month it is too wide. MSCP fixes this with per-horizon calibration. EnbPI and ConformalPID cover the overdispersion and tight-regret cases. NegBin scoring functions beat absolute residuals on claims count data."
+description: "Single-quantile conformal methods apply one interval width across all forecast horizons. At 12 months ahead the interval is too narrow;"
 canonical_url: "https://burning-cost.github.io/2029/03/15/your-claims-forecast-uses-the-same-interval-width-for-all-twelve-months/"
 tags: [conformal-prediction, time-series, mscp, enbpi, conformal-pid, multi-step, fan-chart, negbinom, exchangeability, insurance-conformal-ts, claims-monitoring, python]
 ---

@@ -5,7 +5,7 @@ date: 2026-03-09
 author: Burning Cost
 categories: [techniques, causal-inference]
 tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal, motor, benchmarks, python]
-description: "Where double machine learning outperforms naive regression in insurance pricing -- and where it doesn't. Practical benchmarks on synthetic motor data."
+description: "Where double machine learning beats naive regression in UK motor pricing - and where it costs more than it gains. Benchmarks on synthetic data."
 ---
 
 We have written before about why DML works conceptually -- the Neyman orthogonality argument, the confounding bias report, the bad controls problem. This post is not that. It is about the parts nobody writes up: how DML actually performs against naive alternatives on real-structured data, where it breaks down, and what the failure looks like before it is too late to notice.

@@ -3,7 +3,7 @@ layout: post
 title: "Your Champion Model Has Been Running Unchallenged for Three Years"
 date: 2028-09-15
 author: Burning Cost
-description: "Champion/challenger testing is the right way to evaluate pricing model changes. Most teams do it badly or not at all — ad-hoc scripts, no audit trail, no power analysis. insurance-deploy provides shadow mode routing, deterministic policy assignment, ENBP-compliant logging, and the statistical machinery to tell you when you have enough data to decide."
+description: "Champion/challenger testing is the right way to evaluate pricing model changes. Most teams do it badly or not at all — ad-hoc scripts, no audit trail, no..."
 tags: [champion-challenger, model-deployment, pricing, ICOBS, ENBP, fca-compliance, insurance-deploy, audit, model-governance, python, motor, uk-insurance]
 ---
 

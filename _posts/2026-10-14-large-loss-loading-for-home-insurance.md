@@ -4,7 +4,7 @@ title: "How to Build a Large Loss Loading Model for Home Insurance"
 date: 2026-10-14
 categories: [pricing, techniques, tutorials]
 tags: [large-loss-loading, quantile-regression, tvar, escape-of-water, home-insurance, catboost, insurance-quantile, heteroskedastic, ilf, uk-personal-lines, python]
-description: "A step-by-step guide to building per-risk large loss loadings for UK home insurance using quantile GBMs. Escape of water, high sum insured, heteroskedastic tails."
+description: "Per-risk large loss loadings for UK home insurance using quantile GBMs. Avoids the flat-loading trap by making the loading a function of the risk itself."
 ---
 
 Your home insurance burning cost model is built on Tweedie regression. Expected cost, per risk, conditioned on property type, construction, sum insured, postcode. The model validates well: A/E by decile is clean, the Gini is respectable, the holdout is stable. You sign it off and move on.

@@ -4,7 +4,7 @@ title: "Your New Business Mix Changed. Your Model Didn't Notice."
 date: 2027-02-15
 categories: [model-validation, pricing, techniques]
 tags: [covariate-shift, density-ratio, catboost, channel-mix, fca-consumer-duty, portfolio-drift, python, uk-motor]
-description: "When a new aggregator partnership or competitor exit changes your new business mix, models trained on the old distribution misprice silently. Here is how to detect it and correct it."
+description: "When a new aggregator partnership or competitor exit changes your new business mix, models trained on the old distribution misprice silently."
 ---
 
 Something happened to your new business mix last quarter. Maybe a competitor pulled out of a price comparison site and their policyholders came to you. Maybe you struck a new affinity deal and started writing a segment you barely touched before. Maybe you ran a TV campaign targeting a different demographic. The channel mix shifted. Your portfolio is not the population it was when the model was last trained.
@@ -179,3 +179,11 @@ The practical workflow, in order:
 4. Do not wait for the annual model validation to notice this. By then you have a year of mispriced risks on the book.
 
 The library is at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). The demo notebook in [`burning-cost-examples`](https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks/insurance_covariate_shift_demo.py) runs the full scenario on synthetic UK motor data.
+
+---
+
+## Related articles
+
+- [Your Pricing Model is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
+- [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/)
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/)

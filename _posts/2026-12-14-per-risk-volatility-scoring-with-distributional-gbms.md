@@ -4,7 +4,7 @@ title: "Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Dis
 date: 2026-12-14
 categories: [pricing, techniques, tutorials]
 tags: [distributional-regression, tweedie, catboost, polars, volatility, dispersion, safety-loading, ifrs17, insurance-distributional, uk-motor, tutorial]
-description: "A step-by-step tutorial for building per-risk volatility scores using TweedieGBM from insurance-distributional. Benchmark against constant-phi GBM: coverage calibration, safety loading spread, CRPS."
+description: "Per-risk volatility scores using TweedieGBM from insurance-distributional. Price volatility as a rating factor, not a portfolio-level adjustment."
 ---
 
 Your Tweedie model has a parameter it never shows you: phi, the dispersion. You fitted it once, as a scalar, and it applies identically to every risk in the book. A young driver in a prestige vehicle and a middle-aged driver in a city car at the same expected loss are assigned the same phi. Same variance, same coefficient of variation, same safety loading.

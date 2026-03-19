@@ -4,7 +4,7 @@ title: "Calibration Testing That Goes Beyond the Residual Plot"
 date: 2026-03-09
 categories: [techniques, libraries, pricing]
 tags: [calibration, balance-property, murphy-decomposition, auto-calibration, glm, gbm, poisson, python, insurance-monitoring]
-description: "The full calibration framework for insurance pricing: balance property test, auto-calibration by price cohort, and Murphy decomposition (UNC/DSC/MCB/GMCB/LMCB). The companion post Recalibrate or Refit focuses on using the Murphy split operationally."
+description: "The full calibration framework for insurance pricing: balance property test, auto-calibration by price cohort, and Murphy decomposition..."
 ---
 
 There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.

@@ -261,3 +261,11 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The 
 - [BYM2 Spatial Smoothing for Territory Ratemaking]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory-ratemaking-with-bym2 %})
 - [Extracting Rating Relativities from GBMs with SHAP]({{ site.baseurl }}{% post_url 2026-02-17-extracting-rating-relativities-from-gbms-with-shap %})
 - [From CatBoost to Radar in 50 Lines of Python]({{ site.baseurl }}{% post_url 2026-03-01-from-catboost-to-radar-gbm-to-glm-distillation %})
+
+---
+
+## Related articles
+
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [EBMs for Insurance Pricing: Better Than a GLM, Readable by a Pricing Committee](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
+- [Spatial Territory Ratemaking with BYM2](/2026/02/23/spatial-territory-ratemaking-with-bym2/)

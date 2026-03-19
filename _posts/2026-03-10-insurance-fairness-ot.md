@@ -5,7 +5,7 @@ date: 2026-03-10
 author: Burning Cost
 categories: [techniques, compliance, libraries]
 tags: [fairness, discrimination-free-pricing, optimal-transport, causal-inference, FCA, Consumer-Duty, Equality-Act, Lindholm, Wasserstein, LRTW, motor, python, insurance-fairness]
-description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. insurance-fairness-ot for FCA Consumer Duty compliance in Python."
+description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. Satisfies FCA Consumer Duty proxy discrimination rules."
 ---
 
 Detecting proxy discrimination in your pricing model is the first problem. Fixing it is harder.

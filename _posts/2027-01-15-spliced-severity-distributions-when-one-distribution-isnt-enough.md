@@ -4,7 +4,7 @@ title: "Spliced Severity Distributions: When One Distribution Isn't Enough"
 date: 2027-01-15
 categories: [pricing, techniques, tutorials]
 tags: [severity, composite-distributions, spliced-distributions, gpd, lognormal, evt, ilf, large-loss-loading, reinsurance, motor-bi, insurance-severity, threshold-selection, uk-motor, tutorial]
-description: "A practitioner tutorial on fitting spliced composite severity distributions for UK motor claims using insurance-severity. Body/tail splice vs single parametric, threshold selection, QQ diagnostics, ILF curves."
+description: "A practitioner tutorial on fitting spliced composite severity distributions for UK motor claims using insurance-severity."
 ---
 
 Every pricing actuary has stared at a severity histogram for a UK motor bodily injury book and felt uneasy fitting a single distribution to it. There is a cluster of attritional claims -- bruising, whiplash, minor soft-tissue injuries -- concentrated below £10,000, and then a long, flat tail extending to six-figure numbers for serious injury claims that bear almost no actuarial resemblance to the attritional body. A lognormal fitted to the whole thing will sit too high in the middle and too low at both ends. A gamma will be even worse at the tail.

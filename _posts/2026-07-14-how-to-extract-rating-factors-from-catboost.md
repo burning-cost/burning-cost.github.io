@@ -4,7 +4,7 @@ title: "How to Extract GLM-Style Rating Factors from a CatBoost Model"
 date: 2026-07-14
 categories: [pricing, techniques, tutorials]
 tags: [catboost, shap, shap-relativities, rating-factors, relativities, glm, radar, emblem, uk-motor, interpretability, pra-ss123, python]
-description: "Step-by-step: extract multiplicative CatBoost rating factors using shap-relativities. SHAP decomposition to GLM-format exp(beta) tables with CI and reconstruction check."
+description: "Step-by-step: extract multiplicative CatBoost rating factors using shap-relativities. SHAP decomposition to GLM-format exp(beta) tables with CI and..."
 ---
 
 You have a fitted CatBoost model. The Gini is 4 points higher than the GLM you have been running in production. The holdout A/E by decile is clean. Then someone asks: what is the relativity for area D, and how does it compare to what the GLM says?

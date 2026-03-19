@@ -4,7 +4,7 @@ title: "Your Frequency-Severity Independence Assumption Is Costing You Premium"
 date: 2027-05-15
 categories: [pricing, libraries, tutorials]
 tags: [frequency-severity, sarmanov-copula, dependence, IFM, NCD, UK-motor, pure-premium, copula, insurance-frequency-severity, python, GLM, poisson, gamma, negative-binomial, tutorial]
-description: "Your frequency GLM and severity GLM are both correct. The problem is multiplying them together. Sarmanov copula IFM estimation with insurance-frequency-severity: detect and correct the NCD-driven negative dependence that the independence model silently ignores."
+description: "Your frequency GLM and severity GLM are both correct. Multiplying them is not. How to test and correct for the dependence your pricing model ignores."
 ---
 
 Every UK motor pricing team runs two GLMs. A Poisson or Negative Binomial for claim frequency. A Gamma or Lognormal for claim severity. Pure premium = E[N|x] times E[S|x]. This is the convention, and it is a mathematically reasonable convention provided one condition holds: that claim count and claim severity are independent, conditional on the rating factors.

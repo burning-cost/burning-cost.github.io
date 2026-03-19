@@ -259,3 +259,11 @@ The Milhaud & Dutang (2018) paper is the clearest actuarial evidence that this m
 - **[Survival Models for Insurance Retention](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/)** — The baseline: Cox PH and Kaplan-Meier for retention modelling, before competing risks are added
 - **[Separating Structural Non-Claimers from Risk: Mixture Cure Models](https://burning-cost.github.io/2026/03/11/insurance-cure/)** — When some policies will never claim (structural zeros), not just right-censored; the cure fraction approach
 - **[Vine Copulas for Multi-Peril Home: The Flood-Subsidence Correlation That Costs 9% in Mispriced Revenue](https://burning-cost.github.io/2026/03/12/insurance-copula/)** — Copula models for the joint distribution of home perils; pairs well with competing risks for first-claim modelling
+
+---
+
+## Related articles
+
+- [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](/2026/03/11/insurance-cure/)
+- [Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave](/2027/11/15/cure-models-lapse-retention/)
+- [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

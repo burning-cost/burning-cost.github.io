@@ -4,7 +4,7 @@ title: "Your Severity Model Assumes the Same Variance for Every Policy"
 date: 2027-08-15
 categories: [pricing, libraries, tutorials]
 tags: [dispersion, double-glm, dglm, gamma-glm, severity, variance, phi, reinsurance, channel-mix, broker, commercial, smyth, reml, insurance-dispersion, python, GLM, tutorial]
-description: "Standard Gamma GLMs assign a single dispersion parameter to every policy. That assumption is wrong for most UK books. Double GLM with insurance-dispersion: fit a second regression for phi and get risk-differentiated variance estimates that matter for reinsurance pricing and capital loading."
+description: "Standard Gamma GLMs assign one dispersion parameter to every policy. That is wrong for most UK books. GAMLSS sigma submodels and Tweedie p estimation fix it."
 ---
 
 Every UK pricing team fitting a Gamma severity GLM is implicitly making a claim about dispersion. Not a claim written down anywhere, not a claim anyone signed off on — just the default assumption baked into the model family. The claim is: every policy in the portfolio has the same variance-to-mean ratio.

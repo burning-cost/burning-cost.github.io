@@ -4,7 +4,7 @@ title: "Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain
 date: 2028-02-15
 categories: [pricing, libraries, tutorials]
 tags: [covariate-shift, density-ratio, importance-weighting, rulsif, kliep, catboost, conformal-prediction, model-monitoring, book-mix, insurance-covariate-shift, fca, sup-15-3, uk-motor, python, polars]
-description: "How to run covariate shift detection as a recurring monthly check: monitoring cadence, ESS ratio trends, and the thresholds that trigger a retraining conversation with governance."
+description: "How to run covariate shift detection as a recurring monthly check: monitoring cadence, ESS ratio trends, and the thresholds that trigger a retraining..."
 ---
 
 The standard model monitoring workflow is A/E ratios by segment, PSI on score distributions, and a Gini trend. These are useful. They will catch a model that has gone badly wrong. The problem is the lag. A/E ratios need claims development. PSI needs a score distribution on the new book. Gini drift needs exposure to accumulate. By the time your monitoring dashboard is flashing, you have been writing business on a miscalibrated model for six months.

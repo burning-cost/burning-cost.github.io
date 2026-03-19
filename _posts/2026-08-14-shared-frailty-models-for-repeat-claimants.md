@@ -4,7 +4,7 @@ title: "How to Score Repeat Claimants with a Shared Frailty Model"
 date: 2026-08-14
 categories: [pricing, techniques, tutorials]
 tags: [shared-frailty, recurrent-events, credibility, buhlmann-straub, fleet, pet-insurance, survival-analysis, insurance-recurrent, em-algorithm, uk-motor, python]
-description: "Step-by-step: fit a shared frailty model in Python to score repeat claimants. Gamma frailty via EM, posterior credibility weights, GLM comparison. Works for fleet, pet, and home insurance."
+description: "Step-by-step: fit a shared frailty model in Python to score repeat claimants. Gamma frailty via EM, posterior credibility weights, GLM comparison."
 ---
 
 Your Poisson GLM knows everything about a policyholder: vehicle class, region, age, NCD. It uses all of it to predict their expected claims frequency. What it does not know is their history. Specifically, it does not know whether the policyholder who claimed four times in three years is going to claim again next year, over and above what their rating factors predict.
