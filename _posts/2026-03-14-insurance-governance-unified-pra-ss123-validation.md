@@ -203,8 +203,5 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 `insurance-governance` is MIT-licensed at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
 
----
-
-**Related articles from Burning Cost:**
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring layer that feeds post-deployment evidence back into the inventory

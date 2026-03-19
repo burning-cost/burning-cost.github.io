@@ -243,9 +243,6 @@ Python 3.10+. EBM requires `interpret >= 0.7.0`. ANAM and PIN require `torch >= 
 
 The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The `examples/` directory has three scripts — `ebm_frequency.py`, `anam_pure_premium.py`, and `pin_benchmark.py` — each running on synthetic motor data and producing factor tables, shape function plots, and validation metrics. All three complete in under 30 minutes on a laptop.
 
----
-
-**Related articles from Burning Cost:**
 - [EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)

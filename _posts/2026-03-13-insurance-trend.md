@@ -315,9 +315,6 @@ The ONS integration removes the last reason to do this manually. The HPTH series
 
 `insurance-trend` is open source under the MIT licence at [github.com/burning-cost/insurance-trend](https://github.com/burning-cost/insurance-trend). Install with `uv add insurance-trend`. 154 tests, all passing. Requires Python 3.10+, NumPy, Polars, statsmodels, and ruptures.
 
----
-
-**Related articles from Burning Cost:**
 - [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)

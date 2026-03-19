@@ -294,9 +294,6 @@ pip install "insurance-interactions[shap]"
 
 Source: [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)
 
----
-
-**Related posts from Burning Cost:**
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) — the theory behind CANN + NID and why manual 2D A/E plots miss the non-obvious pairs
 - [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/05/14/recalibrate-or-refit/) — once interactions are added, use Murphy decomposition to decide if future deviations need a refit or just a scale adjustment
 - [Your Factor Banding Is Made Up](/2026/03/14/your-factor-banding-is-made-up/) — once interactions are confirmed, the cell boundaries matter; here is how to optimise them

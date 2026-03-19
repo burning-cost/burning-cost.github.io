@@ -526,9 +526,6 @@ None of these steps is optional if you are pricing personal lines in the UK in 2
 
 The tools exist to do all of this properly. The bottleneck is almost never the software.
 
----
-
-## Related articles
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/): how `shap-relativities` works in detail, including the reconstruction check and exposure weighting
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/): temporal leakage and IBNR contamination in standard CV, and the walk-forward fix

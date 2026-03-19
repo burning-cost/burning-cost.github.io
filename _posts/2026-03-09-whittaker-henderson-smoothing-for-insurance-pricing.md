@@ -259,9 +259,6 @@ The confidence intervals change the conversation further. When the CI on the you
 
 `insurance-whittaker` is open source under the MIT licence at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker). Install with `uv add insurance-whittaker`. 73 tests, all passing. Requires Python 3.10+, NumPy, and SciPy.
 
----
-
-**Related articles from Burning Cost:**
 - [Buhlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Trend Selection Is Not Actuarial Judgment: A Python Approach](/2026/03/13/insurance-trend/)
 - [Building a Modern Insurance Pricing Pipeline in Python](/2026/03/12/modern-pricing-pipeline/)

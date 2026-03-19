@@ -208,7 +208,6 @@ On a portfolio where the only material group factor was broker with ICC = 0.05, 
 
 ---
 
-## What we think
 
 The credibility framework gets misused in two directions. Some teams apply it nowhere, relying instead on manual spreadsheet loadings that are applied at full credibility regardless of the data behind them. Others, having seen the framework work for broker, apply it to every high-cardinality categorical in the dataset, producing random effects stages that are doing nothing because the ICC is 0.01 and every BLUP is 0.98 × 0 = 0.
 
@@ -220,9 +219,6 @@ The decision about which group factors to model at Stage 2 should be driven by t
 
 `insurance-multilevel` is open source under MIT at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `pip install insurance-multilevel`. Requires Python 3.10+, CatBoost, Polars, and SciPy.
 
----
-
-**Related posts from Burning Cost:**
 - [Your Broker Adjustments Are Guesswork](/2026/03/13/your-broker-adjustments-are-guesswork/) — the 2026 introduction to the two-stage CatBoost + REML architecture
 - [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — the closed-form approach when you do not need a GBM Stage 1
 - [Spatial Territory Ratemaking with BYM2](/2026/03/09/spatial-territory-ratemaking-bym2/) — geographic random effects with spatial borrowing, the right tool for postcode sector

@@ -255,9 +255,6 @@ The Milhaud & Dutang (2018) paper is the clearest actuarial evidence that this m
 
 **[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)** — MIT-licensed, PyPI. 2,323 lines, 150 tests, 7 modules.
 
----
-
-## Related articles
 
 - **[Survival Models for Insurance Retention](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/)** — The baseline: Cox PH and Kaplan-Meier for retention modelling, before competing risks are added
 - **[Separating Structural Non-Claimers from Risk: Mixture Cure Models](https://burning-cost.github.io/2026/03/11/insurance-cure/)** — When some policies will never claim (structural zeros), not just right-censored; the cure fraction approach

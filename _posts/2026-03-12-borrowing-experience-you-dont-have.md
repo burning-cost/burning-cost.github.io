@@ -195,9 +195,6 @@ Tian and Feng (JASA, 2023, 118(544), 2684–2697) is the core reference for `GLM
 
 **[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI. For the segments your main book has never seen.
 
----
-
-**Related articles from Burning Cost:**
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
 - [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/)
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)

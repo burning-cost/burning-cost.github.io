@@ -418,9 +418,6 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 
 `insurance-conformal-ts` is open source under BSD-3 at [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts). Requires Python 3.10+, NumPy, SciPy, and statsmodels (for the Poisson GLM base forecaster). Install with `pip install insurance-conformal-ts`.
 
----
-
-**Related posts from Burning Cost:**
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - the cross-sectional case: per-policy intervals for Tweedie GBMs, where exchangeability holds
 - [Tracking Trend Between Model Updates with GAS Filters](/2027/04/15/gas-models-for-between-update-trend/) - score-driven models for between-refit monitoring of the same underlying trend problem
 - [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) - covariate shift detection as a precursor to recalibration

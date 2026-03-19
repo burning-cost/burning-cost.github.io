@@ -258,9 +258,6 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The 
 - Assuncao, R.M., Neves, M.C., Camara, G., & Freitas, C.D.C. (2006). Efficient regionalisation techniques for socio-economic geographical units using minimum spanning trees. *International Journal of Geographical Information Science*, 20(7), 797-811.
 - Guo, C., & Berkhahn, F. (2016). Entity embeddings of categorical variables. *arXiv:1604.06737*.
 
----
-
-**Related articles from Burning Cost:**
 - [BYM2 Spatial Smoothing for Territory Ratemaking]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory-ratemaking-with-bym2 %})
 - [Extracting Rating Relativities from GBMs with SHAP]({{ site.baseurl }}{% post_url 2026-02-17-extracting-rating-relativities-from-gbms-with-shap %})
 - [From CatBoost to Radar in 50 Lines of Python]({{ site.baseurl }}{% post_url 2026-03-01-from-catboost-to-radar-gbm-to-glm-distillation %})

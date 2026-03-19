@@ -329,9 +329,6 @@ Source and tests on [GitHub](https://github.com/burning-cost/insurance-dispersio
 
 One scalar phi for the whole portfolio is an assumption, not a fact. The DGLM lets you test that assumption, reject it when the data warrants it, and price accordingly.
 
----
-
-## Related articles
 
 - [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the broader framework when you need shape and zero-inflation parameters, not just dispersion
 - [Distributional GBMs for insurance pricing](/2026/03/05/insurance-distributional/) — per-risk dispersion estimation via gradient boosting rather than GLMs

@@ -290,9 +290,6 @@ Source and notebooks at [github.com/burning-cost/insurance-recurrent](https://gi
 
 The library supports gamma frailty (default, EM algorithm) and lognormal frailty (Gauss-Hermite quadrature, slower). It does not support Weibull baseline hazard -- baseline hazard is non-parametric (Breslow estimator). If you need a parametric baseline, you need the full frailtypack or reReg API from R.
 
----
-
-**Related posts from Burning Cost:**
 - [When Credibility Meets CatBoost](/2026/04/14/when-credibility-meets-catboost/) -- Bühlmann-Straub vs CatBoost vs two-stage multilevel: the frailty model sits at the intersection of these two worlds
 - [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/07/14/how-to-extract-rating-factors-from-catboost/) -- once you have frailty scores, you can use these as an offset in the main pricing model
 - [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/) -- the monitoring framework that tells you when theta has shifted

@@ -263,7 +263,4 @@ After that: fit `WeibullMixtureCureFitter` with NCD and channel as cure covariat
 
 The R survival community has had covariate-adjusted cure models in `flexsurvcure` for years. Python did not. Now it does.
 
----
-
-**Related articles from Burning Cost:**
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

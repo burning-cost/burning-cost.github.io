@@ -220,7 +220,4 @@ Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodo
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise).
 
----
-
-**Related articles from Burning Cost:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)

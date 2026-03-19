@@ -192,8 +192,5 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-o
 
 The `feasibility_report()` method is the first thing to run before any solve. If your constraints are infeasible at current rates, the solver will tell you - and that is itself useful information about the portfolio.
 
----
-
-**Related articles from Burning Cost:**
 - [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
