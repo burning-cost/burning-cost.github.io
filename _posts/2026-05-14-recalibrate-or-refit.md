@@ -4,7 +4,7 @@ title: "Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question"
 date: 2026-05-14
 categories: [monitoring, pricing, techniques]
 tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, poisson, gini-drift, insurance-monitoring, uk-motor, pra-ss123]
-description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB to decide between a one-afternoon intercept fix and a multi-week refit?"
+description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB..."
 ---
 
 Your monitoring dashboard has gone amber. The A/E ratio is 1.07 — the model is 7% cheap across the portfolio. The question on the table: do we adjust the intercept this afternoon, or do we commission a full model refit?

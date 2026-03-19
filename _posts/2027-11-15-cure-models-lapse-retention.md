@@ -4,7 +4,7 @@ title: "Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Lea
 date: 2027-11-15
 categories: [pricing, libraries, tutorials]
 tags: [survival-analysis, cure-models, mixture-cure, lapse, retention, CLV, insurance-survival, python, polars, consumer-duty, ps21-11, uk-motor]
-description: "Logistic regression treats all non-lapsers the same. Mixture cure models split them into two groups: structural non-lapsers who will never leave, and susceptible customers who just haven't left yet. That difference matters for retention pricing."
+description: "Logistic regression treats all non-lapsers the same. Mixture cure models split them into two groups: structural non-lapsers who will never leave, and..."
 ---
 
 Every renewal pricing team has a lapse model. Most of them are logistic regressions: feed in NCD level, age, channel, price change, out comes a probability. The model is trained on policies where the dependent variable is 1 if the customer did not renew. Standard, defensible, widely deployed.
@@ -200,3 +200,11 @@ For new business books with less than two years of data, do not use a cure model
 ---
 
 The code is at [github.com/burning-cost/insurance-survival](https://github.com/burning-cost/insurance-survival). The library also covers competing risks (Fine-Gray regression for mid-term cancellation vs renewal lapse), recurrent events (shared frailty for pet and fleet books), and the MLflow wrapper for Model Registry deployment.
+
+---
+
+## Related articles
+
+- [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](/2026/03/11/insurance-cure/)
+- [Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing](/2026/03/12/insurance-competing-risks/)
+- [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

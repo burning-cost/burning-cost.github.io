@@ -175,3 +175,11 @@ The credibility approach did not disappear when GBMs arrived. It got a better St
 ---
 
 [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) | [`insurance-multilevel`](https://github.com/burning-cost/insurance-multilevel) | [`shap-relativities`](https://github.com/burning-cost/shap-relativities)
+
+---
+
+## Related articles
+
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
+- [Your Group Factors Are Not All Worth Modelling](/2027/03/15/multilevel-group-factors/)

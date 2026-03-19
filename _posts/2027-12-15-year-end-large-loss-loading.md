@@ -4,7 +4,7 @@ title: "Your Year-End Large Loss Loading Is a Finger in the Air"
 date: 2027-12-15
 categories: [pricing, libraries, tutorials]
 tags: [large-loss, quantile-regression, TVaR, ILF, catboost, insurance-quantile, motor, severity, tail-risk, python, polars]
-description: "December is the season for year-end rate reviews where someone adds a flat 8% large loss loading to every segment regardless of tail weight. There is a better way."
+description: "December is the season for year-end rate reviews where someone adds a flat 8% large loss loading to every segment regardless of tail weight."
 ---
 
 December is the season for year-end rate reviews. Boards want sign-off, reinsurance treaties are being re-priced, and pricing actuaries everywhere are reaching for the same tool: a flat large loss loading applied to the burning cost mean. Pick a number, 6%, maybe 8%, argue about it for half an hour, document it as "consistent with historical average severity inflation" and move on.

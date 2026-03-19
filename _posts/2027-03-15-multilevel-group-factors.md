@@ -4,7 +4,7 @@ title: "Your Group Factors Are Not All Worth Modelling"
 date: 2027-03-15
 categories: [pricing, libraries]
 tags: [multilevel-models, random-effects, credibility, catboost, reml, icc, broker, scheme, fleet, postcode, high-cardinality, variance-components, buhlmann-straub, insurance-multilevel, python]
-description: "ICC diagnostics for multiple group factors in insurance pricing. When broker, scheme, fleet, and postcode sector effects are worth modelling with REML random effects — and when they are not."
+description: "ICC diagnostics for multiple group factors in insurance pricing. When broker, scheme, fleet, and postcode sector effects are worth modelling with REML..."
 ---
 
 There is a tier of problems just above "the model works" that pricing teams only reach after the first year with a new tool. The first year is spent getting the infrastructure right: integrating the library, validating the variance component estimates, convincing compliance that BLUP-derived broker factors are defensible. The second year is when the harder question arrives.

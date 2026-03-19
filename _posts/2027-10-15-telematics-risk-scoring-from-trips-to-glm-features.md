@@ -4,7 +4,7 @@ title: "Telematics Risk Scoring: From Raw Trips to GLM Features"
 date: 2027-10-15
 categories: [pricing, libraries, tutorials]
 tags: [telematics, hmm, hidden-markov-model, driving-states, GLM, poisson, risk-scoring, insurance-telematics, uk-motor, python, polars, catboost, jiang-shi-2024, buehlmann-straub]
-description: "Most pricing teams either buy pre-scored telematics data from a box provider or ignore it entirely. insurance-telematics gives you the full pipeline in Python: raw 1Hz GPS/accelerometer trips to HMM-derived driving state features you can drop into your frequency GLM."
+description: "How to convert raw telematics trip data into GLM-ready features for UK motor pricing. Covers HMM state segmentation and score calibration to GLM relativities."
 ---
 
 Most pricing teams sit in one of two camps on telematics. Either they buy a pre-scored variable from a box provider - a single "telematics score" that appears in the rating engine as a black-box input - or they do not use telematics at all because getting the data into a usable form is too painful. Neither is satisfying. In the first case you cannot audit the score, cannot explain it to underwriters, and cannot update it without going back to the supplier. In the second, you are leaving real risk information on the table.

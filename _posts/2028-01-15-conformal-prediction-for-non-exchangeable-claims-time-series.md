@@ -4,7 +4,7 @@ title: "Your Conformal Intervals Are Wrong When the Claims Series Has Trend"
 date: 2028-01-15
 categories: [pricing, libraries, tutorials]
 tags: [conformal-prediction, time-series, aci, spci, exchangeability, claims-monitoring, loss-ratio, insurance-conformal-ts, sequential-coverage, kupiec, python, tutorial]
-description: "Standard split conformal prediction requires exchangeability — a condition insurance claims time series systematically violate. insurance-conformal-ts implements ACI and SPCI, two methods that track coverage under trend, seasonality, and regime shift. Tutorial with UK motor claims count and loss ratio series."
+description: "Standard split conformal prediction requires exchangeability — a condition insurance claims time series systematically violate."
 ---
 
 Standard conformal prediction gives a finite-sample coverage guarantee. The small print on that guarantee: the calibration and test data must be exchangeable — drawn from the same distribution, with no ordering dependence between them. A monthly UK motor claims count series does not satisfy this. Q4 always runs heavier than Q2. A market-hardening year looks nothing like the stable period you calibrated on. A newly priced segment that added younger drivers last autumn has a different frequency distribution than the training data from two years before.

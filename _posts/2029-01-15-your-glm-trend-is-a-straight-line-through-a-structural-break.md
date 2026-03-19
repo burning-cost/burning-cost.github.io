@@ -4,7 +4,7 @@ title: "Your GLM Trend Is a Straight Line Through a Structural Break"
 date: 2029-01-15
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
-description: "Pricing teams fit log-linear trends to loss experience. The underlying process has structural breaks. insurance-dynamics detects those breaks and models piecewise regimes, so your rate indication is not a blend across a step-change you should have separated."
+description: "Pricing teams fit log-linear trends through experience with structural breaks. The straight line is wrong on both sides. How to detect and correct it."
 canonical_url: "https://burning-cost.github.io/2029/01/15/your-glm-trend-is-a-straight-line-through-a-structural-break/"
 tags: [changepoint, bocpd, pelt, bayesian, structural-break, trend, rate-indication, insurance-dynamics, python, uk-motor, ogden, whiplash, inflation, actuarial]
 ---

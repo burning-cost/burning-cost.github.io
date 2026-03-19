@@ -263,3 +263,11 @@ The key thing the library does not do: non-stationary EVT. For flood and subside
 - **[insurance-severity](https://burning-cost.github.io/2026/03/13/insurance-composite/)** — Composite severity regression for the full distribution, with covariate-dependent thresholds and TVaR
 - **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)** — Increased limits factors from severity distributions with bootstrap CIs; use alongside EVT for excess layer rating factor benchmarks
 - **[insurance-quantile](https://burning-cost.github.io/2026/03/07/insurance-quantile/)** — Quantile GBMs for tail risk, when you want covariate-dependent tail modelling rather than unconditional EVT
+
+---
+
+## Related articles
+
+- [EQRN: Covariate-Dependent Extreme Value Modelling for XL Pricing and Tail Reserving](/2026/03/12/insurance-eqrn/)
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)

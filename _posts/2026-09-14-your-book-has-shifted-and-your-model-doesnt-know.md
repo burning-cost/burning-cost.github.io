@@ -4,7 +4,7 @@ title: "Covariate Shift in Motor Pricing: Detection, Correction, and Conformal I
 date: 2026-09-14
 categories: [techniques]
 tags: [covariate-shift, density-ratio, importance-weighting, conformal-prediction, catboost, rulsif, kliep, motor, uk-personal-lines, insurance-covariate-shift, databricks, python]
-description: "The foundational walkthrough for insurance-covariate-shift: density ratio estimation, ESS/KL diagnostics, importance weighting, shift-robust conformal intervals. For ongoing monitoring cadence, see the companion post from February 2028."
+description: "The foundational walkthrough for insurance-covariate-shift: density ratio estimation, ESS/KL diagnostics, importance weighting, shift-robust conformal..."
 ---
 
 Your direct channel frequency model was built on three years of direct-to-consumer policies. Young urban drivers, full NCB concentration at band 5, postcode distribution skewed to London and the South East. Governance committee passed it. It priced consistently. It validated cleanly on a holdout.

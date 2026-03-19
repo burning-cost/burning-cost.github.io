@@ -4,7 +4,7 @@ title: "How Do You Know Your Sigma Model Is Working?"
 date: 2027-06-15
 categories: [pricing, techniques, tutorials]
 tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, volatility-scoring, sigma, variance, gamma, insurance-distributional-glm, python, model-validation]
-description: "Fitting a GAMLSS sigma submodel is the easy part. Convincing your head of actuarial — and yourself — that it's capturing real signal rather than noise is harder. Three diagnostics from insurance-distributional-glm that close that gap."
+description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."
 ---
 
 Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book — and it is — you should model it, not absorb it into a single global dispersion parameter.

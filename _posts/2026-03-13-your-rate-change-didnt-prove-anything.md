@@ -4,7 +4,7 @@ title: "Synthetic Difference-in-Differences for Rate Change Evaluation"
 date: 2026-03-13
 categories: [regulation, libraries, causal-inference]
 tags: [sdid, causal-inference, difference-in-differences, fca-tr242, fca-ep252, rate-change-evaluation, python, insurance-causal-policy]
-description: "Synthetic DiD, Callaway-Sant'Anna, and HonestDiD for UK rate change evaluation. insurance-causal-policy - causal attribution of outcomes, TR24/2 compliant."
+description: "DiD and Callaway-Sant'Anna for rate change attribution. insurance-causal-policy quantifies what your rate change actually achieved, TR24/2 compliant."
 ---
 
 Your loss ratio went down six months after the rate increase. The pricing presentation shows a before/after chart. Management is pleased. The FCA compliance team has filed it as a positive outcome.

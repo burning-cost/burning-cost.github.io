@@ -35,6 +35,9 @@ plugins:
 
 show_excerpts: true
 
+# Explicitly publish future-dated posts (github-pages gem sets this, but be explicit)
+future: true
+
 markdown: kramdown
 highlighter: rouge
 

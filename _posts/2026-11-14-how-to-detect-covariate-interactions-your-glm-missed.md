@@ -4,7 +4,7 @@ title: "GLM Interaction Detection: A Six-Step Walkthrough with CANN, NID, and SH
 date: 2026-11-14
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, poisson, deviance, insurance-interactions, pra-ss123, uk-motor, tutorial]
-description: "Step-by-step tutorial: plant two interactions in synthetic motor data, detect them with CANN + NID, validate with SHAP, confirm with A/E surfaces, and measure the deviance improvement. The theory post is Finding the Interactions Your GLM Missed."
+description: "Step-by-step tutorial: plant two interactions in synthetic motor data, detect them with CANN + NID, validate with SHAP, confirm with A/E surfaces, and..."
 ---
 
 Every UK personal lines GLM we have seen tests the same handful of interactions: age by vehicle group, region by cover type, occasionally NCD by vehicle age. These are the ones that showed up in 2D A/E plots years ago, or that the previous actuary added with a note in the model documentation. They may not be the interactions that are actually in your current data.
