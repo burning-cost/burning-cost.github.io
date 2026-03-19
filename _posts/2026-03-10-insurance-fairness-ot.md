@@ -5,7 +5,7 @@ date: 2026-03-10
 author: Burning Cost
 categories: [techniques, compliance, libraries]
 tags: [fairness, discrimination-free-pricing, optimal-transport, causal-inference, FCA, Consumer-Duty, Equality-Act, Lindholm, Wasserstein, LRTW, motor, python, insurance-fairness]
-description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. Consumer Duty and Equality Act 2010 compliance in Python."
+description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. insurance-fairness-ot for FCA Consumer Duty compliance in Python."
 ---
 
 Detecting proxy discrimination in your pricing model is the first problem. Fixing it is harder.
@@ -24,7 +24,7 @@ uv add insurance-fairness
 
 ## The regulatory context
 
-The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. TR24/2 (August 2024) found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, used distributional analysis in the FCA's own evaluation methodology — a signal of how the regulator is thinking about within-model outcome monitoring, even if EP25/2 itself does not impose new obligations on firms.
+The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. TR24/2 (August 2024) found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, is about price-walking — it does not impose the proxy discrimination obligation.
 
 The Equality Act 2010 Section 19 captures indirect discrimination: a pricing practice that puts customers with a protected characteristic at a particular disadvantage, even where the characteristic is not explicitly used, is unlawful unless the firm can show proportionate justification through legitimate actuarial purpose.
 
@@ -281,7 +281,7 @@ metrics = report.discrimination_metrics(D=D_test, exposure=exposure_test)
 # Attribution: variable | direct_effect | proxy_effect | justified_effect
 attribution = report.path_attribution()
 
-# Write FCA-format markdown for Consumer Duty (PS22/9) and EP25/2 evidence
+# Write FCA-format markdown for Consumer Duty (PS22/9) and Equality Act evidence
 fca = FCAReport(
     pricing_result=result,
     report_metadata={

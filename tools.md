@@ -164,7 +164,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-fairness",
-      "description": "Proxy discrimination auditing for insurance pricing — Consumer Duty, Equality Act 2010 s.19, bias metrics.",
+      "description": "Proxy discrimination auditing for insurance pricing — FCA Consumer Duty, Equality Act 2010, bias metrics.",
       "codeRepository": "https://github.com/burning-cost/insurance-fairness",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -314,10 +314,10 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
 
 <div class="essential-grid" id="essential-grid">
 
-<div class="essential-card" data-name="insurance-fairness" data-desc="Proxy discrimination auditing Consumer Duty Equality Act 2010 bias metrics protected characteristics">
+<div class="essential-card" data-name="insurance-fairness" data-desc="Proxy discrimination auditing FCA Consumer Duty Equality Act 2010 bias metrics protected characteristics">
   <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></div>
-  <div class="essential-card-desc">Proxy discrimination auditing aligned to Consumer Duty and Equality Act 2010 s.19. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics. Consumer Duty documentation support built in.</div>
-  <div class="essential-card-tag">Consumer Duty &middot; Equality Act 2010</div>
+  <div class="essential-card-desc">Proxy discrimination auditing aligned to FCA Consumer Duty. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics. Equality Act 2010 proportionality documentation built in.</div>
+  <div class="essential-card-tag">FCA Consumer Duty</div>
 </div>
 
 <div class="essential-card" data-name="insurance-governance" data-desc="PRA SS1/23 model validation MRM Gini calibration double-lift governance report">
@@ -482,7 +482,7 @@ Proxy discrimination, Consumer Duty, and FCA evidence packs.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | **Flagship.** Proxy discrimination auditing — Consumer Duty, Equality Act 2010 s.19, bias metrics<br>_Benchmark: Proxy R²=0.78 catches postcode proxy that Spearman (r=0.06) misses entirely_ | `pip install insurance-fairness` |
+| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | **Flagship.** Proxy discrimination auditing — FCA Consumer Duty, Equality Act 2010, bias metrics<br>_Benchmark: Proxy R²=0.78 catches postcode proxy that Spearman (r=0.06) misses entirely_ | `pip install insurance-fairness` |
 | [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift) | Density ratio correction for book shifts — CatBoost/RuLSIF/KLIEP, LR-QR conformal, FCA SUP 15.3 diagnostics<br>_Benchmark: Density ratio correction for portfolio composition shift benchmarked_ | `pip install insurance-covariate-shift` |
 
 </div>
