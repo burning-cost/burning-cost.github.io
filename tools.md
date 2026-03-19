@@ -296,6 +296,14 @@ permalink: /tools/
       "codeRepository": "https://github.com/burning-cost/insurance-elasticity",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "insurance-distill",
+      "description": "GBM-to-GLM distillation for insurance pricing - surrogate factor tables for Radar/Emblem rating engines",
+      "codeRepository": "https://github.com/burning-cost/insurance-distill",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
     }
   ]
 }
@@ -415,7 +423,7 @@ Tools for building and interpreting pricing models.
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values<br>_Benchmark: Production defaults recover both planted interactions; compact config less reliable_ | `pip install insurance-interactions` |
 | [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | `pip install insurance-frequency-severity` |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics<br>_Benchmark: BYM2 vs raw vs manual banding benchmarked on synthetic territory data_ | `pip install insurance-spatial` |
-| [insurance-distill](https://github.com/burning-cost/insurance-distill) | GBM-to-GLM distillation — fits a surrogate Poisson/Gamma GLM to CatBoost predictions, exports multiplicative factor tables for Radar/Emblem | `pip install insurance-distill` |
+| [insurance-distill](https://github.com/burning-cost/insurance-distill) | GBM-to-GLM distillation — fits a surrogate Poisson/Gamma GLM to CatBoost predictions, exports multiplicative factor tables for Radar/Emblem<br>_Benchmark: 90-97% R² match between GBM predictions and distilled GLM factors_ | `pip install insurance-distill` |
 
 </div>
 

@@ -37,6 +37,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 - [`insurance-trend`](https://github.com/burning-cost/insurance-trend) - loss cost trend analysis with structural break detection and regime-aware projections
 - [`insurance-gam`](https://github.com/burning-cost/insurance-gam) - interpretable GAM models: EBM tariffs, actuarial NAM, and pairwise interaction networks with exact Shapley values
 - [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) - automated GLM interaction detection using CANN, NID, and SHAP-based methods
+- [`insurance-distill`](https://github.com/burning-cost/insurance-distill) - GBM-to-GLM distillation: fits a surrogate GLM to CatBoost predictions and exports multiplicative factor tables for Radar/Emblem rating engines
 - [`insurance-survival`](https://github.com/burning-cost/insurance-survival) - shared frailty models for recurrent claims, cure models, competing risks, and retention modelling
 
 **Interpretation**
