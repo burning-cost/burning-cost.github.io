@@ -1,5 +1,5 @@
 title: "Burning Cost"
-description: "Open-source Python libraries for UK personal lines insurance pricing - SHAP relativities, causal inference, conformal prediction, spatial ratemaking, FCA compliance tools, PRA SS1/23 validation. 36 packages on PyPI with Databricks notebooks."
+description: "Open-source Python libraries for UK personal lines insurance pricing - SHAP relativities, causal inference, conformal prediction, spatial ratemaking, FCA compliance tools, PRA SS1/23 validation. 37 libraries on PyPI with Databricks notebooks."
 baseurl: ""
 url: "https://burning-cost.github.io"
 
@@ -10,6 +10,8 @@ author:
 twitter:
   username: burningcost
   card: summary_large_image
+
+og_image: /assets/og-image.png
 
 social:
   name: Burning Cost
