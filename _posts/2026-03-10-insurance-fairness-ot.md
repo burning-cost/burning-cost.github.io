@@ -87,7 +87,7 @@ print(f"Bias correction factor: {corrector.bias_correction_factor_:.4f}")
 # Bias correction factor: 1.0113
 ```
 
-The `log_space=True` flag is important for GLM models. The Lindholm formula averages over D, which is additive. GLMs predict on the log scale (eta = log(mu)), so the averaging should happen there -- geometric mean, not arithmetic mean -- then exponentiate. Mixing the two produces incorrect results for log-linked models.
+The `log_space=True` flag is important for GLM models. Setting `log_space=True` exponentiates each eta(x, d) = log(mu_hat(x, d)) before the arithmetic weighted average, giving sum_d exp(eta(x, d)) * omega_d — the correct Lindholm formula for log-link GLM models. Without it, the code would average the log-scale predictions directly, which is a geometric-mean operation and gives the wrong answer for a log-linked model.
 
 ---
 
@@ -281,8 +281,18 @@ metrics = report.discrimination_metrics(D=D_test, exposure=exposure_test)
 # Attribution: variable | direct_effect | proxy_effect | justified_effect
 attribution = report.path_attribution()
 
-# Write FCA-format markdown with PS21/11 and Consumer Duty framing
-report.to_fca_report("fairness_audit_q1_2026.md")
+# Write FCA-format markdown for Consumer Duty (PS22/9) and EP25/2 evidence
+fca = FCAReport(
+    pricing_result=result,
+    report_metadata={
+        "firm_name": "Example Insurer Ltd",
+        "model_name": "UK Motor Frequency v3.2",
+        "reporting_date": "2026-03-07",
+        "model_version": "3.2",
+    },
+)
+fca.save("fairness_audit_q1_2026.md", format="markdown")
+fca.save("fairness_audit_q1_2026.json", format="json")
 ```
 
 The FCAReport class produces a structured document with the premium comparison table by protected group (before and after correction), the path attribution showing what was removed and why, the bias correction factor, and a template for the Equality Act proportionality analysis. This is the document your model risk committee and compliance team need, not a notebook screenshot.
