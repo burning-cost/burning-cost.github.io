@@ -90,167 +90,134 @@ The library requires a trained CatBoost model and a Polars DataFrame. It assumes
 
 ## Step 1: measuring proxy correlation
 
-Before you compute discrimination-free prices, you need to know which features are proxies and how strongly they correlate with protected characteristics.
+Before you compute discrimination-free prices, you need to know which features are proxies and how strongly they correlate with protected characteristics. The library's primary entry point is `FairnessAudit`, which runs a full audit in one call. For more granular control, you can call `detect_proxies()` directly.
 
 ```python
 import polars as pl
-from insurance_fairness import ProxyAudit
+from insurance_fairness import FairnessAudit
+from catboost import CatBoostRegressor
 
-# df_train is your training data; needs postcode LSOA linked to ONS Census
-# ethnicity_prop is proportion of non-white-British population at LSOA level
-# from ONS Census 2021, linked via postcode -> LSOA lookup
+# df_train is your training data; postcode_district is linked to ONS Census
+# ethnicity_prop is proportion of non-white-British population at LSOA level,
+# from ONS Census 2021, joined via postcode -> LSOA lookup
 
-audit = ProxyAudit(
-    protected_proxy="ethnicity_prop",     # continuous proxy for S
-    rating_factors=["postcode_band", "vehicle_group", "occupation", "ncd", "age_band"],
+model = CatBoostRegressor()
+model.load_model("frequency_model.cbm")
+
+audit = FairnessAudit(
+    model=model,
+    data=df_train,
+    protected_cols=["ethnicity_prop"],
+    prediction_col="predicted_freq",
+    outcome_col="claim_count",
     exposure_col="policy_years",
+    factor_cols=["postcode_district", "vehicle_group", "occupation", "ncd_years", "age_band"],
+    model_name="UK Motor Frequency v3.2",
+    run_proxy_detection=True,
 )
 
-proxy_report = audit.fit(df_train).report()
+report = audit.run()
+report.summary()
 ```
 
 ```
-Proxy Correlation Audit
-Protected characteristic proxy: ethnicity_prop (continuous, 0-1)
-Metric: Spearman rank correlation, exposure-weighted
+============================================================
+Fairness Audit: UK Motor Frequency v3.2
+Date: 2026-03-07
+Policies: 243,891 | Exposure: 201,432.7
+Overall status: AMBER
+============================================================
 
-postcode_band     |  r = +0.61  ***  HIGH  - strong proxy correlation
-occupation        |  r = +0.29  **   MEDIUM - moderate proxy correlation
-vehicle_group     |  r = +0.18  *    LOW  - weak proxy correlation
-age_band          |  r = -0.04        NONE - not a significant proxy
-ncd               |  r = +0.02        NONE - not a significant proxy
-
-Warning: postcode_band has high proxy correlation with protected characteristic.
-Model using postcode_band will require discrimination-free price adjustment.
+Protected characteristic: ethnicity_prop
+----------------------------------------
+  Demographic parity log-ratio: +0.2714 (ratio: 1.3117) [AMBER]
+  Max calibration disparity: 0.0841 [GREEN]
+  Disparate impact ratio: 0.7623 [AMBER]
+  Flagged proxy factors (2): postcode_district, occupation
 ```
 
-The audit runs exposure-weighted Spearman correlations between each rating factor and the protected characteristic proxy. Postcode, in this example, is the main offender - correlation of 0.61 is not marginal. Occupation is worth watching. Age and NCD are not significant proxies here.
+The audit also exposes the proxy detection results in a structured form. To see the full per-factor breakdown:
 
-This table is your evidence base. If you can show the regulator that occupation had correlation 0.29 and that you investigated it, that is a substantially better position than having no record of the analysis.
+```python
+proxy_result = report.results["ethnicity_prop"].proxy_detection
+proxy_df = proxy_result.to_polars()
+print(proxy_df.select(["factor", "proxy_r2", "mutual_information", "partial_correlation", "rag"]))
+```
+
+```
+shape: (5, 5)
+┌────────────────────┬──────────┬───────────────────┬────────────────────┬───────┐
+│ factor             ┆ proxy_r2 ┆ mutual_information ┆ partial_correlation ┆ rag   │
+│ ---                ┆ ---      ┆ ---                ┆ ---                 ┆ ---   │
+│ str                ┆ f64      ┆ f64                ┆ f64                 ┆ str   │
+╞════════════════════╪══════════╪═══════════════════╪════════════════════╪═══════╡
+│ postcode_district  ┆ 0.3847   ┆ 0.2913             ┆ 0.5821              ┆ red   │
+│ occupation         ┆ 0.1134   ┆ 0.0872             ┆ 0.2247              ┆ amber │
+│ vehicle_group      ┆ 0.0621   ┆ 0.0514             ┆ 0.1183              ┆ green │
+│ age_band           ┆ 0.0198   ┆ 0.0231             ┆ -0.0412             ┆ green │
+│ ncd_years          ┆ 0.0087   ┆ 0.0119             ┆ 0.0203              ┆ green │
+└────────────────────┴──────────┴───────────────────┴────────────────────┴───────┘
+```
+
+The proxy R-squared for `postcode_district` is 0.38 — a CatBoost model trained on postcode alone explains 38% of the variance in the ethnicity proportion proxy. That is not marginal. Occupation at 0.11 sits just above the amber threshold (the library flags anything above 0.10). Age and NCD are not significant proxies here.
+
+This table is your evidence base. If you can show the regulator that occupation had proxy R-squared of 0.11 and that you investigated it, that is a substantially better position than having no record of the analysis.
 
 ---
 
 ## Step 2: measuring disparate impact
 
-Proxy correlation tells you which features are suspect. Disparate impact measurement tells you what the model's actual predictions are doing.
+The `FairnessReport` already contains the disparate impact result. You can also inspect calibration-by-group:
 
 ```python
-from insurance_fairness import DisparateImpactAudit
-from catboost import CatBoostRegressor
+# Disparate impact ratio
+di = report.results["ethnicity_prop"].disparate_impact
+print(f"Disparate impact ratio: {di.ratio:.4f} [{di.rag.upper()}]")
+print(f"Group means: {di.group_means}")
 
-model = CatBoostRegressor()
-model.load_model("frequency_model.cbm")
-
-di_audit = DisparateImpactAudit(
-    model=model,
-    protected_proxy="ethnicity_prop",
-    protected_threshold=0.5,   # high-minority-proportion areas vs low
-    exposure_col="policy_years",
-    metric="log_ratio",        # log(E[price | high]) - log(E[price | low])
-)
-
-di_result = di_audit.fit(df_test)
-print(di_result.summary())
+# Calibration by group — actual-to-expected ratios by decile
+cal = report.results["ethnicity_prop"].calibration
+print(f"Max calibration disparity from A/E=1: {cal.max_disparity:.4f} [{cal.rag.upper()}]")
 ```
 
 ```
-Disparate Impact Audit
-Protected group: ethnicity_prop > 0.50 (high minority proportion)
-Reference group: ethnicity_prop <= 0.50
-
-Exposure-weighted mean log predicted frequency:
-  Protected group:   -2.87
-  Reference group:   -3.14
-
-Log ratio (protected / reference): +0.27
-Implied multiplicative disparity: 1.31x
-
-Interpretation: the model predicts 31% higher frequency in high-minority-proportion
-postcode areas relative to low-minority-proportion areas, after conditioning
-on other rating factors.
-
-Note: this is a disparate impact measurement, not a discrimination-free price
-adjustment. Some or all of this disparity may be genuine risk differential.
-See discrimination-free pricing step to decompose.
+Disparate impact ratio: 0.7623 [AMBER]
+Group means: {'0': 0.0412, '1': 0.0540}
+Max calibration disparity from A/E=1: 0.0841 [GREEN]
 ```
 
-The key discipline here: a disparate impact of 1.31x is not automatically discrimination. Risk genuinely varies by postcode. The question is how much of the 1.31x is genuine risk variation versus demographic correlation. The library is explicit about this - it reports the total disparity and tells you to decompose it rather than treating all disparity as discrimination.
+The disparate impact ratio compares mean predicted frequency between groups. A ratio below 0.80 is flagged amber — not because the US four-fifths rule applies in UK law (it does not), but as a diagnostic threshold. The calibration check is separately green: the model is not systematically miscalibrated within groups, which means the disparity in mean predictions largely reflects genuine risk variation rather than model error.
+
+The key discipline here: a disparate impact ratio of 0.76 is not automatically discrimination. Risk genuinely varies by postcode. The question is how much of the disparity is genuine risk variation versus demographic correlation. Use the discrimination-free pricing step in `insurance-fairness.optimal_transport` to decompose it — that library takes these audit findings and produces corrected premiums.
 
 ---
 
-## Step 3: computing discrimination-free prices
+## Step 3: producing the audit report
 
-This is the LRTW calculation. It requires p(S | X) - the conditional distribution of the protected characteristic given observed features. In the UK postcode context, we use ONS Census 2021 ethnicity proportions as the continuous proxy, and the postcode-to-LSOA lookup to link them.
-
-```python
-from insurance_fairness import DiscriminationFreePrice
-
-# df must contain: the raw model predictions, postcode_band, and
-# ethnicity_prop from ONS Census 2021 linked via postcode -> LSOA
-
-dfp = DiscriminationFreePrice(
-    model=model,
-    protected_proxy="ethnicity_prop",
-    protected_proxy_type="continuous",      # continuous proportion, not binary flag
-    marginalisation_method="empirical",     # use empirical p(S|X) from data
-    exposure_col="policy_years",
-)
-
-df_with_df_price = dfp.fit_transform(df_test)
-# Returns df with original prediction and discrimination-free prediction
-```
-
-The output adds two columns: `predicted_freq` (raw model output) and `predicted_freq_df` (discrimination-free version). For policies in high-minority postcodes, the DF price is typically lower than the raw prediction. For policies in low-minority postcodes, it may be slightly higher. The portfolio mean is preserved.
+The library outputs structured data rather than a PDF — the right format depends on your governance infrastructure:
 
 ```python
-# Decompose how much of the disparity is proxy vs risk
-decomposition = dfp.disparity_decomposition()
-print(decomposition)
+import json
+
+# Save a Markdown report for model governance documentation
+report.to_markdown("fairness_audit_2026Q1.md")
+
+# Save a JSON record for MI submissions and audit trail
+audit_dict = report.to_dict()
+with open("fairness_audit_2026Q1.json", "w") as f:
+    json.dump(audit_dict, f, indent=2)
+
+# Print the report status and flagged factors
+print(f"Overall RAG: {report.overall_rag.upper()}")
+print(f"Flagged factors: {report.flagged_factors}")
 ```
 
 ```
-Disparity Decomposition
-Total log ratio (protected vs reference): +0.27
-
-  Genuine risk differential (risk-based):     +0.19  (70%)
-  Proxy discrimination component (removed):   +0.08  (30%)
-
-Discrimination-free log ratio: +0.19
-Discrimination-free multiplicative disparity: 1.21x
-
-Interpretation: of the observed 31% pricing disparity, 21% reflects genuine
-risk differential (actuarially justified) and 10% reflects proxy discrimination
-via postcode correlation with protected characteristics. The DF prices remove
-the 10% proxy component while retaining the 21% risk-based differential.
+Overall RAG: AMBER
+Flagged factors: ['occupation', 'postcode_district']
 ```
 
-This is the output that justifies the analysis to a regulator. You are not claiming your model has no disparate impact - it has some, because risk genuinely varies. You are demonstrating that you have identified and removed the proxy discrimination component, and that the remaining disparity is actuarially justified.
-
----
-
-## Step 4: audit report
-
-The library generates a report designed to sit inside a Consumer Duty fair value assessment:
-
-```python
-from insurance_fairness import AuditReport
-
-report = AuditReport(
-    proxy_audit=audit,
-    di_audit=di_audit,
-    df_price=dfp,
-    model_name="UK Motor Frequency Model v3.2",
-    reference_date="2026-03-07",
-    product_line="Private Motor",
-)
-
-report.to_pdf("fairness_audit_2026Q1.pdf")
-report.to_json("fairness_audit_2026Q1.json")   # machine-readable for MI submissions
-```
-
-The PDF report covers: the protected characteristics assessed, the proxy correlation findings, the disparate impact measurements, the discrimination-free price adjustment methodology, and the decomposition of any remaining disparity into risk-based and proxy-discrimination components.
-
-The JSON output supports structured submissions to your Chief Actuary sign-off process and, where required, to the FCA.
+The Markdown report covers: the protected characteristics assessed, the proxy R-squared and mutual information scores per rating factor, the disparate impact measurements, the calibration-by-group results, and the overall RAG status. The JSON output is machine-readable and supports structured submissions to your Chief Actuary sign-off process.
 
 ---
 
@@ -262,27 +229,25 @@ This is true, in theory. In practice, the magnitude is smaller than the theory i
 
 First, the genuine risk information in postcode - urban density, road quality, theft rates, traffic patterns - is not removed. Only the component of the postcode effect that is not explained by risk-relevant features but is explained by demographic composition gets adjusted. If your model already includes urban density, road type, and crime statistics, the residual postcode-ethnicity correlation being removed is smaller.
 
-Second, the claims experience in the adjusted segments is your test. The library includes a post-adjustment calibration check:
+Second, the calibration check in the audit already shows you whether the model is miscalibrated within groups. If the max calibration disparity is 0.08 (as in the example above), the model's predictions are well-calibrated for each group — the pricing disparity reflects genuine risk, not systematic mispricing. That is the output that justifies the analysis to a regulator.
+
+The library's `calibration_by_group()` function can be called independently on a holdout period to verify that calibration holds out-of-sample:
 
 ```python
-calibration = dfp.calibration_check(df_holdout)
-print(calibration)
+from insurance_fairness import calibration_by_group
+
+cal_holdout = calibration_by_group(
+    df=df_holdout,
+    protected_col="ethnicity_prop",
+    prediction_col="predicted_freq",
+    outcome_col="claim_count",
+    exposure_col="policy_years",
+    n_deciles=10,
+)
+print(f"Holdout max calibration disparity: {cal_holdout.max_disparity:.4f} [{cal_holdout.rag.upper()}]")
 ```
 
-```
-Post-Adjustment Calibration Check
-Holdout: 2025 policy year (n=87,432 policies)
-
-              | A/E ratio (raw) | A/E ratio (DF)
-  Protected   |    1.04         |   1.02
-  Reference   |    0.98         |   0.99
-  Overall     |    1.01         |   1.01
-
-Both raw and DF predictions are well-calibrated on holdout data.
-The discrimination-free adjustment does not materially affect overall calibration.
-```
-
-When the proxy discrimination component is genuinely a proxy and not causal, removing it should not materially damage predictive accuracy. If calibration deteriorates sharply after the DF adjustment, that is information: it suggests postcode's predictive power is not purely proxy. You should investigate what genuine causal channel postcode is capturing that your other features are not - and consider adding those features (urban density index, road quality scores, telematics) to reduce the proxy correlation at source.
+When the proxy discrimination component is genuinely a proxy and not causal, the discrimination-free adjustment should not materially damage predictive accuracy. If calibration deteriorates sharply after the adjustment, that is information: postcode's predictive power is not purely proxy. You should investigate what genuine causal channel postcode is capturing that your other features are not — and consider adding those features (urban density index, road quality scores, telematics) to reduce the proxy correlation at source.
 
 ---
 
@@ -292,13 +257,13 @@ The practical question is not "is our model perfectly discrimination-free" - it 
 
 Our recommended sequence:
 
-**1. Run the proxy audit on your current model.** Generate the correlation table for all rating factors against a protected characteristic proxy. The ONS Census 2021 postcode-to-ethnicity linkage is the starting point for motor. You need an hour of data engineering, not weeks.
+**1. Run the full audit on your current model.** A single `FairnessAudit(...).run()` call gives you proxy R-squared for all rating factors, disparate impact ratios, and calibration-by-group. The ONS Census 2021 postcode-to-ethnicity linkage is the starting point for motor. You need an hour of data engineering, not weeks.
 
-**2. Measure disparate impact with the current production model.** Get the log ratio for protected versus reference groups. Understand the magnitude. If it is above 0.10 (roughly 10% pricing disparity), it will not survive scrutiny without decomposition.
+**2. Examine the flagged factors.** Anything with proxy R-squared above 0.10 goes into the `report.flagged_factors` list. For each flagged factor, understand the evidence: is the proxy correlation driving genuine risk signal or demographic correlation? The calibration-by-group check is your primary test.
 
-**3. Compute the DF prices and decompose.** Understand what proportion of the disparity is risk-based versus proxy-discrimination. If the proxy component is small, document that and file it. If the proxy component is large, you have a pricing problem that the DF prices fix, and you should consider applying them.
+**3. Document everything.** The FCA in TR24/2 was explicit: they want adequate granularity and evidence of good outcomes. "We looked and found it was fine" is not adequate. "We ran these specific tests, found these specific results, and took these specific actions" is. Use `report.to_markdown()` to produce the evidence document.
 
-**4. Document everything.** The FCA in TR24/2 was explicit: they want adequate granularity and evidence of good outcomes. "We looked and found it was fine" is not adequate. "We ran these specific tests, found these specific results, and took these specific actions" is.
+**4. If the proxy component is material, compute discrimination-free prices.** The `insurance-fairness.optimal_transport` subpackage handles this: it takes a CausalGraph specifying which variables are proxies versus justified mediators, and applies the Lindholm marginalisation to produce corrected premiums. See [Discrimination-Free Pricing in Python](/2026/03/10/insurance-fairness-ot/) for that workflow.
 
 **5. Brief the Chief Actuary and your Consumer Duty owner.** This is not a modelling curiosity. It is a regulated obligation with enforcement behind it. The right people need to be informed of the findings.
 
@@ -312,9 +277,9 @@ Three things to be honest about.
 
 **The protected proxy is imperfect.** We use postcode-level ONS ethnicity proportions as a proxy for individual protected characteristics because insurers do not collect individual-level ethnicity data. This means our estimates of p(S | X) are noisy, particularly in mixed postcodes. The proxy audit will underestimate proxy correlation where demographic mixing is high. That is a conservative bias - actual proxy discrimination may be higher than measured.
 
-**Multiple protected characteristics.** This post focuses on ethnicity because it has the most prominent evidence base (the Citizens Advice analysis) and the clearest postcode proxy. The same methods apply to disability, religion, and sex - but building the proxies requires different data sources and is harder. The library supports custom proxy columns: if you have a disability proxy from your distribution data, you can use it.
+**Multiple protected characteristics.** This post focuses on ethnicity because it has the most prominent evidence base (the Citizens Advice analysis) and the clearest postcode proxy. The same methods apply to disability, religion, and sex — pass multiple column names to `protected_cols` and `FairnessAudit` runs them all. But building the proxies requires different data sources and is harder. The library supports custom proxy columns: if you have a disability proxy from your distribution data, you can use it.
 
-**The LRTW framework assumes your model is predictively correct.** The DF price adjustment removes proxy discrimination relative to what the model is already predicting. If the model itself has poor calibration in protected-characteristic-correlated segments - for example, if training data is sparse for some demographic groups - the DF adjustment fixes the proxy issue but not the calibration issue. Both problems are worth solving; they require different tools.
+**The LRTW framework assumes your model is predictively correct.** The audit checks calibration within groups, but if training data is sparse for some demographic groups, the model may be miscalibrated within those groups in ways the decile analysis does not catch. Both proxy discrimination and within-group miscalibration are worth solving; they require different tools.
 
 ---
 
@@ -326,10 +291,10 @@ uv add insurance-fairness
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-fairness). The library requires CatBoost models and Polars DataFrames; postcode-to-LSOA linkage data and ONS Census 2021 ethnic group tables at LSOA level are available from the ONS open data portal.
 
-Start with the proxy audit. Run it on your current production model before you do anything else. If the postcode correlation with your ethnicity proxy is below 0.15, you have a defensible position and can document it. If it is above 0.30, you need to understand the disparity decomposition before your next Consumer Duty review.
+Start with a `FairnessAudit` on your current production model. If `report.overall_rag` comes back green and the flagged_factors list is empty, document that and file it. If the overall status is amber or red, you need to understand the disparity decomposition before your next Consumer Duty review.
 
-The fairness-accuracy trade-off is real. But "we did not audit this because we were worried about our loss ratio" is not a position you can sustain with the regulator. The Citizens Advice analysis is public. The FCA's expectations are documented. The question is not whether you will address this - it is whether you address it now or after a letter arrives from Stratford.
+The fairness-accuracy trade-off is real. But "we did not audit this because we were worried about our loss ratio" is not a position you can sustain with the regulator. The Citizens Advice analysis is public. The FCA's expectations are documented. The question is not whether you will address this — it is whether you address it now or after a letter arrives from Stratford.
 
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/)
 - [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/)
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

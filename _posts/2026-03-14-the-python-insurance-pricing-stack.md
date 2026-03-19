@@ -387,7 +387,7 @@ Getting from a technical price to an implemented rate change.
 
 The standard pricing cycle applies rate changes manually: technical model produces adequate prices, demand model produces elasticity estimates, someone reconciles the two in a spreadsheet while watching the loss ratio. This manual process is not optimising anything. It is approximating a joint optimisation problem with sequential heuristics.
 
-`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/11 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails. Analytical Jacobians make this fast enough for N=10,000 policies in seconds.
+`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/5 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails. Analytical Jacobians make this fast enough for N=10,000 policies in seconds.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
