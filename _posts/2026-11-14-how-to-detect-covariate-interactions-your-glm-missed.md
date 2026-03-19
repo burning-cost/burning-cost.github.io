@@ -1,17 +1,15 @@
 ---
 layout: post
-title: "How to Detect Covariate Interactions Your GLM Missed"
+title: "GLM Interaction Detection: A Six-Step Walkthrough with CANN, NID, and SHAP"
 date: 2026-11-14
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, poisson, deviance, insurance-interactions, pra-ss123, uk-motor, tutorial]
-description: "A six-step walkthrough for finding non-linear interactions a Poisson GLM missed, using CANN, NID, and SHAP interaction values from insurance-interactions."
+description: "Step-by-step tutorial: plant two interactions in synthetic motor data, detect them with CANN + NID, validate with SHAP, confirm with A/E surfaces, and measure the deviance improvement. The theory post is Finding the Interactions Your GLM Missed."
 ---
 
 Every UK personal lines GLM we have seen tests the same handful of interactions: age by vehicle group, region by cover type, occasionally NCD by vehicle age. These are the ones that showed up in 2D A/E plots years ago, or that the previous actuary added with a note in the model documentation. They may not be the interactions that are actually in your current data.
 
-The search for missing interactions is a combinatorial problem that manual methods cannot solve well. A 12-factor model has 66 possible pairwise interactions. Properly testing each one -- fitting the GLM, computing the likelihood-ratio statistic, inspecting the A/E surface, assessing whether the parameter cost is worth the deviance gain -- takes the better part of a day per pair if you do it carefully. Nobody tests all 66. The ones that get missed are, by definition, the ones that did not seem obvious enough to try.
-
-This post is a step-by-step walkthrough. We start with a fitted Poisson GLM, run it through the [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) detection pipeline, validate the candidates with SHAP interaction values, add the confirmed interactions back to the GLM, and measure the deviance improvement. The Databricks notebook at [`insurance_interactions_demo.py`](https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks/insurance_interactions_demo.py) runs the full version of this on synthetic motor data.
+The post [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) covers the theory: why CANN residuals expose what a main-effects GLM cannot express, what Neural Interaction Detection is reading from the weight matrices, and why manual 2D A/E plots miss the non-obvious pairs. This post is the practical companion: a six-step walkthrough you can run directly. We plant two known interactions in synthetic motor data, detect them with [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions), validate with SHAP interaction values, confirm with A/E surfaces, and measure the deviance improvement. The Databricks notebook at [`insurance_interactions_demo.py`](https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks/insurance_interactions_demo.py) runs the full version end to end.
 
 ---
 

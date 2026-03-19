@@ -51,3 +51,10 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor/
+
+# Editorial rules (2026-03-19 quality audit)
+# - Moratorium on new "Your X" titles. 31% of posts (33/107) already use this
+#   pattern. It began as provocation; it is now cliche. Cannot rename existing
+#   posts without breaking URLs. Do not add new ones.
+# - New posts covering the same library as an existing post must explicitly
+#   signal in the intro what angle they add. "Companion post" language required.

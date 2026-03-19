@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Your Book Has Shifted and Your Model Doesn't Know"
+title: "Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals"
 date: 2026-09-14
 categories: [techniques]
 tags: [covariate-shift, density-ratio, importance-weighting, conformal-prediction, catboost, rulsif, kliep, motor, uk-personal-lines, insurance-covariate-shift, databricks, python]
-description: "Detect and correct covariate shift in motor pricing: density ratio estimation, ESS/KL diagnostics, importance weighting, and shift-robust conformal intervals."
+description: "The foundational walkthrough for insurance-covariate-shift: density ratio estimation, ESS/KL diagnostics, importance weighting, shift-robust conformal intervals. For ongoing monitoring cadence, see the companion post from February 2028."
 ---
 
 Your direct channel frequency model was built on three years of direct-to-consumer policies. Young urban drivers, full NCB concentration at band 5, postcode distribution skewed to London and the South East. Governance committee passed it. It priced consistently. It validated cleanly on a holdout.
@@ -13,9 +13,7 @@ Then the aggregator campaign ran. Within six months, your inbound mix had shifte
 
 This is covariate shift. The joint distribution of features p(x) has changed between training and deployment. The conditional relationship p(y|x) -- how risk responds to rating factors -- is likely stable. But the model learned p(y|x) from a particular p(x), and every biased sample it saw during training shapes its behaviour at the margins of that sample. Move to a different p(x) and those margins become the mainstream.
 
-The naive response is to retrain. That is often correct, but it takes months. In the meantime, you need to know how bad the shift actually is, and whether importance weighting can hold things together until the retrained model is ready.
-
-That is what this library does.
+This post covers the full toolkit for detecting and correcting a shift at the point it occurs: density ratio estimation, ESS and KL diagnostics, importance-weighted retraining, and shift-robust conformal intervals. For teams running this as a recurring check -- deciding monthly whether the current book has drifted far enough to trigger a retraining conversation -- the companion post [Monthly Covariate Shift Monitoring](/2028/02/15/covariate-shift-detection-book-mix-changes/) covers the operational monitoring cadence.
 
 ```bash
 pip install insurance-covariate-shift
