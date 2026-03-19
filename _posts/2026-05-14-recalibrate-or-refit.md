@@ -4,7 +4,7 @@ title: "Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question"
 date: 2026-05-14
 categories: [monitoring, pricing, techniques]
 tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, poisson, gini-drift, insurance-monitoring, uk-motor, pra-ss123]
-description: "Murphy decomposition splits miscalibration into a cheap fix (scale factor) vs expensive fix (refit). insurance-monitoring automates the RECALIBRATE vs REFIT decision."
+description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB to decide between a one-afternoon intercept fix and a multi-week refit?"
 ---
 
 Your monitoring dashboard has gone amber. The A/E ratio is 1.07 — the model is 7% cheap across the portfolio. The question on the table: do we adjust the intercept this afternoon, or do we commission a full model refit?
@@ -17,13 +17,11 @@ The right input is the Murphy decomposition.
 
 ## What the decomposition actually measures
 
-A/E ratio of 1.07 tells you the model's predictions are systematically 7% low. It does not tell you *why*. There are two structurally different reasons a model can be miscalibrated:
+A/E ratio of 1.07 tells you the model's predictions are systematically 7% low. It does not tell you *why*. The Murphy decomposition — from Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, December 2025) — gives you the two components of miscalibration as separate numbers: GMCB (the portion a single scaling factor fixes) and LMCB (the portion that requires a structural change to the model). The post [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) covers the full framework, including the balance property test and auto-calibration. This post is about what you do with the GMCB/LMCB split when a monitoring alert fires.
 
-**Global scale error**: the model's shape is correct — it ranks risks right, the relativities between segments are accurate — but the overall level is wrong by a constant. Every prediction needs multiplying by 1.07. This costs an afternoon: update the GLM intercept, or multiply the GBM output by 1.07 in the score function. The ranking, the factor tables, the relativities — none of it changes.
+**Global scale error (GMCB)**: the model's shape is correct — it ranks risks right, the relativities between segments are accurate — but the overall level is wrong by a constant. Every prediction needs multiplying by 1.07. This costs an afternoon: update the GLM intercept, or multiply the GBM output by 1.07 in the score function. The ranking, the factor tables, the relativities — none of it changes.
 
-**Local structural error**: the model's shape is wrong. It overprices young drivers and underprices mature drivers in a way that partly cancels at portfolio level. Or it has the vehicle group relativities in the wrong order because the composition of claims has shifted since training. An intercept adjustment does not fix this — you are multiplying a wrong shape by a constant and calling it a recalibration. The errors reduce but they do not go away, and they stay systematically in the wrong places.
-
-The Murphy decomposition — from Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, December 2025) — gives you these two quantities as separate numbers with a clean decision rule.
+**Local structural error (LMCB)**: the model's shape is wrong. It overprices young drivers and underprices mature drivers in a way that partly cancels at portfolio level. Or it has the vehicle group relativities in the wrong order because the composition of claims has shifted since training. An intercept adjustment does not fix this — you are multiplying a wrong shape by a constant and calling it a recalibration. The errors reduce but they do not go away, and they stay systematically in the wrong places.
 
 ---
 

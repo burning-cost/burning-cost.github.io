@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "Your Model Was Trained on Last Year's Book"
+title: "Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain"
 date: 2028-02-15
 categories: [pricing, libraries, tutorials]
 tags: [covariate-shift, density-ratio, importance-weighting, rulsif, kliep, catboost, conformal-prediction, model-monitoring, book-mix, insurance-covariate-shift, fca, sup-15-3, uk-motor, python, polars]
-description: "Book mix changes faster than governance cycles. Density ratio methods tell you whether last year's model is still fit for purpose on this year's book — before the loss ratio tells you it isn't."
+description: "How to run covariate shift detection as a recurring monthly check: monitoring cadence, ESS ratio trends, and the thresholds that trigger a retraining conversation with governance."
 ---
 
 The standard model monitoring workflow is A/E ratios by segment, PSI on score distributions, and a Gini trend. These are useful. They will catch a model that has gone badly wrong. The problem is the lag. A/E ratios need claims development. PSI needs a score distribution on the new book. Gini drift needs exposure to accumulate. By the time your monitoring dashboard is flashing, you have been writing business on a miscalibrated model for six months.
 
-The underlying cause is almost always the same: the book mix has shifted. Not the underlying risk relationships — those are relatively stable year-on-year — but the distribution of risks being scored. Younger drivers, more EVs, a different channel mix following a price comparison site shake-up, or an M&A transaction that dropped 40,000 broker policies onto a model trained on direct-channel data. The model learned `E[claims | features]` under one feature distribution. It is now being asked to predict under a different one. That is the definition of covariate shift.
+Density ratio estimation catches book mix drift months earlier, because it only needs the feature matrix of risks being scored — no claims labels required. The [foundational post on covariate shift](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) covers the full toolkit: how density ratio estimation works, importance-weighted retraining, and shift-robust conformal intervals. This post is about something different: running the check on a recurring monthly basis, reading the ESS ratio as a trend rather than a one-off diagnostic, and knowing which thresholds should trigger which conversations with governance.
 
 `insurance-covariate-shift` gives you the tools to detect it, quantify it, correct for it, and document it for governance.
 

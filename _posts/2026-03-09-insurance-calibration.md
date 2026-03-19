@@ -4,7 +4,7 @@ title: "Calibration Testing That Goes Beyond the Residual Plot"
 date: 2026-03-09
 categories: [techniques, libraries, pricing]
 tags: [calibration, balance-property, murphy-decomposition, auto-calibration, glm, gbm, poisson, python, insurance-monitoring]
-description: "Poisson z-test, auto-calibration by price cohort, Murphy decomposition in Python. insurance-monitoring v0.1.0 - beyond residual plots for UK pricing actuaries."
+description: "The full calibration framework for insurance pricing: balance property test, auto-calibration by price cohort, and Murphy decomposition (UNC/DSC/MCB/GMCB/LMCB). The companion post Recalibrate or Refit focuses on using the Murphy split operationally."
 ---
 
 There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.
@@ -145,7 +145,7 @@ The verdict logic is:
 - `GMCB >= LMCB`: **RECALIBRATE**: the dominant error is a global scale shift. Multiply predictions by the balance ratio and redeploy. Model structure is sound.
 - `LMCB > GMCB`: **REFIT**: the error is in the model's shape, not its level. A scalar correction will not fix it. The model needs rebuilding or isotonic recalibration on a large holdout sample.
 
-This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive.
+This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive. The post [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/05/14/recalibrate-or-refit/) goes deeper on the operational use of this split: what it looks like in practice when GMCB dominates versus LMCB, common team mistakes when using A/E alone, and the governance documentation pattern for PRA SS1/23.
 
 ---
 
