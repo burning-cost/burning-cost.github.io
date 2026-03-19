@@ -534,7 +534,7 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
     </li>
     <li class="gs-lib-item">
       <span class="gs-lib-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></span>
-      <span class="gs-lib-desc">Proxy discrimination auditing aligned with Consumer Duty (PS22/9) and Equality Act 2010 s.19. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics.</span>
+      <span class="gs-lib-desc">Proxy discrimination auditing aligned with FCA Consumer Duty and Equality Act 2010. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics.</span>
     </li>
     <li class="gs-lib-item">
       <span class="gs-lib-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a></span>

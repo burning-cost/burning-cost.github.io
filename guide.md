@@ -604,8 +604,8 @@ permalink: /guide/
     <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></span>
     <span class="lib-complexity complexity-setup">Needs setup</span>
   </div>
-  <p class="lib-entry-problem">Your pricing actuary says postcode is a legitimate risk variable, but the compliance team is worried it correlates with ethnicity — and under Equality Act 2010 s.19 and Consumer Duty you need to quantify the indirect discrimination risk, not just assert there is none.</p>
-  <div class="lib-entry-output"><strong>Output:</strong> proxy discrimination audit aligned to Consumer Duty and Equality Act 2010 s.19, disparate impact metrics, fairness-accuracy trade-off analysis, Consumer Duty evidence pack</div>
+  <p class="lib-entry-problem">Your pricing actuary says postcode is a legitimate risk variable, but the compliance team is worried it correlates with ethnicity — and under Consumer Duty you need to quantify the indirect discrimination risk, not just assert there is none.</p>
+  <div class="lib-entry-output"><strong>Output:</strong> Consumer Duty-aligned proxy discrimination audit, disparate impact metrics, fairness-accuracy trade-off analysis, Consumer Duty evidence pack</div>
 </div>
 
 <div class="lib-entry">

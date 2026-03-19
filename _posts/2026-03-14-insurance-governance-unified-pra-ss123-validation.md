@@ -57,7 +57,7 @@ The MRM tooling is covered in depth at [Model Risk Governance for UK Insurers: B
 | Double-lift chart (new vs incumbent) | SS1/23 Principle 4 |
 | PSI on score distribution (train vs validation) | SS1/23 Principle 4 |
 | Renewal cohort A/E by tenure band | FCA TR24/2 |
-| Sub-segment calibration by categorical features | Consumer Duty (PS22/9) |
+| Sub-segment calibration by categorical features | Consumer Duty |
 | Data quality (missingness, outliers, cardinality) | SS1/23 Principle 3 |
 | Monitoring plan completeness | SS1/23 Principle 5 |
 

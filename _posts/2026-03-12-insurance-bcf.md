@@ -164,9 +164,9 @@ This is a tool, not a decision. The output gives you a direction and a confidenc
 
 ---
 
-## Consumer Duty documentation
+## Consumer Duty compliance
 
-Consumer Duty (PS22/9, PRIN 2A) requires firms to produce segment-level evidence that pricing produces fair outcomes across protected characteristic groups. The credible interval structure of BCF — you get a posterior over the treatment effect for every protected characteristic group — is exactly what audit documentation needs.
+Consumer Duty (PS22/9, PRIN 2A) requires firms to monitor fair value across groups defined by protected characteristics. The credible interval structure of BCF — you get a posterior over the treatment effect for every protected characteristic group — is exactly what audit documentation needs.
 
 `BCFAuditReport` generates a structured HTML report. The `protected_characteristic_check` method tests whether the treatment effect for each protected group falls within the credible interval of the portfolio average:
 

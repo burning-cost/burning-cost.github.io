@@ -1,24 +1,26 @@
 ---
 layout: page
 title: "Proxy Discrimination Audit Guide"
-description: "A step-by-step compliance guide for UK personal lines pricing actuaries. What Consumer Duty and the Equality Act require, how to audit a pricing model for proxy discrimination, and what the board needs to see."
+description: "A step-by-step compliance guide for UK personal lines pricing actuaries. How Consumer Duty and the Equality Act 2010 require proxy discrimination auditing, how to conduct one, and what the board needs to see."
 permalink: /ep25-2-guide/
 ---
 
-Citizens Advice estimated in 2022 that the ethnicity penalty in UK motor insurance averages £280 per year — £213m annually across the market. The mechanism is not complicated: postcode drives price; postcode correlates with ethnicity; therefore price correlates with ethnicity. The FCA noticed. Consumer Duty (PS22/9) and the Equality Act 2010 are the legal framework. The FCA's multi-firm review TR24/2 (2024) is the enforcement signal.
+Citizens Advice estimated in 2022 that the ethnicity penalty in UK motor insurance averages £280 per year — £213m annually across the market. The mechanism is not complicated: postcode drives price; postcode correlates with ethnicity; therefore price correlates with ethnicity. The legal obligation to address this falls on firms under Consumer Duty (PS22/9, PRIN 2A) and Equality Act 2010 Section 19 — not EP25/2, which is about something else entirely (evaluating GIPP price-walking remedies).
 
-This guide covers what Consumer Duty and the Equality Act 2010 actually require, how to conduct a defensible proxy discrimination audit on a personal lines pricing model, and what "good" looks like when you put it in front of a board or a supervisor.
+This guide covers how to conduct a defensible proxy discrimination audit on a personal lines pricing model, and what "good" looks like when you put it in front of a board or a supervisor.
 
 ---
 
-## The regulatory basis
+## The regulatory obligation
 
-The obligation to test for proxy discrimination rests on two independent bases:
+**FCA Evaluation Paper EP25/2** (published July 2025) evaluated the outcomes of the GIPP price-walking remedies introduced in 2022. That is its actual scope: whether renewal price-walking has been eliminated. It is not the source of proxy discrimination requirements.
 
-- **Consumer Duty (PS22/9, PRIN 2A)** — requires firms to actively monitor whether products provide fair value for different groups of customers, including groups defined by protected characteristics. The FCA's multi-firm review FCA TR24/2 (August 2024) found that most fair value assessments lacked the granularity to evidence good outcomes across protected characteristic groups.
-- **Equality Act 2010, Section 19** — independently prohibits indirect discrimination: a practice that puts persons sharing a protected characteristic at a particular disadvantage, unless it is a proportionate means of achieving a legitimate aim.
+The proxy discrimination obligation comes from two documents:
 
-**FCA EP25/2** (published 22 July 2025) is a different document. It evaluates the outcomes of the GIPP price-walking remedies introduced in January 2022. It is relevant context — the FCA used conditional difference-in-differences methodology to evaluate distributional outcomes — but it does not impose proxy discrimination obligations. The proxy discrimination and fairness auditing requirements come from Consumer Duty and the Equality Act.
+- **Consumer Duty (PS22/9, PRIN 2A)** — requires firms to actively monitor whether products provide fair value for different groups of customers, including groups defined by protected characteristics
+- **Equality Act 2010, Section 19** — independently prohibits indirect discrimination: a practice that puts persons sharing a protected characteristic at a particular disadvantage, unless it is a proportionate means of achieving a legitimate aim
+
+TR24/2 (FCA multi-firm review, 2024) found most insurers relied on inadequate manual checks to satisfy these obligations — which is the immediate supervisory pressure.
 
 The obligation is not to achieve equal prices across groups. It is to demonstrate that price differences reflect genuine risk differences rather than the rating model acting as a proxy for a characteristic it should not price on.
 
@@ -33,7 +35,7 @@ The obligation is not to achieve equal prices across groups. It is to demonstrat
 - Indirect proxy chains: vehicle group predicts theft; theft patterns correlate with area; area correlates with ethnicity
 - Model amplification: a factor with modest proxy correlation but high SHAP importance contributes more discriminatory variation to the final price than the raw correlation implies
 
-The FCA's 2024 multi-firm review (TR24/2) found that most insurers were relying on exactly these inadequate manual checks. TR24/2 makes clear this is not sufficient.
+TR24/2 (the FCA's 2024 multi-firm review) found that most insurers were relying on exactly these inadequate manual checks and that this was not sufficient to meet their Consumer Duty and Equality Act obligations.
 
 ---
 
@@ -273,7 +275,7 @@ The report structure:
 - Methodology section: references to Lindholm et al. and the FCA regulatory mapping
 - Sign-off table: name, role, date, attestation statement
 
-File it. Keep it. Consumer Duty requires ongoing monitoring, not a one-off check at model launch. The supervisory expectation is that this documentation exists and is current.
+File it. Keep it. Consumer Duty requires this documentation to exist, be current, and be reviewed by the board — not just that the model passed a check at launch.
 
 ---
 
