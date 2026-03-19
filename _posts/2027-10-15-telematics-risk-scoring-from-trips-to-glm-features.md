@@ -198,9 +198,6 @@ We think the right use of this library is not as a silver bullet for frequency m
 
 `insurance-telematics` is open source under MIT at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics). Requires Python 3.10+, Polars, hmmlearn, and SciPy.
 
----
-
-**Related posts from Burning Cost:**
 - [When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segments](/2027/07/15/transfer-learning-for-thin-segments/) - credibility and borrowing strength for new or small books of business
 - [Your Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) - once the telematics model is built, running the SS1/23 validation suite
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty at the policy level, complementary to point-estimate frequency models

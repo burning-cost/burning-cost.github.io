@@ -426,9 +426,6 @@ Now the honest caveats, because they matter and they do not disappear by running
 
 The full notebook set - `01_data_prep`, `02_train_extract`, `03_export` - and the Job JSON definition are available as a downloadable archive. The notebooks map 1:1 to the sections above and can be imported directly into a Databricks workspace.
 
----
-
-**Related articles from Burning Cost:**
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

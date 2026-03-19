@@ -285,8 +285,5 @@ Check the coverage report first, before touching the loading calculations. If q_
 
 The burning cost gives you the centre. The quantile model gives you the tail. Both are required. Using only the first is pricing for average experience. Average experience is not what determines whether you write a profitable book of motor BI.
 
----
-
-**Related articles from Burning Cost:**
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

@@ -245,9 +245,6 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-c
 
 The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate.
 
----
-
-**Related articles from Burning Cost:**
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the complement to conformal intervals: conformal tells you about uncertainty, calibration tells you whether the point predictions are at the right level
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)

@@ -231,9 +231,6 @@ Python 3.10+. Polars-native throughout. No scikit-learn dependency. The calibrat
 
 The library is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The `examples/model_drift_monitoring.py` script runs the full three-scenario benchmark — covariate shift, calibration deterioration, Gini decay — on synthetic motor data and produces a structured monitoring report with Murphy decomposition outputs.
 
----
-
-**Related posts from Burning Cost:**
 - [Three-Layer Drift Detection: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)
 - [When Credibility Meets CatBoost](/2026/04/14/when-credibility-meets-catboost/)

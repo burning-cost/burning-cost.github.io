@@ -328,9 +328,6 @@ Bühlmann-Straub is the right tool when you have multiple groups with multi-peri
 
 For multi-dimensional crossed effects (vehicle group and driver age and postcode simultaneously) with full posterior distributions rather than point estimates, use [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — it is more powerful but requires MCMC. For post-GBM residual adjustment at group level (broker, scheme, territory effects), where REML composes cleanly with CatBoost output and the data may be unbalanced, see [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/).
 
----
-
-**Related articles from Burning Cost:**
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
 - [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

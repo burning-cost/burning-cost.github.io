@@ -253,9 +253,6 @@ On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium
 
 `insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). Install with `pip install insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
 
----
-
-**Related posts from Burning Cost:**
 - [Frequency-Severity Dependence in UK Motor: A Shared-Trunk Neural Architecture](/2026/03/13/insurance-dependent-fs/) -- the neural two-part model for teams with larger datasets and more complex dependence structures
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) -- when you want the full predictive distribution, not just the corrected mean
 - [Vine Copulas for Multi-Peril Home](/2026/03/12/insurance-copula/) -- the right copula framework when the dependence is between perils rather than between frequency and severity

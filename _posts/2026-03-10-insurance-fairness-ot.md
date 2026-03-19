@@ -315,9 +315,6 @@ Our view: the DAG should be agreed between the Chief Actuary, the Compliance fun
 
 `insurance-fairness` is open source under the MIT licence at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Install with `uv add insurance-fairness`. Python 3.11+, NumPy, SciPy, networkx, POT (Python Optimal Transport), and Polars.
 
----
-
-**Related articles from Burning Cost:**
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the audit side: how to detect discrimination using insurance-fairness before reaching for the correction tool
 - [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/) - the do-calculus foundations that underpin the causal path decomposition here
 - [Building a Modern Insurance Pricing Pipeline in Python](/2026/03/12/modern-pricing-pipeline/) - where discrimination-free pricing sits in the full end-to-end workflow

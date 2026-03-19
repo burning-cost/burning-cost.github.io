@@ -258,9 +258,6 @@ Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-go
 2. Brauer, A., Denuit, M., Krvavych, Y. et al. (2025). "Model Monitoring: A General Framework with an Application to Non-life Insurance Pricing." arXiv:2510.04556
 3. Wüthrich, M.V. and Ziegel, J. (2024). "Isotonic Recalibration under a Low Signal-to-Noise Ratio." *Scandinavian Actuarial Journal*, 2024(3), 279–299.
 
----
-
-**Related articles from Burning Cost:**
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

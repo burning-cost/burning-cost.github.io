@@ -192,7 +192,6 @@ The Gaussian assumption on log-ratio residuals is reasonable for most insurance 
 
 Stage 2 is fitted on training residuals. If the distribution of groups in the training data differs substantially from production (you launched three new broker relationships last year that were not in the training period), the variance component estimates may not generalise well. The new-group fallback handles the prediction problem, but the `tau2` estimate may be understated if production has more group heterogeneity than training did.
 
-## What we think
 
 Ad-hoc broker loadings are not irrational. They are a rational response to a real signal in the data. The problem is that they are applied at full credibility regardless of how much data the signal is based on, which means they overfit small groups and potentially underfit large ones where the full weight of experience should be trusted.
 
@@ -212,9 +211,6 @@ This library is the right tool when you need to adjust for group-level residuals
 
 For segment-level credibility pricing without a GBM stage — where you want to blend thin segment loss experience with a portfolio prior using explicit EPV/VHM decomposition and K factors — see [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/). For full Bayesian posteriors with multiple crossed rating dimensions and Poisson or Gamma likelihoods, see [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/).
 
----
-
-**Related articles from Burning Cost:**
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

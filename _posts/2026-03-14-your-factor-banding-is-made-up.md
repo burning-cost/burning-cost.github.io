@@ -183,7 +183,6 @@ The outer GLM receives clean, statistically-defended factor encodings at every l
 
 ---
 
-## What we think
 
 The gap between "raw GLM with hand-drawn bands" and "black box GBM" is not a technical inevitability. GLMs remain the regulatory workhorse in UK personal lines — they produce factor tables, they compose with re-basing and credibility, and they map cleanly onto rating systems that were built around the additive log-linear structure. The reason teams reach for GBMs is partly genuine predictive performance and partly frustration with how labour-intensive good GLM feature engineering is.
 
@@ -195,8 +194,5 @@ The tools do not replace actuarial judgment. The minimum exposure constraint, th
 
 `insurance-glm-tools` is open source under the MIT licence at [github.com/burning-cost/insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools). Install with `uv add insurance-glm-tools`. Core requires Python 3.10+, numpy, scipy, scikit-learn, statsmodels, and torch. Spatial features require the `[spatial]` extra.
 
----
-
-**Related articles from Burning Cost:**
 - [Nested GLMs with Neural Network Embeddings for Insurance](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/)
 - [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/)
