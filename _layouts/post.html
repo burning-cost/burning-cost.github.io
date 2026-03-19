@@ -3,29 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title | escape }} | {{ site.title }}</title>
-  <meta name="description" content="{{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 }}">
-  {% if page.canonical_url %}<link rel="canonical" href="{{ page.canonical_url }}">{% else %}<link rel="canonical" href="{{ page.url | absolute_url }}">{% endif %}
+  {% seo %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"></noscript>
   {% feed_meta %}
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="{{ page.title | escape }}">
-  <meta property="og:description" content="{{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | escape }}">
-  <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:site_name" content="{{ site.title }}">
-  <meta property="og:image" content="{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ site.url }}/assets/og-image.png{% endif %}">
-  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
-  {% if page.tags %}<meta property="article:tag" content="{{ page.tags | join: ', ' }}">{% endif %}
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@{{ site.twitter.username }}">
-  <meta name="twitter:title" content="{{ page.title | escape }}">
-  <meta name="twitter:description" content="{{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | escape }}">
-  <meta name="twitter:image" content="{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ site.url }}/assets/og-image.png{% endif %}">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
