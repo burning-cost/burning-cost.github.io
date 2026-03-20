@@ -15,7 +15,7 @@ Built by pricing practitioners who have worked across UK personal lines motor an
 
 ## What we have built
 
-37 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
+34 Python libraries covering the full pricing workflow. See the [full library index with pip install commands](/tools/).
 
 UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most new builds) but many are still taking GLM outputs to production because the GBM outputs are not in a form that rating engines, regulators, or pricing committees can work with. The tools here are about closing that gap — from raw data through to a signed-off rate change with an audit trail. All of it runs on Databricks.
 
@@ -43,7 +43,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 **Interpretation**
 
 - [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - multiplicative rating factor tables from CatBoost models via SHAP, in the same format as exp(beta) from a GLM
-- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal inference via double machine learning for deconfounding rating factors
+- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - causal inference via double machine learning for deconfounding rating factors; includes price elasticity estimation (CausalForestDML, DR-Learner) via `insurance_causal.elasticity`
 
 **Tail Risk & Distributions**
 
@@ -54,9 +54,7 @@ UK pricing teams have adopted GBMs (CatBoost is now the dominant choice for most
 
 **Commercial**
 
-- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints
-- [`insurance-demand`](https://github.com/burning-cost/insurance-demand) - demand modelling for conversion and retention, price response curves
-- [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) - causal price elasticity estimation via CausalForestDML, DR-Learner, and Automatic Debiased ML
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) - constrained rate change optimisation with efficient frontier between loss ratio target and movement cap constraints; includes demand modelling (conversion/retention elasticity, price response curves) via `insurance_optimise.demand`
 
 **Compliance & Governance**
 
