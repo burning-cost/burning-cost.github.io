@@ -6,6 +6,7 @@ categories: [guides]
 tags: [python, insurance-pricing, machine-learning, glm, gbm, pricing-tools]
 description: "35 open-source Python libraries for UK insurance pricing: GBM-to-GLM distillation, causal inference, FCA fairness auditing, rate optimisation, PRA SS1/23."
 ---
+> **Update (March 2026):** `insurance-demand` has been merged into [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise). Install `insurance-optimise` and use `insurance_optimise.demand` for the same functionality.
 
 Every UK pricing team has the same gap. The GBM outperforms the GLM by 4-6 Gini points on the holdout set. Everyone knows it. Nobody in production is running it, because nobody can explain it, govern it, or get it into Radar in a form the head of pricing will sign off on. Emblem and ReMetrica are excellent tools for managing multiplicative rating factor structures. They were not built for gradient boosting, causal inference, or conformal prediction intervals.
 
