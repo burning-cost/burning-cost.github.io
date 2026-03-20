@@ -265,6 +265,7 @@ permalink: /guide/
 <tr><td>smooth noisy one-way curves</td><td><a href="https://github.com/burning-cost/insurance-whittaker"><code>insurance-whittaker</code></a></td></tr>
 <tr><td>get spatial territory factors</td><td><a href="https://github.com/burning-cost/insurance-spatial"><code>insurance-spatial</code></a></td></tr>
 <tr><td>detect if my model has drifted</td><td><a href="https://github.com/burning-cost/insurance-monitoring"><code>insurance-monitoring</code></a></td></tr>
+<tr><td>run an A/B test on pricing without the peeking problem</td><td><a href="https://github.com/burning-cost/insurance-monitoring"><code>insurance-monitoring</code></a> (SequentialTest / mSPRT)</td></tr>
 <tr><td>prove my pricing is not discriminatory</td><td><a href="https://github.com/burning-cost/insurance-fairness"><code>insurance-fairness</code></a></td></tr>
 <tr><td>generate a PRA SS1/23 validation report</td><td><a href="https://github.com/burning-cost/insurance-governance"><code>insurance-governance</code></a></td></tr>
 <tr><td>get prediction intervals on my GBM</td><td><a href="https://github.com/burning-cost/insurance-conformal"><code>insurance-conformal</code></a></td></tr>
@@ -273,6 +274,7 @@ permalink: /guide/
 <tr><td>deconfound a rating factor from channel correlation</td><td><a href="https://github.com/burning-cost/insurance-causal"><code>insurance-causal</code></a></td></tr>
 <tr><td>measure whether a rate change worked</td><td><a href="https://github.com/burning-cost/insurance-causal-policy"><code>insurance-causal-policy</code></a></td></tr>
 <tr><td>set rates with movement caps and a loss ratio target</td><td><a href="https://github.com/burning-cost/insurance-optimise"><code>insurance-optimise</code></a></td></tr>
+<tr><td>optimise rates across profit, retention, and fairness simultaneously</td><td><a href="https://github.com/burning-cost/insurance-optimise"><code>insurance-optimise</code></a> (ParetoFrontier)</td></tr>
 <tr><td>run a champion/challenger experiment</td><td><a href="https://github.com/burning-cost/insurance-deploy"><code>insurance-deploy</code></a></td></tr>
 <tr><td>model tail risk beyond the mean</td><td><a href="https://github.com/burning-cost/insurance-quantile"><code>insurance-quantile</code></a></td></tr>
 <tr><td>cluster vehicle groups or occupation codes into bands</td><td><a href="https://github.com/burning-cost/insurance-glm-tools"><code>insurance-glm-tools</code></a></td></tr>
@@ -647,8 +649,8 @@ permalink: /guide/
     <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-monitoring" target="_blank">insurance-monitoring</a></span>
     <span class="lib-complexity complexity-drop-in">Drop-in</span>
   </div>
-  <p class="lib-entry-problem">Your model has been live for nine months and A/E ratios are creeping up — but you do not know whether to recalibrate the intercept, refit with new data, or whether it is just IBNR noise in the most recent quarter.</p>
-  <div class="lib-entry-output"><strong>Output:</strong> exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, Gini z-test with a formal recalibrate-vs-refit decision rule</div>
+  <p class="lib-entry-problem">Your model has been live for nine months and A/E ratios are creeping up — but you do not know whether to recalibrate the intercept, refit with new data, or whether it is just IBNR noise in the most recent quarter. v0.5.0 adds <code>SequentialTest</code> for anytime-valid A/B testing of champion/challenger experiments without the peeking problem: a standard t-test run at interim checkpoints has a 25% false positive rate; mSPRT (Johari et al. 2022) with exposure-weighted Poisson holds at 1%.</p>
+  <div class="lib-entry-output"><strong>Output:</strong> exposure-weighted PSI/CSI, segmented A/E ratios with IBNR adjustment, Gini z-test with a formal recalibrate-vs-refit decision rule, <code>SequentialTest</code> for sequentially-valid experiment decisions</div>
 </div>
 
 <div class="lib-entry">
@@ -665,8 +667,8 @@ permalink: /guide/
     <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-optimise" target="_blank">insurance-optimise</a></span>
     <span class="lib-complexity complexity-setup">Needs setup</span>
   </div>
-  <p class="lib-entry-problem">You have a technical price per segment, a loss ratio target, and maximum movement caps — and the rate change recommendation is currently done in a spreadsheet where the constraints interact and the solution is not optimal.</p>
-  <div class="lib-entry-output"><strong>Output:</strong> SLSQP-optimised rate changes per segment, efficient frontier between loss ratio improvement and movement constraints, JSON audit trail for FCA ENBP</div>
+  <p class="lib-entry-problem">You have a technical price per segment, a loss ratio target, and maximum movement caps — and the rate change recommendation is currently done in a spreadsheet where the constraints interact and the solution is not optimal. v0.4.1 adds <code>ParetoFrontier</code>: single-objective SLSQP ignores fairness (premium disparity ratio 1.168 in benchmark); the Pareto surface makes the profit/retention/fairness trade-off explicit so you can defend the chosen operating point.</p>
+  <div class="lib-entry-output"><strong>Output:</strong> SLSQP-optimised rate changes per segment, efficient frontier between loss ratio improvement and movement constraints, JSON audit trail for FCA ENBP; <code>ParetoFrontier</code> with epsilon-constraint sweep, TOPSIS selection, and built-in <code>premium_disparity_ratio</code> / <code>loss_ratio_disparity</code> metrics</div>
 </div>
 
 </div>
