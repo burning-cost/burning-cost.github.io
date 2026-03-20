@@ -188,7 +188,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-optimise",
-      "description": "Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier, JSON audit trail.",
+      "description": "Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier, JSON audit trail. v0.4.1 adds ParetoFrontier for multi-objective optimisation across profit, retention, and fairness with TOPSIS selection.",
       "codeRepository": "https://github.com/burning-cost/insurance-optimise",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -212,7 +212,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-monitoring",
-      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test.",
+      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0 adds SequentialTest for anytime-valid A/B testing of champion/challenger experiments via mSPRT.",
       "codeRepository": "https://github.com/burning-cost/insurance-monitoring",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -483,7 +483,7 @@ Prediction intervals, conformal methods, and post-deployment monitoring.
 | [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | **Flagship.** Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds<br>_Benchmark: 90.1% marginal coverage on Tweedie frequency data_ | `pip install insurance-conformal` |
 | [insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts) | Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Poisson/NB scores<br>_Benchmark: Sequential conformal vs static prediction intervals on claims time series benchmarked_ | `pip install insurance-conformal-ts` |
 | [insurance-deploy](https://github.com/burning-cost/insurance-deploy) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test<br>_Benchmark: Champion/challenger routing, shadow mode, quote logging benchmarked_ | `pip install insurance-deploy` |
-| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test<br>_Benchmark: Exposure-weighted PSI/CSI vs aggregate A/E benchmarked_ | `pip install insurance-monitoring` |
+| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0:  for anytime-valid A/B testing of champion/challenger experiments (mSPRT, Johari et al. 2022, exposure-weighted Poisson)<br>_Benchmark: Peeking t-test 25% FPR (5× nominal); mSPRT holds at 1%_ |  |
 | [insurance-governance](https://github.com/burning-cost/insurance-governance) | **Flagship.** Model governance — PRA SS1/23 validation reports, model risk management, risk tier scoring<br>_Benchmark: Automated suite catches age-band miscalibration manual checklists miss_ | `pip install insurance-governance` |
 
 </div>
