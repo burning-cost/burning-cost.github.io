@@ -278,10 +278,10 @@ permalink: /guide/
 <tr><td>cluster vehicle groups or occupation codes into bands</td><td><a href="https://github.com/burning-cost/insurance-glm-tools"><code>insurance-glm-tools</code></a></td></tr>
 <tr><td>model dispersion as well as the mean</td><td><a href="https://github.com/burning-cost/insurance-distributional-glm"><code>insurance-distributional-glm</code></a></td></tr>
 <tr><td>build a broker or fleet-adjusted model</td><td><a href="https://github.com/burning-cost/insurance-multilevel"><code>insurance-multilevel</code></a></td></tr>
-<tr><td>apply individual experience rating to a policy</td><td><a href="https://github.com/burning-cost/experience-rating"><code>experience-rating</code></a></td></tr>
+<tr><td>apply individual experience rating to a policy</td><td><a href="https://github.com/burning-cost/insurance-credibility"><code>insurance-credibility</code></a> (includes experience rating)</td></tr>
 <tr><td>generate synthetic training data</td><td><a href="https://github.com/burning-cost/insurance-synthetic"><code>insurance-synthetic</code></a></td></tr>
 <tr><td>score telematics trips as GLM-compatible risk</td><td><a href="https://github.com/burning-cost/insurance-telematics"><code>insurance-telematics</code></a></td></tr>
-<tr><td>estimate price elasticity causally</td><td><a href="https://github.com/burning-cost/insurance-elasticity"><code>insurance-elasticity</code></a></td></tr>
+<tr><td>estimate price elasticity causally</td><td><a href="https://github.com/burning-cost/insurance-causal"><code>insurance-causal</code></a> (includes elasticity)</td></tr>
 <tr><td>correct for a shift in my book mix</td><td><a href="https://github.com/burning-cost/insurance-covariate-shift"><code>insurance-covariate-shift</code></a></td></tr>
 </tbody>
 </table>
@@ -549,10 +549,10 @@ permalink: /guide/
 
 <div class="lib-entry">
   <div class="lib-entry-top">
-    <span class="lib-entry-name"><a href="https://github.com/burning-cost/experience-rating" target="_blank">experience-rating</a></span>
+    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a></span>
     <span class="lib-complexity complexity-setup">Needs setup</span>
   </div>
-  <p class="lib-entry-problem">Your NCD schedule is fixed at five years old and the discount scales were set judgementally — you want to fit actuarially correct credibility weights from your own data and incorporate dynamic claim history into an individual policy posterior.</p>
+  <p class="lib-entry-problem">Your NCD schedule is fixed at five years old and the discount scales were set judgementally — you want to fit actuarially correct credibility weights from your own data and incorporate dynamic claim history into an individual policy posterior. Experience rating is available via <code>insurance_credibility.experience</code>.</p>
   <div class="lib-entry-output"><strong>Output:</strong> credibility-weighted NCD factors, Bühlmann-Straub static or dynamic state-space individual policy posterior, deep attention credibility model</div>
 </div>
 
@@ -567,19 +567,19 @@ permalink: /guide/
 
 <div class="lib-entry">
   <div class="lib-entry-top">
-    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-elasticity" target="_blank">insurance-elasticity</a></span>
+    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a></span>
     <span class="lib-complexity complexity-advanced">Advanced</span>
   </div>
-  <p class="lib-entry-problem">You need a price elasticity estimate for rate change planning, but conversion data is observational — the prices customers saw were set by a model, not randomly assigned — and a naive regression of conversion on price is picking up selection effects.</p>
+  <p class="lib-entry-problem">You need a price elasticity estimate for rate change planning, but conversion data is observational — the prices customers saw were set by a model, not randomly assigned — and a naive regression of conversion on price is picking up selection effects. Elasticity estimation is available via <code>insurance_causal.elasticity</code>.</p>
   <div class="lib-entry-output"><strong>Output:</strong> causal price elasticity estimates per segment via CausalForestDML or DR-Learner, ENBP-constrained rate optimiser, regulatory audit trail</div>
 </div>
 
 <div class="lib-entry">
   <div class="lib-entry-top">
-    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-demand" target="_blank">insurance-demand</a></span>
+    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-optimise" target="_blank">insurance-optimise</a></span>
     <span class="lib-complexity complexity-setup">Needs setup</span>
   </div>
-  <p class="lib-entry-problem">Your technical price model and your commercial rate are disconnected — the pricing committee sets rate change by segment without knowing the conversion and retention response, and FCA GIPP requires you to consider demand effects formally.</p>
+  <p class="lib-entry-problem">Your technical price model and your commercial rate are disconnected — the pricing committee sets rate change by segment without knowing the conversion and retention response, and FCA GIPP requires you to consider demand effects formally. Demand modelling is available via <code>insurance_optimise.demand</code>.</p>
   <div class="lib-entry-output"><strong>Output:</strong> demand model linking conversion and retention to price, price response curves per segment, FCA GIPP-compliant rate optimisation output</div>
 </div>
 
