@@ -284,6 +284,7 @@ permalink: /guide/
 <tr><td>generate synthetic training data</td><td><a href="https://github.com/burning-cost/insurance-synthetic"><code>insurance-synthetic</code></a></td></tr>
 <tr><td>score telematics trips as GLM-compatible risk</td><td><a href="https://github.com/burning-cost/insurance-telematics"><code>insurance-telematics</code></a></td></tr>
 <tr><td>estimate price elasticity causally</td><td><a href="https://github.com/burning-cost/insurance-causal"><code>insurance-causal</code></a> (includes elasticity)</td></tr>
+<tr><td>identify which segments respond most to a price change</td><td><a href="https://github.com/burning-cost/insurance-causal"><code>insurance-causal</code></a> (causal_forest — GATES/CLAN/RATE)</td></tr>
 <tr><td>correct for a shift in my book mix</td><td><a href="https://github.com/burning-cost/insurance-covariate-shift"><code>insurance-covariate-shift</code></a></td></tr>
 </tbody>
 </table>
@@ -574,6 +575,15 @@ permalink: /guide/
   </div>
   <p class="lib-entry-problem">You need a price elasticity estimate for rate change planning, but conversion data is observational — the prices customers saw were set by a model, not randomly assigned — and a naive regression of conversion on price is picking up selection effects. Elasticity estimation is available via <code>insurance_causal.elasticity</code>.</p>
   <div class="lib-entry-output"><strong>Output:</strong> causal price elasticity estimates per segment via CausalForestDML or DR-Learner, ENBP-constrained rate optimiser, regulatory audit trail</div>
+</div>
+
+<div class="lib-entry">
+  <div class="lib-entry-top">
+    <span class="lib-entry-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a> <span style="font-family:inherit;font-size:0.78rem;font-weight:400;color:#5a6278;">(causal_forest)</span></span>
+    <span class="lib-complexity complexity-advanced">Advanced</span>
+  </div>
+  <p class="lib-entry-problem">You have a portfolio-level price elasticity from DML, but you need to know which segments — young drivers, high-value vehicles, direct channel — respond most to a rate change. A single average effect hides the variation: some segments are highly elastic, others are not, and applying a flat rate change across all of them destroys value. Heterogeneous treatment effects are available via <code>insurance_causal.causal_forest</code>. Use individual CATEs only as a ranking signal — arXiv:2509.11381 shows they are too noisy to act on directly. Work with GATE aggregates at n≥2,000 per group.</p>
+  <div class="lib-entry-output"><strong>Output:</strong> segment-level heterogeneous elasticity via <code>HeterogeneousElasticityEstimator</code>, GATES/BLP/CLAN inference (<code>HeterogeneousInference</code>), targeting evaluation scores RATE/AUTOC/QINI (<code>TargetingEvaluator</code>), forest diagnostics (<code>CausalForestDiagnostics</code>)</div>
 </div>
 
 <div class="lib-entry">

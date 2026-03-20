@@ -140,7 +140,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-causal",
-      "description": "Causal inference for insurance pricing via double machine learning — CatBoost nuisance models, confounding bias reports.",
+      "description": "Causal inference for insurance pricing: double machine learning for deconfounding, causal price elasticity, and causal forest heterogeneous treatment effects (GATES, CLAN, RATE targeting evaluation).",
       "codeRepository": "https://github.com/burning-cost/insurance-causal",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -310,9 +310,9 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
   <div class="essential-card-tag">PRA SS1/23 &middot; MRM</div>
 </div>
 
-<div class="essential-card" data-name="insurance-causal" data-desc="Double machine learning DML causal inference deconfounding rating factors channel bias">
+<div class="essential-card" data-name="insurance-causal" data-desc="Double machine learning DML causal inference deconfounding rating factors channel bias causal forest heterogeneous treatment effects GATES CLAN RATE targeting">
   <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a></div>
-  <div class="essential-card-desc">Double machine learning for deconfounding rating factors. Standard GLM coefficients are biased wherever rating variables correlate with distribution channel or policyholder selection. DML removes that bias without a structural model.</div>
+  <div class="essential-card-desc">Double machine learning for deconfounding rating factors. Standard GLM coefficients are biased wherever rating variables correlate with distribution channel or policyholder selection. DML removes that bias without a structural model. v0.4.0 adds causal forest heterogeneous treatment effects: GATES aggregates, CLAN segment profiling, and RATE/AUTOC/QINI targeting evaluation for segment-level price response.</div>
   <div class="essential-card-tag">Causal inference &middot; DML</div>
 </div>
 
@@ -449,7 +449,7 @@ Separating what causes what from what correlates with what.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation (CausalForestDML, DR-Learner) via `insurance_causal.elasticity`<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
+| [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation and causal forest heterogeneous treatment effects via `insurance_causal.causal_forest` (GATES/BLP/CLAN inference, RATE/AUTOC/QINI targeting evaluation, HTE diagnostics). Use DML for portfolio-level average effects; causal forest for segment-level CATEs with n≥2,000 per group.<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
 | [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation_ | `pip install insurance-causal-policy` |
 
 </div>
