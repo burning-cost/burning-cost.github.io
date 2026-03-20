@@ -275,30 +275,6 @@ permalink: /tools/
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "experience-rating",
-      "description": "Individual policy Bayesian posterior experience rating — static Bühlmann-Straub, dynamic state-space, surrogate IS posteriors, and deep attention credibility.",
-      "codeRepository": "https://github.com/burning-cost/experience-rating",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-demand",
-      "description": "Demand modelling for insurance pricing — conversion and retention elasticity, price response curves.",
-      "codeRepository": "https://github.com/burning-cost/insurance-demand",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "insurance-elasticity",
-      "description": "Price elasticity estimation for insurance — CausalForestDML, DR-Learner, and Automatic Debiased ML.",
-      "codeRepository": "https://github.com/burning-cost/insurance-elasticity",
-      "programmingLanguage": "Python",
-      "license": "https://opensource.org/licenses/MIT"
-    },
-    {
-      "@type": "SoftwareSourceCode",
       "name": "insurance-distill",
       "description": "GBM-to-GLM distillation for insurance pricing - surrogate factor tables for Radar/Emblem rating engines",
       "codeRepository": "https://github.com/burning-cost/insurance-distill",
@@ -310,7 +286,7 @@ permalink: /tools/
 </script>
 
 <div class="tools-intro">
-  <p>37 open-source Python libraries covering the full pricing stack. Ten of them we consider genuinely differentiated — tools that address hard problems in UK pricing where no adequate Python solution existed before. The full portfolio is below the flagship section.</p>
+  <p>34 open-source Python libraries covering the full pricing stack. Ten of them we consider genuinely differentiated — tools that address hard problems in UK pricing where no adequate Python solution existed before. The full portfolio is below the flagship section.</p>
   <p>All libraries are MIT-licensed, installable via pip, and built for Python 3.10+. The GitHub organisation is <a href="https://github.com/burning-cost">burning-cost</a>.</p>
 </div>
 
@@ -455,9 +431,8 @@ When you don't have enough data to trust a standard GLM.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | **Flagship.** Credibility models for UK non-life pricing: Bühlmann-Straub and Bayesian experience rating<br>_Benchmark: 6.8% MAE improvement on thin schemes vs raw experience_ | `pip install insurance-credibility` |
+| [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | **Flagship.** Credibility models for UK non-life pricing: Bühlmann-Straub, Bayesian experience rating, and individual experience rating (static, dynamic, surrogate, and deep attention credibility via `insurance_credibility.experience`)<br>_Benchmark: 6.8% MAE improvement on thin schemes vs raw experience_ | `pip install insurance-credibility` |
 | [insurance-multilevel](https://github.com/burning-cost/insurance-multilevel) | Two-stage CatBoost + REML random effects for high-cardinality group factors — ICC diagnostics<br>_Benchmark: 15.9% gamma deviance reduction; thin-group MAPE 63.6% vs one-hot 66.1%_ | `pip install insurance-multilevel` |
-| [experience-rating](https://github.com/burning-cost/experience-rating) | Individual policy Bayesian posterior experience rating — static, dynamic, surrogate, and deep attention credibility | `pip install experience-rating` |
 | [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data pricing segments using PyMC 5 | `pip install bayesian-pricing` |
 | [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) | Pricing techniques for low-volume segments where standard GLM fitting is unreliable<br>_Benchmark: GLMTransfer narrows bootstrap 90% CI widths 30–60% vs standalone GLM_ | `pip install insurance-thin-data` |
 | [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) | **Flagship.** Whittaker-Henderson 1D/2D smoothing with REML lambda selection, Bayesian CIs, Poisson PIRLS<br>_Benchmark: 57.2% MSE reduction vs raw rates_ | `pip install insurance-whittaker` |
@@ -474,9 +449,8 @@ Separating what causes what from what correlates with what.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
+| [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation (CausalForestDML, DR-Learner) via `insurance_causal.elasticity`<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
 | [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation_ | `pip install insurance-causal-policy` |
-| [insurance-elasticity](https://github.com/burning-cost/insurance-elasticity) | Price elasticity estimation — CausalForestDML, DR-Learner, and Automatic Debiased ML<br>_Benchmark: DML 47.6% GATE RMSE improvement over OLS; valid CIs_ | `pip install insurance-elasticity` |
 
 </div>
 
@@ -524,8 +498,7 @@ From rate change recommendations to live price experimentation.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier<br>_Benchmark: Demand-curve pricing +143.8% profit lift over flat loading_ | `pip install insurance-optimise` |
-| [insurance-demand](https://github.com/burning-cost/insurance-demand) | Demand modelling — conversion and retention elasticity, price response curves<br>_Benchmark: Recovers true price elasticity (-2.09 vs true -2.0); naive model off by 5x_ | `pip install insurance-demand` |
+| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier. Includes demand modelling (conversion/retention elasticity, price response curves) via `insurance_optimise.demand`<br>_Benchmark: Demand-curve pricing +143.8% profit lift over flat loading_ | `pip install insurance-optimise` |
 
 </div>
 

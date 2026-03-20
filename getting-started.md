@@ -594,11 +594,6 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/bayesian_pricing_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>experience-rating</td>
-        <td>NCD stationary distribution, optimal claim threshold</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/experience_rating_demo.py" target="_blank">view</a></td>
-      </tr>
-      <tr>
         <td>insurance-causal</td>
         <td>DML causal effect vs naive Poisson GLM on confounded data</td>
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_causal_demo.py" target="_blank">view</a></td>
@@ -639,11 +634,6 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_datasets_demo.py" target="_blank">view</a></td>
       </tr>
       <tr>
-        <td>insurance-demand</td>
-        <td>Conversion/retention, DML elasticity, GIPP-constrained optimiser</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_demand_demo.py" target="_blank">view</a></td>
-      </tr>
-      <tr>
         <td>insurance-deploy</td>
         <td>Shadow mode, quote logging, bootstrap LR test, ENBP audit</td>
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/champion_challenger_deployment.py" target="_blank">view</a></td>
@@ -672,11 +662,6 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
         <td>insurance-dynamics</td>
         <td>GAS Poisson filter vs static GLM, BOCPD changepoint detection</td>
         <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_dynamics_demo.py" target="_blank">view</a></td>
-      </tr>
-      <tr>
-        <td>insurance-elasticity</td>
-        <td>DML elasticity, ENBP-constrained optimiser, efficient frontier</td>
-        <td><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/price_elasticity_optimisation.py" target="_blank">view</a></td>
       </tr>
       <tr>
         <td>insurance-fairness</td>
