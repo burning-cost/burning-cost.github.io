@@ -6,6 +6,7 @@ categories: [techniques]
 tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-elasticity, uk-motor, polars, python, tutorial]
 description: "OLS elasticity in formula-rated books is contaminated by your own risk model. insurance-elasticity fixes this with CausalForestDML and CatBoost nuisance."
 ---
+> **Update (March 2026):** `insurance-elasticity` has been merged into [`insurance-causal`](https://github.com/burning-cost/insurance-causal). Install `insurance-causal` and use `insurance_causal.elasticity` for the same functionality.
 
 Every pricing team we have talked to has an elasticity model. Most of them are logistic regressions with price change as a regressor, confounders included, holdout Gini looking acceptable. And nearly all of them are wrong in the same direction: they overstate price sensitivity, which means the optimiser gives back too much discount to customers who would have renewed anyway.
 

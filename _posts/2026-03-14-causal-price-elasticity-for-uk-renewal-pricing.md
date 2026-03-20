@@ -6,6 +6,9 @@ categories: [libraries, pricing, causal-inference]
 tags: [elasticity, causal-forest, DML, double-machine-learning, FCA, PS21-5, ENBP, renewal, CausalForestDML, insurance-elasticity, python, motor, econml, catboost]
 description: "CausalForestDML separates causal price effect from risk-lapse correlation in UK motor renewal. insurance-elasticity - per-customer CATE and ENBP optimiser."
 ---
+> **Update (March 2026):** `insurance-elasticity` has been merged into [`insurance-causal`](https://github.com/burning-cost/insurance-causal). Install `insurance-causal` and use `insurance_causal.elasticity` for the same functionality.
+
+> **Update (March 2026):** `insurance-demand` has been merged into [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise). Install `insurance-optimise` and use `insurance_optimise.demand` for the same functionality.
 
 A UK motor renewal book has a structural problem that corrupts every naive price elasticity estimate. Your pricing model re-rates every customer using risk factors. Those same risk factors drive the renewal decision independently of price — higher-risk customers are harder to retain for reasons that have nothing to do with what you charge them. When you regress renewal indicator on log price change, you are picking up both effects simultaneously and cannot separate them from within the regression.
 
