@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Rating Table Smoothing Is Wrong"
+title: "Whittaker-Henderson Smoothing for Rating Tables: The Penalised Least-Squares Method UK Actuaries Should Already Be Using"
 date: 2026-03-18
 author: Burning Cost
 categories: [pricing, actuarial, libraries]

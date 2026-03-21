@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Severity Model Assumes the Same Variance for Every Policy"
+title: "Double GLM for Insurance Severity: Per-Policy Dispersion via the Smyth-Jørgensen Method"
 date: 2026-03-10
 categories: [pricing, libraries, tutorials]
 tags: [dispersion, double-glm, dglm, gamma-glm, severity, variance, phi, reinsurance, channel-mix, broker, commercial, smyth, reml, insurance-dispersion, python, GLM, tutorial]

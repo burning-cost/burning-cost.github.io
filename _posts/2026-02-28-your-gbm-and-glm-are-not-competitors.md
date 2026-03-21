@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your GBM and GLM Are Not Competitors"
+title: "Blending GLMs and GBMs for UK Pricing: Cross-Validated Weights, Not a Choice Between Them"
 date: 2026-02-28
 categories: [pricing, techniques]
 tags: [GLM, GBM, model-blending, stacking, catboost, insurance-cv, shap-relativities, insurance-governance, pra-ss123, python, temporal-cv]

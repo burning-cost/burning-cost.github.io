@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Frequency-Severity Independence Assumption Is Costing You Premium"
+title: "Sarmanov Copula for Frequency-Severity Dependence: The Independence Assumption UK Motor Violates"
 date: 2026-03-08
 categories: [pricing, libraries, tutorials]
 tags: [frequency-severity, sarmanov-copula, dependence, IFM, NCD, UK-motor, pure-premium, copula, insurance-frequency-severity, python, GLM, poisson, gamma, negative-binomial, tutorial]

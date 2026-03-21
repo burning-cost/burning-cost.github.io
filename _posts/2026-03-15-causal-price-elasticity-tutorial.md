@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Elasticity Estimate Is Biased and You Already Know Why"
+title: "Debiasing Price Elasticity Estimates with Double Machine Learning: Removing the Risk Model's Fingerprint"
 date: 2026-03-15
 categories: [techniques]
 tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-elasticity, uk-motor, polars, python, tutorial]

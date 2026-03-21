@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Group Factors Are Not All Worth Modelling"
+title: "ICC Diagnostics for Group Factor Selection: Which Broker, Scheme, and Fleet Effects Justify REML"
 date: 2026-03-06
 categories: [pricing, libraries]
 tags: [multilevel-models, random-effects, credibility, catboost, reml, icc, broker, scheme, fleet, postcode, high-cardinality, variance-components, buhlmann-straub, insurance-multilevel, python]

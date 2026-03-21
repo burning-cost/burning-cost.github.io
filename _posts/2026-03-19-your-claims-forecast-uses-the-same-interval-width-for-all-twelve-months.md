@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your 12-Month Claims Forecast Uses the Same Interval Width for All Twelve Months"
+title: "Multi-Step Conformal Prediction for Claims Forecasts: Horizon-Dependent Intervals with Valid Coverage"
 date: 2026-03-19
 author: Burning Cost
 categories: [pricing, actuarial, libraries]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave"
+title: "Mixture Cure Models for Retention Pricing: Separating Structural Non-Lapsers from the At-Risk Book"
 date: 2026-03-13
 categories: [pricing, libraries, tutorials]
 tags: [survival-analysis, cure-models, mixture-cure, lapse, retention, CLV, insurance-survival, python, polars, consumer-duty, ps21-11, uk-motor]

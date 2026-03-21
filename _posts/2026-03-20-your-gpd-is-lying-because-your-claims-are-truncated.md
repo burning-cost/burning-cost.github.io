@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your GPD Is Lying Because Your Claims Are Truncated"
+title: "Truncation-Corrected GPD Fitting for Capped Claims: Unbiased Tail Index Estimation Under Policy Limits"
 date: 2026-03-20
 author: Burning Cost
 categories: [pricing, severity, libraries, tutorials]

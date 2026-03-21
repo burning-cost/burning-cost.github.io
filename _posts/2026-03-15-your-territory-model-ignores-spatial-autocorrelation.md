@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Territory Model Ignores Spatial Autocorrelation"
+title: "BYM2 Territory Modelling: Posterior Uncertainty Intervals and Year-on-Year Stability from Spatial Smoothing"
 date: 2026-03-15
 categories: [spatial, territory, pricing]
 tags: [spatial, territory, BYM2, ICAR, insurance-spatial, motor, python, uk-motor, postcode, consumer-duty]

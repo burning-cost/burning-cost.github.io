@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care."
+title: "Importance-Weighted Evaluation for Portfolio Composition Shift: Diagnosing the Mismatch Before It Shows in Loss Ratios"
 date: 2026-03-16
 author: Burning Cost
 description: "Density ratio correction for portfolio composition shift — CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your GLM Trend Is a Straight Line Through a Structural Break"
+title: "Trend Fitting Through Regime Changes: Changepoint Detection Before the Rate Indication"
 date: 2026-03-18
 author: Burning Cost
 categories: [pricing, actuarial, libraries]

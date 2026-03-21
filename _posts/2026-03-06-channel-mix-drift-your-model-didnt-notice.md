@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your New Business Mix Changed. Your Model Didn't Notice."
+title: "Density Ratio Detection for Channel Mix Drift: Correcting Predictions Before the Loss Ratio Reacts"
 date: 2026-03-06
 categories: [model-validation, pricing, techniques]
 tags: [covariate-shift, density-ratio, catboost, channel-mix, fca-consumer-duty, portfolio-drift, python, uk-motor]

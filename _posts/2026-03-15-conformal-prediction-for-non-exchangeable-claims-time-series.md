@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Conformal Intervals Are Wrong When the Claims Series Has Trend"
+title: "Adaptive Conformal Inference for Non-Exchangeable Claims Series: Handling Trend Without Retraining"
 date: 2026-03-15
 categories: [pricing, libraries, tutorials]
 tags: [conformal-prediction, time-series, aci, spci, exchangeability, claims-monitoring, loss-ratio, insurance-conformal-ts, sequential-coverage, kupiec, python, tutorial]

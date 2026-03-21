@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Champion Model Has Been Running Unchallenged for Three Years"
+title: "Champion/Challenger Testing That Satisfies the SMF Holder: Routing, Logging, and Bootstrap Power Analysis"
 date: 2026-03-17
 author: Burning Cost
 description: "Champion/challenger testing is the right way to evaluate pricing model changes. Most teams do it badly or not at all — ad-hoc scripts, no audit trail, no..."

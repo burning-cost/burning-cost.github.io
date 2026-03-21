@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Model Validation Is a Checklist, Not a Test"
+title: "Quantitative Model Validation Under PRA SS1/23: Pass/Fail Tests with Reproducible Audit Trails"
 date: 2026-03-11
 categories: [pricing, libraries]
 tags: [validation, pra-ss123, governance, gini, hosmer-lemeshow, psi, calibration, catboost, polars, insurance-governance, motor, uk-pricing, python, model-risk]

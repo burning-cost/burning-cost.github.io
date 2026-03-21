@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Stress Test Portfolio Was Made by Resampling"
+title: "Vine Copula Stress Portfolios for Solvency II: Preserving Joint Tail Structure in Synthetic Scenario Generation"
 date: 2026-03-19
 author: Burning Cost
 categories: [pricing, actuarial, libraries]

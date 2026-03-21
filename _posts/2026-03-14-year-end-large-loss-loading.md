@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Year-End Large Loss Loading Is a Finger in the Air"
+title: "Per-Segment Large Loss Loading with Quantile GBMs: TVaR and ILFs at Risk Level"
 date: 2026-03-14
 categories: [pricing, libraries, tutorials]
 tags: [large-loss, quantile-regression, TVaR, ILF, catboost, insurance-quantile, motor, severity, tail-risk, python, polars]

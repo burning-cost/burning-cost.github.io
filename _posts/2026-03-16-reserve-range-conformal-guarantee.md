@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Reserve Range Has No Frequentist Guarantee"
+title: "Conformal Reserve Ranges: Finite-Sample Coverage Guarantees for IBNR Intervals"
 date: 2026-03-16
 author: Burning Cost
 description: "Bootstrap and expert-judgment reserve ranges look like probability statements but carry no frequentist coverage guarantee."
