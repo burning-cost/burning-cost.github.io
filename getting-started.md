@@ -399,6 +399,10 @@ permalink: /getting-started/
 
 <p class="gs-intro">Most people coming to Burning Cost have one of three starting points. Pick the path closest to yours — each one recommends three to five libraries that solve problems you will encounter first, in an order that makes sense.</p>
 
+<div style="background: #eef2ff; border: 1px solid #c6d4f9; border-left: 4px solid #4f7ef8; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: 0.92rem; color: #2a2d3e; line-height: 1.65;">
+  <strong>Want to see all our libraries working together?</strong> The <a href="/pipeline/" style="color: #4f7ef8; font-weight: 600;">complete motor pricing pipeline</a> walks through a full production workflow — data with a known DGP, GBM training, SHAP factor extraction, GLM distillation, conformal prediction intervals, fairness audit, drift monitoring, and governance pack — in a single runnable script.
+</div>
+
 <!-- Quick install cheat sheet -->
 <div class="gs-install">
   <h2>Quick install</h2>

@@ -25,6 +25,7 @@ minima:
 
 header_pages:
   - tools.md
+  - pipeline.md
   - guide.md
   - notebooks.md
   - about.md
