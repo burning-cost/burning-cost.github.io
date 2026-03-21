@@ -246,6 +246,8 @@ Honest finding: on a single-run Databricks benchmark at n=5,000, the naive GLM a
 
 ### insurance-elasticity — DML price elasticity with heterogeneous treatment effects
 
+> **Merged into [insurance-causal](https://github.com/burning-cost/insurance-causal).** Use `insurance_causal.elasticity` instead. The benchmark below was run before the merge and remains valid.
+
 **What is measured:** DML (DoubleMLElasticityModel) vs naive OLS on 50,000 synthetic renewal policies with known NCD-varying price elasticity. True elasticity varies by NCD band (−1.5 to −3.0). Databricks Serverless, 2026-03-16.
 
 | Method | ATE bias | NCD GATE RMSE | 95% CI valid? |
@@ -255,7 +257,7 @@ Honest finding: on a single-run Databricks benchmark at n=5,000, the naive GLM a
 
 DML reduces NCD GATE RMSE by 47.6% vs OLS. The primary win is not ATE accuracy (both are imprecise at this treatment heterogeneity) but GATE recovery: naive OLS estimates a single pooled elasticity and cannot produce per-NCD-band confidence intervals. The DML CI correctly covers the true NCD elasticity in each band; the OLS CI does not because it conflates confounding with price variation.
 
-[github.com/burning-cost/insurance-elasticity](https://github.com/burning-cost/insurance-elasticity)
+[github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal)
 
 ---
 
@@ -278,6 +280,8 @@ Under strong confounding, naive GLM CI coverage collapses to 30–60% — less t
 
 ### insurance-demand — Price elasticity recovery for new business conversion
 
+> **Merged into [insurance-optimise](https://github.com/burning-cost/insurance-optimise).** Use `insurance_optimise.demand` instead. The benchmark below was run before the merge and remains valid.
+
 **What is measured:** ConversionModel (Heckman-corrected log-price elasticity) vs naive log-price OLS on 30,000 synthetic UK motor quotes with known true price elasticity of −2.0 and selection bias from quote-to-bind conversion.
 
 | Method | Estimated elasticity | Bias vs true (−2.0) |
@@ -287,7 +291,7 @@ Under strong confounding, naive GLM CI coverage collapses to 30–60% — less t
 
 Naive OLS recovers −0.40 because it regresses on the selected sample of bound policies — the most price-insensitive customers. ConversionModel corrects for selection using the full quote funnel, recovering the true −2.0 within 4.5%. The 80% OLS bias is not a modelling subtlety: it produces a fundamentally wrong demand curve that will lead a pricing optimiser to systematically underestimate the cost of price increases.
 
-[github.com/burning-cost/insurance-demand](https://github.com/burning-cost/insurance-demand)
+[github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 
 ---
 
