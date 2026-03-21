@@ -394,10 +394,10 @@ Tools for building and interpreting pricing models.
 | Library | What it does | Install |
 |---|---|---|
 | [shap-relativities](https://github.com/burning-cost/shap-relativities) | SHAP-based rating relativities from GBM models — extract GLM-style multiplicative factors from CatBoost<br>_Benchmark: +2.85pp Gini lift over GLM; 9.4% mean relativity error (honest trade-off vs GLM's 4.5%)_ | `pip install shap-relativities` |
-| [insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools) | GLM tooling — nested GLM embeddings, R2VF factor level clustering, territory banding, SKATER<br>_Benchmark: R2VF fused lasso clustering vs manual quintile banding benchmarked_ | `pip install insurance-glm-tools` |
+| [insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools) | GLM tooling — nested GLM embeddings, R2VF factor level clustering, territory banding, SKATER. Torch is optional: core clustering and banding works without it<br>_Benchmark: R2VF fused lasso clustering vs manual quintile banding benchmarked_ | Core: `pip install insurance-glm-tools`<br>Neural: `pip install insurance-glm-tools[neural]` |
 | [insurance-gam](https://github.com/burning-cost/insurance-gam) | **Flagship.** Interpretable GAMs — EBM tariffs, Actuarial NAM, Pairwise Interaction Networks, exact Shapley values<br>_Benchmark: EBM/NAM interpretable tariffs with exact Shapley values benchmarked on synthetic motor data_ | `pip install insurance-gam` |
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values<br>_Benchmark: Production defaults recover both planted interactions; compact config less reliable_ | `pip install insurance-interactions` |
-| [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | `pip install insurance-frequency-severity` |
+| [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation. Torch is optional: Sarmanov copulas and IFM estimation work without it<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | Core: `pip install insurance-frequency-severity`<br>Neural: `pip install insurance-frequency-severity[neural]` |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics<br>_Benchmark: BYM2 vs raw vs manual banding benchmarked on synthetic territory data_ | `pip install insurance-spatial` |
 | [insurance-distill](https://github.com/burning-cost/insurance-distill) | GBM-to-GLM distillation — fits a surrogate Poisson/Gamma GLM to CatBoost predictions, exports multiplicative factor tables for Radar/Emblem<br>_Benchmark: 90-97% R² match between GBM predictions and distilled GLM factors_ | `pip install insurance-distill` |
 
@@ -417,7 +417,7 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm) | **Flagship.** GAMLSS for Python — model all distribution parameters as functions of covariates, seven families<br>_Benchmark: GAMLSS sigma correlation 0.998 vs 0.000 for constant-phi_ | `pip install insurance-distributional-glm` |
 | [insurance-dispersion](https://github.com/burning-cost/insurance-dispersion) | Double GLM for joint mean-dispersion modelling — alternating IRLS, REML, actuarial factor tables<br>_Benchmark: Double GLM captures heteroscedasticity that constant-phi misses_ | `pip install insurance-dispersion` |
 | [insurance-quantile](https://github.com/burning-cost/insurance-quantile) | Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors<br>_Benchmark: GBM lower TVaR bias on heavy tails; lognormal wins on pinball at small n_ | `pip install insurance-quantile` |
-| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling<br>_Benchmark: Composite reduces tail error 5.6% vs single lognormal_ | `pip install insurance-severity` |
+| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling<br>_Benchmark: Composite reduces tail error 5.6% vs single lognormal; heavy-tail benchmark (Pareto α=1.5) shows 15–20% tail error reduction_ | `pip install insurance-severity` |
 
 </div>
 
@@ -512,7 +512,7 @@ Inflation, reporting delays, and dynamic pricing.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-trend](https://github.com/burning-cost/insurance-trend) | Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection<br>_Benchmark: 3.93pp MAPE improvement over naive OLS trend_ | `pip install insurance-trend` |
+| [insurance-trend](https://github.com/burning-cost/insurance-trend) | Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection<br>_Benchmark: 3.93pp MAPE improvement over naive OLS trend; structural break detection now confirmed on step-change DGP_ | `pip install insurance-trend` |
 | [insurance-dynamics](https://github.com/burning-cost/insurance-dynamics) | Dynamic pricing models — GAS score-driven filters, Bayesian changepoint detection (BOCPD/PELT)<br>_Benchmark: GAS Poisson +13% MAE improvement over GLM trend_ | `pip install insurance-dynamics` |
 
 </div>
@@ -528,7 +528,7 @@ Inflation, reporting delays, and dynamic pricing.
 | [insurance-survival](https://github.com/burning-cost/insurance-survival) | Survival models — cure models, customer lifetime value, lapse tables, MLflow wrapper<br>_Benchmark: Cure model recovers 34.1% cure fraction (true 35.0%); KM/Cox extrapolate to zero_ | `pip install insurance-survival` |
 | [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | **Flagship.** HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data<br>_Benchmark: HMM state features 3–8pp Gini improvement over raw trip averages_ | `pip install insurance-telematics` |
 | [insurance-synthetic](https://github.com/burning-cost/insurance-synthetic) | Vine copula synthetic portfolio generation — exposure-aware, preserves multivariate dependence<br>_Benchmark: Copula 64% better correlation preservation vs naive_ | `pip install insurance-synthetic` |
-| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data<br>_Benchmark: GLM parameter recovery RMSE 0.069; OVB demo shows 24% NCD inflation when age omitted_ | `pip install insurance-datasets` |
+| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data. Polars output supported via `polars=True` on `load_motor()` and `load_home()`<br>_Benchmark: GLM parameter recovery RMSE 0.069; OVB demo shows 24% NCD inflation when age omitted_ | `pip install insurance-datasets`<br>Polars: `pip install insurance-datasets[polars]` |
 
 </div>
 
