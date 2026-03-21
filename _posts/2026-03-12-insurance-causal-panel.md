@@ -250,6 +250,14 @@ The before-after comparison is not wrong. It is just an answer to the wrong ques
 
 *causalfe is available via `uv add causalfe`. The underlying paper is Bonhomme, Cai, and Franke (2026), arXiv:2601.10555. For aggregate causal rate change evaluation, see our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library (SDID + CS21). Burning Cost has no affiliation with the causalfe authors.*
 
-- [Your Rate Change Didn't Prove Anything](/2026/03/19/your-rate-change-didnt-prove-anything/)
+- [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
+
+---
+
+## See also
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — DML as the primary causal approach when panel structure is unavailable or insufficient to absorb unobserved confounders
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — SDiD as an alternative when you have a clean rate change event and a control group, rather than continuous treatment
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library; panel fixed effects can be passed as controls alongside the DML nuisance models

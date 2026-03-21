@@ -249,3 +249,12 @@ The first thing to check after calibrating is always `coverage_by_decile()`. If 
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+
+---
+
+## See also
+
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control, which bounds expected monetary shortfall rather than coverage probability; useful when the cost of under-pricing is asymmetric
+- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction sets for the two-part model, handling the correlation between frequency and severity intervals
+- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2028/01/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for time-series claims data where the exchangeability assumption underlying standard conformal breaks down
+- [Your Reserve Range Has No Frequentist Guarantee](/2028/07/15/reserve-range-conformal-guarantee/) — applying conformal guarantees to IBNR reserve ranges, replacing assumption-dependent stochastic reserving intervals

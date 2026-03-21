@@ -349,3 +349,12 @@ The FCA has not, as of March 2028, issued specific guidance on DML-based demand 
 - [Your Model Was Trained on Last Year's Book](/2028/02/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process
 - [Channel Mix Drift Your Model Didn't Notice](/2027/02/15/channel-mix-drift-your-model-didnt-notice/) — PCW customers are more elastic; a model trained on a channel mix you no longer have will overstate overall elasticity
+
+---
+
+## See also
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical foundations this tutorial builds on
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library used throughout this tutorial
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2028/10/15/dml-small-samples-adaptive-regularisation/) — thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals

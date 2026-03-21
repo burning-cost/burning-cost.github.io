@@ -213,3 +213,11 @@ The GATE RMSE improvement is largest on books where the renewal population has s
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) — the general DML for insurance causal inference library; confounding bias report, DAG validation, sensitivity analysis
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the insurance-optimise demand model with FCA GIPP compliance
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/) — the rate change optimiser that consumes elasticity estimates
+
+---
+
+## See also
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the DML solution to the confounding problem described here, with worked Python examples
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2028/03/15/causal-price-elasticity-tutorial/) — a full tutorial applying DML to a UK renewal book; picks up directly from the diagnosis made here
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — for when you want to evaluate a past rate change rather than estimate a continuous elasticity

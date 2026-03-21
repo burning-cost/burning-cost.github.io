@@ -212,6 +212,6 @@ The escalation path — recalibration or refit — depends on the Murphy decompo
 ---
 
 **Related posts:**
-- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/) — the original case for PSI-first monitoring and why A/E alone is insufficient
+- [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for PSI-first monitoring and why A/E alone is insufficient
 - [Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care.](/2028/05/15/your-new-book-doesnt-look-like-your-old-book/) — density ratio correction for portfolio composition shift, when the distribution change is too large for recalibration
 - [Your Champion Model Has Been Running Unchallenged for Three Years](/2028/09/15/champion-model-unchallenged/) — what happens after monitoring flags a problem: champion/challenger testing and the governance infrastructure for model replacement

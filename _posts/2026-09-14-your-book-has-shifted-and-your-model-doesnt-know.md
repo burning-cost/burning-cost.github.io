@@ -401,3 +401,10 @@ Source and notebooks at [github.com/burning-cost/insurance-covariate-shift](http
 
 - `notebooks/benchmark_covariate_shift.py` -- the benchmark results referenced in the README: PSI improvement, A/E decile correction, metric estimation error for a 5,000-policy source vs 3,000-policy broker acquisition scenario
 - Full docstrings on all three classes with minimal runnable examples
+
+---
+
+## See also
+
+- [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) — the library introduction: density ratio estimation via RuLSIF and LR-QR for shifted distributions, with an MGA acquisition worked example
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2028/02/15/covariate-shift-detection-book-mix-changes/) — the monitoring cadence question: ESS ratio trending over time, verdict thresholds, and the governance triggers for a retraining decision

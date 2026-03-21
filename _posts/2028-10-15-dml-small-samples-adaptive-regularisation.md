@@ -231,3 +231,12 @@ Source at [github.com/burning-cost/insurance-causal](https://github.com/burning-
 - [Your Demand Model is Confounded](/2026/03/01/your-demand-model-is-confounded/)
 - [DML Insurance Benchmarks](/2026/03/09/dml-insurance-benchmarks/)
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
+
+---
+
+## See also
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the foundational post: DML theory and why it solves the confounding problem that OLS cannot
+- [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — the original benchmarks that identified sample size as the main practical limitation addressed here
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library; adaptive regularisation described here is available in versions 0.4+
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2028/03/15/causal-price-elasticity-tutorial/) — the tutorial that demonstrates the full workflow at realistic sample sizes using the methods developed here

@@ -220,5 +220,13 @@ The source is at [github.com/burning-cost/insurance-causal-policy](https://githu
 A before/after chart is not evidence. It is a description of what happened. The question of whether the rate change caused what happened requires a counterfactual. This library builds the counterfactual.
 
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)
+
+---
+
+## See also
+
+- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) — panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — DML for continuous treatment; applies when the rate change was applied at varying levels rather than as a clean step
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — why A/B rate testing and pre/post comparisons both fail for the same structural reason

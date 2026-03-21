@@ -158,7 +158,7 @@ spatial.fit(df, outcome="claim_count", exposure="exposure")
 bands = spatial.derive_bands(n_bands=8)
 ```
 
-See [Your Territory Banding is Wrong](/2026/02/27/your-territory-banding-is-wrong/) for what the BYM2 model finds that choropleth maps miss.
+See [Your Territory Banding is Wrong](/2026/02/23/spatial-territory-ratemaking-with-bym2/) for what the BYM2 model finds that choropleth maps miss.
 
 [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
 
@@ -346,7 +346,7 @@ result = model.fit(df, exposure_col="exposure")
 print(result.ate, result.ci_95)  # average treatment effect + confidence interval
 ```
 
-For the mechanism and a worked motor example, see [Your Rating Factor Might Be Confounded](/2026/03/06/your-rating-factor-might-be-confounded/).
+For the mechanism and a worked motor example, see [Your Rating Factor Might Be Confounded](/2026/03/01/your-demand-model-is-confounded/).
 
 [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal)
 
@@ -401,7 +401,7 @@ result = opt.run(technical_price=df["tc"], elasticity=df["elasticity"], enbp=df[
 print(result.optimal_multipliers)  # per-policy price multipliers
 ```
 
-For the full treatment of the constrained rate optimisation problem and the efficient frontier interpretation, see [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/06/constrained-rate-optimisation-and-the-efficient-frontier/).
+For the full treatment of the constrained rate optimisation problem and the efficient frontier interpretation, see [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/02/21/constrained-rate-optimisation-efficient-frontier/).
 
 [github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 

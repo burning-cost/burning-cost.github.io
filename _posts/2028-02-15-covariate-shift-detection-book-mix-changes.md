@@ -198,3 +198,10 @@ The point is not that you abandon the model. The point is that you know, months 
 - [Your Year-End Large Loss Loading Is a Finger in the Air](/2027/12/15/year-end-large-loss-loading/) — per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — building a defensible sign-off process and what the PRA's SS1/23 actually requires
 - [Transfer Learning for Thin Segments](/2027/07/15/transfer-learning-for-thin-segments/) — when the target book has sparse data of its own, importance weighting pairs with transfer learning for best results
+
+---
+
+## See also
+
+- [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) — the library introduction: how density ratio estimation works and the LR-QR method for applying importance weights to conformal prediction intervals
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book

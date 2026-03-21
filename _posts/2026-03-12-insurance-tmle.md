@@ -299,5 +299,5 @@ TMLE is not strictly better than DML in all cases. For large portfolios with wel
 
 **Related reading:**
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) — DML-based causal elasticity estimation; the right tool when your outcome model is well-specified and the propensity model is less critical
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/) — the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) — the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
 - [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect

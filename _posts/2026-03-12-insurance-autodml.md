@@ -287,5 +287,14 @@ Source and tests: [github.com/burning-cost/insurance-causal](https://github.com/
 The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local Average Treatment Effects in the Frequentist and Bayesian Settings*, *Annals of Statistics*; the ForestRiesz construction and the missing-outcome extension are from arXiv:2601.08643; the dose-response curve implementation follows Colangelo & Lee, *Journal of Business & Economic Statistics* (2025), arXiv:2004.03036.
 
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)
-- [Your Rating Factor Might Be Confounded](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [Your Rating Factor Might Be Confounded](/2026/03/01/your-demand-model-is-confounded/)
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
+
+---
+
+## See also
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical motivation: why OLS elasticity is confounded in a formula-rated book and what DML does instead
+- [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — benchmark evaluation of the algorithms this library implements, with sample size and misspecification sensitivity analysis
+- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) — using panel structure to remove unobserved confounders; a complementary approach for books with multi-year policy histories
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2028/10/15/dml-small-samples-adaptive-regularisation/) — adaptive regularisation extensions for thin segments, now incorporated into the library

@@ -23,7 +23,7 @@ First, the routing is often not deterministic by policy. A policy quoted on Mond
 
 Second, there is no power analysis. Six months of data at 10% challenger allocation — around 1,800 bound policies at a typical volume — is nowhere near enough to detect a 3-percentage-point difference in loss ratio at the 80% power level with 12-month claims development. The promotion decision is noise. You might have promoted a model that underperforms the champion, or rejected one that outperforms it.
 
-Third, ICOBS 6B.2.51R requires written records demonstrating that renewal prices do not exceed the Equivalent New Business Price for identical risk profiles. In the FCA's 2023 multi-firm review, 83% of firms were non-compliant with record-keeping requirements — mostly because their logs were not granular enough to tie a specific premium to a specific model version for a specific policy. An ad-hoc script and a database table is not a compliant audit log.
+Third, ICOBS 6B.2.51R requires written records demonstrating that renewal prices do not exceed the Equivalent New Business Price for identical risk profiles. The FCA's general insurance pricing attestation review found widespread record-keeping failures across the firms sampled — mostly because their logs were not granular enough to tie a specific premium to a specific model version for a specific policy. An ad-hoc script and a database table is not a compliant audit log.
 
 ---
 
@@ -233,6 +233,6 @@ Run a challenger. Log it properly. Know when you have enough data to decide. Tha
 ---
 
 **Related posts:**
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/09/your-champion-challenger-test-has-no-audit-trail/) — the original worked example: shadow mode setup, ENBP logging, and why loss ratio significance takes longer than you think
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — the original worked example: shadow mode setup, ENBP logging, and why loss ratio significance takes longer than you think
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 sign-off and what governance documentation actually needs to contain
 - [The Governance Bottleneck for EBM Adoption](/2028/06/15/the-governance-bottleneck-for-ebm-adoption/) — the translation problem between model quality and pricing committee approval
