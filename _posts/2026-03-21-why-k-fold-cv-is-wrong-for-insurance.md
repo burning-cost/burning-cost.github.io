@@ -218,6 +218,8 @@ The defaults in `walk_forward_split` (three months) are appropriate only for mot
 
 These are starting points, not rules. The right value depends on whether your target is paid losses, incurred, or an ultimate estimate; on how quickly your claims team closes files; and on whether you have a material proportion of complex, contested claims that develop slowly.
 
+> **Watch the IBNR buffer on Motor TP BI.** The figures in the table above are for `ibnr_buffer_months` — the gap between train end and the first test row. On a motor third party bodily injury book, 12–24 months is the parameter minimum, but your *effective validation gap* (the distance from the training cutoff to the point where you are confident test targets are materially reported) should be at least 36 months. We have seen teams run walk-forward on TP BI with an 18-month gap, get clean leakage checks, and only realise when comparing to a 2-year-later out-of-time holdout that the CV scores were still flattering — the test claims were still developing. If your book is Ogden-sensitive (large periodical payment orders, serious injury reserves), 36 months is itself optimistic. Short-tail classes — accidental damage, household contents — can use 6–12 months without issue.
+
 For long-tail lines — employers' liability, professional indemnity — use `accident_year_split` instead of `walk_forward_split`. That function generates one fold per accident year and filters out years with insufficient median development, ensuring immature accident years never appear as test targets:
 
 ```python
