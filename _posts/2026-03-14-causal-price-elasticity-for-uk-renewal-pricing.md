@@ -219,5 +219,5 @@ The GATE RMSE improvement is largest on books where the renewal population has s
 ## See also
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the DML solution to the confounding problem described here, with worked Python examples
-- [Your Elasticity Estimate Is Biased and You Already Know Why](/2028/03/15/causal-price-elasticity-tutorial/) — a full tutorial applying DML to a UK renewal book; picks up directly from the diagnosis made here
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) — a full tutorial applying DML to a UK renewal book; picks up directly from the diagnosis made here
 - [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — for when you want to evaluate a past rate change rather than estimate a continuous elasticity

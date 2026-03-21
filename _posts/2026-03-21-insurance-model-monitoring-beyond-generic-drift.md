@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Insurance Model Monitoring Beyond Generic Data Drift"
-date: 2029-08-30
+date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, tutorials]
 description: "Evidently and NannyML are excellent tools. They do not understand exposure weighting, development lags, or the Gini drift test. insurance-monitoring does."
-canonical_url: "https://burning-cost.github.io/2029/08/30/insurance-model-monitoring-beyond-generic-drift/"
+canonical_url: "https://burning-cost.github.io/2026/03/21/insurance-model-monitoring-beyond-generic-drift/"
 tags: [insurance-model-monitoring-python, model-monitoring, PSI, CSI, ae-ratio, gini-drift, sequential-testing, mSPRT, insurance-monitoring, Evidently, NannyML, model-risk, pricing, python, uk-insurance, polars]
 ---
 
@@ -340,6 +340,6 @@ The `to_polars()` report is the model risk artefact. It records which metrics we
 ---
 
 **Related posts:**
-- [Your Model Drift Alert Is Too Late](/2028/11/15/your-model-drift-alert-is-too-late/) — why A/E is a lagging indicator and what to monitor instead
+- [Your Model Drift Alert Is Too Late](/2026/03/18/your-model-drift-alert-is-too-late/) — why A/E is a lagging indicator and what to monitor instead
 - [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring
-- [Champion Model, Unchallenged](/2028/09/15/champion-model-unchallenged/) — why most insurers never properly test their champion model
+- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model

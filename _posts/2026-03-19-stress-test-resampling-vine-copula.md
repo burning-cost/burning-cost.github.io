@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your Stress Test Portfolio Was Made by Resampling"
-date: 2029-02-15
+date: 2026-03-19
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Resampling your real portfolio to generate stress test scenarios destroys the joint tail structure that capital models depend on."
-canonical_url: "https://burning-cost.github.io/2029/02/15/stress-test-resampling-vine-copula/"
+canonical_url: "https://burning-cost.github.io/2026/03/19/stress-test-resampling-vine-copula/"
 tags: [vine-copula, synthetic-data, stress-testing, capital-modelling, solvency-ii, tail-dependence, tvar, internal-model, insurance-synthetic, python, resampling, diversification]
 ---
 
@@ -154,5 +154,5 @@ For independent validators reviewing an internal model, the vine summary is a di
 
 **Related posts:**
 - [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — the basics: exposure semantics, marginal fitting, TSTR fidelity, and why SDV and CTGAN produce portfolios that break the moment you run a pricing model on them
-- [Your Rating Table Smoothing Is Wrong](/2028/12/15/your-rating-table-smoothing-is-wrong/) — another case where a naive approximation gives structurally incorrect results in the tail
-- [Your Model Drift Alert Is Too Late](/2028/11/15/your-model-drift-alert-is-too-late/) — complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions
+- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) — another case where a naive approximation gives structurally incorrect results in the tail
+- [Your Model Drift Alert Is Too Late](/2026/03/18/your-model-drift-alert-is-too-late/) — complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions

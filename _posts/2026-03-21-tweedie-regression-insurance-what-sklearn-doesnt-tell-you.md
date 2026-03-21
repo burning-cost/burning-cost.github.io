@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure"
-date: 2029-07-30
+date: 2026-03-21
 author: Burning Cost
 categories: [modelling, tutorials, libraries]
 description: "sklearn's TweedieRegressor tutorial gets you to a fitted model in six lines. It also produces predictions that are wrong for any policy with non-annual exposure. Here is the correct approach."
-canonical_url: "https://burning-cost.github.io/2029/07/30/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/"
+canonical_url: "https://burning-cost.github.io/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/"
 tags: [tweedie, GLM, exposure, offset, pure-premium, insurance-distributional, TweedieGBM, statsmodels, catboost, python, tutorial, motor-insurance, uk-insurance, compound-poisson-gamma]
 ---
 

@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your GLM Trend Is a Straight Line Through a Structural Break"
-date: 2029-01-15
+date: 2026-03-18
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Pricing teams fit log-linear trends through experience with structural breaks. The straight line is wrong on both sides. How to detect and correct it."
-canonical_url: "https://burning-cost.github.io/2029/01/15/your-glm-trend-is-a-straight-line-through-a-structural-break/"
+canonical_url: "https://burning-cost.github.io/2026/03/18/your-glm-trend-is-a-straight-line-through-a-structural-break/"
 tags: [changepoint, bocpd, pelt, bayesian, structural-break, trend, rate-indication, insurance-dynamics, python, uk-motor, ogden, whiplash, inflation, actuarial]
 ---
 
@@ -188,5 +188,5 @@ The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both 
 
 **Related posts:**
 - [Tracking Trend Between Model Updates with GAS Filters](/2027/04/15/gas-models-for-between-update-trend/) — the GAS side of insurance-dynamics: continuous tracking of smooth parameter drift, complementary to discrete changepoint detection
-- [Your Model Drift Alert Is Too Late](/2028/11/15/your-model-drift-alert-is-too-late/) — monitoring framework for detecting when a model's input distribution has shifted, upstream of the loss ratio signal
-- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2028/08/15/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) — another case where averaging across time is wrong: static credibility weights all years equally, which fails when the risk has genuinely moved
+- [Your Model Drift Alert Is Too Late](/2026/03/18/your-model-drift-alert-is-too-late/) — monitoring framework for detecting when a model's input distribution has shifted, upstream of the loss ratio signal
+- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2026/03/17/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) — another case where averaging across time is wrong: static credibility weights all years equally, which fails when the risk has genuinely moved

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Reserve Range Has No Frequentist Guarantee"
-date: 2028-07-15
+date: 2026-03-16
 author: Burning Cost
 description: "Bootstrap and expert-judgment reserve ranges look like probability statements but carry no frequentist coverage guarantee."
 tags: [reserving, conformal-prediction, time-series, aci, mscp, exchangeability, reserve-ranges, ibnr, insurance-conformal-ts, motor, python, actuarial]
@@ -157,7 +157,7 @@ We are not arguing for replacing stochastic reserving with conformal prediction.
 ---
 
 **Related posts:**
-- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2028/01/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — the January 2028 tutorial covering ACI and SPCI mechanics in detail
+- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — the January 2028 tutorial covering ACI and SPCI mechanics in detail
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 and what a defensible sign-off process looks like in practice
 - [Year-End Large Loss Loading](/2027/12/15/year-end-large-loss-loading/) — the sister problem: when your frequency estimate is right but your severity range is wrong
 
@@ -168,4 +168,4 @@ We are not arguing for replacing stochastic reserving with conformal prediction.
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: what conformal prediction guarantees and how to calibrate intervals for cross-sectional insurance models
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — when the goal is bounding expected monetary shortfall rather than coverage probability; directly applicable to reserve adequacy questions
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, relevant when reserving requires correlated frequency/severity uncertainty
-- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2028/01/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for development triangles where the trend assumption of static conformal breaks down
+- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for development triangles where the trend assumption of static conformal breaks down

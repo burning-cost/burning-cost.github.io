@@ -253,4 +253,4 @@ The practical bar for using DML in pricing is not "does it perform better than t
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the motivation and theoretical setup: why OLS elasticity estimates are biased in a formula-rated book
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the production library; the benchmarks here test its underlying algorithms
-- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2028/10/15/dml-small-samples-adaptive-regularisation/) — adaptive regularisation that extends DML to the thin-segment case, addressing the sample-size limitations noted in these benchmarks
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — adaptive regularisation that extends DML to the thin-segment case, addressing the sample-size limitations noted in these benchmarks

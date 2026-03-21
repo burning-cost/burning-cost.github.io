@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care."
-date: 2028-05-15
+date: 2026-03-16
 author: Burning Cost
 description: "Density ratio correction for portfolio composition shift — CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"
 tags: [covariate-shift, model-validation, density-ratio, catboost, fca]
@@ -207,6 +207,6 @@ The point is not that the model becomes unusable at 0.30. The point is that by 0
 `insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, NumPy 1.24+.
 
 **Related posts:**
-- [Your Model Was Trained on Last Year's Book](/2028/02/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
+- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 model validation and what a defensible sign-off process looks like
 - [Transfer Learning for Thin Segments](/2027/07/15/transfer-learning-for-thin-segments/) — when the target book has sparse data, importance weighting pairs with transfer learning

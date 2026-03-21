@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Fairness Auditing When You Don't Have Sensitive Attributes"
-date: 2029-04-30
+date: 2026-03-20
 author: Burning Cost
 categories: [compliance, fairness, libraries]
 description: "Most UK insurers don't hold ethnicity, religion, or disability status. Consumer Duty still requires evidence of fair outcomes. PrivatizedFairnessAudit solves this with local differential privacy."
-canonical_url: "https://burning-cost.github.io/2029/04/30/fairness-auditing-without-sensitive-attributes/"
+canonical_url: "https://burning-cost.github.io/2026/03/20/fairness-auditing-without-sensitive-attributes/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, PrivatizedFairnessAudit, differential-privacy, LDP, randomised-response, anchor-point, Equality-Act, python, uk-insurance, v0.3.8]
 ---
 
@@ -155,6 +155,6 @@ Third, noise versus signal. With epsilon values below 1.0 (strong privacy), the 
 ---
 
 **Related posts:**
-- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2029/04/15/the-fca-is-investigating-home-and-travel-insurers/) -- the regulatory context and what a defensible Consumer Duty fair value assessment requires
+- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) -- the regulatory context and what a defensible Consumer Duty fair value assessment requires
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) -- the detection methodology when you do have proxy data: mutual information, CatBoost R-squared, SHAP decomposition
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) -- WassersteinCorrector for discrimination-free premiums when you have the attribute directly

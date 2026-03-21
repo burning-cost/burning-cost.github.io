@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Territory Model Ignores Spatial Autocorrelation"
-date: 2028-04-15
+date: 2026-03-15
 categories: [spatial, territory, pricing]
 tags: [spatial, territory, BYM2, ICAR, insurance-spatial, motor, python, uk-motor, postcode, consumer-duty]
 description: "Two things independent credibility cannot give you: a quantified uncertainty per sector, and stable factors year-on-year."

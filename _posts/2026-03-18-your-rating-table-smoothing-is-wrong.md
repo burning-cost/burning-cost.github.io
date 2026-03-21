@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your Rating Table Smoothing Is Wrong"
-date: 2028-12-15
+date: 2026-03-18
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Every UK pricing actuary smooths experience tables. Most do it with a 5-point moving average or a polynomial fitted by eye."
-canonical_url: "https://burning-cost.github.io/2028/12/15/your-rating-table-smoothing-is-wrong/"
+canonical_url: "https://burning-cost.github.io/2026/03/18/your-rating-table-smoothing-is-wrong/"
 tags: [whittaker-henderson, smoothing, rating-tables, actuarial, python, polars, reml, insurance-whittaker, uk-motor, uk-home, pricing]
 ---
 
@@ -261,4 +261,4 @@ This library implements the methodology from Biessy, G. (2026), "Whittaker-Hende
 **Related posts:**
 - [Your Severity Model Assumes the Wrong Variance](/2027/08/15/your-severity-model-assumes-the-wrong-variance/) - double GLM for modelling dispersion when the variance structure matters as much as the mean
 - [Validating GAMLSS Sigma Models](/2027/06/15/validating-gamlss-sigma-models/) - distributional regression, which extends the smooth mean-function idea to the full conditional distribution
-- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2028/08/15/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) - another foundational actuarial method that gets the right structure from a principled statistical framework
+- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2026/03/17/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) - another foundational actuarial method that gets the right structure from a principled statistical framework

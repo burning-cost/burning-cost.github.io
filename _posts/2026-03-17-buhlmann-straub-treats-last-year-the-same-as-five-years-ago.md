@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Bühlmann-Straub Treats Last Year the Same as Five Years Ago"
-date: 2028-08-15
+date: 2026-03-17
 author: Burning Cost
 description: "Static credibility weights all years equally. The dynamic Poisson-gamma state-space model weights recent experience more - and quantifies how much more."
 tags: [credibility, experience-rating, bayesian, dynamic-credibility, fleet, commercial-motor, insurance-credibility, python, actuarial, uk-motor]

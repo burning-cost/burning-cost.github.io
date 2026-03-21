@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The EBM Is Sitting in Your Notebook Because You Can't Show It to the Committee"
-date: 2028-06-15
+date: 2026-03-16
 author: Burning Cost
 description: "GLMComparison and MonotonicityEditor in insurance-gam close the governance gap between EBM shape functions and the GLM factor table your pricing committee..."
 tags: [ebm, gam, interpretability, GLM, monotonicity, model-governance, pricing, insurance-gam, motor, python, polars]

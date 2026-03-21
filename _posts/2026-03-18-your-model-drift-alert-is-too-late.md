@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your Model Drift Alert Is Too Late"
-date: 2028-11-15
+date: 2026-03-18
 author: Burning Cost
 categories: [monitoring, model-risk]
 description: "Aggregate A/E is a lagging indicator. insurance-monitoring catches input drift, feature drift, and score drift before the loss ratio moves."
-canonical_url: "https://burning-cost.github.io/2028/11/15/your-model-drift-alert-is-too-late"
+canonical_url: "https://burning-cost.github.io/2026/03/18/your-model-drift-alert-is-too-late"
 tags: [model-monitoring, drift-detection, PSI, CSI, gini, ae-ratio, insurance-monitoring, model-risk, pricing, python, uk-insurance]
 ---
 
@@ -213,5 +213,5 @@ The escalation path — recalibration or refit — depends on the Murphy decompo
 
 **Related posts:**
 - [Your Pricing Model is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for PSI-first monitoring and why A/E alone is insufficient
-- [Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care.](/2028/05/15/your-new-book-doesnt-look-like-your-old-book/) — density ratio correction for portfolio composition shift, when the distribution change is too large for recalibration
-- [Your Champion Model Has Been Running Unchallenged for Three Years](/2028/09/15/champion-model-unchallenged/) — what happens after monitoring flags a problem: champion/challenger testing and the governance infrastructure for model replacement
+- [Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care.](/2026/03/16/your-new-book-doesnt-look-like-your-old-book/) — density ratio correction for portfolio composition shift, when the distribution change is too large for recalibration
+- [Your Champion Model Has Been Running Unchallenged for Three Years](/2026/03/17/champion-model-unchallenged/) — what happens after monitoring flags a problem: champion/challenger testing and the governance infrastructure for model replacement

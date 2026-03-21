@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your GPD Is Lying Because Your Claims Are Truncated"
-date: 2029-05-15
+date: 2026-03-20
 author: Burning Cost
 categories: [pricing, severity, libraries, tutorials]
 description: "Standard GPD fitting is biased when claims are capped by policy limits. Most actuaries know this and do it anyway. insurance-severity v0.2.0 fixes it."
-canonical_url: "https://burning-cost.github.io/2029/05/15/your-gpd-is-lying-because-your-claims-are-truncated/"
+canonical_url: "https://burning-cost.github.io/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/"
 tags: [EVT, extreme-value-theory, GPD, TruncatedGPD, CensoredHillEstimator, WeibullTemperedPareto, policy-limits, truncation, censoring, severity, tail-index, insurance-severity, v0.2.0, python, motor-bi, uk-insurance, reinsurance]
 ---
 

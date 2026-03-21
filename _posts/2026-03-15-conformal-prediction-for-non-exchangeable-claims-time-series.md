@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Conformal Intervals Are Wrong When the Claims Series Has Trend"
-date: 2028-01-15
+date: 2026-03-15
 categories: [pricing, libraries, tutorials]
 tags: [conformal-prediction, time-series, aci, spci, exchangeability, claims-monitoring, loss-ratio, insurance-conformal-ts, sequential-coverage, kupiec, python, tutorial]
 description: "Standard split conformal prediction requires exchangeability — a condition insurance claims time series systematically violate."
@@ -429,4 +429,4 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: split conformal for cross-sectional insurance models where exchangeability holds
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, handling correlated frequency/severity uncertainty simultaneously
-- [Your Reserve Range Has No Frequentist Guarantee](/2028/07/15/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty
+- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty

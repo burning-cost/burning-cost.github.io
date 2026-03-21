@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain"
-date: 2028-02-15
+date: 2026-03-15
 categories: [pricing, libraries, tutorials]
 tags: [covariate-shift, density-ratio, importance-weighting, rulsif, kliep, catboost, conformal-prediction, model-monitoring, book-mix, insurance-covariate-shift, fca, sup-15-3, uk-motor, python, polars]
 description: "How to run covariate shift detection as a recurring monthly check: monitoring cadence, ESS ratio trends, and the thresholds that trigger a retraining..."

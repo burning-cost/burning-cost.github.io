@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DML Works at 1,000 Policies Now. Here Is What Changed."
-date: 2028-10-15
+date: 2026-03-17
 categories: [techniques]
 tags: [causal-inference, dml, double-machine-learning, catboost, small-samples, treatment-effect, renewal-pricing, telematics, insurance-causal, python, uk-motor]
 description: "insurance-causal v0.3.1 fixes over-partialling in DML for small insurance books. Adaptive CatBoost regularisation makes causal estimates reliable at n≥1k."
@@ -239,4 +239,4 @@ Source at [github.com/burning-cost/insurance-causal](https://github.com/burning-
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the foundational post: DML theory and why it solves the confounding problem that OLS cannot
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — the original benchmarks that identified sample size as the main practical limitation addressed here
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library; adaptive regularisation described here is available in versions 0.4+
-- [Your Elasticity Estimate Is Biased and You Already Know Why](/2028/03/15/causal-price-elasticity-tutorial/) — the tutorial that demonstrates the full workflow at realistic sample sizes using the methods developed here
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) — the tutorial that demonstrates the full workflow at realistic sample sizes using the methods developed here

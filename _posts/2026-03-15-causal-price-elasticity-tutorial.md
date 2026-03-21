@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Elasticity Estimate Is Biased and You Already Know Why"
-date: 2028-03-15
+date: 2026-03-15
 categories: [techniques]
 tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-elasticity, uk-motor, polars, python, tutorial]
 description: "OLS elasticity in formula-rated books is contaminated by your own risk model. insurance-elasticity fixes this with CausalForestDML and CatBoost nuisance."
@@ -346,7 +346,7 @@ The FCA has not, as of March 2028, issued specific guidance on DML-based demand 
 
 `insurance-elasticity` is open source under MIT at [github.com/burning-cost/insurance-elasticity](https://github.com/burning-cost/insurance-elasticity). Requires Python 3.10+, CatBoost 1.2+, EconML 0.16+, and Polars 0.20+.
 
-- [Your Model Was Trained on Last Year's Book](/2028/02/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
+- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process
 - [Channel Mix Drift Your Model Didn't Notice](/2027/02/15/channel-mix-drift-your-model-didnt-notice/) — PCW customers are more elastic; a model trained on a channel mix you no longer have will overstate overall elasticity
 
@@ -357,4 +357,4 @@ The FCA has not, as of March 2028, issued specific guidance on DML-based demand 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical foundations this tutorial builds on
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library used throughout this tutorial
-- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2028/10/15/dml-small-samples-adaptive-regularisation/) — thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals

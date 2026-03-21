@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Champion Model Has Been Running Unchallenged for Three Years"
-date: 2028-09-15
+date: 2026-03-17
 author: Burning Cost
 description: "Champion/challenger testing is the right way to evaluate pricing model changes. Most teams do it badly or not at all — ad-hoc scripts, no audit trail, no..."
 tags: [champion-challenger, model-deployment, pricing, ICOBS, ENBP, fca-compliance, insurance-deploy, audit, model-governance, python, motor, uk-insurance]
@@ -235,4 +235,4 @@ Run a challenger. Log it properly. Know when you have enough data to decide. Tha
 **Related posts:**
 - [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — the original worked example: shadow mode setup, ENBP logging, and why loss ratio significance takes longer than you think
 - [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 sign-off and what governance documentation actually needs to contain
-- [The Governance Bottleneck for EBM Adoption](/2028/06/15/the-governance-bottleneck-for-ebm-adoption/) — the translation problem between model quality and pricing committee approval
+- [The Governance Bottleneck for EBM Adoption](/2026/03/16/the-governance-bottleneck-for-ebm-adoption/) — the translation problem between model quality and pricing committee approval

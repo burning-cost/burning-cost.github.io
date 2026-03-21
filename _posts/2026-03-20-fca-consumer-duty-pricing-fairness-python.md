@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "FCA Consumer Duty Pricing Fairness in Python"
-date: 2029-06-15
+date: 2026-03-20
 author: Burning Cost
 categories: [compliance, fairness, libraries, tutorials]
 description: "The FCA expects pricing teams to demonstrate their models don't proxy-discriminate under Consumer Duty. Most teams do this in Excel. Here is how to do it properly in Python, using insurance-fairness."
-canonical_url: "https://burning-cost.github.io/2029/06/15/fca-consumer-duty-pricing-fairness-python/"
+canonical_url: "https://burning-cost.github.io/2026/03/20/fca-consumer-duty-pricing-fairness-python/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, FairnessAudit, ProxyDetection, calibration, disparate-impact, Equality-Act, PRIN-2A, TR24-2, python, uk-insurance, tutorial]
 ---
 
@@ -235,6 +235,6 @@ The honest framing for a pricing committee paper: "Our proxy discrimination audi
 ---
 
 **Related posts:**
-- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2029/04/15/the-fca-is-investigating-home-and-travel-insurers/) — the regulatory context, what TR24/2 actually found, and what a complete evidence pack requires
-- [Fairness Auditing When You Don't Have Sensitive Attributes](/2029/04/30/fairness-auditing-without-sensitive-attributes/) — what to do when you cannot observe ethnicity, religion, or disability status directly
+- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the regulatory context, what TR24/2 actually found, and what a complete evidence pack requires
+- [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — what to do when you cannot observe ethnicity, religion, or disability status directly
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) — the correction step after detection: WassersteinCorrector and causal path decomposition

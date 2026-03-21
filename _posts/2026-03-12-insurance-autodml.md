@@ -297,4 +297,4 @@ The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical motivation: why OLS elasticity is confounded in a formula-rated book and what DML does instead
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — benchmark evaluation of the algorithms this library implements, with sample size and misspecification sensitivity analysis
 - [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) — using panel structure to remove unobserved confounders; a complementary approach for books with multi-year policy histories
-- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2028/10/15/dml-small-samples-adaptive-regularisation/) — adaptive regularisation extensions for thin segments, now incorporated into the library
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — adaptive regularisation extensions for thin segments, now incorporated into the library

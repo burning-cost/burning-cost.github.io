@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?"
-date: 2029-04-15
+date: 2026-03-19
 author: Burning Cost
 categories: [compliance, pricing, fairness]
 description: "Six active Consumer Duty investigations. Two involve home and travel insurers. What a defensible pricing model actually requires under PRIN 2A, and what the FCA thematic review said about most firms' current evidence."
-canonical_url: "https://burning-cost.github.io/2029/04/15/the-fca-is-investigating-home-and-travel-insurers/"
+canonical_url: "https://burning-cost.github.io/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
 ---
 
@@ -110,4 +110,4 @@ If your pricing team cannot today produce a structured, quantitative, Consumer D
 **Related posts:**
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) -- the detection methodology in detail: mutual information, CatBoost proxy R-squared, SHAP decomposition
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) -- the correction step after detection: WassersteinCorrector and causal path decomposition
-- [Fairness Auditing When You Don't Have Sensitive Attributes](/2029/04/30/fairness-auditing-without-sensitive-attributes/) -- what to do when you cannot observe the protected characteristic at all
+- [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) -- what to do when you cannot observe the protected characteristic at all

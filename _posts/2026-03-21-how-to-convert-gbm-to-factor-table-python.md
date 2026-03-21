@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "How to Convert a GBM to a Factor Table in Python"
-date: 2029-07-15
+date: 2026-03-21
 author: Burning Cost
 categories: [modelling, tutorials, libraries]
 description: "GBMs outperform GLMs on most real motor books. But you cannot get a factor table out of them without extra work. Here is how to do it in Python using shap-relativities, including a runnable CatBoost example."
-canonical_url: "https://burning-cost.github.io/2029/07/15/how-to-convert-gbm-to-factor-table-python/"
+canonical_url: "https://burning-cost.github.io/2026/03/21/how-to-convert-gbm-to-factor-table-python/"
 tags: [GBM, CatBoost, LightGBM, XGBoost, SHAP, factor-table, relativities, GLM, Emblem, Radar, pricing, actuarial, shap-relativities, python, uk-insurance, tutorial]
 ---
 

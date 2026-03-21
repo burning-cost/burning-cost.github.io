@@ -13,7 +13,7 @@ Then the aggregator campaign ran. Within six months, your inbound mix had shifte
 
 This is covariate shift. The joint distribution of features p(x) has changed between training and deployment. The conditional relationship p(y|x) -- how risk responds to rating factors -- is likely stable. But the model learned p(y|x) from a particular p(x), and every biased sample it saw during training shapes its behaviour at the margins of that sample. Move to a different p(x) and those margins become the mainstream.
 
-This post covers the full toolkit for detecting and correcting a shift at the point it occurs: density ratio estimation, ESS and KL diagnostics, importance-weighted retraining, and shift-robust conformal intervals. For teams running this as a recurring check -- deciding monthly whether the current book has drifted far enough to trigger a retraining conversation -- the companion post [Monthly Covariate Shift Monitoring](/2028/02/15/covariate-shift-detection-book-mix-changes/) covers the operational monitoring cadence.
+This post covers the full toolkit for detecting and correcting a shift at the point it occurs: density ratio estimation, ESS and KL diagnostics, importance-weighted retraining, and shift-robust conformal intervals. For teams running this as a recurring check -- deciding monthly whether the current book has drifted far enough to trigger a retraining conversation -- the companion post [Monthly Covariate Shift Monitoring](/2026/03/15/covariate-shift-detection-book-mix-changes/) covers the operational monitoring cadence.
 
 ```bash
 uv add insurance-covariate-shift
@@ -407,4 +407,4 @@ Source and notebooks at [github.com/burning-cost/insurance-covariate-shift](http
 ## See also
 
 - [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) — the library introduction: density ratio estimation via RuLSIF and LR-QR for shifted distributions, with an MGA acquisition worked example
-- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2028/02/15/covariate-shift-detection-book-mix-changes/) — the monitoring cadence question: ESS ratio trending over time, verdict thresholds, and the governance triggers for a retraining decision
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — the monitoring cadence question: ESS ratio trending over time, verdict thresholds, and the governance triggers for a retraining decision
