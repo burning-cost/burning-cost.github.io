@@ -60,7 +60,7 @@ A defensible pricing model is one where, if the FCA asked tomorrow, you could pr
 `FairnessAudit` runs the complete proxy detection and group outcome analysis in a single call. Given a fitted CatBoost model, a policy-level dataset, and a list of protected characteristic columns, it computes mutual information scores and CatBoost proxy R-squared for all rating factors, runs calibration-by-group with exposure weighting, and produces a Markdown report with explicit Consumer Duty regulatory mapping. The report is structured for a pricing committee pack or an FCA file review. It does not produce a paragraph of interpretation: it produces tables, confidence intervals, and test results.
 
 ```python
-pip install insurance-fairness
+uv add insurance-fairness
 ```
 
 ```python

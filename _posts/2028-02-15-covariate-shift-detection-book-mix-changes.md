@@ -14,7 +14,7 @@ Density ratio estimation catches book mix drift months earlier, because it only 
 `insurance-covariate-shift` gives you the tools to detect it, quantify it, correct for it, and document it for governance.
 
 ```bash
-pip install insurance-covariate-shift
+uv add insurance-covariate-shift
 # or
 uv add insurance-covariate-shift
 ```

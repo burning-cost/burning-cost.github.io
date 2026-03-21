@@ -173,7 +173,7 @@ The library has 120 tests across six modules.
 ## Installation
 
 ```bash
-pip install insurance-jlm
+uv add insurance-jlm
 ```
 
 Dependencies: `statsmodels`, `lifelines`, `scipy`, `numpy`. No PyTorch. No Stan. Pure Python with a standard scientific stack.

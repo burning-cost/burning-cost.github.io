@@ -230,7 +230,7 @@ This is not a sophisticated early-warning system. It is a five-line check that m
 
 ---
 
-`insurance-conformal-ts` is open source under BSD-3 at [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts). Python 3.10+, NumPy, SciPy, statsmodels. `pip install insurance-conformal-ts`. For plots: `pip install "insurance-conformal-ts[plots]"`. 106 downloads/month and growing — we are adding a ConformalPID tutorial notebook and an MSCP calibration-window sensitivity vignette in the next release.
+`insurance-conformal-ts` is open source under BSD-3 at [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts). Python 3.10+, NumPy, SciPy, statsmodels. `uv add insurance-conformal-ts`. For plots: `uv add "insurance-conformal-ts[plots]"`. 106 downloads/month and growing — we are adding a ConformalPID tutorial notebook and an MSCP calibration-window sensitivity vignette in the next release.
 
 ---
 

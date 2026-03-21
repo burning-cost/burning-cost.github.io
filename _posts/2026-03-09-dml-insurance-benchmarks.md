@@ -243,6 +243,6 @@ The practical bar for using DML in pricing is not "does it perform better than t
 
 `insurance-causal` and `insurance-causal` are both on GitHub and installable via `uv add`. Start with the confounding bias report on data you already understand. If the DML estimate and the GLM coefficient agree within 10%, confounding is not material and your GLM was adequate. If they diverge materially, you have the starting point for the conversation about which number to use and why.
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
 - [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)

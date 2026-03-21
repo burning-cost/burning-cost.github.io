@@ -48,7 +48,7 @@ This is not new methodology. Randomised response dates to Warner (1965). What Zh
 The class takes the noisy attribute `S` (the randomised responses from your opt-in sample) alongside the feature matrix `X` and outcome `Y`. You need to specify the noise rate, either directly via `pi` (the correct-response probability) or via `epsilon` (the LDP privacy budget). If you do not know the noise rate because you are estimating it from the data, pass `X_anchor` and the class uses Procedure 4.5 to estimate it.
 
 ```python
-pip install insurance-fairness
+uv add insurance-fairness
 ```
 
 ```python

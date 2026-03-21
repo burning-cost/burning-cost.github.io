@@ -18,7 +18,7 @@ Whittaker-Henderson smoothing has been the actuarial standard in continental Eur
 `insurance-whittaker` is BSD-3, requires Python 3.10+, and installs with:
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 ---
@@ -254,7 +254,7 @@ This library implements the methodology from Biessy, G. (2026), "Whittaker-Hende
 
 ---
 
-`insurance-whittaker` is open source under BSD-3 at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker). Requires Python 3.10+, Polars, NumPy, and SciPy. Install with `pip install insurance-whittaker`. A full worked example is in `notebooks/whittaker_demo.py`.
+`insurance-whittaker` is open source under BSD-3 at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker). Requires Python 3.10+, Polars, NumPy, and SciPy. Install with `uv add insurance-whittaker`. A full worked example is in `notebooks/whittaker_demo.py`.
 
 ---
 

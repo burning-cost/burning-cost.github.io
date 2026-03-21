@@ -14,7 +14,7 @@ The problem is not that this approach is dishonest. The problem is that it is th
 What you actually need is a per-segment large loss loading: the expected excess of the tail over the mean, computed from a model that has learned the conditional tail distribution from the data. That is what `insurance-quantile` gives you.
 
 ```bash
-pip install insurance-quantile
+uv add insurance-quantile
 # or
 uv add insurance-quantile
 ```

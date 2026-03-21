@@ -34,7 +34,7 @@ The practical consequence: instead of a single retention score per policy, you g
 ## Getting started
 
 ```bash
-pip install insurance-survival
+uv add insurance-survival
 # or
 uv add insurance-survival
 ```

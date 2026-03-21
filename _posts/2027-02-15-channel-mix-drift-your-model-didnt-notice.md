@@ -32,7 +32,7 @@ The correct fix is segment-specific reweighting. And the way to do that without 
 Install the library:
 
 ```bash
-pip install insurance-covariate-shift
+uv add insurance-covariate-shift
 ```
 
 You need two covariate matrices: `X_historical` (the policies that were in the training window — call this the source distribution) and `X_new_business` (the last three months of new business — the target distribution). No loss labels required at this stage.

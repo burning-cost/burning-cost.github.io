@@ -217,7 +217,7 @@ The decision about which group factors to model at Stage 2 should be driven by t
 
 ---
 
-`insurance-multilevel` is open source under MIT at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `pip install insurance-multilevel`. Requires Python 3.10+, CatBoost, Polars, and SciPy.
+`insurance-multilevel` is open source under MIT at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `uv add insurance-multilevel`. Requires Python 3.10+, CatBoost, Polars, and SciPy.
 
 - [Your Broker Adjustments Are Guesswork](/2026/03/13/your-broker-adjustments-are-guesswork/) — the 2026 introduction to the two-stage CatBoost + REML architecture
 - [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — the closed-form approach when you do not need a GBM Stage 1

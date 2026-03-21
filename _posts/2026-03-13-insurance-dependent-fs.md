@@ -170,5 +170,5 @@ The standard two-part model is not wrong in principle. It is wrong in applicatio
 
 Start with the diagnostic. If `dependence_test()` does not reject γ = 0 and `vs_independent()` shows no deviance improvement, the standard model is fine. If it does, you have a quantified, testable justification for a more sophisticated approach.
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)

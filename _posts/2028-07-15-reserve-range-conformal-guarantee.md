@@ -152,7 +152,7 @@ Conformal prediction flips the dependency. The coverage guarantee does not depen
 
 We are not arguing for replacing stochastic reserving with conformal prediction. We are arguing that conformal intervals should sit alongside or replace the stated confidence intervals that currently make claims they cannot support. The best estimate is the best estimate. The range around it should carry a genuine statistical guarantee, not an assumption-contingent one.
 
-`insurance-conformal-ts` is open source under BSD-3 at [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts). Requires Python 3.10+. Install with `pip install insurance-conformal-ts`.
+`insurance-conformal-ts` is open source under BSD-3 at [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts). Requires Python 3.10+. Install with `uv add insurance-conformal-ts`.
 
 ---
 

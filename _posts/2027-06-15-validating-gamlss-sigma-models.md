@@ -116,7 +116,7 @@ Quantile residuals give you a global distributional check. The worm plot gives y
 ```python
 from insurance_distributional_glm import worm_plot
 
-# Requires: pip install "insurance-distributional-glm[plots]"
+# Requires: uv add "insurance-distributional-glm[plots]"
 # Split the holdout into 4 groups by fitted mu, plot separately
 worm_plot(model_sigma, df_holdout, y_holdout, n_groups=4, seed=42)
 ```
@@ -246,7 +246,7 @@ The full workflow runs in under five minutes on a standard motor severity datase
 
 ---
 
-`insurance-distributional-glm` v0.1.0 is at [github.com/burning-cost/insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm). The diagnostics module (`quantile_residuals`, `worm_plot`) and `volatility_score` are all included in the base install. Worm plots require matplotlib: `pip install "insurance-distributional-glm[plots]"`.
+`insurance-distributional-glm` v0.1.0 is at [github.com/burning-cost/insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm). The diagnostics module (`quantile_residuals`, `worm_plot`) and `volatility_score` are all included in the base install. Worm plots require matplotlib: `uv add "insurance-distributional-glm[plots]"`.
 
 ---
 

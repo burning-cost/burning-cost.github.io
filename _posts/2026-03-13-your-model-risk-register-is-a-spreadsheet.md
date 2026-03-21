@@ -3,7 +3,7 @@ layout: post
 title: "Model Risk Governance for UK Insurers: Beyond the Excel Register"
 date: 2026-03-13
 categories: [libraries, regulation]
-tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-governance, insurance-monitoring]
+tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-monitoring]
 description: "PRA SS1/23 model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. insurance-governance - one pip install."
 ---
 
@@ -17,7 +17,7 @@ That is not a model risk register. It is a list.
 
 The distinction matters because the PRA's 2026 supervision priorities letter (issued in January 2026) specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests — it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
+[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests — it wraps [`insurance_governance.validation`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
 ```bash
 uv add insurance-governance
@@ -61,7 +61,7 @@ The library has four components: `ModelCard`, `RiskTierScorer`, `ModelInventory`
 
 ### ModelCard: structured model metadata
 
-The `ModelCard` in `insurance-governance` extends the `ModelCard` in `insurance-governance`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and — eventually — regulators.
+The `ModelCard` in `insurance-governance` extends the `ValidationModelCard` from `insurance_governance.validation`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and — eventually — regulators.
 
 It adds: model class (`pricing`, `reserving`, `capital`, or `underwriting`), a training data period, champion/challenger status, an assumptions register with per-assumption risk levels, explicit `not_intended_for` declarations, and outstanding issues.
 

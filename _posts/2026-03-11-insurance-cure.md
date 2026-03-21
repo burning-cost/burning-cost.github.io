@@ -14,7 +14,7 @@ The biostatistics literature has had a model for this since Boag (1949) applied 
 [`insurance-survival`](https://github.com/burning-cost/insurance-survival) fills that gap.
 
 ```bash
-pip install insurance-survival
+uv add insurance-survival
 ```
 
 ---

@@ -16,8 +16,8 @@ The post [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-inte
 ## Step 1: Install and set up the baseline
 
 ```bash
-pip install insurance-interactions
-pip install "insurance-interactions[shap]"   # adds CatBoost + shapiq for SHAP validation
+uv add insurance-interactions
+uv add "insurance-interactions[shap]"   # adds CatBoost + shapiq for SHAP validation
 ```
 
 We will use a synthetic UK motor portfolio: 50,000 policies, annual frequency model, Poisson family. The data has four rating factors -- age band (10 levels), vehicle group (20 levels), NCD band (9 levels), and area (8 levels) -- and two planted interactions in the data-generating process that the main-effects GLM will not know about.
@@ -152,7 +152,7 @@ The `n_cells` column matters here. Age × vehicle group requires 171 new paramet
 NID measures interaction strength in the CANN weight matrices. SHAP interaction values measure it in a separately fitted CatBoost model. When both methods agree on a pair, the evidence is materially stronger than either alone.
 
 ```python
-# Requires the [shap] extra: pip install "insurance-interactions[shap]"
+# Requires the [shap] extra: uv add "insurance-interactions[shap]"
 # The detector runs SHAP validation automatically when CatBoost is available
 
 shap_table = detector.interaction_table()
@@ -288,8 +288,8 @@ The library does not replace actuarial judgment. It gives you a ranked list of c
 The [`insurance_interactions_demo.py`](https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks/insurance_interactions_demo.py) notebook on Databricks runs this full pipeline end to end: synthetic 50,000-policy portfolio with two planted interactions, CANN training with ensemble averaging, NID ranking, SHAP validation, A/E surface plots, and a final deviance comparison table. It is the fastest way to see all three stages working together before wiring in your own GLM predictions.
 
 ```bash
-pip install insurance-interactions
-pip install "insurance-interactions[shap]"
+uv add insurance-interactions
+uv add "insurance-interactions[shap]"
 ```
 
 Source: [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)

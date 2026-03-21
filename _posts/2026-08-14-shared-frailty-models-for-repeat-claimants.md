@@ -44,7 +44,7 @@ The `theta` parameter is the key quantity to examine. `theta` close to zero mean
 ## Setup
 
 ```bash
-pip install insurance-recurrent
+uv add insurance-recurrent
 # or
 uv add insurance-recurrent
 ```
@@ -52,7 +52,7 @@ uv add insurance-recurrent
 For HTML reports:
 
 ```bash
-pip install "insurance-recurrent[report]"
+uv add "insurance-recurrent[report]"
 ```
 
 Python 3.10+. Dependencies: NumPy, SciPy, pandas. No R.
@@ -278,7 +278,7 @@ As a rough calibration: for gamma frailty, `sqrt(theta)` is the coefficient of v
 ## The library
 
 ```bash
-pip install insurance-recurrent
+uv add insurance-recurrent
 # or
 uv add insurance-recurrent
 ```

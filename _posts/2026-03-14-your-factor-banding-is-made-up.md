@@ -147,7 +147,7 @@ SKATER (Spatial 'K'luster Analysis by Tree Edge Removal) solves this by construc
 This is accessed via the nested pipeline when you have a GeoDataFrame of postcode sector polygons:
 
 ```python
-pip install "insurance-glm-tools[spatial]"
+uv add "insurance-glm-tools[spatial]"
 ```
 
 ```python

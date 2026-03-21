@@ -16,7 +16,7 @@ The GLM cannot tell you this. It is built to estimate population-averaged effect
 [`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) wraps Bayesian Causal Forests for insurance pricing teams. It estimates the treatment effect for every policy in your portfolio — not an average — with a posterior distribution and credible intervals suitable for Consumer Duty audit documentation.
 
 ```bash
-pip install insurance-bcf
+uv add insurance-bcf
 ```
 
 ---
@@ -239,9 +239,9 @@ Data spanning the GIPP break should generally be split. Pre-GIPP renewal behavio
 [`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) is MIT-licensed and on PyPI. 149 tests across four modules: `BayesianCausalForest`, `ElasticityEstimator`, `BCFAuditReport`, and `simulate`. It wraps stochtree 0.4.0 and requires a C++ build; wheels are available for Linux x86_64, macOS (Intel + Apple Silicon), and Windows x86_64.
 
 ```bash
-pip install stochtree>=0.4.0
-pip install insurance-bcf
-pip install insurance-bcf[diagnostics]   # includes arviz for multi-chain R-hat
+uv add stochtree>=0.4.0
+uv add insurance-bcf
+uv add insurance-bcf[diagnostics]   # includes arviz for multi-chain R-hat
 ```
 
 It is the 73rd library in the Burning Cost open-source portfolio.
@@ -268,6 +268,6 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 - **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** — Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for Consumer Duty evidence packs.
 - **[insurance-dynamics](https://github.com/burning-cost/insurance-dynamics)** — Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.
 
-- [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/)
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)

@@ -12,7 +12,7 @@ Double Machine Learning has a small-sample problem that we have been quiet about
 `insurance-causal` v0.3.1 fixes this.
 
 ```bash
-pip install "insurance-causal>=0.3.1"
+uv add "insurance-causal>=0.3.1"
 ```
 
 ---

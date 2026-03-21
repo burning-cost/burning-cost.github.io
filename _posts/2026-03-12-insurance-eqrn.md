@@ -10,7 +10,7 @@ description: "EQRN covariate-dependent GPD tail modelling for XL pricing. Per-ri
 Standard GPD fitting gives you one shape parameter and one scale parameter for the whole book. That is fine for portfolio capital reporting. It is not fine for per-risk XL pricing, TPBI reserving by driver profile, or any use case where tail heaviness varies across your portfolio. EQRN — Extreme Quantile Regression Neural Networks, from Pasche & Engelke's 2024 paper in the *Annals of Applied Statistics* — solves this. [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) is the first Python implementation.
 
 ```bash
-pip install insurance-quantile
+uv add insurance-quantile
 ```
 
 ---

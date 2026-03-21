@@ -32,7 +32,7 @@ Three situations force this conversation.
 ```bash
 uv pip install "shap-relativities[all]"
 # or
-pip install "shap-relativities[all]"
+uv add "shap-relativities[all]"
 ```
 
 The `[all]` extra pulls in `shap>=0.42`, `catboost>=1.2`, `scikit-learn>=1.3`, `pandas>=2.0`, and `matplotlib>=3.7`. Core is Polars-native; pandas is a bridge dependency that shap's TreeExplainer needs internally.

@@ -355,7 +355,7 @@ For teams that want to avoid the parametric assumptions entirely, the package in
 
 ```bash
 pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install insurance-severity[glm]
+uv add insurance-severity[glm]
 ```
 
 ```python

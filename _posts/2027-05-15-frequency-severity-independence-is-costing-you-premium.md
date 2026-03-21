@@ -20,7 +20,7 @@ The independence model overstates the pure premium for high-frequency policyhold
 [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) gives you a practical way to measure and correct this.
 
 ```bash
-pip install insurance-frequency-severity
+uv add insurance-frequency-severity
 ```
 
 ---
@@ -251,7 +251,7 @@ On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium
 
 ---
 
-`insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). Install with `pip install insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
+`insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). Install with `uv add insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
 
 - [Frequency-Severity Dependence in UK Motor: A Shared-Trunk Neural Architecture](/2026/03/13/insurance-dependent-fs/) -- the neural two-part model for teams with larger datasets and more complex dependence structures
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) -- when you want the full predictive distribution, not just the corrected mean

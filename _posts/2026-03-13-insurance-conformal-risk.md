@@ -24,18 +24,18 @@ where `L` is your loss function and `α` is the risk level. Not the probability 
 [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this for UK pricing workflows. Three controllers, each targeting a different risk the pricing team cares about.
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 ```
 
 ---
 
 ## The confusion worth clearing up
 
-`insurance-conformal` and `insurance-conformal` address different questions. They are related but distinct.
+`insurance-conformal` and the conformal risk control module address different questions. They are related but distinct.
 
 `insurance-conformal` controls **coverage probability**: the claim falls within the prediction interval on at least `1 - α` of policies. It finds the smallest interval such that `P(Y ≤ upper) ≥ 1 - α`. The output is an interval. The guarantee is about frequency of inclusion.
 
-`insurance-conformal` controls **expected monetary loss**: the expected shortfall from underpriced policies, as a fraction of premium income, is at most `α`. It finds the smallest loading multiplier λ such that `E[max(claim - λ·premium, 0) / premium] ≤ α`. The output is a loading factor. The guarantee is about financial exposure.
+The conformal risk control module controls **expected monetary loss**: the expected shortfall from underpriced policies, as a fraction of premium income, is at most `α`. It finds the smallest loading multiplier λ such that `E[max(claim - λ·premium, 0) / premium] ≤ α`. The output is a loading factor. The guarantee is about financial exposure.
 
 Coverage control suits regulators who think in terms of miscoverage rates. Risk control suits actuaries who think in terms of loss ratios.
 
@@ -238,7 +238,7 @@ If calibration fails entirely — `RuntimeError: No lambda controls expected ris
 - 121 tests, MIT-licensed, Python 3.10+
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 ```
 
 Source at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).

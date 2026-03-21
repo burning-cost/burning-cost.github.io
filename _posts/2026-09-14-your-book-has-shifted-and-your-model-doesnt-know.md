@@ -16,7 +16,7 @@ This is covariate shift. The joint distribution of features p(x) has changed bet
 This post covers the full toolkit for detecting and correcting a shift at the point it occurs: density ratio estimation, ESS and KL diagnostics, importance-weighted retraining, and shift-robust conformal intervals. For teams running this as a recurring check -- deciding monthly whether the current book has drifted far enough to trigger a retraining conversation -- the companion post [Monthly Covariate Shift Monitoring](/2028/02/15/covariate-shift-detection-book-mix-changes/) covers the operational monitoring cadence.
 
 ```bash
-pip install insurance-covariate-shift
+uv add insurance-covariate-shift
 ```
 
 ---
@@ -392,7 +392,7 @@ Importance weighting corrects for distribution shift in the feature space. It do
 ## The library
 
 ```bash
-pip install insurance-covariate-shift
+uv add insurance-covariate-shift
 # or
 uv add insurance-covariate-shift
 ```

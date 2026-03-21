@@ -18,7 +18,7 @@ The practical consequence is not just a conceptual inelegance. If you use the se
 [`insurance-dispersion`](https://github.com/burning-cost/insurance-dispersion) implements the Double GLM of Smyth (JRSS-B, 1989). It adds a second regression model for the dispersion parameter phi, fit jointly with the mean model by alternating IRLS. The result is a per-policy phi that varies with the same risk factors that drive volatility: distribution channel, limit band, broker type, vehicle class. The mean model is unchanged. You are not rebuilding your severity GLM; you are giving it a second equation.
 
 ```bash
-pip install insurance-dispersion
+uv add insurance-dispersion
 ```
 
 ---
@@ -310,7 +310,7 @@ The argument for keeping a constant phi is that it is simpler and that the mean 
 
 ---
 
-`insurance-dispersion` is open source under BSD-3 at [github.com/burning-cost/insurance-dispersion](https://github.com/burning-cost/insurance-dispersion). Install with `pip install insurance-dispersion`. Requires Python 3.10+, NumPy, SciPy, and formulaic.
+`insurance-dispersion` is open source under BSD-3 at [github.com/burning-cost/insurance-dispersion](https://github.com/burning-cost/insurance-dispersion). Install with `uv add insurance-dispersion`. Requires Python 3.10+, NumPy, SciPy, and formulaic.
 
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) — when you want the full predictive distribution from a gradient boosted model rather than a GLM
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2027/05/15/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption in the two-part model that systematically misfires on NCD-heavy UK motor books

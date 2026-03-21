@@ -182,7 +182,7 @@ The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both 
 
 ---
 
-`insurance-dynamics` is open source under MIT at [github.com/burning-cost/insurance-dynamics](https://github.com/burning-cost/insurance-dynamics). Requires Python 3.10+. Install with `pip install insurance-dynamics`. The full UK event calendar is in `insurance_dynamics.changepoint.priors.UK_EVENTS`.
+`insurance-dynamics` is open source under MIT at [github.com/burning-cost/insurance-dynamics](https://github.com/burning-cost/insurance-dynamics). Requires Python 3.10+. Install with `uv add insurance-dynamics`. The full UK event calendar is in `insurance_dynamics.changepoint.priors.UK_EVENTS`.
 
 ---
 

@@ -43,7 +43,7 @@ Post-PS21/5, this matters even more. The FCA's GIPP remedies (PS21/5, effective 
 
 ## The Double Machine Learning fix
 
-DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/).
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/).
 
 The practical upshot: the residualised treatment `D_tilde` is the part of the price variation not explained by risk characteristics — the exogenous variation from seasonal rate changes, portfolio rebalancing, and manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect and produces a valid confidence interval.
 
@@ -220,4 +220,4 @@ Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodo
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise).
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)

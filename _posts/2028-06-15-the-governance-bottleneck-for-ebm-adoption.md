@@ -16,7 +16,7 @@ This is not a model quality problem. It is a governance translation problem. The
 `insurance-gam` has tooling specifically for this. `GLMComparison` and `MonotonicityEditor` are not modelling tools. They are governance tools. They answer the question: relative to the model you already approved, what is the EBM doing differently, and on which features?
 
 ```bash
-pip install "insurance-gam[ebm]"
+uv add "insurance-gam[ebm]"
 ```
 
 ---

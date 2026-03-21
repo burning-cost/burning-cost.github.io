@@ -18,7 +18,7 @@ What you actually have is 80,000 policies in a related book with a mature, well-
 [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) implements this via `GLMTransfer`, which is the Tian and Feng (JASA, 2023) two-step penalised GLM method adapted for the insurance workflow. The short version: pool source and target data to get a stable starting point, then fine-tune on target data alone to correct for whatever is genuinely different about the segment.
 
 ```bash
-pip install insurance-thin-data
+uv add insurance-thin-data
 ```
 
 ---
@@ -270,7 +270,7 @@ The specific failure mode: credibility blending a scalar frequency per risk cell
 
 ---
 
-`insurance-thin-data` is open source under MIT at [github.com/burning-cost/insurance-thin-data](https://github.com/burning-cost/insurance-thin-data). Install with `pip install insurance-thin-data`. The transfer module requires Python 3.10+, NumPy, SciPy, and scikit-learn; no PyTorch dependency unless you are using the CANN fine-tuning backend.
+`insurance-thin-data` is open source under MIT at [github.com/burning-cost/insurance-thin-data](https://github.com/burning-cost/insurance-thin-data). Install with `uv add insurance-thin-data`. The transfer module requires Python 3.10+, NumPy, SciPy, and scikit-learn; no PyTorch dependency unless you are using the CANN fine-tuning backend.
 
 - [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/) — when you have no related source book at all, TabICLv2 in-context learning works directly from the target data
 - [Your New Business Mix Changed. Your Model Didn't Notice.](/2027/02/15/channel-mix-drift-your-model-didnt-notice/) — covariate shift detection when the portfolio composition drifts without a new segment being added

@@ -15,7 +15,7 @@ The cause is not a coding error. It is a structural feature of how insurance pri
 `insurance-elasticity` wraps CausalForestDML from EconML with insurance-specific handling for binary outcomes, GIPP structural constraints, and the near-deterministic treatment problem that plagues formula-rated books. This tutorial covers the full workflow in seven steps.
 
 ```bash
-pip install insurance-elasticity
+uv add insurance-elasticity
 # or
 uv add insurance-elasticity
 ```
