@@ -148,7 +148,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-causal-policy",
-      "description": "Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity, FCA evidence pack.",
+      "description": "Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity, FCA evidence pack. v0.2.0 adds DoublyRobustSCEstimator (DRSC): doubly robust SC — consistent if either parallel trends or SC weights are correct; 24% lower RMSE than SDID with few donors.",
       "codeRepository": "https://github.com/burning-cost/insurance-causal-policy",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -450,7 +450,7 @@ Separating what causes what from what correlates with what.
 | Library | What it does | Install |
 |---|---|---|
 | [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation and causal forest heterogeneous treatment effects via `insurance_causal.causal_forest` (GATES/BLP/CLAN inference, RATE/AUTOC/QINI targeting evaluation, HTE diagnostics). Use DML for portfolio-level average effects; causal forest for segment-level CATEs with n≥2,000 per group.<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
-| [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation_ | `pip install insurance-causal-policy` |
+| [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity. v0.2.0 adds DoublyRobustSCEstimator (DRSC, arXiv:2503.11375): doubly robust — consistent if either parallel trends or SC weights hold<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation. DRSC: 24% lower RMSE than SDID with few donors (N_co=6), equivalent with many (N_co=40)_ | `pip install insurance-causal-policy` |
 
 </div>
 

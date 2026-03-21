@@ -531,7 +531,7 @@ permalink: /guide/
     <span class="lib-complexity complexity-advanced">Advanced</span>
   </div>
   <p class="lib-entry-problem">You put through a rate increase in Q3 and conversion dropped — but you cannot tell how much of that drop was the rate change versus market conditions, because you have no control group and the pre/post comparison is confounded by seasonal effects.</p>
-  <div class="lib-entry-output"><strong>Output:</strong> causal rate change impact estimate via synthetic difference-in-differences, event study chart, HonestDiD sensitivity, FCA evidence pack</div>
+  <div class="lib-entry-output"><strong>Output:</strong> causal rate change impact estimate via SDID or DoublyRobustSCEstimator (DRSC, v0.2.0 — doubly robust: consistent if either parallel trends or SC weights hold; 24% lower RMSE than SDID with few control segments), event study chart, HonestDiD sensitivity, FCA evidence pack</div>
 </div>
 
 <div class="lib-entry">

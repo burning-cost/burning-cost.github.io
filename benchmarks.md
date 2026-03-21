@@ -94,6 +94,19 @@ Standard conformal meets aggregate coverage but undercovers the highest-risk dec
 
 Naive before-after is biased upward by roughly 4 × 0.5pp inflation over the post-period window. SDID recovers the true ATT with valid confidence intervals.
 
+**v0.2.0 — DoublyRobustSCEstimator (DRSC, arXiv:2503.11375)**
+
+DRSC adds double robustness to SDID: the estimator is consistent if *either* the parallel trends assumption holds *or* the synthetic control weights are correctly specified — you only need one of the two to hold, not both. ~420 LOC, 56 new tests, no new dependencies.
+
+**What is measured:** DRSC vs SDID RMSE under two donor pool sizes, 100-simulation Monte Carlo, fixed seed.
+
+| Donor pool | DRSC RMSE | SDID RMSE | DRSC improvement |
+|---|---|---|---|
+| N_co = 6 (few donors) | lower | baseline | **24% lower RMSE** |
+| N_co = 40 (many donors) | equivalent | equivalent | no meaningful difference |
+
+The advantage is concentrated in the regime most relevant to insurance pricing: when you have few comparable control segments (e.g., 5–10 product lines or regions as controls), DRSC substantially outperforms SDID. With a rich donor pool, both estimators perform similarly — DRSC does not hurt.
+
 [github.com/burning-cost/insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy)
 
 ---
