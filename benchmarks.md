@@ -160,6 +160,38 @@ Manual aggregate A/E: 0.962 reference, 0.942 monitoring → verdict INVESTIGATE 
 
 ---
 
+### insurance-monitoring v0.7.0 — PITMonitor (calibration drift)
+
+**What is measured:** PITMonitor vs repeated Hosmer-Lemeshow test on a calibrated pricing model subject to random calibration noise and a genuine 15% frequency drift.
+
+**False positive rate under random noise (no genuine drift):**
+
+| Method | FPR |
+|---|---|
+| Repeated Hosmer-Lemeshow | **46%** |
+| PITMonitor (e-process martingale) | **~3%** |
+
+Repeated testing inflates H-L's false positive rate badly — running it each quarter compounds the nominal 5% level to 46% over a typical monitoring horizon. PITMonitor builds an e-process from PIT values (probability integral transform of each observed loss against the model's predictive CDF) and stops only when the running martingale crosses a threshold calibrated to control FPR at the chosen level. Under a genuine 15% frequency shift, PITMonitor detects the drift within approximately 100–200 observation steps — fast enough to be actionable without crying wolf first.
+
+[github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)
+
+---
+
+### insurance-monitoring v0.7.0 — InterpretableDriftDetector (attribution)
+
+**What is measured:** Feature-interaction drift attribution on a 5-factor synthetic portfolio with drift planted in exactly 2 factors.
+
+| Metric | Result |
+|---|---|
+| Drifting factors correctly identified | 2/2 |
+| Non-drifting factors incorrectly flagged | 0/3 |
+
+InterpretableDriftDetector runs pairwise feature-interaction tests and applies Benjamini-Hochberg FDR correction across the full candidate set. On this benchmark: both planted drifters identified, zero false positives. The BH correction is essential — without it, multiple testing at a 5-factor portfolio produces spurious attributions that send the repricing team in the wrong direction.
+
+[github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)
+
+---
+
 ## Covariate Shift Diagnostics
 
 ### insurance-covariate-shift — Shift severity classification
