@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Build a Large Loss Loading Model for Home Insurance"
-date: 2026-10-14
+date: 2026-03-04
 categories: [pricing, techniques, tutorials]
 tags: [large-loss-loading, quantile-regression, tvar, escape-of-water, home-insurance, catboost, insurance-quantile, heteroskedastic, ilf, uk-personal-lines, python]
 description: "Per-risk large loss loadings for UK home insurance using quantile GBMs. Avoids the flat-loading trap by making the loading a function of the risk itself."
@@ -391,5 +391,5 @@ Source and notebooks at [github.com/burning-cost/insurance-quantile](https://git
 **Related posts:**
 
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) -- the library introduction; start here if this is your first encounter with quantile regression in pricing
-- [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/) -- once the large loss loading is in production, this is the framework for deciding when it needs updating
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) -- if the severity distribution shifts after a portfolio acquisition, importance weighting corrects the tail estimates without a full retrain
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) -- once the large loss loading is in production, this is the framework for deciding when it needs updating
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) -- if the severity distribution shifts after a portfolio acquisition, importance weighting corrects the tail estimates without a full retrain

@@ -197,5 +197,5 @@ The model is not just sitting in a notebook because the committee is unreasonabl
 
 **Related posts:**
 - [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/) - the three-way EBM/ANAM/PIN decision framework
-- [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) - PRA SS1/23 and what a defensible sign-off process looks like
-- [Validating GAMLSS Sigma Models](/2027/06/15/validating-gamlss-sigma-models/) - when the dispersion model also needs governance sign-off
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) - PRA SS1/23 and what a defensible sign-off process looks like
+- [Validating GAMLSS Sigma Models](/2026/03/08/validating-gamlss-sigma-models/) - when the dispersion model also needs governance sign-off

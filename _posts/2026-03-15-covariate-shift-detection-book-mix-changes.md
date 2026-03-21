@@ -9,7 +9,7 @@ description: "How to run covariate shift detection as a recurring monthly check:
 
 The standard model monitoring workflow is A/E ratios by segment, PSI on score distributions, and a Gini trend. These are useful. They will catch a model that has gone badly wrong. The problem is the lag. A/E ratios need claims development. PSI needs a score distribution on the new book. Gini drift needs exposure to accumulate. By the time your monitoring dashboard is flashing, you have been writing business on a miscalibrated model for six months.
 
-Density ratio estimation catches book mix drift months earlier, because it only needs the feature matrix of risks being scored — no claims labels required. The [foundational post on covariate shift](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) covers the full toolkit: how density ratio estimation works, importance-weighted retraining, and shift-robust conformal intervals. This post is about something different: running the check on a recurring monthly basis, reading the ESS ratio as a trend rather than a one-off diagnostic, and knowing which thresholds should trigger which conversations with governance.
+Density ratio estimation catches book mix drift months earlier, because it only needs the feature matrix of risks being scored — no claims labels required. The [foundational post on covariate shift](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) covers the full toolkit: how density ratio estimation works, importance-weighted retraining, and shift-robust conformal intervals. This post is about something different: running the check on a recurring monthly basis, reading the ESS ratio as a trend rather than a one-off diagnostic, and knowing which thresholds should trigger which conversations with governance.
 
 `insurance-covariate-shift` gives you the tools to detect it, quantify it, correct for it, and document it for governance.
 
@@ -195,13 +195,13 @@ The point is not that you abandon the model. The point is that you know, months 
 
 `insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, and NumPy 1.24+.
 
-- [Your Year-End Large Loss Loading Is a Finger in the Air](/2027/12/15/year-end-large-loss-loading/) — per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
-- [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — building a defensible sign-off process and what the PRA's SS1/23 actually requires
-- [Transfer Learning for Thin Segments](/2027/07/15/transfer-learning-for-thin-segments/) — when the target book has sparse data of its own, importance weighting pairs with transfer learning for best results
+- [Your Year-End Large Loss Loading Is a Finger in the Air](/2026/03/14/year-end-large-loss-loading/) — per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — building a defensible sign-off process and what the PRA's SS1/23 actually requires
+- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) — when the target book has sparse data of its own, importance weighting pairs with transfer learning for best results
 
 ---
 
 ## See also
 
 - [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) — the library introduction: how density ratio estimation works and the LR-QR method for applying importance weights to conformal prediction intervals
-- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book

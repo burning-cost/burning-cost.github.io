@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your New Business Mix Changed. Your Model Didn't Notice."
-date: 2027-02-15
+date: 2026-03-06
 categories: [model-validation, pricing, techniques]
 tags: [covariate-shift, density-ratio, catboost, channel-mix, fca-consumer-duty, portfolio-drift, python, uk-motor]
 description: "When a new aggregator partnership or competitor exit changes your new business mix, models trained on the old distribution misprice silently."
@@ -185,5 +185,5 @@ The library is at [github.com/burning-cost/insurance-covariate-shift](https://gi
 ## Related articles
 
 - [Your Pricing Model is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
-- [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/)
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/)
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/)
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/)

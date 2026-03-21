@@ -259,6 +259,6 @@ This library implements the methodology from Biessy, G. (2026), "Whittaker-Hende
 ---
 
 **Related posts:**
-- [Your Severity Model Assumes the Wrong Variance](/2027/08/15/your-severity-model-assumes-the-wrong-variance/) - double GLM for modelling dispersion when the variance structure matters as much as the mean
-- [Validating GAMLSS Sigma Models](/2027/06/15/validating-gamlss-sigma-models/) - distributional regression, which extends the smooth mean-function idea to the full conditional distribution
+- [Your Severity Model Assumes the Wrong Variance](/2026/03/10/your-severity-model-assumes-the-wrong-variance/) - double GLM for modelling dispersion when the variance structure matters as much as the mean
+- [Validating GAMLSS Sigma Models](/2026/03/08/validating-gamlss-sigma-models/) - distributional regression, which extends the smooth mean-function idea to the full conditional distribution
 - [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2026/03/17/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) - another foundational actuarial method that gets the right structure from a principled statistical framework

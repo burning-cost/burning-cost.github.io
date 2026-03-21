@@ -234,5 +234,5 @@ Run a challenger. Log it properly. Know when you have enough data to decide. Tha
 
 **Related posts:**
 - [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — the original worked example: shadow mode setup, ENBP logging, and why loss ratio significance takes longer than you think
-- [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 sign-off and what governance documentation actually needs to contain
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 sign-off and what governance documentation actually needs to contain
 - [The Governance Bottleneck for EBM Adoption](/2026/03/16/the-governance-bottleneck-for-ebm-adoption/) — the translation problem between model quality and pricing committee approval

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Year-End Large Loss Loading Is a Finger in the Air"
-date: 2027-12-15
+date: 2026-03-14
 categories: [pricing, libraries, tutorials]
 tags: [large-loss, quantile-regression, TVaR, ILF, catboost, insurance-quantile, motor, severity, tail-risk, python, polars]
 description: "December is the season for year-end rate reviews where someone adds a flat 8% large loss loading to every segment regardless of tail weight."
@@ -176,6 +176,6 @@ That is a better answer than "we used 7%, consistent with last year."
 
 `insurance-quantile` is open source under MIT at [github.com/burning-cost/insurance-quantile](https://github.com/burning-cost/insurance-quantile). Requires Python 3.10+, CatBoost 1.2+, and Polars 1.0+.
 
-- [Your Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — building a defensible sign-off process alongside the technical output
-- [Your Severity Model Assumes the Wrong Variance](/2027/08/15/your-severity-model-assumes-the-wrong-variance/) — why the Tweedie variance function matters and when to use a Gamma or inverse Gaussian instead
-- [Spliced Severity Distributions: When One Distribution Is Not Enough](/2027/01/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) — parametric alternative for closed-form ILFs
+- [Your Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — building a defensible sign-off process alongside the technical output
+- [Your Severity Model Assumes the Wrong Variance](/2026/03/10/your-severity-model-assumes-the-wrong-variance/) — why the Tweedie variance function matters and when to use a Gamma or inverse Gaussian instead
+- [Spliced Severity Distributions: When One Distribution Is Not Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) — parametric alternative for closed-form ILFs

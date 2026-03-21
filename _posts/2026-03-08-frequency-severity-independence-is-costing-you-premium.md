@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Frequency-Severity Independence Assumption Is Costing You Premium"
-date: 2027-05-15
+date: 2026-03-08
 categories: [pricing, libraries, tutorials]
 tags: [frequency-severity, sarmanov-copula, dependence, IFM, NCD, UK-motor, pure-premium, copula, insurance-frequency-severity, python, GLM, poisson, gamma, negative-binomial, tutorial]
 description: "Your frequency GLM and severity GLM are both correct. Multiplying them is not. How to test and correct for the dependence your pricing model ignores."
@@ -254,5 +254,5 @@ On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium
 `insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). Install with `uv add insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
 
 - [Frequency-Severity Dependence in UK Motor: A Shared-Trunk Neural Architecture](/2026/03/13/insurance-dependent-fs/) -- the neural two-part model for teams with larger datasets and more complex dependence structures
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) -- when you want the full predictive distribution, not just the corrected mean
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) -- when you want the full predictive distribution, not just the corrected mean
 - [Vine Copulas for Multi-Peril Home](/2026/03/12/insurance-copula/) -- the right copula framework when the dependence is between perils rather than between frequency and severity

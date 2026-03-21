@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question"
-date: 2026-05-14
+date: 2026-02-28
 categories: [monitoring, pricing, techniques]
 tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, poisson, gini-drift, insurance-monitoring, uk-motor, pra-ss123]
 description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB..."
@@ -233,4 +233,4 @@ The library is at [github.com/burning-cost/insurance-monitoring](https://github.
 
 - [Three-Layer Drift Detection: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)
-- [When Credibility Meets CatBoost](/2026/04/14/when-credibility-meets-catboost/)
+- [When Credibility Meets CatBoost](/2026/02/28/when-credibility-meets-catboost/)

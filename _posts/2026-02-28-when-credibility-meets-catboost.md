@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "When Credibility Meets CatBoost: Choosing Between Classical and Modern Approaches"
-date: 2026-04-14
+date: 2026-02-28
 categories: [pricing, libraries, guides]
 tags: [credibility, buhlmann-straub, catboost, gbm, multilevel, random-effects, reml, insurance-credibility, insurance-multilevel, shap-relativities, uk-motor, scheme-pricing]
 description: "Bühlmann-Straub vs CatBoost vs two-stage multilevel for UK motor pricing: when each wins and how insurance-credibility and insurance-multilevel combine them."
@@ -182,4 +182,4 @@ The credibility approach did not disappear when GBMs arrived. It got a better St
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Group Factors Are Not All Worth Modelling](/2027/03/15/multilevel-group-factors/)
+- [Your Group Factors Are Not All Worth Modelling](/2026/03/06/multilevel-group-factors/)

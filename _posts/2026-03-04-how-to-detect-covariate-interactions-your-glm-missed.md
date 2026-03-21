@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GLM Interaction Detection: A Six-Step Walkthrough with CANN, NID, and SHAP"
-date: 2026-11-14
+date: 2026-03-04
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, poisson, deviance, insurance-interactions, pra-ss123, uk-motor, tutorial]
 description: "Step-by-step tutorial: plant two interactions in synthetic motor data, detect them with CANN + NID, validate with SHAP, confirm with A/E surfaces, and..."
@@ -295,5 +295,5 @@ uv add "insurance-interactions[shap]"
 Source: [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)
 
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) — the theory behind CANN + NID and why manual 2D A/E plots miss the non-obvious pairs
-- [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/05/14/recalibrate-or-refit/) — once interactions are added, use Murphy decomposition to decide if future deviations need a refit or just a scale adjustment
+- [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/02/28/recalibrate-or-refit/) — once interactions are added, use Murphy decomposition to decide if future deviations need a refit or just a scale adjustment
 - [Your Factor Banding Is Made Up](/2026/03/14/your-factor-banding-is-made-up/) — once interactions are confirmed, the cell boundaries matter; here is how to optimise them

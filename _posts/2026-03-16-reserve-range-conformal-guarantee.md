@@ -158,8 +158,8 @@ We are not arguing for replacing stochastic reserving with conformal prediction.
 
 **Related posts:**
 - [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — the January 2028 tutorial covering ACI and SPCI mechanics in detail
-- [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 and what a defensible sign-off process looks like in practice
-- [Year-End Large Loss Loading](/2027/12/15/year-end-large-loss-loading/) — the sister problem: when your frequency estimate is right but your severity range is wrong
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 and what a defensible sign-off process looks like in practice
+- [Year-End Large Loss Loading](/2026/03/14/year-end-large-loss-loading/) — the sister problem: when your frequency estimate is right but your severity range is wrong
 
 ---
 

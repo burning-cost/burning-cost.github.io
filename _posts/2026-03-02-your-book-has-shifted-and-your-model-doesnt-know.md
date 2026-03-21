@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals"
-date: 2026-09-14
+date: 2026-03-02
 categories: [techniques]
 tags: [covariate-shift, density-ratio, importance-weighting, conformal-prediction, catboost, rulsif, kliep, motor, uk-personal-lines, insurance-covariate-shift, databricks, python]
 description: "The foundational walkthrough for insurance-covariate-shift: density ratio estimation, ESS/KL diagnostics, importance weighting, shift-robust conformal..."

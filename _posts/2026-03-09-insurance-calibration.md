@@ -145,7 +145,7 @@ The verdict logic is:
 - `GMCB >= LMCB`: **RECALIBRATE**: the dominant error is a global scale shift. Multiply predictions by the balance ratio and redeploy. Model structure is sound.
 - `LMCB > GMCB`: **REFIT**: the error is in the model's shape, not its level. A scalar correction will not fix it. The model needs rebuilding or isotonic recalibration on a large holdout sample.
 
-This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive. The post [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/05/14/recalibrate-or-refit/) goes deeper on the operational use of this split: what it looks like in practice when GMCB dominates versus LMCB, common team mistakes when using A/E alone, and the governance documentation pattern for PRA SS1/23.
+This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive. The post [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/02/28/recalibrate-or-refit/) goes deeper on the operational use of this split: what it looks like in practice when GMCB dominates versus LMCB, common team mistakes when using A/E alone, and the governance documentation pattern for PRA SS1/23.
 
 ---
 

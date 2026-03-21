@@ -265,5 +265,5 @@ The Milhaud & Dutang (2018) paper is the clearest actuarial evidence that this m
 ## Related articles
 
 - [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](/2026/03/11/insurance-cure/)
-- [Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave](/2027/11/15/cure-models-lapse-retention/)
+- [Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave](/2026/03/13/cure-models-lapse-retention/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

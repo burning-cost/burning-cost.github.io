@@ -208,5 +208,5 @@ The point is not that the model becomes unusable at 0.30. The point is that by 0
 
 **Related posts:**
 - [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
-- [Model Validation Is a Checklist, Not a Test](/2027/09/15/model-validation-pra-ss123/) — PRA SS1/23 model validation and what a defensible sign-off process looks like
-- [Transfer Learning for Thin Segments](/2027/07/15/transfer-learning-for-thin-segments/) — when the target book has sparse data, importance weighting pairs with transfer learning
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 model validation and what a defensible sign-off process looks like
+- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) — when the target book has sparse data, importance weighting pairs with transfer learning

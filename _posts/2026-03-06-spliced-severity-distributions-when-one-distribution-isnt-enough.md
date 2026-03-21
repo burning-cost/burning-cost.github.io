@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spliced Severity Distributions: When One Distribution Isn't Enough"
-date: 2027-01-15
+date: 2026-03-06
 categories: [pricing, techniques, tutorials]
 tags: [severity, composite-distributions, spliced-distributions, gpd, lognormal, evt, ilf, large-loss-loading, reinsurance, motor-bi, insurance-severity, threshold-selection, uk-motor, tutorial]
 description: "A practitioner tutorial on fitting spliced composite severity distributions for UK motor claims using insurance-severity."
@@ -406,6 +406,6 @@ uv add insurance-severity
 
 Source: [github.com/burning-cost/insurance-severity](https://github.com/burning-cost/insurance-severity)
 
-- [How to Build a Large Loss Loading Model for Home Insurance](/2026/10/14/large-loss-loading-for-home-insurance/) -- quantile GBM approach to the same problem of tail heterogeneity
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) -- modelling variance rather than quantiles at the individual risk level
-- [Shared Frailty Models for Repeat Claimants](/2026/08/14/shared-frailty-models-for-repeat-claimants/) -- frequency side of the compound loss model
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) -- quantile GBM approach to the same problem of tail heterogeneity
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) -- modelling variance rather than quantiles at the individual risk level
+- [Shared Frailty Models for Repeat Claimants](/2026/03/02/shared-frailty-models-for-repeat-claimants/) -- frequency side of the compound loss model

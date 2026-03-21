@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How Do You Know Your Sigma Model Is Working?"
-date: 2027-06-15
+date: 2026-03-08
 categories: [pricing, techniques, tutorials]
 tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, volatility-scoring, sigma, variance, gamma, insurance-distributional-glm, python, model-validation]
 description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."
@@ -252,5 +252,5 @@ The full workflow runs in under five minutes on a standard motor severity datase
 
 **Related:**
 - [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the introductory post on fitting the model
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) — a GBM-based approach to the same problem if you need more flexibility in the mean submodel
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2027/05/15/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption most teams leave unchallenged
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — a GBM-based approach to the same problem if you need more flexibility in the mean submodel
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption most teams leave unchallenged

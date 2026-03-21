@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave"
-date: 2027-11-15
+date: 2026-03-13
 categories: [pricing, libraries, tutorials]
 tags: [survival-analysis, cure-models, mixture-cure, lapse, retention, CLV, insurance-survival, python, polars, consumer-duty, ps21-11, uk-motor]
 description: "Logistic regression treats all non-lapsers the same. Mixture cure models split them into two groups: structural non-lapsers who will never leave, and..."
