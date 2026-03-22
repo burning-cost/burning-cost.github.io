@@ -19,7 +19,7 @@ Richman, Scognamiglio, and Wuthrich (arXiv:2508.15678, August 2025) have a diffe
 
 It also produces the best published out-of-sample Poisson deviance on the French MTPL benchmark (freMTPL2freq, n=678,007). Better than GLMs, GBMs, CANNs, and the Credibility Transformer. With 4,147 parameters.
 
-We have built [`insurance-pin`](https://github.com/burning-cost/insurance-gam).
+We have built [`insurance-pin`](https://github.com/burning-cost/insurance-pin).
 
 ---
 
@@ -67,54 +67,90 @@ The paper is silent on this distinction, and the mismatch will produce subtly wr
 
 After training, you have exact expressions for every pairwise surface. Not SHAP approximations. The surface `f_{jk}(x_j, x_k)` is computed by passing a grid of (x_j, x_k) values through the model with all other features held at baseline. The result is a two-dimensional array that tabulates directly as a multiplicative rating factor.
 
-```python
-from insurance_pin import PINModel, PINTrainer, FeatureSpec
+Features are specified as a plain dict mapping feature name to either `"continuous"` or the number of category levels (an integer). Categorical features expect integer codes starting at zero.
 
-features = [
-    FeatureSpec("DrivAge", kind="continuous"),
-    FeatureSpec("BonusMalus", kind="continuous"),
-    FeatureSpec("VehPower", kind="continuous"),
-    FeatureSpec("Density", kind="continuous"),
-    FeatureSpec("VehBrand", kind="categorical", n_levels=11),
-    FeatureSpec("Region", kind="categorical", n_levels=22),
-]
+```python
+import polars as pl
+from insurance_pin import PINModel, PINDiagnostics
+
+features = {
+    "DrivAge": "continuous",
+    "BonusMalus": "continuous",
+    "VehPower": "continuous",
+    "Density": "continuous",
+    "VehBrand": 11,   # 11 category levels, integer-coded 0..10
+    "Region": 22,     # 22 regions
+}
 
 model = PINModel(
     features=features,
-    embed_dim=10,
-    embed_hidden=20,
+    embedding_dim=10,
+    hidden_dim=20,
     token_dim=10,
-    net_hidden=(30, 20),
-    link="log",
+    shared_dims=(30, 20),
+    loss="poisson",
+    lr=0.001,
+    max_epochs=500,
+    patience=20,
 )
 
-trainer = PINTrainer(model=model, loss="poisson", lr=0.001, max_epochs=500, patience=5)
-trainer.fit(train_dataset, val_dataset, exposure_col="Exposure")
+# X_train is a Polars DataFrame or dict of arrays; y_train is a numpy array
+# of observed frequency (claims / exposure); exposure is years at risk
+model.fit(X_train, y_train, exposure=exposure_train, verbose=True)
 
-# Extract the BonusMalus x VehBrand interaction surface
-surface = model.interaction_surface("BonusMalus", "VehBrand", grid_size=50)
-surface.plot()                            # matplotlib heatmap
-df = surface.to_dataframe()              # pd.DataFrame: BonusMalus, VehBrand, value
-rel = surface.to_relativities(base=1.0)  # multiplicative relativities, indexed at 1.0
+# Predictions
+freq_hat = model.predict(X_val)                        # numpy array, shape (n,)
+freq_hat_with_exp = model.predict(X_val, exposure=exposure_val)
 ```
 
-The `.to_relativities()` output is a table of multiplicative factors, indexed to 1.0 at the base cell, that can be incorporated into a rating engine exactly as GLM relativities are. Not an approximation. The model's actual output.
-
-For forward selection -- not every one of the 36 pairs is worth modelling -- the library includes `PINForwardSelector`, which adds pairs in sequence by Poisson deviance gain and builds a sparse model from the winners:
+The interaction surfaces live in a dict keyed by `(feature_j, feature_k)` tuples. Each value contains the grid coordinates and the surface values on the linear predictor scale:
 
 ```python
-from insurance_pin import PINForwardSelector
+diag = PINDiagnostics(model)
 
-selector = PINForwardSelector(features, **model_kwargs)
-selector.fit(train_dataset, val_dataset, max_pairs=5)
+# Plot the BonusMalus x VehBrand interaction surface
+fig, ax = diag.plot_surface("BonusMalus", "VehBrand", X_background=X_train, n_grid=50)
+fig.savefig("bonus_vehbrand_surface.png", dpi=150)
 
-print(selector.selected_pairs())
-# [("BonusMalus", "VehBrand", deviance_gain=0.0023), ...]
+# Or work with the raw arrays directly
+surfaces = model.interaction_surfaces(X_train, n_grid=50, pairs=[("BonusMalus", "VehBrand")])
+surf = surfaces[("BonusMalus", "VehBrand")]
+# surf["grid_j"]: BonusMalus values, shape (50,)
+# surf["grid_k"]: VehBrand codes, shape (11,)
+# surf["surface"]: w*h values, shape (50, 11) -- linear predictor scale
+# exp(surf["surface"]) gives multiplicative relativities
 
-sparse_model = selector.build_model()
+import numpy as np
+relativities = np.exp(surf["surface"])   # 50 x 11 table of multiplicative factors
 ```
 
-A model with five selected interactions is considerably easier to present than one with 36. Which five actually matter is an empirical question, answered by the data rather than by prior judgement.
+The `exp()` step converts the linear predictor scale to multiplicative relativities. This is a table that can be handed to a committee member and loaded into a rating engine, row by row, exactly as GLM relativities are. Not an approximation. The model's actual output.
+
+To see which pairs are worth modelling at all, rank by importance before committing to the full 36:
+
+```python
+# Importance: range of w_{jk} * h_{jk}(x) on training data
+# Large weight, flat surface = low importance. This is the right metric.
+fig, ax, importance_dict = diag.weighted_importance(X_train, top_n=10)
+
+# Fit an ensemble of 10 models for variance reduction (recommended for production)
+from insurance_pin import PINEnsemble
+
+ensemble = PINEnsemble(
+    n_models=10,
+    features=features,
+    loss="poisson",
+    embedding_dim=10,
+    hidden_dim=20,
+    token_dim=10,
+    shared_dims=(30, 20),
+)
+ensemble.fit(X_train, y_train, exposure=exposure_train)
+freq_ensemble = ensemble.predict(X_val)
+uncertainty = ensemble.predict_std(X_val)   # epistemic uncertainty across models
+```
+
+A model fitted with the top five pairs identified by `weighted_importance()` is considerably easier to present than one with 36. Which five actually matter is an empirical question, answered by the data rather than by prior judgement.
 
 ---
 
@@ -145,7 +181,7 @@ Do not use PIN as a first model. Start with a GLM to understand your main effect
 
 The library is PyTorch throughout. The authors released a ZIP archive at github.com/wueth/Tree-Like-PIN that appears to be Keras/TensorFlow -- consistent with Wuthrich group conventions. We have re-implemented from the paper equations in PyTorch, tested against the reference parameter count of 4,147 as a regression anchor.
 
-The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam).
+The repository is at [github.com/burning-cost/insurance-pin](https://github.com/burning-cost/insurance-pin).
 
 ---
 
