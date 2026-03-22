@@ -241,6 +241,5 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ## Related articles
 
-- [Vine Copulas for Multi-Peril Home](/2026/03/12/insurance-copula/)
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)

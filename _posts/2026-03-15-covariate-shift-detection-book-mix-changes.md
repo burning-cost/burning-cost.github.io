@@ -15,8 +15,6 @@ Density ratio estimation catches book mix drift months earlier, because it only 
 
 ```bash
 uv add insurance-covariate-shift
-# or
-uv add insurance-covariate-shift
 ```
 
 ---
@@ -144,7 +142,7 @@ For teams that want narrower intervals on low-risk profiles and wider on high-ri
 
 ## FCA SUP 15.3: what to put in the governance note
 
-Under FCA PRIN 2A.2, insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. Applying a model trained on a materially different book distribution without adjustment could constitute such a change.
+Under FCA PRIN 2A.4, insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. Applying a model trained on a materially different book distribution without adjustment could constitute such a change.
 
 The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note — not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
 
@@ -156,7 +154,7 @@ print(report.fca_sup153_summary())
 COVARIATE SHIFT DIAGNOSTIC REPORT
 Source: Direct 2026 (n=45,231)
 Target: Direct + Aggregator 2027 (n=61,840)
-Generated: 2028-02-15
+Generated: 2026-03-15
 
 VERDICT: MODERATE
 ESS ratio: 0.54 (threshold: 0.30 SEVERE, 0.60 NEGLIGIBLE)

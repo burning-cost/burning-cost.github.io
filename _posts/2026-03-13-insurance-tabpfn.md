@@ -29,7 +29,7 @@ This is in-context learning. The same mechanism that lets a large language model
 
 The performance claims in the Nature paper are not modest. On datasets under 10,000 samples, TabPFN v2 outperforms XGBoost, LightGBM, and tuned neural networks across 300+ benchmarks. The margin is meaningful — Gini improvements of 3–8 points in the regimes where these models have genuinely thin data. Hollmann et al. attribute this to the synthetic pretraining: the model has effectively been regularised by an enormous implicit prior over tabular data-generating processes.
 
-In February 2026, TabICLv2 from INRIA's SODA team superseded TabPFN v2.5 on the same benchmarks. It is Apache 2.0-licensed and available on PyPI. `insurance-thin-data` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI — no GPU, no API key, no cost.
+TabICLv2 (arXiv preprint, INRIA's SODA team) superseded TabPFN v2.5 on the same benchmarks as of early 2026. It is Apache 2.0-licensed and available on PyPI. `insurance-thin-data` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI — no GPU, no API key, no cost.
 
 ---
 
@@ -184,7 +184,7 @@ The BUILD score we assigned during development was 16/20. The four missing point
 
 The Nature paper — Hollmann, Müller, Purucker, Krishnakumar, Körfer, Hoo, Shen, Hutter (2025), "TabPFN v2: Improved In-Context Learning for Tabular Data", Nature 637:319–326 — is not a typical ML conference paper. Nature peer review is substantially more rigorous, and the 300-dataset benchmark leaves less room for cherry-picking than single-paper results. The actuarial credibility of the method is grounded in that publication, not in our endorsement.
 
-TabICLv2, the INRIA/SODA release from February 2026, does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-thin-data` is deliberately designed so that when the next generation of foundation models for tabular data arrives — and there will be a next generation — swapping backends requires changing one string.
+TabICLv2 from INRIA/SODA (arXiv preprint) does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-thin-data` is deliberately designed so that when the next generation of foundation models for tabular data arrives — and there will be a next generation — swapping backends requires changing one string.
 
 ---
 
