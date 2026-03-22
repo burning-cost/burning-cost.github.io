@@ -526,6 +526,23 @@ WH improvement vs raw: +57.2%. Vs moving average: +2.8%. REML selected EDF=7.7. 
 
 ---
 
+## Cross-Validation
+
+### insurance-cv — Walk-forward temporal CV for trending markets
+
+**What is measured:** Walk-forward temporal CV vs random k-fold on 8,000 synthetic UK motor policies with +5%/year claims trend (2021-2024). Poisson frequency model.
+
+| Method | Mean Poisson deviance | vs Prospective | Temporal leakage |
+|---|---|---|---|
+| k-fold (5-fold random) | 0.44027 | −5.6% (optimistic) | Yes |
+| Walk-forward temporal CV | 0.41745 | −10.5% | No |
+
+k-fold trains on future years when evaluating past periods — in a trending market this inflates apparent model fit by 5.6% relative to a prospective estimate. Walk-forward CV never trains on data after the evaluation period and enforces IBNR buffers between folds. The 5.6% optimism is not noise: it compounds with model selection bias when you use k-fold to choose between competing frequency models in a trending book.
+
+[github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
+
+---
+
 ## Interaction Detection
 
 ### insurance-interactions — Automated GLM interaction detection
