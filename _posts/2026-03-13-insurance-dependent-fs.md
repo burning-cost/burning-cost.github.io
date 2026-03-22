@@ -30,7 +30,7 @@ In UK motor, high-frequency policyholders — younger drivers, urban postcodes, 
 
 The Civil Liability Act 2021 and the OIC portal's £4,215 whiplash cap strengthened this negative correlation further for motor liability. The highest-frequency claim category in motor was capped at a lower average severity. Post-2021, if your frequency model is good and your severity model is good but you multiply them assuming independence, you will systematically overprice high-frequency risks and underprice low-frequency risks.
 
-The magnitude is not trivial. From the French MTPL data used in the NeurFS paper (arXiv:2106.10770), fitting the dependence correction explicitly gives a factor of exp{γ(1 + λ)} where γ ≈ −0.15 and λ is the Poisson rate. For an average risk with λ = 0.08, that is a 2.6% correction. For a high-frequency risk with λ = 0.30, it is 4%. For the tails of the distribution — young male urban drivers with prior claims history — you are in cross-subsidy territory.
+The magnitude is not trivial. From the French MTPL data used in the NeurFS paper (arXiv:2106.10770), fitting the dependence correction explicitly gives a factor of exp{γ(1 + λ)} where γ ≈ −0.15 and λ is the Poisson rate. For an average risk with λ = 0.08, that is a ~15% correction (exp(−0.162) ≈ 0.850). For a high-frequency risk with λ = 0.30, it is ~18% (exp(−0.195) ≈ 0.823). For the tails of the distribution — young male urban drivers with prior claims history — you are in cross-subsidy territory.
 
 ---
 
