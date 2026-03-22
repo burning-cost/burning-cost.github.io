@@ -2,6 +2,7 @@
 layout: post
 title: "FCA Consumer Duty Pricing Fairness in Python"
 date: 2026-03-20
+featured: true
 author: Burning Cost
 categories: [compliance, fairness, libraries, tutorials]
 description: "The FCA expects pricing teams to demonstrate their models don't proxy-discriminate under Consumer Duty. Most teams do this in Excel. Here is how to do it properly in Python, using insurance-fairness."

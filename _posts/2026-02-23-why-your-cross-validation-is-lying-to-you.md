@@ -2,6 +2,7 @@
 layout: post
 title: "Why Your Cross-Validation is Lying to You"
 date: 2026-02-23
+featured: true
 categories: [pricing, python, libraries]
 tags: [cross-validation, temporal-leakage, ibnr, walk-forward, insurance-cv, sklearn, catboost]
 description: "Standard k-fold CV is wrong for insurance pricing. Temporal leakage and IBNR contamination inflate scores. Walk-forward validation fixes both - Python."

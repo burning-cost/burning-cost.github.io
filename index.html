@@ -835,7 +835,8 @@ description: "10 flagship Python libraries for UK personal lines insurance prici
     </div>
 
     <div class="post-grid fade-up-children">
-      {% for post in site.posts limit:9 %}
+      {% assign featured_posts = site.posts | where: "featured", true %}
+      {% for post in featured_posts limit:9 %}
       <div class="post-card">
         <div class="post-date">{{ post.date | date: "%d %b %Y" }}</div>
         <div class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></div>

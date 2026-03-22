@@ -2,6 +2,7 @@
 layout: post
 title: "Blending GLMs and GBMs for UK Pricing: Cross-Validated Weights, Not a Choice Between Them"
 date: 2026-02-28
+featured: true
 categories: [pricing, techniques]
 tags: [GLM, GBM, model-blending, stacking, catboost, insurance-cv, shap-relativities, insurance-governance, pra-ss123, python, temporal-cv]
 description: "How to combine GLM and GBM predictions for production pricing: cross-validated blend weights, PRA interpretability, and when blending actually helps."

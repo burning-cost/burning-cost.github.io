@@ -2,6 +2,7 @@
 layout: post
 title: "Conformal Prediction Intervals for Insurance Pricing Models"
 date: 2026-02-19
+featured: true
 categories: [techniques]
 tags: [conformal-prediction, gbm, catboost, uncertainty, tweedie, pricing, python]
 description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Python library."

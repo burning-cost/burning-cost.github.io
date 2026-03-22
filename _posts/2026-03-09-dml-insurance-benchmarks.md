@@ -2,6 +2,7 @@
 layout: post
 title: "DML for Insurance: Practical Benchmarks and Pitfalls"
 date: 2026-03-09
+featured: true
 author: Burning Cost
 categories: [techniques, causal-inference]
 tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal, motor, benchmarks, python]

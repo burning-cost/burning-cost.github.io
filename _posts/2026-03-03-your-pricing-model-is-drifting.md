@@ -2,6 +2,7 @@
 layout: post
 title: "Three-Layer Drift Detection: What PSI and A&E Ratios Miss"
 date: 2026-03-03
+featured: true
 categories: [monitoring]
 tags: [insurance-monitoring, drift, PSI, Gini, calibration, motor, FCA, python]
 description: "Three-layer drift detection: feature drift, segmented calibration, Gini test. Tells you whether to recalibrate or refit - beyond PSI and A/E ratios."
