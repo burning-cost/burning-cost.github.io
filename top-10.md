@@ -251,7 +251,7 @@ permalink: /top-10/
 
 </style>
 
-<p class="t10-intro">Forty-plus libraries, ten that matter most. These are the ones we would reach for first — the tools that address genuinely hard problems in UK personal lines pricing where nothing adequate existed before. Start here, then use the <a href="/guide/">problem guide</a> to find everything else.</p>
+<p class="t10-intro">34 libraries, ten that matter most. These are the ones we would reach for first — the tools that address genuinely hard problems in UK personal lines pricing where nothing adequate existed before. Start here, then use the <a href="/guide/">problem guide</a> to find everything else.</p>
 
 <ul class="t10-list">
 
