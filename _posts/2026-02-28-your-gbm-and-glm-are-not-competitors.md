@@ -35,9 +35,9 @@ Standard k-fold randomly assigns policies to folds. On a motor book where claims
 `insurance-cv` handles this correctly:
 
 ```python
-from insurance_cv import WalkForwardCV
+from insurance_cv import TemporalSplit
 
-cv = WalkForwardCV(
+cv = TemporalSplit(
     date_col="inception_date",
     target_col="claim_freq",
     exposure_col="exposure",
@@ -95,13 +95,13 @@ In production, the blend is a prediction-time operation. Both models score every
 
 ```python
 import catboost as cb
-import statsmodels.formula.api as smf
+import statsmodels.iolib.smpickle as smpickle
 
 # Load trained models
 gbm = cb.CatBoostRegressor()
 gbm.load_model("models/gbm_freq_2026q1.cbm")
 
-glm_result = smf.load_pickle("models/glm_freq_2026q1.pkl")
+glm_result = smpickle.load_pickle("models/glm_freq_2026q1.pkl")
 
 alpha = 0.35  # GLM weight from CV
 
@@ -127,8 +127,12 @@ A pure GBM prediction cannot be decomposed into a factor table. A blended predic
 ```python
 from shap_relativities import SHAPRelativities
 
-sr = SHAPRelativities(gbm, exposure_col="exposure")
-sr.fit(df_train)
+sr = SHAPRelativities(
+    model=gbm,
+    X=X_train,
+    exposure=exposure_array,
+)
+sr.fit()
 
 # Get multiplicative relativities from the GBM component
 gbm_factors = sr.relativities(

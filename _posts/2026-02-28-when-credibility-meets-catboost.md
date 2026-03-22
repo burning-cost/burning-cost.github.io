@@ -71,11 +71,20 @@ The problem arises when you want to add group-level adjustments on top. Feeding 
 Where shap-relativities fits here: once you have a CatBoost base rate model, you still need to produce factor tables for your pricing committee and for Radar or Emblem. Our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library extracts exposure-weighted relativities in multiplicative format from any CatBoost model:
 
 ```python
-from shap_relativities import ShapRelativities
+from shap_relativities import SHAPRelativities
 
-sr = ShapRelativities(model=catboost_model, X=X_train, exposure=exposure)
-tables = sr.extract(factors=["driver_age_band", "vehicle_group", "ncd_years"])
-tables["driver_age_band"].write_csv("age_relativities.csv")
+sr = SHAPRelativities(
+    model=catboost_model,
+    X=X_train,
+    exposure=exposure,
+    categorical_features=["driver_age_band", "vehicle_group", "ncd_years"],
+)
+sr.fit()
+tables = sr.extract_relativities(
+    base_levels={"driver_age_band": "30-39", "vehicle_group": 1, "ncd_years": 5},
+)
+# tables is a Polars DataFrame; filter per feature for individual tables
+age_table = tables.filter(tables["feature"] == "driver_age_band")
 ```
 
 The resulting relativities are what go into Radar. The CatBoost model is the source of truth; the factor tables are the governance-compatible representation of it. This workflow -- CatBoost in training, GLM-format tables in production -- is how the Gini gap actually gets into production.
