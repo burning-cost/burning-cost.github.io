@@ -5,7 +5,7 @@ description: "We built 34 open-source pricing libraries used by UK insurance tea
 permalink: /work-with-us/
 ---
 
-We built 34 open-source Python libraries for UK personal lines pricing — everything from causal elasticity estimation and fairness auditing to Databricks-native deployment pipelines. Together they get 8,500+ monthly PyPI downloads and have been benchmarked on Databricks serverless compute.
+We built 34 open-source Python libraries for UK personal lines pricing — everything from causal elasticity estimation and fairness auditing to Databricks-native deployment pipelines. Together they get 17,200+ monthly PyPI downloads and have been benchmarked on Databricks serverless compute.
 
 Most of the teams that find us via GitHub can run the code. The harder problem is usually one of three things: knowing which library to use for your actual problem, adapting the examples to your data schema and modelling conventions, and getting sign-off from a pricing committee or model risk function that doesn't speak Python.
 
