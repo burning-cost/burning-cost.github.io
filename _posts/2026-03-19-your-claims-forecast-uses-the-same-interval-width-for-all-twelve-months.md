@@ -53,7 +53,7 @@ ccc = ClaimsCountConformal(exposure=exposure_full)
 ccc.fit(y_train, n_train=60)
 
 mscp = MSCP(
-    base_forecaster=ccc._forecaster,   # reuse the fitted GLM
+    base_forecaster=ccc._forecaster,   # _forecaster is the fitted GLM; no public accessor exists
     H=12,                              # 12 horizons
 )
 mscp.fit(y_train)
@@ -95,7 +95,7 @@ from insurance_conformal_ts.nonconformity import NegBinomPearsonScore
 score_nb = NegBinomPearsonScore(dispersion=2.8)  # estimated from residuals
 
 enbpi = EnbPI(
-    base_forecaster=ccc._forecaster,
+    base_forecaster=ccc._forecaster,   # internal attribute; see note above
     score=score_nb,
     B=50,         # 50 bootstrap forecasters
     s=10,         # replace 10 oldest residuals per step (controls forgetting)
@@ -128,7 +128,7 @@ from insurance_conformal_ts import ConformalPID
 from insurance_conformal_ts.nonconformity import PoissonPearsonScore
 
 cpid = ConformalPID(
-    base_forecaster=ccc._forecaster,
+    base_forecaster=ccc._forecaster,   # internal attribute; see note above
     score=PoissonPearsonScore(),
     kp=0.1,   # proportional gain
     ki=0.01,  # integral gain

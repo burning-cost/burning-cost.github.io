@@ -33,7 +33,7 @@ This is the distinction that matters for Solvency II capital. An internal model 
 
 ## Where static conformal fails: the structural break
 
-The January 2028 post showed the basic ACI and SPCI mechanics. Here we focus on the benchmark results that motivated why static split conformal is insufficient for reserving applications.
+The previous post showed the basic ACI and SPCI mechanics. Here we focus on the benchmark results that motivated why static split conformal is insufficient for reserving applications.
 
 We ran the `benchmarks/run_benchmark.py` script in `insurance-conformal-ts` on a synthetic monthly motor claims series with a deliberate structural break at month 61. The setup: 84 months total (60 train, 24 test). The data generating process uses a Poisson count series with a seasonal pattern, mild upward trend, and a +20% step shift at month 61 — simulating market hardening or a large risk event arriving mid-monitoring period. Target coverage was 90%.
 
@@ -157,7 +157,7 @@ We are not arguing for replacing stochastic reserving with conformal prediction.
 ---
 
 **Related posts:**
-- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — the January 2028 tutorial covering ACI and SPCI mechanics in detail
+- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — the previous post, covering ACI and SPCI mechanics in detail
 - [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 and what a defensible sign-off process looks like in practice
 - [Year-End Large Loss Loading](/2026/03/14/year-end-large-loss-loading/) — the sister problem: when your frequency estimate is right but your severity range is wrong
 

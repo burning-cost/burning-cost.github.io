@@ -82,8 +82,9 @@ std_params = genpareto.fit(observed - threshold, floc=0)
 xi_std = std_params[0]
 
 # TruncatedGPD: accounts for the policy limit
-model = TruncatedGPD(threshold=threshold, policy_limit=policy_limit)
-model.fit(observed)
+# TruncatedGPD takes only threshold; policy limits go into fit() as a per-observation array
+model = TruncatedGPD(threshold=threshold)
+model.fit(observed - threshold, np.full(len(observed), policy_limit))
 
 print(f"True xi:          {xi_true:.3f}")
 print(f"Standard GPD xi:  {xi_std:.3f}  (bias: {xi_std - xi_true:+.3f})")
@@ -133,26 +134,21 @@ The Hill estimator is the workhorse quick check on tail index — plot it agains
 ```python
 from insurance_severity import CensoredHillEstimator
 
-hill = CensoredHillEstimator(
-    observations=observed,
-    censored=truncated,       # boolean: True where claim hit policy limit
-)
+# Constructor takes no arguments; data goes into fit()
+hill = CensoredHillEstimator()
+hill.fit(observed, truncated)   # fit(claims, censored) — returns self; access results via properties
 
-xi_hill, k_stable = hill.fit()
-print(f"Censored Hill xi: {xi_hill:.3f} (plateau at k={k_stable})")
+print(f"Censored Hill xi: {hill.xi:.3f} (plateau at k={hill.k_opt})")
 
-# Standard Hill for comparison
-from insurance_severity.diagnostics import hill_plot
-xi_uncorrected = hill.uncorrected_hill(k=k_stable)
-print(f"Uncorrected Hill xi: {xi_uncorrected:.3f}")
+# hill_plot() shows the full k-vs-xi curve with CI band at k_opt
+hill.hill_plot()
 ```
 
 ```
 Censored Hill xi: 0.388 (plateau at k=340)
-Uncorrected Hill xi: 0.271
 ```
 
-The Hill plot is more stable for the censored estimator. The uncorrected version shows a downward trend at higher k as the truncated claims at £1m pile up and suppress the tail — exactly the shape you should be suspicious of when you see it on real data and know you have policy limits.
+The Hill plot is more stable for the censored estimator. The uncorrected Hill estimate on this data comes in around 0.27 — a 30% underestimate — because the truncated claims at £1m pile up and suppress the tail. That downward trend at higher k is exactly the shape you should be suspicious of when you see it on real data and know you have policy limits.
 
 ---
 
@@ -167,16 +163,18 @@ This is useful when:
 ```python
 from insurance_severity import WeibullTemperedPareto
 
-# Fit WTP to the full severity distribution (not just tail exceedances)
-wtp = WeibullTemperedPareto()
-wtp.fit(ground_up)  # ground-up losses — use this when you have them
+# Fit WTP to claims above the threshold (raw values, not exceedances)
+wtp = WeibullTemperedPareto(threshold=threshold)
+wtp.fit(ground_up[ground_up > threshold])
 
 # Compare log-likelihood against standard Pareto
+# WTP has no public log_likelihood(); compute from pdf directly
 from scipy.stats import pareto as scipy_pareto
 
-pareto_params = scipy_pareto.fit(ground_up, floc=threshold)
-ll_pareto = np.sum(scipy_pareto.logpdf(ground_up, *pareto_params))
-ll_wtp = wtp.log_likelihood(ground_up)
+pareto_params = scipy_pareto.fit(ground_up[ground_up > threshold], floc=threshold)
+ll_pareto = np.sum(scipy_pareto.logpdf(ground_up[ground_up > threshold], *pareto_params))
+wtp_pdf_vals = wtp.pdf(ground_up[ground_up > threshold])
+ll_wtp = np.sum(np.log(wtp_pdf_vals[wtp_pdf_vals > 0]))
 
 print(f"Standard Pareto log-likelihood: {ll_pareto:,.1f}")
 print(f"WTP log-likelihood:             {ll_wtp:,.1f}")
