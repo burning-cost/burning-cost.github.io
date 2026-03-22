@@ -729,45 +729,6 @@ BLUP recovery r=0.729 (target >0.6, passed). ICC estimated 0.332 (true 0.360). S
 [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel)
 
 ---
-
-## Trend Analysis
-
-### insurance-trend — Loss cost trend with structural break detection
-
-**What is measured:** `LossCostTrendFitter` (PELT structural break detection + piecewise refit) vs fixed trend assumption (last-12-quarters WLS OLS) on 36 quarters of synthetic UK motor data. True DGP: −40% frequency step-down at Q13 (lockdown-scale event), post-break frequency trend −2% pa, severity trend +10% pa, combined loss cost trend +7.8% pa.
-
-| Metric | Fixed trend (baseline) | insurance-trend |
-|---|---|---|
-| Frequency trend estimate | ~−8% pa | **~+3% pa** (true: −2% pa)|
-| Severity trend estimate | ~+4% pa | **~+8% pa** (true: +8% pa) |
-| Loss cost trend estimate | ~−4% pa | **~+11% pa** (true: +11.2% pa) |
-| Projection MAPE over +4Q | ~30% | **~10%** |
-| Structural break detected | No | **Yes (Q12, within ±2Q)** |
-
-The fixed-trend frequency estimate of approximately −8% pa reflects the −40% lockdown step-down dominating the entire fitted line. The library detects the break, discards the pre-break segment, and refits on the post-break regime only — recovering the true trend. The projection MAPE improvement of ~20pp is a direct consequence of projecting from the correct regime rather than a blended estimate. The PELT penalty parameter requires tuning: penalty=1.5 is appropriate for 36-quarter series with a known large break; the default (3.0) is more conservative and suited to shorter, noisier series. When data is genuinely stable with no structural events, the library and the fixed-rate approach converge.
-
-[github.com/burning-cost/insurance-trend](https://github.com/burning-cost/insurance-trend)
-
----
-
-## Cross-Validation
-
-### insurance-cv — Temporal walk-forward cross-validation
-
-**What is measured:** Walk-forward temporal CV vs random 5-fold KFold on 20,000 synthetic UK motor policies with a +20%/year claims trend (2021–2024). Poisson frequency model. True prospective holdout: 2024 policies.
-
-| Method | Mean Poisson deviance | vs Prospective holdout | Temporal leakage |
-|---|---|---|---|
-| Random KFold (5-fold) | 0.54889 | −13.2% (optimistic) | Yes |
-| Walk-forward (insurance-cv) | **0.59235** | **−6.3% (optimistic)** | **No** |
-| Prospective holdout (ground truth) | 0.63244 | — | — |
-
-Walk-forward is 2.1× more accurate as a prospective score estimate. The more useful output is the fold-by-fold trajectory: walk-forward per-fold deviances rise from 0.547 (early 2022 test) to 0.681 (2024) — a 24% deterioration trend that tells a pricing team their model needs a trend term or quarterly refits. Random KFold folds (0.515–0.591) show no temporal pattern and cannot surface this signal. Note that walk-forward's higher mean deviance (0.592 vs 0.549) is the correct result, not a failure — the library gives you a more honest number, not a better-looking one.
-
-[github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
-
----
-
 ## Notes on methodology
 
 All benchmarks follow the same design contract:
