@@ -148,7 +148,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-causal-policy",
-      "description": "Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity, FCA evidence pack.",
+      "description": "Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity, FCA evidence pack. v0.2.0 adds DoublyRobustSCEstimator (DRSC): doubly robust SC — consistent if either parallel trends or SC weights are correct; 24% lower RMSE than SDID with few donors.",
       "codeRepository": "https://github.com/burning-cost/insurance-causal-policy",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -212,7 +212,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-monitoring",
-      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0 adds SequentialTest for anytime-valid A/B testing of champion/challenger experiments via mSPRT.",
+      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.7.0 adds PITMonitor for anytime-valid calibration monitoring via e-process martingale, and InterpretableDriftDetector for feature-interaction drift attribution with BH FDR control.",
       "codeRepository": "https://github.com/burning-cost/insurance-monitoring",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -299,7 +299,7 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
 <div class="essential-grid" id="essential-grid">
 
 <div class="essential-card" data-name="insurance-fairness" data-desc="Proxy discrimination auditing FCA Consumer Duty Equality Act 2010 bias metrics protected characteristics">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a></div>
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a> [![CI](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Proxy discrimination auditing aligned to FCA Consumer Duty. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics. Equality Act 2010 proportionality documentation built in.</div>
   <div class="essential-card-tag">FCA Consumer Duty</div>
 </div>
@@ -311,7 +311,7 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
 </div>
 
 <div class="essential-card" data-name="insurance-causal" data-desc="Double machine learning DML causal inference deconfounding rating factors channel bias causal forest heterogeneous treatment effects GATES CLAN RATE targeting">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a></div>
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a> [![CI](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Double machine learning for deconfounding rating factors. Standard GLM coefficients are biased wherever rating variables correlate with distribution channel or policyholder selection. DML removes that bias without a structural model. v0.4.0 adds causal forest heterogeneous treatment effects: GATES aggregates, CLAN segment profiling, and RATE/AUTOC/QINI targeting evaluation for segment-level price response.</div>
   <div class="essential-card-tag">Causal inference &middot; DML</div>
 </div>
@@ -329,13 +329,13 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
 </div>
 
 <div class="essential-card" data-name="insurance-conformal" data-desc="conformal prediction distribution-free prediction intervals coverage guarantee GBM Solvency II SCR">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a></div>
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a> [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce tighter intervals. Beyond point estimates: principled uncertainty for every risk score. Solvency II SCR bounds included.</div>
   <div class="essential-card-tag">Conformal prediction &middot; Solvency II</div>
 </div>
 
 <div class="essential-card" data-name="insurance-credibility" data-desc="Buhlmann-Straub credibility Python thin segments NCD factors mixed model">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a></div>
+  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a> [![CI](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Bühlmann-Straub credibility in Python with mixed-model equivalence checks. Caps thin segments, stabilises NCD factors, blends a new model with an incumbent rate. The actuarial answer to the thin data problem.</div>
   <div class="essential-card-tag">Bühlmann-Straub &middot; Thin data</div>
 </div>
@@ -393,11 +393,11 @@ Tools for building and interpreting pricing models.
 
 | Library | What it does | Install |
 |---|---|---|
-| [shap-relativities](https://github.com/burning-cost/shap-relativities) | SHAP-based rating relativities from GBM models — extract GLM-style multiplicative factors from CatBoost<br>_Benchmark: +2.85pp Gini lift over GLM; 9.4% mean relativity error (honest trade-off vs GLM's 4.5%)_ | `pip install shap-relativities` |
-| [insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools) | GLM tooling — nested GLM embeddings, R2VF factor level clustering, territory banding, SKATER<br>_Benchmark: R2VF fused lasso clustering vs manual quintile banding benchmarked_ | `pip install insurance-glm-tools` |
+| [shap-relativities](https://github.com/burning-cost/shap-relativities) [![CI](https://github.com/burning-cost/shap-relativities/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/shap-relativities/actions/workflows/ci.yml) | SHAP-based rating relativities from GBM models — extract GLM-style multiplicative factors from CatBoost<br>_Benchmark: +2.85pp Gini lift over GLM; 9.4% mean relativity error (honest trade-off vs GLM's 4.5%)_ | `pip install shap-relativities` |
+| [insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools) | GLM tooling — nested GLM embeddings, R2VF factor level clustering, territory banding, SKATER. Torch is optional: core clustering and banding works without it<br>_Benchmark: R2VF fused lasso clustering vs manual quintile banding benchmarked_ | Core: `pip install insurance-glm-tools`<br>Neural: `pip install insurance-glm-tools[neural]` |
 | [insurance-gam](https://github.com/burning-cost/insurance-gam) | **Flagship.** Interpretable GAMs — EBM tariffs, Actuarial NAM, Pairwise Interaction Networks, exact Shapley values<br>_Benchmark: EBM/NAM interpretable tariffs with exact Shapley values benchmarked on synthetic motor data_ | `pip install insurance-gam` |
 | [insurance-interactions](https://github.com/burning-cost/insurance-interactions) | Automated GLM interaction detection using CANN, NID scoring, and SHAP interaction values<br>_Benchmark: Production defaults recover both planted interactions; compact config less reliable_ | `pip install insurance-interactions` |
-| [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | `pip install insurance-frequency-severity` |
+| [insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) | **Flagship.** Sarmanov copula joint frequency-severity — analytical premium correction, IFM estimation. Torch is optional: Sarmanov copulas and IFM estimation work without it<br>_Benchmark: Sarmanov copula joint modelling with analytical premium correction benchmarked_ | Core: `pip install insurance-frequency-severity`<br>Neural: `pip install insurance-frequency-severity[neural]` |
 | [insurance-spatial](https://github.com/burning-cost/insurance-spatial) | BYM2 spatial territory ratemaking — PyMC 5 ICAR, adjacency matrices, Moran's I diagnostics<br>_Benchmark: BYM2 vs raw vs manual banding benchmarked on synthetic territory data_ | `pip install insurance-spatial` |
 | [insurance-distill](https://github.com/burning-cost/insurance-distill) | GBM-to-GLM distillation — fits a surrogate Poisson/Gamma GLM to CatBoost predictions, exports multiplicative factor tables for Radar/Emblem<br>_Benchmark: 90-97% R² match between GBM predictions and distilled GLM factors_ | `pip install insurance-distill` |
 
@@ -417,7 +417,7 @@ Beyond point estimates: full distribution modelling and tail risk quantification
 | [insurance-distributional-glm](https://github.com/burning-cost/insurance-distributional-glm) | **Flagship.** GAMLSS for Python — model all distribution parameters as functions of covariates, seven families<br>_Benchmark: GAMLSS sigma correlation 0.998 vs 0.000 for constant-phi_ | `pip install insurance-distributional-glm` |
 | [insurance-dispersion](https://github.com/burning-cost/insurance-dispersion) | Double GLM for joint mean-dispersion modelling — alternating IRLS, REML, actuarial factor tables<br>_Benchmark: Double GLM captures heteroscedasticity that constant-phi misses_ | `pip install insurance-dispersion` |
 | [insurance-quantile](https://github.com/burning-cost/insurance-quantile) | Quantile and expectile GBMs for tail risk, TVaR, and increased limit factors<br>_Benchmark: GBM lower TVaR bias on heavy tails; lognormal wins on pinball at small n_ | `pip install insurance-quantile` |
-| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling<br>_Benchmark: Composite reduces tail error 5.6% vs single lognormal_ | `pip install insurance-severity` |
+| [insurance-severity](https://github.com/burning-cost/insurance-severity) | Spliced Pareto/Gamma severity, Deep Regression Networks, composite Lognormal-GPD, and EQRN extreme quantile neural networks for large loss modelling<br>_Benchmark: Composite reduces tail error 5.6% vs single lognormal; heavy-tail benchmark (Pareto α=1.5) shows 15–20% tail error reduction_ | `pip install insurance-severity` |
 
 </div>
 
@@ -431,7 +431,7 @@ When you don't have enough data to trust a standard GLM.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-credibility](https://github.com/burning-cost/insurance-credibility) | **Flagship.** Credibility models for UK non-life pricing: Bühlmann-Straub, Bayesian experience rating, and individual experience rating (static, dynamic, surrogate, and deep attention credibility via `insurance_credibility.experience`)<br>_Benchmark: 6.8% MAE improvement on thin schemes vs raw experience_ | `pip install insurance-credibility` |
+| [insurance-credibility](https://github.com/burning-cost/insurance-credibility) [![CI](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml) | **Flagship.** Credibility models for UK non-life pricing: Bühlmann-Straub, Bayesian experience rating, and individual experience rating (static, dynamic, surrogate, and deep attention credibility via `insurance_credibility.experience`)<br>_Benchmark: 6.8% MAE improvement on thin schemes vs raw experience_ | `pip install insurance-credibility` |
 | [insurance-multilevel](https://github.com/burning-cost/insurance-multilevel) | Two-stage CatBoost + REML random effects for high-cardinality group factors — ICC diagnostics<br>_Benchmark: 15.9% gamma deviance reduction; thin-group MAPE 63.6% vs one-hot 66.1%_ | `pip install insurance-multilevel` |
 | [bayesian-pricing](https://github.com/burning-cost/bayesian-pricing) | Hierarchical Bayesian models for thin-data pricing segments using PyMC 5 | `pip install bayesian-pricing` |
 | [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) | Pricing techniques for low-volume segments where standard GLM fitting is unreliable<br>_Benchmark: GLMTransfer narrows bootstrap 90% CI widths 30–60% vs standalone GLM_ | `pip install insurance-thin-data` |
@@ -449,8 +449,8 @@ Separating what causes what from what correlates with what.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-causal](https://github.com/burning-cost/insurance-causal) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation and causal forest heterogeneous treatment effects via `insurance_causal.causal_forest` (GATES/BLP/CLAN inference, RATE/AUTOC/QINI targeting evaluation, HTE diagnostics). Use DML for portfolio-level average effects; causal forest for segment-level CATEs with n≥2,000 per group.<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
-| [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation_ | `pip install insurance-causal-policy` |
+| [insurance-causal](https://github.com/burning-cost/insurance-causal) [![CI](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml) | **Flagship.** Double machine learning for deconfounding rating factors — CatBoost nuisance models, confounding bias reports. Includes price elasticity estimation and causal forest heterogeneous treatment effects via `insurance_causal.causal_forest` (GATES/BLP/CLAN inference, RATE/AUTOC/QINI targeting evaluation, HTE diagnostics). Use DML for portfolio-level average effects; causal forest for segment-level CATEs with n≥2,000 per group.<br>_Benchmark: DML removes nonlinear confounding bias at scale (n≥50k); honest: over-partials at small n_ | `pip install insurance-causal` |
+| [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) | Synthetic difference-in-differences for causal rate change evaluation — event study, HonestDiD sensitivity. v0.2.0 adds DoublyRobustSCEstimator (DRSC, arXiv:2503.11375): doubly robust — consistent if either parallel trends or SC weights hold<br>_Benchmark: SDID 98% CI coverage; naive before-after biased +3.8pp by market inflation. DRSC: 24% lower RMSE than SDID with few donors (N_co=6), equivalent with many (N_co=40)_ | `pip install insurance-causal-policy` |
 
 </div>
 
@@ -464,7 +464,7 @@ Proxy discrimination, Consumer Duty, and FCA evidence packs.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) | **Flagship.** Proxy discrimination auditing — FCA Consumer Duty, Equality Act 2010, bias metrics<br>_Benchmark: Proxy R²=0.78 catches postcode proxy that Spearman (r=0.06) misses entirely_ | `pip install insurance-fairness` |
+| [insurance-fairness](https://github.com/burning-cost/insurance-fairness) [![CI](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml) | **Flagship.** Proxy discrimination auditing — FCA Consumer Duty, Equality Act 2010, bias metrics<br>_Benchmark: Proxy R²=0.78 catches postcode proxy that Spearman (r=0.06) misses entirely_ | `pip install insurance-fairness` |
 | [insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift) | Density ratio correction for book shifts — CatBoost/RuLSIF/KLIEP, LR-QR conformal, FCA SUP 15.3 diagnostics<br>_Benchmark: Density ratio correction for portfolio composition shift benchmarked_ | `pip install insurance-covariate-shift` |
 
 </div>
@@ -479,11 +479,11 @@ Prediction intervals, conformal methods, and post-deployment monitoring.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-cv](https://github.com/burning-cost/insurance-cv) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers<br>_Benchmark: Walk-forward catches 10.5% optimism that k-fold hides_ | `pip install insurance-cv` |
-| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) | **Flagship.** Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds<br>_Benchmark: 90.1% marginal coverage on Tweedie frequency data_ | `pip install insurance-conformal` |
+| [insurance-cv](https://github.com/burning-cost/insurance-cv) [![CI](https://github.com/burning-cost/insurance-cv/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-cv/actions/workflows/ci.yml) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers<br>_Benchmark: Walk-forward catches 10.5% optimism that k-fold hides_ | `pip install insurance-cv` |
+| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml) | **Flagship.** Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds<br>_Benchmark: 90.1% marginal coverage on Tweedie frequency data_ | `pip install insurance-conformal` |
 | [insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts) | Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Poisson/NB scores<br>_Benchmark: Sequential conformal vs static prediction intervals on claims time series benchmarked_ | `pip install insurance-conformal-ts` |
-| [insurance-deploy](https://github.com/burning-cost/insurance-deploy) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test<br>_Benchmark: Champion/challenger routing, shadow mode, quote logging benchmarked_ | `pip install insurance-deploy` |
-| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0:  for anytime-valid A/B testing of champion/challenger experiments (mSPRT, Johari et al. 2022, exposure-weighted Poisson)<br>_Benchmark: Peeking t-test 25% FPR (5× nominal); mSPRT holds at 1%_ |  |
+| [insurance-deploy](https://github.com/burning-cost/insurance-deploy) [![CI](https://github.com/burning-cost/insurance-deploy/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-deploy/actions/workflows/ci.yml) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test<br>_Benchmark: Champion/challenger routing, shadow mode, quote logging benchmarked_ | `pip install insurance-deploy` |
+| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) [![CI](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0 adds `SequentialTest` for anytime-valid A/B testing of champion/challenger experiments (mSPRT, Johari et al. 2022). v0.7.0 adds `PITMonitor` for calibration drift via PIT e-process martingale (~3% FPR vs repeated Hosmer-Lemeshow's 46%) and `InterpretableDriftDetector` for feature-interaction drift attribution with BH FDR control (zero false positives in benchmarks)<br>_Benchmark: Peeking t-test 25% FPR (5x nominal); mSPRT holds at 1%. PITMonitor FPR ~3% vs repeated H-L 46%. InterpretableDriftDetector: 2/5 drifting factors correctly attributed, zero false positives_ | `pip install insurance-monitoring` |
 | [insurance-governance](https://github.com/burning-cost/insurance-governance) | **Flagship.** Model governance — PRA SS1/23 validation reports, model risk management, risk tier scoring<br>_Benchmark: Automated suite catches age-band miscalibration manual checklists miss_ | `pip install insurance-governance` |
 
 </div>
@@ -498,7 +498,7 @@ From rate change recommendations to live price experimentation.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier. Includes demand modelling (conversion/retention elasticity, price response curves) via `insurance_optimise.demand`<br>_Benchmark: Demand-curve pricing +143.8% profit lift over flat loading_ | `pip install insurance-optimise` |
+| [insurance-optimise](https://github.com/burning-cost/insurance-optimise) [![CI](https://github.com/burning-cost/insurance-optimise/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-optimise/actions/workflows/ci.yml) | Constrained portfolio rate optimisation — SLSQP with analytical Jacobians, FCA ENBP constraints, efficient frontier. Includes demand modelling (conversion/retention elasticity, price response curves) via `insurance_optimise.demand`<br>_Benchmark: Demand-curve pricing +143.8% profit lift over flat loading_ | `pip install insurance-optimise` |
 
 </div>
 
@@ -512,7 +512,7 @@ Inflation, reporting delays, and dynamic pricing.
 
 | Library | What it does | Install |
 |---|---|---|
-| [insurance-trend](https://github.com/burning-cost/insurance-trend) | Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection<br>_Benchmark: 3.93pp MAPE improvement over naive OLS trend_ | `pip install insurance-trend` |
+| [insurance-trend](https://github.com/burning-cost/insurance-trend) [![CI](https://github.com/burning-cost/insurance-trend/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-trend/actions/workflows/ci.yml) | Loss cost trend analysis — frequency/severity decomposition, ONS index integration, structural break detection<br>_Benchmark: 3.93pp MAPE improvement over naive OLS trend; structural break detection now confirmed on step-change DGP_ | `pip install insurance-trend` |
 | [insurance-dynamics](https://github.com/burning-cost/insurance-dynamics) | Dynamic pricing models — GAS score-driven filters, Bayesian changepoint detection (BOCPD/PELT)<br>_Benchmark: GAS Poisson +13% MAE improvement over GLM trend_ | `pip install insurance-dynamics` |
 
 </div>
@@ -528,7 +528,7 @@ Inflation, reporting delays, and dynamic pricing.
 | [insurance-survival](https://github.com/burning-cost/insurance-survival) | Survival models — cure models, customer lifetime value, lapse tables, MLflow wrapper<br>_Benchmark: Cure model recovers 34.1% cure fraction (true 35.0%); KM/Cox extrapolate to zero_ | `pip install insurance-survival` |
 | [insurance-telematics](https://github.com/burning-cost/insurance-telematics) | **Flagship.** HMM-based driving state classification and GLM-compatible risk scoring from raw telematics trip data<br>_Benchmark: HMM state features 3–8pp Gini improvement over raw trip averages_ | `pip install insurance-telematics` |
 | [insurance-synthetic](https://github.com/burning-cost/insurance-synthetic) | Vine copula synthetic portfolio generation — exposure-aware, preserves multivariate dependence<br>_Benchmark: Copula 64% better correlation preservation vs naive_ | `pip install insurance-synthetic` |
-| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data<br>_Benchmark: GLM parameter recovery RMSE 0.069; OVB demo shows 24% NCD inflation when age omitted_ | `pip install insurance-datasets` |
+| [insurance-datasets](https://github.com/burning-cost/insurance-datasets) | Synthetic UK motor portfolio with known DGP parameters — validate that your model recovers true relativities before using real data. Polars output supported via `polars=True` on `load_motor()` and `load_home()`<br>_Benchmark: GLM parameter recovery RMSE 0.069; OVB demo shows 24% NCD inflation when age omitted_ | `pip install insurance-datasets`<br>Polars: `pip install insurance-datasets[polars]` |
 
 </div>
 
