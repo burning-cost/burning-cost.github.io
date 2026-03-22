@@ -153,6 +153,8 @@ The numbers below are from the insurance-conformal GBM benchmark: 50,000 synthet
 
 We have not benchmarked MAPIE directly on this dataset — the comparison to MAPIE is structural (absolute vs Pearson-weighted score), not a head-to-head run. The headline finding is what the correct score choice achieves compared to the parametric baseline:
 
+_Note: these benchmarks compare insurance-conformal's scoring modes against a parametric Tweedie baseline, not a direct MAPIE head-to-head. The structural argument for why MAPIE's absolute-residual approach produces wider intervals is discussed below._
+
 | Method | Aggregate coverage | Worst-decile coverage | Mean interval width (£) |
 |--------|-------------------|----------------------|------------------------|
 | Parametric Tweedie (global sigma) | 0.931 | 0.904 | 4,393 |
