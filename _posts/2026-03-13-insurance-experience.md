@@ -3,13 +3,13 @@ layout: post
 title: "Individual Experience Rating Beyond NCD: From Bühlmann-Straub to Neural Credibility"
 date: 2026-03-13
 categories: [libraries, pricing, credibility]
-tags: [experience-rating, credibility, Bühlmann-Straub, Bayesian, posterior, Poisson-Gamma, GBM, attention, NCD, FCA, PS21-5, insurance-experience, python, pytorch]
+tags: [experience-rating, credibility, Bühlmann-Straub, Bayesian, posterior, Poisson-Gamma, GBM, attention, NCD, FCA, PS21-11, insurance-experience, python, pytorch]
 description: "Four-tier experience rating in Python: Buhlmann-Straub, Poisson-Gamma state-space, GBM surrogate, attention credibility. Policy-level multiplicative factors."
 ---
 
 NCD has a clean actuarial logic behind it: your claims history tells us something about your risk level that the rating factors don't fully capture, and we want to adjust for it. The implementation, though, is not Bayesian posterior inference. It is a contractual mechanism with a transition matrix. The factor you get depends on how many claims you made last year and which NCD level you started at. The transition rules are chosen to be commercially sensible and regulatorily defensible, not to minimise posterior expected loss.
 
-This distinction matters for two reasons. First, FCA PS21/5 tightened the rules on how NCD discounts interact with the fair price obligation — the contractual structure of NCD can produce outcomes that are hard to defend under a posterior-risk framing when a long-term NCD holder at 65% discount is paying materially less than the posterior risk would suggest. Second, the NCD mechanism is only one specific instantiation of what should be a general facility: using the claims history of an individual policyholder to update the prior estimate of their risk level. There is no reason this has to take the form of a discrete transition matrix.
+This distinction matters for two reasons. First, FCA PS21/11 tightened the rules on how NCD discounts interact with the fair price obligation — the contractual structure of NCD can produce outcomes that are hard to defend under a posterior-risk framing when a long-term NCD holder at 65% discount is paying materially less than the posterior risk would suggest. Second, the NCD mechanism is only one specific instantiation of what should be a general facility: using the claims history of an individual policyholder to update the prior estimate of their risk level. There is no reason this has to take the form of a discrete transition matrix.
 
 [`insurance-experience`](https://github.com/burning-cost/insurance-experience) is the actuarially correct alternative. It implements individual Bayesian a posteriori experience rating across four model tiers, producing a multiplicative credibility factor with the balance property that slots directly into Emblem or Radar as a rating factor. 125 tests, MIT-licensed, on PyPI.
 
@@ -146,9 +146,9 @@ The tiers are not competitors — they are appropriate for different situations.
 
 ---
 
-## The FCA PS21/5 framing
+## The FCA PS21/11 framing
 
-FCA PS21/5 (December 2021) introduced the fair value requirement for general insurance products, including the obligation that pricing reflects the risk of the individual consumer, not just their group membership. NCD discounts were specifically scrutinised in the context of dual pricing remediation — long-standing customers receiving NCD-inflated discounts that exceeded what posterior risk would justify.
+FCA PS21/11 (September 2021) introduced the fair value requirement for general insurance products, including the obligation that pricing reflects the risk of the individual consumer, not just their group membership. NCD discounts were specifically scrutinised in the context of dual pricing remediation — long-standing customers receiving NCD-inflated discounts that exceeded what posterior risk would justify.
 
 `insurance-experience` produces factors grounded in posterior risk inference, not contractual history. The distinction is auditable: you can show the regulator that a 65% NCD policyholder's factor of 0.78 reflects a posterior frequency estimate based on their actual claims history, not a table lookup from a transition matrix. This does not replace NCD in the contractual sense — you still need to honour NCD discounts. It gives you a posterior risk signal that runs alongside the contractual mechanism and can be used to identify where the two diverge materially.
 

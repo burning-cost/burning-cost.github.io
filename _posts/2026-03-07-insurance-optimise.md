@@ -31,7 +31,7 @@ where `tc_i` is the technical price, `cost_i` is the expected loss cost, and `x_
 
 You are maximising this over m, subject to:
 
-- **FCA PS21/5 (ENBP):** For every renewal policy, the offered price must not exceed the price that customer would be quoted as a new customer through the same channel. One-sided: you can price below ENBP, you cannot price above.
+- **FCA PS21/11 (ENBP):** For every renewal policy, the offered price must not exceed the price that customer would be quoted as a new customer through the same channel. One-sided: you can price below ENBP, you cannot price above.
 - **Loss ratio ceiling:** aggregate expected claims / aggregate expected GWP ≤ target (e.g. 70%).
 - **GWP floor:** your finance team needs a minimum written premium number.
 - **Retention floor:** you cannot lose more than X% of your renewal book without triggering underwriting and capital concerns.

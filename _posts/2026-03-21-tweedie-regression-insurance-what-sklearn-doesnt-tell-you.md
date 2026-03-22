@@ -274,7 +274,7 @@ The `pred.mean` from `TweedieGBM` is a point estimate. For per-risk uncertainty 
 `insurance-conformal` provides distribution-free intervals using the Pearson-weighted non-conformity score. Because Var(Y) ~ mu^p for Tweedie, the correct score is `|y - yhat| / yhat^(p/2)`. This produces intervals that are narrower for low-mean risks and wider for high-mean risks, rather than a uniform width that overcovers cheap policies and undercovers expensive ones.
 
 ```python
-from insurance_conformal import TweedieConformal
+from insurance_conformal import InsuranceConformalPredictor
 
 # Fit on a calibration split (not training data)
 n_cal = 1_500
@@ -286,11 +286,15 @@ exp_cal, exp_val = exp_tr[-n_cal:], exp_te
 model_conf = TweedieGBM(power=1.5)
 model_conf.fit(X_tr[:-n_cal], y_tr[:-n_cal], exposure=exp_tr[:-n_cal])
 
-conformal = TweedieConformal(model=model_conf, power=1.5, score="pearson_weighted")
-conformal.calibrate(X_cal, y_cal, exposure=exp_cal)
+cp = InsuranceConformalPredictor(
+    model=model_conf,
+    nonconformity="pearson_weighted",
+    distribution="tweedie",
+)
+cp.calibrate(X_cal, y_cal, exposure=exp_cal)
 
-intervals = conformal.predict_interval(X_val, exposure=exp_val, level=0.90)
-# intervals.lower, intervals.upper — 90% prediction interval per policy
+intervals = cp.predict_interval(X_val, alpha=0.10)
+# intervals[:, 0], intervals[:, 1] — 90% prediction interval per policy
 ```
 
 On a heteroskedastic book, conformal intervals are typically 10–15% narrower than parametric Tweedie intervals at the same nominal coverage. The empirical coverage in the insurance-conformal benchmark is 0.902 vs 0.931 for parametric, with interval widths £3,806 vs £4,393 (50k synthetic UK motor policies, CatBoost Tweedie(1.5), temporal split). The intervals are wider where risk is genuinely higher, which is what you want when setting reinsurance attachments.
@@ -306,7 +310,7 @@ On a heteroskedastic book, conformal intervals are typically 10–15% narrower t
 | Production pricing, annual book with limited exposure variation | Either, with sample weights by exposure |
 | Production pricing, mixed-duration or monthly-payment book | `TweedieGBM` from insurance-distributional |
 | Need per-risk uncertainty (safety loading, RI, IFRS 17) | `TweedieGBM` + `pred.volatility_score()` |
-| Need calibrated prediction intervals | `TweedieConformal` on top of `TweedieGBM` |
+| Need calibrated prediction intervals | `InsuranceConformalPredictor` on top of `TweedieGBM` |
 | someone hands you sklearn code with `TweedieRegressor` | Replace it |
 
 ---

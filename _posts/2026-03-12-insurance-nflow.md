@@ -157,7 +157,7 @@ The library has 200 tests across six modules, all passing on Python 3.11 with cu
 
 **The AIC comparison is not clean.** A depth-6 NSF with a 64-wide context encoder has around 97,000 parameters. A lognormal has 2. AIC will always prefer the lognormal on a small dataset — this is correct behaviour, not a bug. We report AIC for completeness, we caveat it in the output, and we recommend test log-likelihood per observation as the primary comparison metric.
 
-**Regulatory acceptance is an open question.** FCA PS21/5 requires pricing models to be explainable and auditable. A flow with 97,000 parameters satisfies tractable likelihood — you can always compute the exact probability of any claim — but does not produce interpretable coefficients. We think this is a genuine constraint for regulated rate filings. We do not think it prevents teams from using flows for internal pricing analysis, scenario generation, reinsurance placement, and capital modelling.
+**Regulatory acceptance is an open question.** FCA PS21/11 requires pricing models to be explainable and auditable. A flow with 97,000 parameters satisfies tractable likelihood — you can always compute the exact probability of any claim — but does not produce interpretable coefficients. We think this is a genuine constraint for regulated rate filings. We do not think it prevents teams from using flows for internal pricing analysis, scenario generation, reinsurance placement, and capital modelling.
 
 **PyTorch is a dependency.** Insurance pricing teams run sklearn, pandas, scipy, xgboost, lightgbm. PyTorch is not standard kit. The CPU-only install is around 900MB. The library API hides all PyTorch from the user, but the installation is the team's problem to manage.
 

@@ -106,7 +106,7 @@ detector = FrequencyChangeDetector(
 )
 ```
 
-The ten encoded events are: Ogden rate change (March 2017), Ogden partial correction (August 2019), Whiplash Reform Act (Royal Assent November 2018, OIC portal effective May 2021), GIPP pricing rules (PS21/5, effective January 2022), COVID lockdowns (Q1 and Q2 2020), Storm Ciara (February 2020), Storm Dennis (February 2020), Storm Eunice (February 2022), and FCA Motor Finance review (2024). You can add custom events for portfolio-specific events — a major panel change, a broker acquisition, a claims handling outsource.
+The ten encoded events are: Ogden rate change (March 2017), Ogden partial correction (August 2019), Whiplash Reform Act (Royal Assent November 2018, OIC portal effective May 2021), GIPP pricing rules (PS21/11, effective January 2022), COVID lockdowns (Q1 and Q2 2020), Storm Ciara (February 2020), Storm Dennis (February 2020), Storm Eunice (February 2022), and FCA Motor Finance review (2024). You can add custom events for portfolio-specific events — a major panel change, a broker acquisition, a claims handling outsource.
 
 The spike multiplier of 3.0 means the prior probability of a changepoint is three times higher at event periods than non-event periods. This is not aggressive. The posterior is still driven by the data; if the data shows no inflection at the whiplash reform date, the algorithm will not flag a break there. What the prior does is lower the evidence threshold: the data only needs to be moderately consistent with a break at a known-event period, whereas at an arbitrary period it needs to be more compelling.
 
@@ -271,7 +271,7 @@ The only genuine limitation to document: BOCPD is a univariate method. It operat
 - Killick, R., Fearnhead, P. & Eckley, I.A. (2012). Optimal Detection of Changepoints with a Linear Computational Cost. *Journal of the American Statistical Association*, 107(500), 1590-1598.
 - FCA (2022). PS22/9: A new Consumer Duty. Final rules and non-Handbook guidance.
 - Civil Liability Act 2018. Whiplash reforms, Official Injury Claim portal effective 31 May 2021.
-- FCA (2021). PS21/5: Pricing practices in home and motor insurance. Effective 1 January 2022.
+- FCA (2021). PS21/11: Pricing practices in home and motor insurance. Effective 1 January 2022.
 
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the PSI/A-E/Gini framework for detecting whether your model is still accurate
 - [Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book](/2026/03/13/insurance-nowcast/) — covariate-conditioned completion factors for immature accident periods

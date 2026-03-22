@@ -175,7 +175,7 @@ results = clv_model.predict(
 
 The `results` DataFrame includes `S(t)` at each year, cure probability, expected tenure, and the headline CLV figure. The cure model's structural non-lapsers accumulate CLV differently from susceptibles: their S(t) declines slowly (if at all), so their 5-year CLV is not discounted down by the risk of early departure. That difference should feed your discount targeting directly.
 
-This output format is also what Consumer Duty asks for. PS21/5 requires pricing teams to document that discount decisions are CLV-driven. `SurvivalCLV.predict()` gives you the per-policy S(t) path and cure probability in a single auditable table.
+This output format is also what Consumer Duty asks for. PS21/11 requires pricing teams to document that discount decisions are CLV-driven. `SurvivalCLV.predict()` gives you the per-policy S(t) path and cure probability in a single auditable table.
 
 ---
 

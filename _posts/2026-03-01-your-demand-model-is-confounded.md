@@ -37,13 +37,13 @@ A renewal optimiser built on an overstated elasticity will systematically give b
 
 Take a concrete example. Suppose the true causal elasticity is -0.023: a 1 percentage-point premium increase causes a 2.3 percentage-point reduction in renewal probability. Your naive GLM estimate is -0.047. Guelman and Guillén (2014) demonstrated this type of confounding using propensity score methods on automobile insurance renewal data, finding that the causal estimate was substantially lower in absolute magnitude than the naive association. If the optimiser thinks P(renewal) falls twice as fast with price as it actually does, it will undercut more aggressively than it should. On a renewal book of 200,000 policies, using the wrong elasticity can represent millions of pounds in unnecessary margin concession annually.
 
-Post-PS21/5, this matters even more. The FCA's GIPP remedies (PS21/5, effective January 2022) banned price-walking: you cannot charge renewing customers more than the equivalent new business price through the same channel. The direction of the optimisation is now one-sided. You can discount but you cannot surcharge. Every percentage point of discount you apply unnecessarily is pure margin loss with no regulatory upside.
+Post-PS21/11, this matters even more. The FCA's GIPP remedies (PS21/11, effective January 2022) banned price-walking: you cannot charge renewing customers more than the equivalent new business price through the same channel. The direction of the optimisation is now one-sided. You can discount but you cannot surcharge. Every percentage point of discount you apply unnecessarily is pure margin loss with no regulatory upside.
 
 ---
 
 ## The Double Machine Learning fix
 
-DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/).
+DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/).
 
 The practical upshot: the residualised treatment `D_tilde` is the part of the price variation not explained by risk characteristics — the exogenous variation from seasonal rate changes, portfolio rebalancing, and manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect and produces a valid confidence interval.
 
@@ -158,7 +158,7 @@ For portfolio-level optimisation with factor-structure constraints, `insurance-o
 
 ## FCA compliance: the ENBP checker
 
-PS21/5 is direct on this: renewal prices must not exceed the Equivalent New Business Price for the same risk profile through the same channel. The rule has been in force since January 2022. The FCA's evaluation paper from July 2025 (EP25/2) confirmed price-walking has been substantially eliminated, and also confirmed that multi-firm reviews are ongoing - so the audit question is live.
+PS21/11 is direct on this: renewal prices must not exceed the Equivalent New Business Price for the same risk profile through the same channel. The rule has been in force since January 2022. The FCA's evaluation paper from July 2025 (EP25/2) confirmed price-walking has been substantially eliminated, and also confirmed that multi-firm reviews are ongoing - so the audit question is live.
 
 The ENBP calculation is channel-specific. A customer who originally came via Confused.com has an ENBP calculated from your Confused.com new business price for that risk, not your direct price. If you quote differently across channels, the calculation must reflect that. Cash-equivalent incentives offered to new customers (cashback via PCW, first-month-free) must be reflected in the ENBP - the effective new business price is net of those incentives.
 
@@ -180,7 +180,7 @@ print(violations.select(["policy_id", "channel", "renewal_price",
 
 Run this check before any renewal batch. If you have violations, fix them before renewal invitations go out. The FCA's multi-firm reviews have found implementation failures in ENBP calculation methodology - usually because new business prices were pulled from the wrong channel or because cashback incentives were not netted off correctly. The `ENBPChecker` is a systematic audit against these failure modes.
 
-PS21/5 does not prohibit demand modelling. It constrains what the optimiser objective can do with the demand model output. For renewals, you are now optimising in the space where `renewal_price <= ENBP` - you can discount but not surcharge. This is actually a simpler optimisation problem than the pre-2022 world: it is "who do we discount and by how much?" rather than "who do we discount and who do we surcharge?". Demand modelling is still valuable because identifying which customers will lapse without a discount is exactly what survival-based retention models do.
+PS21/11 does not prohibit demand modelling. It constrains what the optimiser objective can do with the demand model output. For renewals, you are now optimising in the space where `renewal_price <= ENBP` - you can discount but not surcharge. This is actually a simpler optimisation problem than the pre-2022 world: it is "who do we discount and by how much?" rather than "who do we discount and who do we surcharge?". Demand modelling is still valuable because identifying which customers will lapse without a discount is exactly what survival-based retention models do.
 
 ---
 
@@ -220,7 +220,6 @@ Commercial platforms - Akur8, Earnix, Radar - implement versions of this methodo
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise).
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
 
 ---
 

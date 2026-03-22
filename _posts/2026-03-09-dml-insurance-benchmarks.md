@@ -5,7 +5,7 @@ date: 2026-03-09
 featured: true
 author: Burning Cost
 categories: [techniques, causal-inference]
-tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal, motor, benchmarks, python]
+tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal-policy, motor, benchmarks, python]
 description: "Where double machine learning beats naive regression in UK motor pricing - and where it costs more than it gains. Benchmarks on synthetic data."
 ---
 
@@ -242,16 +242,13 @@ The benchmark above -- 6x lower RMSE than naive GLM on synthetic data with treat
 
 The practical bar for using DML in pricing is not "does it perform better than the GLM in a simulation?" It is: do we have enough exogenous treatment variation, are our confounders well-specified, and are we prepared to run and report the sensitivity analysis? If the answer to any of those is uncertain, invest in the diagnostics first. A DML estimate with a wide CI or fragile sensitivity analysis is not better than a naive GLM -- it is just slower to produce and harder to explain.
 
-`insurance-causal` and `insurance-causal` are both on GitHub and installable via `uv add`. Start with the confounding bias report on data you already understand. If the DML estimate and the GLM coefficient agree within 10%, confounding is not material and your GLM was adequate. If they diverge materially, you have the starting point for the conversation about which number to use and why.
+`insurance-causal` and `insurance-causal-policy` are both on GitHub and installable via `uv add`. Start with the confounding bias report on data you already understand. If the DML estimate and the GLM coefficient agree within 10%, confounding is not material and your GLM was adequate. If they diverge materially, you have the starting point for the conversation about which number to use and why.
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/)
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
 
 ---
 
 ## See also
 
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the motivation and theoretical setup: why OLS elasticity estimates are biased in a formula-rated book
+- [Double Machine Learning for Insurance Price Elasticity: Why Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/) — the motivation and theoretical setup: why OLS elasticity estimates are biased in a formula-rated book
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the production library; the benchmarks here test its underlying algorithms
 - [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — adaptive regularisation that extends DML to the thin-segment case, addressing the sample-size limitations noted in these benchmarks

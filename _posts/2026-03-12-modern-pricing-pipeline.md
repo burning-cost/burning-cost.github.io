@@ -277,7 +277,7 @@ For FCA Consumer Duty purposes, the causal elasticity estimate is more defensibl
 
 Given a technical price and a demand model, rate optimisation finds the set of factor adjustments that maximises a business objective (portfolio profit, volume, Sharpe ratio on underwriting income) subject to constraints. The constraints are where regulation lives.
 
-FCA PS21/5 imposes equivalent new business pricing (ENBP): a renewing customer cannot be charged more than a new customer with equivalent risk characteristics would pay. ICOBS 6B translates this into a hard constraint on the renewal-to-new ratio by rating cell. PRA Solvency II capital requirements create an implicit constraint on the loss ratio distribution.
+FCA PS21/11 imposes equivalent new business pricing (ENBP): a renewing customer cannot be charged more than a new customer with equivalent risk characteristics would pay. ICOBS 6B translates this into a hard constraint on the renewal-to-new ratio by rating cell. PRA Solvency II capital requirements create an implicit constraint on the loss ratio distribution.
 
 A linear programming formulation handles all of these simultaneously:
 

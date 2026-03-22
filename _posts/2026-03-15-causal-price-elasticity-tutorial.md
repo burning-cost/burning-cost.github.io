@@ -191,7 +191,7 @@ We do not recommend choosing between the two estimators based on which gives a b
 
 ## Step 5: ENBP-constrained renewal pricing optimisation
 
-The ICOBS 6B.2 constraint (FCA PS21/5, effective January 2022) is a hard ceiling: the renewal offer cannot exceed the Equivalent New Business Price through the same channel. The library's optimiser takes ENBP as a pre-computed column — it is not in the business of running your new-business model. You provide it.
+The ICOBS 6B.2 constraint (FCA PS21/11, effective January 2022) is a hard ceiling: the renewal offer cannot exceed the Equivalent New Business Price through the same channel. The library's optimiser takes ENBP as a pre-computed column — it is not in the business of running your new-business model. You provide it.
 
 ```python
 from insurance_causal.elasticity.optimise import RenewalPricingOptimiser

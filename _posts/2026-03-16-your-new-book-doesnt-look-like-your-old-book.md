@@ -162,7 +162,7 @@ print(report.fca_sup153_summary())
 COVARIATE SHIFT DIAGNOSTIC REPORT
 Source: Direct 2025 (n=48,300)
 Target: Mixed Channel 2027 (n=63,100)
-Generated: 2028-05-15
+Generated: 2025-09-15
 
 VERDICT: MODERATE
 ESS ratio: 0.51 (threshold: 0.30 SEVERE, 0.60 NEGLIGIBLE)
@@ -179,7 +179,7 @@ Retrain within 6 months or when ESS ratio falls below 0.35.
 Monitor driver_age and postcode_district distribution monthly.
 ```
 
-FCA PRIN 2A.2 requires that models used in pricing are appropriate for the population being scored. MODERATE verdict means the model is still appropriate but requires documented correction. SEVERE means appropriateness is questionable without retraining.
+FCA PRIN 2A.4 requires that models used in pricing are appropriate for the population being scored. MODERATE verdict means the model is still appropriate but requires documented correction. SEVERE means appropriateness is questionable without retraining.
 
 What the report does not write for you is the actuarial judgement: what caused the shift, what the commercial implications are, and what the remediation plan is. The library provides the quantitative basis; your governance note provides the context. That is the right division of labour.
 
