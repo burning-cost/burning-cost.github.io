@@ -30,6 +30,7 @@ header_pages:
   - notebooks.md
   - about.md
   - compare.md
+  - awesome.md
 
 plugins:
   - jekyll-feed
