@@ -395,6 +395,69 @@ permalink: /getting-started/
     white-space: normal;
   }
 }
+
+.gs-next-steps {
+  margin-top: 1.25rem;
+  padding: 1.1rem 1.25rem;
+  background: #eef2ff;
+  border: 1px solid #c6d4f9;
+  border-radius: 8px;
+}
+
+.gs-next-steps-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4f7ef8;
+  margin-bottom: 0.6rem;
+}
+
+.gs-next-steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.gs-next-steps-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #2a2d3e;
+  line-height: 1.5;
+}
+
+.gs-next-steps-list li::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #4f7ef8;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  top: -1px;
+}
+
+.gs-next-steps-list a {
+  color: #4f7ef8;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+}
+
+.gs-next-steps-list a:hover {
+  text-decoration: underline;
+}
+
+.gs-next-steps-list .nb-desc {
+  color: #5a6278;
+}
 </style>
 
 <p class="gs-intro">Most people coming to Burning Cost have one of three starting points. Pick the path closest to yours — each one recommends three to five libraries that solve problems you will encounter first, in an order that makes sense.</p>
@@ -521,6 +584,15 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
       <span class="gs-lib-desc">Bühlmann-Straub credibility in Python. Practical for capping thin segments, stabilising NCD factors, and blending a new model with an incumbent rate.</span>
     </li>
   </ul>
+
+<div class="gs-next-steps">
+  <div class="gs-next-steps-label">Your next 3 notebooks</div>
+  <ul class="gs-next-steps-list">
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/shap_relativities_demo.py" target="_blank">shap-relativities</a> <span class="nb-desc">— CatBoost relativities vs GLM vs true DGP on synthetic UK motor data. The factor table output format matches Emblem and Radar imports.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/temporal_cross_validation.py" target="_blank">insurance-cv</a> <span class="nb-desc">— Random CV vs temporal CV vs true out-of-time holdout. Shows how much your current CV approach is flattering your model.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distill_demo.py" target="_blank">insurance-distill</a> <span class="nb-desc">— GBM-to-GLM distillation, surrogate factor tables for rating engines. The notebook to read before your next "how do we get it into Radar?" conversation.</span></li>
+  </ul>
+</div>
 </div>
 
 <div class="gs-path">
@@ -549,6 +621,15 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
       <span class="gs-lib-desc">Produces outputs that the actuarial side of the team will recognise. Bridge between a model that lives in Python and a committee that wants a factor table.</span>
     </li>
   </ul>
+
+<div class="gs-next-steps">
+  <div class="gs-next-steps-label">Your next 3 notebooks</div>
+  <ul class="gs-next-steps-list">
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/conformal_prediction_intervals.py" target="_blank">insurance-conformal</a> <span class="nb-desc">— Tweedie conformal intervals vs bootstrap on 50k motor policies. Distribution-free coverage guarantees that don't require a correctly specified model.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_causal_demo.py" target="_blank">insurance-causal</a> <span class="nb-desc">— DML causal effect vs naive Poisson GLM on confounded data. Shows how much bias your current elasticity estimates contain.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/fairness_audit_demo.py" target="_blank">insurance-fairness</a> <span class="nb-desc">— Proxy discrimination audit aligned to FCA Consumer Duty. Runs the Lindholm correction and produces the evidence pack the FCA expects to see.</span></li>
+  </ul>
+</div>
 </div>
 
 <div class="gs-path">
@@ -577,6 +658,15 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
       <span class="gs-lib-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Relevant wherever a model needs a principled uncertainty bound for Solvency II or internal capital.</span>
     </li>
   </ul>
+
+<div class="gs-next-steps">
+  <div class="gs-next-steps-label">Your next 3 notebooks</div>
+  <ul class="gs-next-steps-list">
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_governance_demo.py" target="_blank">insurance-governance</a> <span class="nb-desc">— PRA SS1/23 validation workflow, model risk tiering, HTML report output. The format a model risk committee or PRA supervisor can act on.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py" target="_blank">insurance-monitoring</a> <span class="nb-desc">— Exposure-weighted PSI/CSI, segmented A/E ratios, Gini drift z-test. Gives you a defensible decision rule for recalibrate vs refit.</span></li>
+    <li><a href="https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/champion_challenger_deployment.py" target="_blank">insurance-deploy</a> <span class="nb-desc">— Shadow mode, quote logging, bootstrap likelihood ratio test, ICOBS 6B.2 audit trail. End-to-end champion/challenger with a clear winner declaration method.</span></li>
+  </ul>
+</div>
 </div>
 
 <!-- Worked examples -->

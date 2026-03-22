@@ -2,6 +2,7 @@
 layout: post
 title: "Extracting Rating Relativities from GBMs with SHAP"
 date: 2026-02-17
+featured: true
 categories: [techniques]
 tags: [shap, gbm, catboost, relativities, pricing, python]
 description: "Extract multiplicative rating relativities from CatBoost using SHAP - same exp(beta) format as a GLM. UK personal lines Python with confidence intervals."
