@@ -72,7 +72,7 @@ This is a deployment and governance framework, not a predictive model. The bench
 | Naive GPD | 0.035 | 10.3% |
 | TruncatedGPD | **0.006** | **1.2%** |
 
-**Heavy-tail benchmark (α=1.5 Pareto, infinite variance, n=20,000):** Gamma GLM structurally fails at the tail. LognormalGPDComposite and GammaGPDComposite (both threshold_method='profile_likelihood') recover the tail shape. Q99 error reduction vs Gamma: 15–20+ percentage points. ILF error at £5m limit: 20+ ppts lower for composite models. Run: Databricks Serverless (43s, SUCCESS).
+**Composite model benchmark (LognormalGPDComposite vs single Lognormal, n=3,000):** 2,500 train / 500 test, known heavy-tailed DGP (Lognormal body 85%, Pareto tail α=2.0, 15%). Profile-likelihood threshold selection. Total tail quantile error (sum of absolute errors at Q95, Q99, Q99.5): 7,017 for single Lognormal vs 6,621 for composite — 5.6% reduction. Honest result: the improvement is modest at n=3,000 because the GPD is fitting from only ~375 tail observations and overshoots at Q99.5 (error 3,970 vs lognormal 2,925). The composite advantage grows substantially at larger sample sizes (n=20,000+) where the tail estimate stabilises. Test log-likelihoods are near-identical (−4,613.8 vs −4,613.6); the composite value is in the shape of the tail, not the bulk fit. Run: `benchmarks/benchmark.py`.
 
 **WeibullTemperedPareto vs standard Pareto:** +31.3 log-likelihood; standard Pareto Q99.5 error 15.9%.
 
@@ -125,26 +125,27 @@ Standard conformal meets aggregate coverage but undercovers the highest-risk dec
 
 ### insurance-conformal-ts — Adaptive conformal intervals for aggregate time series
 
-**What is measured:** Adaptive conformal inference (ACI) and ConformalPID vs split conformal and naive parametric on synthetic monthly aggregate claim series with distribution shift. Kupiec unconditional coverage test on held-out windows.
+**What is measured:** ACI (Adaptive Conformal Inference) and ConformalPID vs split conformal and naive fixed-width on synthetic monthly aggregate claim series with a +20% step shift at test start. Base forecaster is a constant (training mean) — the differentiator is the conformal adaptation, not the forecaster. Kupiec unconditional coverage test on held-out windows. Target coverage: 90%.
 
-**24-month test window:**
+**24-month test window (60 train / 24 test):**
 
-| Method | Coverage | Kupiec p-value |
-|---|---|---|
-| Naive parametric | 0.583 | — |
-| Split conformal | 0.542 | — |
-| ACI | 0.792 | 0.1163 |
-| ConformalPID | **0.808** | **0.1481** |
+| Method | Coverage | Width | Kupiec p-value |
+|---|---|---|---|
+| Naive fixed-width | 0.375 | 60.3 | 0.0000 |
+| Split conformal | 0.500 | 86.5 | 0.0000 |
+| **ACI** | **0.792** | 136.7 | **0.1163** |
+| ConformalPID | 0.625 | 95.8 | 0.0003 |
 
-**60-month test window (more stable regime):**
+**60-month test window (60 train / 60 test):**
 
-| Method | Coverage | Kupiec p-value |
-|---|---|---|
-| Split conformal | 0.483 | — |
-| ACI | 0.833 | 0.1876 |
-| ConformalPID | **0.850** | **0.2256** |
+| Method | Coverage | Width | Kupiec p-value |
+|---|---|---|---|
+| Naive fixed-width | 0.383 | 60.3 | 0.0000 |
+| Split conformal | 0.483 | 86.5 | 0.0000 |
+| **ACI** | **0.850** | 155.4 | **0.2256** |
+| ConformalPID | 0.667 | 117.3 | 0.0000 |
 
-Split conformal collapses under distribution shift — its calibration set is stale by the time the test window arrives. ACI and ConformalPID maintain nominal coverage by adapting the quantile online. ConformalPID's integral correction term prevents the slow drift that accumulates in ACI over longer horizons.
+ACI is the winner on this benchmark. Split conformal collapses under distribution shift — its calibration set is stale by the time the test window arrives. ACI maintains statistically valid coverage by adapting the quantile online (Kupiec p=0.12 at 24 months, p=0.23 at 60 months). ConformalPID does not achieve valid Kupiec coverage on this benchmark (p=0.0003 and p=0.0000); its PID integral correction term performs better in theory but on this particular DGP with a constant base forecaster and a sharp step shift, ACI's simpler update rule adapts faster. ACI's second-half coverage (months 31–60) reaches 90% exactly, confirming the adaptive mechanism converges to the target. Static methods stay flat at 38–50% regardless of horizon. The naive fixed interval is narrower (width 60 vs 155) but achieves completely invalid coverage — there is no free lunch with distribution shift.
 
 [github.com/burning-cost/insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts)
 
@@ -171,27 +172,38 @@ Split conformal collapses under distribution shift — its calibration set is st
 
 ### insurance-causal-policy — Synthetic DiD / SDID for pricing interventions
 
-**What is measured:** SDID vs naive before-after and plain DiD. 30-simulation Monte Carlo, 80 segments, 12 periods, true ATT = −0.08, market inflation 0.5pp per period.
+**What is measured:** SDID vs naive before-after and plain DiD. 100 segments, 12 quarterly periods, true ATT = −0.08, market-wide claims inflation 0.5pp per period. Results from `notebooks/benchmark_sdid.py`, Databricks Serverless, 2026-03-17.
 
-| Method | Bias | 95% CI coverage |
-|---|---|---|
-| Naive before-after | ~+2pp upward (market inflation absorbed) | — |
-| SDID | **near-zero** | ~93–95% |
+| Method | ATT estimate | Bias vs true | 95% CI |
+|---|---|---|---|
+| Naive before-after | −0.042 | +3.8pp upward | none |
+| Plain DiD | −0.077 | +0.3pp | none |
+| **SDID** | **−0.075** | **+0.5pp** | **[−0.090, −0.060]** |
 
-Naive before-after is biased upward by roughly 4 × 0.5pp inflation over the post-period window. SDID recovers the true ATT with valid confidence intervals.
+SDID 95% CI coverage across 50 simulations: 98.0% (target 95% — slightly conservative). The naive before-after bias arises because market claims inflation increased loss ratios across all segments during the post-treatment window; a before-after comparison on treated segments alone cannot separate the rate change effect from that market trend.
 
 **v0.2.0 — DoublyRobustSCEstimator (DRSC, arXiv:2503.11375)**
 
-DRSC adds double robustness to SDID: the estimator is consistent if *either* the parallel trends assumption holds *or* the synthetic control weights are correctly specified — you only need one of the two to hold, not both. ~420 LOC, 56 new tests, no new dependencies.
+DRSC adds double robustness to SDID: the estimator is consistent if *either* the parallel trends assumption holds *or* the synthetic control weights are correctly specified — you only need one of the two to hold, not both. 100-simulation Monte Carlo, true ATT = −0.06, 8 pre-treatment + 4 post-treatment periods, 5 treated units. Databricks Serverless, 2026-03-21.
 
-**What is measured:** DRSC vs SDID RMSE under two donor pool sizes, 100-simulation Monte Carlo, fixed seed.
+**Few donors (N_co = 6):**
 
-| Donor pool | DRSC RMSE | SDID RMSE | DRSC improvement |
-|---|---|---|---|
-| N_co = 6 (few donors) | lower | baseline | **24% lower RMSE** |
-| N_co = 40 (many donors) | equivalent | equivalent | no meaningful difference |
+| Metric | SDID | DRSC |
+|---|---|---|
+| Mean ATT | −0.0588 | −0.0590 |
+| Absolute bias | 0.0012 | **0.0010** |
+| RMSE | 0.0137 | **0.0104** |
+| 95% CI coverage | 97% | 93% |
 
-The advantage is concentrated in the regime most relevant to insurance pricing: when you have few comparable control segments (e.g., 5–10 product lines or regions as controls), DRSC substantially outperforms SDID. With a rich donor pool, both estimators perform similarly — DRSC does not hurt.
+**Many donors (N_co = 40):**
+
+| Metric | SDID | DRSC |
+|---|---|---|
+| Mean ATT | −0.0601 | −0.0601 |
+| RMSE | 0.0088 | 0.0088 |
+| 95% CI coverage | **96%** | 91% |
+
+DRSC reduces RMSE by 24% at N_co=6. The advantage is concentrated in the regime most relevant to insurance pricing: when you have few comparable control segments (e.g., 5–10 product lines or regions as controls). At N_co=40, both estimators perform identically on point estimates and RMSE; SDID has slightly better CI coverage because jackknife SE is better calibrated than bootstrap for large symmetric problems. Decision rule: use DRSC when N_co < 10, SDID when N_co ≥ 20.
 
 [github.com/burning-cost/insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy)
 
@@ -248,14 +260,14 @@ Naive OLS recovers −0.40 because it regresses on the selected sample of bound 
 
 ### insurance-dispersion — DGLM for heteroscedastic severity
 
-**What is measured:** DGLM (double GLM with modelled dispersion parameter φ) vs standard Gamma GLM (constant φ) on 25,000 synthetic policies where φ varies by vehicle group. Known DGP: φ ranges from 0.1 (fleet, low dispersion) to 0.6 (young drivers, high dispersion).
+**What is measured:** DGLM (double GLM with modelled dispersion parameter φ) vs standard Tweedie GLM (constant φ) on 25,000 synthetic UK commercial property policies where φ varies by distribution channel. Known DGP: φ ranges 3–6× across channels (direct vs broker SME vs broker large). Databricks benchmark: `databricks/benchmark.py` (Gamma severity, 20,000 policies, four-channel motor book, φ range 0.30–1.50).
 
-| Method | φ MAE | Variance ratio range | 95% PI coverage |
+| Method | φ MAE | Variance ratio range | Max channel A/E deviation |
 |---|---|---|---|
-| Gamma GLM (constant φ) | 0.312 | 0.51–1.94 | 88.3% |
-| DGLM | **0.089** | **0.87–1.12** | **91.7%** |
+| Constant-φ GLM | 0.312 | 0.51–1.94 | 0.38 |
+| DGLM | **0.089** | **0.87–1.12** | **0.11** |
 
-The constant-φ GLM systematically under-reserves for young driver claims (variance ratio 1.94 — predicted variance is half of actual) and over-reserves for fleet (variance ratio 0.51). DGLM reduces φ MAE by 71.5% and collapses the variance ratio range from 0.51–1.94 to 0.87–1.12. Separate Gamma benchmark (single-group φ=0.30): DGLM recovers φ̂=0.304, 90% PI coverage 88.8% vs target 90%.
+The constant-φ GLM assigns variance ratios of 0.51–1.94 across channels — substantially miscalibrated, systematically under-reserving for broker large accounts and over-reserving for direct. DGLM reduces φ MAE by 71.5% and collapses the variance ratio range to 0.87–1.12. The Tweedie deviance on the test set is comparable between models (the mean submodel is the same); the improvement is entirely in variance calibration. Separate single-channel Gamma benchmark (φ=0.30): DGLM recovers φ̂=0.304, 90% PI coverage 88.8% vs target 90%.
 
 [github.com/burning-cost/insurance-dispersion](https://github.com/burning-cost/insurance-dispersion)
 
@@ -521,11 +533,29 @@ The more decision-relevant signal: walk-forward's per-fold trajectory (0.547, 0.
 
 ### insurance-interactions — Automated GLM interaction detection
 
-**What is measured:** CANN+NID interaction detection at scale. 50 features, 3 planted interactions, 1,225 candidate pairs.
+**What is measured:** CANN+NID vs exhaustive likelihood-ratio testing on synthetic UK motor datasets with planted interactions. Two regimes benchmarked. Databricks Serverless, 2026-03-16.
 
-NID filters candidate pairs before statistical testing. Bonferroni threshold is 82× stricter for exhaustive pairwise testing (1,225 pairs) vs NID-pre-filtered testing (~15 pairs). Without NID, the multiple testing burden makes real interactions undetectable in moderate-sized portfolios.
+**50-feature regime (1,225 candidate pairs):**
 
-The 10-feature exhaustive benchmark is included in the README as the honest "when exhaustive works" case.
+| Metric | CANN+NID | Exhaustive LR testing |
+|---|---|---|
+| GLM fits required | ~15 (top-K from NID) | 1,225 |
+| Bonferroni threshold | p < 0.0033 | p < 0.000041 |
+| Planted interactions recovered (3) | expected 2–3/3 | not practical — threshold too strict for moderate effects |
+| Wall-clock time (CPU) | 5–10 min | ~40–60 min (extrapolated) |
+| False positives after correction | expected 0–1 | expected 0–3 |
+
+NID pre-filtering makes the Bonferroni correction **82× less stringent** (15 tests vs 1,225). An interaction with a 0.25 log-point effect can easily fail to clear the exhaustive threshold even when it is real.
+
+**10-feature regime (45 candidate pairs — honest "when exhaustive works" result):**
+
+| Metric | Exhaustive LR testing | CANN+NID (compact, n_ensemble=2) |
+|---|---|---|
+| True positives (2 planted) | **2/2** | 0/2 |
+| False positives (Bonferroni-corrected) | 5 | 1 |
+| Runtime (Databricks CPU) | 43.3s | 34.7s |
+
+At 10 features the CANN missed both planted interactions — a 2-run ensemble with 150 epochs produces unstable NID rankings. Use exhaustive testing when it is practical; CANN+NID when it is not. The crossover point is roughly 20–25 features (C(20,2)=190 pairs). Run `benchmarks/benchmark.py` to reproduce both regimes.
 
 [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)
 
@@ -644,11 +674,17 @@ Honest result: all three methods achieve similar retention forecast MAE (~0.047)
 
 ### insurance-frequency-severity — Sarmanov copula
 
-**What is measured:** JointFreqSev IFM estimator on a pure Sarmanov DGP (ω=3.5 planted directly in the copula). Databricks Serverless (58s, SUCCESS).
+**What is measured:** JointFreqSev IFM estimator (Sarmanov copula) vs independent two-part model on 12,000 synthetic UK motor policies (8,437 train / 3,563 test) with known positive freq-sev dependence via a latent risk score. Results from `benchmarks/benchmark_insurance_frequency_severity.py`, Databricks Serverless, 2026-03-16.
 
-The benchmark uses a pure Sarmanov DGP via `SarmanovCopula.sample()` — the same family as the model being fit. Earlier benchmarks using a latent-factor DGP were methodologically invalid (the planted parameter has no correspondence to the IFM estimate). The current benchmark validates parameter recovery directly: omega planted 3.5, IFM relative error expected <20%.
+| Metric | Independent model | Sarmanov copula |
+|---|---|---|
+| Pure premium MAE | baseline | **−28.6%** |
+| Portfolio total premium bias | +22.95% | −6.77% |
+| Mean correction factor | — | 0.943 |
 
-Independence assumption biases high-severity/high-frequency segments: the pure premium correction factor from the joint model is the differentiating metric.
+Correction factors: mean 0.943, p10 0.939, p90 0.950. The independence model overstates pure premium by systematically assuming high-count and high-severity risks are independent. The correction is per-policy and analytical (closed-form, no simulation at scoring time).
+
+Honest caveat: the fitted omega is −1.14 (Spearman rho ≈ −0.015) with 95% CI (−1.61, +0.30) — independence is not rejected at 5% on this benchmark. The MAE improvement and bias reduction are partially explained by the correction absorbing marginal model error rather than a clean copula signal. The canonical use case is a book where `DependenceTest` returns a positive and significant omega. Run `DependenceTest` before fitting; if p > 0.05, the correction is not supported by the data. Note: an earlier benchmark used a pure Sarmanov DGP for parameter recovery validation (omega planted 3.5, IFM relative error <20%) — the predictive comparison above uses a latent-factor DGP which better reflects production conditions.
 
 [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity)
 
@@ -710,7 +746,7 @@ All benchmarks follow the same design contract:
 
 - **Known DGP** — synthetic data with planted parameters so bias is measurable, not just approximate.
 - **Self-contained** — no external data files; everything is generated in the script.
-- **Honest failures** — where a method has conditions under which it underperforms, these are documented. See insurance-causal (DML over-partialling), insurance-synthetic (severity KS), insurance-whittaker (young-driver peak), insurance-gam (EBM calibration artefact), insurance-survival (comparable MAE across methods), insurance-trend (break detection did not fire on 24-quarter series).
+- **Honest failures** — where a method has conditions under which it underperforms, these are documented. See insurance-causal (DML over-partialling), insurance-synthetic (severity KS), insurance-whittaker (young-driver peak), insurance-gam (EBM calibration artefact), insurance-survival (comparable MAE across methods), insurance-trend (break detection did not fire on 24-quarter series), insurance-conformal-ts (ConformalPID does not beat ACI on this DGP), insurance-interactions (CANN+NID fails on 10-feature compact settings), insurance-frequency-severity (independence not rejected at 5% on this sample).
 - **Databricks Serverless** — all scripts are in `notebooks/benchmark.py` in each repo, formatted for Databricks import. Run times are noted where material.
 - **Parameter recovery** — benchmarks that validate an estimator use DGPs from the same distributional family as the model (see insurance-frequency-severity notes above).
 
