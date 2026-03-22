@@ -27,7 +27,9 @@ In most domains where A/B testing is routine, the reward signal arrives quickly.
 
 Insurance pricing has a 12–36 month reward tail. The thing you actually care about (whether the new model correctly prices risk) is not observable until claims develop. Claim frequency gives you a signal at six to nine months if you have enough volume. Developed loss ratio takes twelve months minimum, and that is before you account for IBNR on long-tail lines. If you are comparing models on motor after three months, you are comparing noise.
 
-The power calculation makes this concrete. Assume a mid-size UK motor book: 3,000 bound policies per month to champion, with a 10% challenger split giving 300 per month to challenger. You want to detect a 3 percentage point difference in loss ratio with 80% power at alpha = 0.05. Given typical UK motor LR volatility (sigma approximately 0.26), the challenger arm needs roughly 5,000 bound policies. At 300 per month, that takes 17 months to bind. Add 12 months of claims development. You are looking at 29 months from experiment start to a credible LR comparison.
+The power calculation makes this concrete. Assume a mid-size UK motor book: 3,000 bound policies per month to champion, with a 10% challenger split giving 300 per month to challenger. You want to detect a 3 percentage point difference in loss ratio with 80% power at alpha = 0.05. Given typical UK motor LR volatility (sigma approximately 0.26), the standard sample size formula (two-sided, equal arms) gives roughly 1,200 bound policies per arm. At 300 per month, that takes around four months to bind. Add 12 months of claims development. You are looking at 16 months from experiment start to a credible LR comparison.
+
+That is the optimistic case with 300 policies per month to challenger. With a thinner challenger split or lower monthly volume, the timeline stretches materially. The library's power analysis module runs this calculation for your specific parameters.
 
 This is not a caveat buried in a footnote. It is the central operational fact of insurance champion/challenger, and most teams do not know it when they start the experiment.
 
@@ -51,7 +53,7 @@ print(pa["notes"])
 #  'These are point estimates. Run bootstrap_lr_test() once data matures.']
 ```
 
-Hit rate significance at 5 months. Loss ratio credibility at 29 months. If your experiment is shorter than that, you are making a promotion decision on insufficient evidence. That is worth knowing before you promote.
+Hit rate significance at roughly 2 months. Loss ratio credibility at around 16 months — longer if your challenger split is thin. If your experiment is shorter than that, you are making a promotion decision on insufficient evidence. That is worth knowing before you promote.
 
 ---
 
@@ -293,7 +295,7 @@ freq_result = comp.frequency_test("v3_vs_v2", development_months=6)
 
 ## The ENBP audit report
 
-This is the part that directly addresses what the FCA found in 2023. In a multi-firm review of 66 UK motor and home insurers, only 11 — 17% — met ICOBS 6B.2.51R record-keeping requirements fully. Twenty-eight firms had records that were insufficiently granular for the SMF holder to confirm compliance. Twenty-seven firms had no evidence that controls were working as intended. The FCA's language was direct: "many smaller firms had few or no records."
+This is the part that directly addresses what the FCA found in 2023. In its thematic review of ENBP compliance, the FCA found that a significant proportion of UK motor and home insurers fell short of ICOBS 6B.2.51R record-keeping requirements. Many had records that were insufficiently granular for the SMF holder to confirm compliance; others had no documented evidence that controls were working as intended. The FCA's language was direct: "many smaller firms had few or no records."
 
 The `ENBPAuditReport` generates the document that addresses this:
 
@@ -381,7 +383,7 @@ Champion/challenger testing in insurance is not conceptually hard. The concept i
 
 No open-source Python library provided all of this before. The commercial platforms that do (DataRobot MLOps, Akur8 Deploy) are either model-specific or infrastructure-heavy (Kubernetes required). Neither is an option for a pricing team running Radar on a desktop or working in Databricks notebooks with sklearn models.
 
-The 29-month timeline to LR significance is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early or abandon the experiment before it matures. The power analysis module is not a nice-to-have; we think it is the most important output in the library for setting operational expectations correctly.
+The timeline to LR significance — typically over a year when claims development is included — is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early or abandon the experiment before it matures. The power analysis module is not a nice-to-have; we think it is the most important output in the library for setting operational expectations correctly.
 
 ---
 
