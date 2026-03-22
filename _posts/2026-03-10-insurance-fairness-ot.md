@@ -12,12 +12,12 @@ Detecting proxy discrimination in your pricing model is the first problem. Fixin
 
 Our earlier library, [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), handles the audit side: given a trained model, it tells you whether postcode is proxying for ethnicity, how much of the motor premium disparity between high- and low-BME postcodes is attributable to each rating factor, and what the Equality Act exposure looks like. That is useful. But the output of an audit is a finding, not a price. The question after the audit is: what do we charge instead?
 
-That is what [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) answers. It computes discrimination-free premiums by (a) decomposing the effect of a protected attribute on the price into causal paths, (b) removing only the paths that constitute discrimination, and (c) handling the multi-attribute case -- where you are adjusting for gender and disability status simultaneously -- via Wasserstein barycenter correction. The result is a corrected premium that can go straight into a GLM tariff table as a set of multiplicative relativities.
+That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) answers. It computes discrimination-free premiums by (a) decomposing the effect of a protected attribute on the price into causal paths, (b) removing only the paths that constitute discrimination, and (c) handling the multi-attribute case -- where you are adjusting for gender and disability status simultaneously -- via Wasserstein barycenter correction. The result is a corrected premium that can go straight into a GLM tariff table as a set of multiplicative relativities.
 
 ```bash
 uv add insurance-fairness
 # or
-uv add insurance-fairness
+uv add insurance-fairness-ot
 ```
 
 ---
@@ -323,7 +323,7 @@ Our view: the DAG should be agreed between the Chief Actuary, the Compliance fun
 
 ---
 
-`insurance-fairness` is open source under the MIT licence at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Install with `uv add insurance-fairness`. Python 3.11+, NumPy, SciPy, networkx, POT (Python Optimal Transport), and Polars.
+`insurance-fairness-ot` is open source under the MIT licence at [github.com/burning-cost/insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot). Install with `uv add insurance-fairness-ot`. Python 3.11+, NumPy, SciPy, networkx, POT (Python Optimal Transport), and Polars.
 
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the audit side: how to detect discrimination using insurance-fairness before reaching for the correction tool
 - [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/) - the do-calculus foundations that underpin the causal path decomposition here

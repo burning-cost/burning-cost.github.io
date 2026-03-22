@@ -181,7 +181,7 @@ frontier = EfficientFrontier(
 
 frontier_result = frontier.run()
 frontier_result.pareto_data()
-# Polars DataFrame: retention, profit, gwp, loss_ratio (15 rows)
+# Polars DataFrame: retention, profit, gwp, loss_ratio (converged points only)
 ```
 
 Each of the 15 points is an independent optimisation at a different retention floor. At 80% retention, the optimiser has more pricing freedom and extracts more profit. At 95%, it is heavily constrained and profit is lower — but you are holding more of your book. The frontier shows you the rate of exchange: how much profit you give up per percentage point of retention. That is the number that should drive the commercial conversation, not a gut feeling about what "reasonable" retention looks like.
