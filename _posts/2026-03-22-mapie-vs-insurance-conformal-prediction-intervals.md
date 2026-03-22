@@ -222,7 +222,7 @@ The benchmark numbers are in `benchmarks/benchmark_gbm.py`. Run them.
 ---
 
 **Related:**
-- [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post
+- [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post
 - [insurance-conformal on GitHub](https://github.com/burning-cost/insurance-conformal)
 - Manna et al. (2025), *Applied Stochastic Models in Business and Industry* — theoretical basis for `pearson_weighted` and locally-weighted conformal in insurance
 - Graziadei et al. (arXiv:2307.13124) — frequency-severity conformal prediction protocol

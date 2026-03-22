@@ -252,8 +252,8 @@ Use Fairlearn when you are doing classification and want to enforce demographic 
 ---
 
 **Related posts:**
-- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/07/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
-- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/02/28/fca-consumer-duty-fair-value-assessments/) — what TR24/2 actually requires vs what most insurers are doing
+- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
+- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — what TR24/2 actually requires vs what most insurers are doing
 
 ---
 

@@ -155,4 +155,4 @@ For independent validators reviewing an internal model, the vine summary is a di
 **Related posts:**
 - [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — the basics: exposure semantics, marginal fitting, TSTR fidelity, and why SDV and CTGAN produce portfolios that break the moment you run a pricing model on them
 - [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) — another case where a naive approximation gives structurally incorrect results in the tail
-- [Your Model Drift Alert Is Too Late](/2026/03/18/your-model-drift-alert-is-too-late/) — complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions
+- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions

@@ -166,6 +166,6 @@ We are not arguing for replacing stochastic reserving with conformal prediction.
 ## See also
 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: what conformal prediction guarantees and how to calibrate intervals for cross-sectional insurance models
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — when the goal is bounding expected monetary shortfall rather than coverage probability; directly applicable to reserve adequacy questions
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — when the goal is bounding expected monetary shortfall rather than coverage probability; directly applicable to reserve adequacy questions
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, relevant when reserving requires correlated frequency/severity uncertainty
 - [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for development triangles where the trend assumption of static conformal breaks down

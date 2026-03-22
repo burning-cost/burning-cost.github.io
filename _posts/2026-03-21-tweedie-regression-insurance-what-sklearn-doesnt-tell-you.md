@@ -333,5 +333,5 @@ If you are building or inheriting a pricing model and the word "offset" does not
 
 **Related posts:**
 
-- [Your Technical Price Ignores Variance](/2026/03/08/insurance-distributional/) — distributional GBM: mean + CoV per risk
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/03/06/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals, why parametric Tweedie intervals fail on heterogeneous books
+- [Your Technical Price Ignores Variance](/2026/03/05/insurance-distributional/) — distributional GBM: mean + CoV per risk
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals, why parametric Tweedie intervals fail on heterogeneous books

@@ -340,6 +340,6 @@ The `to_polars()` report is the model risk artefact. It records which metrics we
 ---
 
 **Related posts:**
-- [Your Model Drift Alert Is Too Late](/2026/03/18/your-model-drift-alert-is-too-late/) — why A/E is a lagging indicator and what to monitor instead
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/07/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring
+- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — why A/E is a lagging indicator and what to monitor instead
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring
 - [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model

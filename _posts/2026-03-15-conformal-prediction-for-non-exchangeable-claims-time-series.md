@@ -427,6 +427,6 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 ## See also
 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: split conformal for cross-sectional insurance models where exchangeability holds
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, handling correlated frequency/severity uncertainty simultaneously
 - [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty
