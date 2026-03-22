@@ -18,7 +18,7 @@ If you are using the additive model, you are underpricing that household. Aas et
 [`insurance-copula`](https://github.com/burning-cost/insurance-copula) is a Python library that wraps pyvinecopulib with an insurance-specific workflow: exposure-weighted vine fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and portfolio aggregate PML simulation. It is the piece that was missing between "pyvinecopulib exists" and "we can use vine copulas in our pricing system."
 
 ```bash
-pip install insurance-copula[vine]
+uv add insurance-copula[vine]
 ```
 
 ---

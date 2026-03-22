@@ -16,7 +16,7 @@ Their conjunction is not guaranteed. If frequency and severity each have 5% misc
 This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements joint coverage control for multi-output insurance models.
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 ```
 
 ---
@@ -306,7 +306,7 @@ Three bugs found during build are worth noting: a deviance-as-width units error 
 - 198 tests, MIT-licensed, Python 3.10+
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 ```
 
 Source at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).

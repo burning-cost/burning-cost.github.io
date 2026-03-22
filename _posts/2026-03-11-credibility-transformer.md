@@ -14,7 +14,7 @@ The Credibility Transformer (Richman, Scognamiglio, Wüthrich, 2024; arXiv:2409.
 [`insurance-credibility-transformer`](https://github.com/burning-cost/insurance-credibility-transformer) implements the base CT and its ICL extension in PyTorch. 85 tests, 2,372 lines of source, MIT-licensed, on PyPI.
 
 ```bash
-pip install insurance-credibility-transformer
+uv add insurance-credibility-transformer
 ```
 
 ---

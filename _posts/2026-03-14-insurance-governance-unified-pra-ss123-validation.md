@@ -21,7 +21,7 @@ In practice that meant: two installs, two pinned versions, and a non-trivial cha
 [`insurance-governance`](https://github.com/burning-cost/insurance-governance) is the merge. One install, one import path, zero coupling to manage yourself.
 
 ```bash
-pip install insurance-governance
+uv add insurance-governance
 ```
 
 ---

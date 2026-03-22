@@ -14,7 +14,7 @@ Consider the discretionary loading band. Your GLM produces a technical price. Yo
 This is the problem [`insurance-online`](https://github.com/burning-cost/insurance-online) addresses. It brings multi-armed bandit algorithms to loading optimisation, with regulatory constraints built in from the start.
 
 ```bash
-pip install insurance-online
+uv add insurance-online
 ```
 
 ---

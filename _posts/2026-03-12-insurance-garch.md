@@ -24,7 +24,7 @@ We built [`insurance-garch`](https://github.com/burning-cost/insurance-garch) to
 `insurance-garch` wraps Kevin Sheppard's `arch` package (v7.2 — a production-grade GARCH implementation used in academic finance for a decade) with an insurance-specific workflow. The design principle is simple: a pricing actuary who has used `insurance-trend` should be able to pick this up in an afternoon.
 
 ```bash
-pip install insurance-garch
+uv add insurance-garch
 ```
 
 ```python

@@ -16,7 +16,7 @@ The problem is not that actuaries are bad at spotting patterns — they are not.
 [`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) implements formal Bayesian change-point detection for insurance pricing time series. MIT-licensed, on PyPI.
 
 ```bash
-pip install insurance-dynamics
+uv add insurance-dynamics
 ```
 
 ---
@@ -259,7 +259,7 @@ The third is audit. Informal monitoring leaves no reproducible record. If you ar
 
 The main classes are `FrequencyChangeDetector` (online BOCPD with exposure-weighted Poisson-Gamma conjugate), `SeverityChangeDetector` (online BOCPD with Normal-InverseGamma conjugate for log-transformed severities), `RetrospectiveBreakFinder` (PELT with bootstrap CIs), `LossRatioMonitor` (combined frequency and severity monitoring with recommendation), `UKEventPrior` (ten encoded UK insurance events as hazard-function priors), and `ConsumerDutyReport` (PRIN 2A.9 evidence pack generation).
 
-Install with `pip install insurance-dynamics` or `uv add insurance-dynamics`.
+Install with `uv add insurance-dynamics`.
 
 The only genuine limitation to document: BOCPD is a univariate method. It operates on a single time series — claim frequency, severity, or loss ratio — not on the multivariate joint distribution of all your rating factors simultaneously. For detecting whether a specific rating factor's effect has changed (concept drift in the P(Y|X) relationship), the correct tool is the Gini drift test in [`insurance-monitoring`](/2026/03/03/your-pricing-model-is-drifting/). Change-point detection and model monitoring solve adjacent but distinct problems: the former asks "has the data-generating process changed?", the latter asks "is my model still accurate?". In a well-run pricing function, both are running in parallel.
 
@@ -275,5 +275,5 @@ The only genuine limitation to document: BOCPD is a univariate method. It operat
 
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the PSI/A-E/Gini framework for detecting whether your model is still accurate
 - [Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book](/2026/03/13/insurance-nowcast/) — covariate-conditioned completion factors for immature accident periods
-- [Bayesian Trend Models for Insurance Frequency and Severity](/2026/03/11/insurance-trend/) — fitting piecewise trend models after a regime change is detected
+- [Bayesian Trend Models for Insurance Frequency and Severity](/2026/03/13/insurance-trend/) — fitting piecewise trend models after a regime change is detected
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

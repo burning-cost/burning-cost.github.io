@@ -16,9 +16,9 @@ There is.
 [`insurance-reconcile`](https://github.com/burning-cost/insurance-reconcile) implements MinTrace reconciliation (Wickramasuriya, Athanasopoulos, Hyndman & Rajaratnam, 2019, JASA 114(508)) for insurance pricing hierarchies, with the insurance-specific extensions that make it work correctly on loss costs, earned premium weights, and frequency×severity decompositions.
 
 ```bash
-pip install insurance-reconcile
+uv add insurance-reconcile
 # With full MinTrace reconciliation:
-pip install 'insurance-reconcile[mintrace]'
+uv add 'insurance-reconcile[mintrace]'
 ```
 
 ---
@@ -339,7 +339,7 @@ MinTrace is not a new idea. It has been standard methodology in academic forecas
 160 tests, 9 modules, MIT-licensed.
 
 ```bash
-pip install 'insurance-reconcile[mintrace]'
+uv add 'insurance-reconcile[mintrace]'
 ```
 
 ---

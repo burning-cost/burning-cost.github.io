@@ -18,7 +18,7 @@ This is the demand model misspecification problem. It is not exotic. Every prici
 [`insurance-dro`](https://github.com/burning-cost/insurance-dro) adds a safety margin. Instead of optimising against a single demand model, it optimises against the worst-case demand distribution within a calibrated ball of plausible distributions around your empirical samples. The output is not a single rate vector but a curve: profit at each level of robustness, with the profit you sacrifice to get there. That curve - the price of robustness - is what goes in the committee paper.
 
 ```bash
-pip install insurance-dro
+uv add insurance-dro
 ```
 
 ---
@@ -183,7 +183,7 @@ KL divergence reformulation uses CVXPY's ExpCone constraints. Chi-squared uses t
 137 tests, MIT-licensed, Python 3.10+.
 
 ```bash
-pip install insurance-dro
+uv add insurance-dro
 ```
 
 Source at [github.com/burning-cost/insurance-dro](https://github.com/burning-cost/insurance-dro).

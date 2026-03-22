@@ -181,3 +181,10 @@ The library is on GitHub at [burning-cost/insurance-covariate-shift](https://git
 - [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the related problem of temporal leakage in model evaluation; covariate shift and temporal leakage are the two main reasons a model's training accuracy exceeds its live accuracy
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals; the LR-QR method in insurance-covariate-shift extends this to the shifted-distribution case
 - [Three-Layer Pricing Model Monitoring: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — ongoing monitoring for the performance degradation that covariate shift causes in deployed models
+
+---
+
+## See also
+
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — a fuller treatment covering all three stages: detecting the shift, applying importance weighting, and extending conformal intervals to the shifted distribution
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — the operational monitoring question: how often to run the diagnostic, what ESS thresholds trigger action, and when retraining is the only answer

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Factor Banding Is Made Up"
+title: "Optimal Binning for GLM Rating Factors: Beyond the Eyeball Test"
 date: 2026-03-14
 categories: [pricing, libraries]
 tags: [GLM, factor-banding, R2VF, fused-lasso, territory, SKATER, embeddings, poisson, BIC, insurance-glm-tools, python]
@@ -147,7 +147,7 @@ SKATER (Spatial 'K'luster Analysis by Tree Edge Removal) solves this by construc
 This is accessed via the nested pipeline when you have a GeoDataFrame of postcode sector polygons:
 
 ```python
-pip install "insurance-glm-tools[spatial]"
+uv add "insurance-glm-tools[spatial]"
 ```
 
 ```python

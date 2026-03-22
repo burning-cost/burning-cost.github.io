@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off."
+title: "EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing"
 date: 2026-03-14
 categories: [libraries, pricing, interpretability]
 tags: [gam, ebm, nam, anam, pin, interpretability, GLM, GBM, tweedie, poisson, monotonicity, shapley, insurance-gam, french-mtpl, python]
