@@ -251,7 +251,7 @@ residual_plot(model, X_test, y_test['claim_count'],
 
 We should be direct about what the EBM advantage actually is and what it is not.
 
-The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. The PRA's SS1/23 model risk management guidance (effective May 2024) requires validators to understand model decision boundaries and test behaviour at margins - but it does not specify architectures.
+The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. The PRA's SS1/23 model risk management guidance (effective May 2024, applicable to banks but widely referenced by insurance teams) calls for validators to understand model decision boundaries and test behaviour at margins - but it does not specify architectures.
 
 The case is about the quality of evidence you can produce when asked to demonstrate that your model does what you think it does.
 

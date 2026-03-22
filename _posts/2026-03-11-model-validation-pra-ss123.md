@@ -4,10 +4,12 @@ title: "Quantitative Model Validation Under PRA SS1/23: Pass/Fail Tests with Rep
 date: 2026-03-11
 categories: [pricing, libraries]
 tags: [validation, pra-ss123, governance, gini, hosmer-lemeshow, psi, calibration, catboost, polars, insurance-governance, motor, uk-pricing, python, model-risk]
-description: "PRA SS1/23 requires quantitative pass/fail tests, not narrative. insurance-governance automates the full validation suite and generates auditable HTML reports."
+description: "PRA SS1/23 principles — written for banks but widely adopted by insurance teams — call for quantitative pass/fail tests, not narrative. insurance-governance automates the full validation suite."
 ---
 
-Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on. The PRA disagrees with this approach. SS1/23, the Supervisory Statement on model risk management in force since May 2024, requires that validation tests have defined quantitative thresholds with documented pass/fail outcomes, and that those outcomes are reproducible and auditable. A narrative saying "discrimination is adequate" does not satisfy Principle 3. A `TestResult(passed=True, metric_value=0.412, details="Gini 0.412, bootstrap 95% CI [0.389, 0.435], threshold 0.30. PASS")` does.
+Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on.
+
+SS1/23, the PRA's Supervisory Statement on model risk management, formally applies to banks and building societies - not insurers. But its principles articulate what sound model governance looks like regardless of firm type, and many insurance MRM frameworks reference it by analogy. Those principles call for validation tests with defined quantitative thresholds and documented pass/fail outcomes that are reproducible and auditable. A narrative saying "discrimination is adequate" does not meet that bar. A `TestResult(passed=True, metric_value=0.412, details="Gini 0.412, bootstrap 95% CI [0.389, 0.435], threshold 0.30. PASS")` does.
 
 [`insurance-governance`](https://github.com/burning-cost/insurance-governance) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, calibration slope, and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
 
@@ -19,7 +21,7 @@ uv add insurance-governance
 
 ## The problem with checklist validation
 
-SS1/23 has nine validation principles. Principle 3 (performance measurement) and Principle 4 (outcome analysis) are where most teams are most exposed. A typical pricing team's validation process looks like:
+SS1/23 has five principles. Principle 3 (performance measurement) and Principle 4 (outcome analysis) are where most teams are most exposed. A typical pricing team's validation process looks like:
 
 - Gini: computed, compared against a threshold inherited from a previous model
 - Lift chart: produced, eyeballed, declared "satisfactory"
@@ -241,7 +243,7 @@ The HTML pack covers model purpose, risk tier rationale, last validation RAG (Gr
 
 The library also does not cover reserving or capital models. The scope is explicitly pricing. For those, you need a different framework entirely.
 
-The practical workflow: run `ModelValidationReport` as part of your model release process, commit the HTML and JSON to your model repository, register the run in `ModelInventory`, and update the `MRMModelCard` with the new validation date. When the PRA visits, you have an auditable trail of every validation run for every model in the portfolio, going back to whenever you started using the library. That is what SS1/23 actually requires.
+The practical workflow: run `ModelValidationReport` as part of your model release process, commit the HTML and JSON to your model repository, register the run in `ModelInventory`, and update the `MRMModelCard` with the new validation date. The result is an auditable trail of every validation run for every model in the portfolio, going back to whenever you started using the library - exactly the kind of evidence a well-run MRM framework should produce.
 
 ---
 

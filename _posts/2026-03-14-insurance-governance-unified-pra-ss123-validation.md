@@ -47,7 +47,7 @@ The MRM tooling is covered in depth at [Model Risk Governance for UK Insurers: B
 
 ## The validation side
 
-`ModelValidationReport` runs nine test categories against a model's validation set and produces a self-contained HTML report plus a JSON sidecar. The tests are mapped directly to PRA SS1/23 and FCA Consumer Duty obligations:
+`ModelValidationReport` runs nine test categories against a model's validation set and produces a self-contained HTML report plus a JSON sidecar. The tests are mapped to PRA SS1/23 principles (as adopted by many insurance MRM frameworks) and FCA Consumer Duty obligations:
 
 | Section | Regulatory anchor |
 |---|---|
@@ -193,7 +193,7 @@ The bottleneck in any validation workflow is the model fitting that produces `y_
 
 ## Our view on the regulatory timeline
 
-PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed.
+PRA SS1/23 came into force for banks on 17 May 2024. It does not apply to insurers — insurance model governance is covered by Solvency UK internal model requirements and Consumer Duty obligations. However, SS1/23 articulates sound MRM principles that many insurance teams reference by analogy when building their own frameworks. Whether a formal extension to insurers will follow is unclear — no PRA consultation has been issued as of March 2026. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed.
 
 The firms that will handle the PRA extension without a scramble are the ones who can already answer these questions with a query: which models are in production at what tier, when was each last validated, who approved the findings, and what is the machine-readable link between the governance record and the statistical evidence?
 
