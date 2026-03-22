@@ -530,14 +530,17 @@ WH improvement vs raw: +57.2%. Vs moving average: +2.8%. REML selected EDF=7.7. 
 
 ### insurance-cv — Walk-forward temporal CV for trending markets
 
-**What is measured:** Walk-forward temporal CV vs random k-fold on 8,000 synthetic UK motor policies with +5%/year claims trend (2021-2024). Poisson frequency model.
+**What is measured:** Walk-forward temporal CV vs random k-fold on 20,000 synthetic UK motor policies with +20%/year claims trend (2021-2024). Poisson frequency model. Two findings: score accuracy vs prospective holdout, and fold-by-fold deterioration trajectory.
 
-| Method | Mean Poisson deviance | vs Prospective | Temporal leakage |
+| Method | Mean Poisson deviance | vs Prospective (0.63244) | Temporal leakage |
 |---|---|---|---|
-| k-fold (5-fold random) | 0.44027 | −5.6% (optimistic) | Yes |
-| Walk-forward temporal CV | 0.41745 | −10.5% | No |
+| k-fold (5-fold random) | 0.54889 | −13.2% (optimistic) | Yes |
+| Walk-forward temporal CV | 0.59235 | −6.3% (optimistic) | No |
+| Prospective holdout (ground truth) | 0.63244 | 0.00% | — |
 
-k-fold trains on future years when evaluating past periods — in a trending market this inflates apparent model fit by 5.6% relative to a prospective estimate. Walk-forward CV never trains on data after the evaluation period and enforces IBNR buffers between folds. The 5.6% optimism is not noise: it compounds with model selection bias when you use k-fold to choose between competing frequency models in a trending book.
+Walk-forward is 2.1× more accurate as a prospective score estimate (6.3% vs 13.2% error). The 13.2% overoptimism from k-fold is systematic: leakage lets each fold's training set contain future-trend data, making the model appear better calibrated than it will be on genuinely future policies.
+
+The more decision-relevant signal: walk-forward's per-fold trajectory (0.547, 0.555, 0.606, 0.572, 0.681) rises 24% from earliest to latest test window, warning that this model degrades into the rating year. k-fold per-fold scores (0.515, 0.544, 0.559, 0.514, 0.591) are shuffled across time and show no such pattern. k-fold cannot surface deterioration signals because its folds have no temporal ordering.
 
 [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 
