@@ -72,7 +72,7 @@ pip install pyarrow
 **insurance-datasets** (Burning Cost) — synthetic UK motor and home insurance datasets with published data-generating processes. New. Two datasets: UK personal lines motor (18 columns, Poisson-Gamma DGP) and household (16 columns). Both have known true coefficients, so you can verify that your model implementation recovers them. Use this for testing GLM or GBM implementations before your production data is available.
 
 ```bash
-pip install insurance-datasets
+uv add insurance-datasets
 ```
 
 ---
@@ -88,7 +88,7 @@ pip install shap
 **shap-relativities** (Burning Cost) — converts SHAP values from a CatBoost model into GLM-style multiplicative factor tables. New. Extracts continuous relativity curves for numeric variables (e.g. a full driver age curve) and discrete loading tables for categoricals, in the same format as Emblem or Radar output. The honest assessment: this does not improve the model's predictive performance — the SHAP extraction introduces a small approximation (typically 5–7% mean error vs the true DGP on our synthetic benchmark). Its value is entirely in communicating GBM behaviour to actuaries and rating engine teams.
 
 ```bash
-pip install shap-relativities
+uv add shap-relativities
 ```
 
 **EBM / InterpretML** — Explainable Boosting Machines: a GAM fitted by boosting that is inherently interpretable. Maintained by Microsoft; growing. Each feature gets its own shape function, shown as a graph. Strong on non-linear single-variable effects; interaction detection requires explicit configuration. This sits between a GLM and a black-box GBM in both accuracy and interpretability. We find it useful for initial factor analysis where you want to see the shape of a continuous rating variable without committing to a bin structure.
@@ -100,7 +100,7 @@ pip install interpret
 **insurance-gam** (Burning Cost) — three production-grade interpretable alternatives to GLMs: Actuarial NAM (Neural Additive Model fine-tuned for exposure-weighted insurance data), PIN (Poisson Interaction Network for explicit two-way interactions), and EBM integration. New. Use NAM when the GLM's linear additive structure is leaving predictive performance on the table but the team needs to see individual factor shapes. Use PIN when you have a specific interaction hypothesis to test.
 
 ```bash
-pip install "insurance-gam[ebm]"
+uv add "insurance-gam[ebm]"
 ```
 
 ---
@@ -110,7 +110,7 @@ pip install "insurance-gam[ebm]"
 **insurance-distill** (Burning Cost) — fits a Poisson or Gamma GLM surrogate to a GBM's predictions, with optimal binning, and exports factor tables in a format that Radar or Emblem can consume. New. In our testing on synthetic UK motor data the surrogate GLM retained 90–97% of the GBM's Gini coefficient. This is a pragmatic tool for teams whose rating engine cannot consume a GBM directly. If your organisation can deploy arbitrary Python scoring, use the GBM directly.
 
 ```bash
-pip install insurance-distill
+uv add insurance-distill
 ```
 
 ---
@@ -132,7 +132,7 @@ pip install aif360
 **insurance-fairness** (Burning Cost) — FCA-specific proxy discrimination analysis: proxy R-squared per rating factor, mutual information scores, SHAP-linked proxy impact, and a `FairnessAudit.run()` method that produces a Markdown report structured around FCA Consumer Duty expectations. New. Use this when you need to answer the specific question the FCA is asking about proxy discrimination in personal lines pricing. The general-purpose tools do not answer that question in the form regulators expect.
 
 ```bash
-pip install insurance-fairness
+uv add insurance-fairness
 ```
 
 **EquiPy** — equality of opportunity metrics for insurance. Community-maintained; dormant since 2023. We mention it for completeness but would not build on it given the maintenance status.
@@ -156,13 +156,13 @@ pip install dowhy
 **insurance-causal** (Burning Cost) — DML with CatBoost for estimating price elasticity and treatment effects in insurance renewal portfolios, including a Riesz representer approach for continuous treatment (actual premium charged) that avoids the generalised propensity score instabilities common in renewal data. New. The Riesz representer is a practical advance over standard EconML for the renewal pricing case; we would not reach for this library for a general DML problem where EconML is sufficient.
 
 ```bash
-pip install insurance-causal
+uv add insurance-causal
 ```
 
 **insurance-causal-policy** (Burning Cost) — Synthetic Difference-in-Differences (SDID) for evaluating the effect of rate changes across portfolio segments. New. SDID uses pre-treatment data to construct a synthetic control that removes market-wide inflation bias — a significant problem in naive before-after analysis of rate changes. On our synthetic benchmark (100 segments, true ATT = -0.08 on loss ratio), SDID bias was 0.0052 vs plain DiD bias of 0.0034 and naive before-after bias of 0.0378. For most well-designed rate changes, DiD is adequate; this library is the right choice when you cannot identify a clean control group.
 
 ```bash
-pip install insurance-causal-policy
+uv add insurance-causal-policy
 ```
 
 ---
@@ -190,7 +190,7 @@ pip install alibi-detect
 **insurance-monitoring** (Burning Cost) — exposure-weighted PSI/CSI, Gini drift z-tests, A/E by segment, and structured audit trail output aligned with PRA SS3/17 model risk documentation requirements. New. If you are running standard drift detection on an insurance book and reporting to a model risk committee, this is the tool. For general ML monitoring outside insurance, Evidently is more mature.
 
 ```bash
-pip install insurance-monitoring
+uv add insurance-monitoring
 ```
 
 ---
@@ -206,13 +206,13 @@ pip install mapie
 **insurance-conformal** (Burning Cost) — conformal prediction intervals with Tweedie and Poisson non-conformity scores, exposure weighting, and a locally-weighted variant for risk-segment-level calibration. New. On our benchmark (50,000 policies, heteroskedastic Gamma DGP), the parametric Tweedie approach had 13–14% wider intervals than conformal and systematically under-covered the top risk decile. Use this if you need per-segment coverage guarantees; MAPIE with a custom score is a reasonable alternative.
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 ```
 
 **insurance-conformal-ts** (Burning Cost) — conformal prediction for insurance claims time series where the exchangeability assumption fails: seasonal loss patterns, market hardening, IBNR development. New. Standard conformal gives invalid intervals when the test distribution shifts — exactly what happens during market dislocations. This library implements methods for the non-exchangeable case.
 
 ```bash
-pip install insurance-conformal-ts
+uv add insurance-conformal-ts
 ```
 
 ---
@@ -234,7 +234,7 @@ pip install cmdstanpy
 **insurance-spatial** (Burning Cost) — BYM2 (Besag-York-Mollié 2) Bayesian spatial model for UK territory ratemaking, implemented in PyMC. Includes spatially weighted conformal prediction intervals for geographic coverage guarantees under Consumer Duty. New. The alternative to grouping postcode sectors by k-means on loss ratios — BYM2 borrows strength across adjacent sectors and quantifies what fraction of geographic variation is genuinely spatial vs idiosyncratic noise.
 
 ```bash
-pip install insurance-spatial
+uv add insurance-spatial
 ```
 
 ---
@@ -250,7 +250,7 @@ pip install lifelines
 **insurance-survival** (Burning Cost) — extends lifelines with three subpackages that fill confirmed Python ecosystem gaps: `cure` (covariate-adjusted mixture cure models for never-lapse estimation), `competing_risks` (Fine-Gray regression with IPCW weighting for lapse modelling where death and cancellation compete), and `recurrent` (shared frailty models for repeat-claim policyholders). New. If you are running standard time-to-lapse or time-to-first-claim analysis, lifelines is sufficient. Use this library when you hit one of those three specific gaps.
 
 ```bash
-pip install insurance-survival
+uv add insurance-survival
 ```
 
 ---
@@ -266,7 +266,7 @@ pip install mlflow
 **insurance-governance** (Burning Cost) — model validation report generator (Gini, PSI, Hosmer-Lemeshow, lift charts in self-contained HTML), model risk management framework with `RiskTierScorer` (0-100 composite score mapping to Tier 1/2/3), `ModelInventory`, and `GovernanceReport` output aligned with UK insurance model governance requirements. New. The validation report is the most immediately useful part — it runs the standard suite of validation tests in one call. Use MLflow for experiment tracking; use this for the regulatory documentation layer.
 
 ```bash
-pip install insurance-governance
+uv add insurance-governance
 ```
 
 ---
@@ -276,43 +276,43 @@ pip install insurance-governance
 **insurance-credibility** (Burning Cost) — Bühlmann-Straub group credibility (for fleet schemes and large accounts) and Bayesian individual experience rating (for NCD-like credibility at policy level). New. The Bühlmann-Straub formula is standard actuarial practice; this is the first clean Python implementation we are aware of.
 
 ```bash
-pip install insurance-credibility
+uv add insurance-credibility
 ```
 
 **insurance-dispersion** (Burning Cost) — Double GLM (DGLM) for joint modelling of mean and dispersion. A second regression model estimates the dispersion parameter phi per risk rather than assuming a single scalar across the book. New. Use this when you have systematic heteroskedasticity — broker vs direct business, fleet vs personal lines — that your single-dispersion model is misfitting.
 
 ```bash
-pip install insurance-dispersion
+uv add insurance-dispersion
 ```
 
 **insurance-whittaker** (Burning Cost) — Whittaker-Henderson smoothing for experience rating tables. New. Every UK pricing team smooths age and vehicle-group curves. Most do it in Excel. This is the Python implementation, with automatic lambda selection via cross-validation.
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 **insurance-frequency-severity** (Burning Cost) — Sarmanov copula joint frequency-severity modelling. New. The standard two-GLM approach multiplies frequency and severity predictions assuming independence. When claim count and average severity are correlated (they are, for large fleets and commercial lines), this introduces systematic bias. The Sarmanov copula captures the dependency structure.
 
 ```bash
-pip install insurance-frequency-severity
+uv add insurance-frequency-severity
 ```
 
 **insurance-telematics** (Burning Cost) — HMM-based driving regime classification and telematics scoring pipeline. New. Three-state HMM (cautious/normal/aggressive driving regimes) fitted to trip-level speed and acceleration data, with a `TelematicsScoringPipeline` that produces per-driver risk scores and a `TripSimulator` for prototyping without real telematics data.
 
 ```bash
-pip install insurance-telematics
+uv add insurance-telematics
 ```
 
 **insurance-eqrn** (Burning Cost) — Extreme Quantile Regression Neural Networks (Pasche & Engelke 2024, *Annals of Applied Statistics*) for covariate-dependent GPD parameters. New. For XL pricing and reinsurance layer costing where you need per-segment tail estimates rather than a single pooled GPD. If you only need portfolio-level VaR, standard EVT (scipy's `genpareto`) is sufficient.
 
 ```bash
-pip install insurance-eqrn
+uv add insurance-eqrn
 ```
 
 **insurance-nflow** (Burning Cost) — normalising flows for severity distribution modelling. New. Drops the parametric family assumption (lognormal, Gamma) and learns the full conditional distribution from data, including bimodal structures and heavy tails via the Hickling-Prangle Tail Transform Flow (ICML 2025). The relevant use case is UK motor bodily injury severity, which is genuinely bimodal and poorly fit by any single parametric family.
 
 ```bash
-pip install insurance-nflow
+uv add insurance-nflow
 ```
 
 ---
@@ -322,7 +322,7 @@ pip install insurance-nflow
 **insurance-optimise** (Burning Cost) — constrained rate optimisation with demand curve estimation (DML-based elasticity), ENBP (Expected Net Benefit of Pricing) metric, and FCA Consumer Duty constraint enforcement. New. The honest numbers from our benchmark: DML elasticity estimation on typical portfolio data with small price variation is imprecise. The optimiser's value is in the constrained maximisation step — even with an imprecise elasticity estimate, demand-curve-aware pricing outperformed flat loading by +143% mean profit per segment on synthetic PCW data.
 
 ```bash
-pip install insurance-optimise
+uv add insurance-optimise
 ```
 
 ---
@@ -332,7 +332,7 @@ pip install insurance-optimise
 **insurance-cv** (Burning Cost) — temporal walk-forward cross-validation for insurance pricing models, with splits that respect policy year, accident year, and IBNR development structure. New. Standard k-fold CV gives you overoptimistic scores on insurance data because it allows future accident years to appear in training folds. On our benchmark (20,000 policies, +20%/year claims trend), random k-fold overestimated CV score by approximately 8–12 Gini points relative to a true out-of-time holdout; temporal CV matched the holdout. Use this; k-fold on insurance data is not meaningful.
 
 ```bash
-pip install insurance-cv
+uv add insurance-cv
 ```
 
 ---

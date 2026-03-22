@@ -15,8 +15,6 @@ What you actually need is a per-segment large loss loading: the expected excess 
 
 ```bash
 uv add insurance-quantile
-# or
-pip install insurance-quantile
 ```
 
 ---

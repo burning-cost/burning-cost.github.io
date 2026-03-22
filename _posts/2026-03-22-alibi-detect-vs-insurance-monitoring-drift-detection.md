@@ -278,7 +278,7 @@ The tools are not alternatives for the same problem. Alibi Detect solves generic
 ## Installation
 
 ```bash
-pip install insurance-monitoring
+uv add insurance-monitoring
 ```
 
 Polars-native. No scikit-learn dependency. Python 3.10+. Version 0.7.1 at time of writing.
