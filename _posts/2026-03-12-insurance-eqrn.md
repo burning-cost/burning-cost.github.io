@@ -41,7 +41,7 @@ Valid for tau well above tau_0. The neural network learns xi(x) and sigma(x) fro
 
 EQRN fits in two stages. Neither step can be skipped without breaking the other.
 
-**Step 1: Intermediate quantile with LightGBM (out-of-fold)**
+**Step 1: Intermediate quantile with CatBoost (out-of-fold)**
 
 Fit a quantile regression at a moderate level — tau_0 = 0.8 or 0.85 — using K-fold cross-validation. The critical requirement is that the intermediate quantile predictions used in Step 2 must be out-of-fold. In-sample predictions give artificially accurate thresholds, and the network in Step 2 then learns the wrong exceedance set.
 

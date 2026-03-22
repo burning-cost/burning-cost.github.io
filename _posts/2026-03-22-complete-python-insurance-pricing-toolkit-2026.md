@@ -20,31 +20,31 @@ These are the tools most teams use daily.
 **statsmodels** — GLMs, GEEs, mixed models, and time-series in one package. Maintained by the statsmodels community; established. The standard choice for Poisson and Gamma GLMs: transparent, numerically stable, and produces the p-values and standard errors your technical reviewers expect. Its `GLM` class is the reference implementation for multiplicative pricing.
 
 ```bash
-pip install statsmodels
+uv add statsmodels
 ```
 
 **scikit-learn** — `TweedieRegressor`, `HistGradientBoostingRegressor`, and the full pipeline infrastructure. Maintained by a large INRIA-led community; established. Use it for GBM pipelines and when you need sklearn's ecosystem (`Pipeline`, `GridSearchCV`, cross-validators). Its `TweedieRegressor` is good for Tweedie-family GLMs but lacks the inference machinery statsmodels provides — you cannot get standard errors out of it.
 
 ```bash
-pip install scikit-learn
+uv add scikit-learn
 ```
 
 **CatBoost** — gradient boosted trees with native ordered boosting and first-class categorical support. Maintained by Yandex; established. Our preferred GBM for insurance. Ordered boosting reduces target leakage from exposure-correlated categoricals (postcode, occupation) that standard gradient boosting handles poorly. Pass `loss_function='Tweedie'` for combined ratio targets or `loss_function='Poisson'` for frequency directly. CatBoost handles high-cardinality categoricals (ABI group, postcode sector) without preprocessing.
 
 ```bash
-pip install catboost
+uv add catboost
 ```
 
 **LightGBM** — fast gradient boosting with histogram approximation. Maintained by Microsoft; established. Faster to train than CatBoost on most datasets; competitive accuracy. The ordered boosting advantage goes to CatBoost for insurance data with correlated categoricals. Use LightGBM when training speed is the binding constraint or when you need its leaf-wise growth for large feature spaces.
 
 ```bash
-pip install lightgbm
+uv add lightgbm
 ```
 
 **XGBoost** — the original competitive GBM. Maintained by a large open-source community; established. Still widely used; strong distributed training story. We reach for CatBoost or LightGBM first in insurance contexts, but XGBoost's `Poisson` objective and `reg:tweedie` are production-grade and well-understood. Choose it if your team is already fluent in it — the differences are marginal on tabular insurance data.
 
 ```bash
-pip install xgboost
+uv add xgboost
 ```
 
 ---
@@ -54,19 +54,19 @@ pip install xgboost
 **Polars** — fast, memory-efficient dataframes backed by Rust and Apache Arrow. Maintained by Ritchie Vink and the Polars team; growing fast. Our recommendation for new work. Lazy evaluation means query plans are optimised before execution, which matters when you are joining 5m policy records with monthly claims triangles. The syntax is more explicit than pandas — which is a feature when you are debugging a complex frequency severity join.
 
 ```bash
-pip install polars
+uv add polars
 ```
 
 **pandas** — the universal Python dataframe library. Maintained by a large community; established. Still the right choice when you need interoperability: most ML libraries produce or consume pandas DataFrames, and most example code is written against pandas. We use polars for heavy lifting and convert to pandas at the ML library boundary.
 
 ```bash
-pip install pandas
+uv add pandas
 ```
 
 **PyArrow** — columnar in-memory format and interop layer. Maintained by the Apache Arrow project; established. You need this whenever you are moving data between systems (Parquet files, Spark, Polars). Not something you typically use directly in a pricing model, but a required dependency of anything that reads Parquet.
 
 ```bash
-pip install pyarrow
+uv add pyarrow
 ```
 
 **insurance-datasets** (Burning Cost) — synthetic UK motor and home insurance datasets with published data-generating processes. New. Two datasets: UK personal lines motor (18 columns, Poisson-Gamma DGP) and household (16 columns). Both have known true coefficients, so you can verify that your model implementation recovers them. Use this for testing GLM or GBM implementations before your production data is available.
@@ -82,7 +82,7 @@ uv add insurance-datasets
 **SHAP** — Shapley value attribution for any model. Maintained by Scott Lundberg and the SHAP team; established. The standard for understanding what a GBM is doing. Use `TreeExplainer` for CatBoost/LightGBM/XGBoost — it is exact and fast. The main insurance limitation: raw SHAP values are additive in log-space for log-link models, not in the multiplicative factor space that actuaries work in. That is the gap the next tool fills.
 
 ```bash
-pip install shap
+uv add shap
 ```
 
 **shap-relativities** (Burning Cost) — converts SHAP values from a CatBoost model into GLM-style multiplicative factor tables. New. Extracts continuous relativity curves for numeric variables (e.g. a full driver age curve) and discrete loading tables for categoricals, in the same format as Emblem or Radar output. The honest assessment: this does not improve the model's predictive performance — the SHAP extraction introduces a small approximation (typically 5–7% mean error vs the true DGP on our synthetic benchmark). Its value is entirely in communicating GBM behaviour to actuaries and rating engine teams.
@@ -94,7 +94,7 @@ uv add shap-relativities
 **EBM / InterpretML** — Explainable Boosting Machines: a GAM fitted by boosting that is inherently interpretable. Maintained by Microsoft; growing. Each feature gets its own shape function, shown as a graph. Strong on non-linear single-variable effects; interaction detection requires explicit configuration. This sits between a GLM and a black-box GBM in both accuracy and interpretability. We find it useful for initial factor analysis where you want to see the shape of a continuous rating variable without committing to a bin structure.
 
 ```bash
-pip install interpret
+uv add interpret
 ```
 
 **insurance-gam** (Burning Cost) — three production-grade interpretable alternatives to GLMs: Actuarial NAM (Neural Additive Model fine-tuned for exposure-weighted insurance data), PIN (Poisson Interaction Network for explicit two-way interactions), and EBM integration. New. Use NAM when the GLM's linear additive structure is leaving predictive performance on the table but the team needs to see individual factor shapes. Use PIN when you have a specific interaction hypothesis to test.
@@ -120,13 +120,13 @@ uv add insurance-distill
 **Fairlearn** — general-purpose toolkit for assessing and mitigating algorithmic fairness issues. Maintained by Microsoft; established. Covers demographic parity, equalised odds, and a range of mitigation algorithms. The insurance gap: it has no concept of proxy discrimination (the scenario the FCA specifically investigates — where a factor correlates with a protected characteristic even when that characteristic is not in the model).
 
 ```bash
-pip install fairlearn
+uv add fairlearn
 ```
 
 **AI Fairness 360 (AIF360)** — IBM's broader fairness toolkit, covering more metrics and preprocessing/postprocessing mitigations than Fairlearn. Maintained by IBM Research; established. More comprehensive than Fairlearn; also heavier. Neither covers insurance-specific proxy discrimination detection out of the box.
 
 ```bash
-pip install aif360
+uv add aif360
 ```
 
 **insurance-fairness** (Burning Cost) — FCA-specific proxy discrimination analysis: proxy R-squared per rating factor, mutual information scores, SHAP-linked proxy impact, and a `FairnessAudit.run()` method that produces a Markdown report structured around FCA Consumer Duty expectations. New. Use this when you need to answer the specific question the FCA is asking about proxy discrimination in personal lines pricing. The general-purpose tools do not answer that question in the form regulators expect.
@@ -144,13 +144,13 @@ uv add insurance-fairness
 **EconML** — heterogeneous treatment effects via Double Machine Learning (DML), causal forests, and related methods. Maintained by Microsoft; growing. The right tool for estimating how a price or product change affected claims frequency when you have observational data and confounders. We use EconML's `LinearDML` and `CausalForestDML` for rate change evaluation where a controlled experiment was not run.
 
 ```bash
-pip install econml
+uv add econml
 ```
 
 **DoWhy** — causal graph specification and identification. Maintained by Microsoft; growing. Useful for making the causal assumptions explicit (drawing the DAG) before running estimation. We use it as a conceptual layer on top of EconML rather than as a standalone estimation tool.
 
 ```bash
-pip install dowhy
+uv add dowhy
 ```
 
 **insurance-causal** (Burning Cost) — DML with CatBoost for estimating price elasticity and treatment effects in insurance renewal portfolios, including a Riesz representer approach for continuous treatment (actual premium charged) that avoids the generalised propensity score instabilities common in renewal data. New. The Riesz representer is a practical advance over standard EconML for the renewal pricing case; we would not reach for this library for a general DML problem where EconML is sufficient.
@@ -172,19 +172,19 @@ uv add insurance-causal-policy
 **Evidently** — open-source ML monitoring: data drift, model quality, and data quality reports. Maintained by Evidently AI; established. Comprehensive general-purpose monitoring. The insurance gap: it has no exposure-weighting (a PSI calculated on policy count is not the same as one calculated on exposure), and its out-of-the-box metrics are not aligned to insurance KPIs (Gini drift, A/E by segment).
 
 ```bash
-pip install evidently
+uv add evidently
 ```
 
 **NannyML** — performance monitoring without ground truth labels, using CBPE (Confidence-Based Performance Estimation). Maintained by NannyML; growing. Useful when you want to estimate model performance degradation before claims have developed. Again, no insurance-native metrics or exposure weighting.
 
 ```bash
-pip install nannyml
+uv add nannyml
 ```
 
 **Alibi Detect** — statistical drift detection: MMD, KS, LSDD, and several others. Maintained by Seldon; established. Strong on the statistical testing side. More a toolkit than a monitoring system — you compose tests rather than getting reports.
 
 ```bash
-pip install alibi-detect
+uv add alibi-detect
 ```
 
 **insurance-monitoring** (Burning Cost) — exposure-weighted PSI/CSI, Gini drift z-tests, A/E by segment, and structured audit trail output aligned with PRA SS3/17 model risk documentation requirements. New. If you are running standard drift detection on an insurance book and reporting to a model risk committee, this is the tool. For general ML monitoring outside insurance, Evidently is more mature.
@@ -200,7 +200,7 @@ uv add insurance-monitoring
 **MAPIE** — Model Agnostic Prediction Interval Estimator: split conformal and cross-conformal prediction intervals for regression and classification. Maintained by Quantmetry; growing. The general-purpose implementation. Well-documented, scikit-learn compatible. For insurance: it supports custom non-conformity scores, which you need because the standard absolute residual score is wrong for skewed claim distributions.
 
 ```bash
-pip install mapie
+uv add mapie
 ```
 
 **insurance-conformal** (Burning Cost) — conformal prediction intervals with Tweedie and Poisson non-conformity scores, exposure weighting, and a locally-weighted variant for risk-segment-level calibration. New. On our benchmark (50,000 policies, heteroskedastic Gamma DGP), the parametric Tweedie approach had 13–14% wider intervals than conformal and systematically under-covered the top risk decile. Use this if you need per-segment coverage guarantees; MAPIE with a custom score is a reasonable alternative.
@@ -222,13 +222,13 @@ uv add insurance-conformal-ts
 **PyMC** — probabilistic programming in Python, with NUTS sampling. Maintained by the PyMC team; established. The standard Python Bayesian modelling library. Use it for hierarchical models (territory ratemaking, credibility blending) where you want full posterior distributions rather than point estimates and standard errors.
 
 ```bash
-pip install pymc
+uv add pymc
 ```
 
 **CmdStanPy** — Python interface to Stan, the mature probabilistic programming language. Maintained by the Stan development team; established. Stan's HMC sampler is often faster than PyMC for complex hierarchical models. The tradeoff is Stan's separate modelling language. We use CmdStanPy when the model is complex enough that Stan's performance advantage outweighs the DSL overhead.
 
 ```bash
-pip install cmdstanpy
+uv add cmdstanpy
 ```
 
 **insurance-spatial** (Burning Cost) — BYM2 (Besag-York-Mollié 2) Bayesian spatial model for UK territory ratemaking, implemented in PyMC. Includes spatially weighted conformal prediction intervals for geographic coverage guarantees under Consumer Duty. New. The alternative to grouping postcode sectors by k-means on loss ratios — BYM2 borrows strength across adjacent sectors and quantifies what fraction of geographic variation is genuinely spatial vs idiosyncratic noise.
@@ -244,7 +244,7 @@ uv add insurance-spatial
 **lifelines** — survival analysis in Python: Kaplan-Meier, Cox regression, parametric models. Maintained by Cameron Davidson-Pilon; established. The standard Python survival library. Strong on the core methods. The insurance-specific gaps: `MixtureCureFitter` is univariate only (no covariate adjustment on the cure fraction), no Fine-Gray competing risks regression, no shared frailty for recurrent events.
 
 ```bash
-pip install lifelines
+uv add lifelines
 ```
 
 **insurance-survival** (Burning Cost) — extends lifelines with three subpackages that fill confirmed Python ecosystem gaps: `cure` (covariate-adjusted mixture cure models for never-lapse estimation), `competing_risks` (Fine-Gray regression with IPCW weighting for lapse modelling where death and cancellation compete), and `recurrent` (shared frailty models for repeat-claim policyholders). New. If you are running standard time-to-lapse or time-to-first-claim analysis, lifelines is sufficient. Use this library when you hit one of those three specific gaps.
@@ -260,7 +260,7 @@ uv add insurance-survival
 **MLflow** — experiment tracking, model registry, and deployment tooling. Maintained by Databricks; established. The standard for tracking model training runs, comparing Gini coefficients across experiments, and registering production models. Widely deployed in insurance IT stacks. Nothing insurance-specific, but if you are not using it you probably should be.
 
 ```bash
-pip install mlflow
+uv add mlflow
 ```
 
 **insurance-governance** (Burning Cost) — model validation report generator (Gini, PSI, Hosmer-Lemeshow, lift charts in self-contained HTML), model risk management framework with `RiskTierScorer` (0-100 composite score mapping to Tier 1/2/3), `ModelInventory`, and `GovernanceReport` output aligned with UK insurance model governance requirements. New. The validation report is the most immediately useful part — it runs the standard suite of validation tests in one call. Use MLflow for experiment tracking; use this for the regulatory documentation layer.

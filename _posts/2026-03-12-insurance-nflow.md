@@ -182,7 +182,7 @@ The flow is at the top of that hierarchy in terms of flexibility and at the bott
 ## Installation
 
 ```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
+uv pip install torch --index-url https://download.pytorch.org/whl/cpu
 uv add insurance-nflow
 ```
 

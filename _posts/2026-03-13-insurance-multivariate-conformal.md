@@ -102,7 +102,7 @@ import numpy as np
 from insurance_conformal.multivariate import JointConformalPredictor
 
 # freq_glm: fitted statsmodels Poisson GLM with log link
-# sev_gbm: fitted LightGBM model on claims with severity > 0
+# sev_gbm: fitted CatBoost model on claims with severity > 0
 
 predictor = JointConformalPredictor(
     models={'frequency': freq_glm, 'severity': sev_gbm},

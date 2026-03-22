@@ -21,7 +21,7 @@ Install the dependencies:
 ```bash
 uv add insurance-datasets shap-relativities insurance-fairness \
     insurance-conformal insurance-monitoring
-pip install catboost polars scikit-learn
+uv add catboost polars scikit-learn
 ```
 
 `insurance-datasets` generates synthetic UK motor policies from a known data generating process. The DGP is a Poisson frequency model and a Gamma severity model with log-linear predictors. True parameters are exported as `TRUE_FREQ_PARAMS` and `TRUE_SEV_PARAMS`, so you can validate whether your fitted GLM recovers them.
