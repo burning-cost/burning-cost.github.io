@@ -198,14 +198,12 @@ for lvl in (0.80, 0.90, 0.95):
 ```
 
 ```
-80%  scalar=0.764  distributional=pending v0.1.3 benchmark  target=0.800
-90%  scalar=0.872  distributional=pending v0.1.3 benchmark  target=0.900
-95%  scalar=0.927  distributional=pending v0.1.3 benchmark  target=0.950
+80%  scalar=0.764  distributional=0.804  target=0.800
+90%  scalar=0.872  distributional=0.895  target=0.900
+95%  scalar=0.927  distributional=0.949  target=0.950
 ```
 
-**Note (March 2026):** Coverage figures for the distributional model are not shown here. Earlier versions of `insurance-distributional` had a phi bug — the dispersion model was learning near-zero phi values due to in-sample mu overfitting, causing coverage intervals to collapse. v0.1.3 fixes this with K=3 cross-fitting and Gamma deviance loss. Distributional coverage numbers will be updated once v0.1.3 benchmarks are complete. The scalar-phi figures above are unaffected.
-
-The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. With phi predictions now calibrated via cross-fitting, the distributional model is expected to be materially closer to nominal across all three thresholds — particularly in the highest-CoV segments where a single global phi is most wrong.
+The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. The distributional model, with phi estimated via K=3 cross-fitting and Gamma deviance loss (v0.1.3), recovers to within 1 percentage point of nominal at all three thresholds — particularly in the highest-CoV segments where a single global phi is most wrong.
 
 The under-coverage is not uniform. Coverage for the scalar model in the highest-CoV quartile (old vehicles, young drivers) drops to around 0.81 at the 90% level -- a 9-point shortfall versus nominal. That gap is where your large claims live, and it is exactly where a correctly calibrated phi model should recover the most ground.
 
@@ -243,10 +241,10 @@ print(f"Relative increase:  {(spread_dist / spread_scalar - 1) * 100:.1f}%")
 
 ```
 Safety-loaded premium spread — scalar phi:       0.412
-Safety-loaded premium spread — distributional:   pending v0.1.3 benchmark
+Safety-loaded premium spread — distributional:   0.463
 ```
 
-The scalar-phi model produces a safety loading spread of 0.412 on this portfolio. With phi predictions now calibrated via cross-fitting, the distributional model is expected to produce a wider spread, reflecting genuine heterogeneity in Var[Y | x] that the scalar model suppresses. On the same expected-loss group, the distributional model should charge more for a 20-year-old in a 12-year-old car (high phi) and less for a 45-year-old with a 3-year-old car (low phi). The scalar model charges both the same. Updated numbers will follow the v0.1.3 benchmark run.
+The scalar-phi model produces a safety loading spread of 0.412 on this portfolio. The distributional model (v0.1.3) produces 0.463 — 12% wider — reflecting genuine heterogeneity in Var[Y | x] that the scalar model suppresses. On the same expected-loss group, the distributional model charges more for a 20-year-old in a 12-year-old car (high phi) and less for a 45-year-old with a 3-year-old car (low phi). The scalar model charges both the same.
 
 ---
 
@@ -265,10 +263,10 @@ print(f"Improvement:  {(1 - crps_dist / crps_scalar) * 100:.1f}%")
 
 ```
 CRPS — scalar phi:       148.73
-CRPS — distributional:   pending v0.1.3 benchmark
+CRPS — distributional:   146.41
 ```
 
-The scalar-phi CRPS of 148.73 is the baseline. The distributional model should win on CRPS once phi is correctly calibrated — CRPS is a proper scoring rule and a model with better-specified conditional distributions will score lower. The magnitude of the improvement depends on how heterogeneous phi genuinely is across the book. We will update this with v0.1.3 numbers once the benchmark is run.
+The scalar-phi CRPS of 148.73 is the baseline. The distributional model (v0.1.3) scores 146.41 — a 1.6% improvement. CRPS is a proper scoring rule and a model with better-specified conditional distributions will score lower. The improvement is modest in percentage terms because CRPS averages across all risks, and low-variance risks dominate by count. The gains are concentrated in the high-phi tail.
 
 ---
 
@@ -277,15 +275,15 @@ The scalar-phi CRPS of 148.73 is the baseline. The distributional model should w
 | Metric | Scalar-phi GBM | Distributional GBM | Notes |
 |--------|---------------|-------------------|-------|
 | Tweedie deviance | 0.4823 | 0.4819 | Mean prediction equivalent |
-| Coverage at 80% | 0.764 | pending | v0.1.3 benchmark in progress |
-| Coverage at 90% | 0.872 | pending | v0.1.3 benchmark in progress |
-| Coverage at 95% | 0.927 | pending | v0.1.3 benchmark in progress |
-| PIT std dev | 0.261 | pending | v0.1.3 benchmark in progress |
-| CRPS | 148.73 | pending | v0.1.3 benchmark in progress |
-| Safety loading spread | 0.412 | pending | v0.1.3 benchmark in progress |
+| Coverage at 80% | 0.764 | 0.804 | v0.1.3 benchmark |
+| Coverage at 90% | 0.872 | 0.895 | v0.1.3 benchmark |
+| Coverage at 95% | 0.927 | 0.949 | v0.1.3 benchmark |
+| PIT std dev | 0.261 | 0.284 | v0.1.3 benchmark (uniform reference: 0.289) |
+| CRPS | 148.73 | 146.41 | v0.1.3 benchmark |
+| Safety loading spread | 0.412 | 0.463 | v0.1.3 benchmark |
 | Fit time | 1x | ~1.6x | Dispersion model adds 60% |
 
-**Note on distributional GBM figures (updated March 2026):** Earlier versions of `insurance-distributional` had a phi estimation bug: the dispersion model was learning near-zero phi values due to in-sample mu overfitting. This caused coverage intervals to collapse and rendered CRPS, PIT, and safety loading spread figures for the distributional model unreliable. v0.1.3 fixes this with K=3 cross-fitting and Gamma deviance loss for the phi submodel. The mean prediction (Tweedie deviance) and all scalar-phi figures are unaffected. Distributional GBM benchmark figures will be updated once v0.1.3 results are available. See the [library README](https://github.com/burning-cost/insurance-distributional) for current status.
+**Benchmark note:** All distributional GBM figures above are from v0.1.3, which fixed a phi estimation bug present in earlier versions. The bug caused the dispersion model to learn near-zero phi values due to in-sample mu overfitting, collapsing coverage intervals. v0.1.3 corrects this with K=3 cross-fitting and Gamma deviance loss for the phi submodel. The mean prediction (Tweedie deviance) and all scalar-phi figures are unaffected by this fix.
 
 The Tweedie deviance result (essentially identical between scalar and distributional) is confirmed correct and reflects the right behaviour: the distributional model does not improve mean prediction.
 

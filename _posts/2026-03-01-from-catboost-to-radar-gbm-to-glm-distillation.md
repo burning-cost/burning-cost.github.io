@@ -150,7 +150,7 @@ surrogate.export_csv(
 
 Each CSV has three columns: `level`, `log_coefficient`, `relativity`. The base factor CSV contains the model intercept, which corresponds to the base pure premium before multiplicative factors are applied.
 
-For direct Radar formatting, `format_radar_csv()` converts a factor table DataFrame to the two-column format (FeatureName, Relativity) that Radar expects when you rebuild a table manually:
+For direct Radar formatting, `format_radar_csv()` converts a factor table DataFrame to the two-column format (FeatureName, Relativity) that Radar uses for its factor table rebuild path. (Radar also supports a three-column FactorName/Level/Relativity format for its expanded factor editor import; the two formats serve different Radar workflows. The two-column path is what `insurance-distill` produces.)
 
 ```python
 from insurance_distill import format_radar_csv

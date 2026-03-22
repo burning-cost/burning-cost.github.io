@@ -3,8 +3,8 @@ layout: post
 title: "Tracking Trend Between Model Updates with GAS Filters"
 date: 2026-03-08
 categories: [pricing, libraries]
-tags: [gas, time-varying-parameters, trend, severity-inflation, frequency, catboost, poisson, gamma, score-driven, insurance-dynamics, motor, uk-pricing, python]
-description: "GAS filters track claims frequency and severity trend between GLM refits. Step-by-step tutorial using insurance-dynamics on UK motor data."
+tags: [gas, time-varying-parameters, trend, severity-inflation, frequency, catboost, poisson, gamma, score-driven, insurance-gas, motor, uk-pricing, python]
+description: "GAS filters track claims frequency and severity trend between GLM refits. Step-by-step tutorial using insurance-gas on UK motor data."
 ---
 
 Most UK pricing teams refit their GLM or GBM annually, sometimes quarterly. In between, the model is static: it produces the same expected frequency for a 35-year-old male in SW6 with three years' NCD today as it did on the day it was fitted. Meanwhile, the world keeps moving. Parts inflation pushes average repair costs up 12% year-on-year. A cold winter lifts glass and escape-of-water claims. A competitor exits the PCW market and their book migrates to you, subtly shifting the mix. None of this appears in the model until the next refit.
@@ -21,10 +21,10 @@ where `f_t` is the log-rate (for Poisson) or log-mean (for Gamma) at period t, `
 
 Critically, the likelihood is closed-form. There is no Kalman filter, no MCMC, no expectation-maximisation. The filter path is a deterministic function of past data, and maximum likelihood is a standard L-BFGS-B optimisation. On 60 monthly observations, it fits in under five seconds.
 
-[`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) implements GAS for the distributions actuaries actually use: Poisson and NegBin for frequency, Gamma and log-normal for severity, Beta for loss ratios, ZIP for zero-inflated data. It exposes the filter path as a trend index - base period = 100 - which is the format pricing teams already understand from development factor analysis.
+[`insurance-gas`](https://github.com/burning-cost/insurance-gas) implements GAS for the distributions actuaries actually use: Poisson and NegBin for frequency, Gamma and log-normal for severity, Beta for loss ratios, ZIP for zero-inflated data. It exposes the filter path as a trend index - base period = 100 - which is the format pricing teams already understand from development factor analysis.
 
 ```bash
-uv add insurance-dynamics
+uv add insurance-gas
 ```
 
 ---
@@ -36,8 +36,8 @@ The library ships synthetic datasets that match realistic UK motor patterns: sea
 ```python
 import polars as pl
 import numpy as np
-from insurance_dynamics import GASModel
-from insurance_dynamics.datasets import load_motor_frequency
+from insurance_gas import GASModel
+from insurance_gas.datasets import load_motor_frequency
 
 # 60 monthly periods, Poisson GAS(1,1)
 # trend_break=True inserts a +40% step at period 30
@@ -105,7 +105,7 @@ The filter correctly picks up the 40% step increase at period 30 and tracks the 
 Frequency and severity trend are different problems with different statistical structure. Frequency is Poisson (or NegBin); severity is continuous and right-skewed, typically Gamma or log-normal. The GAS framework handles both through the same API.
 
 ```python
-from insurance_dynamics.datasets import load_severity_trend
+from insurance_gas.datasets import load_severity_trend
 
 # 40 quarterly periods, 5% quarterly inflation
 sev_data = load_severity_trend(T=40, seed=42, inflation_rate=0.05)
@@ -178,7 +178,7 @@ A single trend index over the whole book conceals heterogeneous behaviour across
 
 ```python
 import pandas as pd
-from insurance_dynamics import GASPanel
+from insurance_gas import GASPanel
 
 # Construct a minimal panel: period, cell_id, claims, exposure
 # In practice this comes from your claims extract
@@ -251,7 +251,9 @@ If the Ljung-Box p-value is below 0.05, the filter is not adapting fast enough. 
 For short series (under 30 periods), use bootstrap confidence intervals on the filter path rather than the Hessian-based standard errors:
 
 ```python
-boot_ci = result.bootstrap_ci(n_boot=500, confidence=0.90)
+from insurance_gas import bootstrap_ci
+
+boot_ci = bootstrap_ci(result, n_boot=500, confidence=0.90)
 # boot_ci.filter_lower, boot_ci.filter_upper: DataFrames with same shape as filter_path
 ```
 
@@ -303,7 +305,7 @@ The practical workflow: fit the GAS filter monthly on each key metric (frequency
 
 ---
 
-`insurance-dynamics` is open source under MIT at [github.com/burning-cost/insurance-dynamics](https://github.com/burning-cost/insurance-dynamics). Install with `uv add insurance-dynamics`. Requires Python 3.10+, NumPy, SciPy, and Pandas (Polars for the frames above).
+`insurance-gas` is open source under MIT at [github.com/burning-cost/insurance-gas](https://github.com/burning-cost/insurance-gas). Install with `uv add insurance-gas`. Requires Python 3.10+, NumPy, SciPy, and Pandas (Polars for the frames above).
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) - monitoring model performance and detecting when a refit is overdue
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty quantification at the policy level, complementary to aggregate trend tracking

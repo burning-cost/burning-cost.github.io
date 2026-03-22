@@ -67,10 +67,8 @@ sdf = (
     .filter(F.col("status") == "active")
 )
 
-# Convert via Arrow for efficiency
-df = pl.from_arrow(sdf.toPandas().pipe(pl.from_pandas))
-# Or directly if your Databricks runtime supports it:
-# df = pl.from_pandas(sdf.toPandas())
+# Convert Spark DataFrame to Polars via pandas
+df = pl.from_pandas(sdf.toPandas())
 ```
 
 The schema is load-bearing. A wrong type here - `claim_count` as a float, `exposure_years` as an integer - breaks the model pipeline downstream in ways that produce wrong numbers rather than errors. Enforce it at the DDL stage, not with defensive code in the notebook.
@@ -319,9 +317,9 @@ If the SHAP relativities diverge materially from the GLM on a factor where there
 
 ## 7. Export to Radar Format
 
-Radar (Willis Towers Watson) expects a factor table as `FactorName`, `Level`, `Relativity` - three columns, one row per factor level. The format is simple. The four things that go wrong are consistent enough to be worth naming.
+Radar (Willis Towers Watson) expects factor tables in a specific format for import. When building the expanded three-column table for Radar's factor editor, the columns are `FactorName`, `Level`, `Relativity` - one row per factor level. (The `insurance-distill` library's `format_radar_csv()` produces a two-column `FeatureName, Relativity` format used for a different Radar import path; the two formats serve different Radar workflows.) The four things that go wrong in the three-column format are consistent enough to be worth naming.
 
-**Column naming.** Radar is case-sensitive. `factorname` will not import. `FactorName`, `Level`, `Relativity` exactly.
+**Column naming.** Radar is case-sensitive. `factorname` will not import. `FactorName`, `Level`, `Relativity` exactly — for this three-column import path.
 
 **Continuous features.** Radar does not interpolate a continuous curve. Driver age and mileage need to be discretised into bands before export. The banding should align with the existing GLM banding - not because the GBM's continuous curve is wrong, but because any relativity movement that results from re-banding will be indistinguishable from genuine model signal in a pricing committee review. Keep the bands consistent and change one thing at a time.
 

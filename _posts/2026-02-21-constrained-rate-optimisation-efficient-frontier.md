@@ -15,7 +15,7 @@ It works. The problems are structural.
 
 The Excel scenario is a single point. The team has picked one combination of factor adjustments and checked whether it satisfies the constraints. They have no idea whether a different combination of adjustments could have hit the same LR with less volume loss, or the same volume with a lower LR. The efficient frontier - the full set of achievable (LR, volume) outcomes - is never computed.
 
-The shadow prices on constraints are never known either. How much volume would you lose if you tightened the LR target by one percentage point? Which constraint is actually binding? What is the regulatory cost of FCA PS21/5 ENBP compliance, in dislocation terms? These are answerable questions. Nobody is answering them.
+The shadow prices on constraints are never known either. How much volume would you lose if you tightened the LR target by one percentage point? Which constraint is actually binding? What is the regulatory cost of FCA PS21/11 ENBP compliance, in dislocation terms? These are answerable questions. Nobody is answering them.
 
 We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to answer them formally.
 
@@ -27,77 +27,67 @@ The setup is directly analogous to Markowitz portfolio optimisation.
 
 In portfolio construction, you have a universe of assets. Each has an expected return and a variance. You want to find the portfolio weights - how much to allocate to each asset - that minimise variance for a given expected return target. Solving for many return targets traces the efficient frontier: the Pareto-optimal set of (return, risk) portfolios. The frontier tells you, quantitatively, what trade-off you are making at every point.
 
-In rate optimisation, you have a portfolio of policies. Each has a technical premium, a current premium, and a renewal probability that responds to price changes. The decision variables are multiplicative adjustments to rating factor relativities: you are deciding how much to shift each factor. The objective is minimum dislocation - keep the factor adjustments as close to 1.0 as possible, while meeting the LR and volume constraints.
+In rate optimisation, you have a portfolio of policies. Each has a technical premium, a current premium, and a renewal probability that responds to price changes. The decision variables are per-policy price multipliers: you are deciding how much to shift each policy's premium. The objective is maximum profit subject to constraints on loss ratio, volume retention, and regulatory compliance.
 
 Solving for many LR targets traces the efficient frontier of achievable (LR, volume) pairs. At each point on the frontier, you get shadow prices: the Lagrange multipliers that tell you the marginal cost of tightening each constraint.
 
 The formal problem is:
 
 ```
-minimise   Σ_k (m_k - 1)²
+maximise   Σ_i (m_i * tc_i - cost_i) * x_i(m_i)
 subject to E[LR(m)] ≤ LR_target
-           E[vol_ratio(m)] ≥ vol_bound
-           m_k ∈ [m_k_min, m_k_max]  for all k
-           π_i^renewal ≤ π_i^NB_equiv  (ENBP, per channel)
+           E[retention(m)] ≥ retention_bound
+           m_i ≤ enbp_i / tc_i  (PS21/11 ENBP, renewal policies)
+           m_i ∈ [m_min, m_max]  for all i
 ```
 
-The decision variables `m_k` are multiplicative adjustments to each rating factor. A value of 1.05 means factor k's relativities are uniformly scaled up by 5% across all levels - a parallel shift on the log scale. The demand model enters through the volume and LR constraints: `p_i(π_i / π_market_i)` is the renewal probability at the adjusted premium. This makes both constraints nonlinear in `m`, which is why the problem requires SLSQP rather than a linear solver.
+The decision variables `m_i` are per-policy price multipliers relative to technical price. The demand model enters through `x_i(m_i)`, the renewal or conversion probability at multiplier `m_i`. This makes both constraints nonlinear in `m`, which is why the problem requires SLSQP rather than a linear solver.
 
 ---
 
 ## A worked example
 
 ```python
+import numpy as np
 import polars as pl
-from insurance_optimise import (
-    PolicyData, FactorStructure, DemandModel,
-    RateChangeOptimiser, EfficientFrontier,
-    LossRatioConstraint, VolumeConstraint,
-    ENBPConstraint, FactorBoundsConstraint,
-)
-from insurance_optimise.demand import make_logistic_demand, LogisticDemandParams
+from insurance_optimise import PortfolioOptimiser, ConstraintConfig, EfficientFrontier
+from insurance_optimise import ClaimsVarianceModel, make_demand_model
 
-# Load GLM outputs: policy_id, channel, renewal_flag,
-# technical_premium, current_premium
+# Load GLM outputs: policy_id, renewal_flag, technical_premium, expected_loss_cost,
+# renewal_probability, price_elasticity, enbp
 df = pl.read_parquet("policies.parquet")
 
-# rate_optimiser works with pandas at its boundary
-data = PolicyData(df.to_pandas())
-
-# Describe the multiplicative tariff structure
-factor_names = ["f_age_band", "f_ncb", "f_vehicle_group", "f_region", "f_tenure_discount"]
-fs = FactorStructure(
-    factor_names=factor_names,
-    factor_values=df.select(factor_names).to_pandas(),
-    renewal_factor_names=["f_tenure_discount"],  # renewal-only; excluded from NB equivalent
+# Build constraint configuration
+config = ConstraintConfig(
+    lr_max=0.72,
+    retention_min=0.97,
+    max_rate_change=0.15,   # ±15% cap per policy
+    enbp_buffer=0.01,       # 1% buffer below ENBP ceiling
 )
 
-# Wrap a logistic demand model
-params = LogisticDemandParams(intercept=1.0, price_coef=-2.0, tenure_coef=0.05)
-demand = make_logistic_demand(params)
-
-# Specify constraints
-opt = RateChangeOptimiser(data=data, demand=demand, factor_structure=fs)
-opt.add_constraint(LossRatioConstraint(bound=0.72))
-opt.add_constraint(VolumeConstraint(bound=0.97))
-opt.add_constraint(ENBPConstraint(channels=["PCW", "direct"]))
-opt.add_constraint(FactorBoundsConstraint(lower=0.90, upper=1.15, n_factors=fs.n_factors))
-
-# Check feasibility before solving
-print(opt.feasibility_report())
+# Build the optimiser - operates at policy level on numpy arrays
+opt = PortfolioOptimiser(
+    technical_price=df["technical_premium"].to_numpy(),
+    expected_loss_cost=df["expected_loss_cost"].to_numpy(),
+    p_demand=df["renewal_probability"].to_numpy(),
+    elasticity=df["price_elasticity"].to_numpy(),
+    renewal_flag=df["renewal_flag"].to_numpy(),
+    enbp=df["enbp"].to_numpy(),
+    constraints=config,
+)
 
 # Solve
-result = opt.solve()
-print(result.summary())
+result = opt.optimise()
+print(result)
 ```
 
-`result.factor_adjustments` gives you the optimal multiplier for each factor - `{"f_age_band": 1.04, "f_ncb": 1.02, ...}`. `result.shadow_prices` is the number worth reading first.
+`result.multipliers` gives you the optimal per-policy price multiplier. `result.shadow_prices` is the number worth reading first.
 
 ---
 
 ## Shadow prices: the number to put in front of the commercial director
 
-The shadow price on the LR constraint is the Lagrange multiplier: the marginal dislocation cost of tightening the LR target by one unit. When the LR constraint is slack, the shadow price is zero - you are not at the frontier, and tightening the target costs nothing yet. As you approach the knee of the frontier, the shadow price rises steeply.
+The shadow price on the LR constraint is the Lagrange multiplier: the marginal profit cost of tightening the LR target by one unit. When the LR constraint is slack, the shadow price is zero - you are not at the frontier, and tightening the target costs nothing yet. As you approach the knee of the frontier, the shadow price rises steeply.
 
 Tracing the frontier makes this concrete:
 
@@ -125,15 +115,29 @@ The volume shadow price tells a similar story. At a 97% volume retention bound i
 
 ## The FCA ENBP constraint
 
-PS21/5 prohibits renewal premiums above the new business equivalent through the same channel. For most UK motor and home portfolios, this is a genuinely binding constraint: renewal customers typically received loyalty discounts that are now prohibited. When you take rate on renewals, you have to be careful which factors you move, because some factor changes apply only to renewals (tenure discounts, NCB-at-renewal adjustments) and are excluded from the NB equivalent calculation.
+PS21/11 prohibits renewal premiums above the new business equivalent through the same channel. For most UK motor and home portfolios, this is a genuinely binding constraint: renewal customers typically received loyalty discounts that are now prohibited. When you take rate on renewals, you have to be careful which policies are constrained by ENBP.
 
-`ENBPConstraint` enforces this formally and channel-specifically:
+The library enforces this per-policy via the `enbp` array and the `enbp_buffer` in `ConstraintConfig`:
 
 ```python
-opt.add_constraint(ENBPConstraint(channels=["PCW", "direct"]))
+config = ConstraintConfig(
+    lr_max=0.72,
+    retention_min=0.97,
+    enbp_buffer=0.01,   # stay 1% below the ENBP ceiling
+)
+
+opt = PortfolioOptimiser(
+    technical_price=technical_premiums,
+    expected_loss_cost=loss_costs,
+    p_demand=renewal_probs,
+    elasticity=elasticities,
+    renewal_flag=is_renewal,
+    enbp=enbp_values,     # NB-equivalent price per renewal policy
+    constraints=config,
+)
 ```
 
-Declare which factors are renewal-only in the `FactorStructure` and the library handles the NB-equivalent calculation automatically. The shadow price on the ENBP constraint tells you the dislocation cost of regulatory compliance: how much harder the optimiser has to work to find a feasible solution because of the ENBP restriction. This number belongs in your PS21/5 impact analysis.
+The shadow price on the ENBP constraint tells you the dislocation cost of regulatory compliance: how much profit the optimiser forgoes because of the ENBP restriction. This number belongs in your PS21/11 impact analysis.
 
 No other open-source tool we are aware of implements this constraint at all. Commercial tools such as Radar Optimiser and Earnix have it in some form, but with opaque solver implementations and no programmatic access to shadow prices.
 
@@ -141,7 +145,7 @@ No other open-source tool we are aware of implements this constraint at all. Com
 
 ## The stochastic formulation
 
-The deterministic problem uses E[LR] ≤ target. The stochastic formulation, following Branda (2013), is stricter: P(LR ≤ target) ≥ α. The LR must stay below the target with confidence level α, not just in expectation.
+The deterministic problem uses E[LR] ≤ target. The stochastic formulation, following Branda (2014), is stricter: P(LR ≤ target) ≥ α. The LR must stay below the target with confidence level α, not just in expectation.
 
 Under a normal approximation - appropriate for large books where the CLT applies - this reformulates to:
 
@@ -152,21 +156,32 @@ E[LR] + z_α × σ[LR] ≤ target
 where σ[LR] comes from the variance estimates in your GLM. For a Tweedie claims model you pass the dispersion parameter and power; the library derives the policy-level variance and aggregates.
 
 ```python
-from insurance_optimise.stochastic import ClaimsVarianceModel, StochasticRateOptimiser
+from insurance_optimise import ClaimsVarianceModel, PortfolioOptimiser, ConstraintConfig
 
-variance_model = ClaimsVarianceModel.from_tweedie(
-    mean_claims=data.df["technical_premium"].values,
+var_model = ClaimsVarianceModel.from_tweedie(
+    mean_claims=loss_costs,
     dispersion=1.2,
     power=1.5,
 )
 
-opt = StochasticRateOptimiser(
-    data=data, demand=demand, factor_structure=fs,
-    variance_model=variance_model,
-    lr_bound=0.72,
-    alpha=0.95,
+config = ConstraintConfig(
+    lr_max=0.72,
+    retention_min=0.97,
+    stochastic_lr=True,
+    stochastic_alpha=0.95,
 )
-result = opt.solve()
+
+opt = PortfolioOptimiser(
+    technical_price=technical_premiums,
+    expected_loss_cost=loss_costs,
+    p_demand=renewal_probs,
+    elasticity=elasticities,
+    renewal_flag=is_renewal,
+    enbp=enbp_values,
+    claims_variance=var_model.variance_claims,
+    constraints=config,
+)
+result = opt.optimise()
 ```
 
 The stochastic solver will always recommend higher rate than the deterministic one. The difference is the "uncertainty premium" - the additional rate required to maintain the LR target with 95% confidence rather than just in expectation. If your book has high variance (large Tweedie dispersion, concentrated exposure), this can be substantial. If you have a large, diversified portfolio, it will be small. That is not a surprise result, but it is a result the solver quantifies rather than leaves to intuition.
@@ -190,7 +205,7 @@ uv add "insurance-optimise[stochastic]"
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
 
-The `feasibility_report()` method is the first thing to run before any solve. If your constraints are infeasible at current rates, the solver will tell you - and that is itself useful information about the portfolio.
+The `portfolio_summary()` method is the first thing to run before any solve - it gives you baseline metrics at current prices so you can see what the optimiser is starting from.
 
 - [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
