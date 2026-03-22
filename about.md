@@ -1,11 +1,11 @@
 ---
 layout: page
 title: About
-description: "Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks."
+description: "Burning Cost publishes open-source Python libraries for machine learning and data science in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks."
 permalink: /about/
 ---
 
-Burning Cost is on the forefront of machine learning and data science research in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks.
+Burning Cost publishes open-source Python libraries for machine learning and data science in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks.
 
 The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. Simple, direct, no mystification. That is how we think about tooling.
 
