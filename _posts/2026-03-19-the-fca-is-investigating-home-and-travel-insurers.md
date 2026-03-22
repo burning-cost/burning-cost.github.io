@@ -9,7 +9,7 @@ canonical_url: "https://burning-cost.github.io/2026/03/19/the-fca-is-investigati
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
 ---
 
-Six Consumer Duty investigations are currently open at the FCA. Two of the most serious involve insurers specifically on fair value grounds, and both are in home and travel markets. The FCA has already stopped one firm from writing new business pending remediation. Intervention rate from the 2025 home and travel thematic: roughly 40%.
+Following the Which? super-complaint on home and travel insurance, the FCA has opened two enforcement investigations into firms on fair value grounds and restricted one firm from growing its book until identified issues are fixed. It has also commissioned three skilled person reviews into claims handling systems and controls and extracted remedial commitments from three senior managers — including consideration of whether redress may be due to customers.
 
 This is not a hypothetical compliance risk.
 
@@ -76,7 +76,7 @@ audit = FairnessAudit(
     factor_cols=["postcode_district", "vehicle_group", "ncd_years", "build_year"],
 )
 report = audit.run()
-report.to_markdown("fair_value_evidence_2029.md")
+report.to_markdown("fair_value_evidence_2026q1.md")
 ```
 
 `MulticalibrationAudit` handles the within-premium-band analysis. It segments policyholders into predicted premium deciles, then tests for systematic A/E bias within each (decile, group) cell. The correction mechanism applies credibility-weighted adjustments where cells fail the test, following the Denuit, Michaelides and Trufin (2026) framework adapted for UK insurance conventions.

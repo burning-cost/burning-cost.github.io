@@ -12,7 +12,7 @@ tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, F
 
 There is a specific obligation in PRIN 2A.4.6 that most UK pricing teams are not meeting, and the FCA has been explicit about this since TR24/2 in August 2024. The obligation is to monitor whether your pricing model produces systematically different outcomes for customers with different protected characteristics — age, gender, disability, ethnicity — and to produce quantitative evidence of that monitoring on a regular basis.
 
-Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA looked at what firms were producing and called it "high-level summaries with little substance." That finding from TR24/2 is what opened the six Consumer Duty investigations that are currently live, two of which name insurers specifically on fair value grounds.
+Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA looked at what firms were producing and called it "high-level summaries with little substance." That finding from TR24/2 preceded the FCA enforcement actions that followed the Which? super-complaint on home and travel insurance, two of which named insurers specifically on fair value grounds.
 
 This post shows how to run a proper proxy discrimination audit in Python using `insurance-fairness`. The API is built around the specific evidence the FCA needs, not around generic ML fairness benchmarks.
 
@@ -143,7 +143,7 @@ report.summary()
 The console output gives you the headline RAG status and per-characteristic metrics. The substantive output is the Markdown file:
 
 ```python
-report.to_markdown("fair_value_evidence_2029q2.md")
+report.to_markdown("fair_value_evidence_2026q2.md")
 ```
 
 This file contains: proxy detection results for all five rating factors, calibration by group with exposure-weighted A/E ratios across ten premium deciles, demographic parity ratio in log-space, disparate impact ratio, and a regulatory mapping section linking each finding to PRIN 2A.4.6 and Equality Act Section 19. There is a sign-off table at the end for the certifying actuary.
@@ -227,7 +227,7 @@ The `max_disparity` compares the female and male A/E ratios within each predicte
 
 A green RAG status from `FairnessAudit` means: no rating factor has proxy R-squared above 0.10 for any protected characteristic, the maximum calibration disparity across (protected group × premium decile) cells is below 0.05, and the demographic parity log-ratio is within ±0.05. It does not mean your model definitely does not discriminate. It means the tests we can run on observable data do not find evidence of discrimination at the standard thresholds.
 
-The honest framing for a pricing committee paper: "Our proxy discrimination audit for Q2 2029 found no rating factors with proxy R-squared above 0.10 for gender, and maximum calibration disparity of X across (gender × predicted premium decile) cells. This is consistent with the model not discriminating on gender. We note that the audit cannot detect discrimination by characteristics we do not hold in our policy data — ethnicity, religion, disability status — and we address this in a separate analysis using ONS Census 2021 LSOA-level ethnicity proxies." That framing is more defensible than a paragraph asserting the model is actuarially justified.
+The honest framing for a pricing committee paper: "Our proxy discrimination audit for Q2 2026 found no rating factors with proxy R-squared above 0.10 for gender, and maximum calibration disparity of X across (gender × predicted premium decile) cells. This is consistent with the model not discriminating on gender. We note that the audit cannot detect discrimination by characteristics we do not hold in our policy data — ethnicity, religion, disability status — and we address this in a separate analysis using ONS Census 2021 LSOA-level ethnicity proxies." That framing is more defensible than a paragraph asserting the model is actuarially justified.
 
 ---
 

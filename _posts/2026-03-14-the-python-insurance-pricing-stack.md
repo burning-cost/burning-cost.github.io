@@ -128,9 +128,9 @@ A representative UK motor rating model has roughly 4.5 million theoretical cells
 `bayesian-pricing` uses partial pooling via PyMC hierarchical models. Thin segments borrow strength from related segments. The degree of borrowing is determined by the data, not a hyperparameter you tune by hand.
 
 ```python
-from bayesian_pricing import HierarchicalFrequencyModel
+from bayesian_pricing import HierarchicalFrequency
 
-model = HierarchicalFrequencyModel(
+model = HierarchicalFrequency(
     group_cols=["driver_age_band", "vehicle_group"],
     exposure_col="exposure",
 )
@@ -166,14 +166,14 @@ See [Your Territory Banding is Wrong](/2026/02/23/spatial-territory-ratemaking-w
 
 ### insurance-interactions — GLM interaction detection
 
-Adding interaction terms to a GLM is guesswork without a systematic search. A portfolio with 20 rating factors has 190 possible pairwise interactions. `insurance-interactions` uses a combination of the Friedman H-statistic (with computationally feasible subsampling for UK portfolio sizes) and GBM-derived interaction importance to rank which interactions are worth testing, then fits them as GLM two-way terms and reports the deviance reduction.
+Adding interaction terms to a GLM is guesswork without a systematic search. A portfolio with 20 rating factors has 190 possible pairwise interactions. `insurance-interactions` uses a three-stage pipeline: a Combined Actuarial Neural Network (CANN) trained on GLM residuals, Neural Interaction Detection (NID) scoring from the CANN weight matrices to rank all candidate pairs, and GLM likelihood-ratio testing on the top-K shortlist. The result is a ranked interaction table with deviance improvement, AIC/BIC, and Bonferroni-corrected p-values — not a list of guesses.
 
 ```python
 from insurance_interactions import InteractionDetector
 
-detector = InteractionDetector(base_model=fitted_gbm, n_top=10)
-ranked = detector.fit(X_train, y_train, exposure=exposure)
-ranked.summary()  # top 10 interactions ranked by H-statistic
+detector = InteractionDetector(family='poisson')
+detector.fit(X_train, y_train, glm_predictions=mu_glm, exposure=exposure)
+print(detector.interaction_table())  # ranked by NID score with LR test results
 ```
 
 See [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) for why the standard approach misses most of the signal.
