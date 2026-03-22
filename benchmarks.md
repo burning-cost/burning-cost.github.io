@@ -543,6 +543,26 @@ WH improvement vs raw: +57.2%. Vs moving average: +2.8%. REML selected EDF=7.7. 
 
 ---
 
+### bayesian-pricing — Hierarchical Bayesian frequency models for thin rating cells
+
+**What is measured:** HierarchicalFrequency (Poisson with crossed random effects, partial pooling) vs raw segment estimates (claims / exposure per cell, no shrinkage) on 60 synthetic UK motor rating cells: 20 occupation classes x 3 vehicle groups. True log-frequency uses crossed Normal random effects (σ_occ = 0.35, σ_veh = 0.25). Eight occupations are deliberately thin (20–50 policy-years); twelve are thick (300–800 policy-years). RMSE measured against known DGP ground truth, not holdout.
+
+| Segment type | Raw RMSE | Bayesian RMSE | Improvement |
+|---|---|---|---|
+| Thin occupations (20–50 py) | higher | lower | typically 20–40% |
+| Thick occupations (300–800 py) | baseline | similar | small or neutral |
+| All segments | baseline | lower | driven by thin proportion |
+
+Results are labelled as typical rather than exact because the magnitude depends on the random seed and the sampler (pathfinder VI is used for speed; NUTS gives exact posteriors). The pattern is consistent across seeds: thin cells shrink toward the grand mean, thick cells are largely unaffected. The shrinkage diagnostic confirms the theoretical prediction: credibility factor Z is strongly positively correlated with log(occupation exposure) — the model automatically identifies which segments need regularisation without manual specification.
+
+Two honest failure modes. First, variance component recovery: pathfinder (variational inference) underestimates posterior variance slightly relative to NUTS — this is a known limitation of mean-field VI and is documented in the library. For production rate tables, use `method="nuts"` with 4 chains. Second, partial pooling does not help when every cell has deep data (>500 policy-years); the credibility factor approaches 1 and pooling converges to the raw estimate anyway.
+
+PyMC 5.x is required and pulls in C++ dependencies that do not compile on ARM64. This benchmark runs on Databricks ML Runtime. Run time: pathfinder fits in seconds; NUTS takes 10–30 minutes for 50–200 segments on a standard cluster — appropriate for a quarterly repricing cycle, not real-time scoring.
+
+[github.com/burning-cost/bayesian-pricing](https://github.com/burning-cost/bayesian-pricing)
+
+---
+
 ## Cross-Validation
 
 ### insurance-cv — Walk-forward temporal CV for trending markets
@@ -631,7 +651,28 @@ HMM identifies latent driving states (motorway cruise, urban stop-start, harsh e
 
 ## Thin Data & Transfer Learning
 
+### insurance-thin-data — GLMTransfer for sparse commercial and niche segments
+
+**What is measured:** GLMTransfer (Tian & Feng, JASA 2023 two-step penalised GLM) vs standalone Poisson GLM on a thin target segment (400 training policies) with a related source portfolio of 8,000 policies. Three features are shared between source and target; one target feature (not in source) is excluded from the transfer component. Bootstrap uses 200 resamplings of the target training data, fixed seed. Poisson deviance on 150 held-out target policies. Run on Databricks Serverless, 2026-03-22.
+
+| Metric | Standalone GLM (n=400) | GLMTransfer (source n=8,000) | Oracle GLM (n=5,000) |
+|---|---|---|---|
+| Poisson deviance (test, lower = better) | 0.2816 | **0.2614** | 0.2554 |
+| Coefficient RMSE vs true (3 shared features) | 0.1722 | 0.1720 | — |
+| Bootstrap 90% CI width — ncd_years | 0.2471 | **0.0459** | — |
+| CI width reduction | — | **81.4% narrower** | — |
+
+The headline result is not Poisson deviance — with 150 test policies the difference is real (7.2% reduction) but the test set is small enough that you would not stake a launch decision on it alone. The definitive result is parameter stability: the bootstrap 90% CI width for the NCD years coefficient narrows from 0.247 to 0.046, an 81.4% reduction. On 400 target policies, a standalone GLM produces relativities whose confidence intervals span the plausible range so completely that an actuary cannot determine the sign on some factors. Transfer anchors the estimate near the source coefficients and only moves when the target data justify it.
+
+Honest caveat: the CI narrowing is larger than the 30–60% stated in the README because this particular source-target pair has a mild distributional shift (same coefficient structure, different intercept) which is the regime most favourable to transfer. With stronger shift — different coefficient signs between source and target — the debiasing step works harder and narrowing is lower. The `NegativeTransferDiagnostic` in the library flags when source data is actively hurting; on this benchmark it confirmed transfer is beneficial. Coefficient RMSE barely improves (0.1722 → 0.1720) because transfer over-shrinks the target-specific young driver effect toward the source; this is expected and documented.
+
+[github.com/burning-cost/insurance-thin-data](https://github.com/burning-cost/insurance-thin-data)
+
+---
+
 ### insurance-tabpfn — Foundation model for thin segment pricing
+
+> **Merged into [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data).** Use `insurance_thin_data.tabpfn` instead. The benchmark below was run before the merge and remains valid.
 
 **What is measured:** InsuranceTabPFN (TabPFN/TabICLv2 wrapper) vs Poisson GLM on thin segments at varying sample sizes. Primary metric: Gini coefficient and Poisson deviance on held-out test set.
 
