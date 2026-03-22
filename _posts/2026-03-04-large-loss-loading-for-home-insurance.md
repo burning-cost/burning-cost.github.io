@@ -180,19 +180,21 @@ The loading is TVaR_alpha(i) − E[Y_i]: the expected cost given that a large lo
 Which alpha to use depends on your reinsurance structure. If you have a per-risk excess of loss treaty with a £100k retention, and claims above £100k sit in the XL layer, then alpha = 0.95 (the approximate probability that a claim falls below £100k on a mid-sized home book) is the right loading level: you are pricing the cost that sits below the treaty. If you are retaining everything, use TVaR at 0.99 to load for the genuine tail.
 
 ```python
-from insurance_quantile import large_loss_loading
+from insurance_quantile import large_loss_loading, per_risk_tvar
+import numpy as np
 
 # TVaR at the 95th percentile: appropriate if you retain claims up to ~£100k
 # and place the excess in a per-risk XL treaty
-loading_df = large_loss_loading(
-    mean_model=tweedie,
-    quantile_model=qmodel,
-    X=X_val,
-    alpha=0.95,
-)
+loading_series = large_loss_loading(model_mean=tweedie, model_quantile=qmodel, X=X_val, alpha=0.95)
+tvar_result    = per_risk_tvar(qmodel, X_val, alpha=0.95)
+mean_preds     = tweedie.predict(X_val.to_numpy())
 
-# Add sum_insured for analysis
-loading_df = loading_df.with_columns(X_val["sum_insured"])
+loading_df = pl.DataFrame({
+    "sum_insured": X_val["sum_insured"],
+    "mean_pred":   pl.Series(mean_preds),
+    "tvar_0.95":   tvar_result.values,
+    "loading":     loading_series,
+})
 
 print(loading_df.head(6))
 ```

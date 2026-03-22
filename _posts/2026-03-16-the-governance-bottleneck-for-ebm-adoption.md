@@ -181,13 +181,13 @@ This is the format a pricing committee reads. The `relativity` column is normali
 
 ---
 
-## Why this matters more now than in 2026
+## Why this matters now
 
-The [original insurance-gam post](/2026/03/14/insurance-gam-interpretable-nonlinearity/) covered the three-way decision between EBM, ANAM, and PIN. That is still the right framework for choosing which architecture to use. What has changed since 2026 is the regulatory context.
+The [original insurance-gam post](/2026/03/14/insurance-gam-interpretable-nonlinearity/) covered the three-way decision between EBM, ANAM, and PIN. That is still the right framework for choosing which architecture to use. The regulatory pressure to use it has grown since then.
 
-FCA Consumer Duty, operational since 2023, requires firms to demonstrate that pricing outcomes are fair on an ongoing basis. The 2027 FCA pricing practices review found that several firms had deployed interpretable ML models that were not being actively monitored at the factor level - the black-box critique applied not to GBMs but to GAMs that were interpretable in principle but not in practice, because teams lacked the tooling to review them factor-by-factor at refresh.
+FCA Consumer Duty, operational since July 2023, requires firms to demonstrate that pricing outcomes are fair on an ongoing basis. The obligation applies to the model as used, not just as documented. A GAM that produces interpretable shape functions at training time but is never reviewed at factor level after deployment is not meeting the spirit of that requirement — the black-box critique applies not to GBMs but to GAMs that are interpretable in principle but unreviewed in practice, because teams lack the tooling to do it systematically at each refresh.
 
-`GLMComparison.divergence_summary()` is the answer to that review finding. It produces a quantified, auditable comparison of EBM factors against the previously approved GLM at every refresh. When the EBM moves a factor more than 5 percentage points relative to the approved GLM, you have a documented trigger for review. When it stays within tolerance, you have documented evidence that the EBM is not drifting away from approved rates in ways the governance process did not intend.
+`GLMComparison.divergence_summary()` is the answer to that gap. It produces a quantified, auditable comparison of EBM factors against the previously approved GLM at every refresh. When the EBM moves a factor more than 5 percentage points relative to the approved GLM, you have a documented trigger for review. When it stays within tolerance, you have documented evidence that the EBM is not drifting away from approved rates in ways the governance process did not intend.
 
 The model is not just sitting in a notebook because the committee is unreasonable. It is sitting there because the tooling to connect EBM outputs to GLM governance vocabulary did not exist until recently. It exists now.
 

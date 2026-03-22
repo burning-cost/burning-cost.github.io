@@ -3,8 +3,8 @@ layout: post
 title: "Debiasing Price Elasticity Estimates with Double Machine Learning: Removing the Risk Model's Fingerprint"
 date: 2026-03-15
 categories: [techniques]
-tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-elasticity, uk-motor, polars, python, tutorial]
-description: "OLS elasticity in formula-rated books is contaminated by your own risk model. insurance-elasticity fixes this with CausalForestDML and CatBoost nuisance."
+tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-causal, uk-motor, polars, python, tutorial]
+description: "OLS elasticity in formula-rated books is contaminated by your own risk model. insurance-causal fixes this with CausalForestDML and CatBoost nuisance."
 ---
 > **Update (March 2026):** `insurance-elasticity` has been merged into [`insurance-causal`](https://github.com/burning-cost/insurance-causal). Install `insurance-causal` and use `insurance_causal.elasticity` for the same functionality.
 
@@ -12,12 +12,10 @@ Every pricing team we have talked to has an elasticity model. Most of them are l
 
 The cause is not a coding error. It is a structural feature of how insurance pricing works, and it cannot be fixed by adding more covariates to the regression.
 
-`insurance-elasticity` wraps CausalForestDML from EconML with insurance-specific handling for binary outcomes, GIPP structural constraints, and the near-deterministic treatment problem that plagues formula-rated books. This tutorial covers the full workflow in seven steps.
+`insurance-causal` (via `insurance_causal.elasticity`) wraps CausalForestDML from EconML with insurance-specific handling for binary outcomes, GIPP structural constraints, and the near-deterministic treatment problem that plagues formula-rated books. This tutorial covers the full workflow in seven steps.
 
 ```bash
-uv add insurance-elasticity
-# or
-uv add insurance-elasticity
+uv add insurance-causal
 ```
 
 ---
@@ -40,8 +38,8 @@ The library ships `make_renewal_data()` for reproducible examples. It generates 
 
 ```python
 import polars as pl
-from insurance_elasticity.data import make_renewal_data
-from insurance_elasticity import RenewalElasticityEstimator
+from insurance_causal.elasticity.data import make_renewal_data
+from insurance_causal.elasticity import RenewalElasticityEstimator
 
 df = make_renewal_data(n=50_000, random_state=42)
 # df has columns: driver_age, ncd_years, vehicle_group, region,
@@ -160,7 +158,7 @@ The CATE distribution matters for the optimiser in step 5. If the distribution i
 
 CausalForestDML is our primary estimator. It is not infallible: it requires the overlap assumption (discussed in step 6), it uses a specific forest structure, and the honest estimation approach has finite-sample properties that depend on tree depth. Before trusting the GATEs, run the DR-Learner as an independent check.
 
-The DR-Learner (Kennedy 2023, Annals of Statistics 51(2): 958-981) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified — not both. The insurance-elasticity library wraps it with the same interface:
+The DR-Learner (Kennedy 2023, Annals of Statistics 51(2): 958-981) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified — not both. The `insurance_causal.elasticity` module wraps it with the same interface:
 
 ```python
 est_dr = RenewalElasticityEstimator(
@@ -196,7 +194,7 @@ We do not recommend choosing between the two estimators based on which gives a b
 The ICOBS 6B.2 constraint (FCA PS21/5, effective January 2022) is a hard ceiling: the renewal offer cannot exceed the Equivalent New Business Price through the same channel. The library's optimiser takes ENBP as a pre-computed column — it is not in the business of running your new-business model. You provide it.
 
 ```python
-from insurance_elasticity.optimise import RenewalPricingOptimiser
+from insurance_causal.elasticity.optimise import RenewalPricingOptimiser
 
 # Assume df has 'tech_prem' (technical premium), 'enbp' (pre-computed),
 # 'last_year_price' columns
@@ -316,7 +314,7 @@ print(audit.summary())
 
 ```
 ENBP COMPLIANCE AUDIT
-Run date: 2028-03-15
+Run date: 2026-03-15
 Policies processed: 50,000
 
 Policies where optimal_price > enbp: 0 (0.0%) — COMPLIANT
@@ -340,11 +338,11 @@ What to add in the governance narrative — the text the audit report does not w
 - What are the known limitations? Near-deterministic treatment in underwriting-constrained segments. CATEs for NCB 0 customers with recent claims are wider confidence intervals than for the NCB 5+ majority.
 - How will the model be monitored? Recommended: quarterly recalibration of ATE, comparison of predicted vs actual renewal rates by NCD band, and retesting overlap diagnostics when book mix shifts.
 
-The FCA has not, as of March 2028, issued specific guidance on DML-based demand models. FCA EP25/2 (2025) reviewed GIPP compliance broadly and found firms largely compliant with the ENBP cap; the next wave of scrutiny will be on the pricing logic used to set discounts, not just the ENBP ceiling itself. Having a documented causal model, with known limitations and a monitoring cadence, is a better position than an OLS model with no documented identification strategy.
+The FCA has not, as of March 2026, issued specific guidance on DML-based demand models. FCA EP25/2 (2025) reviewed GIPP compliance broadly and found firms largely compliant with the ENBP cap; the next wave of scrutiny will be on the pricing logic used to set discounts, not just the ENBP ceiling itself. Having a documented causal model, with known limitations and a monitoring cadence, is a better position than an OLS model with no documented identification strategy.
 
 ---
 
-`insurance-elasticity` is open source under MIT at [github.com/burning-cost/insurance-elasticity](https://github.com/burning-cost/insurance-elasticity). Requires Python 3.10+, CatBoost 1.2+, EconML 0.16+, and Polars 0.20+.
+`insurance-causal` is open source under MIT at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal). The elasticity module (`insurance_causal.elasticity`) requires Python 3.10+, CatBoost 1.2+, EconML 0.16+, and Polars 0.20+.
 
 - [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
 - [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process

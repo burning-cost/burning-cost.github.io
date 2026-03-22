@@ -11,7 +11,7 @@ Your loss ratio went down six months after the rate increase. The pricing presen
 
 None of this is evidence that the rate change caused the improvement.
 
-This is not a pedantic distinction. FCA TR24/2 (August 2024) reviewed how UK insurers evaluate the outcomes of their pricing interventions and found that 28 firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's language was explicit: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. They compared outcomes between treated and comparison groups in their own EP25/2 evaluation specifically because they knew the before/after approach cannot isolate the treatment effect from market-wide trends.
+This is not a pedantic distinction. FCA TR24/2 (August 2024) reviewed how UK insurers evaluate the outcomes of their pricing interventions and found that a material number of firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's language was explicit: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. They compared outcomes between treated and comparison groups in their own EP25/2 evaluation specifically because they knew the before/after approach cannot isolate the treatment effect from market-wide trends.
 
 We built [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) to close this gap. It is on PyPI at v0.1.4, 170 tests passing, and it produces the kind of structured causal evidence that TR24/2 was looking for.
 
@@ -219,6 +219,13 @@ The source is at [github.com/burning-cost/insurance-causal-policy](https://githu
 
 A before/after chart is not evidence. It is a description of what happened. The question of whether the rate change caused what happened requires a counterfactual. This library builds the counterfactual.
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/05/your-rating-factor-might-be-confounded/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)
+
+---
+
+## See also
+
+- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) — panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — DML for continuous treatment; applies when the rate change was applied at varying levels rather than as a clean step
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — why A/B rate testing and pre/post comparisons both fail for the same structural reason
