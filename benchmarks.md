@@ -150,60 +150,6 @@ Split conformal collapses under distribution shift — its calibration set is st
 
 ---
 
-### insurance-conformal-claims — Conformal prediction for heavy-tailed individual claims
-
-**What is measured:** Conformal prediction intervals vs parametric GLM intervals on individual motor claims at 99% nominal coverage level. Following Hong (2025) Table 2 — Pareto-distributed severity where GLM normality assumption fails structurally.
-
-| Method | Achieved coverage at 99% nominal |
-|---|---|
-| GLM parametric (Gaussian residual assumption) | 57.8% |
-| Conformal prediction (split) | **99.6%** |
-
-The 41pp coverage gap is not noise — it is the systematic consequence of fitting Gaussian prediction intervals to Pareto-distributed claims. The conformal interval is distribution-free by construction. The cost is wider intervals: conformal intervals are roughly 2–3× wider than GLM intervals in the body, but unlike GLM intervals they actually contain the tail observations.
-
-[github.com/burning-cost/insurance-conformal-claims](https://github.com/burning-cost/insurance-conformal-claims)
-
----
-
-## Neural Network Pricing Models
-
-### insurance-pin — Poisson interaction network (French MTPL)
-
-**What is measured:** Ensemble PIN vs published baselines on freMTPL2freq (French motor third-party liability frequency). Standard Poisson deviance metric — lower is better. Results from Databricks Serverless.
-
-| Model | Poisson deviance | Parameters |
-|---|---|---|
-| Null (intercept only) | 25.445 | — |
-| Poisson GLM | 24.102 | — |
-| GAM | 23.956 | — |
-| FNN (feed-forward neural network) | 23.783 | — |
-| CAFFT | 23.726 | — |
-| Credibility Transformer (CT) | 23.711 | 1,746 |
-| **Ensemble PIN** | **23.667** | **4,147** |
-
-PIN achieves the best published Poisson deviance on this benchmark at 4,147 parameters — smaller than a standard FNN and better than the Credibility Transformer. The architecture explicitly models pairwise feature interactions via a bilinear layer, which is what the GLM misses on this dataset (vehicle age × bonus-malus cross-effect).
-
-[github.com/burning-cost/insurance-pin](https://github.com/burning-cost/insurance-pin)
-
----
-
-### insurance-credibility-transformer — Attention-based credibility for tariff cells
-
-**What is measured:** Credibility Transformer (CT) vs standard baselines on freMTPL2freq. Same benchmark as insurance-pin above. Results from Databricks Serverless.
-
-| Model | Poisson deviance | Parameters |
-|---|---|---|
-| Null | 25.445 | — |
-| Poisson GLM | 24.102 | — |
-| FNN | 23.783 | — |
-| CT (nadam) | 23.711 | **1,746** |
-| Deep CT | 23.577 | ~320,000 |
-
-The CT achieves better Poisson deviance than FNN with 1,746 parameters — roughly 10× fewer than a typical FNN. The attention mechanism pools information across tariff cells, implementing credibility weighting without explicit manual specification of credibility structure. The Deep CT further improves to 23.577 at the cost of substantially more parameters.
-
-[github.com/burning-cost/insurance-credibility-transformer](https://github.com/burning-cost/insurance-credibility-transformer)
-
----
 
 ### insurance-gam — Interpretable GAM/EBM pricing models
 
@@ -278,20 +224,6 @@ DML reduces NCD GATE RMSE by 47.6% vs OLS. The primary win is not ATE accuracy (
 
 ---
 
-### insurance-tmle — TMLE for causal effect estimation under strong confounding
-
-**What is measured:** TMLE vs naive Poisson GLM under strong confounding on synthetic UK motor DGP. Two scenarios: moderate confounding and strong confounding (confounder accounts for 60%+ of outcome variance).
-
-| Method | ATE bias | 95% CI coverage |
-|---|---|---|
-| Naive GLM | 2–5× true effect | 30–60% |
-| TMLE | **near-zero** | **~95%** |
-
-Under strong confounding, naive GLM CI coverage collapses to 30–60% — less than half the nominal level. TMLE's double-robustness (consistent if either outcome model or propensity score is correctly specified) maintains near-nominal coverage. The cost is computation: TMLE requires cross-fitting with CatBoost nuisance models, adding roughly 30–60 seconds vs GLM's seconds on n=10,000.
-
-[github.com/burning-cost/insurance-tmle](https://github.com/burning-cost/insurance-tmle)
-
----
 
 ## Demand & Retention Modelling
 
@@ -391,6 +323,8 @@ GAS Poisson achieves the best log-likelihood (−231.7 vs −236.3 for GLM trend
 | Frequency | +3.000% | −5.152% | −5.353% |
 | Severity | +8.000% | +2.353% | +2.256% |
 | Loss cost | +11.240% | −2.921% | −3.217% |
+
+† Without break detection, single-segment OLS returns the wrong sign on frequency trend. Use `changepoints=[8,12]` or auto-detection for series with structural breaks.
 
 **4-quarter forward projection MAPE:**
 

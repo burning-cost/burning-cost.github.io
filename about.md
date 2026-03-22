@@ -1,11 +1,11 @@
 ---
 layout: page
 title: About
-description: "Open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept — burning cost is claims incurred divided by premium earned."
+description: "Open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept — burning cost is the pure loss experience rate, used for experience rating."
 permalink: /about/
 ---
 
-Burning Cost is a set of open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. We build tools for the problems where Emblem, Radar, and Akur8 stop — causal inference, proxy discrimination auditing, conformal prediction, model governance.
+Burning Cost is a set of open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept: burning cost is the pure loss experience rate — actual losses on a risk as a proportion of the subject premium — used for experience rating. We build tools for the problems where Emblem, Radar, and Akur8 stop — causal inference, proxy discrimination auditing, conformal prediction, model governance.
 
 The name is also a philosophy. Simple, direct, no mystification. That is how we think about tooling.
 
