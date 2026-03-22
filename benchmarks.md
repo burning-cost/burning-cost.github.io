@@ -44,6 +44,23 @@ Adding an interaction DGP (vehicle_group × NCD): SHAP relativities give +3.4pp 
 
 ---
 
+### insurance-deploy — Champion/challenger deployment framework
+
+**What is measured:** Operational correctness of the deployment infrastructure — routing determinism, ENBP breach detection, and statistical test calibration. 10,000 synthetic motor policies, 20% challenger allocation, shadow mode, ~40% renewals with 2% injected ENBP breaches.
+
+| Capability | What's guaranteed |
+|---|---|
+| Routing determinism | Hash routing gives expected allocation within 0.5pp; same policy_id always routes to same arm |
+| ENBP breach detection | ~2% of renewals flagged, matching the injected breach rate |
+| Bootstrap LR test calibration | Returns INSUFFICIENT_EVIDENCE at typical volumes — reflects the true statistical difficulty |
+| Power analysis | Reports 18–24 months to LR significance including 12-month development, matching theoretical calculation |
+
+This is a deployment and governance framework, not a predictive model. The benchmark validates that the infrastructure does what it claims: deterministic routing, correct audit logging, and honest statistical tests that do not promote a challenger prematurely. At 20% challenger allocation and 10,000 policies, the power analysis correctly flags that loss ratio significance requires 18–24 months — teams that expect a promotion decision in 60 days will be disappointed, and the library is designed to surface that before the experiment starts. SQLite is not appropriate for multi-process concurrent writes; use the adapter pattern for distributed rating engines.
+
+[github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy)
+
+---
+
 ## Severity Modelling
 
 ### insurance-severity — EVT tail modelling
@@ -710,6 +727,44 @@ Known issue: claim_amount KS=0.93 for vine (severity synthesis limitation, docum
 BLUP recovery r=0.729 (target >0.6, passed). ICC estimated 0.332 (true 0.360). Stage 2 lift: +15.93% deviance reduction vs Stage 1 alone. REML under-estimates variance components when Stage 1 is strong — documented in README.
 
 [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel)
+
+---
+
+## Trend Analysis
+
+### insurance-trend — Loss cost trend with structural break detection
+
+**What is measured:** `LossCostTrendFitter` (PELT structural break detection + piecewise refit) vs fixed trend assumption (last-12-quarters WLS OLS) on 36 quarters of synthetic UK motor data. True DGP: −40% frequency step-down at Q13 (lockdown-scale event), post-break frequency trend −2% pa, severity trend +10% pa, combined loss cost trend +7.8% pa.
+
+| Metric | Fixed trend (baseline) | insurance-trend |
+|---|---|---|
+| Frequency trend estimate | ~−8% pa | **~+3% pa** (true: −2% pa)|
+| Severity trend estimate | ~+4% pa | **~+8% pa** (true: +8% pa) |
+| Loss cost trend estimate | ~−4% pa | **~+11% pa** (true: +11.2% pa) |
+| Projection MAPE over +4Q | ~30% | **~10%** |
+| Structural break detected | No | **Yes (Q12, within ±2Q)** |
+
+The fixed-trend frequency estimate of approximately −8% pa reflects the −40% lockdown step-down dominating the entire fitted line. The library detects the break, discards the pre-break segment, and refits on the post-break regime only — recovering the true trend. The projection MAPE improvement of ~20pp is a direct consequence of projecting from the correct regime rather than a blended estimate. The PELT penalty parameter requires tuning: penalty=1.5 is appropriate for 36-quarter series with a known large break; the default (3.0) is more conservative and suited to shorter, noisier series. When data is genuinely stable with no structural events, the library and the fixed-rate approach converge.
+
+[github.com/burning-cost/insurance-trend](https://github.com/burning-cost/insurance-trend)
+
+---
+
+## Cross-Validation
+
+### insurance-cv — Temporal walk-forward cross-validation
+
+**What is measured:** Walk-forward temporal CV vs random 5-fold KFold on 20,000 synthetic UK motor policies with a +20%/year claims trend (2021–2024). Poisson frequency model. True prospective holdout: 2024 policies.
+
+| Method | Mean Poisson deviance | vs Prospective holdout | Temporal leakage |
+|---|---|---|---|
+| Random KFold (5-fold) | 0.54889 | −13.2% (optimistic) | Yes |
+| Walk-forward (insurance-cv) | **0.59235** | **−6.3% (optimistic)** | **No** |
+| Prospective holdout (ground truth) | 0.63244 | — | — |
+
+Walk-forward is 2.1× more accurate as a prospective score estimate. The more useful output is the fold-by-fold trajectory: walk-forward per-fold deviances rise from 0.547 (early 2022 test) to 0.681 (2024) — a 24% deterioration trend that tells a pricing team their model needs a trend term or quarterly refits. Random KFold folds (0.515–0.591) show no temporal pattern and cannot surface this signal. Note that walk-forward's higher mean deviance (0.592 vs 0.549) is the correct result, not a failure — the library gives you a more honest number, not a better-looking one.
+
+[github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 
 ---
 
