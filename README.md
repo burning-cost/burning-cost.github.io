@@ -52,7 +52,7 @@ Ten libraries we consider genuinely differentiated — tools for hard problems i
 
 ## Full Library Portfolio
 
-36 libraries in total, covering the full pricing workflow from data validation through to deployment and monitoring. See [burning-cost.github.io/tools](https://burning-cost.github.io/tools/) for the complete list.
+34 libraries in total, covering the full pricing workflow from data validation through to deployment and monitoring. See [burning-cost.github.io/tools](https://burning-cost.github.io/tools/) for the complete list.
 
 ## Site structure
 
