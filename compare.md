@@ -56,7 +56,7 @@ permalink: /compare/
 
 This page exists because pricing actuaries searching for open-source insurance pricing tools deserve a straight answer, not marketing.
 
-Burning Cost publishes 34 open-source Python libraries for machine learning and data science in UK personal lines insurance. We help teams adopt best practice, best-in-class tooling, and Databricks — libraries covering the full pricing workflow. We are not trying to compete with Emblem, Radar, Akur8, or DataRobot. Those tools have real strengths: polished UIs, enterprise support contracts, integration with downstream systems, and regulatory track records with insurers who do not want to maintain Python infrastructure.
+Burning Cost is 34 open-source Python libraries covering the full pricing workflow. We are not trying to compete with Emblem, Radar, Akur8, or DataRobot. Those tools have real strengths: polished UIs, enterprise support contracts, integration with downstream systems, and regulatory track records with insurers who do not want to maintain Python infrastructure.
 
 What we offer is different: research-backed methodology, transparent implementations, version-controllable outputs, and specific focus on UK regulatory requirements. If you are a pricing team working in Python or Databricks, Burning Cost covers the actuarial gaps that general ML libraries do not.
 
@@ -155,6 +155,8 @@ pip install insurance-optimise
 ```
 
 The [full library index](/tools/) lists every library with pip install commands, links to GitHub repos, and links to relevant blog posts. Each library ships with a Databricks notebook demo on synthetic UK motor data.
+
+Ready to try one? Start with [insurance-fairness](/tools/#insurance-fairness) — it's the easiest way to see the difference in 5 minutes.
 
 ---
 

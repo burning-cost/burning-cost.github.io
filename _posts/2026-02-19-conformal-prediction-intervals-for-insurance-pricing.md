@@ -3,8 +3,8 @@ layout: post
 title: "Conformal Prediction Intervals for Insurance Pricing Models"
 date: 2026-02-19
 categories: [techniques]
-tags: [conformal-prediction, gbm, catboost, uncertainty, tweedie, pricing, python]
-description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Python library."
+tags: [conformal-prediction, gbm, catboost, uncertainty, tweedie, pricing, python, conformal-risk-control, premium-sufficiency, CRC]
+description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Also: conformal risk control for expected monetary shortfall. Python library."
 ---
 
 Your Tweedie GBM gives point estimates. That is a problem.
@@ -235,6 +235,40 @@ It is also not a replacement for model calibration. A model that is systematical
 
 ---
 
+## When coverage is the wrong guarantee: conformal risk control
+
+A 90% coverage interval means 10% of outcomes fall outside it. For a portfolio of 5,000 motor policies at that miscoverage rate, 500 policies are uncovered. But those 500 policies could each generate a £200 shortfall, or they could be 3 policies generating £50,000 each. The coverage guarantee says nothing about which. The expected monetary loss — the number that shows up in your loss ratio — depends entirely on how the misses are distributed. Both scenarios satisfy the same 90% coverage constraint.
+
+Conformal risk control (Angelopoulos, Bates, Fisch, Lei and Schuster, ICLR 2024, arXiv:2208.02814) changes what you control. Instead of bounding the probability of being wrong, it bounds the expected magnitude of being wrong:
+
+```
+E[L(Y, d(X))] ≤ α
+```
+
+where `L` is your loss function and `α` is the risk level. `insurance-conformal` implements three controllers for this.
+
+**PremiumSufficiencyController** finds the smallest loading multiplier λ* such that the expected shortfall from underpriced policies, as a fraction of premium income, is at most α:
+
+```python
+from insurance_conformal.risk import PremiumSufficiencyController
+
+psc = PremiumSufficiencyController(alpha=0.05, B=3.0)
+psc.calibrate(y_cal, premium_cal)
+print(psc.lambda_hat_)   # e.g., 1.27
+```
+
+The calibration applies a finite-sample correction `(n/(n+1)) · R̂_n(λ) + B/(n+1)` before comparing empirical risk to α. At n = 1,000 and B = 3.0, this correction adds 0.003 to every risk estimate — small, but the difference between a valid guarantee and a broken one. Setting `B = np.percentile(y_cal / premium_cal, 99.9)` is a safe finite empirical bound.
+
+The marginal guarantee holds over the calibration distribution, not per-segment. Use `psc.shortfall_report()` to check whether high-value deciles are driving disproportionate shortfall behind an acceptable average.
+
+**IntervalWidthController** finds the quantile level such that expected interval width stays within a business budget — relevant when underwriting quotes off upper bounds and wider intervals mean less competitive pricing on well-priced risks.
+
+**SelectiveRiskController** finds the score threshold that guarantees the expected loss on the accepted book is bounded while keeping at least `xi_min` of volume. This is SCRC-I from arXiv:2512.12844 with a DKW correction on selection rate to prevent threshold selection bias.
+
+The two systems compose: use `InsuranceConformalPredictor` for coverage intervals, then calibrate `PremiumSufficiencyController` on those upper bounds to add a risk-controlled loading on top. The result is a two-layer guarantee — coverage probability controlled by the first layer, expected shortfall above the interval controlled by the second.
+
+---
+
 ## Getting started
 
 ```bash
@@ -254,7 +288,6 @@ The first thing to check after calibrating is always `coverage_by_decile()`. If 
 
 ## See also
 
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control, which bounds expected monetary shortfall rather than coverage probability; useful when the cost of under-pricing is asymmetric
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction sets for the two-part model, handling the correlation between frequency and severity intervals
-- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2028/01/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for time-series claims data where the exchangeability assumption underlying standard conformal breaks down
-- [Your Reserve Range Has No Frequentist Guarantee](/2028/07/15/reserve-range-conformal-guarantee/) — applying conformal guarantees to IBNR reserve ranges, replacing assumption-dependent stochastic reserving intervals
+- [Adaptive Conformal Inference for Non-Exchangeable Claims Series](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — when the exchangeability assumption underlying standard conformal breaks down
+- [Conformal Reserve Ranges: Finite-Sample Coverage Guarantees for IBNR Intervals](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to IBNR reserve ranges

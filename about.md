@@ -1,13 +1,13 @@
 ---
 layout: page
 title: About
-description: "Burning Cost publishes open-source Python libraries for machine learning and data science in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks."
+description: "Open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept — burning cost is claims incurred divided by premium earned."
 permalink: /about/
 ---
 
-Burning Cost publishes open-source Python libraries for machine learning and data science in UK personal lines insurance. We help pricing teams adopt best practice, best-in-class tooling, and Databricks.
+Burning Cost is a set of open-source Python libraries for UK personal lines pricing actuaries. The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. We build tools for the problems where Emblem, Radar, and Akur8 stop — causal inference, proxy discrimination auditing, conformal prediction, model governance.
 
-The name comes from a basic actuarial concept: burning cost is claims incurred divided by premium earned. Simple, direct, no mystification. That is how we think about tooling.
+The name is also a philosophy. Simple, direct, no mystification. That is how we think about tooling.
 
 Built by pricing practitioners who have worked across UK personal lines motor and home books.
 
@@ -79,8 +79,12 @@ We wrote those libraries because we needed them. Then we kept going. Everything 
 
 ---
 
-## Contact
+## Built for real portfolios
 
-**Email:** [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com)
+Our benchmarks use synthetic data with known parameters because that is the only way to measure bias — you need ground truth. But the libraries are designed for messy real-world data: fractional exposures from mid-term adjustments, IBNR-contaminated accident years, missing NCD values, vehicle group code changes across ABI revisions, and duplicate records from system migrations. Every API accepts exposure offsets as a first-class parameter. Every model handles missing values through CatBoost's native treatment rather than requiring imputation. If your portfolio does not look like `np.random.default_rng(42)`, that is what these tools are built for.
 
-**GitHub:** [github.com/burning-cost](https://github.com/burning-cost)
+---
+
+## Get in touch
+
+Start a conversation on [GitHub Discussions](https://github.com/orgs/burning-cost/discussions) — that's where we discuss new features, answer questions, and take feedback. For everything else: [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com).

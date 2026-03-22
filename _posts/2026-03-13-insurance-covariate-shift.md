@@ -186,5 +186,5 @@ The library is on GitHub at [burning-cost/insurance-covariate-shift](https://git
 
 ## See also
 
-- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — a fuller treatment covering all three stages: detecting the shift, applying importance weighting, and extending conformal intervals to the shifted distribution
-- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2028/02/15/covariate-shift-detection-book-mix-changes/) — the operational monitoring question: how often to run the diagnostic, what ESS thresholds trigger action, and when retraining is the only answer
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — a fuller treatment covering all three stages: detecting the shift, applying importance weighting, and extending conformal intervals to the shifted distribution
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — the operational monitoring question: how often to run the diagnostic, what ESS thresholds trigger action, and when retraining is the only answer

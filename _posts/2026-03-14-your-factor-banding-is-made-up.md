@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your Factor Banding Is Made Up"
+title: "Optimal Binning for GLM Rating Factors: Beyond the Eyeball Test"
 date: 2026-03-14
 categories: [pricing, libraries]
 tags: [GLM, factor-banding, R2VF, fused-lasso, territory, SKATER, embeddings, poisson, BIC, insurance-glm-tools, python]

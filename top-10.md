@@ -417,7 +417,7 @@ permalink: /top-10/
   </div>
   <p class="t10-oneliner">Tail risk quantile and expectile regression — TVaR, increased limit factors, exceedance curves</p>
   <p class="t10-problem">Your mean model gives you no handle on the upper tail. Large loss loading and ILF curves require quantile estimates at the 90th and 99th percentile per risk, not just the expected value. This library fits quantile and expectile GBMs at multiple levels simultaneously, producing per-risk TVaR and ILF tables in standard actuarial format. The GBM approach captures non-linear covariate effects on the tail that parametric EVT methods miss in moderate-sized portfolios.</p>
-  <div class="t10-benchmark"><strong>Benchmark:</strong> GBM lower TVaR bias on heavy tails vs lognormal parametric. Lognormal wins on pinball loss at small n — use the parametric path below ~10,000 policies, GBM above it.</div>
+  <div class="t10-benchmark"><strong>Benchmark:</strong> Lognormal QR: 95.3% coverage at Q95 (target 95%), pinball loss 277.1 vs GBM 298.7, TVaR MAE 315.1 vs GBM 477.0. GBM undercovers the highest-risk vehicle group by 4–6pp due to a common residual distribution. Use the parametric path below ~5,000 policies, GBM above it.</div>
   <div class="t10-footer">
     <code class="t10-install">pip install insurance-quantile</code>
     <a href="https://github.com/burning-cost/insurance-quantile" class="t10-link" target="_blank">GitHub</a>
