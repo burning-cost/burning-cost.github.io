@@ -254,3 +254,16 @@ For most UK insurance pricing work, it is not.
 **Related posts:**
 - [Your Technical Price Ignores Variance](https://burning-cost.github.io/2026/03/08/insurance-distributional/) — the full argument for per-risk volatility estimation, So & Valdez (2024) in detail
 - [GAMLSS in Python, Finally](https://burning-cost.github.io/2026/03/10/insurance-distributional-glm/) — the insurance-distributional-glm launch post with full benchmark numbers
+
+---
+
+**More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
+
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
