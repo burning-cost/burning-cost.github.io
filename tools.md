@@ -172,7 +172,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-conformal",
-      "description": "Distribution-free prediction intervals for insurance GBM and GLM models — locally-weighted Pearson residuals, Solvency II SCR bounds.",
+      "description": "Distribution-free prediction intervals for insurance GBM and GLM pricing models — 5 non-conformity scores (pearson_weighted, pearson, deviance, anscombe, raw) tuned for Tweedie and Poisson claims, Solvency II SCR bounds, frequency-severity conformal intervals, and online retrospective adjustment (RetroAdj). Current: v0.6.0.",
       "codeRepository": "https://github.com/burning-cost/insurance-conformal",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -212,7 +212,7 @@ permalink: /tools/
     {
       "@type": "SoftwareSourceCode",
       "name": "insurance-monitoring",
-      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.7.0 adds PITMonitor for anytime-valid calibration monitoring via e-process martingale, and InterpretableDriftDetector for feature-interaction drift attribution with BH FDR control.",
+      "description": "Model drift detection for deployed pricing — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test, SequentialTest for anytime-valid champion/challenger A/B testing (mSPRT), PITMonitor for calibration drift detection via e-process martingale, and InterpretableDriftDetector for feature-interaction drift attribution with BH FDR control. Current: v0.8.0.",
       "codeRepository": "https://github.com/burning-cost/insurance-monitoring",
       "programmingLanguage": "Python",
       "license": "https://opensource.org/licenses/MIT"
@@ -328,9 +328,9 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
   <div class="essential-card-tag">Telematics &middot; HMM &middot; UBI</div>
 </div>
 
-<div class="essential-card" data-name="insurance-conformal" data-desc="conformal prediction distribution-free prediction intervals coverage guarantee GBM Solvency II SCR">
+<div class="essential-card" data-name="insurance-conformal" data-desc="conformal prediction distribution-free prediction intervals coverage guarantee GBM GLM Tweedie Solvency II SCR pearson_weighted non-conformity scores frequency-severity">
   <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a> [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml)</div>
-  <div class="essential-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Variance-weighted non-conformity scores produce tighter intervals. Beyond point estimates: principled uncertainty for every risk score. Solvency II SCR bounds included.</div>
+  <div class="essential-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Five non-conformity scores tuned for Tweedie and Poisson claims — the default <code>pearson_weighted</code> score produces 13.4% narrower intervals than parametric Tweedie at identical 90% coverage. Frequency-severity conformal intervals, online retrospective adjustment, Solvency II SCR bounds.</div>
   <div class="essential-card-tag">Conformal prediction &middot; Solvency II</div>
 </div>
 
@@ -480,10 +480,10 @@ Prediction intervals, conformal methods, and post-deployment monitoring.
 | Library | What it does | Install |
 |---|---|---|
 | [insurance-cv](https://github.com/burning-cost/insurance-cv) [![CI](https://github.com/burning-cost/insurance-cv/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-cv/actions/workflows/ci.yml) | Temporal walk-forward cross-validation — respects policy time structure, IBNR buffers, sklearn-compatible scorers<br>_Benchmark: Walk-forward catches 10.5% optimism that k-fold hides_ | `pip install insurance-cv` |
-| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml) | **Flagship.** Distribution-free prediction intervals for insurance GBMs — locally-weighted Pearson residuals, Solvency II SCR bounds<br>_Benchmark: 90.1% marginal coverage on Tweedie frequency data_ | `pip install insurance-conformal` |
+| [insurance-conformal](https://github.com/burning-cost/insurance-conformal) [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml) | **Flagship.** Distribution-free prediction intervals for insurance GBMs and GLMs — 5 non-conformity scores tuned for Tweedie/Poisson claims (`pearson_weighted` default, `pearson`, `deviance`, `anscombe`, `raw`), frequency-severity conformal intervals (Graziadei et al.), online retrospective adjustment (RetroAdj), Solvency II SCR bounds. v0.6.0.<br>_Benchmark: pearson_weighted score 13.4% narrower intervals than parametric Tweedie at identical 90% coverage; 50k synthetic UK motor policies_ | `pip install insurance-conformal` |
 | [insurance-conformal-ts](https://github.com/burning-cost/insurance-conformal-ts) | Conformal prediction for non-exchangeable claims time series — ACI, EnbPI, SPCI, Poisson/NB scores<br>_Benchmark: Sequential conformal vs static prediction intervals on claims time series benchmarked_ | `pip install insurance-conformal-ts` |
 | [insurance-deploy](https://github.com/burning-cost/insurance-deploy) [![CI](https://github.com/burning-cost/insurance-deploy/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-deploy/actions/workflows/ci.yml) | Champion/challenger pricing framework — shadow mode, SHA-256 routing, SQLite quote log, bootstrap LR test<br>_Benchmark: Champion/challenger routing, shadow mode, quote logging benchmarked_ | `pip install insurance-deploy` |
-| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) [![CI](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. v0.5.0 adds `SequentialTest` for anytime-valid A/B testing of champion/challenger experiments (mSPRT, Johari et al. 2022). v0.7.0 adds `PITMonitor` for calibration drift via PIT e-process martingale (~3% FPR vs repeated Hosmer-Lemeshow's 46%) and `InterpretableDriftDetector` for feature-interaction drift attribution with BH FDR control (zero false positives in benchmarks)<br>_Benchmark: Peeking t-test 25% FPR (5x nominal); mSPRT holds at 1%. PITMonitor FPR ~3% vs repeated H-L 46%. InterpretableDriftDetector: 2/5 drifting factors correctly attributed, zero false positives_ | `pip install insurance-monitoring` |
+| [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) [![CI](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-monitoring/actions/workflows/ci.yml) | Model drift detection — exposure-weighted PSI/CSI, actual-vs-expected ratios, Gini drift z-test. `SequentialTest` for anytime-valid champion/challenger A/B testing (mSPRT, Johari et al. 2022). `PITMonitor` for calibration drift via PIT e-process martingale (~3% FPR vs repeated Hosmer-Lemeshow's 46%). `InterpretableDriftDetector` for feature-interaction drift attribution with BH FDR control (zero false positives in benchmarks). Current: v0.8.0.<br>_Benchmark: Peeking t-test 25% FPR (5x nominal); mSPRT holds at 1%. PITMonitor FPR ~3% vs repeated H-L 46%. InterpretableDriftDetector: 2/5 drifting factors correctly attributed, zero false positives_ | `pip install insurance-monitoring` |
 | [insurance-governance](https://github.com/burning-cost/insurance-governance) | **Flagship.** Model governance — PRA SS1/23 validation reports, model risk management, risk tier scoring<br>_Benchmark: Automated suite catches age-band miscalibration manual checklists miss_ | `pip install insurance-governance` |
 
 </div>
