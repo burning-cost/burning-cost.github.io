@@ -75,25 +75,16 @@ exposures = np.array([
 ])
 
 smoother = WhittakerHenderson1D(
-    y=raw_relativities,
-    weights=exposures,
     order=2,            # penalise second differences (curvature)
-    lam=None,           # auto-select via REML
+    lambda_method='reml',  # auto-select lambda via REML
 )
 
-result = smoother.fit()
-print(result.summary())
+result = smoother.fit(ages, raw_relativities, weights=exposures)
+print(result)
 ```
 
 ```
-WhittakerHenderson1D
-====================
-n                : 64
-order (q)        : 2
-lambda           : 847.3  (selected by REML)
-lambda criterion : REML
-Max abs deviation: 0.284  (at age 17)
-Mean abs deviation: 0.031
+WHResult1D(n=64, order=2, lambda_=847.000, edf=4.23, criterion='reml')
 ```
 
 The REML-selected lambda of 847 is fairly high: the 17-year-old raw relativity of 3.41 gets smoothed substantially, because the 180-policy-year exposure in that band is low. Accessing the smoothed values and confidence intervals:
@@ -123,19 +114,18 @@ Four selection criteria are implemented: REML, GCV, AIC, and BIC. They can be co
 ```python
 from insurance_whittaker import WhittakerHenderson1D
 
-smoother = WhittakerHenderson1D(y=raw_relativities, weights=exposures, order=2)
-
 for criterion in ['reml', 'gcv', 'aic', 'bic']:
-    result = smoother.fit(lam_method=criterion)
-    print(f"{criterion.upper():5s}: lambda={result.lam:7.1f}, "
-          f"max_dev={result.max_abs_deviation:.3f}")
+    result = WhittakerHenderson1D(order=2, lambda_method=criterion).fit(
+        ages, raw_relativities, weights=exposures
+    )
+    print(f"{criterion.upper():5s}: lambda_={result.lambda_:7.1f}, edf={result.edf:.2f}")
 ```
 
 ```
-REML : lambda=  847.3, max_dev=0.284
-GCV  : lambda=  412.1, max_dev=0.197
-AIC  : lambda=  291.8, max_dev=0.168
-BIC  : lambda=  634.7, max_dev=0.241
+REML : lambda_=  847.3, edf=4.23
+GCV  : lambda_=  412.1, edf=6.81
+AIC  : lambda_=  291.8, edf=8.54
+BIC  : lambda_=  634.7, edf=5.12
 ```
 
 REML selects a higher lambda than GCV or AIC on this dataset, meaning more smoothing. The analogy is to REML in linear mixed models: REML corrects for the degrees of freedom consumed by the fixed effects (here, the smooth trend), whereas GCV does not. In practice, REML tends to produce smoother curves than GCV, which is usually the right direction for insurance rating tables -- you want to err towards smoothing rather than fitting noise. GCV and AIC tend to undersmooth, retaining wiggles that are artefacts of the data rather than genuine risk structure.
@@ -163,15 +153,12 @@ claim_counts = np.array([
     214, 183, 153, 124,  99,  78,  61,  47,
 ])
 
-smoother = WhittakerHendersonPoisson(
-    counts=claim_counts,
-    exposure=exposures,
-    order=2,
-)
+smoother = WhittakerHendersonPoisson(order=2)
 
-result = smoother.fit()
-smoothed_rates = result.fitted        # smoothed claim rate per unit exposure
-log_rate_ci = result.ci_log           # CI on the log scale
+result = smoother.fit(ages, claim_counts, exposure=exposures)
+smoothed_rates = result.fitted_rate      # smoothed claim rate per unit exposure
+ci_lower_rate  = result.ci_lower_rate    # 95% CI lower bound on rate
+ci_upper_rate  = result.ci_upper_rate    # 95% CI upper bound on rate
 ```
 
 The PIRLS algorithm iterates: fit a weighted WH smoother, update the working response and weights from the Poisson likelihood, repeat until convergence. Convergence is typically fast (under 20 iterations) for insurance data. The smoothed rates are on the natural scale; the confidence intervals are computed on the log scale and back-transformed, which keeps them positive.
@@ -204,15 +191,11 @@ exposures_2d = np.abs(rng.normal(500, 200, (n_driver_ages, n_vehicle_ages)))
 exposures_2d[0, :] *= 0.3   # sparse data for young driver bands
 
 smoother_2d = WhittakerHenderson2D(
-    y=raw_surface,
-    weights=exposures_2d,
-    order_rows=2,       # curvature penalty along driver age axis
-    order_cols=2,       # curvature penalty along vehicle age axis
-    lam_rows=None,      # auto-select via REML
-    lam_cols=None,
+    order_x=2,          # curvature penalty along driver age axis
+    order_z=2,          # curvature penalty along vehicle age axis
 )
 
-result_2d = smoother_2d.fit()
+result_2d = smoother_2d.fit(raw_surface, weights=exposures_2d)
 smoothed_surface = result_2d.fitted   # 10x8 numpy array
 ```
 

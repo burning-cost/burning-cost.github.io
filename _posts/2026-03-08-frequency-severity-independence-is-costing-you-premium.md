@@ -104,7 +104,7 @@ freq_glm = sm.GLM(
 sev_glm = sm.GLM(
     avg_severity[claims_mask],
     X_const[claims_mask],
-    family=sm.families.Gamma(link=sm.families.links.Log()),
+    family=sm.families.Gamma(link=sm.families.links.log()),
 ).fit()
 
 # Fit the joint model -- accepts your existing fitted GLM objects

@@ -125,7 +125,7 @@ When you include multiple group levels with material ICC, the multipliers compos
 premiums = model.predict(X_test, group_cols=["broker_id", "scheme_id"])
 ```
 
-The library fits a separate `RandomEffectsEstimator` per group level. Broker effects and scheme effects do not interact in the model — each is an independent one-way random effects problem on the Stage 1 residuals. This is clean and auditable, but it means the model cannot capture a situation where Broker A's business through Scheme C is systematically different from what you would predict by multiplying their individual BLUPs.
+The library fits a separate `RandomEffectsEstimator` per group level using sequential residual conditioning: broker effects are estimated from Stage 1 residuals, then scheme effects are estimated from the residuals after removing the broker component. Broker effects and scheme effects do not interact in the model — each is a one-way REML problem, fitted in sequence. This is clean and auditable, but it means the model cannot capture a situation where Broker A's business through Scheme C is systematically different from what you would predict by multiplying their individual BLUPs.
 
 In practice, broker-by-scheme interaction effects are usually small relative to the main effects unless your book has a specific scheme that one broker dominates. If you suspect a material interaction, the diagnostic is to look at the residuals from the two-stage model, broken down by broker-scheme cell:
 
