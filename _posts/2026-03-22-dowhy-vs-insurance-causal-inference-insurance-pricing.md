@@ -229,7 +229,7 @@ print(refute)
 # If the estimate shifts substantially, the specification is fragile.
 ```
 
-Notes on what is missing: no exposure handling for the Poisson outcome, no CatBoost nuisance models, no comparison to the naive estimate, no sensitivity bounds. You would need to add all of these.
+Notes on what is missing: no exposure handling for the Poisson outcome, no CatBoost nuisance models, no comparison to the naive estimate. You would need to add all of these.
 
 **insurance-causal approach:**
 
@@ -264,14 +264,10 @@ print(ate)
 report = model.confounding_bias_report(naive_coefficient=-0.045)
 print(report)
 
-# Sensitivity analysis — how strong would an unobserved confounder
-# need to be to overturn the conclusion?
-from insurance_causal.diagnostics import sensitivity_analysis
-sa = sensitivity_analysis(
-    ate=ate.estimate, se=ate.std_error,
-    gamma_values=[1.0, 1.25, 1.5, 2.0],
-)
-print(sa[["gamma", "conclusion_holds", "ci_lower", "ci_upper"]])
+# Note: sensitivity_analysis() in insurance_causal.diagnostics is being
+# redesigned (the previous Rosenbaum formula had no statistical basis).
+# For now, use confounding_bias_report() to assess confounding magnitude,
+# or SelectionCorrectedElasticity.sensitivity_bounds() for IPW-based bounds.
 ```
 
 ---
@@ -284,7 +280,7 @@ print(sa[["gamma", "conclusion_holds", "ci_lower", "ci_upper"]])
 | GitHub stars | ~7,900 (March 2026) | Small, focused |
 | DAG specification | Required — forces discipline | Not required — you nominate confounders |
 | Formal identification check | Yes — a genuine strength | No — assumes backdoor adjustment |
-| Refutation tests | Yes — placebo, random cause, subsample | Sensitivity bounds; Rosenbaum-style heuristic |
+| Refutation tests | Yes — placebo, random cause, subsample | `confounding_bias_report()` for qualitative assessment; formal sensitivity analysis planned |
 | Estimation methods | Regression adjustment, IPW, IV, DML (via EconML), matching | DML with CatBoost nuisance; causal forests |
 | Exposure/offset handling | No | Yes — Poisson/Gamma throughout |
 | Categorical features | Manual encoding required | CatBoost native |

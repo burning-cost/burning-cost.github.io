@@ -148,18 +148,21 @@ On a synthetic UK motor TPLI portfolio of 20,000 policies, minimising premium di
 `DoubleFairnessAudit` recovers the full Pareto front along the action/outcome trade-off, with quantified revenue impact at each operating point:
 
 ```python
+import numpy as np
 from insurance_fairness import DoubleFairnessAudit
 
-double_audit = DoubleFairnessAudit(
-    data=df,
-    protected_col="gender",
-    prediction_col="predicted_rate",
-    outcome_col="claim_amount",
-    exposure_col="exposure",
-    revenue_col="written_premium",
-)
-pareto = double_audit.run()
-pareto.report()   # maps to PRIN 2A Outcome 4 and TR24/2
+# DoubleFairnessAudit takes arrays, not a DataFrame
+X = df[feature_cols].to_numpy()
+y_primary   = df["written_premium"].to_numpy()   # primary outcome: revenue
+y_fairness  = df["claim_amount"].to_numpy()       # fairness outcome: loss
+S           = df["gender"].to_numpy()             # protected group: binary 0/1
+exposure    = df["exposure"].to_numpy()
+
+double_audit = DoubleFairnessAudit(n_alphas=20)
+double_audit.fit(X, y_primary, y_fairness, S, exposure=exposure)
+result = double_audit.audit()   # returns DoubleFairnessResult with full Pareto front
+print(result.summary())         # plain-text Pareto front table
+print(double_audit.report())    # FCA-ready report mapping to PRIN 2A Outcome 4 and TR24/2
 ```
 
 Fairlearn's mitigation tools optimise for a single fairness criterion at a time. They will not show you the trade-off surface, and they cannot tell you the revenue cost of each operating point. For a UK insurer documenting their Consumer Duty assessment, the Pareto front is the auditable evidence.

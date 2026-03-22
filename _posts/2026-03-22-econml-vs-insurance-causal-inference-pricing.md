@@ -71,16 +71,17 @@ None of this is documented for insurance use cases. It is solvable, but it is a 
 
 ```python
 from insurance_causal import CausalPricingModel
+from insurance_causal.treatments import BinaryTreatment
 
 model = CausalPricingModel(
-    outcome_col="claim_count",
-    treatment_col="new_business_flag",
-    feature_cols=feature_cols,
+    outcome="claim_count",
+    outcome_type="poisson",
+    treatment=BinaryTreatment(column="new_business_flag"),
+    confounders=feature_cols,
     exposure_col="earned_exposure",       # Poisson offset applied automatically
-    outcome_family="poisson",             # log-link, variance = mu
 )
 model.fit(df)
-ate = model.ate()
+ate = model.average_treatment_effect()
 print(f"ATE: {ate.estimate:.4f} (95% CI: [{ate.ci_lower:.4f}, {ate.ci_upper:.4f}])")
 ```
 
@@ -106,13 +107,15 @@ est = LinearDML(model_y=model_y, model_t=model_t)
 
 ```python
 # insurance-causal: CatBoost handles categoricals natively
+from insurance_causal.treatments import PriceChangeTreatment
+
 model = CausalPricingModel(
-    outcome_col="claim_count",
-    treatment_col="price_change_pct",
-    feature_cols=feature_cols,
-    categorical_cols=["abi_group", "occupation", "region", "payment_method"],
+    outcome="claim_count",
+    outcome_type="poisson",
+    treatment=PriceChangeTreatment(column="price_change_pct", scale="log"),
+    confounders=feature_cols,
+    # No encoding step. CatBoost uses ordered statistics on the raw levels.
 )
-# No encoding step. CatBoost uses ordered statistics on the raw levels.
 ```
 
 ### Problem 3: the confounding bias report
@@ -148,19 +151,22 @@ EconML has a selection-corrected DML variant, but it handles a single binary sel
 `insurance-causal` implements `DualSelectionDML`, which follows Dolgikh & Potanin (2025, arXiv:2511.12640). It uses control functions rather than inverse probability weighting for each selection stage:
 
 ```python
+import numpy as np
 from insurance_causal.autodml import DualSelectionDML
 
-estimator = DualSelectionDML(
-    outcome_col="claim_severity",
-    treatment_col="risk_factor",
-    feature_cols=feature_cols,
-    selection_cols=["renewed", "claimed"],   # both selection stages
-    exclusion_cols=["competitor_quote"],     # instruments for renewal selection
-)
-estimator.fit(df)
-print(estimator.ate())
-# ATE on selected population (renewing, claiming)
-# ATE on full population (under selection correction)
+# Build arrays from df: Y=claim_severity (NaN for non-selected), D=risk_factor,
+# Z=selection indicators (shape n x 2), X=confounders, W_Z=exclusion restrictions
+Y = df["claim_severity"].to_numpy()              # NaN where not (renewed & claimed)
+D = df["risk_factor"].to_numpy()
+Z = df[["renewed", "claimed"]].to_numpy()        # both selection stages
+X = df[feature_cols].to_numpy()
+W_Z = df[["competitor_quote"]].to_numpy()        # instrument for renewal selection
+
+estimator = DualSelectionDML(estimand="ATES", n_folds=5, random_state=42)
+estimator.fit(Y, D, Z, X, W_Z=W_Z)
+result = estimator.estimate()
+print(result.summary())
+# ATES: ate=... se=... 95% CI=[..., ...]  n_selected=.../...
 ```
 
 This is a problem that does not exist outside insurance in the same form. EconML was not built to solve it.
@@ -177,23 +183,22 @@ EconML's `CausalForestDML` will estimate heterogeneous treatment effects. It wil
 - Return the elasticity estimate in the format a pricing optimiser expects
 
 ```python
-from insurance_causal.elasticity import RenewalElasticityEstimator
+from insurance_causal.elasticity import RenewalElasticityEstimator, ElasticitySurface
 
 est = RenewalElasticityEstimator(
-    model="causal_forest",         # CausalForestDML under the hood (via EconML)
-    treatment_col="log_price_ratio",
-    outcome_col="renewed",
-    feature_cols=feature_cols,
-    selection_correction=True,
+    cate_model="causal_forest",    # CausalForestDML under the hood (via EconML)
+    binary_outcome=True,
 )
-est.fit(df)
+est.fit(df, outcome="renewed", treatment="log_price_ratio", confounders=feature_cols)
 
 # Elasticity surface by segment
-surface = est.elasticity_surface(segment_cols=["abi_group", "ncd_years"])
-# DataFrame: one row per segment, columns: elasticity, ci_lower, ci_upper, n
+surface = ElasticitySurface(est)
+summary = surface.segment_summary(df, by=["abi_group", "ncd_years"])
+# polars DataFrame: one row per segment, columns: elasticity, ci_lower, ci_upper, n
 
 # Or: portfolio-level ATE with proper log-log interpretation
-print(est.ate())
+ate, lb, ub = est.ate()
+print(f"ATE: {ate:.3f}  95% CI: [{lb:.3f}, {ub:.3f}]")
 # ATE: -1.34 → a 10% price increase reduces renewal probability by ~13.4 ppts
 ```
 
@@ -215,25 +220,28 @@ from insurance_causal.causal_forest import (
     HeterogeneousInference,
 )
 
-est = HeterogeneousElasticityEstimator(
-    treatment_col="price_change_pct",
-    outcome_col="renewed",
-    feature_cols=feature_cols,
-    exposure_col="earned_exposure",
-)
-est.fit(df_train)
+est = HeterogeneousElasticityEstimator(n_estimators=200, catboost_iterations=300)
+est.fit(df_train, outcome="renewed", treatment="price_change_pct",
+        confounders=feature_cols)
 
-inference = HeterogeneousInference(est)
+# Compute per-row CATE estimates — the proxy for heterogeneity
+cates = est.cate(df_train)
 
-# GATES: are these segment-level effects statistically different from the ATE?
-gates = inference.gates(segment_col="abi_group")
+# HeterogeneousInference takes hyperparams, not the estimator
+inference = HeterogeneousInference(n_splits=100, k_groups=5)
 
-# CLAN: what observable characteristics distinguish high-effect from low-effect policies?
-clan = inference.clan(n_quantiles=5)
+# Run BLP, GATES, and CLAN in one call
+result = inference.run(df_train, estimator=est, cate_proxy=cates)
 
-# RATE: is the CATE ordering better than random at identifying high-effect policies?
-rate = inference.rate(df_test)
-print(f"RATE AUTOC: {rate.autoc:.3f} (p={rate.p_value:.4f})")
+# GATES: group average treatment effects — are segment-level effects real?
+print(result.gates.table)
+
+# CLAN: which covariates distinguish high-effect from low-effect customers?
+print(result.clan.table)
+
+# BLP: the formal heterogeneity test — beta_2 > 0 means heterogeneity exists
+print(f"BLP beta_2: {result.blp.beta_2:.4f} (p={result.blp.beta_2_pvalue:.4f})")
+print(result.summary())
 ```
 
 RATE (Rank Average Treatment Effect) is the practical heterogeneity test: it tells you whether your CATE estimates are capturing real variation or just noise. A RATE AUTOC close to zero means your causal forest is not identifying meaningful heterogeneity; it is telling you the ATE is sufficient. This is an important negative result — it tells the pricing team not to bother with segment-specific elasticities. EconML will give you a CATE for every observation without helping you determine whether the variation is real.
@@ -247,18 +255,23 @@ EconML requires you to estimate the generalised propensity score (GPS) when the 
 `insurance-causal`'s `autodml` subpackage uses the Riesz representer approach (Chernozhukov et al. 2022, Econometrica 90(3)) to avoid estimating the GPS entirely:
 
 ```python
-from insurance_causal.autodml import AutoDML
+from insurance_causal.autodml import PremiumElasticity
 
-estimator = AutoDML(
-    outcome_col="claim_count",
-    treatment_col="offer_price",
-    feature_cols=feature_cols,
-    exposure_col="earned_exposure",
-    estimand="AME",    # Average Marginal Effect — price elasticity
+estimator = PremiumElasticity(
+    outcome_family="poisson",   # Poisson outcome with exposure offset
+    n_folds=5,
+    riesz_type="forest",        # recommended for insurance data
 )
-estimator.fit(df)
-print(estimator.ame())
-# Average price elasticity: -0.89 (95% CI: [-1.04, -0.74])
+# fit() takes arrays: X=confounders, D=treatment, Y=outcome, exposure=exposure
+estimator.fit(
+    X=df[feature_cols].to_numpy(),
+    D=df["offer_price"].to_numpy(),
+    Y=df["claim_count"].to_numpy(),
+    exposure=df["earned_exposure"].to_numpy(),
+)
+result = estimator.estimate()
+print(result.summary())
+# AME: -0.89  se=0.077  95% CI=[-1.04, -0.74]  (Average Marginal Effect)
 ```
 
 EconML does not implement the Riesz representer approach for DML as of version 0.15. It is in the academic literature; it is not in the package.
@@ -279,7 +292,7 @@ EconML does not implement the Riesz representer approach for DML as of version 0
 | Dual selection bias | Single-stage only | `DualSelectionDML` for both selection stages |
 | GATES / CLAN / RATE | No | Yes — `HeterogeneousInference` |
 | Price elasticity surface | No | Yes — `RenewalElasticityEstimator` |
-| Riesz representer (continuous treatment) | No | Yes — `AutoDML` with `autodml` subpackage |
+| Riesz representer (continuous treatment) | No | Yes — `PremiumElasticity` in `autodml` subpackage |
 | Regulatory framing | None | Confounding bias, sensitivity, audit-ready output |
 | Documentation | Excellent — notebooks, papers, API reference | Focused on pricing use cases |
 | Academic validation | Extensive | Newer; builds on EconML and DoubleML foundations |
