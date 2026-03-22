@@ -3,7 +3,7 @@ layout: post
 title: "Robust Rate Optimisation: Pricing Against Demand Model Misspecification"
 date: 2026-03-13
 categories: [libraries, pricing, optimisation]
-tags: [dro, distributionally-robust-optimisation, wasserstein, ambiguity-set, price-of-robustness, rate-optimisation, demand-model, FCA, PS21/5, ENBP, cvxpy, insurance-dro, python, motor, home, renewal-pricing]
+tags: [dro, distributionally-robust-optimisation, wasserstein, ambiguity-set, price-of-robustness, rate-optimisation, demand-model, FCA, PS21/11, ENBP, cvxpy, insurance-dro, python, motor, home, renewal-pricing]
 description: "Distributionally robust rate optimisation: worst-case demand within a Wasserstein ball. Price-of-robustness curve for UK pricing committee papers - Python."
 ---
 
@@ -11,7 +11,7 @@ Every rate optimiser in UK personal lines works the same way. You estimate a dem
 
 The implicit assumption, never stated, is that your demand model is correct.
 
-It is not correct. It is calibrated on renewal data from a period when price walking was legal. FCA PS21/5 banned price walking in January 2022. Your model was trained on consumer behaviour under a pricing regime that no longer exists. The elasticities are estimates with standard errors. The model architecture is wrong in ways you have not yet discovered. And when your optimiser is wrong about demand, it is wrong in the worst possible way: it finds rates that are locally optimal under the wrong model, which means they are systematically suboptimal under reality.
+It is not correct. It is calibrated on renewal data from a period when price walking was legal. FCA PS21/11 banned price walking in January 2022. Your model was trained on consumer behaviour under a pricing regime that no longer exists. The elasticities are estimates with standard errors. The model architecture is wrong in ways you have not yet discovered. And when your optimiser is wrong about demand, it is wrong in the worst possible way: it finds rates that are locally optimal under the wrong model, which means they are systematically suboptimal under reality.
 
 This is the demand model misspecification problem. It is not exotic. Every pricing actuary who has ever submitted a rate change and watched the actual conversion deviate from forecast knows exactly what this feels like.
 
@@ -55,7 +55,7 @@ The ACM ICAIF 2024 paper by Bhatt et al. (DOI: 10.1145/3768292.3770404) is the f
 
 The mechanism is straightforward. KL divergence constrains `E_Q[log(dQ/dP)]`. This includes distributional shifts that no pricing decision can mitigate - shifts in the baseline level of demand, structural changes in the population, macroeconomic shocks. You are protecting against perturbations that your rates cannot hedge. The result is a very conservative rate recommendation for a modest actual gain in robustness.
 
-Wasserstein DRO does not have this problem. The Wasserstein distance measures perturbations in terms of the transport cost of probability mass. These are perturbations that look like demand shifts your model failed to anticipate - competitor price moves, seasonal effects, the behavioural changes following PS21/5. They are perturbations that different rate vectors can hedge against differently.
+Wasserstein DRO does not have this problem. The Wasserstein distance measures perturbations in terms of the transport cost of probability mass. These are perturbations that look like demand shifts your model failed to anticipate - competitor price moves, seasonal effects, the behavioural changes following PS21/11. They are perturbations that different rate vectors can hedge against differently.
 
 `insurance-dro` ships all three ambiguity set types. We recommend Wasserstein as the primary. KL and chi-squared are available as comparison points - running them lets you see empirically how much more conservative they are on your data.
 
@@ -71,7 +71,7 @@ In the DRO formulation, ENBP is a hard constraint on the rate multiplier:
 
 This constraint binds before the optimiser touches the objective. It does not interact with the robustness level - it is not relaxed as `eps` increases. The practical effect is that some policies have very little room to move regardless of what the demand model says, and this shows up in the rate vectors across the PoR curve.
 
-PS21/5 also tightened the link between ENBP and demand model quality. The demand models used to set renewal pricing were calibrated on pre-PS21/5 behaviour when price walking was legal. The post-PS21/5 renewal demand function is different - more elastic at the ENBP bound, less elastic below it - and you should not be confident your pre-2022 demand model captures this. This is precisely the kind of structural misspecification that Wasserstein DRO is designed to handle.
+PS21/11 also tightened the link between ENBP and demand model quality. The demand models used to set renewal pricing were calibrated on pre-PS21/11 behaviour when price walking was legal. The post-PS21/11 renewal demand function is different - more elastic at the ENBP bound, less elastic below it - and you should not be confident your pre-2022 demand model captures this. This is precisely the kind of structural misspecification that Wasserstein DRO is designed to handle.
 
 ---
 
@@ -170,7 +170,7 @@ It does not make demand model estimation easier. You still need a good empirical
 
 It does not replace scenario analysis. A deterministic scenario - "what if renewal conversion falls 5% across the portfolio due to a competitor price cut" - answers a different question than a Wasserstein ball of radius `eps`. Both are useful for different parts of a committee paper.
 
-It does not solve the identification problem introduced by PS21/5. The structural break in consumer behaviour is a one-time shift, not a distributional uncertainty that DRO can hedge. DRO protects against ongoing demand model misspecification, not against not having data from the new regime.
+It does not solve the identification problem introduced by PS21/11. The structural break in consumer behaviour is a one-time shift, not a distributional uncertainty that DRO can hedge. DRO protects against ongoing demand model misspecification, not against not having data from the new regime.
 
 ---
 

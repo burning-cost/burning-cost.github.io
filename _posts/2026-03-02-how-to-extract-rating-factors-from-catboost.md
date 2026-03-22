@@ -180,10 +180,12 @@ df_model = df.with_columns([
     pl.col("has_convictions").cast(pl.Utf8).alias("conv_str"),
 ]).to_pandas()
 
+from statsmodels.genmod.families import Poisson
+
 glm = smf.glm(
     formula="claim_count ~ area_str + ncd_str + conv_str",
     data=df_model,
-    family=smf.families.Poisson(),
+    family=Poisson(),
     offset=np.log(df_model["exposure"]),
 ).fit()
 

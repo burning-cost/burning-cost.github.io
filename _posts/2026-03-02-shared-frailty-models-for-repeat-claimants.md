@@ -45,8 +45,6 @@ The `theta` parameter is the key quantity to examine. `theta` close to zero mean
 
 ```bash
 uv add insurance-recurrent
-# or
-uv add insurance-recurrent
 ```
 
 For HTML reports:
@@ -262,7 +260,7 @@ resid = cox_snell_residuals(model, data)
 **Score residuals.** The EM algorithm should converge cleanly. Check that log-likelihood is monotonically increasing across iterations:
 
 ```python
-print(model.log_likelihood_history_[-5:])  # should be increasing and plateau
+print(f"Final log-likelihood: {model.log_likelihood_:.4f}")  # check convergence: model.converged_, model.n_iter_
 ```
 
 ---
@@ -278,8 +276,6 @@ As a rough calibration: for gamma frailty, `sqrt(theta)` is the coefficient of v
 ## The library
 
 ```bash
-uv add insurance-recurrent
-# or
 uv add insurance-recurrent
 ```
 

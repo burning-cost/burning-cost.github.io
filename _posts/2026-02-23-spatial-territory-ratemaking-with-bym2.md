@@ -189,7 +189,7 @@ This is the correct behaviour. The model adapts to what the data support rather 
 
 ## The regulatory case
 
-The FCA's pricing regulations under PS21/5 and Consumer Duty (July 2023) do not prohibit postcode rating. Postcode is not a protected characteristic under the Equality Act 2010. But they do require that your pricing is defensible, auditable, and demonstrably linked to genuine risk differentials.
+The FCA's pricing regulations under PS21/11 and Consumer Duty (July 2023) do not prohibit postcode rating. Postcode is not a protected characteristic under the Equality Act 2010. But they do require that your pricing is defensible, auditable, and demonstrably linked to genuine risk differentials.
 
 A k-means territory banding based on volatile loss ratios is difficult to defend. If challenged, your best argument is "this is what the data shows" - but the data for most sectors shows very little reliably.
 
