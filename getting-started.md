@@ -672,7 +672,7 @@ factors = sr.<span class="c-fn">fit_transform</span>(X)
 <!-- Worked examples -->
 <div class="gs-examples">
   <h2>Worked Examples</h2>
-  <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains 47 Databricks notebooks covering the full ecosystem. (These are in the burning-cost-examples GitHub repo — the <a href="/notebooks/">Notebooks</a> page on this site hosts a curated subset.) Each one installs its own dependencies, generates synthetic data, fits models, and benchmarks against a standard actuarial baseline. Browse the <a href="https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks" target="_blank">notebooks/ directory</a> or pick from the table below — sorted by library name.</p>
+  <p class="gs-examples-intro">The <a href="https://github.com/burning-cost/burning-cost-examples" target="_blank">burning-cost-examples</a> repo contains 35 Databricks notebooks covering the full ecosystem. (These are in the burning-cost-examples GitHub repo — the <a href="/notebooks/">Notebooks</a> page on this site hosts a curated subset.) Each one installs its own dependencies, generates synthetic data, fits models, and benchmarks against a standard actuarial baseline. Browse the <a href="https://github.com/burning-cost/burning-cost-examples/tree/main/notebooks" target="_blank">notebooks/ directory</a> or pick from the table below — sorted by library name.</p>
   <table class="gs-example-table">
     <thead>
       <tr>
