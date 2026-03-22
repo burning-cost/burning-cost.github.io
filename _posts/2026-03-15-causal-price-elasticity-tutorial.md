@@ -353,6 +353,6 @@ The FCA has not, as of March 2026, issued specific guidance on DML-based demand 
 ## See also
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical foundations this tutorial builds on
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) — the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library used throughout this tutorial
 - [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals
