@@ -234,7 +234,7 @@ The standard alternative is a residual plot: actual versus predicted, often in d
 
 The Hosmer-Lemeshow test (already in `insurance-governance`) catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
 
-The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), published October 2024. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
+The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), submitted October 2025. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
 
 ---
 
@@ -255,7 +255,7 @@ Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-go
 **References:**
 
 1. Lindholm, M. and Wüthrich, M.V. (2025). "The Balance Property in Insurance Pricing." *Scandinavian Actuarial Journal*. DOI: 10.1080/03461238.2025.2552909
-2. Brauer, A., Denuit, M., Krvavych, Y. et al. (2025). "Model Monitoring: A General Framework with an Application to Non-life Insurance Pricing." arXiv:2510.04556
+2. Brauer, A., Menzel, P., and Wüthrich, M.V. (2025). "Model Monitoring: A General Framework with an Application to Non-life Insurance Pricing." arXiv:2510.04556
 3. Wüthrich, M.V. and Ziegel, J. (2024). "Isotonic Recalibration under a Low Signal-to-Noise Ratio." *Scandinavian Actuarial Journal*, 2024(3), 279–299.
 
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
