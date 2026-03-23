@@ -299,61 +299,61 @@ Ten libraries for the problems that matter most. Each addresses a specific hard 
 <div class="essential-grid" id="essential-grid">
 
 <div class="essential-card" data-name="insurance-fairness" data-desc="Proxy discrimination auditing FCA Consumer Duty Equality Act 2010 bias metrics protected characteristics">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-fairness" target="_blank">insurance-fairness</a> [![CI](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml)</div>
+  <div class="essential-card-name"><a href="/insurance-fairness/">insurance-fairness</a> [![CI](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-fairness/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Proxy discrimination auditing aligned to FCA Consumer Duty. Quantifies indirect discrimination risk from rating variables correlated with protected characteristics. Equality Act 2010 proportionality documentation built in.</div>
   <div class="essential-card-tag">FCA Consumer Duty</div>
 </div>
 
 <div class="essential-card" data-name="insurance-governance" data-desc="PRA SS1/23 model validation MRM Gini calibration double-lift governance report">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-governance" target="_blank">insurance-governance</a></div>
+  <div class="essential-card-name"><a href="/insurance-governance/">insurance-governance</a></div>
   <div class="essential-card-desc">PRA SS1/23-compliant model validation reports. Bootstrap Gini CI, Poisson A/E CI, double-lift charts, renewal cohort test. HTML/JSON output structured for model risk committees and PRA review.</div>
   <div class="essential-card-tag">PRA SS1/23 &middot; MRM</div>
 </div>
 
 <div class="essential-card" data-name="insurance-causal" data-desc="Double machine learning DML causal inference deconfounding rating factors channel bias causal forest heterogeneous treatment effects GATES CLAN RATE targeting">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-causal" target="_blank">insurance-causal</a> [![CI](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml)</div>
+  <div class="essential-card-name"><a href="/insurance-causal/">insurance-causal</a> [![CI](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-causal/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Double machine learning for deconfounding rating factors. Standard GLM coefficients are biased wherever rating variables correlate with distribution channel or policyholder selection. DML removes that bias without a structural model. v0.4.0 adds causal forest heterogeneous treatment effects: GATES aggregates, CLAN segment profiling, and RATE/AUTOC/QINI targeting evaluation for segment-level price response.</div>
   <div class="essential-card-tag">Causal inference &middot; DML</div>
 </div>
 
 <div class="essential-card" data-name="insurance-whittaker" data-desc="Whittaker-Henderson smoothing REML GCV lambda selection Bayesian CI age curves NCD">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-whittaker" target="_blank">insurance-whittaker</a></div>
+  <div class="essential-card-name"><a href="/insurance-whittaker/">insurance-whittaker</a></div>
   <div class="essential-card-desc">Whittaker-Henderson smoothing for experience rating tables. 1D, 2D, and Poisson variants with REML lambda selection and Bayesian credible intervals. Smooths age curves, NCD scales, and vehicle group relativities without parametric assumptions.</div>
   <div class="essential-card-tag">Non-parametric smoothing &middot; REML</div>
 </div>
 
 <div class="essential-card" data-name="insurance-telematics" data-desc="HMM telematics driving state classification risk score UBI GLM GPS accelerometer">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-telematics" target="_blank">insurance-telematics</a></div>
+  <div class="essential-card-name"><a href="/insurance-telematics/">insurance-telematics</a></div>
   <div class="essential-card-desc">End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores. HMM driving state classification (cautious/normal/aggressive), Bühlmann-Straub credibility aggregation to driver level, Poisson GLM integration.</div>
   <div class="essential-card-tag">Telematics &middot; HMM &middot; UBI</div>
 </div>
 
 <div class="essential-card" data-name="insurance-conformal" data-desc="conformal prediction distribution-free prediction intervals coverage guarantee GBM GLM Tweedie Solvency II SCR pearson_weighted non-conformity scores frequency-severity">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-conformal" target="_blank">insurance-conformal</a> [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml)</div>
+  <div class="essential-card-name"><a href="/insurance-conformal/">insurance-conformal</a> [![CI](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-conformal/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Distribution-free prediction intervals with finite-sample coverage guarantees. Five non-conformity scores tuned for Tweedie and Poisson claims — the default <code>pearson_weighted</code> score produces 13.4% narrower intervals than parametric Tweedie at identical 90% coverage. Frequency-severity conformal intervals, online retrospective adjustment, Solvency II SCR bounds.</div>
   <div class="essential-card-tag">Conformal prediction &middot; Solvency II</div>
 </div>
 
 <div class="essential-card" data-name="insurance-credibility" data-desc="Buhlmann-Straub credibility Python thin segments NCD factors mixed model">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-credibility" target="_blank">insurance-credibility</a> [![CI](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml)</div>
+  <div class="essential-card-name"><a href="/insurance-credibility/">insurance-credibility</a> [![CI](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml/badge.svg)](https://github.com/burning-cost/insurance-credibility/actions/workflows/ci.yml)</div>
   <div class="essential-card-desc">Bühlmann-Straub credibility in Python with mixed-model equivalence checks. Caps thin segments, stabilises NCD factors, blends a new model with an incumbent rate. The actuarial answer to the thin data problem.</div>
   <div class="essential-card-tag">Bühlmann-Straub &middot; Thin data</div>
 </div>
 
 <div class="essential-card" data-name="insurance-frequency-severity" data-desc="Sarmanov copula joint frequency severity modelling GLM marginals IFM premium correction dependence">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-frequency-severity" target="_blank">insurance-frequency-severity</a></div>
+  <div class="essential-card-name"><a href="/insurance-frequency-severity/">insurance-frequency-severity</a></div>
   <div class="essential-card-desc">Sarmanov copula joint frequency-severity modelling with GLM marginals. IFM estimation, analytical premium correction, Garrido conditional severity, dependence tests. Tests the independence assumption every pricing model makes.</div>
   <div class="essential-card-tag">Sarmanov copula &middot; Joint modelling</div>
 </div>
 
 <div class="essential-card" data-name="insurance-gam" data-desc="EBM NAM interpretable GAM neural additive model factor table deep learning insurance">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-gam" target="_blank">insurance-gam</a></div>
+  <div class="essential-card-name"><a href="/insurance-gam/">insurance-gam</a></div>
   <div class="essential-card-desc">EBM and Neural Additive Model for interpretable deep learning in insurance pricing. Shape functions per rating factor give the transparency of a GLM with the predictive power of a neural network. Factor table output for pricing committee review.</div>
   <div class="essential-card-tag">EBM &middot; NAM &middot; Interpretable ML</div>
 </div>
 
 <div class="essential-card" data-name="insurance-monitoring" data-desc="model drift detection PSI CSI actual vs expected Gini drift sequential testing mSPRT champion challenger">
-  <div class="essential-card-name"><a href="https://github.com/burning-cost/insurance-monitoring" target="_blank">insurance-monitoring</a></div>
+  <div class="essential-card-name"><a href="/insurance-monitoring/">insurance-monitoring</a></div>
   <div class="essential-card-desc">Exposure-weighted drift detection for deployed pricing models. PSI, CSI, actual-vs-expected ratios, Gini drift z-test. v0.8.0 adds SequentialTest for anytime-valid A/B testing of champion/challenger experiments via mSPRT, PITMonitor for calibration drift, and InterpretableDriftDetector for feature-interaction drift attribution.</div>
   <div class="essential-card-tag">Model monitoring &middot; Drift detection</div>
 </div>
