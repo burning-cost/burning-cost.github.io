@@ -4,7 +4,7 @@ title: "Per-Risk Volatility Scoring: Heterogeneous Dispersion with Distributiona
 date: 2026-03-04
 categories: [pricing, techniques, tutorials]
 tags: [distributional-regression, tweedie, catboost, polars, volatility, dispersion, safety-loading, ifrs17, insurance-distributional, uk-motor, tutorial]
-description: "Replace scalar Tweedie dispersion with per-risk phi using TweedieGBM. Coverage calibration benchmarks, safety loading spread analysis, and CRPS comparison - insurance-distributional Python."
+description: "Per-risk phi from TweedieGBM instead of scalar dispersion. Coverage calibration, safety loading spread analysis, and CRPS comparison — insurance-distributional."
 ---
 
 The standard Tweedie model contains a parameter that rarely gets scrutinised: phi, the dispersion. Fitted once as a scalar, it applies identically to every risk in the book. A young driver in a prestige vehicle and a mature driver in a city car at the same expected loss are assigned the same phi, same coefficient of variation, and the same safety loading.

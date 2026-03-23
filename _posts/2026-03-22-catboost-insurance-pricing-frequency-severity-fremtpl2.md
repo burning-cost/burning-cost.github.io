@@ -4,7 +4,7 @@ title: "CatBoost for Insurance Pricing: Frequency-Severity on freMTPL2"
 date: 2026-03-22
 categories: [pricing, techniques, tutorials]
 tags: [catboost, frequency-severity, burning-cost, fremtpl2, poisson, gamma, polars, shap-relativities, insurance-distill, uk-motor, python, open-data]
-description: "Build a CatBoost frequency-severity pricing model on freMTPL2 using Polars. Poisson frequency, Gamma severity, combined burning cost, SHAP factor extraction, and distillation to Radar."
+description: "CatBoost frequency-severity pricing on freMTPL2 with Polars: Poisson frequency, Gamma severity, burning cost, SHAP factor extraction, Radar distillation."
 ---
 
 Most actuarial pricing projects spend months on something that should take a week: getting a working frequency-severity model off the ground. The delay is usually not the modelling itself. It is the argument about which loss function to use, whether categorical variables need encoding, how to handle the exposure offset, and whether the combined burning cost "makes sense." These are legitimate questions, but they have answers, and the answers are not complicated.

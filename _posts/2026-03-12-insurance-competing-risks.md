@@ -4,7 +4,7 @@ title: "Competing Risks in Insurance: Fine-Gray Subdistribution Hazard in Python
 date: 2026-03-12
 categories: [libraries, pricing, survival, retention, home-insurance]
 tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, Gray-test, IPCW, retention, lapse, home-insurance, motor, insurance-survival, python]
-description: "Fine-Gray subdistribution hazard for UK insurance competing risks. Separates lapse, MTC, and NTU correctly using Aalen-Johansen CIF and IPCW weighting - insurance-survival Python."
+description: "Fine-Gray subdistribution hazard for insurance competing risks. Separates lapse, MTC, and NTU correctly using Aalen-Johansen CIF and IPCW weighting. Python."
 ---
 
 In most UK insurers' retention models, mid-term cancellations are handled by treating them as censored for the voluntary lapse analysis. When a policyholder leaves via MTC, the Cox model marks them as withdrawn from the lapse risk set and moves on. The same pattern applies in home insurance peril modelling: a policy with an escape of water is censored for the fire analysis.

@@ -4,7 +4,7 @@ title: "DoWhy vs insurance-causal: Which Causal Inference Library Should Insurer
 date: 2026-03-22
 author: Burning Cost
 categories: [causal-inference, libraries, comparisons, pricing]
-description: "DoWhy is the most rigorous general-purpose causal inference library in Python — DAG specification, formal identification, refutation tests. It was not built for insurance pricing. Here is what that difference costs you."
+description: "DoWhy vs insurance-causal: DoWhy lacks insurance pricing primitives. What that gap costs when estimating causal price effects on renewal portfolios."
 canonical_url: "https://burning-cost.github.io/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/"
 tags: [DoWhy, insurance-causal, DML, double-machine-learning, DAG, causal-graph, refutation, price-elasticity, Poisson, exposure, renewal, causal-inference, python, uk-insurance, dowhy-insurance-pricing]
 ---

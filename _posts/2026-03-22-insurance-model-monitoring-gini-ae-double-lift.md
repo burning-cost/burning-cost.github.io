@@ -4,7 +4,7 @@ title: "Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-
 date: 2026-03-22
 author: Burning Cost
 categories: [monitoring, model-risk, tutorials, libraries]
-description: "What pricing actuaries actually monitor and how to do it in Python: Gini coefficient stability, A/E ratios by segment, exposure-weighted PSI, and double-lift curves using the insurance-monitoring library."
+description: "Insurance model monitoring in Python: Gini stability, A/E ratios by segment, exposure-weighted PSI, and double-lift curves. insurance-monitoring library."
 canonical_url: "https://burning-cost.github.io/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/"
 tags: [insurance-model-monitoring-python, gini-drift, ae-ratio, double-lift, PSI, sequential-testing, insurance-monitoring, model-risk, pricing, python, uk-insurance, polars]
 ---

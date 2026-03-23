@@ -4,7 +4,7 @@ title: "GAMLSS Sigma Submodel Validation: GAIC, Quantile Residuals and Worm Plot
 date: 2026-03-08
 categories: [pricing, techniques, tutorials]
 tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, volatility-scoring, sigma, variance, gamma, insurance-distributional-glm, python, model-validation]
-description: "Four-step workflow to validate a GAMLSS sigma submodel before production: GAIC comparison, holdout quantile residuals, worm plots, and volatility score calibration against empirical CV."
+description: "Validate a GAMLSS sigma submodel before production: GAIC comparison, holdout quantile residuals, worm plots, and volatility score calibration."
 ---
 
 [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) fits GAMLSS models that allow the dispersion parameter sigma to vary by risk. A sigma submodel with two or three covariates will almost always reduce training-set log-likelihood. That does not mean it has learned something real — it might be fitting the idiosyncratic variance of your training cohort rather than a structural relationship that holds on unseen data.

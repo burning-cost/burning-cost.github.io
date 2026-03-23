@@ -4,7 +4,7 @@ title: "Covariate-Conditioned IBNR Completion: Segment-Level Development Factors
 date: 2026-03-13
 categories: [libraries, pricing, reserving]
 tags: [nowcasting, IBNR, EM-algorithm, XGBoost, reporting-delay, completion-factors, frequency-GLM, insurance-nowcast, python, poisson, multinomial]
-description: "Covariate-conditioned IBNR completion by risk segment using ML-EM algorithm with XGBoost M-step. Exposure-weighted Poisson occurrence plus multinomial delay model - insurance-nowcast Python."
+description: "IBNR completion by risk segment using ML-EM with XGBoost. Exposure-weighted Poisson occurrence plus multinomial delay model — insurance-nowcast Python."
 ---
 
 Aggregate LDFs from the quarterly triangle assume recent business has the same risk profile as the historical average. When the book has shifted — more fleet in the last 18 months, more high-NCD motor at the younger end of the age distribution — the aggregate factor will be wrong for every segment it is applied to. Fleet motor PD has a median reporting delay of around 2 months. Young driver motor BI runs closer to 4–5 months with a long right tail past 18 months. Averaging those two development patterns produces a factor that understates IBNR for the slower-reporting segment and overstates it for the faster one.

@@ -4,7 +4,7 @@ title: "FCA Proxy Discrimination Testing in Python: A Practical Guide"
 date: 2026-03-22
 categories: [fairness, regulation, techniques]
 tags: [fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, insurance-fairness, python, Equality-Act, pricing, audit]
-description: "EP25/2 requires non-life insurers to test whether rating factors act as proxies for protected characteristics. Here is exactly how to run that test in Python, with the correct statistical methods and an audit-ready output."
+description: "EP25/2 proxy discrimination testing in Python: correct statistical methods for testing rating factor proxies, with audit-ready output."
 ---
 
 The FCA's Evaluation Paper EP25/2, published in early 2025, is the most specific regulatory guidance yet on what a proxy discrimination audit for a non-life pricing model should look like. It is not Consumer Duty in general. It is not the Gender Directive. It is the question: do your rating factors act as conduits for protected characteristics you are not permitted to use directly?

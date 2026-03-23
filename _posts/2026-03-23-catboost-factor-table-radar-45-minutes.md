@@ -4,7 +4,7 @@ title: "CatBoost Factor Table to Radar in 45 Minutes"
 date: 2026-03-23
 author: Burning Cost
 categories: [gbm, insurance-pricing, rating-engines]
-description: "A case study: we trained a CatBoost motor frequency model, extracted SHAP relativities, distilled them into a GLM factor table, and exported Radar-compatible CSVs. The whole workflow took 45 minutes."
+description: "CatBoost motor frequency model to Radar factor table in 45 minutes: SHAP relativity extraction, GLM distillation, and Radar-compatible CSV export in Python."
 canonical_url: "https://burning-cost.github.io/2026/03/23/catboost-factor-table-radar-45-minutes/"
 tags: [catboost, shap, radar, factor-tables, insurance-pricing, python, polars, insurance-distill, shap-relativities]
 ---

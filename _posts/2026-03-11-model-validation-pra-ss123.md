@@ -4,7 +4,7 @@ title: "Quantitative Model Validation Under PRA SS1/23: Pass/Fail Tests with Rep
 date: 2026-03-11
 categories: [pricing, libraries]
 tags: [validation, pra-ss123, governance, gini, hosmer-lemeshow, psi, calibration, catboost, polars, insurance-governance, motor, uk-pricing, python, model-risk]
-description: "PRA SS1/23 principles — written for banks but widely adopted by insurance teams — call for quantitative pass/fail tests, not narrative. insurance-governance automates the full validation suite."
+description: "PRA SS1/23 model validation in Python: quantitative pass/fail tests rather than narrative. insurance-governance automates the full validation suite."
 ---
 
 Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on.

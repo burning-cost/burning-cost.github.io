@@ -4,7 +4,7 @@ title: "The Complete Python Insurance Pricing Toolkit: Every Library You Need in
 date: 2026-03-22
 categories: [guides]
 tags: [python, insurance-pricing, ecosystem]
-description: "A comprehensive map of 45 Python tools across 14 insurance pricing categories - general-purpose and insurance-specific, with honest assessments of when to use each."
+description: "45 Python tools across 14 insurance pricing categories — general-purpose and insurance-specific — with honest assessments of when to use each."
 ---
 
 The Python insurance pricing ecosystem has grown fast enough that it is genuinely difficult to keep track of what exists. This is our attempt at a comprehensive, honest map — general-purpose tools alongside insurance-specific ones, with plain assessments of when each is the right choice.

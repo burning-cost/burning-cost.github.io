@@ -3,7 +3,7 @@ layout: post
 title: "Bridging the EBM-GLM Governance Gap: GLMComparison and MonotonicityEditor in Python"
 date: 2026-03-16
 author: Burning Cost
-description: "GLMComparison ranks EBM-GLM divergence by feature; MonotonicityEditor enforces actuarial constraints via isotonic regression. Two tools for moving an EBM from notebook to pricing committee approval - insurance-gam, Python."
+description: "Get an EBM through pricing committee approval: GLMComparison ranks divergence by feature, MonotonicityEditor enforces actuarial constraints."
 tags: [ebm, gam, interpretability, GLM, monotonicity, model-governance, pricing, insurance-gam, motor, python, polars]
 ---
 

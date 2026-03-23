@@ -5,7 +5,7 @@ date: 2026-03-22
 author: Burning Cost
 categories: [python, glm, insurance-pricing]
 tags: [glm, python, uk-insurance, glum, polars, catboost, freMTPL2, poisson, gamma, frequency-severity, exposure, NCD, ABI-group, postcode, FCA, Consumer-Duty, Emblem, Radar, IBNR, offsets, insurance-distill, shap-relativities, insurance-cv]
-description: "The standard GLM insurance Python tutorials use sklearn and generic datasets. This post covers what UK pricing actuaries actually need: proper exposure handling, UK rating factors, FCA/Consumer Duty implications, frequency-severity split, Emblem/Radar deployment, and IBNR offsets. Working code with glum and Polars."
+description: "GLM insurance Python for UK pricing actuaries: exposure handling, Consumer Duty, frequency-severity split, and Emblem/Radar deployment with glum."
 canonical_url: "https://burning-cost.github.io/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/"
 ---
 

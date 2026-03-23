@@ -4,7 +4,7 @@ title: "Exposure-Weighted Gini Coefficient in Python"
 date: 2026-03-23
 author: Burning Cost
 categories: [python, model-validation, tutorials]
-description: "Standard Gini coefficients ignore exposure — a fundamental mistake for insurance pricing models. We show the correct exposure-weighted formula, a clean Python implementation, and how a 4-point Gini overstatement from ignoring exposure would distort a UK motor model governance decision."
+description: "Exposure-weighted Gini for insurance pricing: correct formula, Python implementation, and why ignoring exposure distorts motor model governance."
 canonical_url: "https://burning-cost.github.io/2026/03/23/exposure-weighted-gini-coefficient-python/"
 tags: [gini-coefficient, exposure-weighting, model-discrimination, python, uk-insurance, motor-pricing, insurance-monitoring, model-governance, pricing-actuary]
 ---

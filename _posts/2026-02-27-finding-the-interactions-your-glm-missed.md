@@ -4,7 +4,7 @@ title: "Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Tes
 date: 2026-02-27
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, catboost, polars, pricing, python, motor]
-description: "Automated interaction search for UK motor GLMs: CANN residuals detect structure the main-effects GLM cannot express, NID ranks candidate pairs, LR tests with Bonferroni correction confirm significance - insurance-interactions Python."
+description: "Automated GLM interaction search for UK motor: CANN residuals detect missed structure, NID ranks candidates, LR tests with Bonferroni confirm significance."
 published: true
 ---
 

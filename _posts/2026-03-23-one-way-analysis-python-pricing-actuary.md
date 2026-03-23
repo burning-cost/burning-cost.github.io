@@ -4,7 +4,7 @@ title: "One-Way Analysis in Python: From Scratch to Production"
 date: 2026-03-23
 author: Burning Cost
 categories: [python, pricing-analysis, tutorials]
-description: "One-way analysis is the first thing every pricing actuary does on a new dataset. We build it from scratch in pandas, add credibility-weighted confidence intervals, handle thin cells correctly, then show the production shortcut using shap-relativities for GBM models."
+description: "One-way analysis in Python for pricing actuaries: pandas from scratch, credibility-weighted confidence intervals, thin cell handling, GBM shortcuts."
 canonical_url: "https://burning-cost.github.io/2026/03/23/one-way-analysis-python-pricing-actuary/"
 tags: [one-way-analysis, factor-tables, pandas, python, uk-insurance, motor-pricing, shap-relativities, insurance-gam, credibility, confidence-intervals, pricing-actuary, observed-expected]
 ---

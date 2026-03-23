@@ -499,6 +499,20 @@
       .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
 </head>
 <body>
 

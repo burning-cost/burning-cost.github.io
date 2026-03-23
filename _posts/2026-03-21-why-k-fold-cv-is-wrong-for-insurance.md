@@ -4,7 +4,7 @@ title: "Why k-Fold CV Is Wrong for Insurance and What to Do Instead"
 date: 2026-03-21
 author: Burning Cost
 categories: [pricing, python, libraries, tutorials]
-description: "Insurance walk-forward cross-validation prevents the look-ahead bias that makes standard k-fold results useless for prospective evaluation. Complete Python example with insurance-cv."
+description: "Walk-forward CV for insurance prevents look-ahead bias that makes k-fold results useless for prospective evaluation. Python with insurance-cv."
 canonical_url: "https://burning-cost.github.io/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/"
 tags: [cross-validation, walk-forward, temporal-leakage, ibnr, insurance-cv, sklearn, poisson-deviance, uk-motor, insurance-walk-forward-cross-validation]
 ---

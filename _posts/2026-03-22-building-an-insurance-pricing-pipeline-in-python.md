@@ -4,7 +4,7 @@ title: "Building an Insurance Pricing Pipeline in Python: From Raw Claims to Pro
 date: 2026-03-22
 categories: [guides, tutorials]
 tags: [python, pipeline, tutorial, insurance-datasets, shap-relativities, insurance-fairness, insurance-conformal, insurance-monitoring, catboost, fca]
-description: "End-to-end UK motor pricing pipeline in Python: synthetic data generation, CatBoost frequency/severity models, GLM factor extraction, FCA fairness audit, conformal prediction intervals, and drift monitoring."
+description: "End-to-end UK motor pricing in Python: CatBoost frequency/severity, GLM factor extraction, FCA fairness audit, conformal intervals, drift monitoring."
 ---
 Most pricing tutorials stop at the model. You get a GLM fitted to the French MTPL dataset, a reasonable Gini, and a pat on the back. Then you try to apply the same approach to a live book and discover that the model is the easy part.
 

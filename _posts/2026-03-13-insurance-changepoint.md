@@ -4,7 +4,7 @@ title: "Bayesian Changepoint Detection for Insurance Loss Ratios in Python"
 date: 2026-03-13
 categories: [libraries, pricing, monitoring]
 tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-dynamics, python]
-description: "Bayesian Online Changepoint Detection for UK insurance loss ratios: exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, PELT retrospective analysis, Consumer Duty evidence pack."
+description: "Bayesian changepoint detection for UK insurance loss ratios: Poisson-Gamma conjugates, regulatory event priors, PELT retrospective analysis, Consumer Duty pack."
 ---
 
 The standard UK personal lines experience review produces one formal output on frequency regime changes: someone marks a kink on a chart, the team agrees a trend has probably shifted, and the rate filing documents it as "technical pricing review, Q2 inflection noted." That process gives you no posterior probability on the break, no uncertainty on its location, and no audit trail that satisfies an FCA reviewer.

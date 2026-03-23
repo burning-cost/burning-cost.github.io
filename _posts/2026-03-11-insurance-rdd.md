@@ -4,7 +4,7 @@ title: "Regression Discontinuity Design for Insurance Rating Thresholds in Pytho
 date: 2026-03-11
 categories: [libraries, pricing, causal-inference]
 tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, postcode, FCA, Consumer-Duty, Poisson, GLM, geographic-RDD, insurance-rdd, python]
-description: "Regression Discontinuity Design tests causal risk changes at rating thresholds: age 25, NCD steps, territory boundaries. Exposure-weighted Poisson outcomes, geographic RDD, Consumer Duty output - Python."
+description: "Regression Discontinuity for causal risk changes at rating thresholds — age 25, NCD steps, territory — with Poisson outcomes and Consumer Duty output. Python."
 ---
 
 UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm — and what pricing teams almost never formally test — is whether the observed claims risk actually drops by the same factor at age 25, or whether the pricing premium exceeds the causal risk change.

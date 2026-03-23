@@ -5,7 +5,7 @@ date: 2026-02-19
 featured: true
 categories: [techniques]
 tags: [conformal-prediction, gbm, catboost, uncertainty, tweedie, pricing, python, conformal-risk-control, premium-sufficiency, CRC]
-description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Also: conformal risk control for expected monetary shortfall. Python library."
+description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Python."
 ---
 
 Your Tweedie GBM gives point estimates. That is a problem.

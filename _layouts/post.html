@@ -550,15 +550,20 @@
         "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
         "datePublished": "{{ page.date | date_to_xmlschema }}",
         "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+        "image": "{{ site.url }}/assets/og-image.png",
         "author": {
           "@type": "Organization",
           "name": "Burning Cost",
-          "url": "https://burning-cost.github.io"
+          "url": "{{ site.url }}"
         },
         "publisher": {
           "@type": "Organization",
           "name": "Burning Cost",
-          "url": "https://burning-cost.github.io"
+          "url": "{{ site.url }}",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "{{ site.url }}/assets/og-image.png"
+          }
         },
         "url": {{ page.url | absolute_url | jsonify }},
         "mainEntityOfPage": {

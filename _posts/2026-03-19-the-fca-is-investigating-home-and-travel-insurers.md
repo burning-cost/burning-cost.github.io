@@ -4,7 +4,7 @@ title: "FCA Consumer Duty Investigations in Home and Travel Insurance: Building 
 date: 2026-03-19
 author: Burning Cost
 categories: [compliance, pricing, fairness]
-description: "Active Consumer Duty investigations in home and travel insurance. What a defensible pricing model requires under PRIN 2A, what TR24/2 found about current evidence quality, and how insurance-fairness operationalises the monitoring obligation."
+description: "FCA Consumer Duty investigations in home and travel. What PRIN 2A requires, what TR24/2 found, and how to operationalise the monitoring obligation."
 canonical_url: "https://burning-cost.github.io/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
 ---

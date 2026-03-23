@@ -4,7 +4,7 @@ title: "How to Build a Burning Cost Model for Insurance Pricing in Python"
 date: 2026-03-23
 categories: [python, pricing, tutorials]
 tags: [burning-cost, frequency-severity, glm, poisson, gamma, glum, polars, exposure, large-loss, IBNR, python, uk-motor, insurance-pricing]
-description: "A practical guide to building a burning cost model for UK insurance pricing in Python. Covers the frequency-severity split, exposure offsets, large loss capping, IBNR adjustment, and how to combine the two models into a defensible pure premium."
+description: "Build a burning cost model in Python: frequency-severity split, exposure offsets, large loss capping, IBNR adjustment, and combined pure premium for UK pricing."
 ---
 
 A burning cost model is the foundation of most UK personal lines pricing. The name comes from reinsurance: the "burning cost" of a programme is the actual incurred losses divided by the premium or exposure, giving you the rate of loss. In a pricing context, a burning cost model is a predictive model of expected claim cost per unit of exposure - the pure premium before expenses, profit loading, or tax.
