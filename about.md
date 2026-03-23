@@ -11,8 +11,6 @@ The name is also a philosophy. Simple, direct, no mystification. That is how we 
 
 Built by pricing practitioners who have worked across UK personal lines motor and home books.
 
-Built by pricing practitioners who have worked across UK personal lines motor and home books.
-
 ---
 
 ## What we have built
@@ -90,3 +88,5 @@ Our benchmarks use synthetic data with known parameters because that is the only
 ## Get in touch
 
 Start a conversation on [GitHub Discussions](https://github.com/orgs/burning-cost/discussions) — that's where we discuss new features, answer questions, and take feedback. For everything else: [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com).
+
+If you need help getting the libraries into production — adapting examples to your data schema, navigating model risk sign-off, or building a compliant audit trail — see [Work with Us](/work-with-us/).

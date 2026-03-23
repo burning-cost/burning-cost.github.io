@@ -25,11 +25,9 @@ minima:
 
 header_pages:
   - tools.md
-  - pipeline.md
-  - guide.md
-  - notebooks.md
+  - blog.md
+  - resources.md
   - about.md
-  - compare.md
 
 plugins:
   - jekyll-feed

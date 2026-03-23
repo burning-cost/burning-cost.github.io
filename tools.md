@@ -1,6 +1,6 @@
 ---
 layout: tools
-title: "Open-Source Python Libraries for Insurance Pricing"
+title: "Libraries"
 description: "Open-source Python libraries for UK non-life pricing — 10 flagship tools for proxy discrimination auditing, PRA SS1/23 validation, DML causal inference, conformal prediction, Whittaker-Henderson smoothing, GAMLSS, and Bühlmann-Straub credibility."
 permalink: /tools/
 ---
