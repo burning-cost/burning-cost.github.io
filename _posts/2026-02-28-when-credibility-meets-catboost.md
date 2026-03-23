@@ -191,4 +191,4 @@ The credibility approach did not disappear when GBMs arrived. It got a better St
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Group Factors Are Not All Worth Modelling](/2026/03/06/multilevel-group-factors/)
+- [When Group Effects Are Worth Modelling: ICC Diagnostics for High-Cardinality Factors](/2026/03/06/multilevel-group-factors/)

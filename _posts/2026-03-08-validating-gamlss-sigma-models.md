@@ -251,4 +251,4 @@ The full workflow runs in under five minutes on a standard motor severity datase
 **Related:**
 - [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the introductory post on fitting the model
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — a GBM-based approach to the same problem if you need more flexibility in the mean submodel
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption most teams leave unchallenged
+- [Frequency-Severity Dependence in UK Motor Pricing](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption most teams leave unchallenged

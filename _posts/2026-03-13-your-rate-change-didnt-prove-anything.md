@@ -7,9 +7,7 @@ tags: [sdid, causal-inference, difference-in-differences, fca-tr242, fca-ep252, 
 description: "DiD and Callaway-Sant'Anna for rate change attribution. insurance-causal-policy quantifies what your rate change actually achieved, TR24/2 compliant."
 ---
 
-Your loss ratio went down six months after the rate increase. The pricing presentation shows a before/after chart. Management is pleased. The FCA compliance team has filed it as a positive outcome.
-
-None of this is evidence that the rate change caused the improvement.
+A loss ratio improvement six months after a rate increase is exactly the kind of result that ends up in a pricing presentation as evidence of success. It may well be genuine. The problem is that a before/after chart cannot tell you whether the improvement was caused by the rate change or whether it would have happened anyway.
 
 This is not a pedantic distinction. FCA TR24/2 (August 2024) reviewed how UK insurers evaluate the outcomes of their pricing interventions and found that a material number of firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's language was explicit: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. They compared outcomes between treated and comparison groups in their own EP25/2 evaluation specifically because they knew the before/after approach cannot isolate the treatment effect from market-wide trends.
 

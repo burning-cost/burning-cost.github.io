@@ -4,14 +4,14 @@ title: "Truncation-Corrected GPD Fitting for Capped Claims: Unbiased Tail Index 
 date: 2026-03-20
 author: Burning Cost
 categories: [pricing, severity, libraries, tutorials]
-description: "Standard GPD fitting is biased when claims are capped by policy limits. Most actuaries know this and do it anyway. insurance-severity v0.2.0 fixes it."
+description: "Standard GPD fitting is biased when claims are capped by policy limits. The bias is systematic and downward. insurance-severity v0.2.0 fixes it."
 canonical_url: "https://burning-cost.github.io/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/"
 tags: [EVT, extreme-value-theory, GPD, TruncatedGPD, CensoredHillEstimator, WeibullTemperedPareto, policy-limits, truncation, censoring, severity, tail-index, insurance-severity, v0.2.0, python, motor-bi, uk-insurance, reinsurance]
 ---
 
 There is a flaw in how most UK actuaries fit severity models to claims data, and it is not subtle. The flaw is this: we fit a Generalised Pareto Distribution to exceedances above a threshold, we report a tail index, we use that tail index to price reinsurance layers and set large loss loadings — and the entire time, the data we fitted to was not the actual claim sizes. It was the actual claim sizes capped at policy limits.
 
-Claims are not observed ground-up. They are settled at whatever the policy pays, which is `min(ground-up loss, policy limit)`. If your policy limit is £500k and the ground-up loss was £1.8m, you see £500k. You do not see £1.8m. You do not even know it was £1.8m. For standard GPD fitting, which assumes you are observing the tail directly, every one of those £500k observations is a lie — and it is a lie that points in one direction. Downward. You are systematically underestimating how heavy the tail is.
+Claims are not observed ground-up. They are settled at whatever the policy pays: `min(ground-up loss, policy limit)`. If your policy limit is £500k and the ground-up loss was £1.8m, you see £500k. You do not see £1.8m. You do not even know it was £1.8m. For standard GPD fitting, which assumes you are observing the tail directly, every one of those £500k cap observations is a truncated value — biased downward in a single, systematic direction. The result is a consistent underestimate of how heavy the tail actually is.
 
 `insurance-severity` v0.2.0 adds three classes that deal with this properly.
 

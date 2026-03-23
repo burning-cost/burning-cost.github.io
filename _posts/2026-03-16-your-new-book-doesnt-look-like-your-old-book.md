@@ -8,11 +8,9 @@ tags: [covariate-shift, model-validation, density-ratio, catboost, fca]
 categories: [techniques, model-validation]
 ---
 
-Your frequency model passed validation. Gini looks fine. A/E on holdout is 0.987. The governance committee signed it off and it went live.
+A frequency model can pass validation cleanly — Gini looks fine, A/E on holdout is 0.987, governance committee signs it off — and still produce deteriorating loss ratios six months later. The monitoring dashboard shows nothing alarming. The underwriting team points at weather. The claims team points at fraud.
 
-Six months later, the loss ratio is climbing and nobody can explain why. The underwriting team points at weather. The claims team points at fraud. The pricing team looks at the monitoring dashboard and sees nothing alarming.
-
-Here is what the dashboard is not showing you: the book you are pricing today is not the book your model was trained on. The loss ratio is not telling you the model is wrong. It is telling you the model is right — for a book you no longer write.
+The issue is often simpler: the book being priced today is not the book the model was trained on. The loss ratio is climbing not because the model is wrong, but because it is right — for a portfolio that no longer exists.
 
 ---
 
@@ -208,6 +206,6 @@ The point is not that the model becomes unusable at 0.30. The point is that by 0
 `insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, NumPy 1.24+.
 
 **Related posts:**
-- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
+- [Importance-Weighted Evaluation for Portfolio Composition Shift: Diagnosing the Mismatch Before It Shows in Loss Ratios](/2026/03/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
 - [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 model validation and what a defensible sign-off process looks like
 - [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) — when the target book has sparse data, importance weighting pairs with transfer learning

@@ -285,7 +285,7 @@ What we'd resist is the assumption that Evidently covers the monitoring problem 
 
 **Related posts:**
 - [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — detailed walkthrough of each monitoring layer with worked examples
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
+- [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
 - [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model
 
 ---

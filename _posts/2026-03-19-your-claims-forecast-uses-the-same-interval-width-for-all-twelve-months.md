@@ -235,6 +235,6 @@ This is not a sophisticated early-warning system. It is a five-line check that m
 ---
 
 **Related posts:**
-- [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — ACI and SPCI basics, the exchangeability failure, UK motor worked example. Start here if you are new to conformal prediction for insurance.
-- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying the same framework to reserving triangles; the ACI/MSCP case for replacing bootstrap reserve ranges with conformal bounds
-- [Your Stress Test Portfolio Was Made by Resampling](/2026/03/19/stress-test-resampling-vine-copula/) — the capital modelling complement: once you have valid conformal intervals on a claims forecast, this is how to build the stress portfolio the capital model runs on
+- [Conformal Prediction for Non-Exchangeable Claims Time Series](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/) — ACI and SPCI basics, the exchangeability failure, UK motor worked example. Start here if you are new to conformal prediction for insurance.
+- [Conformal Guarantees for Reserve Ranges](/2026/03/16/reserve-range-conformal-guarantee/) — applying the same framework to reserving triangles; the ACI/MSCP case for replacing bootstrap reserve ranges with conformal bounds
+- [Stress Portfolio Construction with Vine Copulas](/2026/03/19/stress-test-resampling-vine-copula/) — the capital modelling complement: once you have valid conformal intervals on a claims forecast, this is how to build the stress portfolio the capital model runs on

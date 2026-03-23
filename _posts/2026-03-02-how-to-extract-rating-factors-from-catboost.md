@@ -274,7 +274,7 @@ Source at [github.com/burning-cost/shap-relativities](https://github.com/burning
 
 The library supports Poisson, Tweedie, and Gamma CatBoost objectives. It does not support linear-link models — there is a runtime check and it will raise a clear error.
 
-- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)
+- [Blending GLMs and GBMs for UK Pricing: Cross-Validated Weights, Not a Choice Between Them](/2026/02/28/your-gbm-and-glm-are-not-competitors/)
 - [When Credibility Meets CatBoost](/2026/02/28/when-credibility-meets-catboost/)
 - [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)

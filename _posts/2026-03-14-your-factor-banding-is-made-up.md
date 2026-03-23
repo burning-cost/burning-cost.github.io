@@ -195,4 +195,4 @@ The tools do not replace actuarial judgment. The minimum exposure constraint, th
 `insurance-glm-tools` is open source under the MIT licence at [github.com/burning-cost/insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools). Install with `uv add insurance-glm-tools`. Core requires Python 3.10+, numpy, scipy, scikit-learn, statsmodels, and torch. Spatial features require the `[spatial]` extra.
 
 - [Nested GLMs with Neural Network Embeddings for Insurance](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/)
-- [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/)
+- [EBM, ANAM, or PIN: Choosing the Right Interpretable Model for Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/)

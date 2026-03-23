@@ -340,5 +340,5 @@ Full `MonitoringReport` code with a complete UK motor synthetic example is in th
 **Related posts:**
 - [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - detailed walkthrough of each monitoring layer: exposure-weighted PSI, Murphy decomposition, mSPRT sequential testing
 - [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - direct feature comparison with gap analysis
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) - the original case for multi-layer monitoring
+- [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) - the original case for multi-layer monitoring
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) - the decision framework in depth

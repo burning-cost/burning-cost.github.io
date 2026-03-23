@@ -335,7 +335,7 @@ The gap for insurance pricing is the same gap we see with EconML: neither librar
 **Related posts:**
 - [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — the same analysis for EconML: stronger on heterogeneous effects, same gap on insurance-specific structure
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — foundational post on why DML beats naive GLM for causal price elasticity
-- [Your demand model is confounded](/2026/03/01/your-demand-model-is-confounded/) — the problem this library solves, explained without library comparisons
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the problem this library solves, explained without library comparisons
 
 ---
 

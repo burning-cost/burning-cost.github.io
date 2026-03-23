@@ -344,7 +344,7 @@ The FCA has not, as of March 2026, issued specific guidance on DML-based demand 
 
 `insurance-causal` is open source under MIT at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal). The elasticity module (`insurance_causal.elasticity`) requires Python 3.10+, CatBoost 1.2+, EconML 0.16+, and Polars 0.20+.
 
-- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
+- [Importance-Weighted Evaluation for Portfolio Composition Shift: Diagnosing the Mismatch Before It Shows in Loss Ratios](/2026/03/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
 - [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process
 - [Channel Mix Drift Your Model Didn't Notice](/2026/03/06/channel-mix-drift-your-model-didnt-notice/) — PCW customers are more elastic; a model trained on a channel mix you no longer have will overstate overall elasticity
 

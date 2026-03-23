@@ -7,13 +7,11 @@ tags: [fairness, proxy-discrimination, FCA, Consumer-Duty, Equality-Act, LRTW, G
 description: "Detect and correct proxy discrimination in UK insurance using SHAP and insurance-fairness. Protected characteristic leakage detection under FCA Consumer Duty."
 ---
 
-Your GBM uses postcode as a feature. That is completely standard practice in UK motor insurance. Postcode predicts claim frequency. The model validation looks fine.
+Postcode is a standard rating factor in UK motor insurance and a legitimate predictor of claim frequency. It is also correlated with ethnicity: in Inner East London, ONS Census 2021 data shows that many LSOAs have non-white British populations above 70%. A model that never sees ethnicity can still produce premiums that correlate with it, because postcode is doing that work implicitly.
 
-But postcode also correlates with ethnicity. In London, in particular, postcode bands are not race-neutral. The ONS Census 2021 shows that Inner East London LSOAs have non-white British populations above 70%. Your model does not explicitly use ethnicity. It does not need to. Postcode is doing that job for it.
+This is proxy discrimination under Equality Act 2010 Section 19, and since July 2023 it has been directly in scope of FCA Consumer Duty under PRIN 2A.4, which requires firms to monitor whether their products provide fair value across groups defined by protected characteristics.
 
-This is proxy discrimination. It is the subject of Equality Act 2010 Section 19. And as of July 2023, it is directly in scope of FCA Consumer Duty, specifically PRIN 2A.4, which requires firms to monitor whether their products provide fair value across groups defined by protected characteristics.
-
-The FCA has signalled this is a priority area. In TR24/2 (August 2024), they found that fair value assessments from reviewed firms were too high level and lacked the granularity to adequately evidence good outcomes across customer groups. The next step is enforcement.
+The FCA has signalled this is a priority area. In TR24/2 (August 2024), they found that fair value assessments from reviewed firms were too high level and lacked the granularity to adequately evidence good outcomes across customer groups. The direction of travel is towards enforcement.
 
 We built [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) to give pricing teams an audit-ready answer to this problem. This post explains the regulatory exposure, the technical problem of proxy discrimination in insurance models, and how to use the library to measure and mitigate it.
 

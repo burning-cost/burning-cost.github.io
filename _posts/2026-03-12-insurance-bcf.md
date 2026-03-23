@@ -270,4 +270,4 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 
 - [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/)
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)
-- [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)

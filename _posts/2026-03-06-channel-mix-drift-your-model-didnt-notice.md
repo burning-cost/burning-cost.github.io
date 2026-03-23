@@ -184,6 +184,6 @@ The library is at [github.com/burning-cost/insurance-covariate-shift](https://gi
 
 ## Related articles
 
-- [Your Pricing Model is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
+- [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/)
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/)
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/)
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/)

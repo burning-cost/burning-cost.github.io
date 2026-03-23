@@ -304,7 +304,7 @@ Polars-native throughout. No scikit-learn dependency. Python 3.10+.
 - [Alibi Detect vs insurance-monitoring: Drift Detection for Insurance Pricing Models](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — the same comparison against Alibi Detect
 - [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — comparison against Evidently
 - [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — detailed walkthrough of each monitoring layer
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
+- [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
 
 ---
 

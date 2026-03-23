@@ -420,7 +420,7 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - the cross-sectional case: per-policy intervals for Tweedie GBMs, where exchangeability holds
 - [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) - score-driven models for between-refit monitoring of the same underlying trend problem
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - covariate shift detection as a precursor to recalibration
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - covariate shift detection as a precursor to recalibration
 
 ---
 
@@ -429,4 +429,4 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: split conformal for cross-sectional insurance models where exchangeability holds
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
 - [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, handling correlated frequency/severity uncertainty simultaneously
-- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty
+- [Conformal Guarantees for Reserve Ranges](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty

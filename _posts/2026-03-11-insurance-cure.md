@@ -242,5 +242,5 @@ For lines where structural zeros are the main story — UK flood home insurance,
 ## Related articles
 
 - [Competing Risks in Insurance: Fine-Gray Subdistribution Hazard in Python](/2026/03/12/insurance-competing-risks/)
-- [Your Lapse Model Ignores Cure: The Customers Who Were Never Going to Leave](/2026/03/13/cure-models-lapse-retention/)
+- [Cure Models for Insurance Lapse and Retention](/2026/03/13/cure-models-lapse-retention/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

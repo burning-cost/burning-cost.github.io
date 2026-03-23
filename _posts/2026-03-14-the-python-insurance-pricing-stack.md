@@ -158,7 +158,7 @@ spatial.fit(df, outcome="claim_count", exposure="exposure")
 bands = spatial.derive_bands(n_bands=8)
 ```
 
-See [Your Territory Banding is Wrong](/2026/02/23/spatial-territory-ratemaking-with-bym2/) for what the BYM2 model finds that choropleth maps miss.
+See [BYM2 Territory Modelling: Posterior Uncertainty Intervals and Year-on-Year Stability from Spatial Smoothing](/2026/02/23/spatial-territory-ratemaking-with-bym2/) for what the BYM2 model finds that choropleth maps miss.
 
 [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
 
@@ -346,7 +346,7 @@ result = model.fit(df, exposure_col="exposure")
 print(result.ate, result.ci_95)  # average treatment effect + confidence interval
 ```
 
-For the mechanism and a worked motor example, see [Your Rating Factor Might Be Confounded](/2026/03/01/your-demand-model-is-confounded/).
+For the mechanism and a worked motor example, see [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/).
 
 [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal)
 

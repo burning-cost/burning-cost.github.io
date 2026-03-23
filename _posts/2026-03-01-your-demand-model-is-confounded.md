@@ -7,9 +7,7 @@ tags: [demand, elasticity, DML, double-machine-learning, conversion, retention, 
 description: "Double Machine Learning fixes biased price elasticity in insurance quote data. insurance-optimise: conversion, retention, elasticity, demand curves, FCA GIPP."
 ---
 
-Your renewal pricing model has a price elasticity coefficient. Your team uses it. It is wrong.
-
-Not wrong as in: someone made an arithmetic error. Wrong as in: the quantity it estimates is not the quantity you need for sound pricing decisions. It measures the association between price change and lapse, and it embeds a confound that naive regression cannot remove. In observational insurance data, this confound can materially overstate true price sensitivity. A renewal optimiser built on an overstated elasticity gives back margin to customers who would have renewed anyway.
+Most renewal pricing models carry a price elasticity coefficient derived from a naive regression of renewal indicator on price change. The problem is not arithmetic — it is structural. That coefficient measures the association between price and lapse rather than the causal effect of price on lapse, and it embeds a confound that ordinary regression cannot remove. In observational insurance data, this confound systematically overstates true price sensitivity. A renewal optimiser built on an overstated elasticity gives back margin to customers who would have renewed anyway.
 
 We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to fix this. This post explains the problem in detail and shows how the library addresses it.
 
@@ -228,4 +226,4 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-o
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — benchmark results across simulated and real insurance datasets; where DML outperforms OLS and where it does not
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library that implements the DML pipeline described here, with automatic nuisance model selection
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) — why the confounding problem in renewal pricing is structural, not a data quality issue
-- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) — a step-by-step tutorial applying DML to a UK renewal book, with all the data engineering and validation steps
+- [Debiasing Price Elasticity Estimates with Double Machine Learning](/2026/03/15/causal-price-elasticity-tutorial/) — a step-by-step tutorial applying DML to a UK renewal book, with all the data engineering and validation steps

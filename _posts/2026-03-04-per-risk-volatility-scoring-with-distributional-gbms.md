@@ -326,4 +326,4 @@ Source: [github.com/burning-cost/insurance-distributional](https://github.com/bu
 
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) -- the library announcement and theoretical foundations
 - [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) -- an alternative approach to variance-aware pricing using quantile regression
-- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) -- how to blend the distributional GBM mean output into a GLM rating structure for deployment
+- [Blending GLMs and GBMs for UK Pricing: Cross-Validated Weights, Not a Choice Between Them](/2026/02/28/your-gbm-and-glm-are-not-competitors/) -- how to blend the distributional GBM mean output into a GLM rating structure for deployment

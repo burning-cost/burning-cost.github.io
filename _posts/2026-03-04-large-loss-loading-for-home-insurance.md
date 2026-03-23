@@ -394,4 +394,4 @@ Source and notebooks at [github.com/burning-cost/insurance-quantile](https://git
 
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) -- the library introduction; start here if this is your first encounter with quantile regression in pricing
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) -- once the large loss loading is in production, this is the framework for deciding when it needs updating
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) -- if the severity distribution shifts after a portfolio acquisition, importance weighting corrects the tail estimates without a full retrain
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) -- if the severity distribution shifts after a portfolio acquisition, importance weighting corrects the tail estimates without a full retrain

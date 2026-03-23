@@ -252,7 +252,7 @@ For most UK insurance pricing work, it is not.
 ---
 
 **Related posts:**
-- [Your Technical Price Ignores Variance](https://burning-cost.github.io/2026/03/05/insurance-distributional/) — the full argument for per-risk volatility estimation, So & Valdez (2024) in detail
+- [Per-Risk Volatility Scoring with Distributional GBMs](https://burning-cost.github.io/2026/03/05/insurance-distributional/) — the full argument for per-risk volatility estimation, So & Valdez (2024) in detail
 - [GAMLSS in Python, Finally](https://burning-cost.github.io/2026/03/10/insurance-distributional-glm/) — the insurance-distributional-glm launch post with full benchmark numbers
 
 ---
