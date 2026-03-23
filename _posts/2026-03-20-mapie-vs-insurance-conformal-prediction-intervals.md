@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MAPIE vs insurance-conformal: Why Generic Conformal Prediction Breaks on Insurance Data"
-date: 2026-03-22
+date: 2026-03-20
 author: Burning Cost
 categories: [conformal-prediction, libraries, comparisons]
 description: "MAPIE is the standard Python library for conformal prediction, but it wasn't designed for insurance. Here is what goes wrong with exposure-weighted portfolios and Tweedie models, and what insurance-conformal does differently."

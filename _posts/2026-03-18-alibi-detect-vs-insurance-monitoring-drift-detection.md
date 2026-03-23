@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Alibi Detect vs insurance-monitoring: Drift Detection for Insurance Pricing Models"
-date: 2026-03-22
+date: 2026-03-18
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, comparisons]
 description: "Alibi Detect is a solid general-purpose drift detection library. It doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS3/17 regulatory framing. For insurance pricing teams, those omissions are the whole problem."

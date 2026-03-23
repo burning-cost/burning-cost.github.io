@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "NannyML vs insurance-monitoring: Drift Detection Built for Insurance Portfolios"
-date: 2026-03-22
+date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, comparisons]
 description: "NannyML is the best general-purpose ML monitoring library for teams without ground truth labels. For insurance pricing, it doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS3/17 framing. Here is the direct comparison."
