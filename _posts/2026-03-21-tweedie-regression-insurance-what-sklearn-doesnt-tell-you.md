@@ -5,7 +5,7 @@ date: 2026-03-21
 author: Burning Cost
 categories: [modelling, tutorials, libraries]
 description: "sklearn's TweedieRegressor tutorial gets you to a fitted model in six lines. It also produces predictions that are wrong for any policy with non-annual exposure. Here is the correct approach."
-canonical_url: "https://burning-cost.github.io/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/"
+canonical_url: "/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/"
 tags: [tweedie, GLM, exposure, offset, pure-premium, insurance-distributional, TweedieGBM, statsmodels, catboost, python, tutorial, motor-insurance, uk-insurance, compound-poisson-gamma]
 ---
 
@@ -335,3 +335,5 @@ If you are building or inheriting a pricing model and the word "offset" does not
 
 - [Your Technical Price Ignores Variance](/2026/03/05/insurance-distributional/) — distributional GBM: mean + CoV per risk
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals, why parametric Tweedie intervals fail on heterogeneous books
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the balance test and Murphy decomposition for deciding whether your Tweedie model needs recalibrating or a full refit
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to generate the structured validation documentation that a production Tweedie model needs before it goes near a rate change

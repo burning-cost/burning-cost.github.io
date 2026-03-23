@@ -264,3 +264,6 @@ After that: fit `WeibullMixtureCureFitter` with NCD and channel as cure covariat
 The R survival community has had covariate-adjusted cure models in `flexsurvcure` for years. Python did not. Now it does.
 
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)
+- [Your Lapse Model Ignores Cure](/2026/03/11/insurance-cure/) — the subpopulation of customers who were never going to leave: why mixing them into a standard Kaplan-Meier estimate biases your projected retention rate upward
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) — the downstream model that consumes survival-derived CLV scores to allocate the retention discount budget
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — once the survival model is in production, the Murphy decomposition tells you when its calibration has drifted enough to warrant intervention

@@ -5,7 +5,7 @@ date: 2026-03-22
 author: Burning Cost
 categories: [compliance, fairness, techniques]
 description: "Mutual information, proxy R-squared, and SHAP proxy scores all flag proxy discrimination but catch different things. A practical guide to interpreting conflicting signals in insurance-fairness proxy detection."
-canonical_url: "https://burning-cost.github.io/2026/03/22/three-methods-proxy-discrimination-detection-compared/"
+canonical_url: "/2026/03/22/three-methods-proxy-discrimination-detection-compared/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, mutual-information, proxy-r2, SHAP, detect-proxies, Equality-Act, python, uk-insurance, methodology]
 ---
 

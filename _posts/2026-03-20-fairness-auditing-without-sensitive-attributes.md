@@ -5,7 +5,7 @@ date: 2026-03-20
 author: Burning Cost
 categories: [compliance, fairness, libraries]
 description: "Most UK insurers don't hold ethnicity, religion, or disability status. Consumer Duty still requires evidence of fair outcomes. PrivatizedFairnessAudit solves this with local differential privacy."
-canonical_url: "https://burning-cost.github.io/2026/03/20/fairness-auditing-without-sensitive-attributes/"
+canonical_url: "/2026/03/20/fairness-auditing-without-sensitive-attributes/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, PrivatizedFairnessAudit, differential-privacy, LDP, randomised-response, anchor-point, Equality-Act, python, uk-insurance, v0.3.8]
 ---
 

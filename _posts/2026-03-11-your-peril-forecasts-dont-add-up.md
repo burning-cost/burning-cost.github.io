@@ -348,6 +348,8 @@ uv add 'insurance-reconcile[mintrace]'
 
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
 - [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/) — GLM-based trend with structural break detection and ONS index integration
+- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — for teams building reconciliation tests on synthetic portfolios: `insurance-synthetic` generates hierarchically consistent data with known perils and exposure structure, so you can verify that your reconciliation pipeline closes correctly before touching real data
+- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) — once the hierarchy reconciles, GAS filters handle the between-update trend problem: smoothly blending the reconciled forecast with emerging claims experience without waiting for a full refit
 
 ---
 

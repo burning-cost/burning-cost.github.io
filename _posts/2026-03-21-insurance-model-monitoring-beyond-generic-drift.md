@@ -5,7 +5,7 @@ date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, tutorials]
 description: "Evidently and NannyML are excellent tools. They do not understand exposure weighting, development lags, or the Gini drift test. insurance-monitoring does."
-canonical_url: "https://burning-cost.github.io/2026/03/21/insurance-model-monitoring-beyond-generic-drift/"
+canonical_url: "/2026/03/21/insurance-model-monitoring-beyond-generic-drift/"
 tags: [insurance-model-monitoring-python, model-monitoring, PSI, CSI, ae-ratio, gini-drift, sequential-testing, mSPRT, insurance-monitoring, Evidently, NannyML, model-risk, pricing, python, uk-insurance, polars]
 ---
 
@@ -340,6 +340,7 @@ The `to_polars()` report is the model risk artefact. It records which metrics we
 ---
 
 **Related posts:**
-- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — why A/E is a lagging indicator and what to monitor instead
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring
-- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring: why PSI alone is not enough and what a three-layer monitoring cadence looks like
+- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model, and how `insurance-deploy` shadow mode provides the challenger evidence
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — once monitoring flags a deterioration, the Murphy decomposition gives you a principled answer to whether the fix is a scalar shift or a full model rebuild
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance layer: how monitoring outputs from `insurance-monitoring` feed into the `ModelInventory` audit trail that SS1/23-level documentation requires

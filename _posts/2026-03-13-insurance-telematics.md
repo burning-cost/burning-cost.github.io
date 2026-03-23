@@ -132,5 +132,7 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 ---
 
 **Related reading:**
-- [The Telematics Score That Forgets Where It's Been](/2026/03/12/insurance-jlm/) — joint longitudinal models that use the telematics risk score trajectory as a marker to predict time-to-claim; the downstream model that insurance-telematics feeds into (the associated `insurance-jlm` repository is archived; the post documents the approach)
+- [The Telematics Score That Forgets Where It's Been](/2026/03/12/insurance-jlm/) — joint longitudinal models that use the telematics risk score trajectory as a marker to predict time-to-claim; the downstream model that insurance-telematics feeds into
 - [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) — time-to-lapse modelling; pairing retention survival analysis with telematics risk segmentation to identify the customers worth retaining
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — once the HMM regime scores are available as features, `TweedieGBM` can estimate per-risk CoV that varies by driving style profile, not just by static risk characteristics
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — telematics pricing models sit at Tier 2 or Tier 3 under most model risk frameworks given their dependence on proprietary data sources; `insurance-governance` automates the validation evidence required for the model register entry

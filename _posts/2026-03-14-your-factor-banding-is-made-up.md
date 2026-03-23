@@ -196,3 +196,5 @@ The tools do not replace actuarial judgment. The minimum exposure constraint, th
 
 - [Nested GLMs with Neural Network Embeddings for Insurance](/2026/03/09/nested-glms-with-neural-network-embeddings-for-insurance/)
 - [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/)
+- [Whittaker-Henderson Smoothing for Insurance Pricing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) — the complement to optimal banding: once you have the right bins, WH smoothing with REML lambda selection graduates the curve so adjacent bands do not flip sign due to sampling noise
+- [Your Territory Model Ignores Spatial Autocorrelation](/2026/03/15/your-territory-model-ignores-spatial-autocorrelation/) — the spatial equivalent of this problem: SKATER grouping is available in `insurance-glm-tools`, and this post explains why k-means on postcode loss ratios produces geographically fragmented territories that SKATER avoids

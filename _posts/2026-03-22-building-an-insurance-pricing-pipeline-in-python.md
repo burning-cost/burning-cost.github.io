@@ -429,9 +429,20 @@ None of this requires a bespoke actuarial platform. The full pipeline runs in st
 
 Individual library documentation:
 
-- [`insurance-datasets`](https://burning-cost.github.io/insurance-datasets) — synthetic data generation
-- [`shap-relativities`](https://burning-cost.github.io/shap-relativities) — GBM to GLM factor extraction
-- [`insurance-fairness`](https://burning-cost.github.io/insurance-fairness) — proxy discrimination audit
-- [`insurance-conformal`](https://burning-cost.github.io/insurance-conformal) — prediction intervals
-- [`insurance-monitoring`](https://burning-cost.github.io/insurance-monitoring) — drift detection and calibration monitoring
-- [`insurance-deploy`](https://burning-cost.github.io/insurance-deploy) — champion/challenger and ENBP logging
+- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) — synthetic data generation
+- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) — GBM to GLM factor extraction
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — proxy discrimination audit
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — prediction intervals
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — drift detection and calibration monitoring
+- [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) — champion/challenger and ENBP logging
+
+---
+
+**Go deeper on each step:**
+
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — the theory behind the `shap-relativities` extraction: why raw SHAP values are not multiplicative factors, and how the exposure-weighted aggregation works
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — a deeper treatment of the `insurance-conformal` calibration step: non-conformity score choices, the coverage-by-decile diagnostic, and the difference between marginal and conditional coverage
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the full FCA audit workflow that Section 5 of this tutorial abbreviates
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — the three-layer monitoring framework: what PSI on its own misses and why the Murphy decomposition matters for the recalibrate vs refit decision
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance documentation layer that sits above this pipeline: generating the HTML validation report and registering the model in `ModelInventory`
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — what to add once the mean model is working: per-risk CoV for safety loading, underwriter referrals, and IFRS 17 risk adjustment

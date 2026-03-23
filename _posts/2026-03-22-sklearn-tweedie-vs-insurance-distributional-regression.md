@@ -5,7 +5,7 @@ date: 2026-03-22
 author: Burning Cost
 categories: [distributional, glm, libraries, comparisons]
 description: "sklearn's TweedieRegressor is a well-engineered GLM. It fits a fixed-power Tweedie model correctly. The problem is that insurance pricing needs per-risk variance, not a single portfolio-level dispersion parameter — and that is not what it was built to do."
-canonical_url: "https://burning-cost.github.io/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/"
+canonical_url: "/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/"
 tags: [tweedie-regression-python, sklearn-tweedieregressor, tweedie-insurance-pricing, distributional-regression, GAMLSS, insurance-distributional, per-risk-volatility, heteroscedasticity-insurance]
 ---
 
@@ -252,8 +252,8 @@ For most UK insurance pricing work, it is not.
 ---
 
 **Related posts:**
-- [Your Technical Price Ignores Variance](https://burning-cost.github.io/2026/03/05/insurance-distributional/) — the full argument for per-risk volatility estimation, So & Valdez (2024) in detail
-- [GAMLSS in Python, Finally](https://burning-cost.github.io/2026/03/10/insurance-distributional-glm/) — the insurance-distributional-glm launch post with full benchmark numbers
+- [Your Technical Price Ignores Variance](/2026/03/05/insurance-distributional/) — the full argument for per-risk volatility estimation, So & Valdez (2024) in detail
+- [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the insurance-distributional-glm launch post with full benchmark numbers
 
 ---
 

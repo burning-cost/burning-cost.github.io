@@ -351,3 +351,18 @@ A few decision rules that apply across most of these categories:
 ---
 
 *This post will be updated as the ecosystem evolves. If we have missed a tool that deserves coverage, the repository is open.*
+
+---
+
+**Deep dives on the Burning Cost libraries:**
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the first open-source Python implementation of the So & Valdez ASTIN 2024 Best Paper approach; per-risk CoV for safety loading and referrals
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) — conditional quantile regression for the tail: year-end large loss loadings and per-segment TVaR
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free coverage guarantees; the case for Tweedie non-conformity scores over raw residuals
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the FCA-specific proxy audit that Fairlearn does not cover
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) — the joint optimisation problem that manual reconciliation cannot solve, with shadow prices and an efficient frontier
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — why exposure-weighted PSI and the Murphy decomposition matter; what Evidently and NannyML miss
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — structured validation documentation and model inventory management aligned to UK regulatory expectations
+- [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — EBMs, ANAMs, and PIN as alternatives to the GLM/GBM binary
+- [Whittaker-Henderson Smoothing for Insurance Pricing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) — REML lambda selection and confidence intervals for rating table graduation
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — why OLS renewal elasticity is structurally confounded and what DML does about it

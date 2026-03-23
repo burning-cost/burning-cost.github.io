@@ -170,5 +170,7 @@ The standard two-part model is not wrong in principle. It is wrong in applicatio
 
 Start with the diagnostic. If `dependence_test()` does not reject γ = 0 and `vs_independent()` shows no deviance improvement, the standard model is fine. If it does, you have a quantified, testable justification for a more sophisticated approach.
 
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/)
-- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) — the DML approach to removing confounding from pricing elasticity; the shared-trunk architecture here addresses a different kind of dependence, within the loss model rather than between price and demand
+- [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/) — the ANAM architecture produces interpretable shape functions; this library extends that approach to model the joint frequency-severity distribution rather than a single output
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — models the full conditional distribution of pure premium; complements the joint two-part model when you also need variance estimates for safety loading
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the GLM-based Sarmanov copula approach to the same problem; use the neural shared-trunk model here when you need non-linear dependence structures or when the GLM's additive assumption is too restrictive

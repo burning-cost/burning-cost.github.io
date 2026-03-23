@@ -109,3 +109,5 @@ The pricing committee slide with a single trend line is still going to exist. Bu
 **Related reading:**
 - [Trend Selection Is Not Actuarial Judgment: A Python Approach](/2026/03/13/insurance-trend/) — GLM-based trend models for the structural component; GARCH captures the volatility around that trend
 - [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — before fitting any trend or volatility model, test whether the series has had a structural break that invalidates the stationarity assumption
+- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) — GAS models for smooth time-varying trend; GARCH is the right choice when the volatility process is the focus, GAS when you want a single-equation model for both level and scale
+- [Your Claims Forecast Uses the Same Interval Width for All Twelve Months](/2026/03/19/your-claims-forecast-uses-the-same-interval-width-for-all-twelve-months/) — conformal prediction intervals for seasonal claims time series; the width estimates from GARCH feed naturally into the MSCP calibration step

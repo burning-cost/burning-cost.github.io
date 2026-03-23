@@ -5,7 +5,7 @@ date: 2026-03-22
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "EquiPy is a technically excellent fairness correction tool built on optimal transport theory, from Arthur Charpentier's group at UQAM. insurance-fairness is an FCA-focused proxy discrimination auditor. They are not competing — they address different stages of the same compliance problem."
-canonical_url: "https://burning-cost.github.io/2026/03/22/equipy-vs-insurance-fairness/"
+canonical_url: "/2026/03/22/equipy-vs-insurance-fairness/"
 tags: [equipy, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, optimal-transport, Wasserstein, demographic-parity, Charpentier]
 ---
 
@@ -177,9 +177,9 @@ The two libraries are complementary. They are not competing for the same job.
 ---
 
 **Related posts:**
-- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
-- [Fairlearn vs insurance-fairness](https://burning-cost.github.io/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — why generic ML fairness tools miss what the FCA cares about
-- [FCA is Investigating Home and Travel Insurers](https://burning-cost.github.io/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — what the live enforcement risk looks like
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — why generic ML fairness tools miss what the FCA cares about
+- [FCA is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — what the live enforcement risk looks like
 
 ---
 

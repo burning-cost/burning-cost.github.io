@@ -6,7 +6,7 @@ featured: true
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "Fairlearn is excellent for classification fairness. It was not built for insurance pricing, the Equality Act 2010, or the FCA's specific concern: proxy discrimination in a multiplicative rating model. Here is what the difference means in practice."
-canonical_url: "https://burning-cost.github.io/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/"
+canonical_url: "/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/"
 tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
 ---
 
@@ -252,7 +252,7 @@ Use Fairlearn when you are doing classification and want to enforce demographic 
 ---
 
 **Related posts:**
-- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
 - [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — what TR24/2 actually requires vs what most insurers are doing
 
 ---

@@ -256,9 +256,9 @@ The Milhaud & Dutang (2018) paper is the clearest actuarial evidence that this m
 **[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)** — MIT-licensed, PyPI. 2,323 lines, 150 tests, 7 modules.
 
 
-- **[Survival Models for Insurance Retention](https://burning-cost.github.io/2026/03/11/survival-models-for-insurance-retention/)** — The baseline: Cox PH and Kaplan-Meier for retention modelling, before competing risks are added
-- **[Separating Structural Non-Claimers from Risk: Mixture Cure Models](https://burning-cost.github.io/2026/03/11/insurance-cure/)** — When some policies will never claim (structural zeros), not just right-censored; the cure fraction approach
-- **[Vine Copulas for Multi-Peril Home: The Flood-Subsidence Correlation That Costs 9% in Mispriced Revenue](https://burning-cost.github.io/2026/03/12/insurance-copula/)** — Copula models for the joint distribution of home perils; pairs well with competing risks for first-claim modelling
+- **[Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/)** — The baseline: Cox PH and Kaplan-Meier for retention modelling, before competing risks are added
+- **[Separating Structural Non-Claimers from Risk: Mixture Cure Models](/2026/03/11/insurance-cure/)** — When some policies will never claim (structural zeros), not just right-censored; the cure fraction approach
+- **[Vine Copulas for Multi-Peril Home: The Flood-Subsidence Correlation That Costs 9% in Mispriced Revenue](/2026/03/12/insurance-copula/)** — Copula models for the joint distribution of home perils; pairs well with competing risks for first-claim modelling
 
 ---
 

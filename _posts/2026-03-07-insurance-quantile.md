@@ -285,5 +285,7 @@ Check the coverage report first, before touching the loading calculations. If q_
 
 The burning cost gives you the centre. The quantile model gives you the tail. Both are required. Using only the first is pricing for average experience. Average experience is not what determines whether you write a profitable book of motor BI.
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — when you need the full predictive distribution rather than specific quantiles: per-risk CoV, IFRS 17 risk adjustment, and capital allocation
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals with finite-sample coverage guarantees; the complement to quantile regression when parametric assumptions are uncertain
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — a worked tutorial applying this library to home BI and subsidence: TVaR computation, loading tables, and the comparison against a Gamma GLM baseline
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — how to check whether the quantile model's coverage is holding up on out-of-time data, using the Murphy decomposition and decile coverage diagnostics

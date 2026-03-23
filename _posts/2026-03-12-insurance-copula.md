@@ -233,13 +233,14 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ## See Also
 
-- **[insurance-severity](https://burning-cost.github.io/2026/03/13/insurance-composite/)** — Composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
-- **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)** — When the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
-- **[insurance-synthetic](https://burning-cost.github.io/2026/03/09/insurance-synthetic/)** — Vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow
+- [Spliced Severity Distributions: When One Distribution Isn't Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) — composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
+- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) — when the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
+- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow
 
 ---
 
 ## Related articles
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
-- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — modelling the full conditional distribution of a single peril rather than the joint distribution across perils
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) — per-segment TVaR estimation from a single-peril model; complements the vine copula approach for multi-peril portfolios
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — a related independence assumption that fails in NCD-heavy motor books; the Sarmanov copula for the two-part model rather than multi-peril dependence

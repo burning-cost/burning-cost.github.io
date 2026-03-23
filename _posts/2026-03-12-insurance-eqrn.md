@@ -171,9 +171,9 @@ The Pasche & Engelke (2024) publication in *Annals of Applied Statistics* — a 
 
 Three other libraries address tail risk but none addresses covariate-dependent EVT:
 
-- **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)**: marginal GPD/GEV, no covariate conditioning, full censored MLE and profile likelihood CI. Use it for portfolio-level threshold selection and return levels. EQRN extends this to segment level.
-- **[insurance-quantile](https://burning-cost.github.io/2026/03/07/insurance-quantile/)**: CatBoost quantile regression, covariate-dependent, but no EVT extrapolation. Reliable to the 95th percentile; for the 99.5th percentile there is no theoretical basis for direct quantile regression beyond the training data range. EQRN adds the EVT extrapolation.
-- **[insurance-nflow](https://burning-cost.github.io/2026/03/12/insurance-nflow/)**: full conditional density, flexible, but no asymptotic tail guarantees. For extreme quantile work, EQRN is lighter, tail-specific, and theoretically grounded.
+- **[insurance-evt](/2026/03/13/insurance-evt/)**: marginal GPD/GEV, no covariate conditioning, full censored MLE and profile likelihood CI. Use it for portfolio-level threshold selection and return levels. EQRN extends this to segment level.
+- **[insurance-quantile](/2026/03/07/insurance-quantile/)**: CatBoost quantile regression, covariate-dependent, but no EVT extrapolation. Reliable to the 95th percentile; for the 99.5th percentile there is no theoretical basis for direct quantile regression beyond the training data range. EQRN adds the EVT extrapolation.
+- **[insurance-nflow](/2026/03/12/insurance-nflow/)**: full conditional density, flexible, but no asymptotic tail guarantees. For extreme quantile work, EQRN is lighter, tail-specific, and theoretically grounded.
 
 The gap EQRN fills: covariate-dependent extrapolation to extreme quantile levels using EVT theory. No other Python library does this.
 
@@ -201,9 +201,9 @@ The CRAN EQRN package (Pasche, March 2025) is the only prior implementation. Fou
 
 ## See Also
 
-- **[insurance-evt](https://burning-cost.github.io/2026/03/13/insurance-evt/)** — Marginal GPD/GEV for portfolio-level EVT, with censored MLE for open TPBI claims and ExcessGPD layer pricing
-- **[insurance-quantile](https://burning-cost.github.io/2026/03/07/insurance-quantile/)** — Quantile GBMs for covariate-dependent tail modelling, without EVT extrapolation
-- **[insurance-nflow](https://burning-cost.github.io/2026/03/12/insurance-nflow/)** — Normalizing flows for the full conditional severity distribution
+- **[insurance-evt](/2026/03/13/insurance-evt/)** — Marginal GPD/GEV for portfolio-level EVT, with censored MLE for open TPBI claims and ExcessGPD layer pricing
+- **[insurance-quantile](/2026/03/07/insurance-quantile/)** — Quantile GBMs for covariate-dependent tail modelling, without EVT extrapolation
+- **[insurance-nflow](/2026/03/12/insurance-nflow/)** — Normalizing flows for the full conditional severity distribution
 
 ---
 

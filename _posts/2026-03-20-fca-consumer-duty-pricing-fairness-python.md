@@ -6,7 +6,7 @@ featured: true
 author: Burning Cost
 categories: [compliance, fairness, libraries, tutorials]
 description: "The FCA expects pricing teams to demonstrate their models don't proxy-discriminate under Consumer Duty. Most teams do this in Excel. Here is how to do it properly in Python, using insurance-fairness."
-canonical_url: "https://burning-cost.github.io/2026/03/20/fca-consumer-duty-pricing-fairness-python/"
+canonical_url: "/2026/03/20/fca-consumer-duty-pricing-fairness-python/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, FairnessAudit, ProxyDetection, calibration, disparate-impact, Equality-Act, PRIN-2A, TR24-2, python, uk-insurance, tutorial]
 ---
 

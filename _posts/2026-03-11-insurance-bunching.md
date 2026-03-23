@@ -207,4 +207,7 @@ We think there is real signal in UK motor and household data. If your pricing te
 
 ## See also
 
-- [Your champion/challenger test has no audit trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — `insurance-deploy` for structured model deployment: once you have identified and corrected for threshold gaming, getting the updated model into production with sign-off and rollback.
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — `insurance-deploy` for structured model deployment: once you have identified and corrected for threshold gaming, getting the updated model into production with sign-off and rollback.
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the FCA fairness audit that complements bunching detection: once you have corrected the declared mileage distribution, check whether the residual patterns correlate with protected characteristics.
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance framework that a bunching detection report should feed into: the `ModelInventory` entry for any corrected model needs to document both the original issue and the remediation.
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — after correcting for threshold gaming, re-run the balance test: a model trained on gamed data will often show a systematic A/E bias in the mileage segments where bunching is concentrated.
