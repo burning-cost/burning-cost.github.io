@@ -23,14 +23,9 @@ theme: minima
 minima:
   skin: classic
 
-header_pages:
-  - tools.md
-  - pipeline.md
-  - guide.md
-  - notebooks.md
-  - about.md
-  - compare.md
-  - awesome.md
+# Nav is hardcoded in each _layouts/*.html file.
+# header_pages is unused (minima default header not in use).
+# Main nav: Libraries (/tools/), Blog (/blog/) only.
 
 plugins:
   - jekyll-feed
