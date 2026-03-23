@@ -259,13 +259,13 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The 
 - Guo, C., & Berkhahn, F. (2016). Entity embeddings of categorical variables. *arXiv:1604.06737*.
 
 - [BYM2 Spatial Smoothing for Territory Ratemaking]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory-ratemaking-with-bym2 %})
-- [Extracting Rating Relativities from GBMs with SHAP]({{ site.baseurl }}{% post_url 2026-02-17-extracting-rating-relativities-from-gbms-with-shap %})
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From CatBoost to Radar in 50 Lines of Python]({{ site.baseurl }}{% post_url 2026-03-01-from-catboost-to-radar-gbm-to-glm-distillation %})
 
 ---
 
 ## Related articles
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [EBMs for Insurance Pricing: Better Than a GLM, Readable by a Pricing Committee](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
 - [Spatial Territory Ratemaking with BYM2](/2026/02/23/spatial-territory-ratemaking-with-bym2/)

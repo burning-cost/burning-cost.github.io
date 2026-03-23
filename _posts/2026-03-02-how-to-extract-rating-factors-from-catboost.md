@@ -276,5 +276,5 @@ The library supports Poisson, Tweedie, and Gamma CatBoost objectives. It does no
 
 - [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)
 - [When Credibility Meets CatBoost](/2026/02/28/when-credibility-meets-catboost/)
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)

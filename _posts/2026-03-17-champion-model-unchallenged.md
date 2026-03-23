@@ -5,6 +5,7 @@ date: 2026-03-17
 author: Burning Cost
 description: "Champion/challenger testing is the right way to evaluate pricing model changes. Most teams do it badly or not at all — ad-hoc scripts, no audit trail, no..."
 tags: [champion-challenger, model-deployment, pricing, ICOBS, ENBP, fca-compliance, insurance-deploy, audit, model-governance, python, motor, uk-insurance]
+categories: [model-governance, pricing]
 ---
 
 We recently had a conversation with a pricing actuary at a mid-size UK personal lines carrier. She had been trying to get a new motor model promoted to production for eight months. The challenger had a Gini 3 points higher than the champion in holdout. The holdout was clean — walk-forward, no leakage. The commercial case was obvious. The blocker was not a governance committee. It was the question nobody could answer: "How do we know the challenger actually outperforms in production, and how do we demonstrate that to the SMF holder?"

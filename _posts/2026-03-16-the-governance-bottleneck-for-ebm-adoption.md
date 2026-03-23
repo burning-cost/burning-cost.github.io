@@ -5,6 +5,7 @@ date: 2026-03-16
 author: Burning Cost
 description: "Get an EBM through pricing committee approval: GLMComparison ranks divergence by feature, MonotonicityEditor enforces actuarial constraints."
 tags: [ebm, gam, interpretability, GLM, monotonicity, model-governance, pricing, insurance-gam, motor, python, polars]
+categories: [pricing, model-governance]
 ---
 
 An EBM with lower Poisson deviance than the production GLM can sit in a notebook for six months because the pricing committee reads factor tables, not continuous shape functions. NCD band 0 is 1.00. Band 1 is 0.84. Band 5 is 0.52. The committee has opinions about those numbers. When the EBM output is a curve in log space, they have no reference point for whether it agrees with the GLM at NCD 3 or is doing something unexpected at the 19-year-old boundary.

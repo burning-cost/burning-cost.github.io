@@ -235,6 +235,6 @@ For most UK personal lines teams, the interesting result will be that the intera
 
 Those are the interactions your GLM missed. The library finds them.
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)
 - [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/)

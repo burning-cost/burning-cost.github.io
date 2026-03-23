@@ -470,7 +470,7 @@ def rebase_factor_table(ft: pl.DataFrame, feature_prefix: str, exposure_col: pl.
 
 If you are following the standard UK actuarial workflow - fit a GBM to find the right structure, then distil into a GLM for deployment - the Python path is:
 
-1. Fit a CatBoost frequency model (see [Extracting Rating Relativities from GBMs with SHAP](https://burning-cost.github.io/2026/03/05/extracting-rating-relativities-from-gbms-with-shap/))
+1. Fit a CatBoost frequency model (see [Extracting Rating Relativities from GBMs with SHAP](/2026/03/02/how-to-extract-rating-factors-from-catboost/))
 2. Use [shap-relativities](https://github.com/burning-cost/shap-relativities) to extract a continuous age curve and group-level relativities - this replaces the manual Emblem factor derivation step
 3. Use [insurance-distill](https://github.com/burning-cost/insurance-distill) to fit a surrogate GLM on the GBM's pseudo-predictions, with optimal binning - this is the Emblem-compatible factor table
 4. Validate the surrogate GLM's Gini against the GBM

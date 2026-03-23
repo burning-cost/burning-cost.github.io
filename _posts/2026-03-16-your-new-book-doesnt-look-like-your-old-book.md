@@ -5,6 +5,7 @@ date: 2026-03-16
 author: Burning Cost
 description: "Density ratio correction for portfolio composition shift — CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"
 tags: [covariate-shift, model-validation, density-ratio, catboost, fca]
+categories: [techniques, model-validation]
 ---
 
 Your frequency model passed validation. Gini looks fine. A/E on holdout is 0.987. The governance committee signed it off and it went live.

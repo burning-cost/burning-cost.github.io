@@ -217,6 +217,6 @@ Start with the pure GLM. Fit the GBM. Run `insurance-cv` walk-forward validation
 
 If the honest GBM lift is less than 2 points, do not blend. GLM complexity is invisible to pricing committees; GBM governance overhead is not. The blend only earns its keep when the lift is real.
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
-- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [One Package, One Install: PRA SS1/23 Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

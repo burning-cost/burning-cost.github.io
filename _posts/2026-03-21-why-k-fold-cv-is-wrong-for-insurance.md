@@ -13,7 +13,7 @@ Every insurance pricing model we have ever seen was evaluated using k-fold cross
 
 This is not bad luck. It is a structural property of k-fold on temporally ordered data, and it is worse for insurance than for almost any other supervised learning application because insurance data has three distinct time axes — inception date, accident date, valuation date — each of which creates a different leakage mechanism.
 
-We wrote the [first version of this argument in 2026](/2026/02/23/why-your-cross-validation-is-lying-to-you/). That post explains the mechanisms. This post is the practitioner's guide: what exactly goes wrong, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
+We wrote the [first version of this argument in 2026](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/). That post explains the mechanisms. This post is the practitioner's guide: what exactly goes wrong, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
 
 ---
 
@@ -300,6 +300,6 @@ Run `split_summary` before you tune anything. If `gap_days` contains zeros, you 
 ---
 
 **Related posts:**
-- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the first treatment of this topic; start here if the mechanisms are unfamiliar
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) — the first treatment of this topic; start here if the mechanisms are unfamiliar
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — what happens after deployment when the prospective evaluation was correctly done
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees

@@ -5,6 +5,7 @@ date: 2026-03-16
 author: Burning Cost
 description: "Bootstrap and expert-judgment reserve ranges look like probability statements but carry no frequentist coverage guarantee."
 tags: [reserving, conformal-prediction, time-series, aci, mscp, exchangeability, reserve-ranges, ibnr, insurance-conformal-ts, motor, python, actuarial]
+categories: [techniques, reserving]
 ---
 
 Most reserve ranges are not probability statements. They look like probability statements. The presentation says "best estimate ± 15%" or "75th percentile reserve" and the committee reads this as "there is a 75% probability that ultimate claims will fall below this number." That reading is wrong, and the wrongness has consequences that appear in SCR calculations, reinsurance treaty negotiations, and board risk appetite statements.

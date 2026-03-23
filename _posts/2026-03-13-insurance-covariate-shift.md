@@ -178,7 +178,7 @@ The library is on GitHub at [burning-cost/insurance-covariate-shift](https://git
 ---
 
 **Related reading:**
-- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the related problem of temporal leakage in model evaluation; covariate shift and temporal leakage are the two main reasons a model's training accuracy exceeds its live accuracy
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) — the related problem of temporal leakage in model evaluation; covariate shift and temporal leakage are the two main reasons a model's training accuracy exceeds its live accuracy
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals; the LR-QR method in insurance-covariate-shift extends this to the shifted-distribution case
 - [Three-Layer Pricing Model Monitoring: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — ongoing monitoring for the performance degradation that covariate shift causes in deployed models
 

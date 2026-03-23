@@ -191,6 +191,6 @@ Richman, R., Scognamiglio, S., and Wuthrich, M.V. "Tree-like Pairwise Interactio
 
 Lou, Y., Caruana, R., Gehrke, J., and Hooker, G. "Accurate Intelligible Models with Pairwise Interactions." KDD 2013.
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [Explainable Boosting Machines for Insurance Tariff Construction](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
 - [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/)

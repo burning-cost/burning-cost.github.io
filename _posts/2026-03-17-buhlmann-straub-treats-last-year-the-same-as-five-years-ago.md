@@ -5,6 +5,7 @@ date: 2026-03-17
 author: Burning Cost
 description: "Static credibility weights all years equally. The dynamic Poisson-gamma state-space model weights recent experience more - and quantifies how much more."
 tags: [credibility, experience-rating, bayesian, dynamic-credibility, fleet, commercial-motor, insurance-credibility, python, actuarial, uk-motor]
+categories: [techniques, pricing]
 ---
 
 The Bühlmann-Straub formula has been the backbone of UK scheme pricing for half a century. It produces a defensible, mathematically principled blend of a portfolio prior and segment experience. We have written about it [before](/2026/02/19/buhlmann-straub-credibility-in-python/). It is still the right tool for most group credibility problems.

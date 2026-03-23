@@ -32,7 +32,7 @@ tables = sr.extract(factors=["driver_age_band", "vehicle_group", "area"])
 tables["driver_age_band"].write_csv("age_relativities.csv")
 ```
 
-The full methodology — Shapley efficiency axiom, log-space decomposition, confidence intervals via bootstrap — is covered in [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/).
+The full methodology — Shapley efficiency axiom, log-space decomposition, confidence intervals via bootstrap — is covered in [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/).
 
 [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities)
 
@@ -56,7 +56,7 @@ cv = WalkForwardCV(
 scores = cv.cross_val_score(model, X, y, exposure=exposure, date_col="inception_date")
 ```
 
-The full diagnosis of how k-fold breaks on insurance data is in [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/).
+The full diagnosis of how k-fold breaks on insurance data is in [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/).
 
 [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 

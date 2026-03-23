@@ -292,7 +292,7 @@ PyPI: [pypi.org/project/insurance-gam](https://pypi.org/project/insurance-gam)
 
 The architecture builds on interpretML's `ExplainableBoostingMachine` (Nori et al., arXiv:1909.09223, 2019), which in turn builds on the GA2M framework of Lou et al. (KDD 2012). The actuarial workflow layer - relativities, diagnostics, GLM comparison - is specific to this library.
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)
 - [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/)

@@ -215,6 +215,6 @@ The source is at [github.com/burning-cost/insurance-distill](https://github.com/
 
 One thing the library does not do: it does not tell you whether the Gini retention on your specific dataset is acceptable. A 93% Gini ratio on a 0.28 Gini model retains more absolute discrimination than a 97% ratio on a 0.12 Gini model. The right threshold depends on your book, your rating structure, and what the pricing committee considers material. That judgement remains yours.
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From GBM to Radar: A Complete Databricks Workflow for Pricing Actuaries](/2026/02/21/from-gbm-to-radar-databricks-workflow/)
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

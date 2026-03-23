@@ -4,6 +4,7 @@ title: "Building a Modern Insurance Pricing Pipeline in Python"
 date: 2026-03-12
 description: "Complete UK insurance pricing pipeline in Python: CatBoost GLM distillation, causal inference, FCA fairness auditing, rate optimisation, PRA SS1/23 governance."
 tags: [pricing, python, pipeline, tutorial, databricks]
+categories: [pricing, python, tutorials]
 ---
 
 *This post is the vendor-agnostic pipeline overview: decisions and tooling that apply regardless of compute environment. For a complete worked example on Databricks specifically — Unity Catalog, MLflow tracking, scheduled Jobs, and Radar export — see [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/).*
@@ -527,8 +528,8 @@ None of these steps is optional if you are pricing personal lines in the UK in 2
 The tools exist to do all of this properly. The bottleneck is almost never the software.
 
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/): how `shap-relativities` works in detail, including the reconstruction check and exposure weighting
-- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/): temporal leakage and IBNR contamination in standard CV, and the walk-forward fix
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/): how `shap-relativities` works in detail, including the reconstruction check and exposure weighting
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/): temporal leakage and IBNR contamination in standard CV, and the walk-forward fix
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/): distribution-free coverage guarantees and handling heteroscedasticity in GBMs
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/): balance test, auto-calibration, and Murphy decomposition for the recalibrate-vs-refit decision
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/): Double Machine Learning for price elasticity estimation

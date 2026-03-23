@@ -222,7 +222,7 @@ A production burning cost model needs several things we have not covered here:
 
 **Trend.** The frequency and severity models above use historical data. Fitting a separate trend component - using a gas model or a temporal spline - is necessary before the burning cost can be used for rating. We cover this in [our post on between-update trend](/2026/03/08/gas-models-for-between-update-trend/).
 
-**Rating factor extraction.** If you need to deploy into Radar or Emblem as a factor table, you cannot use the Python GLM predictions directly. You need to extract multiplicative relativities from the model. We cover this in [extracting rating relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) and with our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library.
+**Rating factor extraction.** If you need to deploy into Radar or Emblem as a factor table, you cannot use the Python GLM predictions directly. You need to extract multiplicative relativities from the model. We cover this in [extracting rating relativities from GBMs with SHAP](/2026/03/02/how-to-extract-rating-factors-from-catboost/) and with our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library.
 
 **Model validation.** Before you present burning cost estimates to pricing leadership or use them to set rates, you need a formal validation against holdout data: Gini coefficient, double lift chart, and calibration by decile at minimum. The PRA's SS1/23 sets out expectations for model validation; we cover what that looks like in practice in [model validation under PRA SS1/23](/2026/03/11/model-validation-pra-ss123/).
 
