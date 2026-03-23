@@ -1,17 +1,15 @@
 ---
 layout: post
-title: "When Did Your Loss Ratio Actually Change?"
+title: "Bayesian Changepoint Detection for Insurance Loss Ratios in Python"
 date: 2026-03-13
 categories: [libraries, pricing, monitoring]
 tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, exposure-weighted, Consumer-Duty, FCA, Whiplash-Reform, Ogden, GIPP, motor, insurance-dynamics, python]
-description: "Bayesian Online Changepoint Detection for UK insurance loss ratios. Poisson-Gamma conjugates, regulatory event priors, Consumer Duty evidence pack - Python."
+description: "Bayesian Online Changepoint Detection for UK insurance loss ratios: exposure-weighted Poisson-Gamma conjugates, UK regulatory event priors, PELT retrospective analysis, Consumer Duty evidence pack."
 ---
 
-There is a conversation that happens in almost every UK personal lines pricing team, usually in a quarterly experience review. Someone puts up the monthly frequency chart. There is a clear kink, somewhere around Q2 of last year. One actuary says it looks like something changed around April. Another says maybe June. A third points out that the storms in February could have influenced it. The team agrees that the trend has probably shifted, applies a judgement-based adjustment to the rate filing, and documents it as "technical pricing review, Q2 inflection noted."
+The standard UK personal lines experience review produces one formal output on frequency regime changes: someone marks a kink on a chart, the team agrees a trend has probably shifted, and the rate filing documents it as "technical pricing review, Q2 inflection noted." That process gives you no posterior probability on the break, no uncertainty on its location, and no audit trail that satisfies an FCA reviewer.
 
-This is the entire monitoring methodology for detecting regime changes at most UK insurers. An eyeball test, a committee, and a sentence in a Word document.
-
-The problem is not that actuaries are bad at spotting patterns — they are not. The problem is that eyeballing gives you no posterior probability, no uncertainty on the break location, no formal detection threshold, and no audit trail that satisfies an FCA reviewer. Under Consumer Duty (PRIN 2A.9, effective July 2023), firms must evidence that pricing models are being monitored for continued fair value delivery. "We looked at the chart and it seemed fine" is not evidence in any meaningful sense.
+Under Consumer Duty (PRIN 2A.9, effective July 2023), firms must evidence that pricing models are being monitored for continued fair value delivery. A documented eyeball test is not that evidence. Bayesian Online Changepoint Detection produces posterior probabilities at each period — "P = 0.91 that the data-generating process changed in Q3 2023" — which is auditable, reproducible, and defensible in a supervisory review in a way that "the chart looked kinked" is not.
 
 [`insurance-dynamics`](https://github.com/burning-cost/insurance-dynamics) implements formal Bayesian change-point detection for insurance pricing time series. MIT-licensed, on PyPI.
 
@@ -274,6 +272,6 @@ The only genuine limitation to document: BOCPD is a univariate method. It operat
 - FCA (2021). PS21/11: Pricing practices in home and motor insurance. Effective 1 January 2022.
 
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the PSI/A-E/Gini framework for detecting whether your model is still accurate
-- [Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book](/2026/03/13/insurance-nowcast/) — covariate-conditioned completion factors for immature accident periods
+- [Covariate-Conditioned IBNR Completion: Segment-Level Development Factors with insurance-nowcast](/2026/03/13/insurance-nowcast/) — covariate-conditioned completion factors for immature accident periods
 - [Bayesian Trend Models for Insurance Frequency and Severity](/2026/03/13/insurance-trend/) — fitting piecewise trend models after a regime change is detected
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)

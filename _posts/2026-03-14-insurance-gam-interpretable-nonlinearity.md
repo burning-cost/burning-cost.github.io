@@ -247,4 +247,4 @@ The repository is at [github.com/burning-cost/insurance-gam](https://github.com/
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
-- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/)

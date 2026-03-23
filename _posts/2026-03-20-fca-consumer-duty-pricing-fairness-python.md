@@ -236,6 +236,6 @@ The honest framing for a pricing committee paper: "Our proxy discrimination audi
 ---
 
 **Related posts:**
-- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the regulatory context, what TR24/2 actually found, and what a complete evidence pack requires
+- [FCA Consumer Duty Investigations in Home and Travel Insurance: Building a Defensible Pricing Model](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the regulatory context, what TR24/2 actually found, and what a complete evidence pack requires
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — what to do when you cannot observe ethnicity, religion, or disability status directly
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) — the correction step after detection: WassersteinCorrector and causal path decomposition

@@ -155,6 +155,6 @@ Third, noise versus signal. With epsilon values below 1.0 (strong privacy), the 
 ---
 
 **Related posts:**
-- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) -- the regulatory context and what a defensible Consumer Duty fair value assessment requires
+- [FCA Consumer Duty Investigations in Home and Travel Insurance: Building a Defensible Pricing Model](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) -- the regulatory context and what a defensible Consumer Duty fair value assessment requires
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) -- the detection methodology when you do have proxy data: mutual information, CatBoost R-squared, SHAP decomposition
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) -- WassersteinCorrector for discrimination-free premiums when you have the attribute directly

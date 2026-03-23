@@ -206,5 +206,5 @@ The code is at [github.com/burning-cost/insurance-survival](https://github.com/b
 ## Related articles
 
 - [Separating Structural Non-Claimers from Risk: Mixture Cure Models for Insurance Pricing](/2026/03/11/insurance-cure/)
-- [Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing](/2026/03/12/insurance-competing-risks/)
+- [Competing Risks in Insurance: Fine-Gray Subdistribution Hazard in Python](/2026/03/12/insurance-competing-risks/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)

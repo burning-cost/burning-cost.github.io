@@ -1,20 +1,18 @@
 ---
 layout: post
-title: "Finding the Interactions Your GLM Missed"
+title: "Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing"
 date: 2026-02-27
 categories: [techniques]
 tags: [GLM, interactions, CANN, NID, shap, catboost, polars, pricing, python, motor]
-description: "Automated interaction search for UK motor GLMs using CANN residuals and NID. Bonferroni-corrected shortlist before manual testing - insurance-interactions."
+description: "Automated interaction search for UK motor GLMs: CANN residuals detect structure the main-effects GLM cannot express, NID ranks candidate pairs, LR tests with Bonferroni correction confirm significance - insurance-interactions Python."
 published: true
 ---
 
-Your motor frequency GLM has 12 rating factors. That means 66 possible pairwise interactions. You have tested, at most, a handful. The ones that felt obvious to whoever built the model five years ago, or the ones that showed up in a 2D actual-to-expected plot during a rate review, or the ones suggested by a GBM someone ran in a notebook and never fully documented.
+A UK motor frequency GLM with 12 rating factors has 66 possible pairwise interactions. For 20 factors it is 190. Testing each one properly — fitting the GLM, computing the likelihood-ratio statistic, checking a 2D A/E plot, evaluating whether the parameter cost is worth the deviance gain — takes the better part of a day per pair. In practice, most teams test a handful of pairs chosen by intuition or heuristic. That is not an auditable process, and it misses genuine signal.
 
-Many interactions in a UK personal lines GLM are chosen by intuition or heuristic search. That is an imperfect way to choose them - not because actuaries have bad intuitions, but because the search space is too large for intuition to be systematic, the signal is buried under correlation structure, and "this pair felt worth testing" is not an auditable process.
+The age-by-vehicle-group interaction is one of the most reliably non-additive in UK motor data. A multiplicative GLM prices a young driver in a high-performance vehicle as young-driver relativity × vehicle group relativity. The observed frequency at that intersection is often materially higher. The interaction exists in the data; the standard model does not find it unless someone knows to look.
 
-There are 66 pairs for a 12-factor model. For a 20-factor model there are 190. Testing each one properly - fitting the GLM, computing the likelihood-ratio statistic, checking a 2D A/E plot, deciding whether the parameter count is worth the deviance gain - takes the better part of a day per pair if you do it carefully. You will not test all of them. You will miss interactions that are in the data.
-
-`insurance-interactions` automates the search.
+`insurance-interactions` automates the search with a three-stage pipeline: CANN residuals to detect structure the GLM cannot express, Neural Interaction Detection to rank candidate pairs, and likelihood-ratio tests with Bonferroni correction on the shortlist.
 
 ---
 

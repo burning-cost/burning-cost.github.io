@@ -1,17 +1,15 @@
 ---
 layout: post
-title: "The EBM Is Sitting in Your Notebook Because You Can't Show It to the Committee"
+title: "Bridging the EBM-GLM Governance Gap: GLMComparison and MonotonicityEditor in Python"
 date: 2026-03-16
 author: Burning Cost
-description: "GLMComparison and MonotonicityEditor in insurance-gam close the governance gap between EBM shape functions and the GLM factor table your pricing committee..."
+description: "GLMComparison ranks EBM-GLM divergence by feature; MonotonicityEditor enforces actuarial constraints via isotonic regression. Two tools for moving an EBM from notebook to pricing committee approval - insurance-gam, Python."
 tags: [ebm, gam, interpretability, GLM, monotonicity, model-governance, pricing, insurance-gam, motor, python, polars]
 ---
 
-You built the EBM. Poisson deviance is lower than the production GLM. The driver age shape function picked up the U-curve between 25 and 75 that you have been bucketing by hand for years. The double-lift chart is clean. You showed it to the pricing lead and she said: "Looks interesting. Can you put it alongside the factor table?"
+An EBM with lower Poisson deviance than the production GLM can sit in a notebook for six months because the pricing committee reads factor tables, not continuous shape functions. NCD band 0 is 1.00. Band 1 is 0.84. Band 5 is 0.52. The committee has opinions about those numbers. When the EBM output is a curve in log space, they have no reference point for whether it agrees with the GLM at NCD 3 or is doing something unexpected at the 19-year-old boundary.
 
-Six months later, it is still in a notebook.
-
-This is not a model quality problem. It is a governance translation problem. The pricing committee reads factor tables. NCD band 0 is 1.00. Band 1 is 0.84. Band 5 is 0.52. They have opinions about these numbers, because they have been debating them for years. When you show them an EBM shape function - a continuous curve in log space - they have no reference point. They cannot tell whether the EBM agrees with the GLM at NCD 3, or whether it is doing something unexpected at the 19-year-old boundary that the GLM handles with a manual override.
+The governance problem is translation, not model quality. `GLMComparison` and `MonotonicityEditor` in `insurance-gam` are not modelling tools. They convert EBM outputs into the factor-table vocabulary that pricing governance processes already understand: which features diverge from the approved GLM, by how much, and whether any shape function violates actuarial monotonicity constraints.
 
 `insurance-gam` has tooling specifically for this. `GLMComparison` and `MonotonicityEditor` are not modelling tools. They are governance tools. They answer the question: relative to the model you already approved, what is the EBM doing differently, and on which features?
 

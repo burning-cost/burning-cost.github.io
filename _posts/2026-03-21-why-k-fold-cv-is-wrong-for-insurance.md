@@ -300,6 +300,6 @@ Run `split_summary` before you tune anything. If `gap_days` contains zeros, you 
 ---
 
 **Related posts:**
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the first treatment of this topic; start here if the mechanisms are unfamiliar
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the first treatment of this topic; start here if the mechanisms are unfamiliar
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — what happens after deployment when the prospective evaluation was correctly done
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees

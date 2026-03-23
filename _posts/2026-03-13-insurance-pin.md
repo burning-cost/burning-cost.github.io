@@ -193,4 +193,4 @@ Lou, Y., Caruana, R., Gehrke, J., and Hooker, G. "Accurate Intelligible Models w
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Explainable Boosting Machines for Insurance Tariff Construction](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
-- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/)

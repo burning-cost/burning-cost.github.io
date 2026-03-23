@@ -56,7 +56,7 @@ cv = WalkForwardCV(
 scores = cv.cross_val_score(model, X, y, exposure=exposure, date_col="inception_date")
 ```
 
-The full diagnosis of how k-fold breaks on insurance data is in [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/).
+The full diagnosis of how k-fold breaks on insurance data is in [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/).
 
 [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 
@@ -176,7 +176,7 @@ detector.fit(X_train, y_train, glm_predictions=mu_glm, exposure=exposure)
 print(detector.interaction_table())  # ranked by NID score with LR test results
 ```
 
-See [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) for why the standard approach misses most of the signal.
+See [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/) for why the standard approach misses most of the signal.
 
 [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)
 

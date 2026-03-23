@@ -212,6 +212,6 @@ Start with the `examples/` directory: the `frequency_model.py` script runs a Poi
 Your SHAP values are not your model. They are a post-hoc explanation of a model that does not intrinsically know why it made any prediction. If you want a model whose interpretability is structural rather than approximate — one where the shape functions are the model, not a description of it — that is what this library provides.
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
-- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Automated Interaction Detection for Insurance GLMs: CANN, NID and LR Testing](/2026/02/27/finding-the-interactions-your-glm-missed/)
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)
 - [From CatBoost to Radar: GBM-to-GLM Distillation](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)

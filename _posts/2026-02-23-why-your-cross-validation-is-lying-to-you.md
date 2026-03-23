@@ -1,18 +1,16 @@
 ---
 layout: post
-title: "Why Your Cross-Validation is Lying to You"
+title: "Temporal Leakage and IBNR Contamination in Insurance Model Validation"
 date: 2026-02-23
 featured: true
 categories: [pricing, python, libraries]
 tags: [cross-validation, temporal-leakage, ibnr, walk-forward, insurance-cv, sklearn, catboost]
-description: "Standard k-fold CV is wrong for insurance pricing. Temporal leakage and IBNR contamination inflate scores. Walk-forward validation fixes both - Python."
+description: "Standard k-fold CV produces inflated scores on insurance data: temporal leakage, IBNR contamination, and seasonal confounding. Walk-forward validation with configurable IBNR buffers fixes all three - insurance-cv, Python."
 ---
 
-Your GBM is tuned. CV loss looks good across five folds. You commit the hyperparameters, run prospective monitoring, and six months into the rating year the modelled-to-actual ratio is drifting. The loss ratio is worse than the CV results suggested it would be. You open a ticket. Someone says "overfitting." Everyone nods.
+Standard k-fold CV on insurance data systematically overstates model performance. A GBM that looks well-tuned across five folds can produce a modelled-to-actual ratio that drifts materially in the first prospective rating period. The gap is not overfitting in the usual sense. It is leakage baked into the evaluation methodology from day one.
 
-It is not overfitting. It is leakage - baked directly into the cross-validation methodology from the first day of the project. The CV results were never honest. The model looked better than it was because the evaluation methodology let future information into the past.
-
-This post explains exactly how that happens with standard k-fold on insurance data, what the consequences are, and how `insurance-cv` fixes it.
+Three structural problems make k-fold wrong for insurance data: temporal leakage from random fold assignment across development periods, IBNR contamination where test targets are understated because claims in the test fold are less developed than those in training, and seasonal confounding from non-representative fold composition. `insurance-cv` corrects all three with walk-forward validation and configurable IBNR development buffers.
 
 ---
 

@@ -1,19 +1,17 @@
 ---
 layout: post
-title: "How Do You Know Your Sigma Model Is Working?"
+title: "GAMLSS Sigma Submodel Validation: GAIC, Quantile Residuals and Worm Plots"
 date: 2026-03-08
 categories: [pricing, techniques, tutorials]
 tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, volatility-scoring, sigma, variance, gamma, insurance-distributional-glm, python, model-validation]
-description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."
+description: "Four-step workflow to validate a GAMLSS sigma submodel before production: GAIC comparison, holdout quantile residuals, worm plots, and volatility score calibration against empirical CV."
 ---
 
-Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book — and it is — you should model it, not absorb it into a single global dispersion parameter.
+[`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) fits GAMLSS models that allow the dispersion parameter sigma to vary by risk. A sigma submodel with two or three covariates will almost always reduce training-set log-likelihood. That does not mean it has learned something real — it might be fitting the idiosyncratic variance of your training cohort rather than a structural relationship that holds on unseen data.
 
-Since then, the question we keep getting asked is not "how do I fit this?" The question is: "how do I know it's working?"
+Validating a sigma submodel is a distinct problem from validating the mean model. Standard GLM diagnostics are silent on whether the dispersion structure is genuine. The checks described here are designed to answer one question: is this sigma submodel capturing real heterogeneity in claim severity variance, or is it noise that will produce miscalibrated safety loadings in production?
 
-That question matters more than it might appear. A sigma submodel with two or three covariates will almost always reduce training-set log-likelihood. That does not mean it has learned something real. It might be fitting the idiosyncratic variance of your training cohort rather than a structural relationship that will hold on unseen data. If you put that model into production and charge variance loadings based on a sigma coefficient that is overfitting noise, you will systematically missprice in ways that are hard to detect until the A/E ratios accumulate.
-
-Here is the validation workflow we use before signing off a sigma submodel as production-ready.
+Here is the four-step validation workflow we use before signing off a sigma submodel as production-ready.
 
 ---
 

@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "Treating Competing Risks as Censored Is Biasing Your Retention and Home Insurance Pricing"
+title: "Competing Risks in Insurance: Fine-Gray Subdistribution Hazard in Python"
 date: 2026-03-12
 categories: [libraries, pricing, survival, retention, home-insurance]
 tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, Gray-test, IPCW, retention, lapse, home-insurance, motor, insurance-survival, python]
-description: "Fine-Gray subdistribution hazard for UK insurance competing risks. Separates lapse, MTC, and NTU correctly - insurance-survival Python, not naive censoring."
+description: "Fine-Gray subdistribution hazard for UK insurance competing risks. Separates lapse, MTC, and NTU correctly using Aalen-Johansen CIF and IPCW weighting - insurance-survival Python."
 ---
 
-There is a mistake buried in most UK insurers' retention models. It is not exotic: it is a standard decision made in lifelines or scikit-survival when you set up a Cox proportional hazards model and treat every exit event the same way. When a policyholder leaves via mid-term cancellation rather than voluntary lapse, you mark them as censored for the lapse analysis and move on. The same pattern appears in home insurance peril modelling — fire claim analysis treats the policy that had an escape of water as censored. Motor claim models treat the windscreen claimant as censored for the own-damage analysis.
+In most UK insurers' retention models, mid-term cancellations are handled by treating them as censored for the voluntary lapse analysis. When a policyholder leaves via MTC, the Cox model marks them as withdrawn from the lapse risk set and moves on. The same pattern applies in home insurance peril modelling: a policy with an escape of water is censored for the fire analysis.
 
-This is the competing risks problem, and treating it as censoring biases your estimated event probabilities upward. The scale of the bias depends on how common the competing events are; in retention, where MTC, NTU, and lapse may each account for a quarter or more of exits, the effect is not small.
+This is the competing risks problem. Treating competing events as non-informative censoring biases estimated event probabilities upward — the Kaplan-Meier estimator inflates the cause-specific CIF because it assumes the competing events are uninformative departures from a homogeneous risk set. In retention, where MTC, NTU, and lapse can each account for a quarter or more of exits, the bias is material.
 
-The fix has existed since 1999 — Fine & Gray published their subdistribution hazard model in JASA that year — but until now there has been no pure-Python, pip-installable implementation. [`insurance-survival`](https://github.com/burning-cost/insurance-survival) is that implementation.
+The correct tool is the Fine-Gray subdistribution hazard model, published by Fine & Gray in JASA in 1999. Until now, no pure-Python pip-installable implementation existed. [`insurance-survival`](https://github.com/burning-cost/insurance-survival) is that implementation.
 
 ```bash
 uv add insurance-survival

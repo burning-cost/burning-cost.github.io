@@ -528,7 +528,7 @@ The tools exist to do all of this properly. The bottleneck is almost never the s
 
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/): how `shap-relativities` works in detail, including the reconstruction check and exposure weighting
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/): temporal leakage and IBNR contamination in standard CV, and the walk-forward fix
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/): temporal leakage and IBNR contamination in standard CV, and the walk-forward fix
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/): distribution-free coverage guarantees and handling heteroscedasticity in GBMs
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/): balance test, auto-calibration, and Murphy decomposition for the recalibrate-vs-refit decision
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/): Double Machine Learning for price elasticity estimation

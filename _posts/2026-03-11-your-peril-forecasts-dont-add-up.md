@@ -346,7 +346,7 @@ uv add 'insurance-reconcile[mintrace]'
 
 **[insurance-reconcile on GitHub](https://github.com/burning-cost/insurance-reconcile)**
 
-- [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
+- [Bayesian Changepoint Detection for Insurance Loss Ratios in Python](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
 - [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/) — GLM-based trend with structural break detection and ONS index integration
 
 ---

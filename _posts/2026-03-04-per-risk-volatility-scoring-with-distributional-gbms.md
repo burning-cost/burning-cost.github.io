@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Distributional GBM"
+title: "Per-Risk Volatility Scoring: Heterogeneous Dispersion with Distributional GBM in Python"
 date: 2026-03-04
 categories: [pricing, techniques, tutorials]
 tags: [distributional-regression, tweedie, catboost, polars, volatility, dispersion, safety-loading, ifrs17, insurance-distributional, uk-motor, tutorial]
-description: "Per-risk volatility scores using TweedieGBM from insurance-distributional. Price volatility as a rating factor, not a portfolio-level adjustment."
+description: "Replace scalar Tweedie dispersion with per-risk phi using TweedieGBM. Coverage calibration benchmarks, safety loading spread analysis, and CRPS comparison - insurance-distributional Python."
 ---
 
-Your Tweedie model has a parameter it never shows you: phi, the dispersion. You fitted it once, as a scalar, and it applies identically to every risk in the book. A young driver in a prestige vehicle and a middle-aged driver in a city car at the same expected loss are assigned the same phi. Same variance, same coefficient of variation, same safety loading.
+The standard Tweedie model contains a parameter that rarely gets scrutinised: phi, the dispersion. Fitted once as a scalar, it applies identically to every risk in the book. A young driver in a prestige vehicle and a mature driver in a city car at the same expected loss are assigned the same phi, same coefficient of variation, and the same safety loading.
 
-That is the assumption. It is wrong, and it is measurable.
+The Smyth-Jørgensen double GLM extended this by fitting phi as a function of covariates on squared Pearson residuals. `TweedieGBM` implements the gradient-boosted version following the So & Valdez ASTIN 2024 Best Paper approach, producing a per-risk dispersion estimate that drives meaningful differences in safety loading across the book.
 
-This tutorial walks through replacing that scalar phi with a per-risk dispersion model using [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional). We build `TweedieGBM` on a synthetic UK motor portfolio, benchmark it against the constant-phi baseline on coverage calibration, and measure how much the safety loading spread changes when phi is allowed to vary.
+This tutorial builds `TweedieGBM` on a synthetic UK motor portfolio, benchmarks it against the constant-phi baseline on coverage calibration, and measures the safety loading spread when phi varies by risk.
 
 ```bash
 uv add insurance-distributional

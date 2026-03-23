@@ -1,19 +1,19 @@
 ---
 layout: post
-title: "The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?"
+title: "FCA Consumer Duty Investigations in Home and Travel Insurance: Building a Defensible Pricing Model"
 date: 2026-03-19
 author: Burning Cost
 categories: [compliance, pricing, fairness]
-description: "Active Consumer Duty investigations in home and travel insurance. What a defensible pricing model actually requires under PRIN 2A, and what the FCA thematic review said about most firms' current evidence."
+description: "Active Consumer Duty investigations in home and travel insurance. What a defensible pricing model requires under PRIN 2A, what TR24/2 found about current evidence quality, and how insurance-fairness operationalises the monitoring obligation."
 canonical_url: "https://burning-cost.github.io/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
 ---
 
-Following the Which? super-complaint on home and travel insurance, the FCA has indicated — according to market commentary and its own published supervisory communications — that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
+Following the Which? super-complaint on home and travel insurance, the FCA has indicated — through published supervisory communications and market commentary — that enforcement activity is under way on fair value grounds. Reports point to restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers.
 
-This is not a hypothetical compliance risk.
+This is active supervisory engagement, not a theoretical risk.
 
-The question for any home or travel pricing team is whether their model governance would survive scrutiny. Not whether it looks reasonable internally, but whether it would hold up in front of an FCA supervision team who has already found that the majority of firms are producing inadequate evidence. The answer for most teams, based on what the FCA has said publicly, is no.
+The FCA's TR24/2 thematic review, published August 2024, examined how firms were implementing their Consumer Duty monitoring obligations. The finding was direct: most firms were producing "high-level summaries with little substance or relevant information." What the FCA expects is quantitative evidence — statistical tests, segment-level disparity analysis, documented audit trails — not prose descriptions of why a pricing methodology is reasonable.
 
 ---
 

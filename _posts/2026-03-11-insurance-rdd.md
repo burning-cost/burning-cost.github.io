@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "Does the Risk Actually Drop at 25? Using Regression Discontinuity to Test Your Age Threshold"
+title: "Regression Discontinuity Design for Insurance Rating Thresholds in Python"
 date: 2026-03-11
 categories: [libraries, pricing, causal-inference]
 tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, postcode, FCA, Consumer-Duty, Poisson, GLM, geographic-RDD, insurance-rdd, python]
-description: "Regression Discontinuity Design tests if UK motor risk drops at age 25. Exposure-weighted Poisson outcomes, geographic boundaries, Consumer Duty output."
+description: "Regression Discontinuity Design tests causal risk changes at rating thresholds: age 25, NCD steps, territory boundaries. Exposure-weighted Poisson outcomes, geographic RDD, Consumer Duty output - Python."
 ---
 
-UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm — and what pricing teams almost never formally test — is whether the observed claims risk drops by the same factor at age 25, or whether the pricing premium far exceeds the causal risk change.
+UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm — and what pricing teams almost never formally test — is whether the observed claims risk actually drops by the same factor at age 25, or whether the pricing premium exceeds the causal risk change.
 
-The distinction matters. If your tariff relativity at the age-25 boundary is 3.0 but the causal rate ratio is 1.6, you are overcharging drivers just below 25 relative to their actual risk contribution. That is a Consumer Duty exposure. But you do not know whether you are in that position unless you have run the test.
+The distinction matters for Consumer Duty. Regression Discontinuity Design is the standard econometric method for causal identification at thresholds: it exploits the fact that driver age is externally verified by DVLA records and cannot be manipulated, so any discontinuity in claims frequency at age 25 is causally attributable to the threshold crossing. If the causal rate ratio is 1.6 but the tariff implies 3.0, that gap requires explanation.
 
 [`insurance-rdd`](https://github.com/burning-cost/insurance-rdd) provides that test. It brings Regression Discontinuity Design — the standard econometric method for causal identification at thresholds — to Python for the first time with insurance-specific defaults: exposure weighting, Poisson and Gamma outcome families, geographic territory boundary analysis, and FCA Consumer Duty formatted output.
 

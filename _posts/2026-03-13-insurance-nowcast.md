@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "Covariate-Conditioned IBNR Completion: Why Aggregate LDFs Mismatch Your Recent Book"
+title: "Covariate-Conditioned IBNR Completion: Segment-Level Development Factors with insurance-nowcast"
 date: 2026-03-13
 categories: [libraries, pricing, reserving]
 tags: [nowcasting, IBNR, EM-algorithm, XGBoost, reporting-delay, completion-factors, frequency-GLM, insurance-nowcast, python, poisson, multinomial]
-description: "Covariate-conditioned IBNR completion by risk segment using ML-EM algorithm. insurance-nowcast corrects aggregate LDF bias from your actual recent risk mix."
+description: "Covariate-conditioned IBNR completion by risk segment using ML-EM algorithm with XGBoost M-step. Exposure-weighted Poisson occurrence plus multinomial delay model - insurance-nowcast Python."
 ---
 
-Every UK pricing actuary building a frequency GLM on motor BI data has a version of this conversation with their reserving colleague. You want to include Q3 and Q4 of the most recent accident year — you have 18 months of data and throwing it away feels wasteful. The reserving team hands you a set of LDFs from the quarterly triangle. You apply them. You move on.
+Aggregate LDFs from the quarterly triangle assume recent business has the same risk profile as the historical average. When the book has shifted — more fleet in the last 18 months, more high-NCD motor at the younger end of the age distribution — the aggregate factor will be wrong for every segment it is applied to. Fleet motor PD has a median reporting delay of around 2 months. Young driver motor BI runs closer to 4–5 months with a long right tail past 18 months. Averaging those two development patterns produces a factor that understates IBNR for the slower-reporting segment and overstates it for the faster one.
 
-The problem is not the LDFs themselves. The problem is that aggregate LDFs assume your recent business has the same risk profile as your historical average. If you've written more fleet in the last 18 months — or more high-NCD motor at the younger end of the age distribution — the aggregate factor will mismatch. Fleet motor PD has a median reporting delay of around 2 months. Young driver motor BI runs closer to 4–5 months with a long right tail extending past 18 months. These are not the same development pattern. Averaging them gives you a factor that is wrong for both.
+The subtler version of this failure is invisible in diagnostics. A Q4 frequency model built with aggregate LDF correction looks plausible — it doesn't flag as a model failure. The bias is towards the historical risk mix rather than the current one, and it compounds at the rate at which the book shifts.
 
-The subtler version of this failure is invisible. Your Q4 data looks like a low-frequency quarter — so either you discard it, or you apply the LDF and it corrects for average development but not for the shift in risk mix. Either way the resulting frequency model is slightly biased towards the mix of business you wrote historically rather than the mix you're writing now. This bias is hard to see in diagnostics, it doesn't show up as a model failure, and it compounds at the rate at which your book is shifting.
+[`insurance-nowcast`](https://github.com/burning-cost/insurance-nowcast) gives you covariate-conditioned completion factors: the development factor for a young driver motor BI claim reflects the reporting delay distribution for that segment, not the whole book.
 
 [`insurance-nowcast`](https://github.com/burning-cost/insurance-nowcast) gives you covariate-conditioned completion factors. The development factor for a young driver motor BI claim reflects the reporting delay distribution for young driver motor BI claims, not for your whole book. 3,023 lines of source, 1,722 lines of tests, 171 tests passing. MIT-licensed, on PyPI.
 
@@ -179,5 +179,5 @@ If your completion factors diverge materially from the reserving team's LDFs, in
 **[insurance-nowcast on GitHub](https://github.com/burning-cost/insurance-nowcast)** — 171 tests, MIT-licensed, PyPI. Library #40.
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
-- [Why Your Cross-Validation Is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Temporal Leakage and IBNR Contamination in Insurance Model Validation](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
 - [Calibration Testing for Insurance Pricing Models](/2026/03/09/insurance-calibration/)

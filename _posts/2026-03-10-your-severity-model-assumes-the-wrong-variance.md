@@ -314,4 +314,4 @@ The argument for keeping a constant phi is that it is simpler and that the mean 
 
 - [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — when you want the full predictive distribution from a gradient boosted model rather than a GLM
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption in the two-part model that systematically misfires on NCD-heavy UK motor books
-- [How Do You Know Your Sigma Model Is Working?](/2026/03/08/validating-gamlss-sigma-models/) — REML for a different application: selecting the smoothing parameter for Whittaker-Henderson curves
+- [GAMLSS Sigma Submodel Validation: GAIC, Quantile Residuals and Worm Plots](/2026/03/08/validating-gamlss-sigma-models/) — REML for a different application: selecting the smoothing parameter for Whittaker-Henderson curves

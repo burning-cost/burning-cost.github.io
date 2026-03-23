@@ -108,4 +108,4 @@ The pricing committee slide with a single trend line is still going to exist. Bu
 
 **Related reading:**
 - [Trend Selection Is Not Actuarial Judgment: A Python Approach](/2026/03/13/insurance-trend/) — GLM-based trend models for the structural component; GARCH captures the volatility around that trend
-- [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — before fitting any trend or volatility model, test whether the series has had a structural break that invalidates the stationarity assumption
+- [Bayesian Changepoint Detection for Insurance Loss Ratios in Python](/2026/03/13/insurance-changepoint/) — before fitting any trend or volatility model, test whether the series has had a structural break that invalidates the stationarity assumption
