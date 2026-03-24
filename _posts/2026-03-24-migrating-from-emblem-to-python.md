@@ -70,6 +70,7 @@ The Emblem model development screen gives you a list of factors, a fit button, a
 
 ```python
 import statsmodels.formula.api as smf
+import statsmodels.api as sm
 import numpy as np
 
 df_pd = df.to_pandas()
@@ -84,7 +85,7 @@ freq_model = smf.glm(
         "C(area, Treatment(reference='D'))"
     ),
     data=df_pd,
-    family=smf.families.Poisson(link=smf.families.links.Log()),
+    family=sm.families.Poisson(link=sm.families.links.Log()),
     offset=df_pd["log_exp"],
 ).fit()
 ```
@@ -100,7 +101,7 @@ claims["avg_sev"] = claims["severity"] / claims["claim_count"]
 sev_model = smf.glm(
     formula="avg_sev ~ C(veh_group, Treatment(reference='5')) + C(area, Treatment(reference='D'))",
     data=claims,
-    family=smf.families.Gamma(link=smf.families.links.Log()),
+    family=sm.families.Gamma(link=sm.families.links.Log()),
     freq_weights=claims["claim_count"],
 ).fit()
 ```

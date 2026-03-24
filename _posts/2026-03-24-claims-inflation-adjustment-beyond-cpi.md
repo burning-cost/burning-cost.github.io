@@ -120,7 +120,7 @@ This is cleaner than fitting on nominal costs and then applying a portfolio-leve
 
 ## The Ogden rate problem
 
-For liability lines, court award inflation has a distinct driver: the Ogden discount rate. The rate changed from -0.75% to -0.25% in July 2019, which materially reduced the lump sum multipliers applied to serious injury claims. Claims settled after the change had smaller capitalised values than equivalent claims settled before it.
+For liability lines, court award inflation has a distinct driver: the Ogden discount rate. The rate changed from -0.75% to -0.25% (announced July 2019, effective 5 August 2019), which materially reduced the lump sum multipliers applied to serious injury claims. Claims settled after the change had smaller capitalised values than equivalent claims settled before it.
 
 This creates a structural break in any liability severity series that straddles July 2019. The level shift is not inflation in any ordinary sense; it is a regulatory change with a specific date. If you fit a single trend through this break, the regression slope absorbs some of the level shift as a trend estimate, giving you biased trend rates on both sides of the boundary.
 
