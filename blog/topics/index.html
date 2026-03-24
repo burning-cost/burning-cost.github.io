@@ -1,0 +1,128 @@
+---
+layout: page
+title: "Browse by Topic"
+description: "189 articles organised into eight topic areas. Find posts on specific techniques, library comparisons, regulation, model monitoring, and practical how-to guides."
+permalink: /blog/topics/
+---
+
+<style>
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin: 0 0 2rem;
+  }
+
+  .topic-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    background: var(--surface);
+  }
+
+  .topic-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(79,126,248,0.1);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  .topic-card-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .topic-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1d2e;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .topic-card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .topic-card-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover { color: var(--accent); text-decoration: none; }
+</style>
+
+<a href="/blog/" class="back-link">&larr; All articles</a>
+
+<div class="topics-grid">
+
+  <a href="/blog/techniques/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Techniques</div>
+    <div class="topic-card-desc">Deep dives into individual pricing methods: DML, conformal prediction, credibility, copulas, spatial models, GAMs, normalising flows, and more.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/validation/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Validation</div>
+    <div class="topic-card-desc">Empirical tests of whether specific methods deliver in insurance practice. Gini scores, calibration, and failure modes reported without softening.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/comparisons/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Comparisons</div>
+    <div class="topic-card-desc">Head-to-head evaluations of generic ML libraries versus insurance-specific tools. When a general library breaks on insurance data and what to use instead.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/regulation/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Regulation &amp; Fairness</div>
+    <div class="topic-card-desc">FCA Consumer Duty, PRA SS1/23, proxy discrimination, and model risk governance. Regulatory requirements translated into audit-ready Python code.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/monitoring/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Monitoring</div>
+    <div class="topic-card-desc">Model drift, champion/challenger testing, and performance degradation in live pricing. From PSI and A/E ratios to sequential testing and covariate shift correction.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/how-to/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">How-To</div>
+    <div class="topic-card-desc">Short practical guides: one-way analysis, Gini, factor tables, burning cost models, GLM reproduction, and common tasks currently done in Excel.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+  <a href="/blog/getting-started/" class="topic-card">
+    <div class="topic-card-label">Topic</div>
+    <div class="topic-card-title">Getting Started</div>
+    <div class="topic-card-desc">Starting points for UK pricing teams moving to Python, evaluating the toolkit, or rebuilding a workflow. Pipeline guides, Emblem migration, Python vs R.</div>
+    <div class="topic-card-count">View articles &rarr;</div>
+  </a>
+
+</div>

@@ -1,0 +1,86 @@
+---
+layout: category-index
+title: "Techniques"
+description: "Deep dives into individual pricing methods — DML, conformal prediction, credibility, copulas, spatial models, GAMs, normalising flows, and more. Each post covers the methodology, its assumptions, and what it gets wrong in standard practice."
+permalink: /blog/techniques/
+category_slug: techniques
+match_tags:
+  - dml
+  - double-machine-learning
+  - conformal-prediction
+  - whittaker-henderson
+  - whittaker
+  - credibility
+  - buhlmann-straub
+  - BYM2
+  - ICAR
+  - spatial
+  - copula
+  - sarmanov-copula
+  - vine-copula
+  - gamlss
+  - ebm
+  - gam
+  - shap
+  - normalizing-flows
+  - nflow
+  - transfer-learning
+  - GLMTransfer
+  - shared-frailty
+  - competing-risks
+  - cure-models
+  - mixture-cure
+  - survival-analysis
+  - GARCH
+  - changepoint
+  - causal-inference
+  - CausalForestDML
+  - TMLE
+  - BCF
+  - causal-forest
+  - regression-discontinuity
+  - sdid
+  - tabpfn
+  - ANAM
+  - anam
+  - pairwise-interaction
+  - PIN
+  - pin
+  - distributional-regression
+  - double-glm
+  - dglm
+  - dispersion
+  - frequency-severity
+  - causalfe
+  - nowcast
+  - online-learning
+  - covariate-shift
+  - density-ratio
+  - extreme-value
+  - gpd
+  - spliced-distributions
+  - composite-distributions
+  - gas-model
+  - gas
+  - multilevel-models
+  - random-effects
+  - telematics
+  - hmm
+  - hidden-markov-model
+  - NID
+  - CANN
+  - interactions
+  - large-loss
+  - quantile-regression
+  - TVaR
+  - bayesian
+  - embeddings
+  - synthetic-data
+  - vine-copula
+  - reserving
+  - conformal-risk-control
+match_categories:
+  - techniques
+  - causal-inference
+  - spatial
+---
