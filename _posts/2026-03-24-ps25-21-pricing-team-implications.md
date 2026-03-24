@@ -123,5 +123,5 @@ If you are implementing PS25/21 changes in Q1 2026 and need to get the documenta
 
 **Related:**
 - [One Package, One Install: PRA SS1/23 Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the full insurance-governance walkthrough
-- [The EBM Is Sitting in Your Notebook Because You Can't Show It to the Committee](/2026/02/10/the-governance-bottleneck-for-ebm-adoption/) — governance translation between model outputs and committee packs
+- [The EBM Is Sitting in Your Notebook Because You Can't Show It to the Committee](/2026/03/16/the-governance-bottleneck-for-ebm-adoption/) — governance translation between model outputs and committee packs
 - [FCA Proxy Discrimination Testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/) — the EP25/2 audit requirement that sits alongside PS25/21 product governance

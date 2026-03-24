@@ -420,4 +420,4 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - the cross-sectional case: per-policy intervals for Tweedie GBMs, where exchangeability holds
 - [Tracking Trend Between Model Updates with GAS Filters](/2027/04/15/gas-models-for-between-update-trend/) - score-driven models for between-refit monitoring of the same underlying trend problem
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) - covariate shift detection as a precursor to recalibration
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - covariate shift detection as a precursor to recalibration

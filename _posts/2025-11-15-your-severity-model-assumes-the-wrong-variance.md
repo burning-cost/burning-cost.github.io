@@ -312,6 +312,6 @@ The argument for keeping a constant phi is that it is simpler and that the mean 
 
 `insurance-dispersion` is open source under BSD-3 at [github.com/burning-cost/insurance-dispersion](https://github.com/burning-cost/insurance-dispersion). Install with `pip install insurance-dispersion`. Requires Python 3.10+, NumPy, SciPy, and formulaic.
 
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) — when you want the full predictive distribution from a gradient boosted model rather than a GLM
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — when you want the full predictive distribution from a gradient boosted model rather than a GLM
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2027/05/15/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption in the two-part model that systematically misfires on NCD-heavy UK motor books
 - [Stop Smoothing Your Rating Tables in Excel](/2027/06/15/stop-smoothing-rating-tables-in-excel/) — REML for a different application: selecting the smoothing parameter for Whittaker-Henderson curves

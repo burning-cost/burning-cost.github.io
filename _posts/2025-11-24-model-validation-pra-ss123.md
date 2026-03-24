@@ -249,4 +249,4 @@ The practical workflow: run `ModelValidationReport` as part of your model releas
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) - monitoring model performance and detecting when a refit is overdue
 - [Tracking Trend Between Model Updates with GAS Filters](/2027/04/15/gas-models-for-between-update-trend/) - between-refit trend tracking with a principled statistical foundation
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty quantification at the policy level, complementary to portfolio-level validation
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty quantification at the policy level, complementary to portfolio-level validation

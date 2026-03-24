@@ -446,7 +446,7 @@ pip install "insurance-gam[ebm]"
 
 On the insurance-gam benchmark (synthetic UK motor, 10,000 policies), EBM ranked risks 28% better than a main-effects GLM by Gini. On freMTPL2 the gap is smaller because freMTPL2 has fewer categorical levels and less interaction structure, but the EBM still outperforms the unspecified GLM without requiring any shape analysis up front.
 
-EBMs are our preferred recommendation for teams that need interpretability and cannot accept the GLM's discriminatory ceiling. The governance workflow — `GLMComparison` to show what the EBM does differently from the approved GLM, `MonotonicityEditor` to enforce directional constraints — is described in the [insurance-gam governance post](/2026/02/10/the-governance-bottleneck-for-ebm-adoption/).
+EBMs are our preferred recommendation for teams that need interpretability and cannot accept the GLM's discriminatory ceiling. The governance workflow — `GLMComparison` to show what the EBM does differently from the approved GLM, `MonotonicityEditor` to enforce directional constraints — is described in the [insurance-gam governance post](/2026/03/16/the-governance-bottleneck-for-ebm-adoption/).
 
 ---
 
@@ -470,7 +470,7 @@ This benchmark covers model fit. The rest of the pipeline has dedicated tooling.
 
 - **Frequency-severity combination**: this post covers frequency only. For the severity model and the freq-sev combination — including the non-independence correction that the standard pure premium formula ignores — see [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity). The dependence correction is worth roughly 3-8% improvement in pure premium calibration on a typical UK motor book.
 
-- **Monitoring for drift**: a model trained today and deployed in 18 months will face book mix changes, economic drift, and claims inflation. [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) implements population stability index, feature drift detection, and performance tracking across rolling windows. [Monitoring post](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/).
+- **Monitoring for drift**: a model trained today and deployed in 18 months will face book mix changes, economic drift, and claims inflation. [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) implements population stability index, feature drift detection, and performance tracking across rolling windows. [Monitoring post](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/).
 
 ---
 
