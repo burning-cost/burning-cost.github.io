@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Reserve Range Has No Frequentist Guarantee"
-date: 2028-07-15
+date: 2026-02-14
 author: Burning Cost
 description: "Bootstrap and expert-judgment reserve ranges look like probability statements but carry no frequentist coverage guarantee."
 tags: [reserving, conformal-prediction, time-series, aci, mscp, exchangeability, reserve-ranges, ibnr, insurance-conformal-ts, motor, python, actuarial]

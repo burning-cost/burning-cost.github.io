@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Conformal Intervals Are Wrong When the Claims Series Has Trend"
-date: 2028-01-15
+date: 2025-12-30
 categories: [pricing, libraries, tutorials]
 tags: [conformal-prediction, time-series, aci, spci, exchangeability, claims-monitoring, loss-ratio, insurance-conformal-ts, sequential-coverage, kupiec, python, tutorial]
 description: "Standard split conformal prediction requires exchangeability — a condition insurance claims time series systematically violate."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Severity Model Assumes the Same Variance for Every Policy"
-date: 2027-08-15
+date: 2025-11-15
 categories: [pricing, libraries, tutorials]
 tags: [dispersion, double-glm, dglm, gamma-glm, severity, variance, phi, reinsurance, channel-mix, broker, commercial, smyth, reml, insurance-dispersion, python, GLM, tutorial]
 description: "Standard Gamma GLMs assign one dispersion parameter to every policy. That is wrong for most UK books. GAMLSS sigma submodels and Tweedie p estimation fix it."

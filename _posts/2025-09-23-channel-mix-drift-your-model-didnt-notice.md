@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your New Business Mix Changed. Your Model Didn't Notice."
-date: 2027-02-15
+date: 2025-09-23
 categories: [model-validation, pricing, techniques]
 tags: [covariate-shift, density-ratio, catboost, channel-mix, fca-consumer-duty, portfolio-drift, python, uk-motor]
 description: "When a new aggregator partnership or competitor exit changes your new business mix, models trained on the old distribution misprice silently."

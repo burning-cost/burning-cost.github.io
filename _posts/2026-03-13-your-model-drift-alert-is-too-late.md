@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your Model Drift Alert Is Too Late"
-date: 2028-11-15
+date: 2026-03-13
 author: Burning Cost
 categories: [monitoring, model-risk]
 description: "Aggregate A/E is a lagging indicator. insurance-monitoring catches input drift, feature drift, and score drift before the loss ratio moves."
-canonical_url: "https://burning-cost.github.io/2028/11/15/your-model-drift-alert-is-too-late"
+canonical_url: "https://burning-cost.github.io/2026/03/13/your-model-drift-alert-is-too-late"
 tags: [model-monitoring, drift-detection, PSI, CSI, gini, ae-ratio, insurance-monitoring, model-risk, pricing, python, uk-insurance]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Group Factors Are Not All Worth Modelling"
-date: 2027-03-15
+date: 2025-10-01
 categories: [pricing, libraries]
 tags: [multilevel-models, random-effects, credibility, catboost, reml, icc, broker, scheme, fleet, postcode, high-cardinality, variance-components, buhlmann-straub, insurance-multilevel, python]
 description: "ICC diagnostics for multiple group factors in insurance pricing. When broker, scheme, fleet, and postcode sector effects are worth modelling with REML..."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tracking Trend Between Model Updates with GAS Filters"
-date: 2027-04-15
+date: 2025-10-10
 categories: [pricing, libraries]
 tags: [gas, time-varying-parameters, trend, severity-inflation, frequency, catboost, poisson, gamma, score-driven, insurance-dynamics, motor, uk-pricing, python]
 description: "GAS filters track claims frequency and severity trend between GLM refits. Step-by-step tutorial using insurance-dynamics on UK motor data."

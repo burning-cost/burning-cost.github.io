@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segments"
-date: 2027-07-15
+date: 2025-11-06
 categories: [pricing, libraries, tutorials]
 tags: [transfer-learning, thin-data, GLMTransfer, MMD, covariate-shift, negative-transfer, poisson-glm, insurance-thin-data, uk-motor, electric-vehicles, python, JASA, Tian-Feng]
 description: "GLMTransfer borrows statistical strength from a related source book to price thin target segments. Motor-to-fleet, home-to-landlord, and fleet roll-outs."

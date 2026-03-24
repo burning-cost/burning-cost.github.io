@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Telematics Risk Scoring: From Raw Trips to GLM Features"
-date: 2027-10-15
+date: 2025-12-03
 categories: [pricing, libraries, tutorials]
 tags: [telematics, hmm, hidden-markov-model, driving-states, GLM, poisson, risk-scoring, insurance-telematics, uk-motor, python, polars, catboost, jiang-shi-2024, buehlmann-straub]
 description: "How to convert raw telematics trip data into GLM-ready features for UK motor pricing. Covers HMM state segmentation and score calibration to GLM relativities."
