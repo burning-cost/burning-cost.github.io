@@ -1182,7 +1182,245 @@
       display: inline-block;
     }
 
+    /* ── PyPI downloads / social proof section ──────────────────── */
+
+    .pypi-downloads {
+      background: var(--navy-mid);
+      padding: 5rem 1.5rem;
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pypi-downloads::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(79,126,248,0.07) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    .pypi-downloads-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pypi-downloads-header {
+      margin-bottom: 3rem;
+      max-width: 680px;
+    }
+
+    .section-label--light {
+      color: rgba(79,126,248,0.85);
+    }
+
+    .section-label--light::before {
+      background: rgba(79,126,248,0.85);
+    }
+
+    .pypi-downloads-header h2 {
+      font-size: clamp(1.65rem, 3vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-top: 0.6rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .pypi-downloads-header p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .downloads-grid { grid-template-columns: 1fr; }
+    }
+
+    .downloads-table {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--navy-border2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .downloads-table-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 1.25rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--navy-border2);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .downloads-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.55rem 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+
+    .downloads-row:hover {
+      background: rgba(79,126,248,0.05);
+    }
+
+    .downloads-row--top .dl-bar {
+      background: linear-gradient(90deg, var(--accent), #a268ff);
+    }
+
+    .dl-name {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      width: 190px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dl-bar-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .dl-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(79,126,248,0.55);
+      transition: width 0.4s ease;
+    }
+
+    .dl-count {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    .downloads-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.7rem 1.25rem;
+      background: rgba(79,126,248,0.08);
+      border-top: 1px solid rgba(79,126,248,0.2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    .social-proof-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .proof-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--navy-border2);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+
+    .proof-card:hover {
+      border-color: rgba(79,126,248,0.35);
+    }
+
+    .proof-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .proof-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .proof-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .proof-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .proof-cta .btn {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .proof-cta .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 1px 3px rgba(79,126,248,0.3);
+      font-size: 0.88rem;
+      padding: 0.75rem 1.25rem;
+    }
+
+    .proof-cta .btn-primary:hover {
+      background: var(--accent-hover);
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(79,126,248,0.4);
+      transform: translateY(-1px);
+    }
+
+    .proof-cta .btn-outline {
+      color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-size: 0.88rem;
+      padding: 0.75rem 1.25rem;
+    }
+
+    .proof-cta .btn-outline:hover {
+      background: rgba(255,255,255,0.07);
+      color: var(--white);
+      border-color: rgba(255,255,255,0.28);
+      transform: translateY(-1px);
+    }
+
     /* ── Blog section ────────────────────────────────────────────── */
+
 
     .posts {
       background: var(--surface);
@@ -1644,7 +1882,7 @@
     "@type": "Organization",
     "name": "Burning Cost",
     "url": "https://burning-cost.github.io",
-    "description": "Open-source Python libraries for UK personal lines insurance pricing. 36 packages covering SHAP relativities, conformal prediction, causal inference, FCA compliance, and Databricks workflows.",
+    "description": "Open-source Python libraries for UK personal lines insurance pricing. 34 packages covering SHAP relativities, conformal prediction, causal inference, FCA compliance, and Databricks workflows.",
     "sameAs": [
       "https://github.com/burning-cost",
       "https://pypi.org/user/burning-cost/"
@@ -1674,15 +1912,8 @@
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/" class="active">Home</a></li>
-        <li><a href="/getting-started/" class="nav-cta">Get Started</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/guide/">Guide</a></li>
-        <li><a href="/notebooks/">Notebooks</a></li>
-        <li><a href="/compare/">Compare</a></li>
-        <li><a href="/work-with-us/">Work with Us</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
       </ul>
     </div>
   <script>
@@ -1706,13 +1937,12 @@
       <div class="footer-top">
         <div class="footer-tagline-block">
           <div class="footer-brand">Burning<span>Cost</span></div>
-          <p class="footer-tagline"><strong>Built for UK insurance pricing teams.</strong> 35 open-source libraries covering the full pricing workflow: from walk-forward cross-validation to constrained rate optimisation. Outputs in formats pricing committees, regulators, and rating engines already understand.</p>
+          <p class="footer-tagline"><strong>Built for UK insurance pricing teams.</strong> 34 open-source libraries covering the full pricing workflow: from walk-forward cross-validation to constrained rate optimisation. Outputs in formats pricing committees, regulators, and rating engines already understand.</p>
         </div>
         <div class="footer-newsletter">
           <div class="footer-newsletter-label">Stay current</div>
           <div class="footer-newsletter-title">New libraries and articles</div>
           <p class="footer-newsletter-desc">We publish articles on insurance pricing methods roughly once a fortnight. No filler, no generic data science content adapted for insurance.</p>
-          <a href="mailto:pricing.frontier@gmail.com?subject=Subscribe%3A%20Burning%20Cost%20updates" class="footer-newsletter-cta">
             Get updates by email &rarr;
           </a>
         </div>
@@ -1721,10 +1951,6 @@
         <ul class="footer-links">
           <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
           <li><a href="/blog/">Blog</a></li>
-          <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
-        <li><a href="/compare/">Compare</a></li>
-          <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
         </ul>
         <div class="footer-copy">Open source &middot; UK insurance pricing</div>
       </div>
@@ -1843,8 +2069,8 @@
           { text: '#  1            0.912       0.901     0.923', type: 'output', delay: 80 },
           { text: '#  2            0.847       0.835     0.860', type: 'output', delay: 80 },
           { text: '', type: 'blank', delay: 300 },
-          { text: 'print(f"Reconstruction R² = {sr.reconstruction_r2:.4f}")', type: 'code', delay: 300 },
-          { text: 'Reconstruction R² = 0.9973', type: 'success', delay: 400 },
+          { text: '#  3            0.793       0.780     0.807', type: 'output', delay: 80 },
+          { text: '#  4+           0.754       0.739     0.769', type: 'success', delay: 80 },
         ];
 
         var currentLine = 0;

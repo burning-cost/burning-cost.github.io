@@ -499,6 +499,20 @@
       .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -509,12 +523,8 @@
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/getting-started/" class="nav-cta">Get Started</a></li>
         <li><a href="/blog/" class="active">Blog</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/work-with-us/">Work with Us</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
       </ul>
     </div>
   <script>
@@ -539,7 +549,6 @@
       <p class="page-header-desc">{{ page.description }}</p>
       {% endif %}
       <div class="page-header-meta">
-        {{ site.posts | size }} articles &middot; <a href="/tags/">Browse by tag</a>
       </div>
     </div>
   </div>
@@ -648,10 +657,6 @@
       <ul class="footer-links">
         <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/tags/">Tags</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
-        <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
       </ul>
       <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
     </div>

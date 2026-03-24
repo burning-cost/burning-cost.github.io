@@ -207,6 +207,20 @@
       .tags-search-box { width: 100%; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -216,12 +230,8 @@
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/getting-started/" class="nav-cta">Get Started</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/work-with-us/">Work with Us</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
       </ul>
     </div>
   <script>
@@ -311,9 +321,6 @@
         <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/ep25-2-guide/">Audit Guide</a></li>
-        <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
       </ul>
       <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
     </div>

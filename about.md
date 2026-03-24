@@ -11,8 +11,6 @@ The name is also a philosophy. Simple, direct, no mystification. That is how we 
 
 Built by pricing practitioners who have worked across UK personal lines motor and home books.
 
-Built by pricing practitioners who have worked across UK personal lines motor and home books.
-
 ---
 
 ## What we have built

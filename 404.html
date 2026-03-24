@@ -1,0 +1,108 @@
+---
+layout: page
+title: "Page Not Found"
+description: "The page you were looking for does not exist. Browse our open-source Python libraries for UK insurance pricing."
+permalink: /404.html
+sitemap: false
+---
+
+<style>
+.not-found-wrap {
+  text-align: center;
+  padding: 2rem 0 3rem;
+}
+.not-found-code {
+  font-size: 6rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+  font-family: var(--mono);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.not-found-msg {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1d2e;
+  margin-bottom: 0.75rem;
+}
+.not-found-sub {
+  font-size: 1rem;
+  color: #5a6278;
+  margin-bottom: 2rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.not-found-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.not-found-links a {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn-primary-nf {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary-nf:hover { background: var(--accent-hover); color: #fff; text-decoration: none; }
+.btn-outline-nf {
+  border: 1px solid var(--border-dark);
+  color: #1a1d2e;
+}
+.btn-outline-nf:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.not-found-suggestions h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6278;
+  font-family: var(--mono);
+  margin-bottom: 1rem;
+}
+.not-found-suggestion-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.not-found-suggestion-list li a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+</style>
+
+<div class="not-found-wrap">
+  <div class="not-found-code">404</div>
+  <p class="not-found-msg">Page not found</p>
+  <p class="not-found-sub">This URL does not exist. The post may have moved, or the link may be wrong.</p>
+
+  <div class="not-found-links">
+    <a href="/blog/" class="btn-primary-nf">Browse all articles</a>
+    <a href="/tools/" class="btn-outline-nf">View libraries</a>
+    <a href="/" class="btn-outline-nf">Home</a>
+  </div>
+
+  <div class="not-found-suggestions">
+    <h2>Popular starting points</h2>
+    <ul class="not-found-suggestion-list">
+      <li><a href="/getting-started/">Getting started with Burning Cost</a></li>
+      <li><a href="/guide/">Which library do I need?</a></li>
+      <li><a href="/top-10/">Top 10 flagship libraries</a></li>
+      <li><a href="/notebooks/">Databricks notebooks</a></li>
+      <li><a href="/compare/">Compare with alternatives</a></li>
+    </ul>
+  </div>
+</div>
