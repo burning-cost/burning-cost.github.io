@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Model Validation Is a Checklist, Not a Test"
-date: 2027-09-15
+date: 2025-07-13
 categories: [pricing, libraries]
 tags: [validation, pra-ss123, governance, gini, hosmer-lemeshow, psi, calibration, catboost, polars, insurance-governance, motor, uk-pricing, python, model-risk]
 description: "PRA SS1/23 requires quantitative pass/fail tests, not narrative. insurance-governance automates the full validation suite and generates auditable HTML reports."

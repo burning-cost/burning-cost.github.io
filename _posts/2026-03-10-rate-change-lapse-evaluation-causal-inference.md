@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Rate Change Evaluation: Did the Premium Increase Cause the Lapses?"
-date: 2029-01-15
+date: 2026-03-10
 author: Burning Cost
 categories: [pricing, causal-inference, libraries, case-study]
 description: "A 12% rate increase on young motor drivers. An 8% lapse spike three months later. Here is how to tell whether the rate change caused it — using synthetic difference-in-differences."
-canonical_url: "https://burning-cost.github.io/2029/01/15/rate-change-lapse-evaluation-causal-inference/"
+canonical_url: "https://burning-cost.github.io/2026/03/10/rate-change-lapse-evaluation-causal-inference/"
 tags: [causal-inference, sdid, synthetic-control, did, rate-change, lapses, retention, fca-tr242, insurance-causal-policy, motor, uk-motor, python, polars, consumer-duty]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DML Works at 1,000 Policies Now. Here Is What Changed."
-date: 2028-10-15
+date: 2026-01-24
 categories: [techniques]
 tags: [causal-inference, dml, double-machine-learning, catboost, small-samples, treatment-effect, renewal-pricing, telematics, insurance-causal, python, uk-motor]
 description: "insurance-causal v0.3.1 fixes over-partialling in DML for small insurance books. Adaptive CatBoost regularisation makes causal estimates reliable at n≥1k."

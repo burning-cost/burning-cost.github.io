@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Frequency-Severity Independence Assumption Is Costing You Premium"
-date: 2027-05-15
+date: 2025-05-14
 categories: [pricing, libraries, tutorials]
 tags: [frequency-severity, sarmanov-copula, dependence, IFM, NCD, UK-motor, pure-premium, copula, insurance-frequency-severity, python, GLM, poisson, gamma, negative-binomial, tutorial]
 description: "Your frequency GLM and severity GLM are both correct. Multiplying them is not. How to test and correct for the dependence your pricing model ignores."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spliced Severity Distributions: When One Distribution Isn't Enough"
-date: 2027-01-15
+date: 2025-03-15
 categories: [pricing, techniques, tutorials]
 tags: [severity, composite-distributions, spliced-distributions, gpd, lognormal, evt, ilf, large-loss-loading, reinsurance, motor-bi, insurance-severity, threshold-selection, uk-motor, tutorial]
 description: "A practitioner tutorial on fitting spliced composite severity distributions for UK motor claims using insurance-severity."

@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Your Rating Table Smoothing Is Wrong"
-date: 2028-12-15
+date: 2026-02-23
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Every UK pricing actuary smooths experience tables. Most do it with a 5-point moving average or a polynomial fitted by eye."
-canonical_url: "https://burning-cost.github.io/2028/12/15/your-rating-table-smoothing-is-wrong/"
+canonical_url: "https://burning-cost.github.io/2026/02/23/your-rating-table-smoothing-is-wrong/"
 tags: [whittaker-henderson, smoothing, rating-tables, actuarial, python, polars, reml, insurance-whittaker, uk-motor, uk-home, pricing]
 ---
 

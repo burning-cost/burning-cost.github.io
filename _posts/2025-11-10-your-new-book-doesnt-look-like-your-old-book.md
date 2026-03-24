@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your New Book Doesn't Look Like Your Old Book. Your Model Doesn't Care."
-date: 2028-05-15
+date: 2025-11-10
 author: Burning Cost
 description: "Density ratio correction for portfolio composition shift — CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"
 tags: [covariate-shift, model-validation, density-ratio, catboost, fca]

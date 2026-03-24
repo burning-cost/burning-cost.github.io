@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Year-End Large Loss Loading Is a Finger in the Air"
-date: 2027-12-15
+date: 2025-08-27
 categories: [pricing, libraries, tutorials]
 tags: [large-loss, quantile-regression, TVaR, ILF, catboost, insurance-quantile, motor, severity, tail-risk, python, polars]
 description: "December is the season for year-end rate reviews where someone adds a flat 8% large loss loading to every segment regardless of tail weight."

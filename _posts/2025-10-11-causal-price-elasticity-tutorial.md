@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Elasticity Estimate Is Biased and You Already Know Why"
-date: 2028-03-15
+date: 2025-10-11
 categories: [techniques]
 tags: [causal-inference, price-elasticity, dml, causal-forest, catboost, renewal-pricing, enbp, icobs-6b2, fca, gipp, heterogeneous-treatment-effects, dr-learner, insurance-elasticity, uk-motor, polars, python, tutorial]
 description: "OLS elasticity in formula-rated books is contaminated by your own risk model. insurance-elasticity fixes this with CausalForestDML and CatBoost nuisance."

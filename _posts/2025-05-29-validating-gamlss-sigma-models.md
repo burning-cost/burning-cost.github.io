@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How Do You Know Your Sigma Model Is Working?"
-date: 2027-06-15
+date: 2025-05-29
 categories: [pricing, techniques, tutorials]
 tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, volatility-scoring, sigma, variance, gamma, insurance-distributional-glm, python, model-validation]
 description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."

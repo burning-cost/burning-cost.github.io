@@ -24,6 +24,7 @@ minima:
   skin: classic
 
 header_pages:
+  - course.md
   - tools.md
   - blog.md
   - resources.md
