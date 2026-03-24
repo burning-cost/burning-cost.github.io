@@ -4,8 +4,8 @@ title: "Modelling Social Inflation in UK Motor Severity: A Python Approach"
 date: 2026-03-24
 categories: [pricing, libraries, tutorials]
 tags: [social-inflation, superimposed-inflation, bodily-injury, severity, taylor-separation, whittaker-henderson, insurance-whittaker, motor, uk-pricing, ogden, medco, python, tutorial]
-description: "UK motor bodily injury severity has outrun CPI since 2022. This post implements the Taylor (1977) two-factor separation method and Whittaker-Henderson smoothing in Python to separate economic inflation from superimposed inflation."
-excerpt: "Every UK motor pricing team wrestling with BI severity knows the number is going up faster than CPI. The question is: how much of that is real, how much is superimposed, and what trend do you project forward? Taylor (1977) gives us the decomposition. Python makes it tractable."
+description: "UK motor bodily injury severity has outrun CPI since 2022. This post implements a multiplicative severity separation model and Whittaker-Henderson smoothing in Python to separate economic inflation from superimposed inflation."
+excerpt: "Every UK motor pricing team wrestling with BI severity knows the number is going up faster than CPI. The question is: how much of that is real, how much is superimposed, and what trend do you project forward? A multiplicative separation model gives us the decomposition. Python makes it tractable."
 published: true
 ---
 
@@ -15,7 +15,7 @@ The ABI reported motor claims hitting a record £11.7bn in 2024. Average claim s
 
 That "something else" has a name: superimposed inflation, or social inflation in American parlance. It is claims severity growth above general economic inflation. Measuring it correctly — separating the component that tracks CPI from the component that does not — is the single hardest and most commercially important calibration problem in UK motor pricing right now.
 
-This post implements the Taylor (1977) two-factor separation method in Python, then uses [insurance-whittaker](/insurance-whittaker/) to smooth the resulting development patterns. Both methods are older than most pricing actuaries' careers. The gap in UK practice is not the theory; it is production-quality Python tooling that makes them routine.
+This post implements a multiplicative severity separation model in Python, then uses [insurance-whittaker](/insurance-whittaker/) to smooth the resulting development patterns. Note that Taylor's original 1977 formulation in the ASTIN Bulletin is a three-factor model: C[i,j] = R[i] × x[j] × y[i+j], where y[i+j] is a calendar-year diagonal parameter that isolates claims inflation directly. The two-factor model used here — C[i,j] = r[i] × l[j] — omits that diagonal component, making it simpler to implement on a severity triangle but unable to extract a direct inflation index from the diagonals. For the full three-factor Taylor decomposition, see [our companion post on claims inflation decomposition](/2026/03/24/claims-inflation-decomposition-taylor-two-factor-separation-python/). Both methods are older than most pricing actuaries' careers. The gap in UK practice is not the theory; it is production-quality Python tooling that makes them routine.
 
 ---
 
@@ -35,15 +35,17 @@ None of these is captured in CPI. Deflating your severity triangle by CPI and tr
 
 ---
 
-## The Taylor separation method
+## The multiplicative separation model
 
-G.C. Taylor published the two-factor separation method in the ASTIN Bulletin in 1977. The idea is straightforward. In a severity triangle, the average cost of claims settled in development period j from accident year i is modelled as:
+The idea is straightforward. In a severity triangle, the average cost of claims settled in development period j from accident year i is modelled as:
 
 ```
 C[i, j] = r[i] * l[j]
 ```
 
 where `r[i]` is an accident year severity index (the real underlying cost level at the time of the accident) and `l[j]` is a payment delay factor (how settlement mix shifts as claims develop — large claims settle later, lifting average cost in later development periods). The inflation embedded in `r[i]` is what you are measuring. Once you have estimated `r[i]` for each accident year, you fit a trend to it and separate the CPI-tracking component from the superimposed component.
+
+This differs from Taylor's (1977) three-factor model, which adds a calendar-year parameter y[i+j] to the right-hand side. That third factor directly captures the inflation diagonal — it is the right formulation when you want to extract an inflation index from the triangle itself. The two-factor form here is appropriate when you have an external inflation index (CPI or HPTH) you plan to use for deflation, and you want the accident-year factors r[i] to carry the combined inflation signal for subsequent trend fitting.
 
 The fitting is a least-squares problem on the log scale. With a triangle of average severity by accident year and development year:
 
@@ -54,7 +56,12 @@ from scipy.optimize import minimize
 
 def taylor_separation(avg_cost: np.ndarray, weights: np.ndarray) -> dict:
     """
-    Taylor (1977) two-factor separation of a severity triangle.
+    Multiplicative two-factor separation of a severity triangle.
+
+    Note: this is not the full Taylor (1977) three-factor model. Taylor's
+    original formulation includes a calendar-year diagonal parameter y[i+j]
+    that isolates the inflation series directly. This implementation fits only
+    accident-year factors r[i] and development-year factors l[j].
 
     Parameters
     ----------
@@ -164,7 +171,7 @@ The Taylor method gives you a point estimate for each development year factor. W
 [`insurance-whittaker`](/insurance-whittaker/) solves this. The development year factors `l[j]` estimated from Taylor separation are smoothed using Whittaker-Henderson with automatic REML lambda selection. The result is a smooth, credible development pattern where the uncertainty widens correctly in sparsely-observed development periods.
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 ```python
@@ -260,7 +267,7 @@ Neither of these limitations makes the method wrong. They make it a model that n
 The IFoA Claims Inflation Working Party (British Actuarial Journal, 2024, runner-up Brian Hey Prize) confirmed there is no standard Python tooling for this class of problem in the UK market — all work is done in bespoke reserving and pricing models. The separation method and `insurance-whittaker` together give you a reusable, tested, version-controlled foundation. The next time someone asks what the superimposed inflation assumption is and whether it is defensible, you want to be able to show them code and output, not a spreadsheet last edited by someone who left in 2022.
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 Full documentation and notebooks at [`insurance-whittaker`](/insurance-whittaker/).

@@ -212,7 +212,7 @@ The gradient boosted model is the performance ceiling. It makes no assumptions a
 
 The cost is interpretability. A CatBoost model is not a set of factor tables. It is a forest of trees. A pricing committee cannot review it in the same way they review a GLM coefficient. This is a real constraint in UK personal lines, where a model that cannot be explained to an FCA reviewer or challenged by an underwriter is difficult to deploy in production.
 
-We use CatBoost with a Poisson objective. Exposure enters as a sample weight, which is the correct treatment for a count model where the offset is not directly supported in the same way as statsmodels.
+We use CatBoost with a Poisson objective. Exposure enters as a log-offset via the `baseline` parameter in `Pool`, which is the correct treatment for a Poisson count model: the baseline is added to the model's output before the loss is computed, exactly mirroring the log-exposure offset in statsmodels.
 
 ```python
 import catboost
@@ -224,17 +224,20 @@ all_cols     = feature_cols + cat_cols
 X_train_cb = train.select(all_cols).to_pandas()
 X_test_cb  = test.select(all_cols).to_pandas()
 
+log_exp_train = np.log(train["exposure"].to_numpy())
+log_exp_test  = np.log(test["exposure"].to_numpy())
+
 pool_train = catboost.Pool(
     data=X_train_cb,
     label=train["claim_count"].to_numpy(),
-    weight=train["exposure"].to_numpy(),
+    baseline=log_exp_train,    # log-exposure offset: added to output before Poisson loss
     cat_features=cat_cols,
 )
 
 pool_test = catboost.Pool(
     data=X_test_cb,
     label=test["claim_count"].to_numpy(),
-    weight=test["exposure"].to_numpy(),
+    baseline=log_exp_test,
     cat_features=cat_cols,
 )
 

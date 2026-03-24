@@ -215,8 +215,13 @@ surrogate = SurrogateGLM(
 surrogate.fit(max_bins=10)
 
 # Export factor tables
-tables = surrogate.factor_tables()          # dict of Polars DataFrames
-surrogate.export_radar("motor_freq.xlsx")  # factor tables in Radar-compatible CSV import format
+# Access all factor tables at once via the report
+report = surrogate.report()
+tables = report.factor_tables          # dict[str, pl.DataFrame], one per feature
+
+# Export all factor tables as CSVs for Radar/Emblem import
+surrogate.export_csv("output/factors/", prefix="motor_freq_")
+# Writes: motor_freq_driver_age.csv, motor_freq_vehicle_value.csv, ...
 ```
 
 The approach is: use the GBM's predictions as targets for the GLM, so the GLM learns to approximate the GBM's structure rather than the noisy raw claims. The factor tables that come out are multiplicative, interpretable, and can be loaded into Radar via its standard import template. The loss in discrimination relative to running the GBM directly is typically 1-2 Gini points - a price worth paying for a rating engine that auditors and regulators can review.

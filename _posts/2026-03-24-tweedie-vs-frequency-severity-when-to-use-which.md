@@ -48,7 +48,7 @@ This is fine when:
 
 **The frequency and severity drivers are the same.** If vehicle age, driver age, and postcode affect both frequency and severity in the same direction, a single linear predictor may capture enough. If the drivers are different - which they often are - you are forcing a compromise.
 
-The typical UK personal lines motor Tweedie GLM returns a p estimate around 1.5-1.6, which is consistent with Poisson claim counts and Gamma-distributed severities with a shape parameter around 2-3. If your estimated p is outside [1.2, 1.8], question whether the compound Poisson-Gamma assumption is appropriate at all.
+The typical UK personal lines motor Tweedie GLM returns a p estimate around 1.5-1.6. Using the formula p = (alpha+2)/(alpha+1), p=1.5 corresponds to a Gamma shape of 1.0 (the exponential distribution) and p=1.6 corresponds to a shape of 0.67. These are thin-tailed severity distributions. If your expected severity has a shape more like 2-3 — typical of mixed bodily injury and property damage books — the corresponding p would be closer to 1.25-1.33. If your estimated p is outside [1.2, 1.8], question whether the compound Poisson-Gamma assumption is appropriate at all.
 
 ---
 
