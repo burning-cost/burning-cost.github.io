@@ -194,7 +194,7 @@ No point pretending otherwise. Here is the genuine list:
 
 ## Deployment to Radar via insurance-distill
 
-Once you have a fitted GBM you want to get into Radar, [`insurance-distill`](https://github.com/burning-cost/insurance-distill) handles the GLM distillation step: it fits a surrogate Poisson or Gamma GLM on the GBM's predictions, bins continuous variables at the GBM's natural split points, and produces multiplicative factor tables in Radar's expected format.
+Once you have a fitted GBM you want to get into Radar, [`insurance-distill`](https://github.com/burning-cost/insurance-distill) handles the GLM distillation step: it fits a surrogate Poisson or Gamma GLM on the GBM's predictions, bins continuous variables at the GBM's natural split points, and produces multiplicative factor tables in a format compatible with Radar's CSV import template.
 
 ```bash
 uv add insurance-distill
@@ -216,10 +216,10 @@ surrogate.fit(max_bins=10)
 
 # Export factor tables
 tables = surrogate.factor_tables()          # dict of Polars DataFrames
-surrogate.export_radar("motor_freq.xlsx")  # formatted Excel for Radar import
+surrogate.export_radar("motor_freq.xlsx")  # factor tables in Radar-compatible CSV import format
 ```
 
-The approach is: use the GBM's predictions as targets for the GLM, so the GLM learns to approximate the GBM's structure rather than the noisy raw claims. The factor tables that come out are multiplicative, interpretable, and load directly into Radar. The loss in discrimination relative to running the GBM directly is typically 1-2 Gini points - a price worth paying for a rating engine that auditors and regulators can review.
+The approach is: use the GBM's predictions as targets for the GLM, so the GLM learns to approximate the GBM's structure rather than the noisy raw claims. The factor tables that come out are multiplicative, interpretable, and can be loaded into Radar via its standard import template. The loss in discrimination relative to running the GBM directly is typically 1-2 Gini points - a price worth paying for a rating engine that auditors and regulators can review.
 
 ---
 
@@ -253,7 +253,7 @@ print(report.summary())
 # Flags: covariate drift on veh_group (PSI=0.14), AE ratio 1.08 (warning threshold 1.05)
 ```
 
-The Population Stability Index (PSI) flags when the distribution of an input variable has shifted relative to the training period. An AE ratio of 1.08 on frequency means claims are running 8% above what the model expects - not necessarily a refitting trigger, but worth monitoring. The Gini coefficient on recent months tells you whether the model is still discriminating correctly or has flattened.
+The Population Stability Index (PSI) flags when the distribution of an input variable has shifted relative to the training period. A PSI of 0.14 and an AE warning threshold of 1.05 are reasonable defaults on a book of 50k+ policies; on smaller books these thresholds need calibrating to your actual data volume. An AE ratio of 1.08 on frequency means claims are running 8% above what the model expects - not necessarily a refitting trigger, but worth monitoring. The Gini coefficient on recent months tells you whether the model is still discriminating correctly or has flattened.
 
 ---
 
