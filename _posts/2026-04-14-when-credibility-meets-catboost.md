@@ -149,10 +149,10 @@ This is the notation that mirrors Bühlmann-Straub deliberately. The tau2/sigma2
 The diagnostic you want from insurance-multilevel is the ICC -- the intraclass correlation coefficient -- which tells you what fraction of total premium variance sits between groups rather than within them. If ICC is below 2%, the group structure is probably not worth the additional complexity. If it is above 10%, treating groups as random effects will materially improve both accuracy and stability.
 
 ```python
-from insurance_multilevel import diagnostics
+from insurance_multilevel import icc
 
-vc = model._variance_components["broker_id"]
-icc = diagnostics.icc(vc, group_col="broker_id")
+vc = model.variance_components["broker_id"]
+icc_val = icc(vc, "broker_id")
 # 0.087 -- 8.7% of variance between brokers, worth modelling separately
 ```
 
@@ -182,4 +182,4 @@ The credibility approach did not disappear when GBMs arrived. It got a better St
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
-- [Your Group Factors Are Not All Worth Modelling](/2027/03/15/multilevel-group-factors/)
+- [Your Group Factors Are Not All Worth Modelling](/2026/03/06/multilevel-group-factors/)

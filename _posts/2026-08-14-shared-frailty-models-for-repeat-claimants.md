@@ -259,10 +259,11 @@ resid = cox_snell_residuals(model, data)
 # Or KS test: scipy.stats.kstest(resid, 'expon')
 ```
 
-**Score residuals.** The EM algorithm should converge cleanly. Check that log-likelihood is monotonically increasing across iterations:
+**Score residuals.** The EM algorithm should converge cleanly. Verify convergence and final log-likelihood:
 
 ```python
-print(model.log_likelihood_history_[-5:])  # should be increasing and plateau
+print(f"Converged: {model.converged_}  (iterations: {model.n_iter_})")
+print(f"Final log-likelihood: {model.log_likelihood_:.4f}")
 ```
 
 ---

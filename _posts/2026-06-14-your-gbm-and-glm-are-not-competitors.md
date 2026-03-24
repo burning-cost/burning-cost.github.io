@@ -34,24 +34,22 @@ Standard k-fold randomly assigns policies to folds. On a motor book where claims
 `insurance-cv` handles this correctly:
 
 ```python
-from insurance_cv import WalkForwardCV
+from insurance_cv import walk_forward_split
 
-cv = WalkForwardCV(
+splits = walk_forward_split(
+    df,
     date_col="inception_date",
-    target_col="claim_freq",
-    exposure_col="exposure",
-    n_folds=5,
-    gap_months=3,          # respect 3-month reporting lag
     min_train_months=24,   # require at least 2 years of history
+    ibnr_buffer_months=3,  # respect 3-month reporting lag
 )
 
-for fold in cv.split(df):
+for fold in splits:
     train, test = fold.train, fold.test
     # fit GLM on train, predict on test
     # fit GBM on train, predict on test
 ```
 
-The `gap_months=3` parameter is important. It creates a buffer between the end of each training window and the start of the test window, preventing IBNR-contaminated claims from appearing in both. Without this gap, a policy that incepted near the fold boundary appears in training with partially-developed claims, and in the test set with those same claims at a slightly earlier development stage. The model learns the development pattern as if it were a rating factor.
+The `ibnr_buffer_months=3` parameter is important. It creates a buffer between the end of each training window and the start of the test window, preventing IBNR-contaminated claims from appearing in both. Without this gap, a policy that incepted near the fold boundary appears in training with partially-developed claims, and in the test set with those same claims at a slightly earlier development stage. The model learns the development pattern as if it were a rating factor.
 
 ---
 
@@ -126,12 +124,18 @@ A pure GBM prediction cannot be decomposed into a factor table. A blended predic
 ```python
 from shap_relativities import SHAPRelativities
 
-sr = SHAPRelativities(gbm, exposure_col="exposure")
-sr.fit(df_train)
+# X is the feature DataFrame, exposure is earned car-years
+sr = SHAPRelativities(
+    model=gbm,
+    X=df_train.select(["driver_age_band", "vehicle_group", "ncd_years", "postcode_area"]),
+    exposure=df_train["exposure"],
+    categorical_features=["driver_age_band", "vehicle_group", "ncd_years"],
+)
+sr.fit()
 
 # Get multiplicative relativities from the GBM component
-gbm_factors = sr.relativities(
-    factors=["driver_age_band", "vehicle_group", "ncd_years", "postcode_area"],
+gbm_factors = sr.extract_relativities(
+    normalise_to="base_level",
     base_levels={"driver_age_band": "30-39", "ncd_years": "5"},
     ci_level=0.95,
 )
