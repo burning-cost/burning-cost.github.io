@@ -110,8 +110,8 @@ permalink: /course/
 
 <div class="cta-block">
   <p>Written course · 12 modules · Python notebooks · £97 one-off payment</p>
-  <a class="cta-button" href="https://burningcost.gumroad.com/l/insurance-pricing-python">Buy on Gumroad — £97</a>
-  <p class="refund-note">No questions asked refund within 30 days.</p>
+  <a class="cta-button" href="mailto:pricing.frontier@gmail.com?subject=Insurance%20Pricing%20Course%20—%20Purchase&body=I'd%20like%20to%20purchase%20the%20Insurance%20Pricing%20in%20Python%20course%20(£97).%20Please%20send%20payment%20details.">Buy — £97</a>
+  <p class="refund-note">No questions asked refund within 30 days. Email us and we refund in full.</p>
 </div>
 
 ---
@@ -192,6 +192,6 @@ Ask on [GitHub Discussions](https://github.com/orgs/burning-cost/discussions) or
 
 <div class="cta-block">
   <p>Written course · 12 modules · Python notebooks · £97 one-off payment</p>
-  <a class="cta-button" href="https://burningcost.gumroad.com/l/insurance-pricing-python">Buy on Gumroad — £97</a>
+  <a class="cta-button" href="mailto:pricing.frontier@gmail.com?subject=Insurance%20Pricing%20Course%20—%20Purchase&body=I'd%20like%20to%20purchase%20the%20Insurance%20Pricing%20in%20Python%20course%20(£97).%20Please%20send%20payment%20details.">Buy — £97</a>
   <p class="refund-note">No questions asked refund within 30 days. Email us and we refund in full.</p>
 </div>
