@@ -113,8 +113,10 @@ from insurance_distributional_glm.families import Gamma
 
 model = DistributionalGLM(
     family=Gamma(),
-    formula_mu=["driver_age", "vehicle_age", "ncd_years", "region"],
-    formula_sigma=["driver_age", "vehicle_age"],  # dispersion varies by risk
+    formulas={
+        "mu": ["driver_age", "vehicle_age", "ncd_years", "region"],
+        "sigma": ["driver_age", "vehicle_age"],  # dispersion varies by risk
+    },
 )
 model.fit(X_train, y_train, exposure=exposure_train)
 

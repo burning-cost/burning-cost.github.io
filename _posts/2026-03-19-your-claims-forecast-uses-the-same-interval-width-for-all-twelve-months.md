@@ -95,10 +95,10 @@ from insurance_conformal_ts.nonconformity import NegBinomPearsonScore
 score_nb = NegBinomPearsonScore(dispersion=2.8)  # estimated from residuals
 
 enbpi = EnbPI(
-    base_forecaster=ccc._forecaster,   # internal attribute; see note above
+    forecaster_factory=lambda: ccc._forecaster.__class__(),  # factory producing new unfitted instances
     score=score_nb,
     B=50,         # 50 bootstrap forecasters
-    s=10,         # replace 10 oldest residuals per step (controls forgetting)
+    window_size=10,  # replace 10 oldest residuals per step (controls forgetting)
 )
 
 enbpi.fit(y_train)
@@ -130,9 +130,9 @@ from insurance_conformal_ts.nonconformity import PoissonPearsonScore
 cpid = ConformalPID(
     base_forecaster=ccc._forecaster,   # internal attribute; see note above
     score=PoissonPearsonScore(),
-    kp=0.1,   # proportional gain
-    ki=0.01,  # integral gain
-    kd=0.05,  # derivative gain
+    Kp=0.1,   # proportional gain
+    Ki=0.01,  # integral gain
+    Kd=0.05,  # derivative gain
     saturation=0.05,  # integral saturation limit
 )
 
