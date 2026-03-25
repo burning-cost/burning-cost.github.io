@@ -17,7 +17,7 @@ The problem is not that tools like Evidently or NannyML are badly engineered. Th
 
 2. **Development lags.** An A/E alert raised on undeveloped accident months is comparing immature claims to a model trained on mature ones. The ratio is biased downward by as much as 30–40% for liability lines. Generic calibration monitoring does not know what IBNR is.
 
-3. **The discrimination dimension.** A pricing model can have a stable A/E — correct on average — while its Gini coefficient erodes. The model still predicts the right mean but has lost the ability to rank risks. An adverse selection consequence follows as surely as from explicit mispricing, and generic monitoring does not test for it.
+3. **The discrimination dimension.** A pricing model can have a stable A/E - correct on average - while its Gini coefficient erodes. The model still predicts the right mean but has lost the ability to rank risks. An adverse selection consequence follows as surely as from explicit mispricing, and generic monitoring does not test for it.
 
 4. **The sequential testing problem.** When you run champion/challenger experiments on renewal cohorts and check results monthly, a standard significance test inflates false positives to roughly five times the nominal rate. The typical UK motor renewal cycle forces exactly this kind of repeated peeking.
 
@@ -33,9 +33,9 @@ uv add insurance-monitoring
 
 PSI is the industry-standard feature drift statistic, and it is wrong for insurance portfolios unless you correct it.
 
-The standard formula computes bin proportions by policy count. For a book where mid-term adjustments, short-period policies, and annual renewals coexist, this gives each policy equal weight. A 30-day policy and a 365-day policy look the same to the formula. But they contribute very differently to claims exposure. If your young driver cohort is disproportionately on short-period policies — which it is, because comparison sites and monthly-pay schemes attract younger drivers — unweighted PSI will understate the distributional shift in the exposure you actually care about.
+The standard formula computes bin proportions by policy count. For a book where mid-term adjustments, short-period policies, and annual renewals coexist, this gives each policy equal weight. A 30-day policy and a 365-day policy look the same to the formula. But they contribute very differently to claims exposure. If your young driver cohort is disproportionately on short-period policies - which it is, because comparison sites and monthly-pay schemes attract younger drivers - unweighted PSI will understate the distributional shift in the exposure you actually care about.
 
-The fix is to weight bin proportions by earned exposure (car-years, earned house-years, earned unit-months — whatever your exposure measure is). `insurance-monitoring` does this via the `exposure_weights` parameter on `psi()`.
+The fix is to weight bin proportions by earned exposure (car-years, earned house-years, earned unit-months - whatever your exposure measure is). `insurance-monitoring` does this via the `exposure_weights` parameter on `psi()`.
 
 ```python
 import numpy as np
@@ -92,9 +92,9 @@ Wasserstein distance is the best statistic for communication: it tells an underw
 
 ## The discrimination dimension
 
-Aggregate A/E monitoring is now standard practice on most UK pricing teams. What is not standard is Gini drift monitoring — and this is the gap that matters most.
+Aggregate A/E monitoring is now standard practice on most UK pricing teams. What is not standard is Gini drift monitoring - and this is the gap that matters most.
 
-A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale. The model predicts the right mean by coincidence — cheap and expensive errors cancel — but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
+A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale. The model predicts the right mean by coincidence - cheap and expensive errors cancel - but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
 
 `insurance-monitoring` implements the Gini drift z-test from [arXiv 2510.04556](https://arxiv.org/abs/2510.04556), which establishes the asymptotic normality of the sample Gini and derives a proper bootstrap variance estimator. This is not a heuristic threshold; it is a proper hypothesis test.
 
@@ -130,7 +130,7 @@ print(f"p-value:        {result['p_value']:.3f}")
 print(f"Significant:    {result['significant']}")
 ```
 
-The decision rule from arXiv 2510.04556 maps onto the library's traffic lights: one-sigma (p < 0.32) triggers `INVESTIGATE`, two-sigma (p < 0.10) triggers `REFIT`. These are deliberately conservative thresholds — the authors' argument is that the cost of missing a Gini decline is high enough to accept more false positives than you would accept in a publication context.
+The decision rule from arXiv 2510.04556 maps onto the library's traffic lights: one-sigma (p < 0.32) triggers `INVESTIGATE`, two-sigma (p < 0.10) triggers `REFIT`. These are deliberately conservative thresholds - the authors' argument is that the cost of missing a Gini decline is high enough to accept more false positives than you would accept in a publication context.
 
 We agree with that logic. The cost of a spurious investigation is two days of an actuary's time. The cost of an undetected Gini decline, compounded over 18 months of renewals, is measurable in loss ratio.
 
@@ -164,7 +164,7 @@ print(seg)
 # shape: segment | actual | expected | ae_ratio | n_policies
 ```
 
-The Garwood interval is exact for Poisson counts — not a normal approximation, not a bootstrap. At low claim counts (under 30), the normal approximation understates interval width by 15–20%. This matters for new entrant segments, niche products, or monthly monitoring of sub-books.
+The Garwood interval is exact for Poisson counts - not a normal approximation, not a bootstrap. At low claim counts (under 30), the normal approximation understates interval width by 15–20%. This matters for new entrant segments, niche products, or monthly monitoring of sub-books.
 
 Segment-level A/E is the tool that reveals the 15%/−15% cancellation pattern. It does require claims development, which the PSI layer does not. The two layers are complementary: PSI fires first (at feature shift, before any claim), A/E confirms (after claims develop, confirming the economic impact).
 
@@ -174,15 +174,15 @@ Segment-level A/E is the tool that reveals the 15%/−15% cancellation pattern. 
 
 The hardest decision in model monitoring is not "is the model drifting?" It is "what do we do about it?"
 
-Recalibration — applying a scalar multiplier across all predictions — takes hours. Refitting — rebuilding the model on recent data — takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time.
+Recalibration - applying a scalar multiplier across all predictions - takes hours. Refitting - rebuilding the model on recent data - takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time.
 
 The Murphy decomposition (Lindholm & Wüthrich, SAJ 2025) resolves this. It decomposes forecast error into:
 
-- **UNC** (uncertainty): irreducible noise in the data — not the model's fault
+- **UNC** (uncertainty): irreducible noise in the data - not the model's fault
 - **DSC** (discrimination): the portion of forecast skill explained by ranking
 - **MCB** (miscalibration): the portion explained by wrong scale
 
-MCB itself splits into GMCB (global miscalibration — fixed by a multiplier) and LMCB (local miscalibration — requires model refit). If GMCB dominates, recalibrate. If LMCB dominates, refit.
+MCB itself splits into GMCB (global miscalibration - fixed by a multiplier) and LMCB (local miscalibration - requires model refit). If GMCB dominates, recalibrate. If LMCB dominates, refit.
 
 ```python
 from insurance_monitoring.calibration import murphy_decomposition
@@ -201,7 +201,7 @@ No other Python monitoring library we are aware of implements this decomposition
 
 ## Putting it together: MonitoringReport
 
-The `MonitoringReport` class assembles all three layers — exposure-weighted PSI per feature, A/E with confidence intervals, Gini drift test, and Murphy decomposition — into a single traffic-light output with an actionable recommendation.
+The `MonitoringReport` class assembles all three layers - exposure-weighted PSI per feature, A/E with confidence intervals, Gini drift test, and Murphy decomposition - into a single traffic-light output with an actionable recommendation.
 
 ```python
 from insurance_monitoring import MonitoringReport
@@ -262,7 +262,7 @@ The `to_polars()` output is designed to be logged to a database or written to a 
 
 One thing generic tools do not handle: the false positive problem in renewal cycle A/B tests.
 
-UK motor teams typically set up a champion/challenger split at the start of the quarter and check results monthly. Under a standard two-sample test, checking monthly for 12 months at p < 0.05 per check produces an actual false positive rate of approximately 25% — five times nominal. This is not a theoretical concern; it is the most common source of spurious "significant" challenger wins we see in practice.
+UK motor teams typically set up a champion/challenger split at the start of the quarter and check results monthly. Under a standard two-sample test, checking monthly for 12 months at p < 0.05 per check produces an actual false positive rate of approximately 25% - five times nominal. This is not a theoretical concern; it is the most common source of spurious "significant" challenger wins we see in practice.
 
 `insurance-monitoring` implements the mixture Sequential Probability Ratio Test (mSPRT) from Johari et al. (2022), which is valid at all stopping times. The evidence statistic is an e-process with the property that the probability of it ever exceeding 1/alpha is at most alpha, regardless of when you stop.
 
@@ -311,7 +311,7 @@ To be direct about the comparison:
 
 **NannyML** adds statistical rigour to performance estimation and some calibration testing. It does not understand the insurance data structure: no exposure weights, no Poisson-rate A/E, no Gini test.
 
-Both tools are reasonable starting points for engineering teams standing up generic ML monitoring. Neither is the right tool for a UK pricing actuary running monthly monitoring on a motor or home book. The insurance-specific structure — exposure weights, Poisson rates, Gini as the primary discrimination metric, Garwood intervals, Murphy decomposition — is not a bolt-on. It changes the conclusions.
+Both tools are reasonable starting points for engineering teams standing up generic ML monitoring. Neither is the right tool for a UK pricing actuary running monthly monitoring on a motor or home book. The insurance-specific structure - exposure weights, Poisson rates, Gini as the primary discrimination metric, Garwood intervals, Murphy decomposition - is not a bolt-on. It changes the conclusions.
 
 ---
 
@@ -340,7 +340,7 @@ The `to_polars()` report is the model risk artefact. It records which metrics we
 ---
 
 **Related posts:**
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring: why PSI alone is not enough and what a three-layer monitoring cadence looks like
-- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model, and how `insurance-deploy` shadow mode provides the challenger evidence
-- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — once monitoring flags a deterioration, the Murphy decomposition gives you a principled answer to whether the fix is a scalar shift or a full model rebuild
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance layer: how monitoring outputs from `insurance-monitoring` feed into the `ModelInventory` audit trail that SS1/23-level documentation requires
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) - the original case for multi-layer monitoring: why PSI alone is not enough and what a three-layer monitoring cadence looks like
+- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) - why most insurers never properly test their champion model, and how `insurance-deploy` shadow mode provides the challenger evidence
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) - once monitoring flags a deterioration, the Murphy decomposition gives you a principled answer to whether the fix is a scalar shift or a full model rebuild
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the governance layer: how monitoring outputs from `insurance-monitoring` feed into the `ModelInventory` audit trail that SS1/23-level documentation requires

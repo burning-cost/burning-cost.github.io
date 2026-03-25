@@ -9,7 +9,7 @@ description: "Step-by-step: extract multiplicative CatBoost rating factors using
 
 You have a fitted CatBoost model. The Gini is 4 points higher than the GLM you have been running in production. The holdout A/E by decile is clean. Then someone asks: what is the relativity for area D, and how does it compare to what the GLM says?
 
-There is no built-in CatBoost method for this. There is no "print factor table" button. The standard workaround — partial dependence plots — gives you a curve, not a number, and it does not decompose correctly when features are correlated. What you actually want is the `exp(beta)` format that any UK pricing actuary or Radar import template expects: one row per factor level, a point estimate, a confidence interval, and the exposure count that supports it.
+There is no built-in CatBoost method for this. There is no "print factor table" button. The standard workaround - partial dependence plots - gives you a curve, not a number, and it does not decompose correctly when features are correlated. What you actually want is the `exp(beta)` format that any UK pricing actuary or Radar import template expects: one row per factor level, a point estimate, a confidence interval, and the exposure count that supports it.
 
 This post shows how to get exactly that using `shap-relativities`, our open-source library built for this problem. We will fit a CatBoost Poisson frequency model on synthetic motor data, extract the factor tables, validate the reconstruction, compare against the GLM, and discuss what to document for a model validation committee.
 
@@ -114,7 +114,7 @@ print(rels.select(["feature", "level", "relativity", "lower_ci", "upper_ci",
                    "n_obs", "exposure_weight"]))
 ```
 
-Output (approximately — actual numbers vary with the random seed):
+Output (approximately - actual numbers vary with the random seed):
 
 ```
 feature          level  relativity  lower_ci  upper_ci   n_obs  exposure_weight
@@ -136,7 +136,7 @@ has_convictions      1       1.568     1.489     1.651    7682         6145.0
 
 The true DGP NCD coefficient is -0.12 per year, so NCD=5 vs NCD=0 should give `exp(-0.12 × 5) = exp(-0.60) ≈ 0.549`. We get exactly 0.549. The conviction relativity should be close to `exp(0.45) ≈ 1.57`. We get 1.568. The extraction is working correctly.
 
-The confidence intervals come from the central limit theorem on the per-level mean SHAP contributions. They capture data uncertainty — how precisely we have estimated each level's mean SHAP given the portfolio — not model uncertainty from the GBM fitting process itself. At 50,000 policies the intervals are tight. At 5,000 they are noticeably wider and you should be cautious about thin levels.
+The confidence intervals come from the central limit theorem on the per-level mean SHAP contributions. They capture data uncertainty - how precisely we have estimated each level's mean SHAP given the portfolio - not model uncertainty from the GBM fitting process itself. At 50,000 policies the intervals are tight. At 5,000 they are noticeably wider and you should be cautious about thin levels.
 
 ---
 
@@ -160,7 +160,7 @@ print(checks["feature_coverage"])
 #   message='All 4 features have non-zero SHAP variance.')
 ```
 
-The reconstruction check is the important one. It verifies that `exp(shap_values.sum(axis=1) + expected_value)` matches the model's own `predict()` output to within `1e-4` on every row. If this fails — and it does sometimes fail when the model's objective and the SHAP output type are mismatched — stop and investigate before presenting any numbers to anyone.
+The reconstruction check is the important one. It verifies that `exp(shap_values.sum(axis=1) + expected_value)` matches the model's own `predict()` output to within `1e-4` on every row. If this fails - and it does sometimes fail when the model's objective and the SHAP output type are mismatched - stop and investigate before presenting any numbers to anyone.
 
 The sparse levels check flags categories with fewer than 30 observations, which is the point at which CLT confidence intervals become unreliable. If it flags levels you care about, go back to your data and ask whether that segment has enough volume for its relativity to be trustworthy at all.
 
@@ -215,7 +215,7 @@ print(ncd_comparison)
 #     5         0.549     0.521     0.578    0.551
 ```
 
-On this synthetic data — where the DGP is genuinely log-linear and there are no interactions — the two models agree closely. On a real motor book the NCD and area relativities are also often similar between GLM and GBM, because these variables have strong main effects that the GLM captures adequately. The divergence shows up in vehicle group, in interactions between young drivers and high-performance vehicles, and in geographic effects that interact with claims frequency in ways a single-factor table cannot express.
+On this synthetic data - where the DGP is genuinely log-linear and there are no interactions - the two models agree closely. On a real motor book the NCD and area relativities are also often similar between GLM and GBM, because these variables have strong main effects that the GLM captures adequately. The divergence shows up in vehicle group, in interactions between young drivers and high-performance vehicles, and in geographic effects that interact with claims frequency in ways a single-factor table cannot express.
 
 When the GBM relativity for a segment is more than 10-15% away from the GLM, that is worth investigating before deciding which to trust. Sometimes the GBM has picked up a genuine pattern. Sometimes it is overfitting to a sparse cell. The confidence interval tells you about the former; the sparse levels check tells you about the latter.
 
@@ -235,7 +235,7 @@ age_curve = sr.extract_continuous_curve(
 print(age_curve.head(10))
 ```
 
-The LOESS smoother (via statsmodels) fits a locally-weighted regression to the per-observation SHAP values as a function of age. The result is a smooth relativity curve with pointwise confidence bands. Use `smooth_method="isotonic"` only when you have a strong theoretical prior that the relationship is strictly monotone — enforcing isotonic regression on driver age will prevent the U-shape pattern (high risk at 17-24, declining through the 30s and 40s, rising again after 70) that most motor portfolios show.
+The LOESS smoother (via statsmodels) fits a locally-weighted regression to the per-observation SHAP values as a function of age. The result is a smooth relativity curve with pointwise confidence bands. Use `smooth_method="isotonic"` only when you have a strong theoretical prior that the relationship is strictly monotone - enforcing isotonic regression on driver age will prevent the U-shape pattern (high risk at 17-24, declining through the 30s and 40s, rising again after 70) that most motor portfolios show.
 
 The continuous curve is what you show the pricing committee and use to inform your binning decisions. Once you have agreed the band boundaries, refit on the discretised variable to get clean band-level relativities with observation counts:
 
@@ -254,13 +254,13 @@ df = df.with_columns(
 
 A PRA SS1/23 model validation committee will ask several specific questions about SHAP-derived relativities. These are the honest answers.
 
-**What are the confidence intervals measuring?** Data uncertainty — how stably we have estimated each factor level's mean SHAP contribution given the training data. They do not capture whether the GBM would produce different relativities on a different data split or after refit. For a full uncertainty picture you would need to bootstrap across model refits; the library does not do this yet.
+**What are the confidence intervals measuring?** Data uncertainty - how stably we have estimated each factor level's mean SHAP contribution given the training data. They do not capture whether the GBM would produce different relativities on a different data split or after refit. For a full uncertainty picture you would need to bootstrap across model refits; the library does not do this yet.
 
-**What happens with correlated features?** Under the default `tree_path_dependent` SHAP method, attribution for correlated features is split according to tree path order, which is not uniquely defined. If area and socioeconomic deprivation index are both in the model and are correlated, their SHAP attribution will be sensitive to which one the trees split on first. The `feature_perturbation="interventional"` option, combined with a representative background dataset, corrects for this via marginalisation — but it is substantially slower. Document which method you used.
+**What happens with correlated features?** Under the default `tree_path_dependent` SHAP method, attribution for correlated features is split according to tree path order, which is not uniquely defined. If area and socioeconomic deprivation index are both in the model and are correlated, their SHAP attribution will be sensitive to which one the trees split on first. The `feature_perturbation="interventional"` option, combined with a representative background dataset, corrects for this via marginalisation - but it is substantially slower. Document which method you used.
 
-**Are interaction effects included?** TreeSHAP attributes interaction effects back to the participating features. If area and vehicle age have a genuine interaction in the model, some of that interaction is allocated to the area SHAP value and some to the vehicle age SHAP value. The individual factor tables absorb those interactions but do not separate them from main effects. This means the SHAP relativity for area is not purely a main effect — it includes the area component of any area×vehicle interaction. For most governance purposes this is acceptable: it is what the model actually uses for each segment. For presentations that require clean main-effect/interaction decomposition, `shap_interaction_values()` gives pure main effects, but it is O(n × p²) and quickly becomes slow on large portfolios.
+**Are interaction effects included?** TreeSHAP attributes interaction effects back to the participating features. If area and vehicle age have a genuine interaction in the model, some of that interaction is allocated to the area SHAP value and some to the vehicle age SHAP value. The individual factor tables absorb those interactions but do not separate them from main effects. This means the SHAP relativity for area is not purely a main effect - it includes the area component of any area×vehicle interaction. For most governance purposes this is acceptable: it is what the model actually uses for each segment. For presentations that require clean main-effect/interaction decomposition, `shap_interaction_values()` gives pure main effects, but it is O(n × p²) and quickly becomes slow on large portfolios.
 
-**Has the reconstruction been verified?** Yes — show the `validate()["reconstruction"]` output with max error < 1e-4. This is the sanity check that proves the extracted relativities are actually consistent with what the model predicts, not an approximation.
+**Has the reconstruction been verified?** Yes - show the `validate()["reconstruction"]` output with max error < 1e-4. This is the sanity check that proves the extracted relativities are actually consistent with what the model predicts, not an approximation.
 
 ---
 
@@ -270,9 +270,9 @@ A PRA SS1/23 model validation committee will ask several specific questions abou
 uv pip install "shap-relativities[all]"
 ```
 
-Source at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities). A ready-to-run Databricks notebook — covering model fit, SHAP extraction, reconstruction validation, GLM comparison, and the continuous driver age curve — is at [burning-cost-examples/notebooks/shap\_relativities\_demo.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/shap_relativities_demo.py).
+Source at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities). A ready-to-run Databricks notebook - covering model fit, SHAP extraction, reconstruction validation, GLM comparison, and the continuous driver age curve - is at [burning-cost-examples/notebooks/shap\_relativities\_demo.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/shap_relativities_demo.py).
 
-The library supports Poisson, Tweedie, and Gamma CatBoost objectives. It does not support linear-link models — there is a runtime check and it will raise a clear error.
+The library supports Poisson, Tweedie, and Gamma CatBoost objectives. It does not support linear-link models - there is a runtime check and it will raise a clear error.
 
 - [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)
 - [When Credibility Meets CatBoost](/2026/02/28/when-credibility-meets-catboost/)

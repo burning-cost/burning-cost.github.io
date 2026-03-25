@@ -95,7 +95,7 @@ The 95% bootstrap CI runs 1,000 parametric replicates, resampling residuals from
 
 The severity side is where the interesting actuarial problem lives. Average cost per claim in UK motor has done something unusual since 2021: it has risen sharply even after accounting for general price inflation. The reason is structural. Modern vehicles have ADAS sensors embedded in the windscreen, bumper, and door mirrors. Replacing a bumper on a 2018 SEAT Leon requires recalibrating the parking sensor suite. A windscreen replacement on many current vehicles requires recalibrating the lane-keep assist camera. These parts and procedures do not appear in the ONS consumer price basket in proportion to their weight in motor repair costs.
 
-The decomposition this requires is: how much of the severity trend is general economic inflation (CPI, RPI, or the ONS SPPI for vehicle repair — series code HPTH), and how much is structural cost inflation that a general index will not capture? The residual is superimposed inflation. It matters because economic inflation is at least partially offset by investment return; superimposed inflation is a pure cost. And it matters for reserving: IBNR on recent periods should be inflated at the total trend, not just the economic index.
+The decomposition this requires is: how much of the severity trend is general economic inflation (CPI, RPI, or the ONS SPPI for vehicle repair - series code HPTH), and how much is structural cost inflation that a general index will not capture? The residual is superimposed inflation. It matters because economic inflation is at least partially offset by investment return; superimposed inflation is a pure cost. And it matters for reserving: IBNR on recent periods should be inflated at the total trend, not just the economic index.
 
 ```python
 from insurance_trend import SeverityTrendFitter, ExternalIndex
@@ -144,9 +144,9 @@ Bootstrap N     : 1000
 Superimposed inflation: 0.0284
 ```
 
-When an external index is provided, the fit is performed on the deflated severity series: total paid divided by the re-based index. So `trend_rate` is the trend in severity after stripping out the index-measured inflation. `superimposed_inflation()` returns the residual: the severity cost growth that the economic index did not capture. In this example the 2.84% superimposed component represents ADAS recalibration costs, labour time complexity, and parts pricing dynamics — the structural drivers that the ONS SPPI basket does not fully weight.
+When an external index is provided, the fit is performed on the deflated severity series: total paid divided by the re-based index. So `trend_rate` is the trend in severity after stripping out the index-measured inflation. `superimposed_inflation()` returns the residual: the severity cost growth that the economic index did not capture. In this example the 2.84% superimposed component represents ADAS recalibration costs, labour time complexity, and parts pricing dynamics - the structural drivers that the ONS SPPI basket does not fully weight.
 
-The ONS HPTH series is free, public, and updated monthly. No API key, no commercial licence. Other indices catalogued in the library include L7JE (CPI 12.5.4.1 Motor vehicle insurance), D7DO (CPI 04.3.2 services for maintenance and repair of dwellings — useful for household books), and CZEA (RPI Maintenance of motor vehicles). For BCIS data, which is subscription-only, `ExternalIndex.from_csv()` handles the load.
+The ONS HPTH series is free, public, and updated monthly. No API key, no commercial licence. Other indices catalogued in the library include L7JE (CPI 12.5.4.1 Motor vehicle insurance), D7DO (CPI 04.3.2 services for maintenance and repair of dwellings - useful for household books), and CZEA (RPI Maintenance of motor vehicles). For BCIS data, which is subscription-only, `ExternalIndex.from_csv()` handles the load.
 
 ```python
 # For household property books, the ONS building repair index
@@ -227,7 +227,7 @@ factor = result.trend_factor(8)
 print(f"Trend factor (2 years): {factor:.4f}")  # e.g. 1.0917
 ```
 
-For a portfolio with an average loss cost of £450 at the mid-point of the experience period, a 4.49% annual trend to a future policy mid-point two years out means a projected loss cost of £450 × 1.092 = £491. That is the number that goes into the rate. The confidence interval around 4.49% — roughly ±2.5 points given the component CIs — means the projected loss cost range is roughly £475–£510. The "selected" trend table in a rate filing should reflect that range.
+For a portfolio with an average loss cost of £450 at the mid-point of the experience period, a 4.49% annual trend to a future policy mid-point two years out means a projected loss cost of £450 × 1.092 = £491. That is the number that goes into the rate. The confidence interval around 4.49% - roughly ±2.5 points given the component CIs - means the projected loss cost range is roughly £475–£510. The "selected" trend table in a rate filing should reflect that range.
 
 ---
 
@@ -254,7 +254,7 @@ print(result_uc.summary())
 
 The UnobservedComponents model has a time-varying slope, allowing the trend rate to evolve rather than holding it constant within segments. The reported trend rate is the mean of the smoothed state slope over the last four quarters: essentially a recent-period estimate of where the trend is now. Bootstrap CIs are capped at 200 replicates for this method because fitting a state-space model is substantially more expensive than OLS.
 
-We think `local_linear_trend` is appropriate when the trend genuinely seems to be changing gradually — a slow moderation of frequency decline as market saturation approaches, for example — and `log_linear` with explicit structural breaks is appropriate when the discontinuities are abrupt and actuarially attributable to specific events. In practice: use `log_linear` by default, switch to `local_linear_trend` as a cross-check, and document why the two diverge if they do.
+We think `local_linear_trend` is appropriate when the trend genuinely seems to be changing gradually - a slow moderation of frequency decline as market saturation approaches, for example - and `log_linear` with explicit structural breaks is appropriate when the discontinuities are abrupt and actuarially attributable to specific events. In practice: use `log_linear` by default, switch to `local_linear_trend` as a cross-check, and document why the two diverge if they do.
 
 ---
 
@@ -305,9 +305,9 @@ print(projection)
 
 ## What this replaces
 
-A typical Excel-based trend analysis on a quarterly motor book takes a working day to build and is not reproducible — different actuaries will make different choices about which periods to include, whether to log-transform, whether to add seasonal dummies, and whether to acknowledge the COVID break. The choices are implicit in the model structure, not documented.
+A typical Excel-based trend analysis on a quarterly motor book takes a working day to build and is not reproducible - different actuaries will make different choices about which periods to include, whether to log-transform, whether to add seasonal dummies, and whether to acknowledge the COVID break. The choices are implicit in the model structure, not documented.
 
-`insurance-trend` makes those choices explicit and parameterised. The default configuration — log-linear OLS with quarterly seasonal dummies, PELT structural break detection at penalty 3.0, 1,000-replicate bootstrap CI — is defensible and documented. If the peer reviewer wants different assumptions, they change named parameters and rerun. The code is the documentation.
+`insurance-trend` makes those choices explicit and parameterised. The default configuration - log-linear OLS with quarterly seasonal dummies, PELT structural break detection at penalty 3.0, 1,000-replicate bootstrap CI - is defensible and documented. If the peer reviewer wants different assumptions, they change named parameters and rerun. The code is the documentation.
 
 The ONS integration removes the last reason to do this manually. The HPTH series has been public and free since the ONS introduced the SPPI publication. Building it into severity trend analysis is a fifteen-minute task. It has not been standard practice because there was no Python library that made it straightforward. Now there is.
 

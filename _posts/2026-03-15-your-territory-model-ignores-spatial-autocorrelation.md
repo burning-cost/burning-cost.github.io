@@ -17,7 +17,7 @@ Both come down to the same underlying difference: independent credibility treats
 
 When independent O/E credibility produces a territory factor, it produces a point estimate. You know Wolverhampton WV1 2 has a factor of 1.18. You do not know whether that 1.18 is based on 400 policy-years of stable experience or 22 policy-years and a bad quarter.
 
-BYM2 produces a full posterior. The `territory_relativities()` output has `lower` and `upper` columns alongside the point estimate. These are not a delta-method approximation — they come from the full MCMC posterior.
+BYM2 produces a full posterior. The `territory_relativities()` output has `lower` and `upper` columns alongside the point estimate. These are not a delta-method approximation - they come from the full MCMC posterior.
 
 Consider two sectors from a recent motor run:
 
@@ -30,7 +30,7 @@ AB10 3 |      0.957 | 0.875 | 1.047 |   -0.0443
 
 BN1 1 and BN1 2 are adjacent sectors in central Brighton. Their 95% intervals span roughly 16 percentage points each. These are well-exposed sectors; the spatial model has genuine data to work with.
 
-AB10 3 is different. Suppose it had 24 policies and 2 claims in the last year. The raw O/E is 0.89. Standard credibility blending at a weight of 0.30 gives 0.30 × 0.89 + 0.70 × 1.0 = 0.967. BYM2 gives 0.957 — nearly identical point estimate, because the spatial neighbourhood is also slightly below average. But BYM2 also gives you the 95% interval of [0.875, 1.047].
+AB10 3 is different. Suppose it had 24 policies and 2 claims in the last year. The raw O/E is 0.89. Standard credibility blending at a weight of 0.30 gives 0.30 × 0.89 + 0.70 × 1.0 = 0.967. BYM2 gives 0.957 - nearly identical point estimate, because the spatial neighbourhood is also slightly below average. But BYM2 also gives you the 95% interval of [0.875, 1.047].
 
 That interval crosses 1.0. It is telling you directly that the data for AB10 3 does not support a material rate action either way. A pricing committee asking "should we move AB10 3?" now has a quantified answer: no, because the full posterior spans both sides of unity nearly symmetrically.
 
@@ -48,15 +48,15 @@ Independent sector rates are noisy. A sector with 30 policies and a bad year wil
 
 BYM2 factors move less because the spatial structure acts as a regulariser. A sector with a volatile O/E but stable-looking neighbours gets pulled toward those neighbours in every refresh. The movement in the factor table tracks genuine risk change more than sampling noise.
 
-On motor portfolios running both approaches on the same data, BYM2 territory tables change by a mean absolute log-factor of 0.04 per annual refresh. The independent credibility approach on the same data changes by 0.11. That difference — 0.07 on the log scale, roughly 7 percentage points in multiplicative terms — is not in the model's accuracy; both approaches are producing valid estimates of the same underlying risk. The difference is in rate volatility. A policyholder in a thin sector is getting renewals that move less under BYM2 because the model is not confusing last year's bad luck for a genuine risk step change.
+On motor portfolios running both approaches on the same data, BYM2 territory tables change by a mean absolute log-factor of 0.04 per annual refresh. The independent credibility approach on the same data changes by 0.11. That difference - 0.07 on the log scale, roughly 7 percentage points in multiplicative terms - is not in the model's accuracy; both approaches are producing valid estimates of the same underlying risk. The difference is in rate volatility. A policyholder in a thin sector is getting renewals that move less under BYM2 because the model is not confusing last year's bad luck for a genuine risk step change.
 
 Consumer Duty's fair value requirement asks insurers to demonstrate that pricing is not producing unfair outcomes over time. Demonstrating that territory factors are stable, and that the changes that do occur track genuine risk evidence rather than noise, is exactly the kind of documentation that supports that argument. Independent credibility on thin sectors makes this argument harder to make.
 
 ---
 
-For the implementation — how to build the adjacency, run the Moran's I pre-test, fit BYM2, check convergence, and export to Emblem or Radar — see the earlier posts:
+For the implementation - how to build the adjacency, run the Moran's I pre-test, fit BYM2, check convergence, and export to Emblem or Radar - see the earlier posts:
 
-- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/) — the ICAR prior, rho, and why it scales to 9,000 postcode sectors
-- [Getting Spatial Territory Factors Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/) — the full Stage 1 → Stage 2 pipeline with Polars, adjacency caching, and rating engine export
+- [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/) - the ICAR prior, rho, and why it scales to 9,000 postcode sectors
+- [Getting Spatial Territory Factors Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/) - the full Stage 1 → Stage 2 pipeline with Polars, adjacency caching, and rating engine export
 
 Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial).

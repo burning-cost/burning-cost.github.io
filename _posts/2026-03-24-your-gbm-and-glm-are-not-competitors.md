@@ -29,7 +29,7 @@ The question is not whether to blend. It is how to pick the weights honestly.
 
 Before fitting any blend weights, you need an honest estimate of each model's out-of-sample performance. For insurance data this means temporal walk-forward validation, not k-fold.
 
-Standard k-fold randomly assigns policies to folds. On a motor book where claims develop over 12-36 months, this leaks future development information into training folds and makes every model look better than it is. We've seen this inflate apparent GBM Gini scores by 4-6 points — enough to change decisions.
+Standard k-fold randomly assigns policies to folds. On a motor book where claims develop over 12-36 months, this leaks future development information into training folds and makes every model look better than it is. We've seen this inflate apparent GBM Gini scores by 4-6 points - enough to change decisions.
 
 `insurance-cv` handles this correctly:
 
@@ -111,7 +111,7 @@ def score_blend(df: pl.DataFrame) -> pl.Series:
     return pl.Series("blended_freq", np.exp(blended_log))
 ```
 
-Note that we blend in log space, not prediction space. Both the GLM and CatBoost Poisson model produce log-linear predictions, so blending the log-predictions is equivalent to taking a geometric mean weighted by `alpha`. Blending in prediction space (the arithmetic mean) is also common but produces slightly different results for the same `alpha` — it assigns relatively more weight to high predictions. For claim frequency, we prefer the geometric mean.
+Note that we blend in log space, not prediction space. Both the GLM and CatBoost Poisson model produce log-linear predictions, so blending the log-predictions is equivalent to taking a geometric mean weighted by `alpha`. Blending in prediction space (the arithmetic mean) is also common but produces slightly different results for the same `alpha` - it assigns relatively more weight to high predictions. For claim frequency, we prefer the geometric mean.
 
 ---
 
@@ -153,7 +153,7 @@ That is a conversation most pricing committees can have. "The GBM predicts highe
 
 The blend is a new model for model risk management purposes. It goes in the model inventory with its own `run_id` and a validation report.
 
-`insurance-governance` runs the standard battery — Gini CI, actual/expected, Hosmer-Lemeshow calibration, PSI on input distributions, double-lift — against both the pure GLM and the blend, so the committee can see the incremental lift and what it cost in complexity:
+`insurance-governance` runs the standard battery - Gini CI, actual/expected, Hosmer-Lemeshow calibration, PSI on input distributions, double-lift - against both the pure GLM and the blend, so the committee can see the incremental lift and what it cost in complexity:
 
 ```python
 from insurance_governance import ModelValidator, ModelInventory
@@ -193,7 +193,7 @@ Blending helps most when:
 Blending does not help when:
 
 - The GBM's holdout performance is genuinely better, not leakage-inflated, and you have enough data that its variance is controlled. In that case, distil the GBM directly into a GLM with `shap-relativities` and run that in production. The blend is a halfway house; distillation is the end state.
-- The GLM and GBM strongly disagree on a particular segment and you do not know which is right. A blend will produce a number, but the number is not meaningful — it is the average of two models that are telling you contradictory things. Stop, investigate the disagreement, and resolve it before blending.
+- The GLM and GBM strongly disagree on a particular segment and you do not know which is right. A blend will produce a number, but the number is not meaningful - it is the average of two models that are telling you contradictory things. Stop, investigate the disagreement, and resolve it before blending.
 - The GBM was trained on the same time period as the GLM with no holdout discipline. You will not know the optimal `alpha` because you have no honest OOS predictions to optimise against.
 
 ---
@@ -212,7 +212,7 @@ This is not a trick to dress up a GBM in GLM clothing and hope the regulator doe
 
 ## Our recommendation
 
-Start with the pure GLM. Fit the GBM. Run `insurance-cv` walk-forward validation on both. If the honest GBM lift — post-leakage-correction — is more than 2 Gini points, the blend is probably worth the governance overhead. Fit the blend weight from OOS predictions. Extract GBM factors with `shap-relativities`. Register the blend in `insurance-governance` before it goes near a rate change.
+Start with the pure GLM. Fit the GBM. Run `insurance-cv` walk-forward validation on both. If the honest GBM lift - post-leakage-correction - is more than 2 Gini points, the blend is probably worth the governance overhead. Fit the blend weight from OOS predictions. Extract GBM factors with `shap-relativities`. Register the blend in `insurance-governance` before it goes near a rate change.
 
 If the honest GBM lift is less than 2 points, do not blend. GLM complexity is invisible to pricing committees; GBM governance overhead is not. The blend only earns its keep when the lift is real.
 

@@ -11,7 +11,7 @@ canonical_url: "/2026/03/23/glm-assumptions-insurance-pricing-what-actually-matt
 
 Every GLM textbook lists the assumptions. The response follows a particular distribution family. The link function is correctly specified. The observations are independent. The systematic component is linear in the parameters. All four are routinely violated in real insurance pricing work. Two of those violations matter a great deal. Two of them you can mostly ignore. Knowing which is which is what separates a pricing actuary who validates models from one who recites them.
 
-This post goes through each assumption in turn — what it means, what happens when it breaks, and what you should actually do about it on a live motor or home book.
+This post goes through each assumption in turn - what it means, what happens when it breaks, and what you should actually do about it on a live motor or home book.
 
 ---
 
@@ -27,9 +27,9 @@ These are not equally important. We will treat them in order of practical conseq
 
 Choosing the wrong distribution family is the GLM assumption most likely to produce wrong premiums, not just wrong standard errors.
 
-For a frequency model on a UK motor book, the Poisson distribution is usually the right starting point. Not because claims counts are perfectly Poisson — they are not — but because the Poisson GLM is equivalent to maximising the multinomial likelihood for exposure-weighted count data, which is exactly what you want. The variance assumption (Var = mu) is almost certainly wrong, but as we will discuss below, the Poisson MLE has a robustness property that makes this less catastrophic than it sounds.
+For a frequency model on a UK motor book, the Poisson distribution is usually the right starting point. Not because claims counts are perfectly Poisson - they are not - but because the Poisson GLM is equivalent to maximising the multinomial likelihood for exposure-weighted count data, which is exactly what you want. The variance assumption (Var = mu) is almost certainly wrong, but as we will discuss below, the Poisson MLE has a robustness property that makes this less catastrophic than it sounds.
 
-For severity, the Gamma distribution is the standard choice, and it is generally well-calibrated for attritional motor and home claims. Its variance-mean relationship (Var = phi * mu^2, i.e., constant coefficient of variation) matches what we observe empirically: large expected claims have larger absolute variance, but roughly stable CV. If your severity has a heavier tail than Gamma — large loss property or BI-heavy motor — the inverse Gaussian (Var ~ mu^3) is worth trying, or a spliced model where you model attritional and large losses separately.
+For severity, the Gamma distribution is the standard choice, and it is generally well-calibrated for attritional motor and home claims. Its variance-mean relationship (Var = phi * mu^2, i.e., constant coefficient of variation) matches what we observe empirically: large expected claims have larger absolute variance, but roughly stable CV. If your severity has a heavier tail than Gamma - large loss property or BI-heavy motor - the inverse Gaussian (Var ~ mu^3) is worth trying, or a spliced model where you model attritional and large losses separately.
 
 For pure premium directly, Tweedie with power parameter p between 1 and 2 is the correct family. The compound Poisson-Gamma structure of Tweedie (1 < p < 2) matches the actual data-generating process: a Poisson number of claims, each with Gamma-distributed severity. For UK private motor, p typically estimates between 1.5 and 1.7. Getting p wrong by 0.2 or 0.3 produces miscalibrated variance estimates that distort safety loadings and reinsurance pricing even when the mean predictions look fine.
 
@@ -81,11 +81,11 @@ On a typical UK motor book dominated by accidental damage: p ≈ 1.5–1.6. Add 
 
 The independence assumption says that knowing the outcome for policy i tells you nothing about the outcome for policy j. On a motor book, this is wrong in at least two ways.
 
-**Spatial clustering.** Policies in the same postcode are exposed to the same local crime rates, road quality, and weather events. Their claims are positively correlated. For attritional frequency — the grinding background of TPBI and own-damage claims — this correlation is small enough that ignoring it costs you little. Standard errors are slightly underestimated. Point estimates are unaffected.
+**Spatial clustering.** Policies in the same postcode are exposed to the same local crime rates, road quality, and weather events. Their claims are positively correlated. For attritional frequency - the grinding background of TPBI and own-damage claims - this correlation is small enough that ignoring it costs you little. Standard errors are slightly underestimated. Point estimates are unaffected.
 
-For catastrophe exposure — a flood affecting fifty home insurance policies in the same district — spatial correlation matters enormously. The GLM independence assumption means the model has no mechanism to distinguish fifty independent claims from fifty simultaneous correlated claims. It will get the expected aggregate loss approximately right (claims are additive in expectation) but will catastrophically understate the aggregate variance. If you use GLM confidence intervals to set your cat loading, you are underestimating aggregate risk.
+For catastrophe exposure - a flood affecting fifty home insurance policies in the same district - spatial correlation matters enormously. The GLM independence assumption means the model has no mechanism to distinguish fifty independent claims from fifty simultaneous correlated claims. It will get the expected aggregate loss approximately right (claims are additive in expectation) but will catastrophically understate the aggregate variance. If you use GLM confidence intervals to set your cat loading, you are underestimating aggregate risk.
 
-**Frequency-severity dependence.** The two-part model (separate Poisson frequency GLM, separate Gamma severity GLM) assumes frequency and severity are conditionally independent given the rating factors. Every published study that has tested this finds it to be wrong — young drivers who claim are selecting higher-severity claims, high-NCD drivers claim less often but for more when they do. The dependence is modest in most books (Spearman rank correlations in the 0.10–0.20 range) but it is systematically non-zero. We wrote about this in more detail in [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2026-03-08-frequency-severity-independence-is-costing-you-premium %}).
+**Frequency-severity dependence.** The two-part model (separate Poisson frequency GLM, separate Gamma severity GLM) assumes frequency and severity are conditionally independent given the rating factors. Every published study that has tested this finds it to be wrong - young drivers who claim are selecting higher-severity claims, high-NCD drivers claim less often but for more when they do. The dependence is modest in most books (Spearman rank correlations in the 0.10–0.20 range) but it is systematically non-zero. We wrote about this in more detail in [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2026-03-08-frequency-severity-independence-is-costing-you-premium %}).
 
 The practical upshot: for attritional modelling of non-catastrophe lines, the independence assumption is wrong but not materially so for pricing point estimates. For aggregate variance estimates, cat loading, and reinsurance tower pricing, it is wrong in a way that matters and requires explicit treatment.
 
@@ -101,7 +101,7 @@ log(mu) = beta_0 + beta_1 * driver_age_band + beta_2 * vehicle_group + ...
 
 This is a modelling assumption, not a physical law. Driver age effects on frequency are not piecewise-constant across bands. The vehicle group effect is not the same across all driver ages. What the linear predictor buys you is interpretability and stability: a multiplicative rating factor structure that a pricing committee can audit, challenge, and import into a rating engine.
 
-What it costs you is predictive power. Nonlinear age effects, interactions between age and vehicle type, geographies that do not respond linearly to the factors you have included — these are all left in the residuals.
+What it costs you is predictive power. Nonlinear age effects, interactions between age and vehicle type, geographies that do not respond linearly to the factors you have included - these are all left in the residuals.
 
 The common solution is to put more structure in the bands: narrow driver age bands where the effect is steep (17–20, 21–24, 25–29), wider bands where it flattens out. This is actuarial craft. The statistical complement is to test for residual nonlinearity using GAMs, then decide whether the nonlinearity is real enough to warrant a more complex factor structure.
 
@@ -123,7 +123,7 @@ gam_freq.plot_partial("driver_age", compare_glm=glm_result)
 
 The GAM partial effect for driver age is the benchmark for whether your banding is capturing the right shape. If the GAM curve bends sharply between age 19 and 23 but your GLM uses a single "17-24" band, you are assigning the same relativity to two risks that are materially different. That is a linearity violation worth fixing, not just accepting.
 
-Interactions are the harder case. A GLM with a log link does have implicit interactions — the multiplicative structure means the driver age relativity applies proportionally to whatever the vehicle group effect is. But crossed multiplicative interactions (driver age × vehicle group where the young-driver penalty is larger for high-performance vehicles) are not captured without explicit interaction terms. The problem is identifying which interactions are real. We cover that in [Finding the Interactions Your GLM Missed]({{ site.baseurl }}{% post_url 2026-02-27-finding-the-interactions-your-glm-missed %}).
+Interactions are the harder case. A GLM with a log link does have implicit interactions - the multiplicative structure means the driver age relativity applies proportionally to whatever the vehicle group effect is. But crossed multiplicative interactions (driver age × vehicle group where the young-driver penalty is larger for high-performance vehicles) are not captured without explicit interaction terms. The problem is identifying which interactions are real. We cover that in [Finding the Interactions Your GLM Missed]({{ site.baseurl }}{% post_url 2026-02-27-finding-the-interactions-your-glm-missed %}).
 
 ---
 
@@ -131,7 +131,7 @@ Interactions are the harder case. A GLM with a log link does have implicit inter
 
 This is where the Poisson assumption requires the most practical nuance.
 
-A Poisson GLM assumes Var(Y) = mu. On any real motor or home book, the observed variance exceeds this. Policyholders are not Poisson processes with identical risk characteristics within each cell. There is residual heterogeneity — unobserved risk factors, policyholder selection effects, genuine volatility beyond the Poisson rate — that makes the observed variance higher than a pure Poisson would predict. This is overdispersion.
+A Poisson GLM assumes Var(Y) = mu. On any real motor or home book, the observed variance exceeds this. Policyholders are not Poisson processes with identical risk characteristics within each cell. There is residual heterogeneity - unobserved risk factors, policyholder selection effects, genuine volatility beyond the Poisson rate - that makes the observed variance higher than a pure Poisson would predict. This is overdispersion.
 
 The standard test is to compute the Pearson chi-squared statistic divided by the residual degrees of freedom:
 
@@ -203,7 +203,7 @@ plt.ylabel("Deviance residual")
 plt.title("Poisson GLM: deviance residuals vs fitted")
 ```
 
-What you are looking for: no systematic trend (residuals should be centred at zero across the fitted range), and no obvious fan-out (which would indicate the variance function is wrong). Fanning in a Poisson model is unusual, but a consistent positive trend — residuals rising as fitted values increase — indicates underdispersion at high-risk segments, often a sign of model misspecification at the top of the risk distribution.
+What you are looking for: no systematic trend (residuals should be centred at zero across the fitted range), and no obvious fan-out (which would indicate the variance function is wrong). Fanning in a Poisson model is unusual, but a consistent positive trend - residuals rising as fitted values increase - indicates underdispersion at high-risk segments, often a sign of model misspecification at the top of the risk distribution.
 
 ### Cook's distance and influential observations
 
@@ -262,7 +262,7 @@ The insurance pricing world converged on a particular workflow:
 
 **Frequency model:** Poisson GLM with log link and exposure offset. Correct for overdispersion with quasi-Poisson if dispersion > 1.2. Do not use negative binomial unless you have a specific reason (NB adds a parameter that is rarely identifiable on annual motor data with standard rating factors).
 
-**Severity model:** Gamma GLM with log link, fitted on positive claims only. Use inverse Gaussian only if you have established empirically that the variance-mean relationship is cubic rather than quadratic — which is rare for attritional motor, more plausible for BI-heavy books.
+**Severity model:** Gamma GLM with log link, fitted on positive claims only. Use inverse Gaussian only if you have established empirically that the variance-mean relationship is cubic rather than quadratic - which is rare for attritional motor, more plausible for BI-heavy books.
 
 **Pure premium directly:** Tweedie GLM with estimated p. This is appropriate when you have a stable book with a long development history. The advantage over the two-part model is simplicity and the natural handling of the zero-claims mass. The disadvantage is that you lose the ability to separately analyse frequency and severity trends, which matters for monitoring and reserving. Most UK pricing teams use the two-part model for this reason, not because Tweedie is statistically inferior.
 
@@ -285,7 +285,7 @@ p_value = f_dist.sf(f_stat, dfn=(model_extend.df_resid - model_base.df_resid), d
 print(f"F-statistic: {f_stat:.3f}, p-value: {p_value:.4f}")
 ```
 
-Proper MLE (not quasi-likelihood) remains appropriate for: cross-validation comparisons on the same dataset (deviance or log-score), Bayesian credibility extensions, and any context where the full probabilistic model is used downstream — for instance, if you are constructing prediction intervals from the parametric Tweedie distribution.
+Proper MLE (not quasi-likelihood) remains appropriate for: cross-validation comparisons on the same dataset (deviance or log-score), Bayesian credibility extensions, and any context where the full probabilistic model is used downstream - for instance, if you are constructing prediction intervals from the parametric Tweedie distribution.
 
 Speaking of prediction intervals: if your GLM assumptions are materially violated, parametric intervals derived from the fitted distribution will be unreliable. The coverage will be wrong. For intervals that hold without distributional assumptions, `insurance-conformal` constructs finite-sample valid prediction intervals using conformal prediction. These are tighter than parametric Tweedie intervals on heteroskedastic books and have guaranteed coverage regardless of whether the distribution family was correctly specified. See [Conformal Prediction Intervals for Insurance Pricing Models]({{ site.baseurl }}{% post_url 2026-02-19-conformal-prediction-intervals-for-insurance-pricing %}) for the full setup.
 
@@ -329,17 +329,17 @@ The log link also has excellent numerical properties: the Poisson log-linear mod
 
 ## What we recommend
 
-Use Poisson with quasi-likelihood scaling for all frequency inference. Check your Tweedie power parameter empirically — do not default to p=1.5 without testing. Use GAMs to validate your banding structure before locking in rating factors; the linearity assumption is the one most likely to produce systematic pricing errors that accumulate quietly over renewal cycles.
+Use Poisson with quasi-likelihood scaling for all frequency inference. Check your Tweedie power parameter empirically - do not default to p=1.5 without testing. Use GAMs to validate your banding structure before locking in rating factors; the linearity assumption is the one most likely to produce systematic pricing errors that accumulate quietly over renewal cycles.
 
 Ignore the independence assumption for attritional point estimates. Do not ignore it if you are computing aggregate variance, setting cat loads, or pricing reinsurance.
 
-For prediction intervals — coverage-guaranteed uncertainty bands per risk — the distributional assumptions in your GLM are a fragile foundation. Conformal prediction gives you the intervals without requiring those assumptions to hold.
+For prediction intervals - coverage-guaranteed uncertainty bands per risk - the distributional assumptions in your GLM are a fragile foundation. Conformal prediction gives you the intervals without requiring those assumptions to hold.
 
 ---
 
 **Related:**
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2026-03-08-frequency-severity-independence-is-costing-you-premium %}) — empirical evidence and a Python implementation of Sarmanov copula marginals
-- [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2026-03-08-validating-gamlss-sigma-models %}) — when the constant-dispersion assumption fails in a severity model and how to validate a sigma submodel
-- [Finding the Interactions Your GLM Missed]({{ site.baseurl }}{% post_url 2026-02-27-finding-the-interactions-your-glm-missed %}) — testing for residual nonlinearity and interaction effects
-- [Conformal Prediction Intervals for Insurance Pricing Models]({{ site.baseurl }}{% post_url 2026-02-19-conformal-prediction-intervals-for-insurance-pricing %}) — distribution-free prediction intervals when your GLM assumptions are in doubt
-- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure]({{ site.baseurl }}{% post_url 2026-03-21-tweedie-regression-insurance-what-sklearn-doesnt-tell-you %}) — the exposure offset problem and how to estimate p correctly
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2026-03-08-frequency-severity-independence-is-costing-you-premium %}) - empirical evidence and a Python implementation of Sarmanov copula marginals
+- [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2026-03-08-validating-gamlss-sigma-models %}) - when the constant-dispersion assumption fails in a severity model and how to validate a sigma submodel
+- [Finding the Interactions Your GLM Missed]({{ site.baseurl }}{% post_url 2026-02-27-finding-the-interactions-your-glm-missed %}) - testing for residual nonlinearity and interaction effects
+- [Conformal Prediction Intervals for Insurance Pricing Models]({{ site.baseurl }}{% post_url 2026-02-19-conformal-prediction-intervals-for-insurance-pricing %}) - distribution-free prediction intervals when your GLM assumptions are in doubt
+- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure]({{ site.baseurl }}{% post_url 2026-03-21-tweedie-regression-insurance-what-sklearn-doesnt-tell-you %}) - the exposure offset problem and how to estimate p correctly

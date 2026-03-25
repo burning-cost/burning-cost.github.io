@@ -4,14 +4,14 @@ title: "EquiPy vs insurance-fairness: Two Different Questions About Fairness in 
 date: 2026-03-22
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
-description: "EquiPy is a technically excellent fairness correction tool built on optimal transport theory, from Arthur Charpentier's group at UQAM. insurance-fairness is an FCA-focused proxy discrimination auditor. They are not competing — they address different stages of the same compliance problem."
+description: "EquiPy is a technically excellent fairness correction tool built on optimal transport theory, from Arthur Charpentier's group at UQAM. insurance-fairness is an FCA-focused proxy discrimination auditor. They are not competing - they address different stages of the same compliance problem."
 canonical_url: "/2026/03/22/equipy-vs-insurance-fairness/"
 tags: [equipy, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, optimal-transport, Wasserstein, demographic-parity, Charpentier]
 ---
 
-A Python fairness library published on arXiv in March 2025: [EquiPy](https://arxiv.org/abs/2503.09866), from Agathe Fernandes Machado, Suzie Grondin, Philipp Ratz, Arthur Charpentier, and François Hu. Charpentier is at UQAM and is one of the most credible actuarial academics working on fairness — his group has published several papers on Wasserstein-based discrimination correction in insurance contexts, and the theoretical foundations here are strong.
+A Python fairness library published on arXiv in March 2025: [EquiPy](https://arxiv.org/abs/2503.09866), from Agathe Fernandes Machado, Suzie Grondin, Philipp Ratz, Arthur Charpentier, and François Hu. Charpentier is at UQAM and is one of the most credible actuarial academics working on fairness - his group has published several papers on Wasserstein-based discrimination correction in insurance contexts, and the theoretical foundations here are strong.
 
-EquiPy and `insurance-fairness` both touch on pricing fairness. The comparison is worth making precisely, because the tools address fundamentally different stages of the compliance problem. Running EquiPy in place of `insurance-fairness` — or vice versa — will leave a UK insurer with the wrong deliverable for their situation.
+EquiPy and `insurance-fairness` both touch on pricing fairness. The comparison is worth making precisely, because the tools address fundamentally different stages of the compliance problem. Running EquiPy in place of `insurance-fairness` - or vice versa - will leave a UK insurer with the wrong deliverable for their situation.
 
 ```bash
 pip install equipy
@@ -22,9 +22,9 @@ uv add insurance-fairness
 
 ## What EquiPy does
 
-EquiPy is a post-processing fairness correction tool. You train your model without any fairness constraint. You then run EquiPy on the model's predictions to adjust them towards demographic parity. The correction is optimal in the Wasserstein-2 sense — it moves predicted values towards the Wasserstein barycenter of the group-conditional distributions, minimising the total "transportation cost" of the correction.
+EquiPy is a post-processing fairness correction tool. You train your model without any fairness constraint. You then run EquiPy on the model's predictions to adjust them towards demographic parity. The correction is optimal in the Wasserstein-2 sense - it moves predicted values towards the Wasserstein barycenter of the group-conditional distributions, minimising the total "transportation cost" of the correction.
 
-The single-attribute correction (`FairWasserstein`) implements the Chzhen et al. (2020) result. The multi-attribute extension (`MultiWasserstein`) handles sequential correction across several sensitive features simultaneously — the key theoretical contribution is that the sequential application order does not affect the result.
+The single-attribute correction (`FairWasserstein`) implements the Chzhen et al. (2020) result. The multi-attribute extension (`MultiWasserstein`) handles sequential correction across several sensitive features simultaneously - the key theoretical contribution is that the sequential application order does not affect the result.
 
 ```python
 from equipy.fairness import MultiWasserstein
@@ -36,7 +36,7 @@ calibrator.fit(predictions_calib, sensitive_features_calib)
 fair_predictions = calibrator.transform(predictions, sensitive_features)
 ```
 
-The `epsilon` parameter allows approximate demographic parity — you can ask for corrections that bring unfairness below a threshold rather than eliminating it entirely:
+The `epsilon` parameter allows approximate demographic parity - you can ask for corrections that bring unfairness below a threshold rather than eliminating it entirely:
 
 ```python
 # Tolerate residual unfairness of 0.1 on gender, 0.2 on ethnicity proxy
@@ -88,7 +88,7 @@ This is the core reason the tools are not substitutes.
 
 EquiPy answers: **given a model with unfair outputs, how do I produce fairer outputs?** It is a correction tool. It tells you nothing about why the unfairness is happening or which inputs are responsible.
 
-A UK insurer working under FCA Consumer Duty should run detection first, for two reasons. First, the FCA's EP25/2 framework explicitly asks firms to *measure and understand* proxy effects — not just remove them. A firm that applies EquiPy corrections without a detection audit cannot explain to the FCA what they found and why they intervened. Second, detection may reveal that no material proxy effect exists, in which case applying post-processing corrections is unnecessary and will likely worsen calibration without regulatory benefit.
+A UK insurer working under FCA Consumer Duty should run detection first, for two reasons. First, the FCA's EP25/2 framework explicitly asks firms to *measure and understand* proxy effects - not just remove them. A firm that applies EquiPy corrections without a detection audit cannot explain to the FCA what they found and why they intervened. Second, detection may reveal that no material proxy effect exists, in which case applying post-processing corrections is unnecessary and will likely worsen calibration without regulatory benefit.
 
 The correct workflow is: audit with `insurance-fairness`, characterise the proxy effects, decide whether intervention is warranted, then consider correction. EquiPy is a reasonable tool for the correction step.
 
@@ -102,13 +102,13 @@ EquiPy enforces demographic parity: the corrected predictions have the same dist
 
 Demographic parity is probably too aggressive for insurance pricing, and the FCA does not require it.
 
-The FCA's concern, as articulated in EP25/2 and Consumer Duty PS22/9, is proxy discrimination: protected characteristics transmitting into prices through non-protected rating factors. An insurer that eliminates all premium variation correlated with gender would satisfy demographic parity — but it would also eliminate legitimate risk-based differentiation that correlates with gender for actuarially justifiable reasons. The Gender Directive (2012) banned the *direct* use of gender as a rating factor, not the existence of gender-correlated pricing differences arising from risk-differentiated rating.
+The FCA's concern, as articulated in EP25/2 and Consumer Duty PS22/9, is proxy discrimination: protected characteristics transmitting into prices through non-protected rating factors. An insurer that eliminates all premium variation correlated with gender would satisfy demographic parity - but it would also eliminate legitimate risk-based differentiation that correlates with gender for actuarially justifiable reasons. The Gender Directive (2012) banned the *direct* use of gender as a rating factor, not the existence of gender-correlated pricing differences arising from risk-differentiated rating.
 
-Wasserstein barycenter corrections remove *all* correlation between predictions and protected attributes, including the portion driven by genuine risk differences. This is more than Equality Act 2010 Section 19 requires. Section 19 prohibits *unjustified* indirect discrimination — a provision that explicitly permits employers and service providers to apply conditions that produce group disparities if those conditions are proportionate to a legitimate aim. Risk-based pricing is a legitimate aim. The actuarial exemption (Schedule 3 Part 5, EA2010) provides additional cover for insurers using actuarially justified factors.
+Wasserstein barycenter corrections remove *all* correlation between predictions and protected attributes, including the portion driven by genuine risk differences. This is more than Equality Act 2010 Section 19 requires. Section 19 prohibits *unjustified* indirect discrimination - a provision that explicitly permits employers and service providers to apply conditions that produce group disparities if those conditions are proportionate to a legitimate aim. Risk-based pricing is a legitimate aim. The actuarial exemption (Schedule 3 Part 5, EA2010) provides additional cover for insurers using actuarially justified factors.
 
-EquiPy's authors are aware of this tension — their previous work on Wasserstein barycenters in insurance contexts discusses the tradeoff between fairness and actuarial soundness. But the library as shipped does not offer a mechanism to separate the discriminatory component of a group differential from the actuarially justified component. `insurance-fairness`'s `ProxyVulnerabilityScore` does: it estimates the gap between the unaware premium (no protected attribute used) and the aware premium (marginalised over the protected characteristic distribution), isolating the component attributable to proxy transmission specifically.
+EquiPy's authors are aware of this tension - their previous work on Wasserstein barycenters in insurance contexts discusses the tradeoff between fairness and actuarial soundness. But the library as shipped does not offer a mechanism to separate the discriminatory component of a group differential from the actuarially justified component. `insurance-fairness`'s `ProxyVulnerabilityScore` does: it estimates the gap between the unaware premium (no protected attribute used) and the aware premium (marginalised over the protected characteristic distribution), isolating the component attributable to proxy transmission specifically.
 
-That said: for use cases where full demographic parity correction is appropriate — reinsurance pricing on non-actuarially-differentiated pools, underwriting scores used in automated decisions that must satisfy algorithmic fairness standards — EquiPy's theoretical guarantees are stronger than anything else currently available in Python.
+That said: for use cases where full demographic parity correction is appropriate - reinsurance pricing on non-actuarially-differentiated pools, underwriting scores used in automated decisions that must satisfy algorithmic fairness standards - EquiPy's theoretical guarantees are stronger than anything else currently available in Python.
 
 ---
 
@@ -118,9 +118,9 @@ One practical gap: EquiPy takes predictions as a flat array or Series. It does n
 
 Insurance portfolios are not flat rows. A fleet vehicle with 1.0 earned exposure is not the same as a private car with 0.3 earned exposure. Every fairness metric in `insurance-fairness` is exposure-weighted throughout. Running EquiPy on a portfolio with highly variable exposures will produce corrections that are technically optimal in unweighted prediction space but actuarially incorrect when translated into premium income.
 
-This is not a criticism of EquiPy — it was not designed for insurance-specific data structures. It is a reason why exposure weighting matters and why a general-purpose tool requires adaptation before use in a pricing context.
+This is not a criticism of EquiPy - it was not designed for insurance-specific data structures. It is a reason why exposure weighting matters and why a general-purpose tool requires adaptation before use in a pricing context.
 
-`insurance-fairness` is also built specifically around Poisson and Gamma model outputs — the frequency/severity pair that underlies most UK motor, home, and commercial pricing models. Its calibration metrics (`calibration_by_group`) operate on rates with exposure offsets, and demographic parity is computed in log-space because the relevant comparison for a multiplicative model is a ratio of rates, not a difference in levels.
+`insurance-fairness` is also built specifically around Poisson and Gamma model outputs - the frequency/severity pair that underlies most UK motor, home, and commercial pricing models. Its calibration metrics (`calibration_by_group`) operate on rates with exposure offsets, and demographic parity is computed in log-space because the relevant comparison for a multiplicative model is a ratio of rates, not a difference in levels.
 
 ---
 
@@ -128,7 +128,7 @@ This is not a criticism of EquiPy — it was not designed for insurance-specific
 
 On the correction problem itself, EquiPy's technical foundations are more rigorous than anything in `insurance-fairness`.
 
-The Wasserstein barycenter approach provides optimality guarantees: the corrected prediction is the closest distribution (in Wasserstein-2 distance) to the original that achieves demographic parity. The sequential correction for multiple attributes (`MultiWasserstein`) is theoretically elegant — the order-invariance result means you are not making an arbitrary choice about which sensitive attribute to correct first. The `epsilon` parameter enables soft constraints, which is practically useful when full demographic parity is too aggressive.
+The Wasserstein barycenter approach provides optimality guarantees: the corrected prediction is the closest distribution (in Wasserstein-2 distance) to the original that achieves demographic parity. The sequential correction for multiple attributes (`MultiWasserstein`) is theoretically elegant - the order-invariance result means you are not making an arbitrary choice about which sensitive attribute to correct first. The `epsilon` parameter enables soft constraints, which is practically useful when full demographic parity is too aggressive.
 
 The `insurance-fairness` optimal transport module (`insurance_fairness.optimal_transport`) implements Wasserstein corrections for the corrective premium component of `ProxyVulnerabilityScore`, but it does not expose the full multi-attribute sequential correction that EquiPy provides.
 
@@ -144,7 +144,7 @@ Charpentier's group has also produced a companion paper specifically on Wasserst
 | Core method | Wasserstein barycenter, optimal transport | DML proxy detection, CatBoost R-squared, mutual information |
 | Output | Corrected predictions | FCA-ready audit report with RAG statuses |
 | Fairness criterion | Demographic parity (enforced) | Proxy discrimination detection (measured, not enforced) |
-| Multiple sensitive attributes | Yes — sequential, order-invariant | Yes |
+| Multiple sensitive attributes | Yes - sequential, order-invariant | Yes |
 | Exposure weighting | No | Throughout |
 | Insurance model structure (Poisson/Gamma) | No | Yes |
 | FCA regulatory mapping | No | EP25/2, Consumer Duty PRIN 2A, Equality Act s.19 |
@@ -177,19 +177,19 @@ The two libraries are complementary. They are not competing for the same job.
 ---
 
 **Related posts:**
-- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — why generic ML fairness tools miss what the FCA cares about
-- [FCA is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — what the live enforcement risk looks like
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) - the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - why generic ML fairness tools miss what the FCA cares about
+- [FCA is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) - what the live enforcement risk looks like
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

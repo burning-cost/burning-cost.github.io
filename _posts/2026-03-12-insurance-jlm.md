@@ -10,9 +10,9 @@ post_number: 71
 
 There are approximately one million active black box policies in the UK. Every insurer running a telematics book is doing roughly the same thing with the resulting data: taking the most recent driving score, feeding it into a GLM as a static covariate, and pricing on that.
 
-This discards trajectory information. Two drivers at a score of 68 — one who has been at 72 for three months and is declining, one who was at 58 three months ago and is improving — present materially different claim risks. The standard GLM cannot tell them apart. It treats both as equivalent risks because it sees only the current value, not the path.
+This discards trajectory information. Two drivers at a score of 68 - one who has been at 72 for three months and is declining, one who was at 58 three months ago and is improving - present materially different claim risks. The standard GLM cannot tell them apart. It treats both as equivalent risks because it sees only the current value, not the path.
 
-There is a second problem. The observed score is not the true latent risk. It is measured with error: sensor noise, trip sampling variability, boundary effects on the score algorithm. If you put the noisy observed score directly into a Cox model, the association parameter is attenuated — Berkson attenuation bias. You systematically underestimate how strongly the driving trajectory predicts claims.
+There is a second problem. The observed score is not the true latent risk. It is measured with error: sensor noise, trip sampling variability, boundary effects on the score algorithm. If you put the noisy observed score directly into a Cox model, the association parameter is attenuated - Berkson attenuation bias. You systematically underestimate how strongly the driving trajectory predicts claims.
 
 The joint longitudinal-survival model (JLM) solves both problems at once.
 
@@ -22,16 +22,16 @@ The joint longitudinal-survival model (JLM) solves both problems at once.
 
 The Wulfsohn-Tsiatis (1997, *Biometrics*) shared random effects model has two linked submodels.
 
-**Longitudinal submodel** — fits the trajectory:
+**Longitudinal submodel** - fits the trajectory:
 
 ```
 y_i(t_ij) = m_i(t_ij) + ε_ij
 m_i(t_ij) = x_i(t_ij)ᵀ β + z_i(t_ij)ᵀ b_i
 ```
 
-where `b_i ~ N(0, D)` is a subject-specific random effect capturing the individual's persistent latent risk profile, and `ε_ij ~ N(0, σ²)` is measurement noise. `m_i(t)` is the true underlying trajectory — not what was observed.
+where `b_i ~ N(0, D)` is a subject-specific random effect capturing the individual's persistent latent risk profile, and `ε_ij ~ N(0, σ²)` is measurement noise. `m_i(t)` is the true underlying trajectory - not what was observed.
 
-**Survival submodel** — links true trajectory to event time:
+**Survival submodel** - links true trajectory to event time:
 
 ```
 h(t | b_i) = h_0(t) exp(γᵀ w_i + α m_i(t))
@@ -74,7 +74,7 @@ print(model.association_summary())
 # 0  alpha       -0.041  0.009  -4.56    <0.001
 ```
 
-`alpha = -0.041` means: a one-unit increase in true driving score reduces claim hazard by about 4%. This is the attenuation-corrected estimate — a naive Cox model using observed scores would have produced something like -0.027.
+`alpha = -0.041` means: a one-unit increase in true driving score reduces claim hazard by about 4%. This is the attenuation-corrected estimate - a naive Cox model using observed scores would have produced something like -0.027.
 
 ---
 
@@ -142,17 +142,17 @@ book_risk = predictor.batch_predict(current_readings, landmark_time=policy_month
 
 The library has 120 tests across six modules.
 
-**models/joint\_model.py** — the EM loop. E-step uses Gauss-Hermite quadrature via `numpy.polynomial.hermite`. M-step closes over `β`, `D`, `σ²` analytically and optimises `γ`, `α` numerically via `scipy.optimize.minimize`. Convergence is monitored on the observed log-likelihood, not the complete-data version. The constraint `dim(b_i) ≤ 4` is enforced at API level because GHQ computation grows exponentially with random effects dimension: beyond dim 4, 7 quadrature points per dimension means 7⁴ = 2,401 integration nodes per subject per EM iteration.
+**models/joint\_model.py** - the EM loop. E-step uses Gauss-Hermite quadrature via `numpy.polynomial.hermite`. M-step closes over `β`, `D`, `σ²` analytically and optimises `γ`, `α` numerically via `scipy.optimize.minimize`. Convergence is monitored on the observed log-likelihood, not the complete-data version. The constraint `dim(b_i) ≤ 4` is enforced at API level because GHQ computation grows exponentially with random effects dimension: beyond dim 4, 7 quadrature points per dimension means 7⁴ = 2,401 integration nodes per subject per EM iteration.
 
-**models/longitudinal.py** — wraps `statsmodels.MixedLM` for the LME submodel. Extracts β, D, σ² as starting values for EM, then operates in closed form during iteration.
+**models/longitudinal.py** - wraps `statsmodels.MixedLM` for the LME submodel. Extracts β, D, σ² as starting values for EM, then operates in closed form during iteration.
 
-**models/survival.py** — wraps `lifelines.CoxPHFitter` for initial γ estimates. Breslow baseline hazard estimator for the EM loop.
+**models/survival.py** - wraps `lifelines.CoxPHFitter` for initial γ estimates. Breslow baseline hazard estimator for the EM loop.
 
-**prediction/dynamic.py** — `DynamicPredictor` with Monte Carlo integration over the posterior of `b_i`. At each call, draws from the posterior `p(b_i | y_i(t), T_i > t, θ̂)` via rejection sampling from the prior scaled by the likelihood. Cheap enough for batch scoring a book of 50,000 active policies.
+**prediction/dynamic.py** - `DynamicPredictor` with Monte Carlo integration over the posterior of `b_i`. At each call, draws from the posterior `p(b_i | y_i(t), T_i > t, θ̂)` via rejection sampling from the prior scaled by the likelihood. Cheap enough for batch scoring a book of 50,000 active policies.
 
-**data/loaders.py** — `jlm_from_telematics()` and `jlm_from_ncd()`. The NCD variant treats annual NCD level (0–5) as the longitudinal marker and time-to-lapse as the event — relevant for retention modelling.
+**data/loaders.py** - `jlm_from_telematics()` and `jlm_from_ncd()`. The NCD variant treats annual NCD level (0–5) as the longitudinal marker and time-to-lapse as the event - relevant for retention modelling.
 
-**diagnostics/** — martingale residuals for the longitudinal submodel, Cox-Snell residuals for the survival submodel, Brier score and time-dependent AUC for dynamic prediction calibration.
+**diagnostics/** - martingale residuals for the longitudinal submodel, Cox-Snell residuals for the survival submodel, Brier score and time-dependent AUC for dynamic prediction calibration.
 
 ---
 
@@ -164,7 +164,7 @@ The library has 120 tests across six modules.
 
 **Random effects dimension limit.** `dim(b_i) ≤ 4` in v0.1.0. A random intercept + slope model (`dim = 2`) is fine. A random intercept + slope + acceleration model (`dim = 3`) is on the boundary of practical. Anything higher requires MCMC or variational Bayes, which are not in scope for this library.
 
-**MNAR risk from offline devices.** A device that goes offline (battery failure, disconnection) is not missing at random — offline periods correlate with claims. Standard EM assumes data is missing at random. If offline periods in your data are systematically associated with claim risk, the association estimate will be biased. There is no clean statistical fix for this; the engineering fix is to impute offline periods with a specific risk score value and flag them.
+**MNAR risk from offline devices.** A device that goes offline (battery failure, disconnection) is not missing at random - offline periods correlate with claims. Standard EM assumes data is missing at random. If offline periods in your data are systematically associated with claim risk, the association estimate will be biased. There is no clean statistical fix for this; the engineering fix is to impute offline periods with a specific risk score value and flag them.
 
 **No competing risks in v0.1.0.** Motor telematics books have two exit events: claim and lapse. The standard SREM handles a single event. The `jmstate` package handles multi-state models; in v0.2.0 we will add a competing-risks extension for the joint lapse/claim case.
 
@@ -184,11 +184,11 @@ Source and issue tracker: [github.com/burning-cost/insurance-jlm](https://github
 
 ## See also
 
-- [HMM-Based Telematics Risk Scoring](/2026/03/13/insurance-telematics/) — insurance-telematics produces the driving score time series that feeds into insurance-jlm as the longitudinal marker
-- [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) — insurance-survival handles standard time-to-event modelling without the longitudinal component
-- [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/) — insurance-thin-data for thin-segment pricing when your telematics book lacks enough claims for stable JLM estimation
-- [Mixture Cure Models](/2026/03/11/insurance-cure/) — insurance-survival for the non-claimer subpopulation; can be combined with JLM for a full latent class model
+- [HMM-Based Telematics Risk Scoring](/2026/03/13/insurance-telematics/) - insurance-telematics produces the driving score time series that feeds into insurance-jlm as the longitudinal marker
+- [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) - insurance-survival handles standard time-to-event modelling without the longitudinal component
+- [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/) - insurance-thin-data for thin-segment pricing when your telematics book lacks enough claims for stable JLM estimation
+- [Mixture Cure Models](/2026/03/11/insurance-cure/) - insurance-survival for the non-claimer subpopulation; can be combined with JLM for a full latent class model
 
 ---
 
-*insurance-jlm v0.1.0 — 120 tests, 6 modules. Implements the Wulfsohn-Tsiatis (1997) SREM with EM-GHQ estimation and landmark dynamic prediction.*
+*insurance-jlm v0.1.0 - 120 tests, 6 modules. Implements the Wulfsohn-Tsiatis (1997) SREM with EM-GHQ estimation and landmark dynamic prediction.*

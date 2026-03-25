@@ -203,7 +203,7 @@ for lvl in (0.80, 0.90, 0.95):
 95%  scalar=0.927  distributional=0.949  target=0.950
 ```
 
-The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. The distributional model, with phi estimated via K=3 cross-fitting and Gamma deviance loss (v0.1.3), recovers to within 1 percentage point of nominal at all three thresholds — particularly in the highest-CoV segments where a single global phi is most wrong.
+The scalar-phi model is systematically under-covering: its 90% interval contains only 87.2% of observations. The distributional model, with phi estimated via K=3 cross-fitting and Gamma deviance loss (v0.1.3), recovers to within 1 percentage point of nominal at all three thresholds - particularly in the highest-CoV segments where a single global phi is most wrong.
 
 The under-coverage is not uniform. Coverage for the scalar model in the highest-CoV quartile (old vehicles, young drivers) drops to around 0.81 at the 90% level -- a 9-point shortfall versus nominal. That gap is where your large claims live, and it is exactly where a correctly calibrated phi model should recover the most ground.
 
@@ -244,7 +244,7 @@ Safety-loaded premium spread — scalar phi:       0.412
 Safety-loaded premium spread — distributional:   0.463
 ```
 
-The scalar-phi model produces a safety loading spread of 0.412 on this portfolio. The distributional model (v0.1.3) produces 0.463 — 12% wider — reflecting genuine heterogeneity in Var[Y | x] that the scalar model suppresses. On the same expected-loss group, the distributional model charges more for a 20-year-old in a 12-year-old car (high phi) and less for a 45-year-old with a 3-year-old car (low phi). The scalar model charges both the same.
+The scalar-phi model produces a safety loading spread of 0.412 on this portfolio. The distributional model (v0.1.3) produces 0.463 - 12% wider - reflecting genuine heterogeneity in Var[Y | x] that the scalar model suppresses. On the same expected-loss group, the distributional model charges more for a 20-year-old in a 12-year-old car (high phi) and less for a 45-year-old with a 3-year-old car (low phi). The scalar model charges both the same.
 
 ---
 
@@ -266,7 +266,7 @@ CRPS — scalar phi:       148.73
 CRPS — distributional:   146.41
 ```
 
-The scalar-phi CRPS of 148.73 is the baseline. The distributional model (v0.1.3) scores 146.41 — a 1.6% improvement. CRPS is a proper scoring rule and a model with better-specified conditional distributions will score lower. The improvement is modest in percentage terms because CRPS averages across all risks, and low-variance risks dominate by count. The gains are concentrated in the high-phi tail.
+The scalar-phi CRPS of 148.73 is the baseline. The distributional model (v0.1.3) scores 146.41 - a 1.6% improvement. CRPS is a proper scoring rule and a model with better-specified conditional distributions will score lower. The improvement is modest in percentage terms because CRPS averages across all risks, and low-variance risks dominate by count. The gains are concentrated in the high-phi tail.
 
 ---
 

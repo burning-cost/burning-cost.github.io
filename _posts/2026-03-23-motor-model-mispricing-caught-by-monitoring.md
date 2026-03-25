@@ -8,7 +8,7 @@ description: "A UK motor frequency model drifts after an upstream vehicle group 
 tags: [insurance-monitoring, PSI, ae-ratio, gini-drift, vehicle-group, motor-pricing, model-monitoring, drift-detection, python, uk-insurance, case-study]
 ---
 
-This is a walkthrough of a scenario we have seen in some form on more than one UK motor book: a frequency model is deployed, monitored quarterly, and twelve months later the monitoring catches a real problem before the loss ratio does. The problem traces back to an upstream data change — a vehicle group reclassification — that the model was never retrained for.
+This is a walkthrough of a scenario we have seen in some form on more than one UK motor book: a frequency model is deployed, monitored quarterly, and twelve months later the monitoring catches a real problem before the loss ratio does. The problem traces back to an upstream data change - a vehicle group reclassification - that the model was never retrained for.
 
 The tools are from [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The workflow has four steps: PSI flags the distribution shift, A/E ratios confirm the pricing error by segment, a Gini drift z-test confirms the ranking has degraded, and the Murphy decomposition tells you whether to recalibrate or refit.
 
@@ -22,7 +22,7 @@ uv add insurance-monitoring
 
 A Poisson frequency model was deployed in Q1 2025 on a UK motor book of roughly 85,000 active policies. Training data was accident years 2021–2024. Rating factors include vehicle group (ABI groups 1–50), NCD band, postcode district, driver age, and vehicle age.
 
-In July 2025, the Thatcham/ABI vehicle group classification was revised. Approximately 2,200 vehicle makes and models were reclassified, most moving up one to three groups. The insurer's data team applied the revised groups to new business from September 2025 onwards but did not restate the historical policy records. The frequency model was trained on the old groupings. New business from September onwards entered the book with the new group codes, which the model had never seen in training and mapped — via a catch-all — to the midpoint relativities.
+In July 2025, the Thatcham/ABI vehicle group classification was revised. Approximately 2,200 vehicle makes and models were reclassified, most moving up one to three groups. The insurer's data team applied the revised groups to new business from September 2025 onwards but did not restate the historical policy records. The frequency model was trained on the old groupings. New business from September onwards entered the book with the new group codes, which the model had never seen in training and mapped - via a catch-all - to the midpoint relativities.
 
 By December 2025, the quarterly monitoring cycle ran. Here is what it found.
 
@@ -184,7 +184,7 @@ shape: (4, 5)
 └─────────┴────────┴──────────┴──────────┴────────────┘
 ```
 
-The portfolio A/E is 1.043 — amber, but only just. Without the segmental breakdown, you might conclude the model is 4.3% short and apply a recalibration factor. Groups 1-35 and 46-50 are essentially flat. Group 36-45 is 18% short. That is a meaningful mispricing concentrated in the segment that grew the most post-reclassification.
+The portfolio A/E is 1.043 - amber, but only just. Without the segmental breakdown, you might conclude the model is 4.3% short and apply a recalibration factor. Groups 1-35 and 46-50 are essentially flat. Group 36-45 is 18% short. That is a meaningful mispricing concentrated in the segment that grew the most post-reclassification.
 
 The 95% Garwood CI for the portfolio ([1.021, 1.065]) is above 1.0, which confirms the aggregate underpricing is real. But the aggregate number masks what is actually happening: the book is correctly priced for three out of four segments and materially underpriced in one.
 
@@ -192,7 +192,7 @@ The 95% Garwood CI for the portfolio ([1.021, 1.065]) is above 1.0, which confir
 
 ## Step 3: Gini drift z-test confirms the ranking has degraded
 
-A/E ratios measure calibration — the model predicts the right mean. Gini measures discrimination — the model correctly ranks cheap risks below expensive ones. A model can degrade on both simultaneously, and they indicate different responses: calibration failure alone can be fixed with a scalar multiplier; discrimination failure requires a refit.
+A/E ratios measure calibration - the model predicts the right mean. Gini measures discrimination - the model correctly ranks cheap risks below expensive ones. A model can degrade on both simultaneously, and they indicate different responses: calibration failure alone can be fixed with a scalar multiplier; discrimination failure requires a refit.
 
 The reclassification scenario damages discrimination because the model's vehicle group relativities now apply to a different underlying risk than they were trained on. A group-40 vehicle under the old classification is a different risk population than a group-40 vehicle under the new one. The ranking that the model learned is now misapplied.
 
@@ -305,9 +305,9 @@ murphy_global_mcb           0.031    REFIT
 murphy_local_mcb            0.089    REFIT
 ```
 
-The Murphy decomposition shows 71% of the total prediction error is in the DSC (discrimination) component, and local miscalibration (0.089) significantly exceeds global miscalibration (0.031). This is the signature of a ranking problem, not a scale problem. Global MCB dominates when the model's mean is systematically wrong — that is fixable with a scalar adjustment. Local MCB dominates when the miscalibration varies across the feature space, which is exactly what happens when vehicle group relativities apply to the wrong underlying risk population.
+The Murphy decomposition shows 71% of the total prediction error is in the DSC (discrimination) component, and local miscalibration (0.089) significantly exceeds global miscalibration (0.031). This is the signature of a ranking problem, not a scale problem. Global MCB dominates when the model's mean is systematically wrong - that is fixable with a scalar adjustment. Local MCB dominates when the miscalibration varies across the feature space, which is exactly what happens when vehicle group relativities apply to the wrong underlying risk population.
 
-The recommendation is `REFIT`. Recalibration with a scalar multiplier would have corrected the 4.3% aggregate shortfall, but the 18% underpricing in groups 36–45 would have remained — and the discrimination loss would have persisted regardless.
+The recommendation is `REFIT`. Recalibration with a scalar multiplier would have corrected the 4.3% aggregate shortfall, but the 18% underpricing in groups 36–45 would have remained - and the discrimination loss would have persisted regardless.
 
 ---
 
@@ -323,11 +323,11 @@ The lesson here is not that monitoring caught a surprising edge case. It is that
 
 ## Resolution: retrain and validate
 
-The fix is to retrain the frequency model on restated historical data — i.e., with historical vehicle group codes updated to the new classification — and to regenerate the vehicle group relativities from that training. The retraining steps:
+The fix is to retrain the frequency model on restated historical data - i.e., with historical vehicle group codes updated to the new classification - and to regenerate the vehicle group relativities from that training. The retraining steps:
 
 1. Restate the training data: apply the Thatcham reclassification mapping to all historical policy records. This requires the mapping table from the data team; it exists because the classification body published it.
 
-2. Retrain the Poisson frequency model with the updated vehicle group codes. Vehicle group is typically an ordinal or categorical factor — if ordinal, a penalised spline or monotone constraint can be applied to borrow strength across adjacent groups.
+2. Retrain the Poisson frequency model with the updated vehicle group codes. Vehicle group is typically an ordinal or categorical factor - if ordinal, a penalised spline or monotone constraint can be applied to borrow strength across adjacent groups.
 
 3. Validate on the monitoring window: after retraining, run the same monitoring workflow against the Q4 2025 data. The vehicle group PSI should still be elevated (the distribution has genuinely shifted), but the A/E by segment should now be close to 1.0 across all bands, and the Gini should recover.
 
@@ -335,7 +335,7 @@ The fix is to retrain the frequency model on restated historical data — i.e., 
 
 5. Document the root cause and timeline in the model risk log under PRA SS1/23. The quarterly monitoring report becomes a governance artefact: PSI amber/red at Q4 2025, root cause identified, retraining completed by end of January 2026.
 
-The practical timeline was: monitoring cycle run in mid-December 2025, root cause identified within a week, retrained model deployed in late January 2026. Three months of underpriced new business. Without monitoring, the pattern would likely have surfaced in the loss ratio at the Q3 2026 half-year review — roughly twelve months of underpriced exposure.
+The practical timeline was: monitoring cycle run in mid-December 2025, root cause identified within a week, retrained model deployed in late January 2026. Three months of underpriced new business. Without monitoring, the pattern would likely have surfaced in the loss ratio at the Q3 2026 half-year review - roughly twelve months of underpriced exposure.
 
 ---
 
@@ -379,6 +379,6 @@ The insurance-monitoring library is at [github.com/burning-cost/insurance-monito
 ---
 
 **Related posts:**
-- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/) — the four KPIs pricing teams actually track
-- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — gap analysis against generic tools
-- [How to Build a Burning Cost Model for Insurance Pricing in Python](/2026/03/23/burning-cost-model-insurance-python/) — the model that feeds the monitoring workflow
+- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/) - the four KPIs pricing teams actually track
+- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - gap analysis against generic tools
+- [How to Build a Burning Cost Model for Insurance Pricing in Python](/2026/03/23/burning-cost-model-insurance-python/) - the model that feeds the monitoring workflow

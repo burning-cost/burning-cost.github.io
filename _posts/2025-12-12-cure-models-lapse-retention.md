@@ -9,7 +9,7 @@ description: "Logistic regression treats all non-lapsers the same. Mixture cure 
 
 Every renewal pricing team has a lapse model. Most of them are logistic regressions: feed in NCD level, age, channel, price change, out comes a probability. The model is trained on policies where the dependent variable is 1 if the customer did not renew. Standard, defensible, widely deployed.
 
-Here is the problem. The model's "not lapsed" population contains two genuinely different groups. The first group lapsed eventually, just not last year. The second group will never lapse regardless of what you charge them — direct debit, maximum NCD, insured since 1999, no price sensitivity at any realistic premium. When you train a logistic regression on one year of data, these two groups look identical. The model cannot tell them apart because, in any given observation window, both are censored.
+Here is the problem. The model's "not lapsed" population contains two genuinely different groups. The first group lapsed eventually, just not last year. The second group will never lapse regardless of what you charge them - direct debit, maximum NCD, insured since 1999, no price sensitivity at any realistic premium. When you train a logistic regression on one year of data, these two groups look identical. The model cannot tell them apart because, in any given observation window, both are censored.
 
 Mixture cure models exist precisely to separate them.
 
@@ -25,7 +25,7 @@ The mixture cure model encodes this explicitly. The population survival function
 S_pop(t | x, z) = pi(z) * S_u(t | x) + [1 - pi(z)]
 ```
 
-where `pi(z)` is the probability of being susceptible (modelled as a logistic function of covariates z), and `S_u(t | x)` is the conditional survival for susceptibles. The `[1 - pi(z)]` term is the cure fraction — the proportion who will never lapse. It never converges to zero. That is the model telling you: these people are not going anywhere.
+where `pi(z)` is the probability of being susceptible (modelled as a logistic function of covariates z), and `S_u(t | x)` is the conditional survival for susceptibles. The `[1 - pi(z)]` term is the cure fraction - the proportion who will never lapse. It never converges to zero. That is the model telling you: these people are not going anywhere.
 
 The practical consequence: instead of a single retention score per policy, you get two. One says how likely a customer is to be structurally loyal. The other, conditional on not being structural, says how long they are likely to stay. Those are different questions. Your marketing budget should be targeting the second group, not the first.
 
@@ -39,7 +39,7 @@ pip install insurance-survival
 uv add insurance-survival
 ```
 
-We will use the `cure` subpackage, which provides the full mixture cure model suite — four model classes, a simulation helper, and the diagnostics that matter.
+We will use the `cure` subpackage, which provides the full mixture cure model suite - four model classes, a simulation helper, and the diagnostics that matter.
 
 ### Step 1: simulate or load data
 
@@ -59,7 +59,7 @@ The `cure_fraction=0.40` means 40% of policies are structural non-claimers. We k
 
 ### Step 2: test for sufficient follow-up
 
-This step is not optional. Mixture cure model estimates are upwardly biased when the observation window is too short — what looks like a cure fraction is just late claimers who haven't been observed long enough. The Maller-Zhou Qn test formalises this check.
+This step is not optional. Mixture cure model estimates are upwardly biased when the observation window is too short - what looks like a cure fraction is just late claimers who haven't been observed long enough. The Maller-Zhou Qn test formalises this check.
 
 ```python
 qn = sufficient_followup_test(df["tenure_months"], df["claimed"])

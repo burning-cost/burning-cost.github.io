@@ -11,13 +11,13 @@ You ran a causal inference analysis on your telematics trial. You used Double Ma
 
 Now someone asks: how good is your propensity model?
 
-That is the question you do not want. The propensity model — P(telematics device fitted | risk characteristics) — depends on which customers were offered the device, at what price, through which channel, and whether they accepted. You modelled it on the observable covariates. But the acceptance decision depends on things you do not observe: whether the customer was price-sensitive that day, whether a competitor was running a no-device promotion, whether the aggregator ranked you first.
+That is the question you do not want. The propensity model - P(telematics device fitted | risk characteristics) - depends on which customers were offered the device, at what price, through which channel, and whether they accepted. You modelled it on the observable covariates. But the acceptance decision depends on things you do not observe: whether the customer was price-sensitive that day, whether a competitor was running a no-device promotion, whether the aggregator ranked you first.
 
 Your propensity model is misspecified. This is not a modelling failure. It is structural.
 
-DML handles propensity misspecification through cross-fitting and Neyman orthogonality. When the propensity model is wrong but the outcome model is right, DML is still consistent — the orthogonalisation absorbs the error. But DML uses a non-substitution estimator: in finite samples, especially when propensity scores are near 0 or 1, the estimator can produce predicted rates outside the parameter space. Negative claim rates. Conversion probabilities above 1. These get silently clipped or averaged away, but the underlying instability is real.
+DML handles propensity misspecification through cross-fitting and Neyman orthogonality. When the propensity model is wrong but the outcome model is right, DML is still consistent - the orthogonalisation absorbs the error. But DML uses a non-substitution estimator: in finite samples, especially when propensity scores are near 0 or 1, the estimator can produce predicted rates outside the parameter space. Negative claim rates. Conversion probabilities above 1. These get silently clipped or averaged away, but the underlying instability is real.
 
-TMLE — Targeted Maximum Likelihood Estimation — solves the same problem differently. It is also doubly robust. But its targeting step is a substitution estimator: the final ATE is obtained by plugging a corrected outcome model into the parameter mapping, so the estimate always respects parameter space constraints. And critically for insurance: TMLE tolerates propensity misspecification at least as well as DML, and outperforms it in finite samples when the propensity model is the weaker of the two.
+TMLE - Targeted Maximum Likelihood Estimation - solves the same problem differently. It is also doubly robust. But its targeting step is a substitution estimator: the final ATE is obtained by plugging a corrected outcome model into the parameter mapping, so the estimate always respects parameter space constraints. And critically for insurance: TMLE tolerates propensity misspecification at least as well as DML, and outperforms it in finite samples when the propensity model is the weaker of the two.
 
 [`insurance-tmle`](https://github.com/burning-cost/insurance-tmle) is our implementation. It is the first Python library with Poisson TMLE and exposure offsets for insurance count outcomes. The R ecosystem has had mature TMLE tooling since 2015 (`tmle`, `tmle3`, `lmtp`). Python has had nothing that handles the Poisson frequency / Gamma severity structure that insurance actuaries actually need.
 
@@ -31,17 +31,17 @@ uv add insurance-tmle
 
 The algorithm has five steps (van der Laan & Rubin 2006, *International Journal of Biostatistics* 2(1)):
 
-**Step 1 — Initial outcome model.** Fit E[Y | A, W] using any flexible estimator. Call this Q_n(A, W). For claim frequency: a Poisson GLM with log link and exposure offset. For conversion: logistic regression or a gradient boosting classifier. The initial model can be as flexible as you like — random forest, CatBoost, a SuperLearner ensemble.
+**Step 1 - Initial outcome model.** Fit E[Y | A, W] using any flexible estimator. Call this Q_n(A, W). For claim frequency: a Poisson GLM with log link and exposure offset. For conversion: logistic regression or a gradient boosting classifier. The initial model can be as flexible as you like - random forest, CatBoost, a SuperLearner ensemble.
 
-**Step 2 — Propensity model.** Fit P(A=1 | W) = g_n(W). Again, any estimator. This models the probability that a policy received treatment (telematics fitted, price increase applied, intervention offered) given observable characteristics.
+**Step 2 - Propensity model.** Fit P(A=1 | W) = g_n(W). Again, any estimator. This models the probability that a policy received treatment (telematics fitted, price increase applied, intervention offered) given observable characteristics.
 
-**Step 3 — Clever covariate.** Construct H = A/g_n(W) − (1−A)/(1−g_n(W)). This is the efficient influence function's treatment component. For each observation, it encodes how much weight to give based on how surprising its treatment assignment was. Policies that received treatment despite low predicted propensity get high positive weight; policies that did not receive treatment despite high propensity get high negative weight.
+**Step 3 - Clever covariate.** Construct H = A/g_n(W) − (1−A)/(1−g_n(W)). This is the efficient influence function's treatment component. For each observation, it encodes how much weight to give based on how surprising its treatment assignment was. Policies that received treatment despite low predicted propensity get high positive weight; policies that did not receive treatment despite high propensity get high negative weight.
 
-**Step 4 — Targeting step.** This is what separates TMLE from every other doubly-robust estimator. Run a one-parameter regression: for binary outcomes, fit logit(Q\*) = logit(Q_n) + ε·H using Q_n as a fixed offset, and solve for ε. For Poisson outcomes, fit log(Q\*) = log(Q_n) + ε·H, which is equivalent to Q\* = Q_n · exp(ε·H). The update is multiplicative on the rate scale — the final predicted rates stay positive by construction.
+**Step 4 - Targeting step.** This is what separates TMLE from every other doubly-robust estimator. Run a one-parameter regression: for binary outcomes, fit logit(Q\*) = logit(Q_n) + ε·H using Q_n as a fixed offset, and solve for ε. For Poisson outcomes, fit log(Q\*) = log(Q_n) + ε·H, which is equivalent to Q\* = Q_n · exp(ε·H). The update is multiplicative on the rate scale - the final predicted rates stay positive by construction.
 
 The targeting step solves the efficient influence function estimating equation exactly: (1/n) Σ φ_i = 0. This is the mathematical condition for semiparametric efficiency. The initial estimate Q_n is perturbed by the minimum amount necessary to satisfy it.
 
-**Step 5 — Plug-in ATE and standard error.** ATE = (1/n) Σ [Q\*(1, W_i) − Q\*(0, W_i)]. Standard error from the efficient influence function: SE = sqrt(Var(φ)/n), where φ_i = Q\*(1, W_i) − Q\*(0, W_i) + H_i · (Y_i − Q\*(A_i, W_i)) − ATE.
+**Step 5 - Plug-in ATE and standard error.** ATE = (1/n) Σ [Q\*(1, W_i) − Q\*(0, W_i)]. Standard error from the efficient influence function: SE = sqrt(Var(φ)/n), where φ_i = Q\*(1, W_i) − Q\*(0, W_i) + H_i · (Y_i − Q\*(A_i, W_i)) − ATE.
 
 No bootstrap. The EIF-based standard error is analytically exact and computationally trivial.
 
@@ -65,7 +65,7 @@ Q* = Q_n · exp(ε · H)
 
 The multiplicative structure on the rate scale is exactly what insurance pricing uses. Relativities compose multiplicatively in a log-linear GLM. The TMLE targeting step speaks the same language.
 
-The exposure offset in the counterfactual evaluation also deserves care. When we evaluate Q\*(1, W_i) — the predicted claim rate if policy i had received treatment — we standardise to unit exposure. The counterfactual is a rate, not a count. `insurance-tmle` handles this automatically.
+The exposure offset in the counterfactual evaluation also deserves care. When we evaluate Q\*(1, W_i) - the predicted claim rate if policy i had received treatment - we standardise to unit exposure. The counterfactual is a rate, not a count. `insurance-tmle` handles this automatically.
 
 No Python library implemented this before `insurance-tmle`. The `zepid` library (abandoned October 2022) had binary TMLE only. `causallib` (IBM, active) has binary and continuous bounded outcomes. `EconML` (Microsoft) has an open GitHub issue requesting TMLE; as of March 2026 it has not shipped one. `PyTMLE` handles survival outcomes, not cross-sectional count data.
 
@@ -114,7 +114,7 @@ print(f"Price increase reduced conversion by {-tmle.ate:.1%} "
 
 ### Checking the targeting step converged
 
-The epsilon parameter should be close to zero if the initial outcome model was already well-specified. A large epsilon means the targeting step had substantial corrective work to do — which typically indicates propensity model issues or initial outcome model misspecification.
+The epsilon parameter should be close to zero if the initial outcome model was already well-specified. A large epsilon means the targeting step had substantial corrective work to do - which typically indicates propensity model issues or initial outcome model misspecification.
 
 ```python
 from insurance_tmle import ConvergenceCheck
@@ -152,9 +152,9 @@ The `CausalComparison` output is built for a confounding bias table in a committ
 
 ## SuperLearner: not just better, theoretically optimal
 
-TMLE's consistency guarantee requires that at least one nuisance model is correctly specified. In practice, "correctly specified" means "converging at a rate faster than n^(−1/4)" — which gives TMLE its n^(−1/2) efficiency. You cannot guarantee this with a single GLM.
+TMLE's consistency guarantee requires that at least one nuisance model is correctly specified. In practice, "correctly specified" means "converging at a rate faster than n^(−1/4)" - which gives TMLE its n^(−1/2) efficiency. You cannot guarantee this with a single GLM.
 
-The SuperLearner (van der Laan, Polley & Hubbard 2007) maximises the probability of achieving the required convergence rate by stacking multiple learners with cross-validated NNLS weights. The ensemble is provably no worse than the best single learner in the library — it achieves the oracle convergence rate asymptotically.
+The SuperLearner (van der Laan, Polley & Hubbard 2007) maximises the probability of achieving the required convergence rate by stacking multiple learners with cross-validated NNLS weights. The ensemble is provably no worse than the best single learner in the library - it achieves the oracle convergence rate asymptotically.
 
 `insurance-tmle` ships a `SuperLearner` class with insurance-appropriate default libraries:
 
@@ -187,7 +187,7 @@ The SuperLearner's weight report tells you how much each base learner contribute
 
 ## CV-TMLE for smaller portfolios
 
-Standard TMLE relies on empirical process conditions — specifically, the Donsker class condition — that guarantee the plug-in estimator behaves well. These conditions are hard to verify in finite samples and are violated when you use very flexible ML nuisance models with small datasets.
+Standard TMLE relies on empirical process conditions - specifically, the Donsker class condition - that guarantee the plug-in estimator behaves well. These conditions are hard to verify in finite samples and are violated when you use very flexible ML nuisance models with small datasets.
 
 CV-TMLE addresses this by fitting nuisance models on complementary folds (cross-fitting), then applying the targeting step to the held-out fold predictions. This eliminates the Donsker class condition entirely. The cost is computation time.
 
@@ -271,13 +271,13 @@ The report includes five sections: ATE summary table (all estimators side by sid
 
 ## The academic lineage and why it took this long
 
-TMLE was introduced by van der Laan & Rubin in 2006. The core theory — doubly-robust semiparametric efficiency, the targeting step as minimum-perturbation projection onto the tangent space — was well-established by 2011, when van der Laan & Rose published *Targeted Learning* (Springer). The R `tmle` package shipped the same year.
+TMLE was introduced by van der Laan & Rubin in 2006. The core theory - doubly-robust semiparametric efficiency, the targeting step as minimum-perturbation projection onto the tangent space - was well-established by 2011, when van der Laan & Rose published *Targeted Learning* (Springer). The R `tmle` package shipped the same year.
 
-The Python gap reflects where the methodology comes from. TMLE was developed and deployed in epidemiology and health economics, not in insurance. Of 300+ TMLE applications reviewed in a 2023 systematic review (Lodi et al., *Annals of Epidemiology*), the breakdown is: epidemiology, public health, clinical trials, health technology assessment. Insurance: zero. The survey of causal inference papers in banking, finance, and insurance (arXiv:2307.16427, 2023) finds 45 papers over 30 years — and TMLE is not mentioned once.
+The Python gap reflects where the methodology comes from. TMLE was developed and deployed in epidemiology and health economics, not in insurance. Of 300+ TMLE applications reviewed in a 2023 systematic review (Lodi et al., *Annals of Epidemiology*), the breakdown is: epidemiology, public health, clinical trials, health technology assessment. Insurance: zero. The survey of causal inference papers in banking, finance, and insurance (arXiv:2307.16427, 2023) finds 45 papers over 30 years - and TMLE is not mentioned once.
 
 The closest prior art in insurance is Guelman & Guillén (2014, *Expert Systems with Applications*), which uses propensity score matching for automobile insurance price elasticity. Matching, not TMLE. The PSM approach has neither double robustness nor semiparametric efficiency. It is a 2014 paper using 2005 methodology.
 
-`insurance-tmle` is, as far as we can determine, the first Python implementation of Poisson TMLE with exposure offsets anywhere. It is certainly the first implementation designed for insurance causal inference workflows. The claim about academic novelty — that applying TMLE to P&C insurance pricing is unpublished territory — is grounded in a systematic literature search conducted in March 2026. If there is a paper we missed, we would be genuinely interested to see it.
+`insurance-tmle` is, as far as we can determine, the first Python implementation of Poisson TMLE with exposure offsets anywhere. It is certainly the first implementation designed for insurance causal inference workflows. The claim about academic novelty - that applying TMLE to P&C insurance pricing is unpublished territory - is grounded in a systematic literature search conducted in March 2026. If there is a paper we missed, we would be genuinely interested to see it.
 
 ---
 
@@ -285,19 +285,19 @@ The closest prior art in insurance is Guelman & Guillén (2014, *Expert Systems 
 
 We built [`insurance-causal`](https://github.com/burning-cost/insurance-causal) for DML-based price elasticity estimation. It wraps EconML, handles the insurance-specific workflow (exposure offset, confounding report, segment heterogeneity), and is the right tool for large portfolios where you have a strong prior that your outcome model (the claim GLM) is well-specified.
 
-`insurance-tmle` is the natural next step for teams where that prior is weaker — novel product lines, thin segments, situations where you genuinely are not sure whether your outcome model or your propensity model is better specified.
+`insurance-tmle` is the natural next step for teams where that prior is weaker - novel product lines, thin segments, situations where you genuinely are not sure whether your outcome model or your propensity model is better specified.
 
 We think the right workflow is: run both. Use `CausalComparison` to see what each method gives you. Agreement strengthens the result. Divergence tells you something important about model sensitivity. The EIF standard errors are honest about the precision of the TMLE estimate; you can compare them directly to the DML standard errors.
 
-TMLE is not strictly better than DML in all cases. For large portfolios with well-specified Poisson GLMs, DML and TMLE converge to the same estimate. The TMLE advantage concentrates in finite samples, misspecified propensity models, and non-standard outcome families — which is to say, the situations that UK pricing actuaries encounter routinely.
+TMLE is not strictly better than DML in all cases. For large portfolios with well-specified Poisson GLMs, DML and TMLE converge to the same estimate. The TMLE advantage concentrates in finite samples, misspecified propensity models, and non-standard outcome families - which is to say, the situations that UK pricing actuaries encounter routinely.
 
 ---
 
-**[insurance-tmle on GitHub](https://github.com/burning-cost/insurance-tmle)** — MIT-licensed, PyPI, 120 tests. For the causal analyses where your propensity model is structurally wrong and you know it.
+**[insurance-tmle on GitHub](https://github.com/burning-cost/insurance-tmle)** - MIT-licensed, PyPI, 120 tests. For the causal analyses where your propensity model is structurally wrong and you know it.
 
 ---
 
 **Related reading:**
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) — DML-based causal elasticity estimation; the right tool when your outcome model is well-specified and the propensity model is less critical
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) — the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
-- [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) - DML-based causal elasticity estimation; the right tool when your outcome model is well-specified and the propensity model is less critical
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) - the confounding problem that motivates both DML and TMLE, explained through GLM rating factor examples
+- [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) - Bayesian Causal Forests for heterogeneous treatment effects when the causal question involves policy-level variation rather than a single average effect

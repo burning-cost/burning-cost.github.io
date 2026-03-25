@@ -9,9 +9,9 @@ description: "Detect threshold gaming in UK insurance using bunching estimators 
 
 Public economists have known since Saez (2010) that people bunch at tax thresholds. When a taxpayer crosses an income bracket boundary, their marginal tax rate jumps, and the distribution of taxable income develops a spike just below that boundary. The density is not continuous at the kink: there is excess mass on one side, a deficit on the other, and the ratio of excess to counterfactual tells you how strongly people are responding.
 
-The statistical machinery to measure this — polynomial counterfactual density estimation, iterative correction for the deficit region, bootstrap standard errors — is mature in public economics. Diamond and Saez used it. Kleven formalised it in a 2016 handbook chapter that has become the field's reference implementation.
+The statistical machinery to measure this - polynomial counterfactual density estimation, iterative correction for the deficit region, bootstrap standard errors - is mature in public economics. Diamond and Saez used it. Kleven formalised it in a 2016 handbook chapter that has become the field's reference implementation.
 
-Insurance creates identical incentive structures. The specific thresholds differ — NCD levels rather than tax brackets, mileage bands rather than pension contribution limits, sum-insured breakpoints rather than NICs thresholds — but the underlying mechanics are the same. A policyholder facing a discrete premium change at a threshold has an incentive to manipulate their position relative to it. In aggregate, that manipulation produces exactly the density spike that bunching estimators detect.
+Insurance creates identical incentive structures. The specific thresholds differ - NCD levels rather than tax brackets, mileage bands rather than pension contribution limits, sum-insured breakpoints rather than NICs thresholds - but the underlying mechanics are the same. A policyholder facing a discrete premium change at a threshold has an incentive to manipulate their position relative to it. In aggregate, that manipulation produces exactly the density spike that bunching estimators detect.
 
 Nobody has applied this to insurance. The R package `bunching` (Mavrokonstantis 2022) is designed for public economics data. Stata has `bunchit`. Python has nothing in any field.
 
@@ -29,9 +29,9 @@ UK motor insurance gives policyholders several strong threshold incentives, all 
 
 **Mileage bands.** Insurers price on declared annual mileage in bands: 0–5k, 5–10k, 10–15k, 15–20k, 20k+. A driver who covers 10,200 miles per year faces a premium increase at the 10,000 boundary. If they declare 9,800, they save the premium difference. Across a large motor book, this produces excess mass in the distribution of declared mileage just below each band boundary. The deficit appears just above, where honest declarers at 10,100 should be but are not.
 
-**Age boundaries.** UK motor rating factors are steep at young ages — typically a sharp drop somewhere around 24–25. A policyholder who will turn 25 next month has an incentive to misstate their age. In aggregate, declared-age distributions develop a spike just above each rating band boundary where premiums fall sharply.
+**Age boundaries.** UK motor rating factors are steep at young ages - typically a sharp drop somewhere around 24–25. A policyholder who will turn 25 next month has an incentive to misstate their age. In aggregate, declared-age distributions develop a spike just above each rating band boundary where premiums fall sharply.
 
-**Sum insured.** Household policies show round-number clustering at £100k, £150k, £200k, £300k. This is partly cognitive — round numbers are natural reference points — and partly strategic: policyholders declaring just above a pricing threshold to qualify for a cheaper band. The declared sum insured distribution is not smooth.
+**Sum insured.** Household policies show round-number clustering at £100k, £150k, £200k, £300k. This is partly cognitive - round numbers are natural reference points - and partly strategic: policyholders declaring just above a pricing threshold to qualify for a cheaper band. The declared sum insured distribution is not smooth.
 
 **NCD levels.** UK NCD creates the most complex incentive. The De Pril (1978) and Lemaire (1995) theoretical work on "hunger for bonus" shows that policyholders near maximum NCD rationally suppress small claims, since the premium increase from NCD loss exceeds the claim value. In the claims severity distribution, this creates a notch: claims are suppressed below the break-even amount and the density spikes just above. v1.0 handles continuous running variables; discrete NCD levels (number of claim-free years) follow in v1.1.
 
@@ -43,7 +43,7 @@ UK motor insurance gives policyholders several strong threshold incentives, all 
 
 The core estimator follows Kleven (2016) with insurance-specific modifications.
 
-**Counterfactual density.** The observed density of the running variable (mileage, declared age, sum insured) has excess mass near the threshold. The counterfactual is what the density would look like absent the threshold incentive — a smooth polynomial fit to the data excluding a window around the threshold.
+**Counterfactual density.** The observed density of the running variable (mileage, declared age, sum insured) has excess mass near the threshold. The counterfactual is what the density would look like absent the threshold incentive - a smooth polynomial fit to the data excluding a window around the threshold.
 
 ```python
 from insurance_bunching import BunchingEstimator
@@ -72,11 +72,11 @@ print(f"p-value: {result.p_value:.4f}")
 print(f"Excess policyholders: {result.excess_n:.0f}")
 ```
 
-**Iterative correction.** The exclusion window — the bins immediately around the threshold that are excluded from counterfactual fitting — contains both the excess mass and the missing mass. The missing mass (the deficit of honest policyholders who should appear just above the threshold but have shifted down) biases the polynomial fit if you use the raw exclusion region. The estimator corrects iteratively: fit the counterfactual, estimate the missing mass, redistribute it proportionally to bins above the exclusion window, refit. This converges in three to five iterations for typical insurance data and is standard practice in the bunching literature.
+**Iterative correction.** The exclusion window - the bins immediately around the threshold that are excluded from counterfactual fitting - contains both the excess mass and the missing mass. The missing mass (the deficit of honest policyholders who should appear just above the threshold but have shifted down) biases the polynomial fit if you use the raw exclusion region. The estimator corrects iteratively: fit the counterfactual, estimate the missing mass, redistribute it proportionally to bins above the exclusion window, refit. This converges in three to five iterations for typical insurance data and is standard practice in the bunching literature.
 
 **Exposure-weighted WLS.** Insurance bins are not equal-sized. A mileage bin of 9,800–10,000 contains more policies than a bin of 3,800–4,000 simply because more people report round numbers near pricing thresholds. The polynomial fit uses WLS weighted by earned exposure in each bin, so that thin cells have less influence on the counterfactual.
 
-**Kink vs notch.** A kink is a change in the rate of premium increase — the derivative changes at the threshold. A notch is a discrete jump in premium level — the threshold itself triggers a step change. Mileage bands create notches: crossing 10,000 triggers a discrete premium increase. Sum-insured brackets may create kinks where the price per £k of cover changes. The estimator handles both; the counterfactual specification differs.
+**Kink vs notch.** A kink is a change in the rate of premium increase - the derivative changes at the threshold. A notch is a discrete jump in premium level - the threshold itself triggers a step change. Mileage bands create notches: crossing 10,000 triggers a discrete premium increase. Sum-insured brackets may create kinks where the price per £k of cover changes. The estimator handles both; the counterfactual specification differs.
 
 ---
 
@@ -112,7 +112,7 @@ The exposure weighting matters. A policy with 0.5 earned years contributes half 
 
 ## Scanning multiple thresholds: MultiThresholdScanner
 
-A motor book has several mileage thresholds simultaneously. Testing each separately inflates false discovery rates — if you run five tests at α = 0.05, you expect 0.25 false positives even with no bunching anywhere.
+A motor book has several mileage thresholds simultaneously. Testing each separately inflates false discovery rates - if you run five tests at α = 0.05, you expect 0.25 false positives even with no bunching anywhere.
 
 `MultiThresholdScanner` applies Benjamini-Hochberg FDR correction across all tested thresholds.
 
@@ -146,7 +146,7 @@ In this example, the 5k and 10k thresholds show significant bunching; the 15k an
 
 ## FCA Consumer Duty evidence: BunchingReport
 
-FCA Consumer Duty requires insurers to demonstrate that pricing outcomes are fair and that the firm has monitored for practices contrary to customer interests. A portfolio where mileage declarations bunch at a threshold — because the incentive to understate is strong — is not necessarily the insurer's fault, but it is a risk factor: the book is mispriced if the declared mileage distribution differs systematically from true mileage.
+FCA Consumer Duty requires insurers to demonstrate that pricing outcomes are fair and that the firm has monitored for practices contrary to customer interests. A portfolio where mileage declarations bunch at a threshold - because the incentive to understate is strong - is not necessarily the insurer's fault, but it is a risk factor: the book is mispriced if the declared mileage distribution differs systematically from true mileage.
 
 `BunchingReport` generates a self-contained HTML report suitable for regulatory evidence packs.
 
@@ -163,7 +163,7 @@ report = BunchingReport(
 report.generate()
 ```
 
-The report includes: density plots with counterfactual overlays for each threshold, B-hat estimates with confidence intervals, BH-adjusted p-values, and a summary table with pass/fail against the configured FDR level. All charts are base64-embedded PNGs — the HTML file is fully self-contained, with no CDN dependencies that break in regulatory archives three years from now.
+The report includes: density plots with counterfactual overlays for each threshold, B-hat estimates with confidence intervals, BH-adjusted p-values, and a summary table with pass/fail against the configured FDR level. All charts are base64-embedded PNGs - the HTML file is fully self-contained, with no CDN dependencies that break in regulatory archives three years from now.
 
 ---
 
@@ -175,7 +175,7 @@ For mileage declarations, a B-hat of 0.30 at the 10,000-mile threshold means you
 
 For sum insured, a large B-hat at £200k in household insurance suggests systematic underinsurance: customers are declaring below their true rebuild cost to avoid the premium increase at the £200k boundary. This is a fair value concern as well as a pricing accuracy concern.
 
-For age declarations, a B-hat at the age 25 boundary tells you your declared-age distribution has been manipulated. The demographic pattern of policyholders just above 25 — far more than the population distribution would predict — is a fraud signal.
+For age declarations, a B-hat at the age 25 boundary tells you your declared-age distribution has been manipulated. The demographic pattern of policyholders just above 25 - far more than the population distribution would predict - is a fraud signal.
 
 None of this requires matching declared data to ground truth. The bunching test works on the observable distribution alone. That is the technique's key property: it detects gaming from aggregate density patterns without needing to observe the true value.
 
@@ -195,19 +195,19 @@ Significant bunching at a threshold tells you there is gaming or adverse selecti
 
 To be direct: this is the first Python bunching estimator anywhere. The existing implementations are Mavrokonstantis (2022) `bunching` for R and Cattaneo et al. `bunching` for Stata. Neither applies to insurance data. Neither handles exposure weighting, multi-threshold FDR correction, or regulatory report generation.
 
-The technique is not new — Saez (2010) is now 16 years old. The application is. The "hunger for bonus" theoretical literature on NCD (De Pril 1978; Lemaire 1995; Artis et al. 2002) models optimal claiming strategies analytically. It has never used bunching density estimation to detect manipulation empirically. These are separate literatures that have not been connected before.
+The technique is not new - Saez (2010) is now 16 years old. The application is. The "hunger for bonus" theoretical literature on NCD (De Pril 1978; Lemaire 1995; Artis et al. 2002) models optimal claiming strategies analytically. It has never used bunching density estimation to detect manipulation empirically. These are separate literatures that have not been connected before.
 
 We think there is real signal in UK motor and household data. If your pricing team has not looked at the distribution of declared mileage around 10,000 and 15,000, you should.
 
 ---
 
-**[insurance-bunching on GitHub](https://github.com/burning-cost/insurance-bunching)** — 120 tests, MIT-licensed, PyPI.
+**[insurance-bunching on GitHub](https://github.com/burning-cost/insurance-bunching)** - 120 tests, MIT-licensed, PyPI.
 
 ---
 
 ## See also
 
-- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — `insurance-deploy` for structured model deployment: once you have identified and corrected for threshold gaming, getting the updated model into production with sign-off and rollback.
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the FCA fairness audit that complements bunching detection: once you have corrected the declared mileage distribution, check whether the residual patterns correlate with protected characteristics.
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance framework that a bunching detection report should feed into: the `ModelInventory` entry for any corrected model needs to document both the original issue and the remediation.
-- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — after correcting for threshold gaming, re-run the balance test: a model trained on gamed data will often show a systematic A/E bias in the mileage segments where bunching is concentrated.
+- [Your Champion/Challenger Test Has No Audit Trail](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) - `insurance-deploy` for structured model deployment: once you have identified and corrected for threshold gaming, getting the updated model into production with sign-off and rollback.
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the FCA fairness audit that complements bunching detection: once you have corrected the declared mileage distribution, check whether the residual patterns correlate with protected characteristics.
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the governance framework that a bunching detection report should feed into: the `ModelInventory` entry for any corrected model needs to document both the original issue and the remediation.
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - after correcting for threshold gaming, re-run the balance test: a model trained on gamed data will often show a systematic A/E bias in the mileage segments where bunching is concentrated.

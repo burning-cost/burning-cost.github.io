@@ -13,7 +13,7 @@ The harder question is: how many group factors should we be modelling this way?
 
 Broker is obvious. Scheme is probably worth it. Fleet? Possibly. Postcode sector? The model has thousands of them. At what point does stacking REML random effects across multiple group levels stop helping and start producing noise?
 
-The answer is the ICC — the Intraclass Correlation Coefficient — and using it properly is what separates teams that deploy multilevel models sensibly from teams that bolt random effects onto every categorical in the dataset.
+The answer is the ICC - the Intraclass Correlation Coefficient - and using it properly is what separates teams that deploy multilevel models sensibly from teams that bolt random effects onto every categorical in the dataset.
 
 ---
 
@@ -68,13 +68,13 @@ A realistic UK motor portfolio might return:
 └──────────────────┴────────┴────────┴───────┴────────────┘
 ```
 
-The table tells you four distinct stories. Scheme is the dominant group effect: 24% of residual variance after CatBoost is attributable to scheme membership. That is not noise — that is selection effect from how schemes are constituted. A fleet scheme for professional services solicitors writes structurally different risk than a young driver scheme, and CatBoost cannot see this from vehicle type and postcode alone.
+The table tells you four distinct stories. Scheme is the dominant group effect: 24% of residual variance after CatBoost is attributable to scheme membership. That is not noise - that is selection effect from how schemes are constituted. A fleet scheme for professional services solicitors writes structurally different risk than a young driver scheme, and CatBoost cannot see this from vehicle type and postcode alone.
 
 Broker is material: 16%. Worth modelling. The broker effect is partly selection (which types of customer each broker attracts) and partly underwriting culture (how stringent each broker is at point of sale). Both are unobservable from the policy features CatBoost receives.
 
-Fleet is small: 3.4%. The Bühlmann k of 28 means a fleet needs 28 policy-years of exposure to reach 50% credibility. Very few fleets in a personal lines book get anywhere near that. The BLUPs will be close to zero for almost every fleet. The random effects stage is working correctly — it is shrinking almost everything to the portfolio mean — but it is doing so because there is almost no signal to preserve. You are better off excluding `fleet_id` from the random effects list and saving the REML computation.
+Fleet is small: 3.4%. The Bühlmann k of 28 means a fleet needs 28 policy-years of exposure to reach 50% credibility. Very few fleets in a personal lines book get anywhere near that. The BLUPs will be close to zero for almost every fleet. The random effects stage is working correctly - it is shrinking almost everything to the portfolio mean - but it is doing so because there is almost no signal to preserve. You are better off excluding `fleet_id` from the random effects list and saving the REML computation.
 
-Postcode sector is noise: 1.3%. ICC below 2% is a signal that the between-group variance is within estimation error. If you are already modelling postcode risk via a spatial component or postcode district in CatBoost, the sector-level residual variation is a mix of genuine micro-area signal and sampling noise on thin cells. Do not model it as a random effect. The BYM2 spatial model from [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) is the right tool if postcode geography is genuinely material — it borrows spatial structure to stabilise the thin cells that REML treats independently.
+Postcode sector is noise: 1.3%. ICC below 2% is a signal that the between-group variance is within estimation error. If you are already modelling postcode risk via a spatial component or postcode district in CatBoost, the sector-level residual variation is a mix of genuine micro-area signal and sampling noise on thin cells. Do not model it as a random effect. The BYM2 spatial model from [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) is the right tool if postcode geography is genuinely material - it borrows spatial structure to stabilise the thin cells that REML treats independently.
 
 ---
 
@@ -108,7 +108,7 @@ print(f"{len(hc)} of {len(summary)} brokers reach 70% credibility")
 print(summary.select("credibility_weight").describe())
 ```
 
-If most groups have Z < 0.3, the random effects stage is producing multipliers that are 70%+ shrinkage toward the portfolio mean. That is not necessarily wrong — it is what the data warrants — but it means the stage is contributing very little commercially, and you should consider whether the governance cost (explaining BLUPs in pricing reviews, managing model documentation) is justified.
+If most groups have Z < 0.3, the random effects stage is producing multipliers that are 70%+ shrinkage toward the portfolio mean. That is not necessarily wrong - it is what the data warrants - but it means the stage is contributing very little commercially, and you should consider whether the governance cost (explaining BLUPs in pricing reviews, managing model documentation) is justified.
 
 ---
 
@@ -125,7 +125,7 @@ When you include multiple group levels with material ICC, the multipliers compos
 premiums = model.predict(X_test, group_cols=["broker_id", "scheme_id"])
 ```
 
-The library fits a separate `RandomEffectsEstimator` per group level using sequential residual conditioning: broker effects are estimated from Stage 1 residuals, then scheme effects are estimated from the residuals after removing the broker component. Broker effects and scheme effects do not interact in the model — each is a one-way REML problem, fitted in sequence. This is clean and auditable, but it means the model cannot capture a situation where Broker A's business through Scheme C is systematically different from what you would predict by multiplying their individual BLUPs.
+The library fits a separate `RandomEffectsEstimator` per group level using sequential residual conditioning: broker effects are estimated from Stage 1 residuals, then scheme effects are estimated from the residuals after removing the broker component. Broker effects and scheme effects do not interact in the model - each is a one-way REML problem, fitted in sequence. This is clean and auditable, but it means the model cannot capture a situation where Broker A's business through Scheme C is systematically different from what you would predict by multiplying their individual BLUPs.
 
 In practice, broker-by-scheme interaction effects are usually small relative to the main effects unless your book has a specific scheme that one broker dominates. If you suspect a material interaction, the diagnostic is to look at the residuals from the two-stage model, broken down by broker-scheme cell:
 
@@ -167,7 +167,7 @@ The two-level approach that works:
 2. Use REML Stage 2 for broker and scheme effects, which are the group factors where credibility weighting is genuinely useful.
 3. If postcode sector micro-area effects are material for your book, add a BYM2 spatial component from [`insurance-spatial`](https://github.com/burning-cost/insurance-spatial) as a separate stage.
 
-This is not a limitation of the credibility approach — it is the correct application of it. Different group factors have different statistical structures, and using the right model for each is better than forcing everything through the same framework.
+This is not a limitation of the credibility approach - it is the correct application of it. Different group factors have different statistical structures, and using the right model for each is better than forcing everything through the same framework.
 
 ---
 
@@ -202,16 +202,16 @@ print(lift)
 }
 ```
 
-A 7–8% improvement in MALR from Stage 2 alone — after a well-tuned CatBoost Stage 1 — is a substantial gain. This is consistent with the scheme ICC of 0.24 and broker ICC of 0.16 from the diagnostic table above. The lift from random effects is roughly proportional to the ICC: if total residual variance has 40% attributable to group membership, you expect a correspondingly large improvement from modelling it correctly.
+A 7–8% improvement in MALR from Stage 2 alone - after a well-tuned CatBoost Stage 1 - is a substantial gain. This is consistent with the scheme ICC of 0.24 and broker ICC of 0.16 from the diagnostic table above. The lift from random effects is roughly proportional to the ICC: if total residual variance has 40% attributable to group membership, you expect a correspondingly large improvement from modelling it correctly.
 
-On a portfolio where the only material group factor was broker with ICC = 0.05, the lift would be much smaller — probably 1–2% in MALR. That is still real money at scale, but whether it justifies the model governance overhead of two additional group effect tables is a decision for the pricing team, not the algorithm.
+On a portfolio where the only material group factor was broker with ICC = 0.05, the lift would be much smaller - probably 1–2% in MALR. That is still real money at scale, but whether it justifies the model governance overhead of two additional group effect tables is a decision for the pricing team, not the algorithm.
 
 ---
 
 
 The credibility framework gets misused in two directions. Some teams apply it nowhere, relying instead on manual spreadsheet loadings that are applied at full credibility regardless of the data behind them. Others, having seen the framework work for broker, apply it to every high-cardinality categorical in the dataset, producing random effects stages that are doing nothing because the ICC is 0.01 and every BLUP is 0.98 × 0 = 0.
 
-The ICC diagnostic is the tool that keeps you in the sensible middle. Broker and scheme effects in UK personal lines are genuinely material — the actuarial literature on broker effects in motor has documented this for decades, and the two-stage REML model quantifies it rigorously. Fleet effects are usually small because fleet policies in personal lines tend to be structured by vehicle count, not by a fixed organisation ID that persists across renewals. Postcode sector effects exist but require spatial borrowing, not independent random effects.
+The ICC diagnostic is the tool that keeps you in the sensible middle. Broker and scheme effects in UK personal lines are genuinely material - the actuarial literature on broker effects in motor has documented this for decades, and the two-stage REML model quantifies it rigorously. Fleet effects are usually small because fleet policies in personal lines tend to be structured by vehicle count, not by a fixed organisation ID that persists across renewals. Postcode sector effects exist but require spatial borrowing, not independent random effects.
 
 The decision about which group factors to model at Stage 2 should be driven by the ICC and the credibility weight distribution, not by the list of high-cardinality columns in your dataset. The ICC is available from `variance_decomposition()` in four lines of code. Run it first. The list of high-cardinality columns is not a model specification.
 
@@ -219,6 +219,6 @@ The decision about which group factors to model at Stage 2 should be driven by t
 
 `insurance-multilevel` is open source under MIT at [github.com/burning-cost/insurance-multilevel](https://github.com/burning-cost/insurance-multilevel). Install with `uv add insurance-multilevel`. Requires Python 3.10+, CatBoost, Polars, and SciPy.
 
-- [Your Broker Adjustments Are Guesswork](/2026/03/13/your-broker-adjustments-are-guesswork/) — the 2026 introduction to the two-stage CatBoost + REML architecture
-- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — the closed-form approach when you do not need a GBM Stage 1
-- [Spatial Territory Ratemaking with BYM2](/2026/03/09/spatial-territory-ratemaking-bym2/) — geographic random effects with spatial borrowing, the right tool for postcode sector
+- [Your Broker Adjustments Are Guesswork](/2026/03/13/your-broker-adjustments-are-guesswork/) - the 2026 introduction to the two-stage CatBoost + REML architecture
+- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) - the closed-form approach when you do not need a GBM Stage 1
+- [Spatial Territory Ratemaking with BYM2](/2026/03/09/spatial-territory-ratemaking-bym2/) - geographic random effects with spatial borrowing, the right tool for postcode sector

@@ -24,7 +24,7 @@ uv add insurance-fairness-ot
 
 ## The regulatory context
 
-The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. TR24/2 (August 2024) found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, is about price-walking — it does not impose the proxy discrimination obligation.
+The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. TR24/2 (August 2024) found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, is about price-walking - it does not impose the proxy discrimination obligation.
 
 The Equality Act 2010 Section 19 captures indirect discrimination: a pricing practice that puts customers with a protected characteristic at a particular disadvantage, even where the characteristic is not explicitly used, is unlawful unless the firm can show proportionate justification through legitimate actuarial purpose.
 
@@ -87,7 +87,7 @@ print(f"Bias correction factor: {corrector.bias_correction_factor_:.4f}")
 # Bias correction factor: 1.0113
 ```
 
-The `log_space=True` flag is important for GLM models. Setting `log_space=True` exponentiates each eta(x, d) = log(mu_hat(x, d)) before the arithmetic weighted average, giving sum_d exp(eta(x, d)) * omega_d — the correct Lindholm formula for log-link GLM models. Without it, the code would average the log-scale predictions directly, which is a geometric-mean operation and gives the wrong answer for a log-linked model.
+The `log_space=True` flag is important for GLM models. Setting `log_space=True` exponentiates each eta(x, d) = log(mu_hat(x, d)) before the arithmetic weighted average, giving sum_d exp(eta(x, d)) * omega_d - the correct Lindholm formula for log-link GLM models. Without it, the code would average the log-scale predictions directly, which is a geometric-mean operation and gives the wrong answer for a log-linked model.
 
 ---
 

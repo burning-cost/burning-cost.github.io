@@ -9,11 +9,11 @@ description: "Automatic Debiased ML via Riesz Representers for continuous price 
 
 Your pricing team has a demand model. It says retention drops as premium rises. What it almost certainly cannot tell you is: by exactly how much, with what uncertainty, and whether that effect is the same for young drivers in postcodes with thin data as it is for your core 40-year-old motor book.
 
-The standard approaches break down here in a predictable way. Binary treatment DML — split the portfolio into "high price" and "low price", apply CausalForestDML — works acceptably when the treatment is genuinely discrete. Premium is not discrete. Discretising it means choosing a cutpoint, and the cutpoint is arbitrary. Two otherwise identical analyses with cutpoints at the median versus the 60th percentile will give you different answers. You have introduced a researcher degree of freedom into what should be an estimation procedure.
+The standard approaches break down here in a predictable way. Binary treatment DML - split the portfolio into "high price" and "low price", apply CausalForestDML - works acceptably when the treatment is genuinely discrete. Premium is not discrete. Discretising it means choosing a cutpoint, and the cutpoint is arbitrary. Two otherwise identical analyses with cutpoints at the median versus the 60th percentile will give you different answers. You have introduced a researcher degree of freedom into what should be an estimation procedure.
 
-The generalised propensity score (GPS) approach handles continuous treatments correctly in theory. In practice, GPS requires estimating the density of the premium distribution conditional on covariates — and then dividing by it. At the tails of the premium distribution, where renewal rates are 20–30% and your high-risk book is concentrated, those density values are small. You are dividing by small numbers. The resulting weights blow up, the variance explodes, and the confidence intervals become too wide to be actionable.
+The generalised propensity score (GPS) approach handles continuous treatments correctly in theory. In practice, GPS requires estimating the density of the premium distribution conditional on covariates - and then dividing by it. At the tails of the premium distribution, where renewal rates are 20–30% and your high-risk book is concentrated, those density values are small. You are dividing by small numbers. The resulting weights blow up, the variance explodes, and the confidence intervals become too wide to be actionable.
 
-We built [`insurance-causal`](https://github.com/burning-cost/insurance-causal) — library 77 in the Burning Cost portfolio — to handle this correctly. It implements Automatic Debiased Machine Learning via Riesz Representers for continuous treatment causal inference. No density estimation. No arbitrary discretisation. Sqrt(n) inference with double robustness.
+We built [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - library 77 in the Burning Cost portfolio - to handle this correctly. It implements Automatic Debiased Machine Learning via Riesz Representers for continuous treatment causal inference. No density estimation. No arbitrary discretisation. Sqrt(n) inference with double robustness.
 
 ---
 
@@ -41,7 +41,7 @@ where m(W, h) is the Riesz functional evaluated at h. This can be estimated by m
 E[alpha(X)^2 - 2 * m(W, alpha)]
 ```
 
-Any ML model can learn this — it is a regression problem. No density estimation. No division by small values. The minimax identity means you are directly learning the reweighting function you need for debiased inference, not computing it indirectly through a density.
+Any ML model can learn this - it is a regression problem. No density estimation. No division by small values. The minimax identity means you are directly learning the reweighting function you need for debiased inference, not computing it indirectly through a density.
 
 ---
 
@@ -75,9 +75,9 @@ print(result.summary())
 
 The AME is a linear functional of the data distribution, which means it achieves sqrt(n) convergence rates even when the nuisance models (E[Y|D,X] and the Riesz representer) converge at slower rates. You can use forests, gradient boosting, or any other ML method for the nuisances without contaminating the rate of convergence of the main estimate.
 
-The `outcome_family` parameter matters. For claim counts with an exposure offset, use `"poisson"` — the nuisance model fits Y/exposure and the AME is on the rate scale. For pure premium (frequency × severity combined), use `"tweedie"`. For retention (lapse indicator), use `"gaussian"` or leave it as default.
+The `outcome_family` parameter matters. For claim counts with an exposure offset, use `"poisson"` - the nuisance model fits Y/exposure and the AME is on the rate scale. For pure premium (frequency × severity combined), use `"tweedie"`. For retention (lapse indicator), use `"gaussian"` or leave it as default.
 
-Segment-level effects come from the same fit — no refitting required. The efficient influence function decomposes additively over subgroups:
+Segment-level effects come from the same fit - no refitting required. The efficient influence function decomposes additively over subgroups:
 
 ```python
 segment_results = model.effect_by_segment(df["vehicle_group"])
@@ -112,7 +112,7 @@ result = drc.predict(d_grid)
 # result.ci_low, result.ci_high: pointwise 95% confidence bands
 ```
 
-The key difference from a naive regression of Y on D is confounding adjustment. The dose-response curve estimates a *causal* counterfactual — what would happen to your portfolio if you could set everyone's premium to d — not a conditional expectation that conflates risk selection with price response.
+The key difference from a naive regression of Y on D is confounding adjustment. The dose-response curve estimates a *causal* counterfactual - what would happen to your portfolio if you could set everyone's premium to d - not a conditional expectation that conflates risk selection with price response.
 
 For visualisation:
 
@@ -158,7 +158,7 @@ z_i = [g(D_i + eps, X_i) - g(D_i - eps, X_i)] / (2 * eps)
 
 This is the partial derivative of E[Y|D,X] with respect to D, evaluated at the observed data point. A random forest learns alpha(X) by regressing onto z. There is no density in this calculation. There is no inversion. The 99th percentile of |z| is clipped before fitting to handle any residual numerical instability at extreme premium values.
 
-The default hyperparameters — 200 trees, max_depth=6, min_samples_leaf=10 — work well on motor and home renewal books in the 50k–500k policy range. For smaller books:
+The default hyperparameters - 200 trees, max_depth=6, min_samples_leaf=10 - work well on motor and home renewal books in the 50k–500k policy range. For smaller books:
 
 ```python
 from insurance_causal.autodml import PremiumElasticity
@@ -193,7 +193,7 @@ LinearRiesz solves the same minimax objective using ridge regression. It is ten 
 
 UK motor and home renewal portfolios have a selection problem that goes beyond confounding: you only observe claims for policies that renewed. Non-renewers lapse, and their outcomes are missing. Higher premiums cause more lapses, so the observed claim experience is systematically drawn from the lower-risk portion of the portfolio that stayed.
 
-If you estimate the AME naively on renewals, you understate the true causal effect of premium increases on claims — because the retained sample at high premiums is risk-selected, not representative.
+If you estimate the AME naively on renewals, you understate the true causal effect of premium increases on claims - because the retained sample at high premiums is risk-selected, not representative.
 
 `SelectionCorrectedElasticity` handles this. The identification follows the recent extension of the Riesz framework to missing outcomes (arXiv:2601.08643). A selection model P(S=1 | X, D) is estimated jointly with the outcome nuisance, and the EIF score is IPW-corrected:
 
@@ -218,7 +218,7 @@ psi_i = S_i / pi_hat_i * alpha_hat_i * (Y_i - g_hat_i) + alpha_hat_i
 
 where pi_hat_i = P(S=1 | X_i, D_i) estimated by cross-fitted gradient boosting. Selection probabilities are clipped to [0.05, 0.95] to prevent extreme IPW weights at the tails.
 
-The identification assumption is that there are no *unobserved* confounders of selection — that conditional on X and D, which observable features you have, the decision to renew is as good as random. This is a strong assumption. The library tests robustness to violations:
+The identification assumption is that there are no *unobserved* confounders of selection - that conditional on X and D, which observable features you have, the decision to renew is as good as random. This is a strong assumption. The library tests robustness to violations:
 
 ```python
 # Gamma sensitivity bounds: how much unobserved confounding can the estimate survive?
@@ -250,7 +250,7 @@ report = ElasticityReport(
 report.save("elasticity_report.html")
 ```
 
-The HTML output includes the overall AME with confidence interval and p-value, the segment table, sensitivity analysis plots, and a plain-English methodology section written for a regulatory audience. The methodology notes explain the Riesz approach without requiring the reader to know what a Riesz representer is — which is the right level for an FCA evidence pack.
+The HTML output includes the overall AME with confidence interval and p-value, the segment table, sensitivity analysis plots, and a plain-English methodology section written for a regulatory audience. The methodology notes explain the Riesz approach without requiring the reader to know what a Riesz representer is - which is the right level for an FCA evidence pack.
 
 Under FCA pricing review, insurers need to demonstrate that pricing differentials reflect genuine risk differentiation, not differential treatment of loyal customers. An AME estimate with appropriate confidence intervals and sensitivity analysis is the right form of evidence. A naive regression is not.
 
@@ -260,7 +260,7 @@ Under FCA pricing review, insurers need to demonstrate that pricing differential
 
 **PremiumElasticity (AME)** is the right starting point for almost every analysis. It answers "what is the marginal effect of premium on outcomes, on average?" It is a single number with a confidence interval. It is what you present to the underwriting committee before a rate walk. The segment decomposition lets you check whether the effect is uniform or concentrated in a particular book segment.
 
-**DoseResponseCurve** is for when you need the full price-outcome relationship, not just the slope at the current premium level. Use it when you are evaluating a proposed rate change that moves premiums significantly from current levels — for example, repricing a motor sub-book from a mean of £450 to a mean of £600. The dose-response curve tells you what to expect at £600 given causal identification, not just a regression extrapolation.
+**DoseResponseCurve** is for when you need the full price-outcome relationship, not just the slope at the current premium level. Use it when you are evaluating a proposed rate change that moves premiums significantly from current levels - for example, repricing a motor sub-book from a mean of £450 to a mean of £600. The dose-response curve tells you what to expect at £600 given causal identification, not just a regression extrapolation.
 
 **PolicyShiftEffect** is for portfolio-level projections. It is faster than computing the full dose-response curve and directly answers the commercial question: if we apply a 7% rate increase, what is the projected impact on claims frequency? The delta sweep gives you a curve that feeds directly into the optimisation layer.
 

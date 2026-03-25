@@ -7,7 +7,7 @@ tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, v
 description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."
 ---
 
-Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book — and it is — you should model it, not absorb it into a single global dispersion parameter.
+Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book - and it is - you should model it, not absorb it into a single global dispersion parameter.
 
 Since then, the question we keep getting asked is not "how do I fit this?" The question is: "how do I know it's working?"
 
@@ -54,7 +54,7 @@ delta_gaic = model_null.gaic(penalty=2) - model_sigma.gaic(penalty=2)
 print(f"DELTA GAIC: {delta_gaic:.1f}")
 ```
 
-The GAIC with penalty=2 is standard AIC. A positive delta means the sigma covariates are worth adding after penalising for the extra parameters. We use a threshold of 10 as our floor — anything below that is ambiguous, and the governance overhead of explaining a non-standard dispersion submodel to a pricing committee is not worth it for a marginal AIC gain.
+The GAIC with penalty=2 is standard AIC. A positive delta means the sigma covariates are worth adding after penalising for the extra parameters. We use a threshold of 10 as our floor - anything below that is ambiguous, and the governance overhead of explaining a non-standard dispersion submodel to a pricing committee is not worth it for a marginal AIC gain.
 
 On a UK motor severity book with 40,000+ claims and genuine heterogeneity by age and vehicle group, you should typically see a delta GAIC of 30-100. If you are seeing 5-8, your sigma covariates are probably fitting noise. Use BIC (penalty=log(n)) for a stricter test on larger datasets; on 40k observations, log(n) ≈ 10.6, which is a meaningfully harder bar.
 
@@ -96,14 +96,14 @@ Mean: 0.012   Std: 1.003
 Shapiro-Wilk p: 0.312
 ```
 
-An overfitting sigma model — fitted with too many sigma covariates on too few claims — looks like this:
+An overfitting sigma model - fitted with too many sigma covariates on too few claims - looks like this:
 
 ```
 Mean: 0.028   Std: 1.041
 Shapiro-Wilk p: 0.003
 ```
 
-The Shapiro-Wilk p-value of 0.003 flags that the residuals are not normal. Not dramatically non-normal — the mean and standard deviation look almost right — but the tails are systematically off. The model is assigning confidence intervals that are too wide for some segments and too narrow for others in a way that the global statistics conceal.
+The Shapiro-Wilk p-value of 0.003 flags that the residuals are not normal. Not dramatically non-normal - the mean and standard deviation look almost right - but the tails are systematically off. The model is assigning confidence intervals that are too wide for some segments and too narrow for others in a way that the global statistics conceal.
 
 Be honest about what Shapiro-Wilk can and cannot do here. On large holdout sets (10,000+ observations), even small deviations from normality will produce significant p-values. Do not use a p < 0.05 rule mechanically. Look at the QQ plot. The question is whether the tails deviate materially, not whether the test rejects at the 5% level.
 
@@ -123,12 +123,12 @@ worm_plot(model_sigma, df_holdout, y_holdout, n_groups=4, seed=42)
 
 The worm plot splits the holdout into quartiles by fitted mu, then draws a detrended QQ plot (residual minus theoretical normal quantile) for each group. A well-fitting model shows flat worms near zero in all four panels. Systematic patterns indicate specific failures:
 
-- **Worm shifts upward across all groups**: underdispersion — the model's predicted variance is too high
-- **Worm shifts downward**: overdispersion — predicted variance too low
+- **Worm shifts upward across all groups**: underdispersion - the model's predicted variance is too high
+- **Worm shifts downward**: overdispersion - predicted variance too low
 - **S-shape in the worm**: the variance-mean relationship is wrong (for Gamma, this means sigma is systematically biased at one end of the mu range)
-- **U-shape**: kurtosis is wrong — the tails are heavier or lighter than Gamma predicts
+- **U-shape**: kurtosis is wrong - the tails are heavier or lighter than Gamma predicts
 
-The most informative failure mode for a sigma submodel is an S-shape that varies across the four panels. If the high-mu panel shows a downward S and the low-mu panel shows an upward S, your sigma formula is learning the wrong covariates: it is confusing high-mu segments (which have naturally higher absolute variance) with high-CV segments (which have higher variance relative to the mean). The sigma submodel should be predicting CV — which is what the Gamma sigma parameter is — not absolute variance.
+The most informative failure mode for a sigma submodel is an S-shape that varies across the four panels. If the high-mu panel shows a downward S and the low-mu panel shows an upward S, your sigma formula is learning the wrong covariates: it is confusing high-mu segments (which have naturally higher absolute variance) with high-CV segments (which have higher variance relative to the mean). The sigma submodel should be predicting CV - which is what the Gamma sigma parameter is - not absolute variance.
 
 This confusion is common when sigma formula covariates overlap heavily with mu formula covariates. The fix is to refit with a smaller sigma formula, removing covariates that are strongly collinear with the mean submodel.
 
@@ -136,7 +136,7 @@ This confusion is common when sigma formula covariates overlap heavily with mu f
 
 ## Step four: volatility score against empirical CV
 
-The three tests above are diagnostics — they tell you whether the model is self-consistent. The final check is whether the predicted volatility is calibrated against reality.
+The three tests above are diagnostics - they tell you whether the model is self-consistent. The final check is whether the predicted volatility is calibrated against reality.
 
 The `volatility_score` method returns the coefficient of variation CV = sqrt(Var[Y|X]) / E[Y|X] per observation, derived from the fitted distributional parameters. This is the model's prediction of how volatile each policy's severity is, relative to its mean.
 
@@ -225,9 +225,9 @@ That is a £343 pricing difference between two policies with identical expected 
 
 Honest about the limitations:
 
-**Too few claims per segment.** The sigma submodel is estimated from the variability in claim severities, which requires sufficient claims to identify the relationship. If your sigma formula includes a covariate whose lowest-frequency level has 80 claims, the sigma coefficient for that level will have wide uncertainty. We recommend at least 150-200 claims per covariate level before trusting a sigma coefficient. The standard errors are not printed by default — call `model.coefficients['sigma']` and compare the magnitude of the coefficients against the scale of sigma (typically log(0.4) to log(0.9) for motor severity). A coefficient with magnitude below 0.05 is probably not identifiable from noise on fewer than 1,000 claims.
+**Too few claims per segment.** The sigma submodel is estimated from the variability in claim severities, which requires sufficient claims to identify the relationship. If your sigma formula includes a covariate whose lowest-frequency level has 80 claims, the sigma coefficient for that level will have wide uncertainty. We recommend at least 150-200 claims per covariate level before trusting a sigma coefficient. The standard errors are not printed by default - call `model.coefficients['sigma']` and compare the magnitude of the coefficients against the scale of sigma (typically log(0.4) to log(0.9) for motor severity). A coefficient with magnitude below 0.05 is probably not identifiable from noise on fewer than 1,000 claims.
 
-**Sigma covariates that are collinear with mu covariates.** Adding the same set of covariates to both the mu and sigma formulas creates identifiability pressure: the algorithm has to distinguish "this segment has a higher mean" from "this segment has a higher CV". When the covariates are the same, that distinction is hard. Use a strict subset of covariates for sigma — the one or two factors where you have a priori reason to believe the CV differs.
+**Sigma covariates that are collinear with mu covariates.** Adding the same set of covariates to both the mu and sigma formulas creates identifiability pressure: the algorithm has to distinguish "this segment has a higher mean" from "this segment has a higher CV". When the covariates are the same, that distinction is hard. Use a strict subset of covariates for sigma - the one or two factors where you have a priori reason to believe the CV differs.
 
 **Single-peril books with fewer than 10,000 claims.** The GAIC test provides no protection on very small datasets because the log-likelihood surface is noisy. The holdout quantile residual test does help, but only if your holdout is large enough to produce stable distributional statistics (we suggest at least 2,000 holdout claims for a continuous response). On smaller datasets, the constant-dispersion GLM is almost always the right choice, with manual dispersion parameters per major segment if the evidence warrants it.
 
@@ -242,7 +242,7 @@ The validation protocol in order:
 3. Worm plot on holdout split by mu quartile. S-shapes and systematic shifts indicate the wrong sigma formula.
 4. Volatility score vs. empirical CV by segment. Spearman correlation > 0.85 across well-populated segments is the production gate.
 
-The full workflow runs in under five minutes on a standard motor severity dataset. Steps 1 and 4 are the ones that get challenged in a pricing review — the GAIC test because it is unfamiliar to actuaries used to standard F-tests, and the volatility score comparison because it requires segment-level empirical statistics that not every team has readily to hand. Both are worth the effort. A sigma model that passes all four steps is one you can sign off confidently.
+The full workflow runs in under five minutes on a standard motor severity dataset. Steps 1 and 4 are the ones that get challenged in a pricing review - the GAIC test because it is unfamiliar to actuaries used to standard F-tests, and the volatility score comparison because it requires segment-level empirical statistics that not every team has readily to hand. Both are worth the effort. A sigma model that passes all four steps is one you can sign off confidently.
 
 ---
 
@@ -251,6 +251,6 @@ The full workflow runs in under five minutes on a standard motor severity datase
 ---
 
 **Related:**
-- [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) — the introductory post on fitting the model
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — a GBM-based approach to the same problem if you need more flexibility in the mean submodel
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption most teams leave unchallenged
+- [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) - the introductory post on fitting the model
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - a GBM-based approach to the same problem if you need more flexibility in the mean submodel
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) - the other structural assumption most teams leave unchallenged

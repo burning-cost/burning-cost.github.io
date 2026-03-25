@@ -7,7 +7,7 @@ tags: [dispersion, double-glm, dglm, gamma-glm, severity, variance, phi, reinsur
 description: "Standard Gamma GLMs assign one dispersion parameter to every policy. That is wrong for most UK books. GAMLSS sigma submodels and Tweedie p estimation fix it."
 ---
 
-Every UK pricing team fitting a Gamma severity GLM is implicitly making a claim about dispersion. Not a claim written down anywhere, not a claim anyone signed off on — just the default assumption baked into the model family. The claim is: every policy in the portfolio has the same variance-to-mean ratio.
+Every UK pricing team fitting a Gamma severity GLM is implicitly making a claim about dispersion. Not a claim written down anywhere, not a claim anyone signed off on - just the default assumption baked into the model family. The claim is: every policy in the portfolio has the same variance-to-mean ratio.
 
 A broker-placed commercial fleet account with a £250k limit and a direct-channel personal lines policy for a Ford Focus with a £5k vehicle value. Same phi. Same volatility structure, relative to their respective means.
 
@@ -296,7 +296,7 @@ The `dispersion_diagnostic` plot shows scaled unit deviances against fitted phi.
 
 ## One thing this does not replace
 
-The DGLM models heteroscedasticity in the Gamma family. It does not model heavy-tail behaviour beyond what the Gamma captures. For commercial lines severity where the tail is driven by large-loss events that are genuinely extreme — £500k+ losses on a book where the mean is £2k — the Gamma family itself may be the wrong starting point. In that case, [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) (GAMLSS) lets you jointly model the mean, dispersion, and shape parameters of distributions like the Burr or Generalised Gamma that have heavier tails. The DGLM is the right answer when the Gamma family fits the mean and severity structure correctly but dispersion is not uniform. GAMLSS is the right answer when you suspect the distributional family itself is wrong.
+The DGLM models heteroscedasticity in the Gamma family. It does not model heavy-tail behaviour beyond what the Gamma captures. For commercial lines severity where the tail is driven by large-loss events that are genuinely extreme - £500k+ losses on a book where the mean is £2k - the Gamma family itself may be the wrong starting point. In that case, [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) (GAMLSS) lets you jointly model the mean, dispersion, and shape parameters of distributions like the Burr or Generalised Gamma that have heavier tails. The DGLM is the right answer when the Gamma family fits the mean and severity structure correctly but dispersion is not uniform. GAMLSS is the right answer when you suspect the distributional family itself is wrong.
 
 For most UK motor and standard commercial property books, the Gamma family is adequate and the DGLM is the correct extension. Save GAMLSS for portfolios with genuine large-loss exposure where the shape of the tail varies systematically by policy type.
 
@@ -304,14 +304,14 @@ For most UK motor and standard commercial property books, the Gamma family is ad
 
 ## We think flat-phi Gamma GLMs are routinely mispricing reinsurance layers
 
-The argument for keeping a constant phi is that it is simpler and that the mean estimate is unaffected. Both statements are correct. The mean model produces the same fitted mu_i regardless of whether phi is constant or varying. But every downstream use of the severity model that depends on variance — XL layer pricing, credibility weights, capital allocation — inherits the wrong variance. On a heterogeneous book with broker-placed commercial alongside direct personal lines, the error is not small. A factor of five difference in phi between channel types, with the reinsurance layer priced on the portfolio average, is not a rounding error.
+The argument for keeping a constant phi is that it is simpler and that the mean estimate is unaffected. Both statements are correct. The mean model produces the same fitted mu_i regardless of whether phi is constant or varying. But every downstream use of the severity model that depends on variance - XL layer pricing, credibility weights, capital allocation - inherits the wrong variance. On a heterogeneous book with broker-placed commercial alongside direct personal lines, the error is not small. A factor of five difference in phi between channel types, with the reinsurance layer priced on the portfolio average, is not a rounding error.
 
-`insurance-dispersion` is a drop-in extension to the standard Gamma severity pipeline. The mean model formula is unchanged. The only addition is a `dformula` argument specifying what drives phi. Run the `overdispersion_test()` first. If the LRT p-value is above 0.05 and the delta AIC is below 4, keep the flat-phi model — the data do not support varying phi and there is nothing to correct. On any book with genuine channel or segment heterogeneity, we expect the test to reject flatly.
+`insurance-dispersion` is a drop-in extension to the standard Gamma severity pipeline. The mean model formula is unchanged. The only addition is a `dformula` argument specifying what drives phi. Run the `overdispersion_test()` first. If the LRT p-value is above 0.05 and the delta AIC is below 4, keep the flat-phi model - the data do not support varying phi and there is nothing to correct. On any book with genuine channel or segment heterogeneity, we expect the test to reject flatly.
 
 ---
 
 `insurance-dispersion` is open source under BSD-3 at [github.com/burning-cost/insurance-dispersion](https://github.com/burning-cost/insurance-dispersion). Install with `pip install insurance-dispersion`. Requires Python 3.10+, NumPy, SciPy, and formulaic.
 
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — when you want the full predictive distribution from a gradient boosted model rather than a GLM
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2027/05/15/frequency-severity-independence-is-costing-you-premium/) — the other structural assumption in the two-part model that systematically misfires on NCD-heavy UK motor books
-- [Stop Smoothing Your Rating Tables in Excel](/2027/06/15/stop-smoothing-rating-tables-in-excel/) — REML for a different application: selecting the smoothing parameter for Whittaker-Henderson curves
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - when you want the full predictive distribution from a gradient boosted model rather than a GLM
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2027/05/15/frequency-severity-independence-is-costing-you-premium/) - the other structural assumption in the two-part model that systematically misfires on NCD-heavy UK motor books
+- [Stop Smoothing Your Rating Tables in Excel](/2027/06/15/stop-smoothing-rating-tables-in-excel/) - REML for a different application: selecting the smoothing parameter for Whittaker-Henderson curves

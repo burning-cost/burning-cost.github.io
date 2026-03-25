@@ -6,7 +6,7 @@ description: "Complete UK insurance pricing pipeline in Python: CatBoost GLM dis
 tags: [pricing, python, pipeline, tutorial, databricks]
 ---
 
-*This post is the vendor-agnostic pipeline overview: decisions and tooling that apply regardless of compute environment. For a complete worked example on Databricks specifically — Unity Catalog, MLflow tracking, scheduled Jobs, and Radar export — see [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/).*
+*This post is the vendor-agnostic pipeline overview: decisions and tooling that apply regardless of compute environment. For a complete worked example on Databricks specifically - Unity Catalog, MLflow tracking, scheduled Jobs, and Radar export - see [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/).*
 
 
 The UK pricing team's standard toolkit has been largely unchanged for two decades: Emblem or Radar for GLMs, Excel for scenario management, SAS or bespoke R scripts for data manipulation, and periodic exports to whatever catastrophe model the reinsurer mandates. It works. But it has structural limits that become more painful as model complexity increases.
@@ -27,7 +27,7 @@ The strains appear at the edges.
 
 **Uncertainty.** Point estimates come out of every model. Confidence intervals on GLM coefficients assume the model is correctly specified. For a Tweedie GBM on motor claims, that assumption is false in ways that are hard to quantify with standard tools.
 
-**Reproducibility.** An Emblem project file contains the model. The steps that produced the data it was trained on — the extract logic, the outlier removals, the exposure calculations: these typically live in a separate SAS or SQL script, version-controlled separately (or not at all).
+**Reproducibility.** An Emblem project file contains the model. The steps that produced the data it was trained on - the extract logic, the outlier removals, the exposure calculations: these typically live in a separate SAS or SQL script, version-controlled separately (or not at all).
 
 **Governance.** PRA SS1/23 is currently scoped to banks and building societies, but its model risk management principles are widely expected to extend to insurance. An Excel model register and a Word validation template are unlikely to satisfy a serious review.
 
@@ -45,7 +45,7 @@ We are going to walk through each stage. For each one, we will show the minimal 
 
 Production data is confidential, IBNR-contaminated, and expensive to iterate on. The first practical problem in any pipeline is having a dataset you can test code against before touching live claims.
 
-Generic synthetic data tools — SDV, CTGAN, TVAE — produce data that looks reasonable column by column and breaks down as soon as you run a frequency model on it. The frequency/severity decomposition fails because these tools do not understand that claim counts are Poisson with an exposure offset, that claim severity is conditional on a claim occurring, or that the joint distribution of rating factors matters for the multiplicative structure of a GLM.
+Generic synthetic data tools - SDV, CTGAN, TVAE - produce data that looks reasonable column by column and breaks down as soon as you run a frequency model on it. The frequency/severity decomposition fails because these tools do not understand that claim counts are Poisson with an exposure offset, that claim severity is conditional on a claim occurring, or that the joint distribution of rating factors matters for the multiplicative structure of a GLM.
 
 A better approach uses vine copulas to model the joint distribution of rating factors, then samples frequency and severity from distributions consistent with the underlying actuarial structure:
 
@@ -228,7 +228,7 @@ mean_prediction = np.exp(mu + 0.5 * sigma**2)
 var_loaded_price = np.exp(mu + 0.5 * sigma**2) * (1 + safety_loading * sigma)
 ```
 
-**Quantile regression** targets specific percentiles directly — useful for setting excess points or pricing first-loss layers:
+**Quantile regression** targets specific percentiles directly - useful for setting excess points or pricing first-loss layers:
 
 ```python
 from insurance_quantile import QuantileRegressor
@@ -243,7 +243,7 @@ p90_loss = q90.predict(X_new)  # 90th percentile of loss for each risk
 
 ### 6. Causal inference and price elasticity
 
-This is where most pricing pipelines have a genuine gap. A standard demand model estimates the association between price changes and renewal. Causal inference estimates the effect — what would happen to renewal if you changed price, holding everything else fixed.
+This is where most pricing pipelines have a genuine gap. A standard demand model estimates the association between price changes and renewal. Causal inference estimates the effect - what would happen to renewal if you changed price, holding everything else fixed.
 
 The distinction matters because pricing decisions are non-random. Policies that received a large rate increase in the previous year tend to have specific claim characteristics, agent profiles, and behavioural histories. A naive regression of renewal on price change conflates the price effect with all of these selection effects.
 
@@ -369,7 +369,7 @@ status = monitor.check(
 print(status.summary())     # GREEN / AMBER / RED by layer
 ```
 
-The output should feed a dashboard your pricing manager and actuarial function see regularly — not a notebook you run when something goes wrong.
+The output should feed a dashboard your pricing manager and actuarial function see regularly - not a notebook you run when something goes wrong.
 
 ---
 
@@ -513,7 +513,7 @@ The complete workflow, in order:
 4. SHAP relativities to make the GBM explainable (`shap-relativities`)
 5. Interaction detection to find what the GLM missed (`insurance-interactions`)
 6. Conformal intervals for prediction uncertainty (`insurance-conformal`)
-7. Calibration testing — balance test, auto-calibration, Murphy decomposition (`insurance-monitoring`)
+7. Calibration testing - balance test, auto-calibration, Murphy decomposition (`insurance-monitoring`)
 8. Distributional models and quantile regression for tail risk (`insurance-distributional`, `insurance-quantile`)
 9. Causal elasticity for defensible demand modelling (`insurance-causal`)
 10. Constrained optimisation and the efficient frontier (`insurance-optimise`)

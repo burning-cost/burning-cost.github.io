@@ -20,9 +20,9 @@ Below is the full stack, organised by where in the pricing workflow each library
 
 Five libraries that cover the most common failure modes. A pricing team that uses all five is better positioned than most UK insurers.
 
-### shap-relativities — GBM → GLM factor tables
+### shap-relativities - GBM → GLM factor tables
 
-Your GBM is sitting in a notebook because you cannot get a multiplicative factor table out of it. `shap-relativities` closes that gap. It uses SHAP additive decomposition to extract exposure-weighted, confidence-interval-equipped relativities in `exp(β)` format from any CatBoost model — the format your pricing committee and Radar both understand.
+Your GBM is sitting in a notebook because you cannot get a multiplicative factor table out of it. `shap-relativities` closes that gap. It uses SHAP additive decomposition to extract exposure-weighted, confidence-interval-equipped relativities in `exp(β)` format from any CatBoost model - the format your pricing committee and Radar both understand.
 
 ```python
 from shap_relativities import ShapRelativities
@@ -32,13 +32,13 @@ tables = sr.extract(factors=["driver_age_band", "vehicle_group", "area"])
 tables["driver_age_band"].write_csv("age_relativities.csv")
 ```
 
-The full methodology — Shapley efficiency axiom, log-space decomposition, confidence intervals via bootstrap — is covered in [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/).
+The full methodology - Shapley efficiency axiom, log-space decomposition, confidence intervals via bootstrap - is covered in [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/).
 
 [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities)
 
 ---
 
-### insurance-cv — temporal cross-validation
+### insurance-cv - temporal cross-validation
 
 Standard k-fold CV is wrong for insurance data. Policies from 2020 land in the same folds as policies from 2023. Claims from the test fold have less development than claims in training. The IBNR structure poisons both. The result is a CV metric that is optimistic by 5-8 Gini points on UK motor data, and a model tuned against phantom signal.
 
@@ -62,7 +62,7 @@ The full diagnosis of how k-fold breaks on insurance data is in [Why Your Cross-
 
 ---
 
-### insurance-monitoring — drift detection
+### insurance-monitoring - drift detection
 
 A pricing model is not complete when it goes live. It starts degrading from day one. `insurance-monitoring` tracks population stability (PSI), feature drift (KS/Cramér's V), and modelled-to-actual ratios across your rating factors on a configurable cadence. It writes structured alerts your existing monitoring infrastructure can ingest.
 
@@ -78,9 +78,9 @@ report.flag_drifted()  # returns factors with PSI > 0.2
 
 ---
 
-### insurance-fairness — FCA proxy discrimination
+### insurance-fairness - FCA proxy discrimination
 
-The Citizens Advice research (2022) found a £280/year ethnicity penalty in UK motor insurance in postcodes where more than 50% of residents are people of colour — £213m per year across the market. The mechanism is postcode as a rating factor correlating with ethnicity. The FCA Consumer Duty (live July 2023) and Equality Act 2010 Section 19 mean this is not a theoretical risk.
+The Citizens Advice research (2022) found a £280/year ethnicity penalty in UK motor insurance in postcodes where more than 50% of residents are people of colour - £213m per year across the market. The mechanism is postcode as a rating factor correlating with ethnicity. The FCA Consumer Duty (live July 2023) and Equality Act 2010 Section 19 mean this is not a theoretical risk.
 
 `insurance-fairness` runs the full proxy discrimination audit: mutual information between rating factors and protected characteristics, counterfactual fairness tests, and a structured Markdown report with explicit FCA regulatory mapping you can drop into a pricing committee pack.
 
@@ -101,7 +101,7 @@ audit.run().save_report("fairness_audit_2026Q1.md")
 
 ---
 
-### insurance-datasets — synthetic test data
+### insurance-datasets - synthetic test data
 
 Every code example in this stack uses `insurance-datasets`. It generates realistic synthetic UK personal lines portfolios with configurable size, rating factor distributions, and known ground truth parameters. You can test your code before your data is available and verify your implementations produce the right answer.
 
@@ -121,7 +121,7 @@ df = MotorPortfolio(n_policies=50_000, seed=42).generate()
 
 Libraries for specific modelling challenges that the standard GLM/GBM toolchain does not cover well.
 
-### bayesian-pricing — thin segments
+### bayesian-pricing - thin segments
 
 A representative UK motor rating model has roughly 4.5 million theoretical cells. A mid-sized insurer with one million policies covers perhaps 3% of them with more than 30 observations. The thin-data problem is worse at interaction level: "age 17-21 × ABI group 40+ × London" may have 8 claims across five years. That is not enough to estimate frequency to within 30%.
 
@@ -144,7 +144,7 @@ For the full partial-pooling methodology, see [Bayesian Hierarchical Models for 
 
 ---
 
-### insurance-spatial — territory banding
+### insurance-spatial - territory banding
 
 Territory banding by eye from a modelled loss cost map is the most common approach in UK personal lines. It is also demonstrably wrong: human-drawn bands ignore spatial autocorrelation, produce bands whose internal variance is higher than it needs to be, and have no principled criterion for how many bands to use.
 
@@ -164,9 +164,9 @@ See [Your Territory Banding is Wrong](/2026/02/27/your-territory-banding-is-wron
 
 ---
 
-### insurance-interactions — GLM interaction detection
+### insurance-interactions - GLM interaction detection
 
-Adding interaction terms to a GLM is guesswork without a systematic search. A portfolio with 20 rating factors has 190 possible pairwise interactions. `insurance-interactions` uses a three-stage pipeline: a Combined Actuarial Neural Network (CANN) trained on GLM residuals, Neural Interaction Detection (NID) scoring from the CANN weight matrices to rank all candidate pairs, and GLM likelihood-ratio testing on the top-K shortlist. The result is a ranked interaction table with deviance improvement, AIC/BIC, and Bonferroni-corrected p-values — not a list of guesses.
+Adding interaction terms to a GLM is guesswork without a systematic search. A portfolio with 20 rating factors has 190 possible pairwise interactions. `insurance-interactions` uses a three-stage pipeline: a Combined Actuarial Neural Network (CANN) trained on GLM residuals, Neural Interaction Detection (NID) scoring from the CANN weight matrices to rank all candidate pairs, and GLM likelihood-ratio testing on the top-K shortlist. The result is a ranked interaction table with deviance improvement, AIC/BIC, and Bonferroni-corrected p-values - not a list of guesses.
 
 ```python
 from insurance_interactions import InteractionDetector
@@ -182,7 +182,7 @@ See [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interacti
 
 ---
 
-### insurance-glm-tools — nested GLMs and clustering
+### insurance-glm-tools - nested GLMs and clustering
 
 Two specific GLM problems that statsmodels does not solve. First: nested GLMs, where you want to segment the portfolio into clusters and fit separate GLMs per cluster, with the cluster structure itself estimated from data rather than defined by hand. Second: GLM coefficient smoothing via Whittaker-Henderson, for when raw GLM factor relativities oscillate implausibly across ordered bands (age, vehicle age, NCD).
 
@@ -200,7 +200,7 @@ smooth_rels = smoother.fit_transform(raw_relativities["driver_age_band"])
 
 ---
 
-### insurance-gam — interpretable boosting machines
+### insurance-gam - interpretable boosting machines
 
 Explainable Boosting Machines (EBMs, Lou et al. 2013) are additive models with interaction terms that are fully interpretable by construction. Each feature contribution is a learned shape function. For a pricing actuary, EBMs sit between a GLM (fully interpretable, constrained functional form) and a GBM (maximum lift, black box). On UK motor data, EBMs typically close 60-70% of the Gini gap between GLM and GBM while remaining directly explainable without post-hoc tools.
 
@@ -216,7 +216,7 @@ ebm.plot_shape("driver_age_band")  # shows the learned age curve
 
 ---
 
-### insurance-frequency-severity — frequency/severity dependence
+### insurance-frequency-severity - frequency/severity dependence
 
 The standard two-model GLM multiplies `E[N|x]` by `E[S|x]` and assumes independence. The assumption is wrong in UK motor. The NCD structure suppresses borderline claims. Policyholders near the NCD threshold do not report small incidents. The result is a systematic negative dependence between claim count and average severity.
 
@@ -237,9 +237,9 @@ model.fit(claims_df)
 
 ---
 
-### insurance-distributional — variance modelling
+### insurance-distributional - variance modelling
 
-A point estimate of pure premium is not enough when you are setting capital requirements or evaluating risk-adequate pricing for volatile segments. `insurance-distributional` fits distributional regression models — GAMLSS-style, where location, scale, and shape parameters are all functions of rating factors — to give you a full predictive distribution per policy, not just a conditional mean.
+A point estimate of pure premium is not enough when you are setting capital requirements or evaluating risk-adequate pricing for volatile segments. `insurance-distributional` fits distributional regression models - GAMLSS-style, where location, scale, and shape parameters are all functions of rating factors - to give you a full predictive distribution per policy, not just a conditional mean.
 
 ```python
 from insurance_distributional import DistributionalGLM
@@ -257,7 +257,7 @@ loc, scale = dglm.predict_params(X_test)  # both are policy-level predictions
 
 What the PRA expects, implemented as runnable code.
 
-### insurance-governance — PRA SS1/23 and model risk management
+### insurance-governance - PRA SS1/23 and model risk management
 
 PRA Supervisory Statement SS1/23 (Model Risk Management Principles) and FCA TR24/2 require documented, independent validation with traceable audit trails. In practice most UK insurers have a collection of ad-hoc scripts, Excel workbooks, and email threads. `insurance-governance` turns that into a structured, reproducible HTML report with a JSON sidecar for model risk system ingestion. It also implements the model risk tiering framework: a 0-100 composite risk score maps each model to Tier 1/2/3, determining what governance is required.
 
@@ -280,9 +280,9 @@ print(f"Model tier: {tier.tier} (score: {tier.score}/100)")
 
 ---
 
-### insurance-calibration — balance property
+### insurance-calibration - balance property
 
-A well-specified pricing model should satisfy the balance property: the sum of predicted premiums should equal the sum of actual losses in aggregate, and within every rating factor band. Failures of calibration within bands reveal systematic mispricing by segment that aggregate metrics hide. `insurance-calibration` runs the full suite of calibration tests — actual-to-expected by factor, Hosmer-Lemeshow bins, calibration curves — and flags the bands where your model is consistently above or below one.
+A well-specified pricing model should satisfy the balance property: the sum of predicted premiums should equal the sum of actual losses in aggregate, and within every rating factor band. Failures of calibration within bands reveal systematic mispricing by segment that aggregate metrics hide. `insurance-calibration` runs the full suite of calibration tests - actual-to-expected by factor, Hosmer-Lemeshow bins, calibration curves - and flags the bands where your model is consistently above or below one.
 
 ```python
 from insurance_calibration import CalibrationReport
@@ -301,9 +301,9 @@ report.run().plot_calibration_by_factor()
 
 ---
 
-### insurance-conformal — prediction intervals
+### insurance-conformal - prediction intervals
 
-Your Tweedie GBM gives point estimates. A pricing actuary needs to know the uncertainty around those estimates — not as a parametric confidence interval that depends on distributional assumptions, but as a guarantee: this interval will contain the actual loss at least 90% of the time, for any data distribution.
+Your Tweedie GBM gives point estimates. A pricing actuary needs to know the uncertainty around those estimates - not as a parametric confidence interval that depends on distributional assumptions, but as a guarantee: this interval will contain the actual loss at least 90% of the time, for any data distribution.
 
 Conformal prediction provides that guarantee. The implementation detail that matters for insurance: the standard approach uses raw absolute residuals as non-conformity scores, which treats a £1 error on a £100 risk identically to a £1 error on a £10,000 risk. `insurance-conformal` uses Pearson-weighted residuals that respect the heteroscedasticity of insurance data, producing around 30% narrower intervals with identical coverage guarantees.
 
@@ -329,9 +329,9 @@ The full methodology, based on Manna et al. (2025), is in [Conformal Prediction 
 
 Rating factors are not causes. They are correlates. For most pricing purposes, that is good enough. For three specific decisions, it is not: evaluating whether a rating factor's effect is genuine or proxied through a confounder, measuring price elasticity for renewal pricing, and proving a rate change actually worked.
 
-### insurance-causal — double machine learning
+### insurance-causal - double machine learning
 
-Double Machine Learning (Chernozhukov et al. 2018) estimates the causal effect of a treatment — a rating factor, a price change, a telematics score — controlling for high-dimensional confounders using flexible ML models, while preserving valid frequentist inference on the causal parameter. For a GLM coefficient interpretation question ("is this engine size effect genuine or residual confounding from driver type?"), DML gives you a clean answer.
+Double Machine Learning (Chernozhukov et al. 2018) estimates the causal effect of a treatment - a rating factor, a price change, a telematics score - controlling for high-dimensional confounders using flexible ML models, while preserving valid frequentist inference on the causal parameter. For a GLM coefficient interpretation question ("is this engine size effect genuine or residual confounding from driver type?"), DML gives you a clean answer.
 
 ```python
 from insurance_causal import CausalPricingModel
@@ -352,7 +352,7 @@ For the mechanism and a worked motor example, see [Your Rating Factor Might Be C
 
 ---
 
-### insurance-causal-policy — rate change evaluation
+### insurance-causal-policy - rate change evaluation
 
 You applied a 15% rate increase to a segment six months ago. The loss ratio on that segment has improved. Did the rate change work? Or did the rate increase attract better risks (adverse selection reversing), or did claims inflation happen to cool in that period? The naive before/after loss ratio comparison conflates all three.
 
@@ -370,7 +370,7 @@ print(result.att, result.p_value)  # average treatment effect on treated
 
 ---
 
-### insurance-uplift — retention heterogeneous treatment effects
+### insurance-uplift - retention heterogeneous treatment effects
 
 *Note: the `insurance-uplift` repository has been archived and is no longer maintained. The approach is documented here for reference.*
 
@@ -384,7 +384,7 @@ The archived library estimated heterogeneous treatment effects on renewal probab
 
 Getting from a technical price to an implemented rate change.
 
-### insurance-optimise — rate optimisation
+### insurance-optimise - rate optimisation
 
 The standard pricing cycle applies rate changes manually: technical model produces adequate prices, demand model produces elasticity estimates, someone reconciles the two in a spreadsheet while watching the loss ratio. This manual process is not optimising anything. It is approximating a joint optimisation problem with sequential heuristics.
 
@@ -407,7 +407,7 @@ For the full treatment of the constrained rate optimisation problem and the effi
 
 ---
 
-### insurance-demand — price elasticity
+### insurance-demand - price elasticity
 
 Before you can run `insurance-optimise`, you need elasticity estimates. `insurance-demand` fits price elasticity models on renewal and new business data, with the confounding correction that naive logistic regression omits: risk factors drive both the price charged and the renewal decision, so OLS conflates the causal price effect with risk-driven selection.
 
@@ -425,7 +425,7 @@ df["elasticity"] = elast.predict_cate(df)  # individual-level semi-elasticities
 
 ---
 
-### insurance-deploy — champion/challenger
+### insurance-deploy - champion/challenger
 
 A pricing model without a structured champion/challenger framework has no way to prove it outperforms its predecessor. `insurance-deploy` implements the full champion/challenger infrastructure: traffic splitting (by volume or stratified by risk segment), a hold-out audit trail for FCA review, lift calculation between the challenger GBM and the champion GLM on the same live population, and a model registry with version control for pricing committee sign-off.
 
@@ -498,11 +498,11 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 If you are installing for the first time, the order matters:
 
-1. `insurance-datasets` — you need synthetic data to run anything else
-2. `insurance-cv` — fix your CV methodology before tuning any model
-3. `shap-relativities` — if you have a GBM, extract the factor tables first
-4. `insurance-fairness` — run the proxy discrimination audit before the model goes to pricing committee
-5. `insurance-governance` — generate the PRA SS1/23 validation report in parallel with the model build, not after
+1. `insurance-datasets` - you need synthetic data to run anything else
+2. `insurance-cv` - fix your CV methodology before tuning any model
+3. `shap-relativities` - if you have a GBM, extract the factor tables first
+4. `insurance-fairness` - run the proxy discrimination audit before the model goes to pricing committee
+5. `insurance-governance` - generate the PRA SS1/23 validation report in parallel with the model build, not after
 
 Everything else is additive depending on your specific problem. Thin segments? Add `bayesian-pricing`. Territory banding? Add `insurance-spatial`. Going to production with a challenger? Add `insurance-deploy`.
 

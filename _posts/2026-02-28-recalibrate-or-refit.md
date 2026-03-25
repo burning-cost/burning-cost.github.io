@@ -7,7 +7,7 @@ tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, 
 description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB..."
 ---
 
-Your monitoring dashboard has gone amber. The A/E ratio is 1.07 — the model is 7% cheap across the portfolio. The question on the table: do we adjust the intercept this afternoon, or do we commission a full model refit?
+Your monitoring dashboard has gone amber. The A/E ratio is 1.07 - the model is 7% cheap across the portfolio. The question on the table: do we adjust the intercept this afternoon, or do we commission a full model refit?
 
 This question comes up every time a monitoring alert fires. It sounds like it should have a principled answer. In most UK pricing teams, it is answered by committee instinct: how bad does 1.07 feel? how long has it been since the last refit? who has capacity? These are not the right inputs.
 
@@ -17,11 +17,11 @@ The right input is the Murphy decomposition.
 
 ## What the decomposition actually measures
 
-A/E ratio of 1.07 tells you the model's predictions are systematically 7% low. It does not tell you *why*. The Murphy decomposition — from Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, December 2025) — gives you the two components of miscalibration as separate numbers: GMCB (the portion a single scaling factor fixes) and LMCB (the portion that requires a structural change to the model). The post [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) covers the full framework, including the balance property test and auto-calibration. This post is about what you do with the GMCB/LMCB split when a monitoring alert fires.
+A/E ratio of 1.07 tells you the model's predictions are systematically 7% low. It does not tell you *why*. The Murphy decomposition - from Lindholm & Wüthrich (SAJ 2025) and Brauer et al. (arXiv:2510.04556, December 2025) - gives you the two components of miscalibration as separate numbers: GMCB (the portion a single scaling factor fixes) and LMCB (the portion that requires a structural change to the model). The post [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) covers the full framework, including the balance property test and auto-calibration. This post is about what you do with the GMCB/LMCB split when a monitoring alert fires.
 
-**Global scale error (GMCB)**: the model's shape is correct — it ranks risks right, the relativities between segments are accurate — but the overall level is wrong by a constant. Every prediction needs multiplying by 1.07. This costs an afternoon: update the GLM intercept, or multiply the GBM output by 1.07 in the score function. The ranking, the factor tables, the relativities — none of it changes.
+**Global scale error (GMCB)**: the model's shape is correct - it ranks risks right, the relativities between segments are accurate - but the overall level is wrong by a constant. Every prediction needs multiplying by 1.07. This costs an afternoon: update the GLM intercept, or multiply the GBM output by 1.07 in the score function. The ranking, the factor tables, the relativities - none of it changes.
 
-**Local structural error (LMCB)**: the model's shape is wrong. It overprices young drivers and underprices mature drivers in a way that partly cancels at portfolio level. Or it has the vehicle group relativities in the wrong order because the composition of claims has shifted since training. An intercept adjustment does not fix this — you are multiplying a wrong shape by a constant and calling it a recalibration. The errors reduce but they do not go away, and they stay systematically in the wrong places.
+**Local structural error (LMCB)**: the model's shape is wrong. It overprices young drivers and underprices mature drivers in a way that partly cancels at portfolio level. Or it has the vehicle group relativities in the wrong order because the composition of claims has shifted since training. An intercept adjustment does not fix this - you are multiplying a wrong shape by a constant and calling it a recalibration. The errors reduce but they do not go away, and they stay systematically in the wrong places.
 
 ---
 
@@ -34,7 +34,7 @@ D(Y, Ŷ) = UNC + DSC + MCB
 ```
 
 - **UNC** (uncertainty): the baseline deviance of predicting the portfolio mean for everyone. This is fixed by the data and tells you nothing about the model.
-- **DSC** (discrimination): the skill gained by the model's ranking. A higher DSC is better — it means the model distinguishes well between high and low risk. This is what your Gini coefficient approximates.
+- **DSC** (discrimination): the skill gained by the model's ranking. A higher DSC is better - it means the model distinguishes well between high and low risk. This is what your Gini coefficient approximates.
 - **MCB** (miscalibration): the excess deviance from wrong price levels. Zero means the model is perfectly calibrated; positive means it is leaving deviance on the table through miscalibration.
 
 MCB decomposes further:
@@ -43,7 +43,7 @@ MCB decomposes further:
 MCB = GMCB + LMCB
 ```
 
-- **GMCB** (global MCB): the portion of miscalibration fixed by multiplying all predictions by a single constant — i.e., the portion attributable to a wrong intercept. This is the cheap fix.
+- **GMCB** (global MCB): the portion of miscalibration fixed by multiplying all predictions by a single constant - i.e., the portion attributable to a wrong intercept. This is the cheap fix.
 - **LMCB** (local MCB): the portion not fixable by any global scale adjustment. This requires a model refit.
 
 The decision rule: if GMCB >> LMCB, recalibrate. If LMCB >= GMCB, refit.
@@ -107,7 +107,7 @@ The two scenarios produce broadly similar A/E ratios at portfolio level. The dec
 
 ## The full picture: add the Gini drift test
 
-Murphy decomposition answers the RECALIBRATE vs REFIT question for calibration errors. But there is a second failure mode — discriminatory power decay — that GMCB/LMCB does not catch.
+Murphy decomposition answers the RECALIBRATE vs REFIT question for calibration errors. But there is a second failure mode - discriminatory power decay - that GMCB/LMCB does not catch.
 
 If the model's ranking has degraded (the Gini has fallen from 0.42 at deployment to 0.36 eighteen months later), the model's shape may look fine by the MCB test. The claims environment has shifted in a way that makes the historical feature-response relationships less predictive, but the model is still internally consistent. MCB is low. But the model is doing worse work than it was.
 
@@ -177,7 +177,7 @@ print(df)
 
 The decision tree implementation: if the Gini p-value is below 0.10, that triggers REFIT regardless of MCB. If Gini is stable but LMCB >= GMCB, that also triggers REFIT. If Gini is stable and GMCB >> LMCB, RECALIBRATE. If nothing is significantly off, MONITOR_CLOSELY or NO_ACTION depending on A/E.
 
-When the Murphy distribution is set, this is the logic that runs. Without it, the framework falls back to A/E + Gini alone — still more than most teams are running, but less sharp on the RECALIBRATE vs REFIT question.
+When the Murphy distribution is set, this is the logic that runs. Without it, the framework falls back to A/E + Gini alone - still more than most teams are running, but less sharp on the RECALIBRATE vs REFIT question.
 
 ---
 
@@ -229,7 +229,7 @@ uv add insurance-monitoring
 
 Python 3.10+. Polars-native throughout. No scikit-learn dependency. The calibration suite requires only `polars >= 0.20`, `numpy >= 1.24`, and `scipy >= 1.10` for the Garwood confidence intervals on A/E. `matplotlib >= 3.7` is optional for the calibration plot functions.
 
-The library is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The `examples/model_drift_monitoring.py` script runs the full three-scenario benchmark — covariate shift, calibration deterioration, Gini decay — on synthetic motor data and produces a structured monitoring report with Murphy decomposition outputs.
+The library is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The `examples/model_drift_monitoring.py` script runs the full three-scenario benchmark - covariate shift, calibration deterioration, Gini decay - on synthetic motor data and produces a structured monitoring report with Murphy decomposition outputs.
 
 - [Three-Layer Drift Detection: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)

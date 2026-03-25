@@ -7,7 +7,7 @@ tags: [composite-models, spliced-distributions, severity, heavy-tail, GPD, Burr,
 description: "Spliced severity for UK motor BI: lognormal body, GPD tail above a policyholder-specific threshold. insurance-severity - mode-matching, 2,818 lines, 106 tests."
 ---
 
-Every UK motor BI pricing model has the same structural problem. The Gamma GLM fits the body of the claim distribution well — the £3k–50k range where 90% of claims live. Then a £400k claim appears, and the Gamma's thin tail gives it a probability mass that is off by an order of magnitude. You know this, so you apply an aggregate large loss loading, maybe 15% or 18%, derived from some tail factor that your predecessor calibrated three years ago on a different book of business. The loading does not condition on vehicle group, driver age, or region. It is the same for a young driver in a modified VW as for a fleet manager in a mid-range saloon.
+Every UK motor BI pricing model has the same structural problem. The Gamma GLM fits the body of the claim distribution well - the £3k–50k range where 90% of claims live. Then a £400k claim appears, and the Gamma's thin tail gives it a probability mass that is off by an order of magnitude. You know this, so you apply an aggregate large loss loading, maybe 15% or 18%, derived from some tail factor that your predecessor calibrated three years ago on a different book of business. The loading does not condition on vehicle group, driver age, or region. It is the same for a young driver in a modified VW as for a fleet manager in a mid-range saloon.
 
 This is how large loss misallocation compounds. The young driver is underpriced at high limits. The fleet account is overpriced. The aggregate is approximately right, but the cross-subsidy is not visible until you lose the fleet account to a competitor who priced it better.
 
@@ -21,7 +21,7 @@ uv add insurance-severity
 
 ## The structural problem with single-family severity models
 
-UK motor BI claim severity has a tail index (ξ in GPD notation) somewhere in the range 0.1 to 0.5. A Gamma distribution has a tail index of effectively zero — it is exponentially bounded. Fitting a Gamma to the full claim distribution is a model error, not a parameter error. No matter how many thousands of claims you use to fit it, the Gamma will never reproduce the frequency of £200k+ BI claims because its tail decays too fast. The same applies to the lognormal, which is heavier-tailed than the Gamma but still materially thinner than the empirical distribution at high quantiles.
+UK motor BI claim severity has a tail index (ξ in GPD notation) somewhere in the range 0.1 to 0.5. A Gamma distribution has a tail index of effectively zero - it is exponentially bounded. Fitting a Gamma to the full claim distribution is a model error, not a parameter error. No matter how many thousands of claims you use to fit it, the Gamma will never reproduce the frequency of £200k+ BI claims because its tail decays too fast. The same applies to the lognormal, which is heavier-tailed than the Gamma but still materially thinner than the empirical distribution at high quantiles.
 
 The actuarial response to this has traditionally been to accept the GLM for the body, then apply an Increased Limit Factor (ILF) schedule derived from a separate heavy-tailed fit to the large loss experience. ILF schedules are useful, but they have a problem: they are aggregate. The ILF at the £250k limit is the same for every risk, or at best varies by rating group with a coarse classification. It does not respond to the continuous covariate structure of your pricing model.
 
@@ -44,7 +44,7 @@ Three things need to be estimated: the body parameters, the tail parameters, and
 
 The naive approach is to pick t from a mean excess plot, then fit body and tail independently. This works, but it gives you a fixed t for the whole portfolio. A young driver in a high-NCD band does not have the same severity profile as a commercial vehicle operator; the transition from "routine claim" to "large claim" should plausibly happen at different absolute amounts for different risks.
 
-The mode-matching approach makes t covariate-dependent. You set the threshold equal to the mode of the tail distribution. Since the tail scale parameter varies with covariates via a log-link regression, the mode — and therefore the threshold — also varies with covariates. Each policyholder gets their own splice point.
+The mode-matching approach makes t covariate-dependent. You set the threshold equal to the mode of the tail distribution. Since the tail scale parameter varies with covariates via a log-link regression, the mode - and therefore the threshold - also varies with covariates. Each policyholder gets their own splice point.
 
 ---
 
@@ -52,7 +52,7 @@ The mode-matching approach makes t covariate-dependent. You set the threshold eq
 
 There is a constraint that is not obvious from reading the literature and is not documented in any of the R packages that implement composite models.
 
-GPD with shape parameter ξ ≥ 0 has its mode at zero. Not at some small positive value — at exactly zero. The GPD density for ξ > 0 is a strictly decreasing function from the threshold. For ξ = 0 (exponential case) it is flat at the threshold and then decreases. There is no interior mode.
+GPD with shape parameter ξ ≥ 0 has its mode at zero. Not at some small positive value - at exactly zero. The GPD density for ξ > 0 is a strictly decreasing function from the threshold. For ξ = 0 (exponential case) it is flat at the threshold and then decreases. There is no interior mode.
 
 Mode-matching requires setting the threshold equal to the tail mode. If the tail mode is zero, the threshold is zero, which means everything is in the tail and the body is empty. The model degenerates.
 
@@ -104,11 +104,11 @@ print(f"TVaR 99.5% : £{model.tvar(0.995):,.0f}")
 resid = model.quantile_residuals(y)
 ```
 
-The threshold of £87k emerged from the data via mode-matching — we did not specify it. The body weight of 0.881 means about 88% of claims by count are in the body. Both are outputs, not inputs.
+The threshold of £87k emerged from the data via mode-matching - we did not specify it. The body weight of 0.881 means about 88% of claims by count are in the body. Both are outputs, not inputs.
 
 ### Lognormal-GPD with a fixed threshold
 
-When you have a natural threshold from the treaty structure — the XL attachment at £250k, or the deductible at £100k — use fixed threshold with GPD:
+When you have a natural threshold from the treaty structure - the XL attachment at £250k, or the deductible at £100k - use fixed threshold with GPD:
 
 ```python
 from insurance_severity.composite import LognormalGPDComposite
@@ -189,7 +189,7 @@ print(f"Threshold range: £{thresholds.min():,.0f} – £{thresholds.max():,.0f}
 predicted_means = reg.predict(X_test)
 ```
 
-The regression coefficient of 0.421 on vehicle_group means the tail scale parameter (and therefore the threshold) is exp(0.421) = 1.52× higher for that vehicle group — the point at which claims transition from "routine" to "large" is 52% higher in absolute terms. This is the covariate-dependent threshold in action.
+The regression coefficient of 0.421 on vehicle_group means the tail scale parameter (and therefore the threshold) is exp(0.421) = 1.52× higher for that vehicle group - the point at which claims transition from "routine" to "large" is 52% higher in absolute terms. This is the covariate-dependent threshold in action.
 
 For GPD regression with a fixed global threshold:
 
@@ -212,7 +212,7 @@ Here the threshold is shared; only the GPD scale σ_i varies with covariates. Th
 
 ## ILF schedules by policyholder
 
-The regression model can compute an ILF schedule per observation — each policyholder gets their own set of increased limit factors derived from their individual body and tail fit:
+The regression model can compute an ILF schedule per observation - each policyholder gets their own set of increased limit factors derived from their individual body and tail fit:
 
 ```python
 limits = [100_000, 250_000, 500_000, 1_000_000, 2_000_000, 5_000_000]
@@ -231,7 +231,7 @@ print(ilf_df.head())
 # 1    0.7912    0.9318    0.9779     1.0000     1.0289     1.0661
 ```
 
-The ILF at the basic limit is by definition 1.000. Below the basic limit the ILF is less than 1 (limited coverage). Above the basic limit the ILF grows, with the rate of growth determined by the tail distribution. Policyholders with different tail-scale coefficients will have materially different ILF curves at high limits — exactly what you want when pricing excess layers.
+The ILF at the basic limit is by definition 1.000. Below the basic limit the ILF is less than 1 (limited coverage). Above the basic limit the ILF grows, with the rate of growth determined by the tail distribution. Policyholders with different tail-scale coefficients will have materially different ILF curves at high limits - exactly what you want when pricing excess layers.
 
 ---
 
@@ -272,7 +272,7 @@ plt.title("Quantile residuals — composite model")
 plt.show()
 ```
 
-Heavy tails in the residuals above the threshold indicate the tail distribution is not capturing enough mass. If you see this with Burr, try comparing AIC against `LognormalGPDComposite` with profile likelihood threshold — sometimes the GPD is genuinely a better fit even without mode-matching.
+Heavy tails in the residuals above the threshold indicate the tail distribution is not capturing enough mass. If you see this with Burr, try comparing AIC against `LognormalGPDComposite` with profile likelihood threshold - sometimes the GPD is genuinely a better fit even without mode-matching.
 
 ### AIC/BIC comparison
 
@@ -300,13 +300,13 @@ for name, m in models.items():
 
 **`LognormalBurrComposite` with `threshold_method="mode_matching"`** is the default choice for UK motor BI pricing with covariates. Use it when you want per-policyholder thresholds, when you have no strong prior on where the body-tail transition should occur, and when you want ILF schedules conditioned on risk characteristics. The Burr XII tail is not GPD, but it is flexible enough for ξ in the range typical of UK motor BI, and it supports mode-matching where GPD cannot.
 
-**`LognormalGPDComposite` with `threshold_method="fixed"`** is correct when the threshold is determined by the contract structure — reinsurance attachment points, deductibles, policy limits. PI/D&O pricing where the deductible is the natural splice point is the canonical use case. GPD is the EVT-motivated choice above a threshold; use it where the threshold is not in question.
+**`LognormalGPDComposite` with `threshold_method="fixed"`** is correct when the threshold is determined by the contract structure - reinsurance attachment points, deductibles, policy limits. PI/D&O pricing where the deductible is the natural splice point is the canonical use case. GPD is the EVT-motivated choice above a threshold; use it where the threshold is not in question.
 
 **`LognormalGPDComposite` with `threshold_method="profile_likelihood"`** is the data-driven version of the above, when the threshold is not specified by contract and you want to use GPD. The profile likelihood grid search is slower (roughly proportional to `n_threshold_grid` fits) but avoids the Burr approximation. Use it for EL or PL books where the threshold location is uncertain and you prefer the GPD's EVT interpretation.
 
 **`GammaGPDComposite`** is the natural choice if you want continuity with a Gamma GLM for the body. The Gamma GLM frequency × severity decomposition produces Gamma-distributed severities. Combining a Gamma body with a GPD tail gives you a model where the body is exactly what your GLM assumes, with a principled heavy-tailed extension above the threshold.
 
-**`CompositeSeverityRegressor` wrapping `LognormalBurrComposite`** is the full covariate-dependent threshold model. It requires more data than the standalone models — you need enough tail observations across covariate cells to identify the tail scale regression. As a rough guide, you want at least 500–1,000 observations above the modal threshold; below that, the body/tail regression coefficients are poorly identified. Bootstrap confidence intervals (`reg.bootstrap_ci(X, y, n_bootstrap=200)`) tell you how much to trust the covariate effects.
+**`CompositeSeverityRegressor` wrapping `LognormalBurrComposite`** is the full covariate-dependent threshold model. It requires more data than the standalone models - you need enough tail observations across covariate cells to identify the tail scale regression. As a rough guide, you want at least 500–1,000 observations above the modal threshold; below that, the body/tail regression coefficients are poorly identified. Bootstrap confidence intervals (`reg.bootstrap_ci(X, y, n_bootstrap=200)`) tell you how much to trust the covariate effects.
 
 ---
 
@@ -316,9 +316,9 @@ A few things worth knowing before deploying this in production.
 
 **Individual-varying thresholds during optimisation.** For the regression model with mode-matching, each gradient evaluation reclassifies observations between body and tail based on the current threshold estimates. With 100,000 policies this is a vectorised NumPy operation and is fast. The optimizer (L-BFGS-B) typically converges in 80–200 iterations for well-scaled data.
 
-**Multi-start initialisation.** The composite log-likelihood can be multimodal, especially when the threshold is poorly identified by the data. The library defaults to 5 starts for standalone models and 3 for regression models. If you get a poor fit — threshold at the edge of the grid, near-zero tail weight — increase `n_starts`. The warm start (fitting the standalone model first, then using its parameters to initialise the regression) materially reduces the starting-point sensitivity.
+**Multi-start initialisation.** The composite log-likelihood can be multimodal, especially when the threshold is poorly identified by the data. The library defaults to 5 starts for standalone models and 3 for regression models. If you get a poor fit - threshold at the edge of the grid, near-zero tail weight - increase `n_starts`. The warm start (fitting the standalone model first, then using its parameters to initialise the regression) materially reduces the starting-point sensitivity.
 
-**Normalization terms.** The body density is a truncated lognormal or truncated gamma, integrating to 1 over [0, t]. The tail density is the corresponding truncated heavy-tailed distribution, integrating to 1 over (t, ∞). Both normalisation constants appear in the log-likelihood. A common error in composite model implementations is to omit the normalisation — this produces a biased likelihood and biased parameter estimates. The library includes them throughout.
+**Normalization terms.** The body density is a truncated lognormal or truncated gamma, integrating to 1 over [0, t]. The tail density is the corresponding truncated heavy-tailed distribution, integrating to 1 over (t, ∞). Both normalisation constants appear in the log-likelihood. A common error in composite model implementations is to omit the normalisation - this produces a biased likelihood and biased parameter estimates. The library includes them throughout.
 
 **Tail sample size.** GPD parameter estimates are unreliable below about 30 exceedances. The library emits a `UserWarning` if you have fewer than 30 observations above the threshold. For small books, use a low threshold (high quantile, not high absolute value) to get enough tail data, or consider pooling across years before fitting.
 
@@ -330,17 +330,17 @@ The composite framework implemented here draws primarily from two papers:
 
 Liu, Li & Shi (Insurance: Mathematics and Economics, 2024) established the varying-threshold GBII composite regression framework. The covariate-dependent threshold via mode-matching, the reparameterisation to handle shape constraints, and the warm-start initialisation strategy from their paper are all present in the library's regression implementation.
 
-Fung, Li et al. (arXiv:2208.01262, 2022) developed the Lognormal-T composite regression models with varying threshold. The lognormal body with Burr XII tail variant — the most practically useful for actuarial work — is the model in `LognormalBurrComposite`.
+Fung, Li et al. (arXiv:2208.01262, 2022) developed the Lognormal-T composite regression models with varying threshold. The lognormal body with Burr XII tail variant - the most practically useful for actuarial work - is the model in `LognormalBurrComposite`.
 
-Neither group has published a Python implementation. The R packages (evmix, ReIns, CompLognormal) cover univariate fitting only — no regression, no covariate-dependent threshold. The Python gap is total.
+Neither group has published a Python implementation. The R packages (evmix, ReIns, CompLognormal) cover univariate fitting only - no regression, no covariate-dependent threshold. The Python gap is total.
 
 ---
 
-**[insurance-severity on GitHub](https://github.com/burning-cost/insurance-severity)** — 106 tests, MIT-licensed, PyPI. Library #47.
+**[insurance-severity on GitHub](https://github.com/burning-cost/insurance-severity)** - 106 tests, MIT-licensed, PyPI. Library #47.
 
 ---
 
 **Related reading:**
-- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) — when only the tail matters: GPD/GEV for XL layer pricing and return levels, without modelling the body of the distribution
-- [Beyond Lognormal: Normalizing Flows for Insurance Severity Modelling](/2026/03/12/insurance-nflow/) — fully flexible conditional density estimation when neither the body nor the tail fits a parametric family
-- [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) — the dispersion side of severity: modelling heteroscedasticity explicitly rather than assuming constant phi
+- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) - when only the tail matters: GPD/GEV for XL layer pricing and return levels, without modelling the body of the distribution
+- [Beyond Lognormal: Normalizing Flows for Insurance Severity Modelling](/2026/03/12/insurance-nflow/) - fully flexible conditional density estimation when neither the body nor the tail fits a parametric family
+- [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) - the dispersion side of severity: modelling heteroscedasticity explicitly rather than assuming constant phi

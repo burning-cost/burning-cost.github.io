@@ -7,14 +7,14 @@ tags: [model-validation, model-risk-management, mrm, pra-ss123, fca-consumer-dut
 description: "insurance-governance merges insurance-validation and insurance-mrm. PRA SS1/23 statistical validation and MRM governance in one install - no version conflicts."
 ---
 
-*This post is the release note for the `insurance-governance` package merge. For a full walkthrough of the governance workflow — model inventory, risk tier scoring, and PRA SS1/23 executive reports — see [Model Risk Governance for UK Insurers](/2026/03/13/your-model-risk-register-is-a-spreadsheet/).*
+*This post is the release note for the `insurance-governance` package merge. For a full walkthrough of the governance workflow - model inventory, risk tier scoring, and PRA SS1/23 executive reports - see [Model Risk Governance for UK Insurers](/2026/03/13/your-model-risk-register-is-a-spreadsheet/).*
 
 
 We made a mistake with our initial packaging.
 
 `insurance-validation` (statistical validation reports: Gini CI, A/E, Hosmer-Lemeshow, PSI, double-lift) and `insurance-mrm` (governance workflows: model inventory, risk tier scoring, executive committee packs) were shipped as separate libraries. The reasoning seemed sound at the time: validation is a statistical concern; MRM is a process concern; keep them separate.
 
-The problem is that they are not actually separate. The validation report produces a JSON sidecar with a `run_id`. The MRM inventory takes that `run_id` and links it to the model record. The governance pack reads the RAG status from the validation output. These are not independent tools — they are a pipeline, and packaging them separately made every team that used both manage the coupling themselves.
+The problem is that they are not actually separate. The validation report produces a JSON sidecar with a `run_id`. The MRM inventory takes that `run_id` and links it to the model record. The governance pack reads the RAG status from the validation output. These are not independent tools - they are a pipeline, and packaging them separately made every team that used both manage the coupling themselves.
 
 In practice that meant: two installs, two pinned versions, and a non-trivial chance that the `run_id` schema the validation package was writing had drifted from the schema the MRM package was reading. That is a correctness risk in the governance layer, which is precisely the thing we built these tools to make reliable.
 
@@ -93,7 +93,7 @@ The JSON sidecar carries the `run_id` UUID, the RAG status, and all test metrics
 
 `RiskTierScorer` assigns a risk tier from a 0-100 composite score across six dimensions: GWP impacted, model complexity, external data use, how long since last independent validation, drift trigger history, and regulatory exposure (production status, regulatory use, customer-facing pricing).
 
-The scoring is auditable: each dimension contributes a documented number of points, and `TierResult.rationale` returns the full breakdown as a string. When a Tier 1 assignment is questioned at the Model Risk Committee, the answer is not "judgement" — it is: GWP £125m (25.0 pts) + high complexity GBM (20.0 pts) + champion deployment + customer-facing pricing (16.3 pts) = 72.1/100. Threshold for Tier 1 is ≥ 60. That is the answer.
+The scoring is auditable: each dimension contributes a documented number of points, and `TierResult.rationale` returns the full breakdown as a string. When a Tier 1 assignment is questioned at the Model Risk Committee, the answer is not "judgement" - it is: GWP £125m (25.0 pts) + high complexity GBM (20.0 pts) + champion deployment + customer-facing pricing (16.3 pts) = 72.1/100. Threshold for Tier 1 is ≥ 60. That is the answer.
 
 ```python
 from insurance_governance import MRMModelCard, RiskTierScorer, ModelInventory, GovernanceReport
@@ -119,13 +119,13 @@ tier = scorer.score(
 
 `ModelInventory` persists the model register to a JSON file. That file should be version-controlled alongside your code. It stores model metadata, tier assignments, validation run history (linked by `run_id`), review dates, and sign-off status. The `due_for_review()` method is worth running daily from CI: a Tier 1 model approaching its annual review deadline with status `live` (not `validated`) is a governance breach before it becomes a regulatory problem.
 
-`GovernanceReport` produces the executive committee pack — not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
+`GovernanceReport` produces the executive committee pack - not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
 
 ---
 
 ## Why the integration matters
 
-The validation subpackage generates a `run_id`. The MRM subpackage consumes it. When they lived in separate packages, that contract was documented but not enforced — if you upgraded one without the other, you were on your own.
+The validation subpackage generates a `run_id`. The MRM subpackage consumes it. When they lived in separate packages, that contract was documented but not enforced - if you upgraded one without the other, you were on your own.
 
 With the unified package, the `run_id` format is guaranteed to be consistent across `ModelValidationReport.to_json()` and `ModelInventory.update_validation()`. The schema version is the package version. You cannot have a mismatch.
 
@@ -168,7 +168,7 @@ There is no transcription step. The Gini that appears in the executive committee
 
 ## The benchmarks
 
-On synthetic UK motor data — 50,000 policies, CatBoost Poisson frequency model, 60/20/20 temporal split:
+On synthetic UK motor data - 50,000 policies, CatBoost Poisson frequency model, 60/20/20 temporal split:
 
 | Task | Time |
 |---|---|
@@ -179,7 +179,7 @@ On synthetic UK motor data — 50,000 policies, CatBoost Poisson frequency model
 | `ModelInventory.register()` | < 10 ms |
 | `GovernanceReport` HTML | < 1 second |
 
-The bottleneck in any validation workflow is the model fitting that produces `y_pred_val`, not this library. A team running quarterly validation for 15 models completes the full governance suite — statistical tests, HTML reports, JSON sidecars, inventory updates, executive packs — in under ten minutes of wall clock time, most of which is the CatBoost fits.
+The bottleneck in any validation workflow is the model fitting that produces `y_pred_val`, not this library. A team running quarterly validation for 15 models completes the full governance suite - statistical tests, HTML reports, JSON sidecars, inventory updates, executive packs - in under ten minutes of wall clock time, most of which is the CatBoost fits.
 
 ---
 
@@ -187,13 +187,13 @@ The bottleneck in any validation workflow is the model fitting that produces `y_
 
 **Use this if:** you are subject to PRA SS1/23 (or expect to be when it extends to insurers), you have ten or more production pricing models, and you currently manage validation evidence in analyst notebooks and governance records in Excel. The library gives you consistent tests, consistent thresholds, and a machine-readable audit trail.
 
-**Do not use this if:** you are in reserving or capital model governance — this package is scoped entirely to pricing models. It also does not replace independent human review of validation results. It automates the tests and structures the output; it does not make the judgement about whether the results are acceptable.
+**Do not use this if:** you are in reserving or capital model governance - this package is scoped entirely to pricing models. It also does not replace independent human review of validation results. It automates the tests and structures the output; it does not make the judgement about whether the results are acceptable.
 
 ---
 
 ## Our view on the regulatory timeline
 
-PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed.
+PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window - 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed.
 
 The firms that will handle the PRA extension without a scramble are the ones who can already answer these questions with a query: which models are in production at what tier, when was each last validated, who approved the findings, and what is the machine-readable link between the governance record and the statistical evidence?
 
@@ -203,5 +203,5 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 `insurance-governance` is MIT-licensed at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
 
-- [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the original MRM library, now `insurance_governance.mrm`
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring layer that feeds post-deployment evidence back into the inventory
+- [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the original MRM library, now `insurance_governance.mrm`
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the inventory

@@ -9,18 +9,18 @@ description: "How eight Burning Cost libraries fit together in a real UK motor p
 
 Most posts about pricing tools treat each library as a standalone thing. You install it, run the quickstart, close the tab. But a UK motor pricing workflow is not a collection of isolated steps: the smoothed age curve feeds the EBM model, the EBM factors go into the distillation step, the distilled factor table informs the rate optimiser, and monitoring tells you when the whole thing needs to be revisited.
 
-This post shows how eight Burning Cost libraries connect in practice. It is an overview — each section has its own deep-dive post linked at the end. What we will show is which class to call, what output to expect, and why it feeds the next step.
+This post shows how eight Burning Cost libraries connect in practice. It is an overview - each section has its own deep-dive post linked at the end. What we will show is which class to call, what output to expect, and why it feeds the next step.
 
 The full workflow:
 
-1. Synthetic data with a known DGP — `insurance-datasets`
-2. Age and area curve smoothing — `insurance-whittaker`
-3. EBM tariff model — `insurance-gam`
-4. Factor table extraction — `insurance-distill` (or `shap-relativities` for CatBoost)
-5. FCA fairness audit — `insurance-fairness`
-6. Drift monitoring setup — `insurance-monitoring`
-7. Conformal prediction intervals — `insurance-conformal`
-8. Constrained rate optimisation — `insurance-optimise`
+1. Synthetic data with a known DGP - `insurance-datasets`
+2. Age and area curve smoothing - `insurance-whittaker`
+3. EBM tariff model - `insurance-gam`
+4. Factor table extraction - `insurance-distill` (or `shap-relativities` for CatBoost)
+5. FCA fairness audit - `insurance-fairness`
+6. Drift monitoring setup - `insurance-monitoring`
+7. Conformal prediction intervals - `insurance-conformal`
+8. Constrained rate optimisation - `insurance-optimise`
 
 ---
 
@@ -37,7 +37,7 @@ pip install insurance-datasets insurance-whittaker "insurance-gam[ebm]" \
 
 ## 1. Data
 
-`insurance-datasets` generates synthetic UK motor policies from a published Poisson-Gamma DGP. The true coefficients are exported alongside the data, which means you can check whether your fitted model recovers them — something impossible with the standard freMTPL2 benchmark, which has unknown true parameters.
+`insurance-datasets` generates synthetic UK motor policies from a published Poisson-Gamma DGP. The true coefficients are exported alongside the data, which means you can check whether your fitted model recovers them - something impossible with the standard freMTPL2 benchmark, which has unknown true parameters.
 
 ```python
 from insurance_datasets import load_motor, TRUE_FREQ_PARAMS
@@ -57,7 +57,7 @@ Split on `inception_year` rather than randomly. A random split leaks future poli
 
 ## 2. Smoothing age and area curves
 
-Before fitting any model, smooth the one-way experience tables. Raw age curves have noise from thin cells — age 47 appearing cheaper than age 46 for no underwriting reason. `insurance-whittaker` applies Whittaker-Henderson penalised smoothing with automatic REML lambda selection, following Biessy (2026, ASTIN Bulletin).
+Before fitting any model, smooth the one-way experience tables. Raw age curves have noise from thin cells - age 47 appearing cheaper than age 46 for no underwriting reason. `insurance-whittaker` applies Whittaker-Henderson penalised smoothing with automatic REML lambda selection, following Biessy (2026, ASTIN Bulletin).
 
 ```python
 import polars as pl
@@ -82,13 +82,13 @@ smoothed_df = result.to_polars()
 # result.edf      → e.g. 5.2    (effective degrees of freedom)
 ```
 
-The Bayesian credible intervals on `ci_lower` and `ci_upper` are what distinguish this from a manual Excel smooth. Age 17–21 bands on a typical UK motor book have intervals wide enough that you should not be optimising pricing in those cells without additional data. For 2-D smoothing — an age × NCD cross-table — `WhittakerHenderson2D` takes the same arguments with a 2-D input array.
+The Bayesian credible intervals on `ci_lower` and `ci_upper` are what distinguish this from a manual Excel smooth. Age 17–21 bands on a typical UK motor book have intervals wide enough that you should not be optimising pricing in those cells without additional data. For 2-D smoothing - an age × NCD cross-table - `WhittakerHenderson2D` takes the same arguments with a 2-D input array.
 
 ---
 
 ## 3. EBM tariff model
 
-A Poisson GLM is interpretable and regulators understand it. An EBM (`insurance-gam`) is also interpretable — the shape functions are the model, equivalent to GLM factors, but the non-linearity is discovered rather than assumed. On our synthetic motor DGP, the EBM recovers a U-shaped driver age hazard and a convex NCD discount curve that a standard polynomial GLM misses.
+A Poisson GLM is interpretable and regulators understand it. An EBM (`insurance-gam`) is also interpretable - the shape functions are the model, equivalent to GLM factors, but the non-linearity is discovered rather than assumed. On our synthetic motor DGP, the EBM recovers a U-shaped driver age hazard and a convex NCD discount curve that a standard polynomial GLM misses.
 
 ```python
 from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
@@ -118,7 +118,7 @@ print(rt.summary())
 # vehicle_group    4.8    0.14
 ```
 
-The `RelativitiesTable` output is in `exp(β)` format — identical to a GLM. A pricing committee can challenge it factor by factor. The `interactions="3x"` setting caps pairwise interaction terms at three, which is enough to capture most structure on a standard motor book without overfitting.
+The `RelativitiesTable` output is in `exp(β)` format - identical to a GLM. A pricing committee can challenge it factor by factor. The `interactions="3x"` setting caps pairwise interaction terms at three, which is enough to capture most structure on a standard motor book without overfitting.
 
 ---
 
@@ -126,7 +126,7 @@ The `RelativitiesTable` output is in `exp(β)` format — identical to a GLM. A 
 
 Not every team will want an EBM in production. Many prefer a CatBoost GBM for its predictive performance and then need to translate the model into a multiplicative factor table for Radar or Emblem. Two libraries handle this, depending on your workflow.
 
-**GLM surrogate** — one Poisson GLM trained to replicate the GBM's predictions, with automatic binning:
+**GLM surrogate** - one Poisson GLM trained to replicate the GBM's predictions, with automatic binning:
 
 ```python
 from insurance_distill import SurrogateGLM
@@ -149,7 +149,7 @@ print(report.metrics.summary())
 
 The surrogate retains 90–97% of the GBM's Gini in our benchmarks. That gap is the price of interpretability; most pricing teams consider it acceptable.
 
-**Continuous factor curves** — the full age relativity curve, no binning required:
+**Continuous factor curves** - the full age relativity curve, no binning required:
 
 ```python
 from shap_relativities import SHAPRelativities
@@ -173,7 +173,7 @@ We use `shap-relativities` when the age curve shape is genuinely uncertain and w
 
 ## 5. Fairness audit
 
-Before anything goes near production, run an FCA proxy discrimination check. `insurance-fairness` identifies which rating factors act as proxies for protected characteristics — area code is the canonical UK example, with Citizens Advice (2022) estimating a £280/year ethnicity penalty in UK motor insurance driven entirely through postcode-correlated factors. The library computes exposure-weighted calibration by group and produces a Markdown report with explicit PRIN 2A and TR24/2 references.
+Before anything goes near production, run an FCA proxy discrimination check. `insurance-fairness` identifies which rating factors act as proxies for protected characteristics - area code is the canonical UK example, with Citizens Advice (2022) estimating a £280/year ethnicity penalty in UK motor insurance driven entirely through postcode-correlated factors. The library computes exposure-weighted calibration by group and produces a Markdown report with explicit PRIN 2A and TR24/2 references.
 
 ```python
 from insurance_fairness import FairnessAudit
@@ -199,7 +199,7 @@ print(report.flagged_factors)
 report.to_markdown("fairness_audit_2026Q1.md")
 ```
 
-A `proxy_r2 > 0.10` means the factor explains more than 10% of variance in the protected characteristic — the threshold at which the FCA TR24/2 (August 2024) review found most insurers' assessments were inadequate. The `to_markdown()` output maps every finding to the specific regulatory reference and is structured for a pricing committee pack or FCA file review.
+A `proxy_r2 > 0.10` means the factor explains more than 10% of variance in the protected characteristic - the threshold at which the FCA TR24/2 (August 2024) review found most insurers' assessments were inadequate. The `to_markdown()` output maps every finding to the specific regulatory reference and is structured for a pricing committee pack or FCA file review.
 
 ---
 
@@ -233,7 +233,7 @@ print(report.to_polars().filter(pl.col("band") != "green"))
 # csi_driver_age    0.14    amber  ← book skewing older
 ```
 
-The three failure modes are separated: covariate shift (CSI per feature), calibration drift (A/E with Poisson confidence interval), and discrimination decay (Gini drift z-test from arXiv 2510.04556). RECALIBRATE means a multiplicative scalar fix — a few hours of work. REFIT means the model needs rebuilding. An undifferentiated "drift detected" alert cannot tell you which one you are looking at.
+The three failure modes are separated: covariate shift (CSI per feature), calibration drift (A/E with Poisson confidence interval), and discrimination decay (Gini drift z-test from arXiv 2510.04556). RECALIBRATE means a multiplicative scalar fix - a few hours of work. REFIT means the model needs rebuilding. An undifferentiated "drift detected" alert cannot tell you which one you are looking at.
 
 ---
 
@@ -258,7 +258,7 @@ print(cp.empirical_coverage(y_test, intervals))
 # 0.903   ← guaranteed >= 0.90 by construction
 ```
 
-On a heteroskedastic UK motor DGP (50,000 policies, seed=42), Pearson-weighted intervals are 13–14% narrower than parametric Tweedie intervals at the same 90% coverage level. The guarantee is finite-sample valid — it holds regardless of the claim distribution. Over-wide intervals on low-risk policies are wasted capital. Under-wide intervals on high-risk policies are the ones that matter most when they are wrong.
+On a heteroskedastic UK motor DGP (50,000 policies, seed=42), Pearson-weighted intervals are 13–14% narrower than parametric Tweedie intervals at the same 90% coverage level. The guarantee is finite-sample valid - it holds regardless of the claim distribution. Over-wide intervals on low-risk policies are wasted capital. Under-wide intervals on high-risk policies are the ones that matter most when they are wrong.
 
 ---
 
@@ -314,7 +314,7 @@ The workflow is linear but the feedback loops are what matter:
 - **Conformal** → uncertainty bounds that feed the optimiser's scenario mode (run under the upper CI for conservative pricing)
 - **Optimise** → final quote prices, ENBP-enforced, with a JSON audit trail for every run
 
-None of these are optional on a production UK motor book. The fairness audit is live FCA enforcement risk — TR24/2 opened six Consumer Duty investigations. Monitoring is how you avoid a 12-month lag between model failure and loss ratio deterioration. The conformal intervals are the only way to make defensible statements about pricing uncertainty.
+None of these are optional on a production UK motor book. The fairness audit is live FCA enforcement risk - TR24/2 opened six Consumer Duty investigations. Monitoring is how you avoid a 12-month lag between model failure and loss ratio deterioration. The conformal intervals are the only way to make defensible statements about pricing uncertainty.
 
 ---
 

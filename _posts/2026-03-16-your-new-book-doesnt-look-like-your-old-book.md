@@ -3,7 +3,7 @@ layout: post
 title: "Importance-Weighted Evaluation for Portfolio Composition Shift: Diagnosing the Mismatch Before It Shows in Loss Ratios"
 date: 2026-03-16
 author: Burning Cost
-description: "Density ratio correction for portfolio composition shift — CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"
+description: "Density ratio correction for portfolio composition shift - CatBoost classifier, importance-weighted evaluation, insurance-covariate-shift library"
 tags: [covariate-shift, model-validation, density-ratio, catboost, fca]
 ---
 
@@ -11,7 +11,7 @@ Your frequency model passed validation. Gini looks fine. A/E on holdout is 0.987
 
 Six months later, the loss ratio is climbing and nobody can explain why. The underwriting team points at weather. The claims team points at fraud. The pricing team looks at the monitoring dashboard and sees nothing alarming.
 
-Here is what the dashboard is not showing you: the book you are pricing today is not the book your model was trained on. The loss ratio is not telling you the model is wrong. It is telling you the model is right — for a book you no longer write.
+Here is what the dashboard is not showing you: the book you are pricing today is not the book your model was trained on. The loss ratio is not telling you the model is wrong. It is telling you the model is right - for a book you no longer write.
 
 ---
 
@@ -35,7 +35,7 @@ The standard backtesting workflow is:
 
 Step 2 is the problem. The Q4 holdout is drawn from the same distribution as the training data. It tests whether the model generalises within the 2025 book. It does not test whether the model generalises to the 2027 book.
 
-PSI catches the symptom late. Population Stability Index measures whether the model score distribution has shifted. By the time PSI crosses 0.20 (the conventional "investigate" threshold), the score distribution has already drifted substantially — which means you have been pricing on a miscalibrated model for the months it took the score distribution to move. PSI is a lagging indicator. You want a leading one.
+PSI catches the symptom late. Population Stability Index measures whether the model score distribution has shifted. By the time PSI crosses 0.20 (the conventional "investigate" threshold), the score distribution has already drifted substantially - which means you have been pricing on a miscalibrated model for the months it took the score distribution to move. PSI is a lagging indicator. You want a leading one.
 
 A/E on live claims is worse still. You need claims to develop before you can compute it, and claims development on a motor book takes months. You are looking at the past when you need to look at the present.
 
@@ -45,13 +45,13 @@ A/E on live claims is worse still. You need claims to develop before you can com
 
 The density ratio `w(x) = p_target(x) / p_source(x)` is the correct tool. For each risk profile `x`, it asks: how much more (or less) common is this profile in today's book than in the training book? A value of 3.5 for young urban EV drivers means those risks appear 3.5x as frequently now. A value of 0.3 for older rural risks means they appear at one-third the frequency.
 
-You do not need claims data from the new book to estimate this. You only need the feature matrix of risks being scored — what they look like, not what they do. The density ratio is estimated from two unlabelled datasets: source (training distribution) and target (current deployment).
+You do not need claims data from the new book to estimate this. You only need the feature matrix of risks being scored - what they look like, not what they do. The density ratio is estimated from two unlabelled datasets: source (training distribution) and target (current deployment).
 
 Three methods, each suited to different data:
 
-**CatBoost classifier**: train a binary classifier to distinguish source from target observations, then convert the predicted probabilities to density ratios via `w(x) = P(target | x) / P(source | x)`. Handles postcode district, vehicle code, occupation — the high-cardinality categoricals that are standard in UK personal lines data — natively, without preprocessing. The correct choice for most motor books.
+**CatBoost classifier**: train a binary classifier to distinguish source from target observations, then convert the predicted probabilities to density ratios via `w(x) = P(target | x) / P(source | x)`. Handles postcode district, vehicle code, occupation - the high-cardinality categoricals that are standard in UK personal lines data - natively, without preprocessing. The correct choice for most motor books.
 
-**RuLSIF** (Relative Unconstrained Least-Squares Importance Fitting): a kernel method with a closed-form solution, fast, no hyperparameter grid search. Mathematically clean — Yamada et al. (2013) showed the relative formulation is more numerically stable than the original LSIF. Use it when your feature set is all-continuous: model scores, continuous rating factors, demographic indices. It does not handle high-cardinality categoricals well.
+**RuLSIF** (Relative Unconstrained Least-Squares Importance Fitting): a kernel method with a closed-form solution, fast, no hyperparameter grid search. Mathematically clean - Yamada et al. (2013) showed the relative formulation is more numerically stable than the original LSIF. Use it when your feature set is all-continuous: model scores, continuous rating factors, demographic indices. It does not handle high-cardinality categoricals well.
 
 **KLIEP** (Kullback-Leibler Importance Estimation Procedure): explicitly enforces the normalisation constraint `E_source[w(x)] = 1`. Slower than RuLSIF and requires bandwidth selection. Useful primarily as a cross-check: if RuLSIF and KLIEP agree on the verdict, you can trust it.
 
@@ -85,7 +85,7 @@ print(report.feature_importance())
 # {'driver_age': 0.41, 'postcode_district': 0.31, 'vehicle_age': 0.18, 'ncb': 0.10}
 ```
 
-The Effective Sample Size ratio is the headline number. It measures what fraction of source observations are effectively contributing to estimates on the target distribution. ESS = 1.0 means the two books look identical. ESS = 0.51 means roughly half your source data is contributing — the other half represents risks that are substantially over- or under-represented in the current book.
+The Effective Sample Size ratio is the headline number. It measures what fraction of source observations are effectively contributing to estimates on the target distribution. ESS = 1.0 means the two books look identical. ESS = 0.51 means roughly half your source data is contributing - the other half represents risks that are substantially over- or under-represented in the current book.
 
 The library's thresholds are calibrated to practical action:
 
@@ -140,7 +140,7 @@ Importance weighting buys time. It does not replace retraining. The correction i
 - ESS ratio is SEVERE (< 0.30): the weights are high-variance and the correction is directionally useful but imprecise
 - The shift introduces feature categories the model has never seen (new postcode districts from an acquisition, a vehicle group that launched after training)
 - More than 18 months of data from the target distribution are available
-- The importance-weighted A/E by decile shows non-uniform bias — systematic over-pricing in some deciles and under-pricing in others suggests the underlying relationships have shifted, not just the mix
+- The importance-weighted A/E by decile shows non-uniform bias - systematic over-pricing in some deciles and under-pricing in others suggests the underlying relationships have shifted, not just the mix
 
 The second bullet on retrain is commonly missed. If your book composition shifted because you acquired a broker portfolio that brought in vehicle groups with fewer than 50 training observations, importance weighting cannot fix that. The model has no useful prediction for those risks regardless of the mix correction. KLIEP and RuLSIF will return extremely high weights for those observations, which is the correct statistical answer: those risks are badly underrepresented in your training data. The practical answer is a specialist rate for those segments until you have enough data to train on them.
 
@@ -207,6 +207,6 @@ The point is not that the model becomes unusable at 0.30. The point is that by 0
 `insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, NumPy 1.24+.
 
 **Related posts:**
-- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — detection, ESS ratio, conformal intervals under shift, and FCA filings
-- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — PRA SS1/23 model validation and what a defensible sign-off process looks like
-- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) — when the target book has sparse data, importance weighting pairs with transfer learning
+- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) - detection, ESS ratio, conformal intervals under shift, and FCA filings
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) - PRA SS1/23 model validation and what a defensible sign-off process looks like
+- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) - when the target book has sparse data, importance weighting pairs with transfer learning

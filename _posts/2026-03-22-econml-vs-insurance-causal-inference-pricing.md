@@ -11,7 +11,7 @@ tags: [EconML, insurance-causal, DML, double-machine-learning, causal-forests, C
 
 If you search "causal machine learning Python", EconML is the answer. It is maintained by Microsoft Research, has roughly 3,800 GitHub stars, and covers double/debiased machine learning (DML), causal forests, instrumental variables, policy learning, and CATE estimation across a comprehensive API. It is cited in dozens of academic papers and used in production in tech, healthcare, and economics.
 
-For insurance pricing — specifically, estimating causal effects in renewal portfolios with exposure-weighted claim outcomes — it leaves you to solve the hard parts yourself.
+For insurance pricing - specifically, estimating causal effects in renewal portfolios with exposure-weighted claim outcomes - it leaves you to solve the hard parts yourself.
 
 This post is a direct comparison. Not to dismiss EconML: it is a remarkable piece of engineering and `insurance-causal` wraps some of its components directly. But there are specific problems in insurance pricing that EconML does not handle, and knowing which problems those are saves a pricing team several weeks of debugging.
 
@@ -56,7 +56,7 @@ For the question "what is the causal effect of a binary treatment on an outcome,
 
 ### Problem 1: no exposure handling
 
-Every insurance outcome of interest — claim frequency, claim count, loss ratio — is a rate, not a level. A policy in-force for three months contributes a quarter of the exposure of an annual policy. When you estimate the effect of a rating factor or price change on claim frequency, you need to weight observations by earned exposure and use a Poisson (or Tweedie) likelihood, not squared error.
+Every insurance outcome of interest - claim frequency, claim count, loss ratio - is a rate, not a level. A policy in-force for three months contributes a quarter of the exposure of an annual policy. When you estimate the effect of a rating factor or price change on claim frequency, you need to weight observations by earned exposure and use a Poisson (or Tweedie) likelihood, not squared error.
 
 EconML does not have an exposure parameter. Its outcome model defaults to squared error. You can pass a custom `model_y` that accounts for exposure internally, but this requires you to:
 
@@ -65,7 +65,7 @@ EconML does not have an exposure parameter. Its outcome model defaults to square
 3. Implement the offset correctly in your nuisance model
 4. Verify that the cross-fitting procedure preserves the offset structure
 
-None of this is documented for insurance use cases. It is solvable, but it is a significant amount of non-trivial work — and it is the kind of work that pricing actuaries should not have to do from scratch.
+None of this is documented for insurance use cases. It is solvable, but it is a significant amount of non-trivial work - and it is the kind of work that pricing actuaries should not have to do from scratch.
 
 `insurance-causal` handles it directly:
 
@@ -89,7 +89,7 @@ The exposure column becomes an offset in the nuisance model for `E[Y|X]`. The DM
 
 ### Problem 2: categorical features without manual encoding
 
-UK motor and home insurance data contains dozens of categorical features: vehicle group (ABI group, often 50+ levels), occupation code, payment method, region, cover type, broker channel. EconML's default nuisance models — gradient boosting from scikit-learn — require these to be pre-encoded. One-hot encoding a 50-level categorical variable in a 250,000-row training set inflates dimensionality and degrades nuisance model accuracy, which directly degrades causal estimate quality in DML.
+UK motor and home insurance data contains dozens of categorical features: vehicle group (ABI group, often 50+ levels), occupation code, payment method, region, cover type, broker channel. EconML's default nuisance models - gradient boosting from scikit-learn - require these to be pre-encoded. One-hot encoding a 50-level categorical variable in a 250,000-row training set inflates dimensionality and degrades nuisance model accuracy, which directly degrades causal estimate quality in DML.
 
 `insurance-causal` uses CatBoost for all nuisance models. CatBoost handles high-cardinality categoricals natively using ordered target statistics, without manual encoding. This matters for nuisance model fit, and nuisance model fit matters for DML: poor `E[Y|X]` or `E[D|X]` estimation produces residuals that carry confounding, contaminating the causal coefficient.
 
@@ -120,7 +120,7 @@ model = CausalPricingModel(
 
 ### Problem 3: the confounding bias report
 
-The single most practically useful output in causal pricing work is not the ATE estimate — it is the comparison between the naive GLM coefficient and the causal estimate. A pricing actuary who has been using a GLM for five years will ask: "how much does confounding actually matter here?" EconML will give you a causal estimate. It will not tell you how different it is from a naive correlation, why, or how sensitive it is to unobserved confounders.
+The single most practically useful output in causal pricing work is not the ATE estimate - it is the comparison between the naive GLM coefficient and the causal estimate. A pricing actuary who has been using a GLM for five years will ask: "how much does confounding actually matter here?" EconML will give you a causal estimate. It will not tell you how different it is from a naive correlation, why, or how sensitive it is to unobserved confounders.
 
 `insurance-causal` produces a confounding bias report after every fit:
 
@@ -138,13 +138,13 @@ Bias as % of naive                       61.0%
 Sensitivity bound (Gamma=1.5)            [-0.830, -0.532]
 ```
 
-The sensitivity bound implements Rosenbaum-style sensitivity analysis: how strong would an unobserved confounder need to be — in terms of association with both treatment and outcome — to overturn the conclusion? A pricing team presenting to a reserving committee or model risk function needs this number. EconML does not compute it.
+The sensitivity bound implements Rosenbaum-style sensitivity analysis: how strong would an unobserved confounder need to be - in terms of association with both treatment and outcome - to overturn the conclusion? A pricing team presenting to a reserving committee or model risk function needs this number. EconML does not compute it.
 
 ### Problem 4: dual selection bias
 
 This is the most technically distinctive problem in insurance causal inference and the one most likely to produce badly wrong estimates if ignored.
 
-UK renewal portfolios have two selection layers. First: only policies that renew are observed in the post-renewal period. If your causal estimate uses only renewing policies, it is conditioned on selection — and renewal is correlated with the treatment (premium change) in ways that bias the estimate. Second: claim severity is only observed for policies that both renew and submit a claim. Estimating the causal effect of a risk factor on claim severity requires accounting for both selection stages simultaneously.
+UK renewal portfolios have two selection layers. First: only policies that renew are observed in the post-renewal period. If your causal estimate uses only renewing policies, it is conditioned on selection - and renewal is correlated with the treatment (premium change) in ways that bias the estimate. Second: claim severity is only observed for policies that both renew and submit a claim. Estimating the causal effect of a risk factor on claim severity requires accounting for both selection stages simultaneously.
 
 EconML has a selection-corrected DML variant, but it handles a single binary selection variable. Treating the two stages as independent problems produces inconsistent estimates.
 
@@ -244,13 +244,13 @@ print(f"BLP beta_2: {result.blp.beta_2:.4f} (p={result.blp.beta_2_pvalue:.4f})")
 print(result.summary())
 ```
 
-RATE (Rank Average Treatment Effect) is the practical heterogeneity test: it tells you whether your CATE estimates are capturing real variation or just noise. A RATE AUTOC close to zero means your causal forest is not identifying meaningful heterogeneity; it is telling you the ATE is sufficient. This is an important negative result — it tells the pricing team not to bother with segment-specific elasticities. EconML will give you a CATE for every observation without helping you determine whether the variation is real.
+RATE (Rank Average Treatment Effect) is the practical heterogeneity test: it tells you whether your CATE estimates are capturing real variation or just noise. A RATE AUTOC close to zero means your causal forest is not identifying meaningful heterogeneity; it is telling you the ATE is sufficient. This is an important negative result - it tells the pricing team not to bother with segment-specific elasticities. EconML will give you a CATE for every observation without helping you determine whether the variation is real.
 
 ---
 
 ## The Riesz representer approach for continuous treatments
 
-EconML requires you to estimate the generalised propensity score (GPS) when the treatment is continuous — an offer price, a discount percentage, a price index. In renewal portfolios where the treatment is the actual premium charged, the GPS is ill-posed: the price distribution is continuous, concentrated, and shaped by a rating algorithm that is highly correlated with the features. Estimating a density for this process produces numerically unstable residuals.
+EconML requires you to estimate the generalised propensity score (GPS) when the treatment is continuous - an offer price, a discount percentage, a price index. In renewal portfolios where the treatment is the actual premium charged, the GPS is ill-posed: the price distribution is continuous, concentrated, and shaped by a rating algorithm that is highly correlated with the features. Estimating a density for this process produces numerically unstable residuals.
 
 `insurance-causal`'s `autodml` subpackage uses the Riesz representer approach (Chernozhukov et al. 2022, Econometrica 90(3)) to avoid estimating the GPS entirely:
 
@@ -284,17 +284,17 @@ EconML does not implement the Riesz representer approach for DML as of version 0
 |---|---|---|
 | Primary use case | General causal ML, any domain | Insurance pricing causal questions |
 | Stars / contributors | ~3,800 / 80+ | Small, focused |
-| DML | Yes — Linear, NonParametric, Forest variants | Yes — wraps DoubleML with CatBoost nuisance |
-| Causal forests | Yes — `CausalForestDML` | Yes — wraps EconML's `CausalForestDML` |
-| Exposure/offset handling | No | Yes — Poisson/Gamma throughout |
+| DML | Yes - Linear, NonParametric, Forest variants | Yes - wraps DoubleML with CatBoost nuisance |
+| Causal forests | Yes - `CausalForestDML` | Yes - wraps EconML's `CausalForestDML` |
+| Exposure/offset handling | No | Yes - Poisson/Gamma throughout |
 | Categorical features | Manual encoding required | CatBoost native (no encoding step) |
-| Confounding bias report | No | Yes — naive vs causal, sensitivity bounds |
+| Confounding bias report | No | Yes - naive vs causal, sensitivity bounds |
 | Dual selection bias | Single-stage only | `DualSelectionDML` for both selection stages |
-| GATES / CLAN / RATE | No | Yes — `HeterogeneousInference` |
-| Price elasticity surface | No | Yes — `RenewalElasticityEstimator` |
-| Riesz representer (continuous treatment) | No | Yes — `PremiumElasticity` in `autodml` subpackage |
+| GATES / CLAN / RATE | No | Yes - `HeterogeneousInference` |
+| Price elasticity surface | No | Yes - `RenewalElasticityEstimator` |
+| Riesz representer (continuous treatment) | No | Yes - `PremiumElasticity` in `autodml` subpackage |
 | Regulatory framing | None | Confounding bias, sensitivity, audit-ready output |
-| Documentation | Excellent — notebooks, papers, API reference | Focused on pricing use cases |
+| Documentation | Excellent - notebooks, papers, API reference | Focused on pricing use cases |
 | Academic validation | Extensive | Newer; builds on EconML and DoubleML foundations |
 
 ---
@@ -303,11 +303,11 @@ EconML does not implement the Riesz representer approach for DML as of version 0
 
 EconML is a general-purpose causal ML toolkit and it is excellent at what it is designed to do. If your problem is "estimate a causal effect in any domain using DML or causal forests", EconML is the right starting point. Its documentation, community, and academic grounding are vastly ahead of any insurance-specific alternative.
 
-The gap is in the last mile. Insurance pricing causal questions have specific structure: outcomes are rates with exposure offsets, data has high-cardinality categoricals, portfolios have double selection bias, and the practical deliverable is an elasticity surface rather than a generic CATE. EconML does not provide these — not because of a design failure, but because it was not built for this problem.
+The gap is in the last mile. Insurance pricing causal questions have specific structure: outcomes are rates with exposure offsets, data has high-cardinality categoricals, portfolios have double selection bias, and the practical deliverable is an elasticity surface rather than a generic CATE. EconML does not provide these - not because of a design failure, but because it was not built for this problem.
 
-`insurance-causal` is essentially a translation layer: it takes the econometrics from EconML (and DoubleML), wraps it with insurance-specific data handling, and adds the diagnostics a pricing actuary actually needs. The two can be used together — and in several modules, they are.
+`insurance-causal` is essentially a translation layer: it takes the econometrics from EconML (and DoubleML), wraps it with insurance-specific data handling, and adds the diagnostics a pricing actuary actually needs. The two can be used together - and in several modules, they are.
 
-If you are building a general causal inference capability on your data science team, start with EconML. If you are a UK pricing team trying to answer "what is the causal price elasticity of our motor book, corrected for renewal selection, broken out by ABI group?" — start with `insurance-causal`.
+If you are building a general causal inference capability on your data science team, start with EconML. If you are a UK pricing team trying to answer "what is the causal price elasticity of our motor book, corrected for renewal selection, broken out by ABI group?" - start with `insurance-causal`.
 
 ---
 
@@ -316,18 +316,18 @@ If you are building a general causal inference capability on your data science t
 ---
 
 **Related posts:**
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — the same pattern in fairness: a general-purpose library and where it stops
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction in insurance and where the standard library breaks
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - the same pattern in fairness: a general-purpose library and where it stops
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction in insurance and where the standard library breaks
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

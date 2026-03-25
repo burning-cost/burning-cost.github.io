@@ -10,11 +10,11 @@ canonical_url: "/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimina
 tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
 ---
 
-Fairlearn is the obvious starting point when a team is asked to audit an ML model for fairness. It's well-engineered, maintained by Microsoft, has clean scikit-learn compatibility, and implements the standard academic fairness criteria — demographic parity, equalised odds, equitable predictions — through both assessment and mitigation. If you're auditing a fraud classifier or a claims triage model, it is a reasonable first tool to reach for.
+Fairlearn is the obvious starting point when a team is asked to audit an ML model for fairness. It's well-engineered, maintained by Microsoft, has clean scikit-learn compatibility, and implements the standard academic fairness criteria - demographic parity, equalised odds, equitable predictions - through both assessment and mitigation. If you're auditing a fraud classifier or a claims triage model, it is a reasonable first tool to reach for.
 
 For insurance pricing models under FCA supervision, it answers the wrong question.
 
-This post is a direct comparison. Not to dismiss Fairlearn — we recommend it for non-pricing use cases below — but to be precise about where the FCA's actual concern diverges from what a general-purpose fairness library was built to detect.
+This post is a direct comparison. Not to dismiss Fairlearn - we recommend it for non-pricing use cases below - but to be precise about where the FCA's actual concern diverges from what a general-purpose fairness library was built to detect.
 
 ```bash
 uv add insurance-fairness
@@ -28,9 +28,9 @@ This is the central point, and it is worth stating plainly before going any furt
 
 Demographic parity says: the average prediction (or premium) should be the same across protected groups. This is the default framing in most ML fairness literature, and it is the framing Fairlearn was designed to enforce.
 
-Insurance pricing is legally and actuarially different. UK motor, home, and commercial insurers are explicitly permitted to charge different premiums to different risk groups, including groups that correlate with protected characteristics. An older driver does pay more than a 25-year-old. A high-theft-rate postcode does attract a higher premium. This is not discrimination — it is risk differentiation, and it is the basis on which the entire Lloyd's market operates. The Gender Directive (EU, 2012, implemented 2013) banned the use of gender as a direct rating factor, but it did not require premium equality between men and women; risk-based differentiation through other actuarially justified factors is still lawful.
+Insurance pricing is legally and actuarially different. UK motor, home, and commercial insurers are explicitly permitted to charge different premiums to different risk groups, including groups that correlate with protected characteristics. An older driver does pay more than a 25-year-old. A high-theft-rate postcode does attract a higher premium. This is not discrimination - it is risk differentiation, and it is the basis on which the entire Lloyd's market operates. The Gender Directive (EU, 2012, implemented 2013) banned the use of gender as a direct rating factor, but it did not require premium equality between men and women; risk-based differentiation through other actuarially justified factors is still lawful.
 
-What the FCA cares about — and what Fairlearn cannot detect — is **proxy discrimination**: a model that does not use a protected characteristic directly, but uses non-protected rating factors that are sufficiently correlated with it that the effect is the same as if it had. The postcode is the canonical example. Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m per year, driven entirely by postcodes that encode demographic information without any insurer explicitly modelling ethnicity.
+What the FCA cares about - and what Fairlearn cannot detect - is **proxy discrimination**: a model that does not use a protected characteristic directly, but uses non-protected rating factors that are sufficiently correlated with it that the effect is the same as if it had. The postcode is the canonical example. Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m per year, driven entirely by postcodes that encode demographic information without any insurer explicitly modelling ethnicity.
 
 This is the test FCA Exploratory Paper EP25/2 is designed to address. The question is not "is the average premium the same for men and women?" The question is "do your non-protected rating factors act as conduits for characteristics you cannot legally use?"
 
@@ -73,7 +73,7 @@ For a pricing GLM with a log-link Poisson frequency component and a Gamma severi
 
 - There is no binary output to adjust thresholds on
 - The distribution of premiums across groups is not the relevant compliance metric
-- The FCA will not accept "we applied demographic parity mitigations to our pricing model" as regulatory evidence — because demographic parity is not the legal standard
+- The FCA will not accept "we applied demographic parity mitigations to our pricing model" as regulatory evidence - because demographic parity is not the legal standard
 - Mitigation before the fact does not produce the audit trail that pricing committees and FCA file reviews require
 
 ---
@@ -107,9 +107,9 @@ report.to_markdown("audit_q4_2024.md")   # FCA-ready report with regulatory mapp
 
 The proxy detection layer uses:
 
-- **Mutual information scores**: catches non-linear relationships between a rating factor and a protected characteristic. A postcode with a non-monotone correlation to ethnicity — higher in band SW1, lower in E1, higher again in M1 — will show up here when Spearman rank correlation misses it.
+- **Mutual information scores**: catches non-linear relationships between a rating factor and a protected characteristic. A postcode with a non-monotone correlation to ethnicity - higher in band SW1, lower in E1, higher again in M1 - will show up here when Spearman rank correlation misses it.
 - **CatBoost proxy R-squared**: fits a gradient boosting model to predict the protected characteristic from the factor, using CatBoost's native categorical support. An R-squared above 0.10 is treated as a proxy concern. On synthetic UK motor data (50,000 policies) with a known postcode-ethnicity correlation, this method surfaces the issue in under 60 seconds.
-- **SHAP proxy scores**: links the proxy correlation to actual price impact — the difference in predicted premium attributable to the proxy relationship. A factor that is a strong predictor of protected characteristics but has small SHAP values in the pricing model is a different concern than one that is both a proxy and a major pricing driver.
+- **SHAP proxy scores**: links the proxy correlation to actual price impact - the difference in predicted premium attributable to the proxy relationship. A factor that is a strong predictor of protected characteristics but has small SHAP values in the pricing model is a different concern than one that is both a proxy and a major pricing driver.
 
 Fairlearn has no equivalent to any of these. It can tell you whether your model's outputs are demographically unequal. It cannot tell you whether a specific input factor is doing discriminatory work inside the model.
 
@@ -144,7 +144,7 @@ The demographic parity ratio is computed in log-space because insurance pricing 
 
 A subtler issue, documented in FCA TR24/2 (August 2024): action fairness (premium parity) and outcome fairness (loss ratio parity) can conflict, and firms that audit only at the point of quoting miss the Consumer Duty Outcome 4 obligation.
 
-On a synthetic UK motor TPLI portfolio of 20,000 policies, minimising premium disparity (Delta_1) worsens loss ratio disparity (Delta_2) substantially. The two cannot both be zeroed without abandoning risk differentiation. The FCA does not require you to achieve both simultaneously — but it does expect you to have considered the trade-off and documented it.
+On a synthetic UK motor TPLI portfolio of 20,000 policies, minimising premium disparity (Delta_1) worsens loss ratio disparity (Delta_2) substantially. The two cannot both be zeroed without abandoning risk differentiation. The FCA does not require you to achieve both simultaneously - but it does expect you to have considered the trade-off and documented it.
 
 `DoubleFairnessAudit` recovers the full Pareto front along the action/outcome trade-off, with quantified revenue impact at each operating point:
 
@@ -191,7 +191,7 @@ result.summary()
 #   D = 1 (M): Mean PV: +1.83, % overcharged: 55.1%, TVaR_95 overcharge: £25.31
 ```
 
-The Citizens Advice (2022) estimate of £213m per year in ethnicity-related overcharging is essentially this calculation applied at market scale. `ProxyVulnerabilityScore` runs it on your portfolio. Fairlearn cannot produce this number because it is not a classification metric — it requires the rate-model structure, exposure weighting, and the marginalisation over the protected attribute that only makes sense in a multiplicative pricing context.
+The Citizens Advice (2022) estimate of £213m per year in ethnicity-related overcharging is essentially this calculation applied at market scale. `ProxyVulnerabilityScore` runs it on your portfolio. Fairlearn cannot produce this number because it is not a classification metric - it requires the rate-model structure, exposure weighting, and the marginalisation over the protected attribute that only makes sense in a multiplicative pricing context.
 
 ---
 
@@ -204,13 +204,13 @@ The Citizens Advice (2022) estimate of £213m per year in ethnicity-related over
 | Core metric | Demographic parity, equalised odds | Proxy R-squared, mutual information, SHAP proxy scores |
 | Exposure weighting | No | Throughout |
 | Model structure | Any scikit-learn estimator | Poisson/Tweedie rate models |
-| Mitigation tools | Yes — reductions, threshold adjustment | No — detection and reporting |
+| Mitigation tools | Yes - reductions, threshold adjustment | No - detection and reporting |
 | Assumes protected characteristic is available | Yes | Tests whether non-protected features proxy for protected ones |
 | Output | Metric tables | FCA-ready Markdown audit report with regulatory mapping |
 | Financial impact quantification | No | ProxyVulnerabilityScore, parity cost in £ |
 | Double fairness (action vs outcome) | No | DoubleFairnessAudit with full Pareto front |
 
-The asymmetry that matters most is in the fourth-to-last row. Fairlearn assumes you have access to the protected characteristic at training time and wants to ensure your model's outputs are fair with respect to it. The FCA EP25/2 framework starts from the opposite position: your model probably does not use the protected characteristic directly (gender has been a prohibited direct rating factor since 2013), but your rating factors may carry it implicitly. The compliance test is whether you have checked for that implicitness — and Fairlearn's architecture is not designed to run that check.
+The asymmetry that matters most is in the fourth-to-last row. Fairlearn assumes you have access to the protected characteristic at training time and wants to ensure your model's outputs are fair with respect to it. The FCA EP25/2 framework starts from the opposite position: your model probably does not use the protected characteristic directly (gender has been a prohibited direct rating factor since 2013), but your rating factors may carry it implicitly. The compliance test is whether you have checked for that implicitness - and Fairlearn's architecture is not designed to run that check.
 
 ---
 
@@ -239,9 +239,9 @@ Use `insurance-fairness` for:
 
 The ML fairness literature largely assumes that the problem is a model producing unequal outcomes across demographic groups, and that the solution is to constrain or adjust the model to reduce that inequality. Fairlearn implements this framework well.
 
-Insurance pricing sits in a different legal and statistical context. Unequal premiums across demographic groups are not intrinsically problematic — they follow from risk differentiation, which is the point. What is prohibited, under Equality Act 2010 Section 19 and FCA Consumer Duty, is a specific mechanism: non-protected factors acting as conduits for protected characteristics in a way that produces discriminatory outcomes without the insurer intending or knowing it.
+Insurance pricing sits in a different legal and statistical context. Unequal premiums across demographic groups are not intrinsically problematic - they follow from risk differentiation, which is the point. What is prohibited, under Equality Act 2010 Section 19 and FCA Consumer Duty, is a specific mechanism: non-protected factors acting as conduits for protected characteristics in a way that produces discriminatory outcomes without the insurer intending or knowing it.
 
-That is a detection problem, not a mitigation problem. And it requires tools built for the structure of insurance pricing models — multiplicative, rate-based, exposure-weighted — not tools built for classification.
+That is a detection problem, not a mitigation problem. And it requires tools built for the structure of insurance pricing models - multiplicative, rate-based, exposure-weighted - not tools built for classification.
 
 Use Fairlearn when you are doing classification and want to enforce demographic parity. Use `insurance-fairness` when you are pricing and need to demonstrate to the FCA that your model does not use proxies.
 
@@ -252,18 +252,18 @@ Use Fairlearn when you are doing classification and want to enforce demographic 
 ---
 
 **Related posts:**
-- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
-- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — what TR24/2 actually requires vs what most insurers are doing
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) - the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
+- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) - what TR24/2 actually requires vs what most insurers are doing
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

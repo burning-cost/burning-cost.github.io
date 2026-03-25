@@ -11,7 +11,7 @@ tags: [cross-validation, walk-forward, temporal-leakage, ibnr, insurance-cv, skl
 
 Every insurance pricing model we have ever seen was evaluated using k-fold cross-validation at some point in its development. And in every case, the CV score was more optimistic than the model's actual prospective performance. Not sometimes. Every time.
 
-This is not bad luck. It is a structural property of k-fold on temporally ordered data, and it is worse for insurance than for almost any other supervised learning application because insurance data has three distinct time axes — inception date, accident date, valuation date — each of which creates a different leakage mechanism.
+This is not bad luck. It is a structural property of k-fold on temporally ordered data, and it is worse for insurance than for almost any other supervised learning application because insurance data has three distinct time axes - inception date, accident date, valuation date - each of which creates a different leakage mechanism.
 
 We wrote the [first version of this argument in 2026](/2026/02/23/why-your-cross-validation-is-lying-to-you/). That post explains the mechanisms. This post is the practitioner's guide: what exactly goes wrong, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
 
@@ -21,7 +21,7 @@ We wrote the [first version of this argument in 2026](/2026/02/23/why-your-cross
 
 ### 1. Future claims development leaks into training
 
-Your target variable is incurred losses, or an ultimate estimate, or a claim count as of your data extraction date. That extraction date is fixed — say, 1 August 2029. Every policy in your dataset, regardless of inception date, has its claims developed to that same snapshot.
+Your target variable is incurred losses, or an ultimate estimate, or a claim count as of your data extraction date. That extraction date is fixed - say, 1 August 2029. Every policy in your dataset, regardless of inception date, has its claims developed to that same snapshot.
 
 A policy that incepted in March 2025 has 52 months of development at the snapshot date. A policy that incepted in March 2028 has 16 months. K-fold randomly assigns these to folds without caring about the development asymmetry. When fold 3 trains on the 2025-vintage policies and tests on the 2028-vintage policies, the model has learned from claims with far more development than the test set contains. The test targets are systematically understated. The model appears to predict them well, but partly because the development pattern in the training data contains implicit information about how the test claims will eventually mature.
 
@@ -31,7 +31,7 @@ This is not a small effect. On a portfolio with a mild upward frequency trend an
 
 For policies incepted in the months immediately before your data extraction date, some claims will not yet have been reported. A motor own damage claim typically takes days to a few weeks. A motor third party bodily injury claim can take months to surface. A professional indemnity claim can wait years.
 
-If a policy with inception date June 2029 is in your training set, and your snapshot date is August 2029, the claim count for that policy may be zero not because nothing happened but because the claim hasn't been lodged. You are training on a target that is definitionally understated for the most recent policies. When those policies also appear in a k-fold test set — drawn randomly from the same pool — the test set has the same understatement problem. The model looks accurate because train and test targets are understated in the same direction.
+If a policy with inception date June 2029 is in your training set, and your snapshot date is August 2029, the claim count for that policy may be zero not because nothing happened but because the claim hasn't been lodged. You are training on a target that is definitionally understated for the most recent policies. When those policies also appear in a k-fold test set - drawn randomly from the same pool - the test set has the same understatement problem. The model looks accurate because train and test targets are understated in the same direction.
 
 Prospective evaluation does not share this property. When you monitor the 2029 book through 2030, claims will arrive and the actual loss rate will be higher than what the k-fold evaluation suggested. The CV metric was not measuring what you thought it was.
 
@@ -195,9 +195,9 @@ k-fold optimism vs OOT:        +0.0069
 Walk-forward bias vs OOT:      +0.0021
 ```
 
-K-fold is 0.0069 deviance units more optimistic than the true 2029 performance. Walk-forward is 0.0021 units off — about 70% closer to the true holdout. The k-fold optimism is entirely attributable to temporal leakage: random fold assignment means 2029-vintage policies in the training set inform the model's predictions on 2025-vintage test policies, creating a look-ahead that does not exist in prospective deployment.
+K-fold is 0.0069 deviance units more optimistic than the true 2029 performance. Walk-forward is 0.0021 units off - about 70% closer to the true holdout. The k-fold optimism is entirely attributable to temporal leakage: random fold assignment means 2029-vintage policies in the training set inform the model's predictions on 2025-vintage test policies, creating a look-ahead that does not exist in prospective deployment.
 
-The walk-forward CV fold-level variance is also higher — typically 2 to 5 times higher than k-fold on the same data. This is not a flaw. It reflects genuine period-to-period variation in model performance. K-fold averages across all periods and hides this signal. Walk-forward shows you whether your model is degrading as the test window moves further from the training window — which is exactly what you want to know before committing to a set of hyperparameters.
+The walk-forward CV fold-level variance is also higher - typically 2 to 5 times higher than k-fold on the same data. This is not a flaw. It reflects genuine period-to-period variation in model performance. K-fold averages across all periods and hides this signal. Walk-forward shows you whether your model is degrading as the test window moves further from the training window - which is exactly what you want to know before committing to a set of hyperparameters.
 
 ---
 
@@ -218,9 +218,9 @@ The defaults in `walk_forward_split` (three months) are appropriate only for mot
 
 These are starting points, not rules. The right value depends on whether your target is paid losses, incurred, or an ultimate estimate; on how quickly your claims team closes files; and on whether you have a material proportion of complex, contested claims that develop slowly.
 
-> **Watch the IBNR buffer on Motor TP BI.** The figures in the table above are for `ibnr_buffer_months` — the gap between train end and the first test row. On a motor third party bodily injury book, 12–24 months is the parameter minimum, but your *effective validation gap* (the distance from the training cutoff to the point where you are confident test targets are materially reported) should be at least 36 months. We have seen teams run walk-forward on TP BI with an 18-month gap, get clean leakage checks, and only realise when comparing to a 2-year-later out-of-time holdout that the CV scores were still flattering — the test claims were still developing. If your book is Ogden-sensitive (large periodical payment orders, serious injury reserves), 36 months is itself optimistic. Short-tail classes — accidental damage, household contents — can use 6–12 months without issue.
+> **Watch the IBNR buffer on Motor TP BI.** The figures in the table above are for `ibnr_buffer_months` - the gap between train end and the first test row. On a motor third party bodily injury book, 12–24 months is the parameter minimum, but your *effective validation gap* (the distance from the training cutoff to the point where you are confident test targets are materially reported) should be at least 36 months. We have seen teams run walk-forward on TP BI with an 18-month gap, get clean leakage checks, and only realise when comparing to a 2-year-later out-of-time holdout that the CV scores were still flattering - the test claims were still developing. If your book is Ogden-sensitive (large periodical payment orders, serious injury reserves), 36 months is itself optimistic. Short-tail classes - accidental damage, household contents - can use 6–12 months without issue.
 
-For long-tail lines — employers' liability, professional indemnity — use `accident_year_split` instead of `walk_forward_split`. That function generates one fold per accident year and filters out years with insufficient median development, ensuring immature accident years never appear as test targets:
+For long-tail lines - employers' liability, professional indemnity - use `accident_year_split` instead of `walk_forward_split`. That function generates one fold per accident year and filters out years with insufficient median development, ensuring immature accident years never appear as test targets:
 
 ```python
 from insurance_cv import accident_year_split
@@ -277,7 +277,7 @@ The `temporal_leakage_check` function returns `{"errors": [...], "warnings": [..
 
 ## What walk-forward CV does not fix
 
-**Exposure mix changes.** If the portfolio grew significantly between training and test periods — new affinity scheme, changed underwriting appetite — the test fold has a different risk mix than the training data. Walk-forward handles this in the right direction (the model trains on older data and tests on the subsequent mix), but it will not tell you how much of the test period performance gap is model quality versus mix change. Monitor the fold-level exposure distributions alongside the scores.
+**Exposure mix changes.** If the portfolio grew significantly between training and test periods - new affinity scheme, changed underwriting appetite - the test fold has a different risk mix than the training data. Walk-forward handles this in the right direction (the model trains on older data and tests on the subsequent mix), but it will not tell you how much of the test period performance gap is model quality versus mix change. Monitor the fold-level exposure distributions alongside the scores.
 
 **Rate change contamination.** If you put through a 5% rate increase in July 2027, and a walk-forward test fold covers July to December 2027, the test set frequency may be lower than expected because the rate increase shifted out the higher-risk business. The CV metric will look better than it should. Use `policy_year_split` with year boundaries aligned to major rate changes, or note the rate change dates when interpreting fold-level performance.
 
@@ -291,7 +291,7 @@ The `temporal_leakage_check` function returns `{"errors": [...], "warnings": [..
 uv add insurance-cv
 ```
 
-The library is at [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv). The three split generators — `walk_forward_split`, `policy_year_split`, `accident_year_split` — cover the main use cases. `InsuranceCV` wraps them as a sklearn-compatible CV splitter. `temporal_leakage_check` and `split_summary` handle validation and documentation.
+The library is at [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv). The three split generators - `walk_forward_split`, `policy_year_split`, `accident_year_split` - cover the main use cases. `InsuranceCV` wraps them as a sklearn-compatible CV splitter. `temporal_leakage_check` and `split_summary` handle validation and documentation.
 
 The argument for insurance walk-forward cross-validation is not academic. K-fold cross-validation on insurance pricing data produces CV scores that look better than prospective performance because they cannot be anything else: temporal structure and IBNR development make look-ahead bias structurally unavoidable under random splitting. Walk-forward removes the bias at the cost of higher fold-level variance. That variance is real information. The k-fold precision is false precision.
 
@@ -300,6 +300,6 @@ Run `split_summary` before you tune anything. If `gap_days` contains zeros, you 
 ---
 
 **Related posts:**
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) — the first treatment of this topic; start here if the mechanisms are unfamiliar
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — what happens after deployment when the prospective evaluation was correctly done
-- [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees
+- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) - the first treatment of this topic; start here if the mechanisms are unfamiliar
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - what happens after deployment when the prospective evaluation was correctly done
+- [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees

@@ -8,7 +8,7 @@ tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relati
 description: "insurance-gam wraps EBM for UK pricing teams: Poisson/Tweedie loss, exposure offsets, RelativitiesTable, MonotonicityEditor, GLM comparison diagnostics."
 ---
 
-*This post is an EBM deep-dive: how Explainable Boosting Machines work, how to fit them for Poisson/Gamma/Tweedie insurance targets, and the full actuarial workflow — relativity tables, monotonicity editing, GLM comparison, Gini diagnostics. If you want to understand the ANAM architecture, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
+*This post is an EBM deep-dive: how Explainable Boosting Machines work, how to fit them for Poisson/Gamma/Tweedie insurance targets, and the full actuarial workflow - relativity tables, monotonicity editing, GLM comparison, Gini diagnostics. If you want to understand the ANAM architecture, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
 
 
 The two questions that come up in every conversation about replacing a GLM with something more powerful are: can you explain it to the pricing committee, and can you explain it to the regulator?
@@ -269,7 +269,7 @@ Three limitations worth stating plainly.
 
 The EBM's shape functions are per-feature and pairwise. They cannot capture three-way or higher-order interactions without explicit specification. For telematics data or other high-dimensional signals where complex multiway interactions are the whole point, this is a real limitation.
 
-Post-fit monotonicity editing via isotonic regression is not re-fitting. The edited model's shape function is monotone, but the model has not been re-trained with the constraint. If you need guaranteed monotonicity that is architecturally enforced rather than post-hoc corrected, set the `monotone_constraints` argument at fit time — interpretML's `ExplainableBoostingMachine` enforces monotonicity during the boosting process itself, and `InsuranceEBM` exposes this directly via its constructor. Post-hoc isotonic correction is a clean-up step, not a substitute for fit-time constraints on factors where monotonicity is a business requirement.
+Post-fit monotonicity editing via isotonic regression is not re-fitting. The edited model's shape function is monotone, but the model has not been re-trained with the constraint. If you need guaranteed monotonicity that is architecturally enforced rather than post-hoc corrected, set the `monotone_constraints` argument at fit time - interpretML's `ExplainableBoostingMachine` enforces monotonicity during the boosting process itself, and `InsuranceEBM` exposes this directly via its constructor. Post-hoc isotonic correction is a clean-up step, not a substitute for fit-time constraints on factors where monotonicity is a business requirement.
 
 The library is v0.1. Edge cases in categorical handling with rare levels, and behaviour under extreme class imbalance, have not all been characterised. Inspect shape functions and calibration tables before putting any model in production.
 

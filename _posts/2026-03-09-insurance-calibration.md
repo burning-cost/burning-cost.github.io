@@ -58,9 +58,9 @@ print(f"Observed total: {result.observed_total:,.0f} claims")
 print(f"Predicted total: {result.predicted_total:,.0f} claims")
 ```
 
-The balance ratio `alpha = sum(v_i * y_i) / sum(v_i * y_hat_i)` should be 1.0. Values above 1.0 mean the model is under-predicting — it is charging less than claims will cost. In this example alpha is approximately 1.08: every premium is 8% too cheap on average.
+The balance ratio `alpha = sum(v_i * y_i) / sum(v_i * y_hat_i)` should be 1.0. Values above 1.0 mean the model is under-predicting - it is charging less than claims will cost. In this example alpha is approximately 1.08: every premium is 8% too cheap on average.
 
-The p-value uses a Poisson z-test. Under H0, the observed claim count is approximately Normal(predicted, predicted), giving a z-statistic. This is the appropriate test for frequency data. The 95% confidence interval comes from 999 bootstrap resamples of the (y, y_hat, exposure) triplets — it preserves the joint dependence structure.
+The p-value uses a Poisson z-test. Under H0, the observed claim count is approximately Normal(predicted, predicted), giving a z-statistic. This is the appropriate test for frequency data. The 95% confidence interval comes from 999 bootstrap resamples of the (y, y_hat, exposure) triplets - it preserves the joint dependence structure.
 
 A model with a balance ratio of 1.08 and a CI of [1.06, 1.10] is not borderline. It is definitively charging the wrong premium. The CI tells you how certain that conclusion is.
 
@@ -68,9 +68,9 @@ A model with a balance ratio of 1.08 and a CI of [1.06, 1.10] is not borderline.
 
 ## Auto-calibration: the stronger test
 
-Global balance can be satisfied even when the model is systematically wrong within segments. Consider a model that under-prices high-risk policies by 15% and over-prices low-risk policies by 15%. The totals cancel, so the balance test passes. But high-risk cohorts are subsidised by low-risk ones — a pricing equity failure and a retention risk (low-risk customers will be shopped away by competitors who price them more accurately).
+Global balance can be satisfied even when the model is systematically wrong within segments. Consider a model that under-prices high-risk policies by 15% and over-prices low-risk policies by 15%. The totals cancel, so the balance test passes. But high-risk cohorts are subsidised by low-risk ones - a pricing equity failure and a retention risk (low-risk customers will be shopped away by competitors who price them more accurately).
 
-Auto-calibration requires E[Y | mu_hat(X)] = mu_hat(X) at every level of the prediction distribution, not just in aggregate. GLMs with canonical links satisfy this on training data by construction — the score equations enforce it. GBMs and neural networks do not. If you have switched from GLM to GBM without adding a recalibration step, you should run this test.
+Auto-calibration requires E[Y | mu_hat(X)] = mu_hat(X) at every level of the prediction distribution, not just in aggregate. GLMs with canonical links satisfy this on training data by construction - the score equations enforce it. GBMs and neural networks do not. If you have switched from GLM to GBM without adding a recalibration step, you should run this test.
 
 ```python
 from insurance_monitoring.calibration import check_auto_calibration
@@ -89,7 +89,7 @@ print(f"Worst bin deviation: {result.worst_bin_ratio:.3f}")  # e.g. 0.22 = worst
 print(result.per_bin)
 ```
 
-The `per_bin` output is a Polars DataFrame with one row per prediction decile: predicted mean, observed mean, ratio, exposure, and policy count. This is the reliability diagram in tabular form — the first thing a reviewing actuary will want to see.
+The `per_bin` output is a Polars DataFrame with one row per prediction decile: predicted mean, observed mean, ratio, exposure, and policy count. This is the reliability diagram in tabular form - the first thing a reviewing actuary will want to see.
 
 The bootstrap test (default, recommended) implements Algorithm 1 of Brauer et al. (2025): simulate datasets under H0 (y ~ Poisson(y_hat)), compute the MCB statistic on each, and compare to the observed MCB. The p-value is the fraction of bootstrap MCB values that exceed the observed MCB. This is more powerful than the Hosmer-Lemeshow alternative and does not depend on bin count choices.
 
@@ -184,7 +184,7 @@ from insurance_monitoring.calibration import isotonic_recalibrate
 y_hat_recal = isotonic_recalibrate(y, y_hat, exposure)
 ```
 
-Isotonic recalibration finds the order-preserving function that minimises the weighted distance to actuals. It is the most flexible correction, but it uses the holdout data to fit the correction — apply it to new data with a Wüthrich & Ziegel (SAJ 2024) complexity warning in mind. If the number of isotonic steps exceeds sqrt(n), the library raises a warning: the recalibration is fitting noise, not signal.
+Isotonic recalibration finds the order-preserving function that minimises the weighted distance to actuals. It is the most flexible correction, but it uses the holdout data to fit the correction - apply it to new data with a Wüthrich & Ziegel (SAJ 2024) complexity warning in mind. If the number of isotonic steps exceeds sqrt(n), the library raises a warning: the recalibration is fitting noise, not signal.
 
 ---
 
@@ -246,7 +246,7 @@ uv add insurance-monitoring
 
 Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-learn required; isotonic regression uses scipy.stats.isotonic_regression (scipy >= 1.12) with a pure numpy PAVA fallback.
 
-[`insurance-monitoring` on GitHub](https://github.com/burning-cost/insurance-monitoring) — MIT licence. 99 tests, 7 modules.
+[`insurance-monitoring` on GitHub](https://github.com/burning-cost/insurance-monitoring) - MIT licence. 99 tests, 7 modules.
 
 Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-governance) for the discrimination side: Gini, double lift, Lorenz curve, PRA SS1/23 report generation. The two libraries answer different questions. Validation tells you whether the model ranks risks correctly. Calibration tells you whether it prices them at the right level. You need both.
 

@@ -11,11 +11,11 @@ published: true
 
 Every UK motor pricing team wrestling with bodily injury severity knows the same uncomfortable fact: the number is going up faster than CPI, has been since at least 2022, and the standard approach of "take last three years, fit a line, call it a day" is increasingly indefensible.
 
-The ABI reported motor claims hitting a record £11.7bn in 2024. Average claim severity rose 13% year-on-year to £4,900, with Q4 2024 reaching £5,300 — an all-time high. BI claim volume is down 41% since the 2021 whiplash reforms, but total BI cost is up 7% over the same period. The frequency trend is doing what we hoped. The severity trend is doing something else entirely.
+The ABI reported motor claims hitting a record £11.7bn in 2024. Average claim severity rose 13% year-on-year to £4,900, with Q4 2024 reaching £5,300 - an all-time high. BI claim volume is down 41% since the 2021 whiplash reforms, but total BI cost is up 7% over the same period. The frequency trend is doing what we hoped. The severity trend is doing something else entirely.
 
-That "something else" has a name: superimposed inflation, or social inflation in American parlance. It is claims severity growth above general economic inflation. Measuring it correctly — separating the component that tracks CPI from the component that does not — is the single hardest and most commercially important calibration problem in UK motor pricing right now.
+That "something else" has a name: superimposed inflation, or social inflation in American parlance. It is claims severity growth above general economic inflation. Measuring it correctly - separating the component that tracks CPI from the component that does not - is the single hardest and most commercially important calibration problem in UK motor pricing right now.
 
-This post implements a multiplicative severity separation model in Python, then uses [insurance-whittaker](/insurance-whittaker/) to smooth the resulting development patterns. Note that Taylor's original 1977 formulation in the ASTIN Bulletin is a three-factor model: C[i,j] = R[i] × x[j] × y[i+j], where y[i+j] is a calendar-year diagonal parameter that isolates claims inflation directly. The two-factor model used here — C[i,j] = r[i] × l[j] — omits that diagonal component, making it simpler to implement on a severity triangle but unable to extract a direct inflation index from the diagonals. For the full three-factor Taylor decomposition, see [our companion post on claims inflation decomposition](/2026/03/24/claims-inflation-decomposition-taylor-two-factor-separation-python/). Both methods are older than most pricing actuaries' careers. The gap in UK practice is not the theory; it is production-quality Python tooling that makes them routine.
+This post implements a multiplicative severity separation model in Python, then uses [insurance-whittaker](/insurance-whittaker/) to smooth the resulting development patterns. Note that Taylor's original 1977 formulation in the ASTIN Bulletin is a three-factor model: C[i,j] = R[i] × x[j] × y[i+j], where y[i+j] is a calendar-year diagonal parameter that isolates claims inflation directly. The two-factor model used here - C[i,j] = r[i] × l[j] - omits that diagonal component, making it simpler to implement on a severity triangle but unable to extract a direct inflation index from the diagonals. For the full three-factor Taylor decomposition, see [our companion post on claims inflation decomposition](/2026/03/24/claims-inflation-decomposition-taylor-two-factor-separation-python/). Both methods are older than most pricing actuaries' careers. The gap in UK practice is not the theory; it is production-quality Python tooling that makes them routine.
 
 ---
 
@@ -23,11 +23,11 @@ This post implements a multiplicative severity separation model in Python, then 
 
 To calibrate a trend correctly you need to understand what you are calibrating. UK motor BI severity has four identifiable inflationary components since 2022, each with different forward-looking characteristics.
 
-**Legal cost inflation.** Solicitor hourly rates have risen substantially above CPI. The fixed recoverable costs regime, extended in October 2023 to intermediate track claims up to £100,000, was intended to cap legal cost inflation. The evidence so far is mixed — fixed cost caps have held in low-value claims, but cases migrating above the £100k threshold continue to see uncapped legal costs.
+**Legal cost inflation.** Solicitor hourly rates have risen substantially above CPI. The fixed recoverable costs regime, extended in October 2023 to intermediate track claims up to £100,000, was intended to cap legal cost inflation. The evidence so far is mixed - fixed cost caps have held in low-value claims, but cases migrating above the £100k threshold continue to see uncapped legal costs.
 
-**MedCo and medical report fees.** The Ministry of Justice's July 2023 consultation on fixed-cost medical reports resulted in a 25% increase in MedCo fixed-cost medical report fees from April 2025 and a 15% increase to the whiplash tariff from May 2025. For a pricing team building in a 2025 accident year, these step changes need explicit allowance — they are structural shifts, not part of the secular trend.
+**MedCo and medical report fees.** The Ministry of Justice's July 2023 consultation on fixed-cost medical reports resulted in a 25% increase in MedCo fixed-cost medical report fees from April 2025 and a 15% increase to the whiplash tariff from May 2025. For a pricing team building in a 2025 accident year, these step changes need explicit allowance - they are structural shifts, not part of the secular trend.
 
-**Ogden rate.** The personal injury discount rate (PIDR) moved from -0.25% to +0.5% effective 11 January 2025. The direction was favourable for insurers: Kennedys estimated the change would save the industry around £150m per annum, with lump sum payments for the most severe injuries reducing by up to 25%. This is a one-off negative SI component that needs isolating from the secular positive trend — if you naively smooth through the Ogden change you will understate forward severity.
+**Ogden rate.** The personal injury discount rate (PIDR) moved from -0.25% to +0.5% effective 11 January 2025. The direction was favourable for insurers: Kennedys estimated the change would save the industry around £150m per annum, with lump sum payments for the most severe injuries reducing by up to 25%. This is a one-off negative SI component that needs isolating from the secular positive trend - if you naively smooth through the Ogden change you will understate forward severity.
 
 **Care cost inflation.** For serious BI claims, future care costs dominate the settlement. Total pay growth ran at 10.2% for the year to September 2023, well above CPI. Care costs do not track the general CPI basket; they track healthcare wage inflation, which has structurally exceeded CPI.
 
@@ -43,9 +43,9 @@ The idea is straightforward. In a severity triangle, the average cost of claims 
 C[i, j] = r[i] * l[j]
 ```
 
-where `r[i]` is an accident year severity index (the real underlying cost level at the time of the accident) and `l[j]` is a payment delay factor (how settlement mix shifts as claims develop — large claims settle later, lifting average cost in later development periods). The inflation embedded in `r[i]` is what you are measuring. Once you have estimated `r[i]` for each accident year, you fit a trend to it and separate the CPI-tracking component from the superimposed component.
+where `r[i]` is an accident year severity index (the real underlying cost level at the time of the accident) and `l[j]` is a payment delay factor (how settlement mix shifts as claims develop - large claims settle later, lifting average cost in later development periods). The inflation embedded in `r[i]` is what you are measuring. Once you have estimated `r[i]` for each accident year, you fit a trend to it and separate the CPI-tracking component from the superimposed component.
 
-This differs from Taylor's (1977) three-factor model, which adds a calendar-year parameter y[i+j] to the right-hand side. That third factor directly captures the inflation diagonal — it is the right formulation when you want to extract an inflation index from the triangle itself. The two-factor form here is appropriate when you have an external inflation index (CPI or HPTH) you plan to use for deflation, and you want the accident-year factors r[i] to carry the combined inflation signal for subsequent trend fitting.
+This differs from Taylor's (1977) three-factor model, which adds a calendar-year parameter y[i+j] to the right-hand side. That third factor directly captures the inflation diagonal - it is the right formulation when you want to extract an inflation index from the triangle itself. The two-factor form here is appropriate when you have an external inflation index (CPI or HPTH) you plan to use for deflation, and you want the accident-year factors r[i] to carry the combined inflation signal for subsequent trend fitting.
 
 The fitting is a least-squares problem on the log scale. With a triangle of average severity by accident year and development year:
 
@@ -166,7 +166,7 @@ print(f"Fitted annual severity inflation: {annual_inflation:.1%}")
 
 ## Where Whittaker-Henderson comes in
 
-The Taylor method gives you a point estimate for each development year factor. With a seven-period development table that is seven numbers, and fitting a monotone development pattern directly from noisy data is the same smoothing problem as fitting a driver age curve — small cells at the extremes (period 1 is thick; period 7 has one or two diagonal entries) need to be handled without over-fitting the noise.
+The Taylor method gives you a point estimate for each development year factor. With a seven-period development table that is seven numbers, and fitting a monotone development pattern directly from noisy data is the same smoothing problem as fitting a driver age curve - small cells at the extremes (period 1 is thick; period 7 has one or two diagonal entries) need to be handled without over-fitting the noise.
 
 [`insurance-whittaker`](/insurance-whittaker/) solves this. The development year factors `l[j]` estimated from Taylor separation are smoothed using Whittaker-Henderson with automatic REML lambda selection. The result is a smooth, credible development pattern where the uncertainty widens correctly in sparsely-observed development periods.
 
@@ -240,7 +240,7 @@ print(f"Total severity inflation:           {(1+econ_annual)*(1+si_annual)-1:.1%
 
 The choice of deflator is not innocent. CPI is the most common choice because it is readily available, but for BI claims it is structurally wrong. The CPI basket does not include solicitor hourly rates as a component; it does not weight towards care worker wages; it does not include MedCo report fees. The ONS SPPI series for legal services is more appropriate for the legal cost component. For care costs, the NHS pay settlement index is closer to the right benchmark.
 
-We are not aware of a team in the UK market that uses component-level deflators consistently. Most use CPI as a practical approximation and acknowledge the limitation in model documentation. That is defensible — the error from using CPI rather than a bespoke deflator is likely smaller than the uncertainty in the trend estimate itself. But it should be a documented assumption, not a default that nobody examined.
+We are not aware of a team in the UK market that uses component-level deflators consistently. Most use CPI as a practical approximation and acknowledge the limitation in model documentation. That is defensible - the error from using CPI rather than a bespoke deflator is likely smaller than the uncertainty in the trend estimate itself. But it should be a documented assumption, not a default that nobody examined.
 
 ---
 
@@ -250,13 +250,13 @@ The PIDR change to +0.5% effective January 2025 is a discrete negative superimpo
 
 The right approach is to apply the Ogden adjustment explicitly as a loadings step, then fit your superimposed inflation trend to the Ogden-neutral series. This is equivalent to treating the Ogden change as a known structural break and removing it before trend fitting. The forward BI severity projection then has two components: the Ogden-neutral SI trend plus the step adjustment for the new PIDR basis.
 
-The size of the Ogden effect on average BI severity depends heavily on the mix of claim types in your book. For a standard private car portfolio, the impact is concentrated in the serious injury tail — claims above £500k. If your BI mix is predominantly soft-tissue injuries settling under the MoJ portal with average settlements under £5,000, the Ogden adjustment is immaterial. For a commercial fleet book with genuine catastrophic injury exposure, failing to adjust is a material error.
+The size of the Ogden effect on average BI severity depends heavily on the mix of claim types in your book. For a standard private car portfolio, the impact is concentrated in the serious injury tail - claims above £500k. If your BI mix is predominantly soft-tissue injuries settling under the MoJ portal with average settlements under £5,000, the Ogden adjustment is immaterial. For a commercial fleet book with genuine catastrophic injury exposure, failing to adjust is a material error.
 
 ---
 
 ## Limitations
 
-The Taylor separation method assumes multiplicative separability: C[i,j] = r[i] * l[j]. This is a strong assumption. In practice, the development pattern itself shifts over time — litigation timelines changed during COVID, the extension of fixed recoverable costs in 2023 altered settlement behaviour in the intermediate track, and the whiplash reforms changed the mix of claim types reaching each development period. A triangle that mixes pre- and post-reform accident years violates the separability assumption. The residual analysis (`result["residuals"]`) is the diagnostic: large systematic residuals in the post-reform diagonals indicate the model is misspecified.
+The Taylor separation method assumes multiplicative separability: C[i,j] = r[i] * l[j]. This is a strong assumption. In practice, the development pattern itself shifts over time - litigation timelines changed during COVID, the extension of fixed recoverable costs in 2023 altered settlement behaviour in the intermediate track, and the whiplash reforms changed the mix of claim types reaching each development period. A triangle that mixes pre- and post-reform accident years violates the separability assumption. The residual analysis (`result["residuals"]`) is the diagnostic: large systematic residuals in the post-reform diagonals indicate the model is misspecified.
 
 The method also requires average severity per settled claim, not average severity per reported claim. The distinction matters where claims management strategy changes the rate at which claims are settled across development years. If your claims team accelerated settlements in 2021 to clear a backlog, you will see a spurious dip in the development factor for period 1 in the 2021 accident year. This shows up as a residual, but it is indistinguishable from a genuine change in the severity of early-settling claims without external claims management data.
 
@@ -264,7 +264,7 @@ Neither of these limitations makes the method wrong. They make it a model that n
 
 ---
 
-The IFoA Claims Inflation Working Party (British Actuarial Journal, 2024, runner-up Brian Hey Prize) confirmed there is no standard Python tooling for this class of problem in the UK market — all work is done in bespoke reserving and pricing models. The separation method and `insurance-whittaker` together give you a reusable, tested, version-controlled foundation. The next time someone asks what the superimposed inflation assumption is and whether it is defensible, you want to be able to show them code and output, not a spreadsheet last edited by someone who left in 2022.
+The IFoA Claims Inflation Working Party (British Actuarial Journal, 2024, runner-up Brian Hey Prize) confirmed there is no standard Python tooling for this class of problem in the UK market - all work is done in bespoke reserving and pricing models. The separation method and `insurance-whittaker` together give you a reusable, tested, version-controlled foundation. The next time someone asks what the superimposed inflation assumption is and whether it is defensible, you want to be able to show them code and output, not a spreadsheet last edited by someone who left in 2022.
 
 ```bash
 uv add insurance-whittaker

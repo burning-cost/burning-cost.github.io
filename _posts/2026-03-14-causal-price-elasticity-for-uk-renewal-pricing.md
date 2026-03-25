@@ -10,9 +10,9 @@ description: "CausalForestDML separates causal price effect from risk-lapse corr
 
 > **Update (March 2026):** `insurance-demand` has been merged into [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise). Install `insurance-optimise` and use `insurance_optimise.demand` for the same functionality.
 
-A UK motor renewal book has a structural problem that corrupts every naive price elasticity estimate. Your pricing model re-rates every customer using risk factors. Those same risk factors drive the renewal decision independently of price — higher-risk customers are harder to retain for reasons that have nothing to do with what you charge them. When you regress renewal indicator on log price change, you are picking up both effects simultaneously and cannot separate them from within the regression.
+A UK motor renewal book has a structural problem that corrupts every naive price elasticity estimate. Your pricing model re-rates every customer using risk factors. Those same risk factors drive the renewal decision independently of price - higher-risk customers are harder to retain for reasons that have nothing to do with what you charge them. When you regress renewal indicator on log price change, you are picking up both effects simultaneously and cannot separate them from within the regression.
 
-The result is a biased elasticity. Not slightly biased — in our benchmarks on synthetic UK motor data with a realistic data-generating process, OLS relative bias against the true elasticity is 20–80%. A renewal optimiser built on that number is optimising on a false premise.
+The result is a biased elasticity. Not slightly biased - in our benchmarks on synthetic UK motor data with a realistic data-generating process, OLS relative bias against the true elasticity is 20–80%. A renewal optimiser built on that number is optimising on a false premise.
 
 [`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) is our causal price elasticity library: CausalForestDML and LinearDML for heterogeneous semi-elasticity estimation, a diagnostic that catches the near-deterministic price problem before you fit, a full elasticity surface across two portfolio dimensions, and a profit-maximising ENBP-constrained optimiser for FCA PS21/5 compliance.
 
@@ -24,9 +24,9 @@ uv add "insurance-elasticity[all]"
 
 ## How the confounding works in a formula-rated book
 
-When your pricing model generates a renewal offer, the price change is largely a deterministic function of the risk factors in X. Any customer whose risk factors have moved — new claim, birthday, moved postcode — receives a price change driven by that movement. The renewal decision is also driven by those same risk factors: a customer who has had a claim in the last 12 months may lapse for many reasons beyond the premium increase.
+When your pricing model generates a renewal offer, the price change is largely a deterministic function of the risk factors in X. Any customer whose risk factors have moved - new claim, birthday, moved postcode - receives a price change driven by that movement. The renewal decision is also driven by those same risk factors: a customer who has had a claim in the last 12 months may lapse for many reasons beyond the premium increase.
 
-The formal structure: D (log price change) is not randomly assigned. It is approximately m₀(X) — a deterministic function of rating factors. When D ≈ m₀(X), the residualised treatment D̃ = D - E[D|X] has near-zero variance. OLS on the raw data sees the correlation between price changes and lapse but cannot identify whether it is the price causing the lapse or the risk movement that caused both.
+The formal structure: D (log price change) is not randomly assigned. It is approximately m₀(X) - a deterministic function of rating factors. When D ≈ m₀(X), the residualised treatment D̃ = D - E[D|X] has near-zero variance. OLS on the raw data sees the correlation between price changes and lapse but cannot identify whether it is the price causing the lapse or the risk movement that caused both.
 
 Double Machine Learning residualises both D and Y on X separately:
 
@@ -34,7 +34,7 @@ Double Machine Learning residualises both D and Y on X separately:
 2. Fit E[D|X] on log price changes using CatBoost, compute D̃.
 3. Regress Ỹ on D̃. The coefficient is the causal semi-elasticity.
 
-The Neyman-orthogonal score means errors in steps 1 and 2 produce second-order bias in the elasticity estimate, not first-order. You get a valid confidence interval. The residualised D̃ is the genuinely exogenous variation in price — changes that were not mechanically driven by the pricing formula.
+The Neyman-orthogonal score means errors in steps 1 and 2 produce second-order bias in the elasticity estimate, not first-order. You get a valid confidence interval. The residualised D̃ is the genuinely exogenous variation in price - changes that were not mechanically driven by the pricing formula.
 
 The benchmark result on synthetic data: OLS relative bias of 20–80% against the true elasticity. LinearDML and CausalForestDML both reduce this to 1–10%.
 
@@ -42,7 +42,7 @@ The benchmark result on synthetic data: OLS relative bias of 20–80% against th
 
 ## The near-deterministic price problem: check before you fit
 
-The diagnostic that distinguishes `insurance-elasticity` from a generic DML wrapper is `ElasticityDiagnostics`. When Var(D̃) / Var(D) < 10% — less than 10% of price variation is exogenous after conditioning on X — you have near-deterministic treatment. The confidence intervals blow up and the point estimate is noise. You need to know this before fitting, not after.
+The diagnostic that distinguishes `insurance-elasticity` from a generic DML wrapper is `ElasticityDiagnostics`. When Var(D̃) / Var(D) < 10% - less than 10% of price variation is exogenous after conditioning on X - you have near-deterministic treatment. The confidence intervals blow up and the point estimate is noise. You need to know this before fitting, not after.
 
 ```python
 from insurance_elasticity.data import make_renewal_data
@@ -91,9 +91,9 @@ print(f"ATE: {ate:.3f}  95% CI: [{lb:.3f}, {ub:.3f}]")
 
 The ATE is the average semi-elasticity: a 1-unit increase in log price change (approximately a 100% price increase) changes renewal probability by `ATE` percentage points. For the typical 5–20% renewal re-rates in UK personal lines, the practical interpretation is: a 10% price increase changes renewal probability by approximately ATE × log(1.1) ≈ ATE × 0.095.
 
-**Why CatBoost for the nuisance models.** UK insurance data is full of high-cardinality categoricals — region, vehicle group, occupation, payment method. CatBoost handles them natively via ordered target encoding, without the one-hot explosion that penalised regression requires. A 2024 systematic evaluation (arXiv:2403.14385) found gradient boosted trees outperform LASSO in the DML nuisance step when confounding is nonlinear, which it always is with postcode and age-vehicle interactions.
+**Why CatBoost for the nuisance models.** UK insurance data is full of high-cardinality categoricals - region, vehicle group, occupation, payment method. CatBoost handles them natively via ordered target encoding, without the one-hot explosion that penalised regression requires. A 2024 systematic evaluation (arXiv:2403.14385) found gradient boosted trees outperform LASSO in the DML nuisance step when confounding is nonlinear, which it always is with postcode and age-vehicle interactions.
 
-**LinearDML vs CausalForestDML.** LinearDML assumes constant elasticity (or heterogeneity only through explicitly interacted features). It is 30–60× faster than CausalForestDML and the right choice for quick portfolio-level ATE estimation or benchmarking. CausalForestDML is non-parametric and provides valid pointwise confidence intervals via honest splitting — the right choice when you want the heterogeneous elasticity surface and segment-level GATE estimates.
+**LinearDML vs CausalForestDML.** LinearDML assumes constant elasticity (or heterogeneity only through explicitly interacted features). It is 30–60× faster than CausalForestDML and the right choice for quick portfolio-level ATE estimation or benchmarking. CausalForestDML is non-parametric and provides valid pointwise confidence intervals via honest splitting - the right choice when you want the heterogeneous elasticity surface and segment-level GATE estimates.
 
 ---
 
@@ -114,7 +114,7 @@ print(gate)
 #   5+         -1.02  -1.19     -0.85
 ```
 
-The pattern here — elasticity declining in magnitude with NCD — is structurally present in UK motor data. Customers with more years' NCD have more to lose by switching (they would start at zero NCD with a new insurer in most markets) and are correspondingly less price-elastic. A renewal optimiser that uses the pooled ATE is systematically over-discounting the high-NCD segment and under-retaining the low-NCD segment.
+The pattern here - elasticity declining in magnitude with NCD - is structurally present in UK motor data. Customers with more years' NCD have more to lose by switching (they would start at zero NCD with a new insurer in most markets) and are correspondingly less price-elastic. A renewal optimiser that uses the pooled ATE is systematically over-discounting the high-NCD segment and under-retaining the low-NCD segment.
 
 The elasticity surface shows two dimensions simultaneously:
 
@@ -167,7 +167,7 @@ demand_df = demand_curve(est, df, price_range=(-0.25, 0.25, 50))
 # DataFrame: price_change, predicted_renewal_rate, expected_profit
 ```
 
-The efficient frontier — renewal rate vs expected profit across the ENBP-constrained optimised pricing grid — is in the worked example at `price_elasticity_optimisation.py` in the examples repository. Running that on your own data before interpreting results is strongly recommended: it shows how each component behaves and where the ENBP constraint bites.
+The efficient frontier - renewal rate vs expected profit across the ENBP-constrained optimised pricing grid - is in the worked example at `price_elasticity_optimisation.py` in the examples repository. Running that on your own data before interpreting results is strongly recommended: it shows how each component behaves and where the ENBP constraint bites.
 
 ---
 
@@ -210,6 +210,6 @@ The GATE RMSE improvement is largest on books where the renewal population has s
 ---
 
 **Related reading:**
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) — the general DML for insurance causal inference library; confounding bias report, DAG validation, sensitivity analysis
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the insurance-optimise demand model with FCA GIPP compliance
-- [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/) — the rate change optimiser that consumes elasticity estimates
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/02/25/causal-inference-for-insurance-pricing/) - the general DML for insurance causal inference library; confounding bias report, DAG validation, sensitivity analysis
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) - the insurance-optimise demand model with FCA GIPP compliance
+- [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/) - the rate change optimiser that consumes elasticity estimates

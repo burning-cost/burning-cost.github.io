@@ -9,11 +9,11 @@ description: "Constrained portfolio rate optimiser for UK personal lines: SLSQP,
 
 This post covers **policy-level** profit optimisation: finding the optimal price multiplier for each individual risk given elasticity estimates. For factor-level tariff optimisation that adjusts multiplicative rating factor relativities, see [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/).
 
-The typical UK personal lines pricing cycle works like this. The technical model produces a set of risk-adequate prices. Separately, a demand model estimates how customers will respond to price changes. Someone — often the Chief Pricing Actuary, in a spreadsheet — then tries to reconcile the two: applying rate changes that are technically justified, commercially viable, and ENBP-compliant, while watching the portfolio loss ratio and not shocking customers with 40% increases.
+The typical UK personal lines pricing cycle works like this. The technical model produces a set of risk-adequate prices. Separately, a demand model estimates how customers will respond to price changes. Someone - often the Chief Pricing Actuary, in a spreadsheet - then tries to reconcile the two: applying rate changes that are technically justified, commercially viable, and ENBP-compliant, while watching the portfolio loss ratio and not shocking customers with 40% increases.
 
 This manual reconciliation process produces rates that are approximately right and definitively not optimal. It cannot be optimal because it is not solving the joint problem. It is solving a sequence of sub-problems that interact with each other in ways that manual iteration cannot fully untangle.
 
-The interaction is direct: raising a segment's rate reduces demand, which changes the portfolio GWP, which changes the loss ratio calculation, which may tighten the ENBP constraint for some policies, which changes how much room you have to take rate elsewhere. The only way to find the profit-maximising rate change set — subject to all constraints simultaneously — is to solve it as a constrained optimisation problem.
+The interaction is direct: raising a segment's rate reduces demand, which changes the portfolio GWP, which changes the loss ratio calculation, which may tighten the ENBP constraint for some policies, which changes how much room you have to take rate elsewhere. The only way to find the profit-maximising rate change set - subject to all constraints simultaneously - is to solve it as a constrained optimisation problem.
 
 That is what [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) does.
 
@@ -89,7 +89,7 @@ result.shadow_prices         # Lagrange multipliers per constraint
 result.summary_df            # per-policy: multiplier, new premium, ENBP binding?
 ```
 
-The `summary_df` is a Polars DataFrame with one row per policy. The `enbp_binding` column tells you which renewals are priced tight to the ENBP ceiling — this is your ICOBS 6B.2 compliance evidence.
+The `summary_df` is a Polars DataFrame with one row per policy. The `enbp_binding` column tells you which renewals are priced tight to the ENBP ceiling - this is your ICOBS 6B.2 compliance evidence.
 
 ---
 
@@ -102,7 +102,7 @@ result.shadow_prices
 # {'lr_max': 1247.3, 'gwp_min': 0.0, 'retention_min': 8423.1}
 ```
 
-In this example: the loss ratio ceiling is binding (shadow price £1,247, meaning each 1-percentage-point relaxation of the LR target buys you approximately £1,247 in profit). The GWP floor is not binding (shadow price zero — you are meeting it with room to spare). The retention floor is the hard constraint, costing you £8,423 per percentage-point.
+In this example: the loss ratio ceiling is binding (shadow price £1,247, meaning each 1-percentage-point relaxation of the LR target buys you approximately £1,247 in profit). The GWP floor is not binding (shadow price zero - you are meeting it with room to spare). The retention floor is the hard constraint, costing you £8,423 per percentage-point.
 
 This tells you immediately where to direct commercial conversations. The actuarial team trying to argue for a tighter loss ratio target has a £1,247/pp number to put in front of the CFO. The sales team pushing for an 85% retention floor has an £8,423/pp number that quantifies exactly what they are asking the business to give up.
 
@@ -114,7 +114,7 @@ Without constrained optimisation, you have approximate intuitions. With it, you 
 
 The solver is scipy's SLSQP (Sequential Least Squares Programming). We run it in multiplier space (optimising m_i = p_i / tc_i rather than p_i directly), which keeps the decision variables O(1) in magnitude and reduces SLSQP's scale sensitivity.
 
-The critical performance decision is analytical gradients. Without them, SLSQP uses finite differences: at each iteration, it perturbs each variable by a small amount and measures the objective change. For N policies that is 2N extra function evaluations per iteration — at N = 10,000 that is slow enough to be impractical. With analytical gradients, each iteration requires one forward pass and one gradient evaluation: fast regardless of N.
+The critical performance decision is analytical gradients. Without them, SLSQP uses finite differences: at each iteration, it perturbs each variable by a small amount and measures the objective change. For N policies that is 2N extra function evaluations per iteration - at N = 10,000 that is slow enough to be impractical. With analytical gradients, each iteration requires one forward pass and one gradient evaluation: fast regardless of N.
 
 The objective gradient has a clean form:
 
@@ -167,7 +167,7 @@ This is the same scenario analysis that actuaries already run manually for reser
 
 ## The efficient frontier
 
-The tension between profit and retention is not a single decision point. It is a curve. The efficient frontier shows you every point on that curve — the profit-maximising solution for every possible retention target.
+The tension between profit and retention is not a single decision point. It is a curve. The efficient frontier shows you every point on that curve - the profit-maximising solution for every possible retention target.
 
 ```python
 from insurance_optimise import EfficientFrontier
@@ -184,7 +184,7 @@ frontier_result.pareto_data()
 # Polars DataFrame: retention, profit, gwp, loss_ratio (converged points only)
 ```
 
-Each of the 15 points is an independent optimisation at a different retention floor. At 80% retention, the optimiser has more pricing freedom and extracts more profit. At 95%, it is heavily constrained and profit is lower — but you are holding more of your book. The frontier shows you the rate of exchange: how much profit you give up per percentage point of retention. That is the number that should drive the commercial conversation, not a gut feeling about what "reasonable" retention looks like.
+Each of the 15 points is an independent optimisation at a different retention floor. At 80% retention, the optimiser has more pricing freedom and extracts more profit. At 95%, it is heavily constrained and profit is lower - but you are holding more of your book. The frontier shows you the rate of exchange: how much profit you give up per percentage point of retention. That is the number that should drive the commercial conversation, not a gut feeling about what "reasonable" retention looks like.
 
 ---
 

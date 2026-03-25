@@ -102,7 +102,7 @@ print(f"Components:      {adj.n_components()}")    # must be 1 for ICAR
 print(f"Mean neighbours: {adj.neighbour_counts().mean():.1f}")
 ```
 
-The `fix_islands=True` argument handles disconnected components and the queen contiguity graph structure are covered in detail in [the theory post](/2026/02/23/spatial-territory-ratemaking-with-bym2/). Document the island-connection policy in your model documentation — it is a deliberate choice that affects the graph structure.
+The `fix_islands=True` argument handles disconnected components and the queen contiguity graph structure are covered in detail in [the theory post](/2026/02/23/spatial-territory-ratemaking-with-bym2/). Document the island-connection policy in your model documentation - it is a deliberate choice that affects the graph structure.
 
 The adjacency was built from all sectors in the shapefile; we filtered some out for low exposure. So we need to restrict the graph to the sectors in our exposure dataset, in the same order.
 
@@ -162,7 +162,7 @@ A positive, significant Moran's I (p < 0.05 from the permutation test) means nea
 
 The `moran_i()` function is a pure-numpy permutation test with no dependency on external spatial statistics libraries (esda, PySAL). It reshuffles the observed values across areas repeatedly and asks how often the reshuffled data produces an I as extreme as observed. This is more reliable than the analytical normal approximation for the skewed, heavy-tailed distributions typical of insurance O/E ratios.
 
-If Moran's I is not significant, see [the theory post](/2026/02/23/spatial-territory-ratemaking-with-bym2/) for the graceful degradation argument — the short version is: do not abandon the model. Note the test result in the model documentation either way.
+If Moran's I is not significant, see [the theory post](/2026/02/23/spatial-territory-ratemaking-with-bym2/) for the graceful degradation argument - the short version is: do not abandon the model. Note the test result in the model documentation either way.
 
 ---
 

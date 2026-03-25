@@ -8,7 +8,7 @@ tags: [python, pricing, catboost, polars, shap-relativities, insurance-distill, 
 description: "20 short code recipes for common insurance pricing tasks. Each recipe uses a real API from one of our open-source libraries. Copy and adapt."
 ---
 
-A reference post. Each recipe is a standalone snippet — minimal setup, real API calls, expected output in comments. Install whichever libraries you need with `uv add`.
+A reference post. Each recipe is a standalone snippet - minimal setup, real API calls, expected output in comments. Install whichever libraries you need with `uv add`.
 
 No GLM appendices. No theoretical preambles. If you want the background, the linked posts have it.
 
@@ -18,7 +18,7 @@ No GLM appendices. No theoretical preambles. If you want the background, the lin
 
 ### Recipe 1: How do I load a synthetic UK motor dataset with a known data generating process?
 
-Use `insurance-datasets` when you want a portfolio with verifiable ground truth — useful for checking whether your model recovers the correct relativities.
+Use `insurance-datasets` when you want a portfolio with verifiable ground truth - useful for checking whether your model recovers the correct relativities.
 
 ```python
 from insurance_datasets import load_motor, MOTOR_TRUE_FREQ_PARAMS
@@ -64,7 +64,7 @@ print(splits[0].label)
 cv = InsuranceCV(splits, df)
 ```
 
-Rows with inception dates in the 3-month IBNR buffer are excluded from both train and test. For liability or professional indemnity, increase `ibnr_buffer_months` to 12 or more — motor and home are typically safe at 3-6 months.
+Rows with inception dates in the 3-month IBNR buffer are excluded from both train and test. For liability or professional indemnity, increase `ibnr_buffer_months` to 12 or more - motor and home are typically safe at 3-6 months.
 
 ---
 
@@ -95,7 +95,7 @@ for s in splits:
 
 ### Recipe 4: How do I extract GLM-style rating factors from a CatBoost model?
 
-`shap-relativities` converts CatBoost SHAP values into multiplicative factor tables — the `exp(beta)` format that pricing committees and Radar import templates expect.
+`shap-relativities` converts CatBoost SHAP values into multiplicative factor tables - the `exp(beta)` format that pricing committees and Radar import templates expect.
 
 ```python
 from shap_relativities import SHAPRelativities
@@ -136,7 +136,7 @@ The reconstruction check verifies that `exp(shap_values.sum(axis=1) + expected_v
 
 ### Recipe 5: How do I distil a CatBoost model into a Radar-ready factor table?
 
-`insurance-distill` fits a surrogate GLM on GBM pseudo-predictions and exports one CSV per feature — ready to load into Radar or any multiplicative rating engine.
+`insurance-distill` fits a surrogate GLM on GBM pseudo-predictions and exports one CSV per feature - ready to load into Radar or any multiplicative rating engine.
 
 ```python
 from insurance_distill import SurrogateGLM
@@ -169,7 +169,7 @@ The Gini ratio tells you how much discrimination the GLM retains relative to the
 
 ### Recipe 6: How do I model the full conditional distribution of claims, not just the mean?
 
-`insurance-distributional` fits a Tweedie GBM that returns both the mean and variance of the conditional loss distribution — useful for safety loading and reinsurance pricing.
+`insurance-distributional` fits a Tweedie GBM that returns both the mean and variance of the conditional loss distribution - useful for safety loading and reinsurance pricing.
 
 ```python
 from insurance_distributional import TweedieGBM
@@ -250,7 +250,7 @@ print(f"Max A/E disparity: {cal.max_disparity:.3f}")  # 0.034
 print(f"RAG: {cal.rag}")                               # GREEN
 ```
 
-A model that is equally calibrated across groups (A/E ≈ 1.0 in all deciles for all groups) satisfies the sufficiency criterion — the most defensible standard under Equality Act 2010 Section 19.
+A model that is equally calibrated across groups (A/E ≈ 1.0 in all deciles for all groups) satisfies the sufficiency criterion - the most defensible standard under Equality Act 2010 Section 19.
 
 ---
 
@@ -275,13 +275,13 @@ print(f"RAG: {result.rag}")                   # GREEN / AMBER / RED
 # Log-ratio: 0.038  Ratio: 1.039  95% CI: [0.031, 0.046]  RAG: GREEN
 ```
 
-A ratio of 1.039 means male policyholders pay 3.9% more on average. This alone tells you nothing — it may reflect genuine risk differences. Use `calibration_by_group` alongside this to determine whether the difference is actuarially justified.
+A ratio of 1.039 means male policyholders pay 3.9% more on average. This alone tells you nothing - it may reflect genuine risk differences. Use `calibration_by_group` alongside this to determine whether the difference is actuarially justified.
 
 ---
 
 ### Recipe 10: How do I generate a model card for a PRA model validation committee?
 
-`insurance-governance` provides a structured `MRMModelCard` that captures the fields a Model Risk Committee expects — intended use, assumptions, limitations, approval conditions — and serialises to JSON for audit trail.
+`insurance-governance` provides a structured `MRMModelCard` that captures the fields a Model Risk Committee expects - intended use, assumptions, limitations, approval conditions - and serialises to JSON for audit trail.
 
 ```python
 from insurance_governance import MRMModelCard, Assumption, Limitation
@@ -348,13 +348,13 @@ print(f"Overall A/E: {ae:.3f}")   # 0.974
 # ...
 ```
 
-A/E outside [0.90, 1.10] on a sufficiently large segment is a meaningful signal. On thin segments — fewer than ~200 claims — the sampling variance dominates and point estimates are unreliable.
+A/E outside [0.90, 1.10] on a sufficiently large segment is a meaningful signal. On thin segments - fewer than ~200 claims - the sampling variance dominates and point estimates are unreliable.
 
 ---
 
 ### Recipe 12: How do I detect which features are driving model performance drift?
 
-`DriftAttributor` implements TRIPODD (Panda et al. 2025, arXiv:2503.06606): it identifies which features — including interactions — explain why model performance has degraded between train and monitor periods.
+`DriftAttributor` implements TRIPODD (Panda et al. 2025, arXiv:2503.06606): it identifies which features - including interactions - explain why model performance has degraded between train and monitor periods.
 
 ```python
 from insurance_monitoring import DriftAttributor
@@ -376,7 +376,7 @@ print(result.drift_contributions)
 # {'driver_age': 0.034, ('driver_age', 'vehicle_group'): 0.021, ...}
 ```
 
-Single-feature drift (driver_age has shifted) is addressable by recalibration. An interaction effect drifting without the main effects drifting usually means genuine model degradation — refit rather than recalibrate.
+Single-feature drift (driver_age has shifted) is addressable by recalibration. An interaction effect drifting without the main effects drifting usually means genuine model degradation - refit rather than recalibrate.
 
 ---
 
@@ -481,7 +481,7 @@ print(intervals.head(3))
 
 ### Recipe 16: How do I monitor Poisson model calibration in production without repeated-testing inflation?
 
-`PITMonitor` uses probability integral transforms and mixture e-processes (Henzi, Murph, Ziegel 2025, arXiv:2603.13156). You compute the PIT — the model's predictive CDF evaluated at the observed claim count — and feed them sequentially. The monitor alarms if and when the PIT distribution deviates from Uniform(0,1), which is what a correctly calibrated model produces.
+`PITMonitor` uses probability integral transforms and mixture e-processes (Henzi, Murph, Ziegel 2025, arXiv:2603.13156). You compute the PIT - the model's predictive CDF evaluated at the observed claim count - and feed them sequentially. The monitor alarms if and when the PIT distribution deviates from Uniform(0,1), which is what a correctly calibrated model produces.
 
 ```python
 from insurance_monitoring import PITMonitor
@@ -540,7 +540,7 @@ print(results)
 # SCH003        14.1      0.091  0.967          0.091       0.087
 ```
 
-A credibility factor of 0.341 means a scheme has only 1.3 years of effective exposure — trust the portfolio mean heavily. At 0.967, the scheme is large enough to stand on its own experience.
+A credibility factor of 0.341 means a scheme has only 1.3 years of effective exposure - trust the portfolio mean heavily. At 0.967, the scheme is large enough to stand on its own experience.
 
 ---
 
@@ -548,7 +548,7 @@ A credibility factor of 0.341 means a scheme has only 1.3 years of effective exp
 
 ### Recipe 18: How do I smooth a noisy age-frequency curve with automatic lambda selection?
 
-`WhittakerHenderson1D` minimises a penalised sum of squares with the smoothing parameter lambda selected automatically via REML. The result is a smoothed curve with Bayesian credible intervals — useful for informing driver age banding decisions.
+`WhittakerHenderson1D` minimises a penalised sum of squares with the smoothing parameter lambda selected automatically via REML. The result is a smoothed curve with Bayesian credible intervals - useful for informing driver age banding decisions.
 
 ```python
 import numpy as np
@@ -571,7 +571,7 @@ print(smooth_df.filter(pl.col("x").is_between(17, 25)))
 # ...
 ```
 
-`order=2` penalises curvature (second differences) and produces smooth U-shaped curves, which is the right shape for driver age frequency. `order=1` penalises slope changes — appropriate for step functions like NCD.
+`order=2` penalises curvature (second differences) and produces smooth U-shaped curves, which is the right shape for driver age frequency. `order=1` penalises slope changes - appropriate for step functions like NCD.
 
 ---
 
@@ -608,7 +608,7 @@ When frequency is falling (fewer claims) but severity is rising faster (larger i
 
 ### Recipe 20: How do I fit a shared frailty model to identify high-risk repeat claimants?
 
-`AndersenGillFrailty` fits a Cox intensity model with shared gamma frailty via EM. The posterior frailty score for each policyholder is a Bühlmann-Straub credibility estimate of their individual risk relative to their observables — useful for NCD-style experience rating.
+`AndersenGillFrailty` fits a Cox intensity model with shared gamma frailty via EM. The posterior frailty score for each policyholder is a Bühlmann-Straub credibility estimate of their individual risk relative to their observables - useful for NCD-style experience rating.
 
 ```python
 from insurance_survival.recurrent.models import AndersenGillFrailty
@@ -645,7 +645,7 @@ credibility_scores = model.credibility_scores()
 # what their observables predict
 ```
 
-The frailty dispersion parameter theta is the key diagnostic. `theta ≈ 0.3` means substantial unexplained heterogeneity — the risk factors you have do not fully explain individual claim propensity, and the frailty scores contain useful information for experience rating.
+The frailty dispersion parameter theta is the key diagnostic. `theta ≈ 0.3` means substantial unexplained heterogeneity - the risk factors you have do not fully explain individual claim propensity, and the frailty scores contain useful information for experience rating.
 
 ---
 
@@ -669,7 +669,7 @@ uv add insurance-trend
 uv add insurance-survival
 ```
 
-All libraries are on PyPI and require Python 3.10+. CatBoost and Polars are core dependencies across most of them — no pandas except as a bridge where third-party tools require it (e.g., SHAP's TreeExplainer, lifelines).
+All libraries are on PyPI and require Python 3.10+. CatBoost and Polars are core dependencies across most of them - no pandas except as a bridge where third-party tools require it (e.g., SHAP's TreeExplainer, lifelines).
 
 ---
 

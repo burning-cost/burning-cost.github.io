@@ -4,14 +4,14 @@ title: "Your Pricing Model Knows the Average Effect. That Is Not Enough."
 date: 2026-03-24
 categories: [techniques, pricing]
 tags: [causal-inference, causal-forest, heterogeneous-treatment-effects, hte, dml, telematics, econml, insurance-causal, uk-motor]
-description: "Using causal forests and GATES/CLAN/RATE inference to find which customers respond most to a price or discount change — not just the average effect."
+description: "Using causal forests and GATES/CLAN/RATE inference to find which customers respond most to a price or discount change - not just the average effect."
 ---
 
 Double/debiased machine learning gives you a clean average treatment effect (ATE): the mean semi-elasticity of renewal probability with respect to a 10% price increase is −0.18, say. That is a useful number. But it is also the wrong number for most of the decisions you actually make.
 
-When you decide whether to offer a telematics discount, you are not offering it to the portfolio average. You are offering it to specific customers, each of whom has their own elasticity. The 22-year-old in inner-city Manchester on a PCW may respond three times more strongly to a £50 discount than the 55-year-old direct renewer in Surrey. Treating them identically — either by offering the same discount or by using the same retention assumption in a pricing optimisation — is a pricing error. The question is whether you can measure the difference.
+When you decide whether to offer a telematics discount, you are not offering it to the portfolio average. You are offering it to specific customers, each of whom has their own elasticity. The 22-year-old in inner-city Manchester on a PCW may respond three times more strongly to a £50 discount than the 55-year-old direct renewer in Surrey. Treating them identically - either by offering the same discount or by using the same retention assumption in a pricing optimisation - is a pricing error. The question is whether you can measure the difference.
 
-Conditional average treatment effects (CATEs) are the answer. The new `causal_forest` module in [`insurance-causal`](https://github.com/burning-cost/insurance-causal) provides a full pipeline: estimate per-risk CATEs with a causal forest, then run the formal Chernozhukov et al. (2020/2025) inference suite — BLP, GATES, CLAN — plus the Yadlowsky et al. (2025 JASA) RATE test for targeting validity.
+Conditional average treatment effects (CATEs) are the answer. The new `causal_forest` module in [`insurance-causal`](https://github.com/burning-cost/insurance-causal) provides a full pipeline: estimate per-risk CATEs with a causal forest, then run the formal Chernozhukov et al. (2020/2025) inference suite - BLP, GATES, CLAN - plus the Yadlowsky et al. (2025 JASA) RATE test for targeting validity.
 
 ```bash
 uv add insurance-causal
@@ -23,7 +23,7 @@ uv add insurance-causal
 
 Suppose you are evaluating a telematics discount programme. The ATE tells you that across the book, offering a telematics device reduces claims frequency by 8%. Decent result. But the mechanism is not uniform: younger drivers change their behaviour under observation more than older ones; urban drivers have more scope to reduce peak-hour exposure; high-mileage drivers get more signal from telematics. If the discount costs you the same per policy, you want to concentrate it on the customers where the effect is largest.
 
-DML — the approach in the `autodml` subpackage — correctly identifies the ATE but by construction averages out heterogeneity. `CausalForestDML` from EconML (Athey, Tibshirani & Wager, 2019, *Annals of Statistics* 47(2)) instead estimates a separate treatment effect for every point in covariate space. The forest uses "honest" sample splitting: trees are grown on one half of the data and treatment effects estimated on the other, which prevents the in-sample bias that would otherwise inflate heterogeneity findings.
+DML - the approach in the `autodml` subpackage - correctly identifies the ATE but by construction averages out heterogeneity. `CausalForestDML` from EconML (Athey, Tibshirani & Wager, 2019, *Annals of Statistics* 47(2)) instead estimates a separate treatment effect for every point in covariate space. The forest uses "honest" sample splitting: trees are grown on one half of the data and treatment effects estimated on the other, which prevents the in-sample bias that would otherwise inflate heterogeneity findings.
 
 The CATE estimate at a given covariate value x is:
 
@@ -68,9 +68,9 @@ print(f"CATE range: {cates.min():.3f} to {cates.max():.3f}")
 # -> CATE range: -0.312 to -0.089
 ```
 
-The CATEs span from −0.31 to −0.09 across the portfolio. The portfolio average (−0.19) is somewhere in the middle. The question is whether that spread is genuine heterogeneity or estimation noise — and if genuine, which customers sit at the extremes.
+The CATEs span from −0.31 to −0.09 across the portfolio. The portfolio average (−0.19) is somewhere in the middle. The question is whether that spread is genuine heterogeneity or estimation noise - and if genuine, which customers sit at the extremes.
 
-The `min_samples_leaf=20` default matters. EconML's default is 5. For insurance data, rating segments can be sparse — vehicle group E in Scotland may have 200 policies in a 50,000-row training set. Leaves with fewer than 20 observations produce CATE estimates with intervals too wide to act on; 20 is the minimum we would use in production.
+The `min_samples_leaf=20` default matters. EconML's default is 5. For insurance data, rating segments can be sparse - vehicle group E in Scotland may have 200 policies in a 50,000-row training set. Leaves with fewer than 20 observations produce CATE estimates with intervals too wide to act on; 20 is the minimum we would use in production.
 
 ---
 
@@ -105,7 +105,7 @@ N data splits:  100
   Monotone increasing: True
 ```
 
-Group 5's estimated GATE (−0.30) is roughly three times the magnitude of Group 1's (−0.10). The BLP beta_2 is positive and highly significant, confirming the CATE proxy explains real variation — not forest artefacts.
+Group 5's estimated GATE (−0.30) is roughly three times the magnitude of Group 1's (−0.10). The BLP beta_2 is positive and highly significant, confirming the CATE proxy explains real variation - not forest artefacts.
 
 The `n_splits=100` matters. The inference procedure (Chernozhukov et al. 2020) runs 100 random splits of the data, fits a propensity model on the auxiliary half, and runs the BLP regression on the main half each time, then aggregates t-statistics via the median. Single-split inference would be anti-conservative; 100 splits stabilises the size.
 
@@ -113,7 +113,7 @@ The `n_splits=100` matters. The inference procedure (Chernozhukov et al. 2020) r
 
 ## CLAN: who are the most and least affected?
 
-GATES tells you the effect size varies by quintile. CLAN (Classification Analysis) tells you what those quintiles look like — which covariates differ most between Group 5 and Group 1.
+GATES tells you the effect size varies by quintile. CLAN (Classification Analysis) tells you what those quintiles look like - which covariates differ most between Group 5 and Group 1.
 
 ```python
 result.plot_clan()
@@ -158,7 +158,7 @@ Interpretation:
 
 AUTOC integrates TOC(q)/q across the q-grid, upweighting targeting precision at small q (i.e., if you can only offer the discount to your top 10%, does the model identify the right 10%?). A significantly positive AUTOC means the ranking adds real information over random assignment.
 
-If AUTOC is not significant — which happens when treatment variation is too small for the forest to identify heterogeneity reliably — the right response is to not use individual CATEs for targeting decisions. The result is not a failure of the method; it is a useful finding that avoids acting on noise.
+If AUTOC is not significant - which happens when treatment variation is too small for the forest to identify heterogeneity reliably - the right response is to not use individual CATEs for targeting decisions. The result is not a failure of the method; it is a useful finding that avoids acting on noise.
 
 ---
 
@@ -180,7 +180,7 @@ est_freq.fit(
 )
 ```
 
-When `exposure_col` is set, the outcome is divided by exposure (converting counts to rates) and exposure values are passed as sample weights to the nuisance models. The interpretation of `tau_hat(x)` then becomes the change in claim rate per unit log price change — a less intuitive quantity than renewal elasticity, but useful for adverse selection modelling where you want to know whether price changes shift the risk mix differently across segments.
+When `exposure_col` is set, the outcome is divided by exposure (converting counts to rates) and exposure values are passed as sample weights to the nuisance models. The interpretation of `tau_hat(x)` then becomes the change in claim rate per unit log price change - a less intuitive quantity than renewal elasticity, but useful for adverse selection modelling where you want to know whether price changes shift the risk mix differently across segments.
 
 ---
 
@@ -188,7 +188,7 @@ When `exposure_col` is set, the outcome is divided by exposure (converting count
 
 A few things worth being explicit about.
 
-The causal forest, like any DML estimator, requires an identification assumption: conditional on the confounders, price changes must be partially random. In a re-pricing exercise with tight technical models, almost all of the price variation is explained by the confounders and there is very little exogenous price variation left to identify the elasticity. The library will warn if treatment residual variance is near zero, but it cannot recover identification from data that does not have it. You need genuine price variation — A/B test randomisation, historical pricing grid quirks, or competitor shock variation — for any of this to be valid.
+The causal forest, like any DML estimator, requires an identification assumption: conditional on the confounders, price changes must be partially random. In a re-pricing exercise with tight technical models, almost all of the price variation is explained by the confounders and there is very little exogenous price variation left to identify the elasticity. The library will warn if treatment residual variance is near zero, but it cannot recover identification from data that does not have it. You need genuine price variation - A/B test randomisation, historical pricing grid quirks, or competitor shock variation - for any of this to be valid.
 
 The CATE estimates are also conditional on the forest specification. The default `min_samples_leaf=20` means that very sparse rating cells may be averaged over broader neighbourhoods than ideal. Validate the GATES against known subgroups (NCD band, age decile) before relying on the CLAN output for operational decisions.
 

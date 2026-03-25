@@ -7,7 +7,7 @@ tags: [FCA, PS21/5, ENBP, renewal-pricing, causal-inference, portfolio-optimisat
 description: "A complete Python workflow for PS21/5 compliance: DML elasticity estimation, CATE heterogeneity, ENBP-constrained optimisation, proxy discrimination audit, and governance sign-off. Uses real library APIs throughout."
 ---
 
-PS21/5 came into force on 1 January 2022. More than four years later, we still see pricing teams handling the equivalent new business price (ENBP) constraint as a post-hoc cap bolted onto the end of a renewal rating engine — a lookup table check that clips anything above the ENBP ceiling. This works, in the same way that braking at the last possible moment works. It is not a pricing strategy.
+PS21/5 came into force on 1 January 2022. More than four years later, we still see pricing teams handling the equivalent new business price (ENBP) constraint as a post-hoc cap bolted onto the end of a renewal rating engine - a lookup table check that clips anything above the ENBP ceiling. This works, in the same way that braking at the last possible moment works. It is not a pricing strategy.
 
 A proper PS21/5 implementation builds the ENBP constraint into the optimisation objective from the start, uses causal methods to estimate renewal price sensitivity (not the naive regression estimates that contaminate most retention models), checks the resulting pricing for proxy discrimination before it goes live, and produces a governance record that will survive an FCA review. This post walks through that workflow in Python.
 
@@ -19,9 +19,9 @@ We use four libraries: [insurance-causal](https://burning-cost.github.io/insuran
 
 Before writing any code, it is worth being clear about what we are estimating and why naive approaches fail.
 
-A retention model trained on observed renewals does not give you the causal price elasticity. It gives you the correlation between the price you charged and whether the customer renewed — confounded by every factor that simultaneously drove your pricing decision and the customer's renewal choice. High-risk customers get high premiums and also lapse more. NCD-5 customers get low premiums and also renew more. The naive estimate will understate elasticity for high-risk segments and overstate it for low-risk ones, which means any optimiser fed those estimates will systematically overprice the high-risk book and underprice the loyal book. You end up somewhere near PS21/5 non-compliance by accident.
+A retention model trained on observed renewals does not give you the causal price elasticity. It gives you the correlation between the price you charged and whether the customer renewed - confounded by every factor that simultaneously drove your pricing decision and the customer's renewal choice. High-risk customers get high premiums and also lapse more. NCD-5 customers get low premiums and also renew more. The naive estimate will understate elasticity for high-risk segments and overstate it for low-risk ones, which means any optimiser fed those estimates will systematically overprice the high-risk book and underprice the loyal book. You end up somewhere near PS21/5 non-compliance by accident.
 
-The correct answer is double machine learning (DML): partial out the confounders from both the treatment (price) and the outcome (renewal), then estimate the effect in the residualised space. `insurance-causal`'s `PremiumElasticity` implements the Riesz representer variant (Chernozhukov et al. 2022), which avoids estimating the generalised propensity score — important for renewal portfolios where high-premium policies have renewal rates of 20–30% and the GPS is numerically unstable.
+The correct answer is double machine learning (DML): partial out the confounders from both the treatment (price) and the outcome (renewal), then estimate the effect in the residualised space. `insurance-causal`'s `PremiumElasticity` implements the Riesz representer variant (Chernozhukov et al. 2022), which avoids estimating the generalised propensity score - important for renewal portfolios where high-premium policies have renewal rates of 20–30% and the GPS is numerically unstable.
 
 ---
 
@@ -58,7 +58,7 @@ print(result.summary())
 # on average across the portfolio
 ```
 
-The AME is the portfolio-level average. For PS21/5 purposes we also need the segment-level effects — which customer types are most sensitive to renewal loading — because a uniform loading that is acceptable on average may still create a discriminatory outcome in specific segments.
+The AME is the portfolio-level average. For PS21/5 purposes we also need the segment-level effects - which customer types are most sensitive to renewal loading - because a uniform loading that is acceptable on average may still create a discriminatory outcome in specific segments.
 
 ```python
 # Segment results: elasticity by channel × NCD band
@@ -111,7 +111,7 @@ print(result.summary())
 #   Q5 (most sensitive):  -0.74
 ```
 
-The BLP test (Chernozhukov, Demirer, Duflo & Fernandez-Val 2020) provides the formal evidence that heterogeneity exists — not just that the CATE estimates vary, but that they contain signal above noise. You want this in your governance documentation.
+The BLP test (Chernozhukov, Demirer, Duflo & Fernandez-Val 2020) provides the formal evidence that heterogeneity exists - not just that the CATE estimates vary, but that they contain signal above noise. You want this in your governance documentation.
 
 The practical output here is the per-policy `cates` vector. Feed it to the optimiser as the elasticity input, and the optimiser will price each policy according to its actual price sensitivity rather than a segment average.
 
@@ -160,7 +160,7 @@ print(result)
 #   Policies at technical floor: 411 (1.6%)
 ```
 
-The "policies at ENBP ceiling" figure is the key PS21/5 diagnostic. 11.4% of the book is constrained by the ENBP cap — these are the customers who, if you ignored the regulation, you would price above their ENBP. The optimiser has not just capped them; it has set them to the ENBP ceiling and redistributed the margin to compliant policies.
+The "policies at ENBP ceiling" figure is the key PS21/5 diagnostic. 11.4% of the book is constrained by the ENBP cap - these are the customers who, if you ignored the regulation, you would price above their ENBP. The optimiser has not just capped them; it has set them to the ENBP ceiling and redistributed the margin to compliant policies.
 
 Note the `elasticity=cates` line: we are using the per-policy causal estimates from Step 2. If you use the naive OLS elasticity instead, the optimiser will target the wrong customers for retention discounts and overcharge the wrong ones. The ENBP constraint will catch the worst outcomes, but you will leave margin on the table throughout the distribution.
 
@@ -191,7 +191,7 @@ proxy_result.summary()
 # prior_claims     0.12        0.09        AMBER
 ```
 
-`ncd_years` flagging RED is expected — NCD is strongly correlated with age in any UK motor book, because older drivers have had more time to accumulate no-claims years. The question is not whether the correlation exists (it does), but whether the way you are using NCD in renewal pricing results in a systematically worse outcome for older customers as a group.
+`ncd_years` flagging RED is expected - NCD is strongly correlated with age in any UK motor book, because older drivers have had more time to accumulate no-claims years. The question is not whether the correlation exists (it does), but whether the way you are using NCD in renewal pricing results in a systematically worse outcome for older customers as a group.
 
 Run the full `FairnessAudit` to get calibration-by-group and demographic parity diagnostics on the optimised renewal premiums:
 
@@ -219,7 +219,7 @@ If the proxy audit surfaces a RED flag you cannot eliminate (NCD is a legitimate
 
 ## Step 5: Governance sign-off with GovernanceReport
 
-The whole workflow is worthless if it is not documented in a form that survives an FCA review. `insurance-governance` provides `GovernanceReport` — the two-page executive summary for Model Risk Committee sign-off — and `MRMModelCard`, which is the structured metadata record.
+The whole workflow is worthless if it is not documented in a form that survives an FCA review. `insurance-governance` provides `GovernanceReport` - the two-page executive summary for Model Risk Committee sign-off - and `MRMModelCard`, which is the structured metadata record.
 
 ```python
 from insurance_governance import MRMModelCard, GovernanceReport
@@ -309,9 +309,9 @@ The `to_html()` output is self-contained (no CDN dependencies), print-to-PDF rea
 
 Three problems sit outside this workflow.
 
-**ENBP estimation quality.** Everything in Step 3 depends on how accurate your ENBP estimates are. If your new business engine does not price equivalent risks equivalently across channels, your ENBP benchmarks are wrong, and the ENBP ceiling is a fiction. Quarterly back-testing of ENBP estimates against actual new business quotes for equivalent risk profiles is not optional — it is the thing that makes the constraint mean something.
+**ENBP estimation quality.** Everything in Step 3 depends on how accurate your ENBP estimates are. If your new business engine does not price equivalent risks equivalently across channels, your ENBP benchmarks are wrong, and the ENBP ceiling is a fiction. Quarterly back-testing of ENBP estimates against actual new business quotes for equivalent risk profiles is not optional - it is the thing that makes the constraint mean something.
 
-**Causal identification for renewals.** The DML approach in Step 1 handles confounding from observed covariates. It does not handle unobserved confounders — particularly, the fact that customers who are most price-sensitive have probably already left or negotiated. If your renewal book is systematically selected (the most elastic customers churned in prior years), your elasticity estimates will be attenuated. `SelectionCorrectedElasticity` in `insurance-causal` addresses this using the Riesz sample-selection approach (arXiv:2601.08643), but it requires instruments, which are rarely available in motor portfolios.
+**Causal identification for renewals.** The DML approach in Step 1 handles confounding from observed covariates. It does not handle unobserved confounders - particularly, the fact that customers who are most price-sensitive have probably already left or negotiated. If your renewal book is systematically selected (the most elastic customers churned in prior years), your elasticity estimates will be attenuated. `SelectionCorrectedElasticity` in `insurance-causal` addresses this using the Riesz sample-selection approach (arXiv:2601.08643), but it requires instruments, which are rarely available in motor portfolios.
 
 **The ENBP benchmark is not fair value.** PS21/5 says renewal premiums cannot exceed ENBP. It does not say ENBP is a fair price. If your new business pricing is itself unfair (proxying for protected characteristics, charging materially different prices for identical risks by channel), the ENBP cap inherits that unfairness. The fairness audit in Step 4 needs to run on the ENBP benchmarks as well as the renewal premiums.
 
@@ -319,10 +319,10 @@ Three problems sit outside this workflow.
 
 ## Further reading
 
-- [What FCA PS25/21 Actually Means for Your Pricing Team](/2026/03/24/ps25-21-pricing-team-implications/) — governance calendar implications of the PROD 4 changes
-- [Measuring Rate Change Impact with DiD and ITS in Python](/2026/03/25/measure-rate-change-impact-python-did-its/) — evaluating whether your PS21/5-compliant renewal prices actually changed retention
-- [insurance-causal documentation](https://burning-cost.github.io/insurance-causal) — `PremiumElasticity`, `HeterogeneousElasticityEstimator`, `SelectionCorrectedElasticity`
-- [insurance-optimise documentation](https://burning-cost.github.io/insurance-optimise) — `PortfolioOptimiser`, `ConstraintConfig`, ENBP constraint implementation
-- [insurance-fairness documentation](https://burning-cost.github.io/insurance-fairness) — `FairnessAudit`, `detect_proxies`, proxy discrimination diagnostics
-- [insurance-governance documentation](https://burning-cost.github.io/insurance-governance) — `GovernanceReport`, `MRMModelCard`, MRC pack generation
+- [What FCA PS25/21 Actually Means for Your Pricing Team](/2026/03/24/ps25-21-pricing-team-implications/) - governance calendar implications of the PROD 4 changes
+- [Measuring Rate Change Impact with DiD and ITS in Python](/2026/03/25/measure-rate-change-impact-python-did-its/) - evaluating whether your PS21/5-compliant renewal prices actually changed retention
+- [insurance-causal documentation](https://burning-cost.github.io/insurance-causal) - `PremiumElasticity`, `HeterogeneousElasticityEstimator`, `SelectionCorrectedElasticity`
+- [insurance-optimise documentation](https://burning-cost.github.io/insurance-optimise) - `PortfolioOptimiser`, `ConstraintConfig`, ENBP constraint implementation
+- [insurance-fairness documentation](https://burning-cost.github.io/insurance-fairness) - `FairnessAudit`, `detect_proxies`, proxy discrimination diagnostics
+- [insurance-governance documentation](https://burning-cost.github.io/insurance-governance) - `GovernanceReport`, `MRMModelCard`, MRC pack generation
 - FCA PS21/5 policy statement: [fca.org.uk/publication/policy/ps21-5.pdf](https://www.fca.org.uk/publication/policy/ps21-5.pdf)

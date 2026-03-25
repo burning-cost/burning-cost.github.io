@@ -11,7 +11,7 @@ description: "Actuarial Neural Additive Models for UK pricing: exact interpretab
 *This post is an ANAM deep-dive: the Actuarial Neural Additive Model architecture, why it gives mathematically guaranteed monotonicity where EBMs do not, and how to use the insurance-gam implementation with Tweedie/Gamma/Poisson losses. If you want the EBM workflow, read [EBMs for Insurance Pricing](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
 
 
-Your GBM is not interpretable. You already know that. The SHAP values explain it approximately, after the fact, by attributing fractions of each prediction to each feature — a useful diagnostic, not a property of the model itself.
+Your GBM is not interpretable. You already know that. The SHAP values explain it approximately, after the fact, by attributing fractions of each prediction to each feature - a useful diagnostic, not a property of the model itself.
 
 But here is the thing you may not have noticed: your "interpretable model" probably is not interpretable either.
 
@@ -23,7 +23,7 @@ The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UN
 
 ## Why "interpretable" needs to mean something specific
 
-There are two ways a model can be interpretable. The first is intrinsic: the architecture is structured so that the contribution of each feature to each prediction is exactly decomposed by construction. The second is post-hoc: the model is a black box, and a separate explanation algorithm — SHAP, LIME, integrated gradients — approximates the feature contributions after the prediction is made.
+There are two ways a model can be interpretable. The first is intrinsic: the architecture is structured so that the contribution of each feature to each prediction is exactly decomposed by construction. The second is post-hoc: the model is a black box, and a separate explanation algorithm - SHAP, LIME, integrated gradients - approximates the feature contributions after the prediction is made.
 
 Post-hoc interpretability is approximation. SHAP values for a CatBoost model satisfy the Shapley axioms and decompose the prediction exactly, but they do not tell you what the model would predict if a feature changed. The feature's SHAP value is an average marginal contribution over all feature orderings, which is not the same as a shape function. Two models with identical SHAP distributions can have radically different behaviour outside the training distribution.
 
@@ -55,7 +55,7 @@ This is a real problem for UK pricing, not a theoretical one. Small monotonicity
 
 GLMs use Poisson deviance for claim frequency and Tweedie deviance for pure premium because those losses correspond to the actual data-generating process. Fitting a frequency model with MSE loss is wrong: it implicitly assumes Gaussian residuals, misweights the high-frequency cells that carry the most predictive information, and mishandles the zero-inflation that is structural in insurance data.
 
-The EBM (InterpretML) supports Poisson and Gamma objectives but not native Tweedie loss for combined frequency-severity modelling. The original NAM paper (Agarwal et al. 2021, NeurIPS) uses MSE throughout — it was designed for regression and classification on general tabular data, not actuarial targets.
+The EBM (InterpretML) supports Poisson and Gamma objectives but not native Tweedie loss for combined frequency-severity modelling. The original NAM paper (Agarwal et al. 2021, NeurIPS) uses MSE throughout - it was designed for regression and classification on general tabular data, not actuarial targets.
 
 `insurance-gam` implements:
 - **Poisson deviance**: the standard actuarial frequency loss, with exposure as offset
@@ -209,7 +209,7 @@ Start with the `examples/` directory: the `frequency_model.py` script runs a Poi
 
 ---
 
-Your SHAP values are not your model. They are a post-hoc explanation of a model that does not intrinsically know why it made any prediction. If you want a model whose interpretability is structural rather than approximate — one where the shape functions are the model, not a description of it — that is what this library provides.
+Your SHAP values are not your model. They are a post-hoc explanation of a model that does not intrinsically know why it made any prediction. If you want a model whose interpretability is structural rather than approximate - one where the shape functions are the model, not a description of it - that is what this library provides.
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)

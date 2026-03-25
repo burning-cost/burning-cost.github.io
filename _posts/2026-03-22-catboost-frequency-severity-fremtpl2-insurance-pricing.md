@@ -8,7 +8,7 @@ description: "Step-by-step CatBoost frequency-severity model on freMTPL2. Poisso
 author: Burning Cost
 ---
 
-The freMTPL2 dataset — French third-party liability motor, ~678,000 policies — is the closest thing actuarial science has to a standard benchmark. It ships inside `sklearn.datasets` via OpenML, it has a known structure (Poisson frequency, roughly Gamma severity), and enough volume to evaluate models properly. If you are building a freq-sev pricing model in Python and you are not testing it on freMTPL2, you are missing the easiest validation step available.
+The freMTPL2 dataset - French third-party liability motor, ~678,000 policies - is the closest thing actuarial science has to a standard benchmark. It ships inside `sklearn.datasets` via OpenML, it has a known structure (Poisson frequency, roughly Gamma severity), and enough volume to evaluate models properly. If you are building a freq-sev pricing model in Python and you are not testing it on freMTPL2, you are missing the easiest validation step available.
 
 This post covers the complete workflow: data prep in Polars, CatBoost Poisson frequency model, CatBoost Gamma severity model, burning cost combination, factor table extraction via `shap-relativities`, and distillation to GLM format via `insurance-distill`. All code runs locally. No Databricks cluster required.
 
@@ -16,7 +16,7 @@ This post covers the complete workflow: data prep in Polars, CatBoost Poisson fr
 
 ## The data
 
-freMTPL2 is split across two OpenML datasets: `freMTPL2freq` (policy-level with claim counts) and `freMTPL2sev` (claim-level with individual amounts). The frequency file has 678,013 rows. The severity file has 26,639 rows — roughly a 3.9% overall claim frequency.
+freMTPL2 is split across two OpenML datasets: `freMTPL2freq` (policy-level with claim counts) and `freMTPL2sev` (claim-level with individual amounts). The frequency file has 678,013 rows. The severity file has 26,639 rows - roughly a 3.9% overall claim frequency.
 
 ```python
 import polars as pl
@@ -37,7 +37,7 @@ print(sev.shape)    # (26639, 2)
 
 The frequency dataset columns we care about: `IDpol` (policy ID), `ClaimNb` (claim count), `Exposure` (policy years, capped at 1.0), `Area` (A-F), `VehPower` (1-15), `VehAge`, `DrivAge`, `BonusMalus` (French NCD equivalent, 50-350), `VehBrand`, `VehGas` (Regular/Diesel), `Density` (population density of policyholder's commune), `Region` (French administrative region, 21 levels).
 
-One well-known issue with freMTPL2: `ClaimNb` is the number of claims filed under the policy but the severity file links claims by `IDpol`, not by a claim ID. Policies with multiple claims have a single severity row per claim — but matching them back is ambiguous when a policy has two claims and two rows in the severity file. For this walkthrough we use average severity per policy (total paid divided by claim count) for the severity model, which sidesteps the matching problem cleanly.
+One well-known issue with freMTPL2: `ClaimNb` is the number of claims filed under the policy but the severity file links claims by `IDpol`, not by a claim ID. Policies with multiple claims have a single severity row per claim - but matching them back is ambiguous when a policy has two claims and two rows in the severity file. For this walkthrough we use average severity per policy (total paid divided by claim count) for the severity model, which sidesteps the matching problem cleanly.
 
 ```python
 # Compute per-policy average severity from the severity file
@@ -73,7 +73,7 @@ print(
 
 ## Feature preparation
 
-The raw features need light treatment. `BonusMalus` has a floor at 50 (clean driver) and a meaningful nonlinear profile — values above 150 are extreme, roughly 1% of policyholders, and CatBoost will handle that naturally as a continuous feature with no manual transformation needed. `Density` is heavily right-skewed; we log-transform it.
+The raw features need light treatment. `BonusMalus` has a floor at 50 (clean driver) and a meaningful nonlinear profile - values above 150 are extreme, roughly 1% of policyholders, and CatBoost will handle that naturally as a continuous feature with no manual transformation needed. `Density` is heavily right-skewed; we log-transform it.
 
 ```python
 freq_model = (
@@ -139,7 +139,7 @@ freq_model_cb = catboost.CatBoostRegressor(
 freq_model_cb.fit(freq_pool_train, eval_set=freq_pool_test)
 ```
 
-The `baseline` parameter is not in CatBoost's most prominent documentation. It is the correct way to implement an exposure offset in CatBoost: you pass the log-exposure as a starting prediction for each row, and the model learns the residual deviation from that baseline. The alternative — dividing claim counts by exposure and using a weighted MSE — is wrong for Poisson regression and produces inconsistent estimates.
+The `baseline` parameter is not in CatBoost's most prominent documentation. It is the correct way to implement an exposure offset in CatBoost: you pass the log-exposure as a starting prediction for each row, and the model learns the residual deviation from that baseline. The alternative - dividing claim counts by exposure and using a weighted MSE - is wrong for Poisson regression and produces inconsistent estimates.
 
 On the full 678k-row freMTPL2freq dataset, early stopping triggers around iteration 800-850 with a test Poisson loss in the range 0.312-0.318. The exact number varies with the train/test split.
 
@@ -147,7 +147,7 @@ On the full 678k-row freMTPL2freq dataset, early stopping triggers around iterat
 
 ## Severity model: Gamma on claims-only rows
 
-The severity model is fit only on policies with at least one claim. We use `loss_function="RMSE"` with log-transformed severity as the target — this is equivalent to fitting a log-normal, which is close enough to Gamma for a first pass. For a proper Gamma GLM, the correct loss is `loss_function="Tweedie:variance_power=2"`, which CatBoost implements.
+The severity model is fit only on policies with at least one claim. We use `loss_function="RMSE"` with log-transformed severity as the target - this is equivalent to fitting a log-normal, which is close enough to Gamma for a first pass. For a proper Gamma GLM, the correct loss is `loss_function="Tweedie:variance_power=2"`, which CatBoost implements.
 
 ```python
 # Filter to rows with claims and a valid severity
@@ -189,7 +189,7 @@ sev_model_cb = catboost.CatBoostRegressor(
 sev_model_cb.fit(sev_pool_train, eval_set=sev_pool_test)
 ```
 
-The severity dataset has roughly 26,000 rows — small relative to the frequency dataset. With depth=5 and l2_leaf_reg=5.0, we are applying deliberate regularisation to prevent overfitting on thin cells. The Tweedie p=2 objective fits a Gamma distribution, which is the standard actuarial assumption for claim severity and produces predictions on the original scale (not log scale), so no back-transformation is needed.
+The severity dataset has roughly 26,000 rows - small relative to the frequency dataset. With depth=5 and l2_leaf_reg=5.0, we are applying deliberate regularisation to prevent overfitting on thin cells. The Tweedie p=2 objective fits a Gamma distribution, which is the standard actuarial assumption for claim severity and produces predictions on the original scale (not log scale), so no back-transformation is needed.
 
 ---
 
@@ -234,7 +234,7 @@ print(
 
 Expected outputs (approximate): mean `freq_pred` ~ 0.054 claims per policy, mean `sev_pred` ~ €1,800, mean `pure_premium` ~ €97 per policy-year. These are in the right ballpark for French TPL, which has relatively low frequency and moderate severity compared with UK comprehensive motor.
 
-One important subtlety: the severity model is trained only on claimants, but we are predicting it for all policies to produce a pure premium. The Gamma model is extrapolating to zero-claim policies, most of which sit near the mean of the severity distribution. This is standard actuarial practice — the severity component represents "expected cost, given a claim occurs", and the frequency component handles the probability of that claim. The product is correct.
+One important subtlety: the severity model is trained only on claimants, but we are predicting it for all policies to produce a pure premium. The Gamma model is extrapolating to zero-claim policies, most of which sit near the mean of the severity distribution. This is standard actuarial practice - the severity component represents "expected cost, given a claim occurs", and the frequency component handles the probability of that claim. The product is correct.
 
 ---
 
@@ -280,7 +280,7 @@ print(area_rels.filter(pl.col("feature") == "Area"))
 
 The relativities read cleanly: Area F (urban, high density) is 52% more expensive than Area B on frequency, all else equal. These numbers are in the expected direction and magnitude for French TPL.
 
-For the continuous features — `DrivAge`, `BonusMalus`, `log_density` — use the continuous curve:
+For the continuous features - `DrivAge`, `BonusMalus`, `log_density` - use the continuous curve:
 
 ```python
 age_curve = sr_freq.extract_continuous_curve(
@@ -334,7 +334,7 @@ surrogate.export_csv(
 )
 ```
 
-A 94.7% Gini ratio means the surrogate GLM retains 94.7% of the CatBoost's discrimination. For a model with a relatively modest Gini of 0.29 (freMTPL2 is a publicly studied dataset — the ceiling is well understood), this represents genuine performance preservation in a rating-engine-compatible format.
+A 94.7% Gini ratio means the surrogate GLM retains 94.7% of the CatBoost's discrimination. For a model with a relatively modest Gini of 0.29 (freMTPL2 is a publicly studied dataset - the ceiling is well understood), this represents genuine performance preservation in a rating-engine-compatible format.
 
 ---
 
@@ -342,7 +342,7 @@ A 94.7% Gini ratio means the surrogate GLM retains 94.7% of the CatBoost's discr
 
 freMTPL2 has been used in enough published papers that there are established reference points. A well-tuned Poisson GBM on the full dataset typically achieves a Gini coefficient around 0.28-0.31 on frequency, depending on feature engineering. Noll et al. (2020, SAJ) reported Gini values in this range for GBM variants. A Poisson GLM with the same features tends to land around 0.24-0.26. The gap is real but modest.
 
-Two things limit the headroom on freMTPL2. First, the features are actuarially thin — there is no telematics, no claims history beyond BonusMalus, no vehicle value beyond brand and group. Real UK motor data typically has 40-60 features, and the Gini ceiling is correspondingly higher (0.38-0.45 is achievable on a well-featured UK motor book). Second, the French TPL claims environment is relatively homogeneous compared with UK comprehensive: frequency is low and severity, while variable, has less of the extreme tail that vehicle damage and personal injury produce in the UK. Models discriminate less when there is less to discriminate.
+Two things limit the headroom on freMTPL2. First, the features are actuarially thin - there is no telematics, no claims history beyond BonusMalus, no vehicle value beyond brand and group. Real UK motor data typically has 40-60 features, and the Gini ceiling is correspondingly higher (0.38-0.45 is achievable on a well-featured UK motor book). Second, the French TPL claims environment is relatively homogeneous compared with UK comprehensive: frequency is low and severity, while variable, has less of the extreme tail that vehicle damage and personal injury produce in the UK. Models discriminate less when there is less to discriminate.
 
 The freMTPL2 benchmark is most useful for confirming your implementation is correct, not for setting expectations about production performance. If your Poisson CatBoost on freMTPL2 is landing at 0.18 Gini, something is wrong with the exposure offset or the feature encoding. If it is landing at 0.35, you are likely leaking future information. The 0.28-0.31 band is the sanity check.
 
@@ -356,7 +356,7 @@ uv add "shap-relativities[all]"
 uv add insurance-distill
 ```
 
-Source for `shap-relativities` and `insurance-distill` is at [github.com/burning-cost](https://github.com/burning-cost). The full notebook for this walkthrough — with plots, the severity model validation, and the double-lift chart comparing CatBoost to a Poisson GLM baseline — is at [burning-cost-examples/notebooks/fremtpl2_freq_sev.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/fremtpl2_freq_sev.py).
+Source for `shap-relativities` and `insurance-distill` is at [github.com/burning-cost](https://github.com/burning-cost). The full notebook for this walkthrough - with plots, the severity model validation, and the double-lift chart comparing CatBoost to a Poisson GLM baseline - is at [burning-cost-examples/notebooks/fremtpl2_freq_sev.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/fremtpl2_freq_sev.py).
 
 The freMTPL2 data licence is CC BY 4.0. It is academic data, not real policyholder records.
 

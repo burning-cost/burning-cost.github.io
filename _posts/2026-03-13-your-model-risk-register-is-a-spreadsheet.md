@@ -17,7 +17,7 @@ That is not a model risk register. It is a list.
 
 The distinction matters because the PRA's 2026 supervision priorities letter (issued in January 2026) specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests — it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
+[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests - it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
 ```bash
 uv add insurance-governance
@@ -35,7 +35,7 @@ SS1/23's five principles are: (1) model identification and risk classification, 
 
 That is a model inventory with structured metadata and an audit trail, not a spreadsheet.
 
-The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) — a thematic review of product governance — found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. TR24/2 is a supervisory review, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
+The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) - a thematic review of product governance - found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. TR24/2 is a supervisory review, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
 
 ---
 
@@ -61,7 +61,7 @@ The library has four components: `ModelCard`, `RiskTierScorer`, `ModelInventory`
 
 ### ModelCard: structured model metadata
 
-The `ModelCard` in `insurance-governance` extends the `ModelCard` in `insurance-governance`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and — eventually — regulators.
+The `ModelCard` in `insurance-governance` extends the `ModelCard` in `insurance-governance`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and - eventually - regulators.
 
 It adds: model class (`pricing`, `reserving`, `capital`, or `underwriting`), a training data period, champion/challenger status, an assumptions register with per-assumption risk levels, explicit `not_intended_for` declarations, and outstanding issues.
 
@@ -137,7 +137,7 @@ The standard in practice at UK insurers is for a pricing actuary to assign a ris
 
 Score ≥ 60 → Tier 1. Score 30–59 → Tier 2. Score < 30 → Tier 3.
 
-The GWP thresholds are calibrated to UK personal lines scale: the £100m threshold aligns with the PRA's materiality framing for significant insurers; the £25m lower bound roughly mirrors BIBA's mid-tier firm classification. A motor frequency model running on a £125m GWP book, priced using a GBM, deployed as champion, with customer-facing pricing, scores 75 — Tier 1. That is an auditable number with an auditable rationale.
+The GWP thresholds are calibrated to UK personal lines scale: the £100m threshold aligns with the PRA's materiality framing for significant insurers; the £25m lower bound roughly mirrors BIBA's mid-tier firm classification. A motor frequency model running on a £125m GWP book, priced using a GBM, deployed as champion, with customer-facing pricing, scores 75 - Tier 1. That is an auditable number with an auditable rationale.
 
 ```python
 from insurance_governance.mrm import RiskTierScorer
@@ -192,7 +192,7 @@ inventory.update_validation(
 models = inventory.list()
 ```
 
-The inventory is file-backed JSON. No database, no infrastructure dependencies. It runs in a notebook, a CI pipeline, or a model development environment with no internet access. A mid-tier insurer has maybe 50-100 production models — JSON scales to thousands, which is more than enough.
+The inventory is file-backed JSON. No database, no infrastructure dependencies. It runs in a notebook, a CI pipeline, or a model development environment with no internet access. A mid-tier insurer has maybe 50-100 production models - JSON scales to thousands, which is more than enough.
 
 The `run_id` field is the connection point between governance and statistical evidence. When `insurance-governance` generates a validation report, it produces a JSON sidecar with a UUID. `ModelInventory.update_validation()` takes that UUID and stores it against the model record. You now have a machine-readable link from the governance register to the specific validation run. If the PRA asks what validation evidence supports this model's continued use, you query the inventory, retrieve the `run_id`, and retrieve the JSON that carries the Gini, A/E ratios, RAG status, and all test results.
 
@@ -221,7 +221,7 @@ report = GovernanceReport(
 report.save_html('governance_pack.html')
 ```
 
-The HTML output covers: model identity and purpose, risk tier with scoring rationale, current RAG status drawn from the validation JSON, key validation findings (Gini, A/E, calibration — the headline numbers, not the full statistical narrative), the assumptions register with risk levels flagged, the sign-off chain with dates, monitoring plan summary, next review date, and outstanding issues.
+The HTML output covers: model identity and purpose, risk tier with scoring rationale, current RAG status drawn from the validation JSON, key validation findings (Gini, A/E, calibration - the headline numbers, not the full statistical narrative), the assumptions register with risk levels flagged, the sign-off chain with dates, monitoring plan summary, next review date, and outstanding issues.
 
 It is readable in five minutes by someone who has not seen the technical validation report. That is the audience for this document.
 
@@ -296,11 +296,11 @@ If your team is already using `insurance-governance` and `insurance-monitoring`,
 
 ---
 
-`insurance-governance` is open source under the MIT licence at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-governance` and `insurance-monitoring` are optional — the library works standalone but produces richer reports when they are available.
+`insurance-governance` is open source under the MIT licence at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-governance` and `insurance-monitoring` are optional - the library works standalone but produces richer reports when they are available.
 
 ---
 
 **Related reading:**
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the documentation output that supports what the register is supposed to track
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) — structured model deployment with the audit trail that a register entry needs to reference
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring layer that feeds post-deployment evidence back into the register
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the documentation output that supports what the register is supposed to track
+- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/) - structured model deployment with the audit trail that a register entry needs to reference
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the register

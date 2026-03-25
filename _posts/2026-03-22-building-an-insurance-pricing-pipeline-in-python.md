@@ -10,7 +10,7 @@ Most pricing tutorials stop at the model. You get a GLM fitted to the French MTP
 
 What a production pricing pipeline actually needs: a reproducible data ingestion layer, a frequency/severity split with proper exposure handling, a way to extract GLM-style factor tables from your GBM so the underwriting system can import them, a fairness audit that satisfies the FCA's current expectations, calibrated prediction intervals so you know how much to trust the point estimates, and monitoring that tells you when the model has drifted.
 
-This tutorial builds that pipeline end to end using a set of open-source Python libraries maintained under the Burning Cost project. All libraries are on PyPI. We use synthetic UK motor data throughout — the kind of book a mid-sized personal lines insurer might run. We will be honest about where synthetic data diverges from reality.
+This tutorial builds that pipeline end to end using a set of open-source Python libraries maintained under the Burning Cost project. All libraries are on PyPI. We use synthetic UK motor data throughout - the kind of book a mid-sized personal lines insurer might run. We will be honest about where synthetic data diverges from reality.
 
 ---
 
@@ -42,9 +42,9 @@ print(f"Portfolio claim frequency: {freq:.3f}")   # ~0.075
 print(f"Cancellation rate: {(df['exposure'] < 0.99).mean():.1%}")  # ~8%
 ```
 
-**What synthetic data does not give you.** Real portfolios have missing values — the DGP generates complete data. Real portfolios have data quality issues: duplicate policies, inconsistent area codes, exposure miscalculations from system migrations. Real books also have tail correlation in claims that a Poisson/Gamma independence assumption misses. Use this dataset to test algorithms and pipeline structure, not to benchmark against real portfolio performance.
+**What synthetic data does not give you.** Real portfolios have missing values - the DGP generates complete data. Real portfolios have data quality issues: duplicate policies, inconsistent area codes, exposure miscalculations from system migrations. Real books also have tail correlation in claims that a Poisson/Gamma independence assumption misses. Use this dataset to test algorithms and pipeline structure, not to benchmark against real portfolio performance.
 
-The area band distribution (12% A, 18% B, 25% C, 22% D, 14% E, 9% F) and age distribution (12% under-25, 30% 25–40, 35% 40–60, 18% 60–75, 5% over-75) are calibrated to a realistic UK mid-market motor book. NCD penetration is correlated with driver experience, as you'd expect — not random.
+The area band distribution (12% A, 18% B, 25% C, 22% D, 14% E, 9% F) and age distribution (12% under-25, 30% 25–40, 35% 40–60, 18% 60–75, 5% over-75) are calibrated to a realistic UK mid-market motor book. NCD penetration is correlated with driver experience, as you'd expect - not random.
 
 ---
 
@@ -85,7 +85,7 @@ print(df.select(["claim_frequency", "exposure"]).describe())
 
 The frequency/severity split matters. A single Tweedie model is tempting because it avoids the two-model awkwardness, but it conflates two distinct processes. A bad driver in area F has high frequency. An expensive car in area A has high severity. The factors that drive each are different, and fitting them jointly loses that signal. For motor, we model frequency as Poisson and severity as Gamma, then multiply at the end.
 
-Exposure is already calculated in `insurance-datasets` as earned years from inception to expiry (or cancellation). For a real portfolio you will calculate this yourself, typically from the system's policy transaction table. Make sure you are using *earned* exposure, not written exposure — policies written in December that run through to November next year are not fully earned at year end.
+Exposure is already calculated in `insurance-datasets` as earned years from inception to expiry (or cancellation). For a real portfolio you will calculate this yourself, typically from the system's policy transaction table. Make sure you are using *earned* exposure, not written exposure - policies written in December that run through to November next year are not fully earned at year end.
 
 ```python
 # Define the feature sets for each model
@@ -106,7 +106,7 @@ test = df.filter(pl.col("inception_year") == 2023)
 print(f"Train: {len(train):,} | Test: {len(test):,}")
 ```
 
-A random 80/20 split is wrong here. Insurance data has calendar year effects — claims inflation, coding changes, market shifts. Your test set should be a later time period than your training set. We use inception year 2023 as the holdout.
+A random 80/20 split is wrong here. Insurance data has calendar year effects - claims inflation, coding changes, market shifts. Your test set should be a later time period than your training set. We use inception year 2023 as the holdout.
 
 ---
 
@@ -173,7 +173,7 @@ actual_lr = test["incurred"].sum() / (
 print(f"A/E ratio on 2023 holdout: {actual_lr:.3f}")  # should be near 1.0
 ```
 
-We use `loss_function="Poisson"` for frequency, which gives the log-link Poisson GLM objective. The sample weights are earned exposure years — this ensures that a policy with 0.3 car-years gets one-third the influence of a full-year policy.
+We use `loss_function="Poisson"` for frequency, which gives the log-link Poisson GLM objective. The sample weights are earned exposure years - this ensures that a policy with 0.3 car-years gets one-third the influence of a full-year policy.
 
 For severity, `"Gamma"` fits a Gamma with log-link. We model average claim cost per claim (incurred divided by claim count) on the claims-only subset. This is standard actuarial practice: including zero-claim policies in the severity model would bias the estimate downward.
 
@@ -183,7 +183,7 @@ One honest note: a Gradient Boosting Machine will generally outperform a GLM in 
 
 ## 4. Extracting Rating Factors with `shap-relativities`
 
-This is where most GBM pricing tutorials end with a gesture at SHAP waterfall charts and move on. That is not sufficient for production. Your underwriting system — whether that is Radar, Emblem, or an in-house factor engine — expects a table of multiplicative relativities: a base rate, then a factor per rating variable per level. A GLM produces these directly via `exp(beta)`. A GBM does not, until now.
+This is where most GBM pricing tutorials end with a gesture at SHAP waterfall charts and move on. That is not sufficient for production. Your underwriting system - whether that is Radar, Emblem, or an in-house factor engine - expects a table of multiplicative relativities: a base rate, then a factor per rating variable per level. A GLM produces these directly via `exp(beta)`. A GBM does not, until now.
 
 `shap-relativities` converts TreeSHAP values from a log-link GBM into exactly that table. Each factor level gets an exposure-weighted mean SHAP value, converted to a multiplier with CLT confidence intervals.
 
@@ -227,7 +227,7 @@ shape: (6, 9)
 
 Compare that to the true DGP parameters (`area_B=0.10`, `area_C=0.20`, ..., `area_F=0.65` in log-space). The GBM recovers these with reasonable fidelity on 50,000 policies. On a real portfolio the recovery will be noisier due to correlated features and class imbalance.
 
-The `base_levels` argument sets which level in each categorical feature gets relativity 1.0 — your base rate vehicle. For area, we use Band A (rural, lowest risk). For age, the 40–59 bracket (lowest frequency band). These choices must match your actuarial methodology documentation; they are not cosmetic.
+The `base_levels` argument sets which level in each categorical feature gets relativity 1.0 - your base rate vehicle. For area, we use Band A (rural, lowest risk). For age, the 40–59 bracket (lowest frequency band). These choices must match your actuarial methodology documentation; they are not cosmetic.
 
 For a Radar import, you would export `rels.write_csv("area_factors.csv")` and follow the standard Radar factor table format. For Emblem, the structure is identical. The key property that makes this work: because the model uses a log-link objective, the SHAP values are additive in log-space, so `exp(shap_value)` gives a genuine multiplicative factor.
 
@@ -239,7 +239,7 @@ One limitation to document: when features are correlated, SHAP splits attributio
 
 The FCA's Evaluation Paper EP25/2 (February 2025) makes the supervisory expectation explicit: firms must demonstrate that their pricing models do not produce discriminatory outcomes by reference to protected characteristics. Consumer Duty Outcome 4 (Price and Value) extends this to require evidence that different customer groups receive equivalent value, not just equivalent prices.
 
-`insurance-fairness` runs a full proxy discrimination audit. We check whether `occupation_class` — a legitimate rating factor — is acting as a proxy for a protected characteristic. In a UK motor context, the live question is usually postcode or occupation discriminating on ethnicity or disability; we use occupation class here as a worked example.
+`insurance-fairness` runs a full proxy discrimination audit. We check whether `occupation_class` - a legitimate rating factor - is acting as a proxy for a protected characteristic. In a UK motor context, the live question is usually postcode or occupation discriminating on ethnicity or disability; we use occupation class here as a worked example.
 
 First, we need a prediction column on our audit dataset:
 
@@ -294,7 +294,7 @@ report.to_markdown("fairness_audit_motor_v1_2023.md")
 
 The `to_markdown()` output is structured for a pricing committee pack: model metadata, dataset size and exposure, per-characteristic metric tables, and flagged factors with scores. Run this quarterly as part of your model review cycle, not as a one-off box-tick.
 
-A practical note: the DGP in `insurance-datasets` does not include a protected characteristic in the true model — there is no genuine proxy discrimination baked in. On this synthetic data the audit will likely return Green. On real data you will find things. The occupation/postcode question in UK motor is live and contested; the FCA has not yet prescribed remediation methods, but EP25/2 signals that `opt-in` exclusions of protected attributes are not sufficient.
+A practical note: the DGP in `insurance-datasets` does not include a protected characteristic in the true model - there is no genuine proxy discrimination baked in. On this synthetic data the audit will likely return Green. On real data you will find things. The occupation/postcode question in UK motor is live and contested; the FCA has not yet prescribed remediation methods, but EP25/2 signals that `opt-in` exclusions of protected attributes are not sufficient.
 
 ---
 
@@ -302,7 +302,7 @@ A practical note: the DGP in `insurance-datasets` does not include a protected c
 
 A point estimate is an incomplete answer. If you quote a pure premium of £342, the relevant question for reserving and pricing is: what is the 90% prediction interval around that? Standard Poisson GLM theory gives you this via the mean-variance relationship, but GBMs do not have a parametric distribution attached. Conformal prediction provides distribution-free prediction intervals with a finite-sample coverage guarantee.
 
-The coverage guarantee is exactly: if your calibration data is exchangeable with your test data, then 90% of test observations will fall within the predicted interval — no distributional assumptions required. The interval width adapts to local uncertainty, not just the global noise level.
+The coverage guarantee is exactly: if your calibration data is exchangeable with your test data, then 90% of test observations will fall within the predicted interval - no distributional assumptions required. The interval width adapts to local uncertainty, not just the global noise level.
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
@@ -339,9 +339,9 @@ width = float((intervals["upper"] - intervals["lower"]).median())
 print(f"Median interval width: £{width:.0f}")
 ```
 
-We use `nonconformity="pearson_weighted"` — the Pearson residual `(y - ŷ) / sqrt(ŷ^p)` normalised by the predicted value. For Poisson/Tweedie data this gives roughly 30% narrower intervals than raw residuals, with the same coverage guarantee. The non-conformity score accounts for the mean-variance relationship: a policy expected to cost £500 has wider natural variation than one expected to cost £150.
+We use `nonconformity="pearson_weighted"` - the Pearson residual `(y - ŷ) / sqrt(ŷ^p)` normalised by the predicted value. For Poisson/Tweedie data this gives roughly 30% narrower intervals than raw residuals, with the same coverage guarantee. The non-conformity score accounts for the mean-variance relationship: a policy expected to cost £500 has wider natural variation than one expected to cost £150.
 
-The `calibrate()` call stores the empirical quantile of the non-conformity scores. `predict_interval()` then inverts this quantile to produce intervals. No model refitting required — conformal calibration is a post-hoc step.
+The `calibrate()` call stores the empirical quantile of the non-conformity scores. `predict_interval()` then inverts this quantile to produce intervals. No model refitting required - conformal calibration is a post-hoc step.
 
 For reserving applications, `insurance_conformal.risk.PremiumSufficiencyController` provides risk-controlled sufficiency bounds: instead of asking "does the observation fall in the interval", it asks "what loading factor do we need to ensure E[loss / premium] <= alpha". That is the right framing for capital adequacy work, though it is beyond the scope of this tutorial.
 
@@ -369,7 +369,7 @@ exp = Experiment("freq_v2_vs_v1", champion=old_mv, challenger=mv)
 logger = QuoteLogger("./quotes.db")
 ```
 
-`QuoteLogger` maintains an auditable record of every quote: which model version was used, the inputs, and the output price. This is the technical component of ICOBS 6B.2.51R record-keeping for ENBP compliance. Shadow mode is the default — and the right default. Live A/B pricing, where different customers are charged different prices for the same risk, raises Consumer Duty fair value concerns. Take legal advice before enabling live routing.
+`QuoteLogger` maintains an auditable record of every quote: which model version was used, the inputs, and the output price. This is the technical component of ICOBS 6B.2.51R record-keeping for ENBP compliance. Shadow mode is the default - and the right default. Live A/B pricing, where different customers are charged different prices for the same risk, raises Consumer Duty fair value concerns. Take legal advice before enabling live routing.
 
 **Drift detection with `insurance-monitoring`.**
 
@@ -429,20 +429,20 @@ None of this requires a bespoke actuarial platform. The full pipeline runs in st
 
 Individual library documentation:
 
-- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) — synthetic data generation
-- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) — GBM to GLM factor extraction
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — proxy discrimination audit
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — prediction intervals
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — drift detection and calibration monitoring
-- [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) — champion/challenger and ENBP logging
+- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) - synthetic data generation
+- [`shap-relativities`](https://github.com/burning-cost/shap-relativities) - GBM to GLM factor extraction
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) - proxy discrimination audit
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - prediction intervals
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) - drift detection and calibration monitoring
+- [`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) - champion/challenger and ENBP logging
 
 ---
 
 **Go deeper on each step:**
 
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — the theory behind the `shap-relativities` extraction: why raw SHAP values are not multiplicative factors, and how the exposure-weighted aggregation works
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — a deeper treatment of the `insurance-conformal` calibration step: non-conformity score choices, the coverage-by-decile diagnostic, and the difference between marginal and conditional coverage
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the full FCA audit workflow that Section 5 of this tutorial abbreviates
-- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — the three-layer monitoring framework: what PSI on its own misses and why the Murphy decomposition matters for the recalibrate vs refit decision
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance documentation layer that sits above this pipeline: generating the HTML validation report and registering the model in `ModelInventory`
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — what to add once the mean model is working: per-risk CoV for safety loading, underwriter referrals, and IFRS 17 risk adjustment
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) - the theory behind the `shap-relativities` extraction: why raw SHAP values are not multiplicative factors, and how the exposure-weighted aggregation works
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - a deeper treatment of the `insurance-conformal` calibration step: non-conformity score choices, the coverage-by-decile diagnostic, and the difference between marginal and conditional coverage
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the full FCA audit workflow that Section 5 of this tutorial abbreviates
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - the three-layer monitoring framework: what PSI on its own misses and why the Murphy decomposition matters for the recalibrate vs refit decision
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the governance documentation layer that sits above this pipeline: generating the HTML validation report and registering the model in `ModelInventory`
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - what to add once the mean model is working: per-risk CoV for safety loading, underwriter referrals, and IFRS 17 risk adjustment

@@ -128,7 +128,7 @@ The practical fix is to treat July 2019 as a known break point and fit separate 
 
 For motor bodily injury, the 2019 Ogden change was large enough relative to within-period noise that PELT will typically detect it on any book with material injury exposure. For smaller books, the signal may not stand out clearly enough and you should force the break manually.
 
-The most recent Ogden change — from -0.25% to +0.5%, effective 11 January 2025 — creates the same kind of structural break for post-2025 data. Any pricing team modelling BI severity should treat January 2025 as a known break point in their trend framework, not smooth through it with a single uninterrupted regression.
+The most recent Ogden change - from -0.25% to +0.5%, effective 11 January 2025 - creates the same kind of structural break for post-2025 data. Any pricing team modelling BI severity should treat January 2025 as a known break point in their trend framework, not smooth through it with a single uninterrupted regression.
 
 ---
 

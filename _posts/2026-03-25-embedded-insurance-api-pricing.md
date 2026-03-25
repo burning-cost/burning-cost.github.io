@@ -4,10 +4,10 @@ title: "Embedded Insurance Pricing and the API Underwriting Model"
 date: 2026-03-25
 categories: [pricing, architecture, regulation]
 tags: [embedded-insurance, api-pricing, glm, latency, distillation, consumer-duty, fca, fair-value, api-underwriting, insurance-distill, insurance-governance, real-time-pricing, uk-personal-lines]
-description: "BCG's 2025 analysis puts embedded insurance at 30% CAGR. The pricing architecture question is not whether to do it — it's whether your model can answer in under 100ms without compromising actuarial integrity. Here is the engineering and the governance."
+description: "BCG's 2025 analysis puts embedded insurance at 30% CAGR. The pricing architecture question is not whether to do it - it's whether your model can answer in under 100ms without compromising actuarial integrity. Here is the engineering and the governance."
 ---
 
-Embedded insurance — the product appearing at point of sale inside a partner's digital journey rather than through a standalone insurer or broker channel — is growing fast by any measure. BCG's 2025 embedded finance analysis puts the segment at 30% compound annual growth, with personal lines the dominant volume driver: travel insurance inside booking flows, device protection at e-commerce checkout, gap and mechanical breakdown cover inside motor dealer finance journeys. The FCA's 2024 supervisory review of BNPL and embedded financial products flagged it as a priority watch area.
+Embedded insurance - the product appearing at point of sale inside a partner's digital journey rather than through a standalone insurer or broker channel - is growing fast by any measure. BCG's 2025 embedded finance analysis puts the segment at 30% compound annual growth, with personal lines the dominant volume driver: travel insurance inside booking flows, device protection at e-commerce checkout, gap and mechanical breakdown cover inside motor dealer finance journeys. The FCA's 2024 supervisory review of BNPL and embedded financial products flagged it as a priority watch area.
 
 The commercial opportunity is real. The actuarial and engineering challenge that nobody discusses honestly is also real: at embedded distribution scale, your pricing model is an API endpoint, not a monthly batch process. It needs to return a premium in under 100 milliseconds. It needs to do that 50,000 times per day, often under burst traffic conditions at peak retail periods. And it needs to do all of that while satisfying Consumer Duty fair value obligations and PRA SS1/23 model governance requirements that were written for entirely different operating conditions.
 
@@ -17,7 +17,7 @@ This post is about the architecture required and, specifically, about the distil
 
 ## The latency budget
 
-A consumer checkout flow requires the full page to render in under two seconds to avoid material cart abandonment. In practice, the insurer's quote API has a budget of 80-120ms — the rest is the partner's front-end, payment processing, and network round-trip. At 100ms, you have approximately:
+A consumer checkout flow requires the full page to render in under two seconds to avoid material cart abandonment. In practice, the insurer's quote API has a budget of 80-120ms - the rest is the partner's front-end, payment processing, and network round-trip. At 100ms, you have approximately:
 
 - 10ms for network ingress and authentication
 - 20ms for input validation and feature derivation
@@ -31,7 +31,7 @@ Fifty milliseconds for model inference. That is enough time for a pre-loaded sci
 - Running a CatBoost model with 500 trees and deep interactions on a single CPU thread
 - Recomputing partial dependences at serving time
 
-The common failure mode is that pricing teams build an excellent CatBoost model in development — good Gini, clean validation, proper out-of-time splits — then serve it directly via an ML platform that adds latency they never measured during development. The model that takes 2 seconds to score in a batch environment takes 2 seconds in the API too, unless someone explicitly addresses it.
+The common failure mode is that pricing teams build an excellent CatBoost model in development - good Gini, clean validation, proper out-of-time splits - then serve it directly via an ML platform that adds latency they never measured during development. The model that takes 2 seconds to score in a batch environment takes 2 seconds in the API too, unless someone explicitly addresses it.
 
 ---
 
@@ -43,9 +43,9 @@ Three places.
 
 **Interpretability under Consumer Duty.** Under PRIN 2A and the FCA's Consumer Duty guidance (FG22/5, July 2022), firms must be able to explain how a price was arrived at if asked. A GBM with 800 trees and SHAP explanations computed on demand is defensible under a proportionality argument, but the FCA has repeatedly indicated that it expects pricing to be explainable in terms customers can understand. A multiplicative GLM with explicit rating factors for age, occupation, declared value, and term is structurally transparent in a way that SHAP attributions on a GBM are not. This matters more in embedded channels, where the customer has less context and the FCA has explicitly flagged that complexity is a fair value concern.
 
-**Regulatory documentation requirements.** PRA SS1/23 and the FCA's Model Risk Management guidance (MS23/1) require a model inventory and risk tier classification for any model used in production pricing. A GBM served as a black box in an API endpoint is a Tier 1 (Critical) model — 60+ points on the `RiskTierScorer` in insurance-governance, annual review, Model Risk Committee sign-off. A GLM surrogate, with documented factor tables and an explicit validation report showing its deviation from the GBM parent, can sometimes be structured as a Tier 2 implementation of the same business logic. The tier matters because it determines the review cycle and sign-off authority, which in turn determines how quickly you can deploy changes.
+**Regulatory documentation requirements.** PRA SS1/23 and the FCA's Model Risk Management guidance (MS23/1) require a model inventory and risk tier classification for any model used in production pricing. A GBM served as a black box in an API endpoint is a Tier 1 (Critical) model - 60+ points on the `RiskTierScorer` in insurance-governance, annual review, Model Risk Committee sign-off. A GLM surrogate, with documented factor tables and an explicit validation report showing its deviation from the GBM parent, can sometimes be structured as a Tier 2 implementation of the same business logic. The tier matters because it determines the review cycle and sign-off authority, which in turn determines how quickly you can deploy changes.
 
-**Maintenance overhead.** GLM factor tables can be updated in a rating engine (Radar, Emblem, a bespoke table loader) without a full model deployment cycle. When your GBM changes — new training data, feature engineering update — the API deployment needs to go through a full model change process. When a factor table updates, it can go through a simpler rate change process. At embedded distribution volumes, you will be updating rates frequently. The operational overhead of treating every rate update as a model deployment is substantial.
+**Maintenance overhead.** GLM factor tables can be updated in a rating engine (Radar, Emblem, a bespoke table loader) without a full model deployment cycle. When your GBM changes - new training data, feature engineering update - the API deployment needs to go through a full model change process. When a factor table updates, it can go through a simpler rate change process. At embedded distribution volumes, you will be updating rates frequently. The operational overhead of treating every rate update as a model deployment is substantial.
 
 ---
 
@@ -55,7 +55,7 @@ The right architecture for most embedded insurance pricing models is a GBM fitte
 
 [insurance-distill](https://burning-cost.github.io/insurance-distill) implements two distillation approaches. `SurrogateGLM` fits a GLM on GBM pseudo-predictions with optimal binning. `LassoGuidedGLM` uses the GBM's partial dependence curves to place bin boundaries, then uses lasso to select which bins are large enough to matter. Both produce multiplicative factor tables that load directly into a rating engine.
 
-For embedded insurance specifically, `LassoGuidedGLM` is usually the better choice because the feature space is typically thin — embedded products have limited data collection at checkout — and the lasso selection prevents overfitting to the available features:
+For embedded insurance specifically, `LassoGuidedGLM` is usually the better choice because the feature space is typically thin - embedded products have limited data collection at checkout - and the lasso selection prevents overfitting to the available features:
 
 ```python
 import polars as pl
@@ -110,11 +110,11 @@ The `report.metrics.summary()` output is what you present to the Model Risk Comm
 
 The FCA's Consumer Duty guidance specifically discusses embedded and ancillary insurance under the fair value rules. The key obligation under PRIN 2A.4 is that the price paid by the customer must be reasonable relative to the overall benefits of the product. For embedded insurance, this creates a specific analytical challenge: the customer is usually not comparing your embedded product against alternatives at point of sale. The comparison set is implicit, not explicit.
 
-The FCA's 2023 review of add-on insurance (which substantially overlaps with what is now called embedded insurance) found that add-on products showed loss ratios materially below comparable standalone products — sometimes by 20-30 percentage points. The interpretation is straightforward: the convenience premium at checkout was being captured as insurer profit rather than returned to customers as value. Consumer Duty makes that explicit standard unlawful.
+The FCA's 2023 review of add-on insurance (which substantially overlaps with what is now called embedded insurance) found that add-on products showed loss ratios materially below comparable standalone products - sometimes by 20-30 percentage points. The interpretation is straightforward: the convenience premium at checkout was being captured as insurer profit rather than returned to customers as value. Consumer Duty makes that explicit standard unlawful.
 
-For pricing teams, the practical obligation is to document that the embedded price reflects actuarial cost plus a reasonable commercial loading, and that the commercial loading is not materially higher than in equivalent standalone products. That documentation needs to be model-governance-grade — not an ad-hoc analysis, but part of the model's ongoing validation record.
+For pricing teams, the practical obligation is to document that the embedded price reflects actuarial cost plus a reasonable commercial loading, and that the commercial loading is not materially higher than in equivalent standalone products. That documentation needs to be model-governance-grade - not an ad-hoc analysis, but part of the model's ongoing validation record.
 
-[insurance-governance](https://burning-cost.github.io/insurance-governance) provides the infrastructure for this. The `MRMModelCard` captures model purpose, data sources, assumptions, and limitations in a structured form. For an embedded pricing model, the card's assumptions section should explicitly include the fair value assumption — that the distilled GLM's predicted loss cost is a reasonable proxy for the GBM's prediction, and that the commercial loading above that loss cost is consistent with standalone product margins:
+[insurance-governance](https://burning-cost.github.io/insurance-governance) provides the infrastructure for this. The `MRMModelCard` captures model purpose, data sources, assumptions, and limitations in a structured form. For an embedded pricing model, the card's assumptions section should explicitly include the fair value assumption - that the distilled GLM's predicted loss cost is a reasonable proxy for the GBM's prediction, and that the commercial loading above that loss cost is consistent with standalone product margins:
 
 ```python
 from insurance_governance import MRMModelCard, Assumption
@@ -150,7 +150,7 @@ card.assumptions.append(Assumption(
 ))
 ```
 
-The `risk="HIGH"` on the fair value assumption is deliberate. It is not a high-probability risk — we are not saying fair value is likely to fail — but the consequence of it failing silently is regulatory enforcement, and the `MRMModelCard` design treats consequence severity as the driver of risk rating, not probability alone. The mitigation makes the monitoring obligation explicit and traceable.
+The `risk="HIGH"` on the fair value assumption is deliberate. It is not a high-probability risk - we are not saying fair value is likely to fail - but the consequence of it failing silently is regulatory enforcement, and the `MRMModelCard` design treats consequence severity as the driver of risk rating, not probability alone. The mitigation makes the monitoring obligation explicit and traceable.
 
 ---
 
@@ -178,7 +178,7 @@ print(result.tier, result.score, result.rationale)
 
 Tier 1 means annual review and Model Risk Committee sign-off. That is the correct governance standard for an embedded pricing model at this scale. Trying to structure around it by splitting into smaller models or reducing documented GWP impact is governance theatre; any reviewer at the FCA who understands the channel will see through it.
 
-What Tier 1 does not mean is that every rate update goes to the MRC. The model tier governs the model — the algorithm, the training data, the feature set, the validation methodology. Rate changes within the model — updating the factor tables from a new training run using the same methodology — can be handled via the rating change governance process, which is typically lighter. The distillation architecture specifically enables this: the GBM is the model (Tier 1, annual MRC review), and the factor tables are the rate (quarterly update via Chief Actuary sign-off).
+What Tier 1 does not mean is that every rate update goes to the MRC. The model tier governs the model - the algorithm, the training data, the feature set, the validation methodology. Rate changes within the model - updating the factor tables from a new training run using the same methodology - can be handled via the rating change governance process, which is typically lighter. The distillation architecture specifically enables this: the GBM is the model (Tier 1, annual MRC review), and the factor tables are the rate (quarterly update via Chief Actuary sign-off).
 
 ---
 
@@ -186,13 +186,13 @@ What Tier 1 does not mean is that every rate update goes to the MRC. The model t
 
 The architecture we recommend for embedded insurance API pricing has four layers:
 
-**Layer 1 — Batch GBM refit.** Run monthly or quarterly on the full training dataset. This is the actuarially serious model. CatBoost, full feature set, proper cross-validation. It does not run in the API; it lives in your modelling environment.
+**Layer 1 - Batch GBM refit.** Run monthly or quarterly on the full training dataset. This is the actuarially serious model. CatBoost, full feature set, proper cross-validation. It does not run in the API; it lives in your modelling environment.
 
-**Layer 2 — Distillation and factor export.** After each GBM refit, run `LassoGuidedGLM` or `SurrogateGLM` to produce factor tables. Run the validation suite (`report.metrics.summary()`, double-lift chart). Check Gini retention. If retention is above threshold, export factors via `surrogate.export_csv()`. This is a change to the factor tables, not to the model.
+**Layer 2 - Distillation and factor export.** After each GBM refit, run `LassoGuidedGLM` or `SurrogateGLM` to produce factor tables. Run the validation suite (`report.metrics.summary()`, double-lift chart). Check Gini retention. If retention is above threshold, export factors via `surrogate.export_csv()`. This is a change to the factor tables, not to the model.
 
-**Layer 3 — API factor loader.** A thin serving layer that loads factor tables from a configuration store (S3, a database, a feature store) at startup and applies them multiplicatively. No ML library required. This process restarts and reloads tables in under 2 seconds. Factor table updates are a configuration push, not a deployment.
+**Layer 3 - API factor loader.** A thin serving layer that loads factor tables from a configuration store (S3, a database, a feature store) at startup and applies them multiplicatively. No ML library required. This process restarts and reloads tables in under 2 seconds. Factor table updates are a configuration push, not a deployment.
 
-**Layer 4 — Governance and monitoring.** `MRMModelCard` updated on each GBM refit. `ModelValidationReport` generated on each distillation run. Gini retention tracked over time. `RiskTierScorer` run annually or after material changes. These artefacts live in your model registry alongside the model binaries.
+**Layer 4 - Governance and monitoring.** `MRMModelCard` updated on each GBM refit. `ModelValidationReport` generated on each distillation run. Gini retention tracked over time. `RiskTierScorer` run annually or after material changes. These artefacts live in your model registry alongside the model binaries.
 
 The latency at Layer 3 is sub-millisecond per request. The governance overhead of the GBM refit at Layer 1 is fully separated from the operational rate change at Layer 2. Consumer Duty fair value evidence is generated automatically as part of the distillation validation. The MRC sees the model at annual review; the Chief Actuary sees the factor tables at the quarterly rate change.
 
@@ -200,6 +200,6 @@ This is not a novel architecture. It is the standard multiplicative rating engin
 
 ---
 
-**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) — GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) — model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty.
+**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) - GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) - model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty.
 
 **References:** BCG Embedded Finance Report 2025; FCA Consumer Duty Guidance FG22/5 (July 2022); FCA Model Risk Management Discussion Paper MS23/1; PRA Supervisory Statement SS1/23; Lindholm & Palmquist (2024) SSRN 4691626.

@@ -4,12 +4,12 @@ title: "Adaptive Conformal Inference for Non-Exchangeable Claims Series: Handlin
 date: 2026-03-15
 categories: [pricing, libraries, tutorials]
 tags: [conformal-prediction, time-series, aci, spci, exchangeability, claims-monitoring, loss-ratio, insurance-conformal-ts, sequential-coverage, kupiec, python, tutorial]
-description: "Standard split conformal prediction requires exchangeability — a condition insurance claims time series systematically violate."
+description: "Standard split conformal prediction requires exchangeability - a condition insurance claims time series systematically violate."
 ---
 
-Standard conformal prediction gives a finite-sample coverage guarantee. The small print on that guarantee: the calibration and test data must be exchangeable — drawn from the same distribution, with no ordering dependence between them. A monthly UK motor claims count series does not satisfy this. Q4 always runs heavier than Q2. A market-hardening year looks nothing like the stable period you calibrated on. A newly priced segment that added younger drivers last autumn has a different frequency distribution than the training data from two years before.
+Standard conformal prediction gives a finite-sample coverage guarantee. The small print on that guarantee: the calibration and test data must be exchangeable - drawn from the same distribution, with no ordering dependence between them. A monthly UK motor claims count series does not satisfy this. Q4 always runs heavier than Q2. A market-hardening year looks nothing like the stable period you calibrated on. A newly priced segment that added younger drivers last autumn has a different frequency distribution than the training data from two years before.
 
-When exchangeability fails, the coverage guarantee fails with it. The intervals you compute in January using a calibration set from January through December will systematically miss in February and March — precisely the direction the trend was running. Standard split conformal does not warn you. It just quietly undercovers.
+When exchangeability fails, the coverage guarantee fails with it. The intervals you compute in January using a calibration set from January through December will systematically miss in February and March - precisely the direction the trend was running. Standard split conformal does not warn you. It just quietly undercovers.
 
 [`insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts) implements methods designed for the temporal case. The two we use most often are ACI (Adaptive Conformal Inference, Gibbs and Candès NeurIPS 2021) and SPCI (Sequential Predictive Conformal Inference, Xu et al. ICML 2023). Both produce sequential prediction intervals that adapt as new observations arrive. Neither requires the calibration data to be exchangeable with the test period. Both come with diagnostics for checking whether coverage is actually being maintained.
 
@@ -27,11 +27,11 @@ The coverage guarantee from split conformal is:
 P(y_test ∈ [lower, upper]) ≥ 1 - alpha
 ```
 
-This holds when the calibration scores and the test score are exchangeable — meaning that if you randomly permuted the ordering, the joint distribution would be unchanged. For i.i.d. data from a stationary process this is trivially true. For a time series with trend it is false: the test period comes from a different part of the distribution than the calibration period, and permuting the ordering would change the joint distribution.
+This holds when the calibration scores and the test score are exchangeable - meaning that if you randomly permuted the ordering, the joint distribution would be unchanged. For i.i.d. data from a stationary process this is trivially true. For a time series with trend it is false: the test period comes from a different part of the distribution than the calibration period, and permuting the ordering would change the joint distribution.
 
 The practical failure mode is systematic undercoverage. If claims frequency has been rising for the last 18 months and you calibrate your intervals on the first 12 months of data, the conformal quantile is calibrated to a lower frequency regime. The intervals will be too narrow during the test period. You will see 85% coverage when you wanted 90%, and the shortfall will be concentrated in exactly the months when frequency was highest.
 
-The naive fix is to recalibrate more frequently. That helps, but it trades undercoverage for instability — short calibration windows give noisy quantile estimates, and the intervals thrash as new data arrives. ACI and SPCI solve the problem differently: they adapt the quantile threshold online, using observed coverage errors to adjust the intervals at each step.
+The naive fix is to recalibrate more frequently. That helps, but it trades undercoverage for instability - short calibration windows give noisy quantile estimates, and the intervals thrash as new data arrives. ACI and SPCI solve the problem differently: they adapt the quantile threshold online, using observed coverage errors to adjust the intervals at each step.
 
 ---
 
@@ -136,7 +136,7 @@ print(f"Static split conformal: coverage={coverage_static:.1%}, mean width={mean
 Static split conformal: coverage=75.0%, mean width=21.4
 ```
 
-75% coverage against a 90% target. The static calibration set comes from year 6, which sits in the pre-regime-shift part of the series. Year 7 runs 20% higher and the intervals, sized for the old level, are systematically too narrow. The intervals are also inefficiently wide in the months where frequency is normal — the single quantile cannot adapt.
+75% coverage against a 90% target. The static calibration set comes from year 6, which sits in the pre-regime-shift part of the series. Year 7 runs 20% higher and the intervals, sized for the old level, are systematically too narrow. The intervals are also inefficiently wide in the months where frequency is normal - the single quantile cannot adapt.
 
 ---
 
@@ -183,7 +183,7 @@ print(f"ACI: coverage={coverage_aci:.1%}, mean width={mean_width_aci:.1f}")
 ACI: coverage=91.7%, mean width=18.3
 ```
 
-Coverage is 91.7% against a 90% target — essentially on the nose. The mean interval width is narrower than the static approach despite the higher coverage, because the Pearson score normalises by the expected count and the dynamic alpha_t adapts to the regime shift rather than sizing intervals for the wrong level.
+Coverage is 91.7% against a 90% target - essentially on the nose. The mean interval width is narrower than the static approach despite the higher coverage, because the Pearson score normalises by the expected count and the dynamic alpha_t adapts to the regime shift rather than sizing intervals for the wrong level.
 
 The mechanism is simple enough to reason about. When year 7 starts running 20% higher than the calibration window suggests, the ACI intervals miss for several consecutive months. `alpha_t` drops sharply, widening the intervals until they cover again. Once the method has accumulated enough year-7 residuals in its window, the calibration set reflects the new level and the intervals stabilise at the appropriate width.
 
@@ -191,7 +191,7 @@ The mechanism is simple enough to reason about. When year 7 starts running 20% h
 
 ## Step 3: SPCI when the residual series is autocorrelated
 
-ACI adapts the quantile threshold but it still uses the empirical distribution of historical scores to set the threshold at each step. If those scores are autocorrelated — as they are in any seasonal claims series — the empirical quantile at step t is a poor predictor of the score at step t+1, because consecutive scores in a seasonal series are not independent.
+ACI adapts the quantile threshold but it still uses the empirical distribution of historical scores to set the threshold at each step. If those scores are autocorrelated - as they are in any seasonal claims series - the empirical quantile at step t is a poor predictor of the score at step t+1, because consecutive scores in a seasonal series are not independent.
 
 SPCI (Sequential Predictive Conformal Inference) handles this by fitting a quantile regression on lagged non-conformity scores. Instead of asking "what is the 90th percentile of historical scores?", it asks "given the scores I have seen over the last 10 months, what is the predicted 90th percentile of the score at the next step?". When the score series is autocorrelated, this prediction is more accurate than the unconditional quantile, and the resulting intervals are tighter.
 
@@ -219,7 +219,7 @@ print(f"SPCI: coverage={coverage_spci:.1%}, mean width={mean_width_spci:.1f}")
 SPCI: coverage=91.7%, mean width=16.1
 ```
 
-Same coverage as ACI, but 12% narrower intervals. The SPCI quantile regression recognises that a high-score October predicts a high-score November and December, and sizes the winter intervals accordingly. Without this, ACI widens its intervals after missing in October and keeps them wide through November even if the score drops back — a lag that SPCI avoids.
+Same coverage as ACI, but 12% narrower intervals. The SPCI quantile regression recognises that a high-score October predicts a high-score November and December, and sizes the winter intervals accordingly. Without this, ACI widens its intervals after missing in October and keeps them wide through November even if the score drops back - a lag that SPCI avoids.
 
 The difference matters in practice. Narrower intervals are more informative for claims monitoring: when month-end claims fall outside a tight interval, that is a stronger signal than falling outside a wide one. An interval calibrated to 90% coverage with 16 claims of width per month gives you a much cleaner monitoring trigger than one that is 18 claims wide.
 
@@ -227,7 +227,7 @@ The difference matters in practice. Narrower intervals are more informative for 
 
 ## Step 4: the ClaimsCountConformal wrapper
 
-For the standard UK motor use case — monthly claim counts with a Poisson GLM base forecaster and exposure offset — `ClaimsCountConformal` assembles the full pipeline.
+For the standard UK motor use case - monthly claim counts with a Poisson GLM base forecaster and exposure offset - `ClaimsCountConformal` assembles the full pipeline.
 
 ```python
 from insurance_conformal_ts import ClaimsCountConformal
@@ -318,7 +318,7 @@ Coverage drift p-value: 0.612
 Kupiec p-value:         0.734
 ```
 
-Three numbers matter here. The Kupiec POF test (Kupiec 1995, originally developed for VaR backtesting) is a likelihood ratio test with H0: empirical coverage equals nominal coverage. A p-value of 0.734 means we cannot reject correct coverage — the method is working. The drift slope of 0.0021 per month is small and has a p-value of 0.612, so coverage is stable across the monitoring period rather than systematically improving or degrading. If the drift slope were large and negative (falling coverage over time), it would suggest the calibration window is not capturing recent data quickly enough and `gamma` or `window_size` needs adjustment.
+Three numbers matter here. The Kupiec POF test (Kupiec 1995, originally developed for VaR backtesting) is a likelihood ratio test with H0: empirical coverage equals nominal coverage. A p-value of 0.734 means we cannot reject correct coverage - the method is working. The drift slope of 0.0021 per month is small and has a p-value of 0.612, so coverage is stable across the monitoring period rather than systematically improving or degrading. If the drift slope were large and negative (falling coverage over time), it would suggest the calibration window is not capturing recent data quickly enough and `gamma` or `window_size` needs adjustment.
 
 The interval width report:
 
@@ -380,7 +380,7 @@ Loss ratio coverage: 100.0%
 Mean interval width: 0.112
 ```
 
-A mean width of 0.112 on loss ratios that sit around 0.74 means the intervals span roughly ±6 percentage points of loss ratio. That is comfortably informative: a month landing above the upper bound is a genuine signal of adverse development, not background noise. On a portfolio running £50m of earned premium, a loss ratio breach of 6 percentage points corresponds to £3m of adverse loss experience — a meaningful monitoring threshold.
+A mean width of 0.112 on loss ratios that sit around 0.74 means the intervals span roughly ±6 percentage points of loss ratio. That is comfortably informative: a month landing above the upper bound is a genuine signal of adverse development, not background noise. On a portfolio running £50m of earned premium, a loss ratio breach of 6 percentage points corresponds to £3m of adverse loss experience - a meaningful monitoring threshold.
 
 ---
 
@@ -388,13 +388,13 @@ A mean width of 0.112 on loss ratios that sit around 0.74 means the intervals sp
 
 **Use ACI when:**
 - The series is shorter (fewer than 36 monthly periods in the calibration window)
-- The base forecaster is unsophisticated — a seasonal mean or random walk
+- The base forecaster is unsophisticated - a seasonal mean or random walk
 - You want the simplest possible implementation to explain to a governance committee
 
 **Use SPCI when:**
-- The non-conformity score series is autocorrelated — which it will be for any seasonal loss series
+- The non-conformity score series is autocorrelated - which it will be for any seasonal loss series
 - You have at least 20+ calibration periods to seed the quantile regression
-- Interval efficiency matters — for monitoring triggers, tighter intervals at the same coverage level are more informative
+- Interval efficiency matters - for monitoring triggers, tighter intervals at the same coverage level are more informative
 
 The practical test: fit both, run `SequentialCoverageReport` on each, and compare mean widths. If SPCI has tighter intervals with identical coverage (Kupiec passes for both), use SPCI. If SPCI's intervals are similar width to ACI, the quantile regression is not adding anything and ACI is simpler.
 
@@ -412,7 +412,7 @@ If you are currently running split conformal or a standard prediction interval o
 
 The diagnostic is the Kupiec test. Run it on your current intervals using `SequentialCoverageReport`. A p-value below 0.05 means your coverage is statistically different from the nominal level. On many portfolios where standard split conformal is used for monitoring, we would expect this to fail. The intervals look reasonable month to month but the cumulative undercoverage is detectable.
 
-ACI costs nothing at inference time and almost nothing at fit time — there is no bootstrap ensemble, no quantile regression model. The only operational change relative to static split conformal is that `alpha_t` is updated after each observation. This is a one-line addition to any claims monitoring process.
+ACI costs nothing at inference time and almost nothing at fit time - there is no bootstrap ensemble, no quantile regression model. The only operational change relative to static split conformal is that `alpha_t` is updated after each observation. This is a one-line addition to any claims monitoring process.
 
 ---
 
@@ -426,7 +426,7 @@ ACI costs nothing at inference time and almost nothing at fit time — there is 
 
 ## See also
 
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post: split conformal for cross-sectional insurance models where exchangeability holds
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
-- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint prediction sets for the two-part model, handling correlated frequency/severity uncertainty simultaneously
-- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - the foundational post: split conformal for cross-sectional insurance models where exchangeability holds
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - conformal risk control for when you want to bound expected monetary shortfall rather than coverage frequency
+- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) - joint prediction sets for the two-part model, handling correlated frequency/severity uncertainty simultaneously
+- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) - applying conformal guarantees to reserve ranges; uses the time-series methods described here for development pattern uncertainty

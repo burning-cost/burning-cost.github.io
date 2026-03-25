@@ -11,7 +11,7 @@ Your conformal prediction interval covers 90% of outcomes. Standard conformal pr
 
 For insurance pricing, it is the wrong guarantee.
 
-A 10% miscoverage on a portfolio of 5,000 motor policies could be 500 policies each generating a £200 shortfall, or it could be 3 policies with a £50,000 shortfall apiece. The coverage guarantee says nothing about which. The expected monetary loss — the thing that shows up in your loss ratio — depends entirely on which case you are in. But both satisfy the same 90% coverage constraint.
+A 10% miscoverage on a portfolio of 5,000 motor policies could be 500 policies each generating a £200 shortfall, or it could be 3 policies with a £50,000 shortfall apiece. The coverage guarantee says nothing about which. The expected monetary loss - the thing that shows up in your loss ratio - depends entirely on which case you are in. But both satisfy the same 90% coverage constraint.
 
 Conformal risk control, from Angelopoulos, Bates, Fisch, Lei and Schuster (ICLR 2024, arXiv:2208.02814), changes what you control. Instead of bounding the probability of being wrong, it bounds the expected magnitude of being wrong. The formal guarantee:
 
@@ -19,7 +19,7 @@ Conformal risk control, from Angelopoulos, Bates, Fisch, Lei and Schuster (ICLR 
 E[L(Y, d(X))] ≤ α
 ```
 
-where `L` is your loss function and `α` is the risk level. Not the probability that `L` exceeds a threshold — the expected value of `L` itself.
+where `L` is your loss function and `α` is the risk level. Not the probability that `L` exceeds a threshold - the expected value of `L` itself.
 
 [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this for UK pricing workflows. Three controllers, each targeting a different risk the pricing team cares about.
 
@@ -90,7 +90,7 @@ result = psc.predict(premium_new)
 # 891.50       | 1135.77         | 0.274          | 1.274
 ```
 
-The loading is the same for all policies — `λ*` is a scalar multiplier. The guarantee is marginal over the calibration distribution, not per-segment. We discuss the implications of that below.
+The loading is the same for all policies - `λ*` is a scalar multiplier. The guarantee is marginal over the calibration distribution, not per-segment. We discuss the implications of that below.
 
 ### The correction that makes it valid
 
@@ -100,7 +100,7 @@ The calibration algorithm (Algorithm 1 from the paper) applies a finite-sample c
 corrected_risk(λ) = (n/(n+1)) · R̂_n(λ) + B/(n+1)
 ```
 
-`R̂_n(λ)` is the empirical mean shortfall at loading `λ` over the `n` calibration observations. The correction inflates this by the `B/(n+1)` term to account for the unseen test point. This is not cosmetic. Dropping it produces invalid guarantees for calibration sets of the sizes common in insurance pricing (n = 500 to 2,000). At n = 1,000 and B = 3.0, the correction adds 0.003 to every empirical risk estimate — small, but it is the difference between a valid guarantee and a broken one.
+`R̂_n(λ)` is the empirical mean shortfall at loading `λ` over the `n` calibration observations. The correction inflates this by the `B/(n+1)` term to account for the unseen test point. This is not cosmetic. Dropping it produces invalid guarantees for calibration sets of the sizes common in insurance pricing (n = 500 to 2,000). At n = 1,000 and B = 3.0, the correction adds 0.003 to every empirical risk estimate - small, but it is the difference between a valid guarantee and a broken one.
 
 Setting `B` correctly matters as much as the correction. `B` is the maximum possible value of the normalised shortfall loss. If a policy's claim can be at most 5 times its premium, then B = 5. Pass `B = np.percentile(y_cal / premium_cal, 99.9)` as a conservative finite empirical bound.
 
@@ -124,7 +124,7 @@ If decile 10 has mean shortfall of 8.9% against an `α` of 5%, the marginal guar
 
 ## IntervalWidthController: paying for efficiency
 
-The second controller addresses a different optimisation problem. You have conformal prediction intervals with valid coverage. They are wider than you would like — conservative models, or heterogeneous risk populations. You want the tightest quantile level such that expected interval width stays below a budget.
+The second controller addresses a different optimisation problem. You have conformal prediction intervals with valid coverage. They are wider than you would like - conservative models, or heterogeneous risk populations. You want the tightest quantile level such that expected interval width stays below a budget.
 
 This is relevant in any workflow where interval width is the cost. Underwriting might quote on the basis of the upper bound: wider intervals mean higher quoted premiums, which means less competitive pricing on well-priced risks. The width budget is a business constraint.
 
@@ -186,7 +186,7 @@ summary = src.portfolio_summary(y_cal, scores_cal)
 
 The DKW correction handles the bias in selection rate estimation. When you choose the threshold based on the same calibration set you use to estimate the conditional loss, naive thresholding is biased: you are selecting the risks you already know were fine. The DKW bound sets a conservative lower bound on the true selection rate, preventing the controller from accepting a threshold that only appears to meet `xi_min` due to sampling noise.
 
-A note on the loss function: it must return values in `[0, B]` and must be fixed once calibrated — it is not re-estimated at deployment. The guarantee is that the expected value of `loss_fn(Y, score)` on the accepted population is at most `α`, where the expectation is over the calibration distribution. The practical interpretation depends entirely on what you put in `loss_fn`.
+A note on the loss function: it must return values in `[0, B]` and must be fixed once calibrated - it is not re-estimated at deployment. The guarantee is that the expected value of `loss_fn(Y, score)` on the accepted population is at most `α`, where the expectation is over the calibration distribution. The practical interpretation depends entirely on what you put in `loss_fn`.
 
 ---
 
@@ -220,11 +220,11 @@ This gives you a two-layer guarantee. The conformal interval controls coverage. 
 
 ## Calibration set size and what happens when it is small
 
-The Hoeffding bound underlying the finite-sample correction requires a calibration set that is representative of the future population. For motor pricing, 1,000 to 2,000 policies is a workable minimum for typical `α` values (0.03 to 0.10). Below 500, the `B/(n+1)` correction becomes material — at n = 200 and B = 3.0, it adds 0.015 to every empirical risk estimate, which forces `λ*` to be noticeably higher than the empirical minimum.
+The Hoeffding bound underlying the finite-sample correction requires a calibration set that is representative of the future population. For motor pricing, 1,000 to 2,000 policies is a workable minimum for typical `α` values (0.03 to 0.10). Below 500, the `B/(n+1)` correction becomes material - at n = 200 and B = 3.0, it adds 0.015 to every empirical risk estimate, which forces `λ*` to be noticeably higher than the empirical minimum.
 
 This is not a deficiency of the library. It is a statement about the information content of small samples. If you have 300 calibration observations and want to guarantee expected shortfall ≤ 3%, the honest answer is that you need a larger loading factor than you would with 3,000 observations. The correction makes that cost explicit rather than hiding it.
 
-If calibration fails entirely — `RuntimeError: No lambda controls expected risk at alpha` — the options are: increase `alpha`, extend `lambda_grid` to larger values, or increase `n_cal`. The error message reports the minimum achievable corrected risk so you know which constraint is binding.
+If calibration fails entirely - `RuntimeError: No lambda controls expected risk at alpha` - the options are: increase `alpha`, extend `lambda_grid` to larger values, or increase `n_cal`. The error message reports the minimum achievable corrected risk so you know which constraint is binding.
 
 ---
 
@@ -247,6 +247,6 @@ Source at [github.com/burning-cost/insurance-conformal](https://github.com/burni
 
 ## See also
 
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — coverage probability control, conformal prediction intervals, SCR upper bounds. The sibling library that controls frequency of error rather than magnitude. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
-- [`insurance-evt`](https://github.com/burning-cost/insurance-evt) — when the shortfall you care about is in the extreme tail, EVT gives you return levels and XL layer pricing from the GPD. [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)
-- [`insurance-dro`](https://github.com/burning-cost/insurance-dro) — distributional robustness at the optimisation stage. DRO protects the rate recommendation against demand model misspecification; CRC protects the premium against claims model error. Different problems, complementary tools. [Robust Rate Optimisation: Pricing Against Demand Model Misspecification](/2026/03/13/insurance-dro/)
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - coverage probability control, conformal prediction intervals, SCR upper bounds. The sibling library that controls frequency of error rather than magnitude. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [`insurance-evt`](https://github.com/burning-cost/insurance-evt) - when the shortfall you care about is in the extreme tail, EVT gives you return levels and XL layer pricing from the GPD. [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)
+- [`insurance-dro`](https://github.com/burning-cost/insurance-dro) - distributional robustness at the optimisation stage. DRO protects the rate recommendation against demand model misspecification; CRC protects the premium against claims model error. Different problems, complementary tools. [Robust Rate Optimisation: Pricing Against Demand Model Misspecification](/2026/03/13/insurance-dro/)

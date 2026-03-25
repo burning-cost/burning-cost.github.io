@@ -9,9 +9,9 @@ description: "When a new aggregator partnership or competitor exit changes your 
 
 Something happened to your new business mix last quarter. Maybe a competitor pulled out of a price comparison site and their policyholders came to you. Maybe you struck a new affinity deal and started writing a segment you barely touched before. Maybe you ran a TV campaign targeting a different demographic. The channel mix shifted. Your portfolio is not the population it was when the model was last trained.
 
-The model doesn't know. It scores every incoming risk the way it always has, against the distribution of risks it learned from. If the new channel skews older — say, over-55s who cancelled with the competitor — and the model was trained predominantly on a younger, PCW-driven book, the model will overprice the newcomers on frequency and underprice them on severity. Not uniformly; in the pockets of feature space that are suddenly denser in your new business than they were in training data.
+The model doesn't know. It scores every incoming risk the way it always has, against the distribution of risks it learned from. If the new channel skews older - say, over-55s who cancelled with the competitor - and the model was trained predominantly on a younger, PCW-driven book, the model will overprice the newcomers on frequency and underprice them on severity. Not uniformly; in the pockets of feature space that are suddenly denser in your new business than they were in training data.
 
-We have seen a motor portfolio where a new PCW partnership skewed the channel significantly younger, lower NCD, and urban. The model trained on the existing direct-channel book — where the median driver age was 47 — started overpredicting frequency for the under-30 cohort by around 8%. Not because the underlying risk relationship changed. Because the model had seen very few young, low-NCD, urban drivers and was extrapolating into sparse feature space.
+We have seen a motor portfolio where a new PCW partnership skewed the channel significantly younger, lower NCD, and urban. The model trained on the existing direct-channel book - where the median driver age was 47 - started overpredicting frequency for the under-30 cohort by around 8%. Not because the underlying risk relationship changed. Because the model had seen very few young, low-NCD, urban drivers and was extrapolating into sparse feature space.
 
 This post is about detecting that shift before it shows up in loss ratios, and correcting predictions using only the covariate information you already have.
 
@@ -35,7 +35,7 @@ Install the library:
 uv add insurance-covariate-shift
 ```
 
-You need two covariate matrices: `X_historical` (the policies that were in the training window — call this the source distribution) and `X_new_business` (the last three months of new business — the target distribution). No loss labels required at this stage.
+You need two covariate matrices: `X_historical` (the policies that were in the training window - call this the source distribution) and `X_new_business` (the last three months of new business - the target distribution). No loss labels required at this stage.
 
 ```python
 from insurance_covariate_shift import CovariateShiftAdaptor
@@ -60,7 +60,7 @@ print(f"KL divergence: {report.kl_divergence:.3f}")
 # KL divergence: 0.31
 ```
 
-The ESS (effective sample size) ratio of 0.51 means the historical book is worth roughly half its nominal size as a training set for the new business distribution — the other half of the data is in regions of feature space that aren't well represented in what you're now writing. A SEVERE verdict (ESS ≤ 0.30) would mean you should retrain. MODERATE means correction is viable.
+The ESS (effective sample size) ratio of 0.51 means the historical book is worth roughly half its nominal size as a training set for the new business distribution - the other half of the data is in regions of feature space that aren't well represented in what you're now writing. A SEVERE verdict (ESS ≤ 0.30) would mean you should retrain. MODERATE means correction is viable.
 
 The per-feature importance from the report tells you _where_ the shift is concentrated:
 
@@ -125,13 +125,13 @@ for age_band, mask in age_band_masks.items():
 # 66+:   mean_weight=0.44
 ```
 
-The weights confirm the shift structure. Young drivers are significantly underrepresented in training relative to the new channel — mean weight 2.31 for the 17–25 band. The model has less information where it now needs it most. Over-55s are overrepresented in training relative to new business — the model calibrated well for them and the new channel brings fewer of them. Without correction, the pricing for the 17–25 cohort is based on a distribution that does not match who is actually coming through the door.
+The weights confirm the shift structure. Young drivers are significantly underrepresented in training relative to the new channel - mean weight 2.31 for the 17–25 band. The model has less information where it now needs it most. Over-55s are overrepresented in training relative to new business - the model calibrated well for them and the new channel brings fewer of them. Without correction, the pricing for the 17–25 cohort is based on a distribution that does not match who is actually coming through the door.
 
 ---
 
 ## FCA Consumer Duty
 
-There is a regulatory angle here that does not get enough attention. Consumer Duty (PS22/9) requires firms to ensure their products and services deliver good outcomes for customers, including on price and value. If your model is systematically overpredicting frequency for a specific demographic cohort because the training distribution is stale, that is not a random error — it is a directional bias affecting identifiable groups of customers.
+There is a regulatory angle here that does not get enough attention. Consumer Duty (PS22/9) requires firms to ensure their products and services deliver good outcomes for customers, including on price and value. If your model is systematically overpredicting frequency for a specific demographic cohort because the training distribution is stale, that is not a random error - it is a directional bias affecting identifiable groups of customers.
 
 The FCA expects firms to monitor whether pricing models remain appropriate for the customers they are serving. A model trained 18 months ago on a substantially different channel mix is, by any reasonable reading, not appropriate for the current book without adjustment. The fact that the model has not been changed is not a defence; the book has changed.
 
@@ -161,9 +161,9 @@ A MODERATE verdict does not by itself trigger SUP 15.3 notification, but it shou
 
 ## When correction is not enough
 
-Importance weighting corrects for covariate shift: the case where the feature distribution `P(X)` has changed but the conditional loss distribution `P(Y|X)` has not. It cannot correct for concept drift — when the risk relationship itself has changed, not just who is buying. A new PCW bringing in younger drivers is covariate shift if those drivers have the same underlying frequency-given-characteristics as the young drivers in your existing book. If the new channel is systematically adverse-selecting risks within each cell — customers who have been declined elsewhere, or who specifically chose this aggregator because of how it ranked them — that is concept drift and weighting will not save you.
+Importance weighting corrects for covariate shift: the case where the feature distribution `P(X)` has changed but the conditional loss distribution `P(Y|X)` has not. It cannot correct for concept drift - when the risk relationship itself has changed, not just who is buying. A new PCW bringing in younger drivers is covariate shift if those drivers have the same underlying frequency-given-characteristics as the young drivers in your existing book. If the new channel is systematically adverse-selecting risks within each cell - customers who have been declined elsewhere, or who specifically chose this aggregator because of how it ranked them - that is concept drift and weighting will not save you.
 
-The diagnostic helps here too. If you have even a few months of target labels — claims from the new channel — you can test the covariate shift assumption directly: fit the model using source labels and importance weights, compare to a model fitted on target labels, and check whether the weighted source model's predictions track the target model's in the segments where you have target data. If they diverge systematically, concept drift is the more likely culprit.
+The diagnostic helps here too. If you have even a few months of target labels - claims from the new channel - you can test the covariate shift assumption directly: fit the model using source labels and importance weights, compare to a model fitted on target labels, and check whether the weighted source model's predictions track the target model's in the segments where you have target data. If they diverge systematically, concept drift is the more likely culprit.
 
 That is the point where you need labelled target data and a transfer learning approach rather than pure importance weighting. We cover that in [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) and [insurance-transfer](https://github.com/burning-cost/insurance-transfer).
 

@@ -7,7 +7,7 @@ tags: [databricks, catboost, shap, radar, pricing, motor, unity-catalog, mlflow,
 description: "Databricks workflow for UK pricing actuaries: CatBoost plus MLflow tracking, SHAP relativities, and Radar export. End-to-end motor pricing in Python."
 ---
 
-*This post is the Databricks-specific workflow: Unity Catalog, MLflow, CatBoost, and scheduled Jobs exporting to Radar. It assumes you are on Databricks. For a vendor-agnostic overview of the modern Python pricing pipeline — applicable to any compute environment — see [Building a Modern Insurance Pricing Pipeline in Python](/2026/03/12/modern-pricing-pipeline/).*
+*This post is the Databricks-specific workflow: Unity Catalog, MLflow, CatBoost, and scheduled Jobs exporting to Radar. It assumes you are on Databricks. For a vendor-agnostic overview of the modern Python pricing pipeline - applicable to any compute environment - see [Building a Modern Insurance Pricing Pipeline in Python](/2026/03/12/modern-pricing-pipeline/).*
 
 
 A growing number of UK pricing teams are running Databricks. Almost none of them are running it well.
@@ -319,7 +319,7 @@ If the SHAP relativities diverge materially from the GLM on a factor where there
 
 Radar (Willis Towers Watson) expects factor tables in a specific format for import. When building the expanded three-column table for Radar's factor editor, the columns are `FactorName`, `Level`, `Relativity` - one row per factor level. (The `insurance-distill` library's `format_radar_csv()` produces a two-column `FeatureName, Relativity` format used for a different Radar import path; the two formats serve different Radar workflows.) The four things that go wrong in the three-column format are consistent enough to be worth naming.
 
-**Column naming.** Radar is case-sensitive. `factorname` will not import. `FactorName`, `Level`, `Relativity` exactly — for this three-column import path.
+**Column naming.** Radar is case-sensitive. `factorname` will not import. `FactorName`, `Level`, `Relativity` exactly - for this three-column import path.
 
 **Continuous features.** Radar does not interpolate a continuous curve. Driver age and mileage need to be discretised into bands before export. The banding should align with the existing GLM banding - not because the GBM's continuous curve is wrong, but because any relativity movement that results from re-banding will be indistinguishable from genuine model signal in a pricing committee review. Keep the bands consistent and change one thing at a time.
 

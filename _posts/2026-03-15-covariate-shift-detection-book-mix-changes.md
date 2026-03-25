@@ -9,7 +9,7 @@ description: "How to run covariate shift detection as a recurring monthly check:
 
 The standard model monitoring workflow is A/E ratios by segment, PSI on score distributions, and a Gini trend. These are useful. They will catch a model that has gone badly wrong. The problem is the lag. A/E ratios need claims development. PSI needs a score distribution on the new book. Gini drift needs exposure to accumulate. By the time your monitoring dashboard is flashing, you have been writing business on a miscalibrated model for six months.
 
-Density ratio estimation catches book mix drift months earlier, because it only needs the feature matrix of risks being scored — no claims labels required. The [foundational post on covariate shift](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) covers the full toolkit: how density ratio estimation works, importance-weighted retraining, and shift-robust conformal intervals. This post is about something different: running the check on a recurring monthly basis, reading the ESS ratio as a trend rather than a one-off diagnostic, and knowing which thresholds should trigger which conversations with governance.
+Density ratio estimation catches book mix drift months earlier, because it only needs the feature matrix of risks being scored - no claims labels required. The [foundational post on covariate shift](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) covers the full toolkit: how density ratio estimation works, importance-weighted retraining, and shift-robust conformal intervals. This post is about something different: running the check on a recurring monthly basis, reading the ESS ratio as a trend rather than a one-off diagnostic, and knowing which thresholds should trigger which conversations with governance.
 
 `insurance-covariate-shift` gives you the tools to detect it, quantify it, correct for it, and document it for governance.
 
@@ -61,7 +61,7 @@ print(report.feature_importance())
 # {'driver_age': 0.38, 'postcode_district': 0.29, 'vehicle_age': 0.19, 'ncb': 0.14}
 ```
 
-The ESS ratio (Effective Sample Size ratio) is the key summary statistic. If all risks in your new book look like risks in your old book, every source observation contributes equally to target-distribution estimates — ESS ratio is 1.0. If the new book is very different, most source observations have low weight, and the ESS ratio falls toward zero. The library's thresholds are:
+The ESS ratio (Effective Sample Size ratio) is the key summary statistic. If all risks in your new book look like risks in your old book, every source observation contributes equally to target-distribution estimates - ESS ratio is 1.0. If the new book is very different, most source observations have low weight, and the ESS ratio falls toward zero. The library's thresholds are:
 
 - ESS >= 0.60 and KL <= 0.10 nats: NEGLIGIBLE. Deploy as-is, standard monitoring.
 - ESS 0.30-0.60 or KL 0.10-0.50 nats: MODERATE. Apply importance weighting; monitor closely.
@@ -77,7 +77,7 @@ The `method` parameter matters more than the defaults suggest.
 
 **`catboost`** handles the real structure of UK motor data. Postcode district alone has several hundred distinct values. Vehicle make-model combinations run into the thousands. CatBoost's native categorical encoding deals with this without manual preprocessing or target encoding leakage. For most UK personal lines books, this is the right choice.
 
-**`rulsif`** (Relative Unconstrained Least-Squares Importance Fitting) is a kernel method with a closed-form solution. Fast, no hyperparameter grid search needed, and the relative formulation (Yamada et al., 2013) is more numerically stable than the original LSIF. Use it when your feature set is all-continuous — score vectors, rating factors expressed as numerics, demographic indices. It breaks down on high-cardinality categoricals.
+**`rulsif`** (Relative Unconstrained Least-Squares Importance Fitting) is a kernel method with a closed-form solution. Fast, no hyperparameter grid search needed, and the relative formulation (Yamada et al., 2013) is more numerically stable than the original LSIF. Use it when your feature set is all-continuous - score vectors, rating factors expressed as numerics, demographic indices. It breaks down on high-cardinality categoricals.
 
 **`kliep`** (Kullback-Leibler Importance Estimation Procedure) explicitly enforces the normalisation constraint `E_source[w(x)] = 1`. Slower than RuLSIF and requires bandwidth selection, but useful as a sanity check. If RuLSIF and KLIEP agree on the verdict, you can be confident in it.
 
@@ -144,7 +144,7 @@ For teams that want narrower intervals on low-risk profiles and wider on high-ri
 
 Under FCA PRIN 2A.4, insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. Applying a model trained on a materially different book distribution without adjustment could constitute such a change.
 
-The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note — not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
+The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note - not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
 
 ```python
 print(report.fca_sup153_summary())
@@ -177,7 +177,7 @@ The numbers are the numbers. What you add in the governance note is the actuaria
 
 ## When not to bother correcting
 
-Importance weighting is not a free lunch. The correction is only as good as the density ratio estimate, and that estimate degrades when the shift is large. An ESS ratio below 0.30 means the weights are high-variance: the correction is directionally useful — it tells you the model is wrong and in which direction — but the corrected metrics should not be treated as precise estimates. Retrain.
+Importance weighting is not a free lunch. The correction is only as good as the density ratio estimate, and that estimate degrades when the shift is large. An ESS ratio below 0.30 means the weights are high-variance: the correction is directionally useful - it tells you the model is wrong and in which direction - but the corrected metrics should not be treated as precise estimates. Retrain.
 
 The other case where correction adds little value: if the shift is driven entirely by features that do not enter the model. If your claim model uses age, NCB, and vehicle group, and the book mix shift is in a feature you are not modelling (say, payment frequency), then the density ratio correction on your model features will show NEGLIGIBLE and you are done. The shift is real but the model does not need to know about it.
 
@@ -185,7 +185,7 @@ The other case where correction adds little value: if the shift is driven entire
 
 ## The monitoring cadence we recommend
 
-Run the shift diagnostic monthly, against a fixed reference window (12 months of training data). Plot the ESS ratio over time. It is a single number. You can put it on a dashboard alongside your standard A/E and Gini monitoring. When it drops below 0.60, add importance-weighted metrics to your monitoring pack. When it drops below 0.40, start the retraining conversation with governance. When it hits 0.30, the conversation is over — start the retrain.
+Run the shift diagnostic monthly, against a fixed reference window (12 months of training data). Plot the ESS ratio over time. It is a single number. You can put it on a dashboard alongside your standard A/E and Gini monitoring. When it drops below 0.60, add importance-weighted metrics to your monitoring pack. When it drops below 0.40, start the retraining conversation with governance. When it hits 0.30, the conversation is over - start the retrain.
 
 The point is not that you abandon the model. The point is that you know, months before the loss ratio catches up, that the model is operating outside its training distribution. That knowledge is worth having.
 
@@ -193,13 +193,13 @@ The point is not that you abandon the model. The point is that you know, months 
 
 `insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, and NumPy 1.24+.
 
-- [Your Year-End Large Loss Loading Is a Finger in the Air](/2026/03/14/year-end-large-loss-loading/) — per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
-- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — building a defensible sign-off process and what the PRA's SS1/23 actually requires
-- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) — when the target book has sparse data of its own, importance weighting pairs with transfer learning for best results
+- [Your Year-End Large Loss Loading Is a Finger in the Air](/2026/03/14/year-end-large-loss-loading/) - per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) - building a defensible sign-off process and what the PRA's SS1/23 actually requires
+- [Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) - when the target book has sparse data of its own, importance weighting pairs with transfer learning for best results
 
 ---
 
 ## See also
 
-- [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) — the library introduction: how density ratio estimation works and the LR-QR method for applying importance weights to conformal prediction intervals
-- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book
+- [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) - the library introduction: how density ratio estimation works and the LR-QR method for applying importance weights to conformal prediction intervals
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book

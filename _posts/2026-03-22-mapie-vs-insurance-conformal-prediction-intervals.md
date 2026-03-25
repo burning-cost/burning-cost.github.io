@@ -18,13 +18,13 @@ This post explains specifically what goes wrong, shows the code comparison, and 
 
 ## Background: what conformal prediction does
 
-Split conformal prediction is simple in principle. You hold out a calibration set that your model never trained on. You compute a non-conformity score — some measure of how wrong your model's prediction is — for every calibration observation. You sort those scores and take the `ceil((n+1)(1-alpha)/n)` quantile. Call it `q_hat`. Then your prediction interval for a new observation is:
+Split conformal prediction is simple in principle. You hold out a calibration set that your model never trained on. You compute a non-conformity score - some measure of how wrong your model's prediction is - for every calibration observation. You sort those scores and take the `ceil((n+1)(1-alpha)/n)` quantile. Call it `q_hat`. Then your prediction interval for a new observation is:
 
 ```
 [yhat - q_hat, yhat + q_hat]
 ```
 
-The coverage guarantee — `P(y in interval) >= 1 - alpha` — holds without any distributional assumption, as long as calibration and test data are exchangeable.
+The coverage guarantee - `P(y in interval) >= 1 - alpha` - holds without any distributional assumption, as long as calibration and test data are exchangeable.
 
 MAPIE implements this correctly. The guarantee is genuine. The problem is what you put in as the non-conformity score.
 
@@ -55,7 +55,7 @@ y_pred, y_pi = mapie.predict(X_test, alpha=0.10)
 # y_pi shape: (n, 2, 1) → lower and upper bounds
 ```
 
-This works. The coverage guarantee holds. But the calibration quantile is derived from absolute residuals on insurance data where claims range from £0 to £50,000. On a heteroskedastic book, the calibration quantile will be inflated by large residuals from high-risk policies — which means intervals are unnecessarily wide for low-risk policies and structured uniformly when they should be narrower for low-risk and proportionally wider for high-risk.
+This works. The coverage guarantee holds. But the calibration quantile is derived from absolute residuals on insurance data where claims range from £0 to £50,000. On a heteroskedastic book, the calibration quantile will be inflated by large residuals from high-risk policies - which means intervals are unnecessarily wide for low-risk policies and structured uniformly when they should be narrower for low-risk and proportionally wider for high-risk.
 
 **insurance-conformal with pearson_weighted score:**
 
@@ -73,13 +73,13 @@ intervals = cp.predict_interval(X_test, alpha=0.10)
 # Polars DataFrame: columns lower, point, upper
 ```
 
-The score hierarchy matters. For Tweedie/Poisson models, narrowest intervals come from `pearson_weighted`, then `deviance`, then `anscombe`, then raw `pearson`, then `raw`. Coverage is guaranteed in all cases — but `raw` produces intervals that are 13–14% wider than necessary on a UK motor book where high-mean risks are genuinely more dispersed.
+The score hierarchy matters. For Tweedie/Poisson models, narrowest intervals come from `pearson_weighted`, then `deviance`, then `anscombe`, then raw `pearson`, then `raw`. Coverage is guaranteed in all cases - but `raw` produces intervals that are 13–14% wider than necessary on a UK motor book where high-mean risks are genuinely more dispersed.
 
 ---
 
 ## Problem 2: no exposure handling
 
-Every insurance model is a rate model. Expected claims cost is rate × exposure. A policy that ran for six months contributes 0.5 years of exposure; a policy cancelled after two weeks contributes 0.038 years. If you treat these the same as annual policies in your calibration set, your non-conformity scores are not exchangeable — short-exposure policies systematically have smaller residuals not because your model is better at predicting them, but because they had less time to generate claims.
+Every insurance model is a rate model. Expected claims cost is rate × exposure. A policy that ran for six months contributes 0.5 years of exposure; a policy cancelled after two weeks contributes 0.038 years. If you treat these the same as annual policies in your calibration set, your non-conformity scores are not exchangeable - short-exposure policies systematically have smaller residuals not because your model is better at predicting them, but because they had less time to generate claims.
 
 MAPIE has no mechanism for this. It treats calibration observations as exchangeable, which they are not when exposure varies.
 
@@ -91,7 +91,7 @@ cp.calibrate(X_cal, y_cal, exposure=exposure_cal)
 intervals = cp.predict_interval(X_test, alpha=0.10, exposure=exposure_test)
 ```
 
-Without exposure weighting, the calibration quantile is contaminated by the easier-to-predict short-duration policies. The resulting intervals will be too narrow for annual policies — the opposite of what you want.
+Without exposure weighting, the calibration quantile is contaminated by the easier-to-predict short-duration policies. The resulting intervals will be too narrow for annual policies - the opposite of what you want.
 
 ---
 
@@ -127,7 +127,7 @@ This matters for pricing. A reinsurance attachment point is set based on the hig
 
 Non-life pricing separates claims into frequency (how often) and severity (how much). The expected aggregate loss is `E[frequency] × E[severity | claim]`. Conformal prediction for this decomposition has a specific subtlety: you cannot use observed claim counts at calibration time, because that creates a distributional mismatch between calibration scores and test scores that breaks the coverage guarantee.
 
-The correct approach, from Graziadei et al. (arXiv:2307.13124), is to feed the *predicted* frequency from the frequency model into the severity model at both calibration and test time. MAPIE cannot do this — it is a single-model wrapper.
+The correct approach, from Graziadei et al. (arXiv:2307.13124), is to feed the *predicted* frequency from the frequency model into the severity model at both calibration and test time. MAPIE cannot do this - it is a single-model wrapper.
 
 ```python
 from sklearn.linear_model import PoissonRegressor, GammaRegressor
@@ -143,7 +143,7 @@ fs.calibrate(X_cal, d_cal, y_cal)  # d_cal passed for validation only; scores us
 intervals = fs.predict_interval(X_test, alpha=0.10)
 ```
 
-The coverage guarantee holds because calibration scores use `mu_hat(x)`, not observed counts. This is not a workaround — it is the theoretically correct protocol for two-stage models.
+The coverage guarantee holds because calibration scores use `mu_hat(x)`, not observed counts. This is not a workaround - it is the theoretically correct protocol for two-stage models.
 
 ---
 
@@ -151,7 +151,7 @@ The coverage guarantee holds because calibration scores use `mu_hat(x)`, not obs
 
 The numbers below are from the insurance-conformal GBM benchmark: 50,000 synthetic UK motor policies, CatBoost Tweedie(p=1.5) as the point forecast, heteroskedastic Gamma DGP where high-mean risks are genuinely more dispersed than Tweedie(1.5) predicts. Temporal 60/20/20 split (30k train, 10k calibration, 10k test). 90% target coverage. Databricks serverless, seed=42.
 
-We have not benchmarked MAPIE directly on this dataset — the comparison to MAPIE is structural (absolute vs Pearson-weighted score), not a head-to-head run. The headline finding is what the correct score choice achieves compared to the parametric baseline:
+We have not benchmarked MAPIE directly on this dataset - the comparison to MAPIE is structural (absolute vs Pearson-weighted score), not a head-to-head run. The headline finding is what the correct score choice achieves compared to the parametric baseline:
 
 _Note: these benchmarks compare insurance-conformal's scoring modes against a parametric Tweedie baseline, not a direct MAPIE head-to-head. The structural argument for why MAPIE's absolute-residual approach produces wider intervals is discussed below._
 
@@ -161,9 +161,9 @@ _Note: these benchmarks compare insurance-conformal's scoring modes against a pa
 | insurance-conformal (`pearson_weighted`) | 0.902 | 0.879 | 3,806 |
 | insurance-conformal (locally-weighted) | 0.903 | **0.906** | 3,881 |
 
-The parametric approach estimates a single sigma on the calibration set. Because the DGP has genuinely higher dispersion at higher means, the single sigma overestimates uncertainty for low-risk policies (aggregate coverage 93.1% signals over-width) while barely holding the top-decile target. Conformal `pearson_weighted` corrects this: 90.2% aggregate, 13.4% narrower intervals. The locally-weighted variant adds a secondary model to predict residual spread and achieves 90.6% in the top decile — useful when per-decile coverage matters for reinsurance attachment decisions.
+The parametric approach estimates a single sigma on the calibration set. Because the DGP has genuinely higher dispersion at higher means, the single sigma overestimates uncertainty for low-risk policies (aggregate coverage 93.1% signals over-width) while barely holding the top-decile target. Conformal `pearson_weighted` corrects this: 90.2% aggregate, 13.4% narrower intervals. The locally-weighted variant adds a secondary model to predict residual spread and achieves 90.6% in the top decile - useful when per-decile coverage matters for reinsurance attachment decisions.
 
-Using MAPIE with default absolute residuals on this data would produce valid aggregate coverage but wider intervals than `pearson_weighted` — by the same mechanism as the raw score, which the benchmark shows costs 13–14% in width. That is the structural argument, not a measured number.
+Using MAPIE with default absolute residuals on this data would produce valid aggregate coverage but wider intervals than `pearson_weighted` - by the same mechanism as the raw score, which the benchmark shows costs 13–14% in width. That is the structural argument, not a measured number.
 
 Full benchmark: `benchmarks/benchmark_gbm.py` in the insurance-conformal repository.
 
@@ -211,31 +211,31 @@ The library has no MAPIE dependency. The split conformal algorithm is 20 lines o
 
 ## Summary
 
-MAPIE is an excellent library. If you are doing conformal prediction outside insurance, use it. The problem is not that MAPIE is wrong — it is that insurance data violates the implicit assumptions built into a general-purpose implementation.
+MAPIE is an excellent library. If you are doing conformal prediction outside insurance, use it. The problem is not that MAPIE is wrong - it is that insurance data violates the implicit assumptions built into a general-purpose implementation.
 
 Specifically: insurance residuals are not homoskedastic, exposure creates non-exchangeability if ignored, the coverage guarantee needs to be checked by risk segment rather than in aggregate, and frequency-severity models require a specific calibration protocol that single-model wrappers cannot replicate.
 
-[insurance-conformal](https://github.com/burning-cost/insurance-conformal) handles all of this. It is distribution-free, has no parametric assumptions, and produces 90% prediction intervals that hold in aggregate — and, with the locally-weighted variant, hold across risk deciles on a heterogeneous UK motor book.
+[insurance-conformal](https://github.com/burning-cost/insurance-conformal) handles all of this. It is distribution-free, has no parametric assumptions, and produces 90% prediction intervals that hold in aggregate - and, with the locally-weighted variant, hold across risk deciles on a heterogeneous UK motor book.
 
 The benchmark numbers are in `benchmarks/benchmark_gbm.py`. Run them.
 
 ---
 
 **Related:**
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the foundational post
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - the foundational post
 - [insurance-conformal on GitHub](https://github.com/burning-cost/insurance-conformal)
-- Manna et al. (2025), *Applied Stochastic Models in Business and Industry* — theoretical basis for `pearson_weighted` and locally-weighted conformal in insurance
-- Graziadei et al. (arXiv:2307.13124) — frequency-severity conformal prediction protocol
+- Manna et al. (2025), *Applied Stochastic Models in Business and Industry* - theoretical basis for `pearson_weighted` and locally-weighted conformal in insurance
+- Graziadei et al. (arXiv:2307.13124) - frequency-severity conformal prediction protocol
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

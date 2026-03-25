@@ -134,7 +134,7 @@ report_json = pack.to_json()
 
 ## The end-to-end workflow on synthetic data
 
-The library ships a synthetic motor panel generator so you can validate the methodology before applying it to live data. `make_synthetic_motor_panel` creates a segment × period panel with a known true ATT — which lets you verify that the estimator is recovering the right answer.
+The library ships a synthetic motor panel generator so you can validate the methodology before applying it to live data. `make_synthetic_motor_panel` creates a segment × period panel with a known true ATT - which lets you verify that the estimator is recovering the right answer.
 
 ```python
 from insurance_causal_policy import (
@@ -185,9 +185,9 @@ The full workflow from raw tables to regulatory document takes under 20 lines of
 
 We want to be precise about what TR24/2 actually found, because the finding is specific.
 
-The FCA reviewed outcomes monitoring across general insurance firms in August 2024. It found that firms routinely reported outcome metrics — loss ratios, complaint rates, claims acceptance rates — without demonstrating that their pricing interventions caused the observed changes. The failure was methodological: before/after comparisons without counterfactuals, no parallel trends testing, no sensitivity analysis. This is not the FCA demanding peer-reviewed econometrics. It is the FCA saying that "our loss ratio improved" is not the same as "our rate change worked."
+The FCA reviewed outcomes monitoring across general insurance firms in August 2024. It found that firms routinely reported outcome metrics - loss ratios, complaint rates, claims acceptance rates - without demonstrating that their pricing interventions caused the observed changes. The failure was methodological: before/after comparisons without counterfactuals, no parallel trends testing, no sensitivity analysis. This is not the FCA demanding peer-reviewed econometrics. It is the FCA saying that "our loss ratio improved" is not the same as "our rate change worked."
 
-EP25/2 (July 2025) is the FCA's own evaluation of GIPP remedies. It used conditional DiD — the FCA built a control group of comparable firms that did not implement the remedied practices and compared outcomes over the policy year following implementation. The methodology section of EP25/2 explicitly discusses parallel trends testing and counterfactual validity. The FCA is applying a higher standard to its own evaluations than it is seeing from regulated firms.
+EP25/2 (July 2025) is the FCA's own evaluation of GIPP remedies. It used conditional DiD - the FCA built a control group of comparable firms that did not implement the remedied practices and compared outcomes over the policy year following implementation. The methodology section of EP25/2 explicitly discusses parallel trends testing and counterfactual validity. The FCA is applying a higher standard to its own evaluations than it is seeing from regulated firms.
 
 The gap is not about resources; the calculations in `insurance-causal-policy` run on a laptop in under a minute. The gap is that no Python package previously combined SDID, staggered adoption, insurance-specific panel construction, and FCA-oriented output in a form that a pricing team could run without an econometrics background. We hope this closes it.
 
@@ -199,7 +199,7 @@ We should be direct about the limitations, because the regulatory context create
 
 SDID gives you the Average Treatment Effect on the Treated under the assumption that parallel trends hold after reweighting. This assumption cannot be tested from the data; the pre-trend test (and the HonestDiD sensitivity analysis) give you evidence about whether the assumption is plausible, not whether it is true.
 
-For insurance specifically, three threats to identification are worth naming. First, **market-wide shocks**: if the Ogden rate changed, or the FCA introduced GIPP reforms, or there was a severe weather event, during your post-treatment window and this differentially affected your treated and control segments, the SDID estimate is biased. SDID's time weights partially mitigate this but cannot eliminate it. Second, **IBNR**: incurred loss ratios for periods within 12–18 months of the analysis date understate ultimate claims. This means the apparent ATT in recent periods is likely an underestimate of the true effect. Third, **thin segments**: if your treated segments have low earned exposure — say, fewer than 500 car-years per period — the outcome metric itself is noisy, and the SDID weights will struggle to find a synthetic control that matches the pre-treatment trajectory. The `min_exposure` parameter and panel quality warnings exist for this reason.
+For insurance specifically, three threats to identification are worth naming. First, **market-wide shocks**: if the Ogden rate changed, or the FCA introduced GIPP reforms, or there was a severe weather event, during your post-treatment window and this differentially affected your treated and control segments, the SDID estimate is biased. SDID's time weights partially mitigate this but cannot eliminate it. Second, **IBNR**: incurred loss ratios for periods within 12–18 months of the analysis date understate ultimate claims. This means the apparent ATT in recent periods is likely an underestimate of the true effect. Third, **thin segments**: if your treated segments have low earned exposure - say, fewer than 500 car-years per period - the outcome metric itself is noisy, and the SDID weights will struggle to find a synthetic control that matches the pre-treatment trajectory. The `min_exposure` parameter and panel quality warnings exist for this reason.
 
 None of these mean the method is not worth using. The output needs to be interpreted with domain knowledge, and the caveats section of the evidence pack should be read as carefully as the headline ATT.
 
@@ -226,6 +226,6 @@ A before/after chart is not evidence. It is a description of what happened. The 
 
 ## See also
 
-- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) — panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — DML for continuous treatment; applies when the rate change was applied at varying levels rather than as a clean step
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) — why A/B rate testing and pre/post comparisons both fail for the same structural reason
+- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) - panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) - DML for continuous treatment; applies when the rate change was applied at varying levels rather than as a clean step
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) - why A/B rate testing and pre/post comparisons both fail for the same structural reason

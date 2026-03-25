@@ -31,7 +31,7 @@ We built [`insurance-survival`](https://github.com/burning-cost/insurance-surviv
 
 **Actuarial output format.** Pricing actuaries expect qx/px/lx tables. Survival software produces survival curves. Bridging them is mechanical but sufficiently tedious that people avoid it, which is why lapse tables in practice are often computed outside the model.
 
-**MLflow deployment.** lifelines has no native MLflow flavour. You cannot register a `WeibullAFTFitter` in the Model Registry without writing a custom pyfunc wrapper. If your data science platform uses MLflow — increasingly common in UK insurance — this matters.
+**MLflow deployment.** lifelines has no native MLflow flavour. You cannot register a `WeibullAFTFitter` in the Model Registry without writing a custom pyfunc wrapper. If your data science platform uses MLflow - increasingly common in UK insurance - this matters.
 
 ---
 
@@ -110,7 +110,7 @@ cure_probs = fitter.predict_cure(new_policies)
 # Series of π(x) per policy, range [0, 1]
 ```
 
-The high-NCD, direct-debit, long-tenure segment will cluster near 0.6–0.7 in a typical motor book. The PCW-sourced, NCD-0, card-payment segment will cluster near 0.15–0.20. That spread is the distribution of commercial risk in your retention book, and it has always been there — it just was not visible in a single-year logistic model.
+The high-NCD, direct-debit, long-tenure segment will cluster near 0.6–0.7 in a typical motor book. The PCW-sourced, NCD-0, card-payment segment will cluster near 0.15–0.20. That spread is the distribution of commercial risk in your retention book, and it has always been there - it just was not visible in a single-year logistic model.
 
 ---
 
@@ -122,7 +122,7 @@ Once you have a fitted survival model, `SurvivalCLV` integrates it with premium 
 CLV(x) = Σ_{t=1}^{T} S(t|x(t)) × (P_t − C_t) × (1+r)^{−t}
 ```
 
-The `x(t)` notation matters. NCD level is not static; it advances year by year via the UK motor NCD Markov chain (claim: two steps back; no claim: one step up). A customer on NCD 3 today will have a different NCD distribution in year 3 depending on how many claims they make, and that changes both their lapse probability and their premium. `SurvivalCLV` handles this via exact Markov chain marginalisation — no simulation required for this discrete, finite state space.
+The `x(t)` notation matters. NCD level is not static; it advances year by year via the UK motor NCD Markov chain (claim: two steps back; no claim: one step up). A customer on NCD 3 today will have a different NCD distribution in year 3 depending on how many claims they make, and that changes both their lapse probability and their premium. `SurvivalCLV` handles this via exact Markov chain marginalisation - no simulation required for this discrete, finite state space.
 
 ```python
 from insurance_survival import SurvivalCLV
@@ -203,7 +203,7 @@ profiles = pl.DataFrame([
 comparison = table.generate(profiles, by="segment")
 ```
 
-The qx at year 1 for the PCW NCD0 segment will typically be 35–40% for a competitive motor book. For the Direct NCD5 DD segment it will be 10–15%. That ratio is the core of your retention commercial risk — and it is directly quantified, by segment, in a format an actuary can sign off.
+The qx at year 1 for the PCW NCD0 segment will typically be 35–40% for a competitive motor book. For the Direct NCD5 DD segment it will be 10–15%. That ratio is the core of your retention commercial risk - and it is directly quantified, by segment, in a format an actuary can sign off.
 
 ---
 
@@ -227,7 +227,7 @@ with mlflow.start_run():
     )
 ```
 
-Once registered, the model can be loaded with `mlflow.pyfunc.load_model()` and called from a batch scoring notebook or a Delta Live Tables pipeline. The prediction method returns the same output as `predict_survival_function()` — a DataFrame of survival probabilities at requested time points — so existing downstream code does not need to change.
+Once registered, the model can be loaded with `mlflow.pyfunc.load_model()` and called from a batch scoring notebook or a Delta Live Tables pipeline. The prediction method returns the same output as `predict_survival_function()` - a DataFrame of survival probabilities at requested time points - so existing downstream code does not need to change.
 
 On Databricks specifically, the recommended pattern is to run `ExposureTransformer` as a Delta Live Tables pipeline that consumes policy transaction events from a Bronze Delta table, assembles the start/stop survival format incrementally, and writes to a Silver table. The cure model and CLV calculations sit in a Gold layer notebook triggered on each rate change cycle. The MLflow wrapper means the fitted model is versioned, staged (Staging → Production), and auditable. When the FCA asks which model version produced a particular CLV estimate, you have a complete lineage.
 
@@ -264,6 +264,6 @@ After that: fit `WeibullMixtureCureFitter` with NCD and channel as cure covariat
 The R survival community has had covariate-adjusted cure models in `flexsurvcure` for years. Python did not. Now it does.
 
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)
-- [Your Lapse Model Ignores Cure](/2026/03/11/insurance-cure/) — the subpopulation of customers who were never going to leave: why mixing them into a standard Kaplan-Meier estimate biases your projected retention rate upward
-- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) — the downstream model that consumes survival-derived CLV scores to allocate the retention discount budget
-- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — once the survival model is in production, the Murphy decomposition tells you when its calibration has drifted enough to warrant intervention
+- [Your Lapse Model Ignores Cure](/2026/03/11/insurance-cure/) - the subpopulation of customers who were never going to leave: why mixing them into a standard Kaplan-Meier estimate biases your projected retention rate upward
+- [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/) - the downstream model that consumes survival-derived CLV scores to allocate the retention discount budget
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) - once the survival model is in production, the Murphy decomposition tells you when its calibration has drifted enough to warrant intervention

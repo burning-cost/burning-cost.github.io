@@ -53,7 +53,7 @@ print(pa["notes"])
 #  'These are point estimates. Run bootstrap_lr_test() once data matures.']
 ```
 
-Hit rate significance at roughly 2 months. Loss ratio credibility at around 16 months — longer if your challenger split is thin. If your experiment is shorter than that, you are making a promotion decision on insufficient evidence. That is worth knowing before you promote.
+Hit rate significance at roughly 2 months. Loss ratio credibility at around 16 months - longer if your challenger split is thin. If your experiment is shorter than that, you are making a promotion decision on insufficient evidence. That is worth knowing before you promote.
 
 ---
 
@@ -81,7 +81,7 @@ exp = Experiment(
 # enabling live mode in production. Shadow mode (default) carries zero regulatory risk.
 ```
 
-The Consumer Duty concern is real. PRIN 2A requires firms to ensure customers receive fair value. Two customers with identical risk profiles receiving different prices simultaneously — because one was randomly assigned to a challenger model — is not a clear-cut position. The FCA has not explicitly prohibited A/B pricing tests, but the asymmetry matters: shadow mode has zero regulatory risk; live mode has non-trivial regulatory risk. Get legal sign-off before enabling live in production.
+The Consumer Duty concern is real. PRIN 2A requires firms to ensure customers receive fair value. Two customers with identical risk profiles receiving different prices simultaneously - because one was randomly assigned to a challenger model - is not a clear-cut position. The FCA has not explicitly prohibited A/B pricing tests, but the asymmetry matters: shadow mode has zero regulatory risk; live mode has non-trivial regulatory risk. Get legal sign-off before enabling live in production.
 
 Shadow mode has its own limitation: you cannot observe conversion rate or customer behaviour from challenger pricing, because challenger prices were never shown to customers. Shadow mode answers the question of whether the challenger model prices risk better. For commercial outcomes, you need live mode with all its caveats.
 
@@ -383,7 +383,7 @@ Champion/challenger testing in insurance is not conceptually hard. The concept i
 
 No open-source Python library provided all of this before. The commercial platforms that do (DataRobot MLOps, Akur8 Deploy) are either model-specific or infrastructure-heavy (Kubernetes required). Neither is an option for a pricing team running Radar on a desktop or working in Databricks notebooks with sklearn models.
 
-The timeline to LR significance — typically over a year when claims development is included — is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early or abandon the experiment before it matures. The power analysis module is not a nice-to-have; we think it is the most important output in the library for setting operational expectations correctly.
+The timeline to LR significance - typically over a year when claims development is included - is real and worth knowing about. Teams that start champion/challenger experiments without this number tend to either promote too early or abandon the experiment before it matures. The power analysis module is not a nice-to-have; we think it is the most important output in the library for setting operational expectations correctly.
 
 ---
 
@@ -392,6 +392,6 @@ The timeline to LR significance — typically over a year when claims developmen
 ---
 
 **Related reading:**
-- [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — the governance layer that a champion/challenger result needs to feed into
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the independent validation documentation that sits alongside deployment records
-- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — once the challenger is promoted and rates change, this is how to measure whether the change delivered the intended effect
+- [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the governance layer that a champion/challenger result needs to feed into
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the independent validation documentation that sits alongside deployment records
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) - once the challenger is promoted and rates change, this is how to measure whether the change delivered the intended effect
