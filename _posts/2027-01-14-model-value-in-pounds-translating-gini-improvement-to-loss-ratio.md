@@ -3,7 +3,7 @@ layout: post
 title: "Model Value in Pounds: Translating Gini Improvement to Loss Ratio"
 date: 2027-01-14
 categories: [pricing, model-governance, business-case]
-tags: [loss-ratio, gini, pearson-correlation, price-elasticity, lre, business-value, insurance-monitoring, uk-motor, ps21-5, model-validation]
+tags: [loss-ratio, gini, pearson-correlation, price-elasticity, lre, business-value, insurance-monitoring, uk-motor, ps21-5, model-validation, python]
 description: "The LRE metric converts Pearson correlation improvement into expected loss ratio change in basis points. Here is how to use it, and where it breaks."
 ---
 

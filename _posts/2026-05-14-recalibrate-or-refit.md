@@ -3,7 +3,7 @@ layout: post
 title: "Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question"
 date: 2026-05-14
 categories: [monitoring, pricing, techniques]
-tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, poisson, gini-drift, insurance-monitoring, uk-motor, pra-ss123]
+tags: [murphy-decomposition, calibration, model-monitoring, recalibrate, refit, poisson, gini-drift, insurance-monitoring, uk-motor, pra-ss123, python]
 description: "Assumes familiarity with the Murphy decomposition framework. Focuses on the operational question: given a monitoring alert, how do you read GMCB vs LMCB..."
 ---
 

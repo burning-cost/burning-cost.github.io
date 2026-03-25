@@ -4,7 +4,7 @@ title: "Which Uncertainty Quantification Method Should You Use?"
 date: 2026-03-25
 author: Burning Cost
 categories: [techniques, uncertainty-quantification]
-tags: [uncertainty-quantification, conformal, gamlss, distributional-regression, ngboost, catboost, bayesian, bootstrap, insurance-pricing, solvency-ii]
+tags: [uncertainty-quantification, conformal, gamlss, distributional-regression, ngboost, catboost, bayesian, bootstrap, insurance-pricing, solvency-ii, python]
 description: "A decision flowchart for pricing actuaries choosing between conformal prediction, GAMLSS, probabilistic GBMs, Bayesian Last Layer, and bootstrap. Opinionated recommendations with code."
 ---
 

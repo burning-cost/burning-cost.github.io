@@ -35,6 +35,12 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+feed:
+  posts_limit: 20
+  tags:
+    only:
+      - python
+
 show_excerpts: true
 
 # Explicitly publish future-dated posts (github-pages gem sets this, but be explicit)

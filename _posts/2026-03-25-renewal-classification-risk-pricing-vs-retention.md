@@ -3,7 +3,7 @@ layout: post
 title: "Renewal Classification — When Risk-Based Pricing Conflicts With Retention Targets"
 date: 2026-03-25
 categories: [pricing, survival-analysis, causal-inference]
-tags: [insurance-survival, insurance-causal, insurance-optimise, PS21/5, retention]
+tags: [insurance-survival, insurance-causal, insurance-optimise, PS21/5, retention, python]
 description: "How to combine lapse hazard models with causal price elasticity under PS21/5 constraints for UK motor and home renewal pricing."
 ---
 

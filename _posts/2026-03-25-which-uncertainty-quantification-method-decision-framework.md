@@ -3,7 +3,7 @@ layout: post
 title: "Which Uncertainty Quantification Method? A Decision Framework for Insurance Pricing Actuaries"
 date: 2026-03-25
 categories: [pricing, techniques]
-tags: [uncertainty-quantification, conformal-prediction, gamlss, credibility, bootstrap, GAM, insurance-conformal, insurance-distributional, insurance-credibility, insurance-gam, solvency-ii, scr, uk-motor, decision-framework]
+tags: [uncertainty-quantification, conformal-prediction, gamlss, credibility, bootstrap, GAM, insurance-conformal, insurance-distributional, insurance-credibility, insurance-gam, solvency-ii, scr, uk-motor, decision-framework, python]
 description: "A structured decision framework for choosing between conformal prediction, distributional GBM, Bühlmann-Straub credibility, GLM bootstrap, and GAM uncertainty. Model type, data size, regulatory use, and interpretability all drive the answer."
 ---
 

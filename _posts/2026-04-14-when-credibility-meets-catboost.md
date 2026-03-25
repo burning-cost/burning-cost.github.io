@@ -3,7 +3,7 @@ layout: post
 title: "When Credibility Meets CatBoost: Choosing Between Classical and Modern Approaches"
 date: 2026-04-14
 categories: [pricing, libraries, guides]
-tags: [credibility, buhlmann-straub, catboost, gbm, multilevel, random-effects, reml, insurance-credibility, insurance-multilevel, shap-relativities, uk-motor, scheme-pricing]
+tags: [credibility, buhlmann-straub, catboost, gbm, multilevel, random-effects, reml, insurance-credibility, insurance-multilevel, shap-relativities, uk-motor, scheme-pricing, python]
 description: "Bühlmann-Straub vs CatBoost vs two-stage multilevel for UK motor pricing: when each wins and how insurance-credibility and insurance-multilevel combine them."
 ---
 

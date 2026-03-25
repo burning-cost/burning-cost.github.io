@@ -3,7 +3,7 @@ layout: post
 title: "Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Distributional GBM"
 date: 2026-12-14
 categories: [pricing, techniques, tutorials]
-tags: [distributional-regression, tweedie, catboost, polars, volatility, dispersion, safety-loading, ifrs17, insurance-distributional, uk-motor, tutorial]
+tags: [distributional-regression, tweedie, catboost, polars, volatility, dispersion, safety-loading, ifrs17, insurance-distributional, uk-motor, tutorial, python]
 description: "Per-risk volatility scores using TweedieGBM from insurance-distributional. Price volatility as a rating factor, not a portfolio-level adjustment."
 ---
 

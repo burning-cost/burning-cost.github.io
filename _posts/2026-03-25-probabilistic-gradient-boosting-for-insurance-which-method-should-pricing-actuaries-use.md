@@ -3,7 +3,7 @@ layout: post
 title: "Probabilistic Gradient Boosting for Insurance: Which Method Should Pricing Actuaries Use?"
 date: 2026-03-25
 categories: [pricing, techniques, research]
-tags: [distributional-regression, gradient-boosting, xgboostlss, ngboost, catboost, lightgbm, tweedie, insurance-distributional, benchmarking, proper-scoring-rules, crps, uk-motor, actuarial, research]
+tags: [distributional-regression, gradient-boosting, xgboostlss, ngboost, catboost, lightgbm, tweedie, insurance-distributional, benchmarking, proper-scoring-rules, crps, uk-motor, actuarial, research, python]
 description: "Chevalier & Côté (EAJ 2025) benchmark nine GBM variants on five insurance datasets. We read it so you don't have to, then show where insurance-distributional fits in."
 ---
 

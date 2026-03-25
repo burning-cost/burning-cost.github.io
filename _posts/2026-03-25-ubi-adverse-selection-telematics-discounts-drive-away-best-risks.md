@@ -3,7 +3,7 @@ layout: post
 title: "UBI Adverse Selection: When Telematics Discounts Drive Away Your Best Risks"
 date: 2026-03-25
 categories: [pricing, techniques]
-tags: [telematics, ubi, adverse-selection, uk-motor, motor-pricing, insurance-telematics, insurance-optimise, insurance-monitoring, self-selection, portfolio-management]
+tags: [telematics, ubi, adverse-selection, uk-motor, motor-pricing, insurance-telematics, insurance-optimise, insurance-monitoring, self-selection, portfolio-management, python]
 description: "The adverse selection trap in opt-in UBI: why telematics discounts attract the risks you least want to retain, and what to do about it."
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: "UK Motor Is Going Loss-Making Again — Here's the Data"
 date: 2026-03-25
 categories: [market-intelligence, pricing]
-tags: [uk-motor, combined-ratio, claims-inflation, rate-adequacy, loss-ratio, insurance-monitoring, insurance-causal, insurance-optimise, market-intelligence]
+tags: [uk-motor, combined-ratio, claims-inflation, rate-adequacy, loss-ratio, insurance-monitoring, insurance-causal, insurance-optimise, market-intelligence, python]
 description: "EY forecasts a 111% net combined ratio for UK motor in 2026. WTW documents a 13% annual premium fall. Here is what the data shows and what pricing teams should do about it."
 ---
 

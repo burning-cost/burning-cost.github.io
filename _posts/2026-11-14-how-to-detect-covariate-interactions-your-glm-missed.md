@@ -3,7 +3,7 @@ layout: post
 title: "GLM Interaction Detection: A Six-Step Walkthrough with CANN, NID, and SHAP"
 date: 2026-11-14
 categories: [techniques]
-tags: [GLM, interactions, CANN, NID, shap, poisson, deviance, insurance-interactions, pra-ss123, uk-motor, tutorial]
+tags: [GLM, interactions, CANN, NID, shap, poisson, deviance, insurance-interactions, pra-ss123, uk-motor, tutorial, python]
 description: "Step-by-step tutorial: plant two interactions in synthetic motor data, detect them with CANN + NID, validate with SHAP, confirm with A/E surfaces, and..."
 ---
 

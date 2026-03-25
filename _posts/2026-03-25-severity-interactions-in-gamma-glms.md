@@ -3,7 +3,7 @@ layout: post
 title: "Severity Interactions in Gamma GLMs: Weaker Signal, Higher Bar"
 date: 2026-03-25
 categories: [techniques, pricing]
-tags: [GLM, interactions, CANN, NID, gamma, severity, poisson, insurance-interactions, uk-motor, tutorial]
+tags: [GLM, interactions, CANN, NID, gamma, severity, poisson, insurance-interactions, uk-motor, tutorial, python]
 description: "Applying CANN + NID to severity (Gamma) GLMs. Why the signal is weaker than frequency, what configuration changes are needed, and when a severity interaction is worth adding."
 ---
 
