@@ -70,8 +70,8 @@ result = model.fit(
 )
 
 print(model.association_summary())
-#    parameter  estimate     se  z_stat  p_value
-# 0  alpha       -0.041  0.009  -4.56    <0.001
+#    parameter  estimate  std_err  z_stat  p_value
+# 0  alpha (association)  -0.041  0.009  -4.56    <0.001
 ```
 
 `alpha = -0.041` means: a one-unit increase in true driving score reduces claim hazard by about 4%. This is the attenuation-corrected estimate — a naive Cox model using observed scores would have produced something like -0.027.
@@ -83,10 +83,6 @@ print(model.association_summary())
 Fitting the joint model is the first step. The insurance prize is dynamic prediction: updating the claim probability for an individual policy as new readings arrive, without refitting.
 
 ```python
-from insurance_jlm import DynamicPredictor
-
-predictor = DynamicPredictor(model)
-
 # Policy with 4 months of readings so far
 history = pd.DataFrame({
     'policy_id': ['P0042'] * 4,
@@ -97,7 +93,7 @@ history = pd.DataFrame({
 })
 
 # P(no claim in next 8 months | survived 4 months, this history)
-surv_prob = predictor.predict_survival(
+surv_prob = model.predict_survival(
     data=history,
     id_col='policy_id',
     landmark_time=4,
@@ -105,8 +101,8 @@ surv_prob = predictor.predict_survival(
     n_mc=500,
 )
 print(surv_prob)
-# policy_id   P(T > 12 | T > 4)  lower_95  upper_95
-# P0042       0.831               0.801     0.861
+#         id  landmark_time  horizon  survival_prob
+# 0  P0042              4        8          0.831
 ```
 
 Call this at each monthly upload. A policy whose score declines from 72 to 61 over four months has a materially different survival probability than one that was stable at 68. The dynamic predictor quantifies that difference.
@@ -124,16 +120,19 @@ from insurance_jlm import jlm_from_telematics
 model = jlm_from_telematics(
     telematics_df=monthly_scores,   # policy_id, month, score
     claims_df=claims,               # policy_id, claim_month, claimed
-    baseline_covariates=['age_band', 'vehicle_class', 'ncb_years'],
+    surv_covariates=['age_band', 'vehicle_class', 'ncb_years'],
 )
 
 # Association parameter — does trajectory predict claims?
 assoc = model.association_summary()
 
 # Dynamic risk for entire active book
-from insurance_jlm import DynamicPredictor
-predictor = DynamicPredictor(model)
-book_risk = predictor.batch_predict(current_readings, landmark_time=policy_months)
+book_risk = model.predict_survival(
+    data=current_readings,
+    id_col='policy_id',
+    landmark_time=policy_months,
+    horizon=8,
+)
 ```
 
 ---
@@ -187,7 +186,7 @@ Source and issue tracker: [github.com/burning-cost/insurance-jlm](https://github
 - [HMM-Based Telematics Risk Scoring](/2026/03/13/insurance-telematics/) — insurance-telematics produces the driving score time series that feeds into insurance-jlm as the longitudinal marker
 - [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) — insurance-survival handles standard time-to-event modelling without the longitudinal component
 - [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/) — insurance-thin-data for thin-segment pricing when your telematics book lacks enough claims for stable JLM estimation
-- [Mixture Cure Models](/2026/03/11/insurance-cure/) — insurance-survival for the non-claimer subpopulation; can be combined with JLM for a full latent class model
+- [Mixture Cure Models](/2026/03/11/insurance-cure/) — insurance-cure for the non-claimer subpopulation; can be combined with JLM for a full latent class model
 
 ---
 

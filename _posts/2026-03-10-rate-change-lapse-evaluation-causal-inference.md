@@ -84,13 +84,13 @@ The panel summary tells you what you are working with before you fit anything:
   'n_treated_segments': 22,    # young driver segments that got the rate increase
   'n_control_segments': 65,    # older driver segments, unaffected by the action
   'n_periods': 10,             # Q1 2023 through Q2 2025 (8 pre) + Q3, Q4 2025 (2 post)
+  'n_cells': 870,
+  'pct_nonzero_exposure': 98.6,
   'pct_treated_cells': 25.3,
-  'min_exposure': 51.2,
-  'thin_cells_warned': 3,
 }
 ```
 
-22 treated segments and 65 controls is a good ratio for SDID — the constrained weight optimisation has enough donors to construct a credible synthetic control. The 3 thin-cell warnings are worth investigating (typically fringe segments: very young drivers, specific geographic areas), but they will not dominate the estimate.
+22 treated segments and 65 controls is a good ratio for SDID — the constrained weight optimisation has enough donors to construct a credible synthetic control. The 98.6% non-zero exposure cells tells you the panel is well-populated; sparse cells (if present) are typically fringe segments such as very young drivers in thin geographic areas.
 
 ---
 
