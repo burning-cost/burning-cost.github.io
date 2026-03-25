@@ -16,7 +16,7 @@ The same problem at postcode sector level is worse. Nine thousand-plus postcode 
 
 The academic solution exists. Wang, Shi and Cao published a nested GLM framework in the North American Actuarial Journal in 2025 that addresses exactly this. It builds on entity embedding work by Shi and Shi (NAAJ 2023) and Avanzi et al.'s GLMMNet (ASTIN 2024). Until now there has been no Python implementation.
 
-`insurance-glm-tools` is that implementation.
+`insurance-nested-glm` is that implementation.
 
 ---
 
@@ -39,20 +39,20 @@ The nesting is what makes this work. The embedding and territory steps extract s
 ## In practice
 
 ```bash
-uv add insurance-glm-tools
-uv add "insurance-glm-tools[geo]"    # geopandas + spopt for territory clustering
+uv add insurance-nested-glm
+uv add "insurance-nested-glm[spatial]"    # geopandas + spopt for territory clustering
 ```
 
 The geo optional dependency pulls in geopandas and spopt (the spatial optimisation library that provides SKATER). This is the part with GDAL friction. If you do not have GDAL installed system-wide, the geopandas install will fail. On Ubuntu:
 
 ```bash
 sudo apt-get install gdal-bin libgdal-dev
-uv add "insurance-glm-tools[geo]"
+uv add "insurance-nested-glm[spatial]"
 ```
 
 On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[geo]` works fine.
 
-The PyTorch dependency is real. `insurance-glm-tools` pulls in PyTorch for the embedding training. Expect 2GB or so of disk, depending on your platform. For CPU-only use:
+The PyTorch dependency is real. `insurance-nested-glm` pulls in PyTorch for the embedding training. Expect 2GB or so of disk, depending on your platform. For CPU-only use:
 
 ```bash
 uv add insurance-glm-tools --extra-index-url https://download.pytorch.org/whl/cpu
@@ -62,29 +62,30 @@ uv add insurance-glm-tools --extra-index-url https://download.pytorch.org/whl/cp
 
 ```python
 import pandas as pd
-from insurance_glm_tools.nested import NestedGLMPipeline
+from insurance_nested_glm import NestedGLMPipeline
 
 # df: a DataFrame with one row per policy-year
-# Required columns: claims, exposure, plus your rating factors
+# X: feature DataFrame (rating factors); y: claim counts; exposure: policy years
 pipeline = NestedGLMPipeline(
-    base_formula="claims ~ driver_age_band + ncd_band + vehicle_age_band",
-    embedding_categoricals=["vehicle_make", "postcode_sector"],
-    embedding_dim=8,
+    base_formula="driver_age_band + ncd_band + vehicle_age_band",
     n_territories=40,
-    spatial_weights_path="postcode_adjacency.gal",  # libpysal GAL file
+    embedding_epochs=50,
+    embedding_lr=0.01,
 )
 
-result = pipeline.fit(
-    df=df,
-    exposure_col="exposure",
-    claims_col="claims",
-    area_col="postcode_sector",
+pipeline.fit(
+    X=df[feature_cols],
+    y=df["claims"].to_numpy(),
+    exposure=df["exposure"].to_numpy(),
+    geo_gdf=postcode_gdf,           # GeoDataFrame of postcode sectors
+    geo_id_col="postcode_sector",   # column linking policies to spatial units
+    high_card_cols=["vehicle_make", "postcode_sector"],
 )
 ```
 
-The `spatial_weights_path` argument takes a libpysal-format GAL or GWT adjacency file. If you do not have one, the library's `build_adjacency_from_geojson()` helper constructs it from a postcode sector GeoJSON - the same process described in our [BYM2 spatial territory post]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory-ratemaking-with-bym2 %}).
+The `geo_gdf` argument is a GeoDataFrame with one row per spatial unit (postcode sector). The library derives the spatial adjacency weights from the geometry directly — no separate GAL file required. If you do not have a GeoDataFrame, the library's `build_adjacency_from_geojson()` helper constructs one from a postcode sector GeoJSON.
 
-The `embedding_dim=8` parameter controls the size of the embedding vectors. The Wang et al. paper found 8 dimensions sufficient for vehicle make on their data. For postcode sectors with more structural variation, 12-16 dimensions may retain more signal. Treat this as a hyperparameter: compare Phase 4 model deviance across embedding dimensions.
+The `embedding_epochs` and `embedding_lr` parameters control training of the neural embedding layer. Fifty epochs at a learning rate of 0.01 is a reasonable starting point for most motor books; adjust if the loss is still descending at epoch 50.
 
 `n_territories=40` is the target territory count going into the final GLM. This is a business decision as much as a statistical one: 40 territories is meaningful granularity without creating underwriting headaches. The SKATER algorithm will produce exactly `n_territories` contiguous groups.
 
@@ -94,19 +95,20 @@ Every phase is accessible on the fitted result:
 
 ```python
 # Phase 1: base GLM
-print(result.base_glm.summary())
+print(pipeline.base_glm_.model_.summary())
 
-# Phase 2: embeddings (n_levels x embedding_dim)
-vehicle_embeddings = result.embeddings["vehicle_make"]
-print(vehicle_embeddings.shape)   # (847, 8) - 847 unique makes
+# Phase 2: embeddings — dict of col -> DataFrame with category + embedding coords
+embedding_frames = pipeline.embedding_trainer_.get_embedding_frame()
+vehicle_embeddings = embedding_frames["vehicle_make"]   # (847, 8+1) — category + emb_0..emb_7
+print(vehicle_embeddings.shape)   # (847, 9)
 
 # Phase 3: territory assignments
-territory_map = result.territory_map
-# DataFrame: postcode_sector, territory_id, territory_name
+territory_labels = pipeline.territory_clusterer_.labels_
+# pd.Series: index = spatial unit id, values = territory cluster id
 
 # Phase 4: final GLM
-print(result.nested_glm.summary())
-relativities = result.relativities()
+print(pipeline.outer_glm_.model_.summary())
+relativities = pipeline.relativities()
 ```
 
 `result.relativities()` returns a tidy DataFrame with one row per factor level: the GLM coefficient, the exponentiated relativity, and standard error. This is the deliverable for an actuarial peer review or a Radar import.
@@ -130,22 +132,23 @@ The Phase 2 embedding is where the statistical novelty sits. It is worth underst
 The `EmbeddingTrainer` takes the Phase 1 GLM predictions as an offset and trains a neural network where the only learned parameters are the embedding vectors for the high-cardinality categoricals. The network architecture is intentionally minimal: an embedding lookup, a log-sum aggregation of the active embedding vectors, added to the log of the GLM offset. The loss is Poisson deviance.
 
 ```python
-from insurance_glm_tools.nested import EmbeddingTrainer
+from insurance_nested_glm import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
-    categoricals=["vehicle_make", "postcode_sector"],
+    cat_cols=["vehicle_make", "postcode_sector"],
     embedding_dims={"vehicle_make": 8, "postcode_sector": 12},
-    n_epochs=50,
-    learning_rate=0.01,
+    epochs=50,
+    lr=0.01,
     batch_size=2048,
 )
 
-embeddings = trainer.fit(
-    df=df,
-    claims_col="claims",
-    exposure_col="exposure",
-    glm_offset_col="base_glm_log_mu",  # log(Phase 1 predictions)
+trainer.fit(
+    X=df[["vehicle_make", "postcode_sector"]],
+    y=df["claims"].to_numpy(),
+    exposure=df["exposure"].to_numpy(),
+    offset=df["base_glm_log_mu"].to_numpy(),  # log(Phase 1 predictions)
 )
+embeddings = trainer.get_embedding_frame()
 ```
 
 After 50 epochs on a dataset of 500,000 policies, the training takes 3-8 minutes on CPU. On a GPU, this is under a minute. The loss curve should flatten by epoch 30-40 for most insurance datasets; if it is still descending at epoch 50, increase epochs or reduce learning rate.
@@ -157,8 +160,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 # Extract makes with substantial exposure
-makes = vehicle_embeddings.index.tolist()  # list of make names
-vecs = vehicle_embeddings.values          # (n_makes, 8) array
+# vehicle_embeddings has 'category' column + emb_0..emb_7
+makes = vehicle_embeddings["category"].tolist()
+vecs = vehicle_embeddings[[c for c in vehicle_embeddings.columns if c.startswith("emb_")]].to_numpy()
 
 # Top 5 most similar makes to "Ford"
 ford_idx = makes.index("Ford")
@@ -178,23 +182,24 @@ SKATER partitions a spatial graph into k connected regions. The algorithm builds
 
 This is NP-hard in general. SKATER uses a heuristic that is fast in practice but is not guaranteed to find the global optimum. For the full UK postcode sector graph (9,000-plus nodes), expect 10-20 minutes for a 40-territory solution. For district-level work (around 3,000 postcode districts), expect 2-5 minutes.
 
-The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with fewer than `min_claims` observed claims is merged into its spatially adjacent neighbour with the most similar embedding centroid.
+The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with less than `min_exposure` earned exposure is merged into its spatially adjacent neighbour with the most similar embedding centroid.
 
 ```python
-from insurance_glm_tools.nested import TerritoryClusterer
+from insurance_nested_glm import TerritoryClusterer
 
 clusterer = TerritoryClusterer(
-    n_territories=40,
-    min_claims=500,           # minimum claims per territory
-    spatial_weights=weights,  # libpysal weights object
+    n_clusters=40,
+    min_exposure=500.0,   # minimum exposure (years) per territory
+    method="skater",
     random_state=42,
 )
 
-territory_labels = clusterer.fit(
-    embeddings=sector_embeddings,   # (n_sectors, 12) DataFrame
-    area_ids=sector_ids,
-    observed_claims=sector_claims,
+clusterer.fit(
+    gdf=sector_gdf,               # GeoDataFrame: one row per postcode sector
+    feature_cols=embedding_cols,  # embedding columns to use as clustering features
+    exposure=sector_exposure,     # exposure per sector for credibility filtering
 )
+territory_labels = clusterer.labels_   # pd.Series: sector -> territory id
 ```
 
 For UK islands (Orkney, Shetland, Isles of Scilly) that form disconnected components in the postcode adjacency graph, the clusterer assigns each island its nearest-neighbour territory by embedding distance. The island connection policy is logged and should be documented in your model documentation.
@@ -242,11 +247,11 @@ This is also why the nested GLM is different from simply running a GLM on target
 ## Get the library
 
 ```bash
-uv add insurance-glm-tools
-uv add "insurance-glm-tools[geo]"    # adds geopandas + spopt
+uv add insurance-nested-glm
+uv add "insurance-nested-glm[spatial]"    # adds geopandas + spopt
 ```
 
-Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
+Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
 
 ---
 

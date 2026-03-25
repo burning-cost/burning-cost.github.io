@@ -55,15 +55,17 @@ A Spearman correlation of 0.10 does not produce this number. A proxy R² of 0.62
 from insurance_fairness import FairnessAudit
 
 audit = FairnessAudit(
-    df=policies_df,
-    protected_col="diversity_score",
-    rating_factors=["postcode_area", "vehicle_group", "ncd_years", "age_band", "mileage", "payment_method"],
-    premium_col="annual_premium",
+    model=None,                   # None to use pre-computed predictions in data
+    data=policies_df,
+    protected_cols=["diversity_score"],
+    prediction_col="annual_premium",
+    outcome_col="claim_cost",
+    factor_cols=["postcode_area", "vehicle_group", "ncd_years", "age_band", "mileage", "payment_method"],
     exposure_col="exposure",
 )
 
 report = audit.run()
-print(report.proxy_summary())
+report.summary()
 # postcode_area: proxy_r2=0.62, mi=0.41, flag=RED
 # vehicle_group: proxy_r2=0.08, mi=0.06, flag=GREEN
 

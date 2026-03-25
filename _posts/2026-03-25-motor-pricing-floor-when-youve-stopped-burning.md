@@ -149,10 +149,10 @@ from insurance_monitoring.discrimination import GiniDriftBootstrapTest
 # exposure: earned car-years per policy
 
 gini_test = GiniDriftBootstrapTest(
-    reference_gini=0.41,          # Gini at model training time (stored scalar)
-    predicted=predicted_rate,
-    actual=actual_claims,
-    exposure=exposure,
+    training_gini=0.41,           # Gini at model training time (stored scalar)
+    monitor_predicted=predicted_rate,
+    monitor_actual=actual_claims,
+    monitor_exposure=exposure,
     n_bootstrap=2000,
     alpha=0.10,                   # one-sigma rule for monitoring (earlier signal)
 )

@@ -112,10 +112,7 @@ The income protection claims ratio concern is specific, but the general principl
 from insurance_monitoring.calibration import ae_ratio, CalibrationChecker
 
 # Per-segment A/E monitoring
-checker = CalibrationChecker(
-    thresholds_amber=0.15,   # >15% deviation triggers amber
-    thresholds_red=0.25,
-)
+checker = CalibrationChecker(distribution="poisson", alpha=0.05)
 
 for segment in ["standard_lives", "substandard_lives", "over50s"]:
     seg = df[df["segment"] == segment]
@@ -134,13 +131,13 @@ from insurance_monitoring import PITMonitor
 
 monitor = PITMonitor(alpha=0.05)
 
-# Reference period: fit on training data PITs
-monitor.fit(pit_scores_reference)
+# Reference period: feed historical PITs to establish initial state
+monitor.update_many(pit_scores_reference)
 
 # Each month, update with new PITs — alarm fires only if genuinely uncalibrated
-alarm = monitor.update(pit_scores_new_cohort)
+alarm = monitor.update_many(pit_scores_new_cohort)
 if alarm.triggered:
-    print(f"Calibration shift detected: {alarm.statistic:.4f} > {alarm.threshold:.4f}")
+    print(f"Calibration shift detected at step {alarm.time}")
 ```
 
 The point is to build a documented trail that shows segment-level claims ratios are being tracked in something close to real time, not reconstructed after a regulatory request.
@@ -178,7 +175,7 @@ card = MRMModelCard(
     limitations=[
         Limitation(
             description="Model trained on standard underwriting decisions. Substandard lives pricing extrapolated.",
-            severity="HIGH",
+            impact="Substandard lives premiums may be under or overpriced; segment-level A/E required.",
         ),
     ],
 )

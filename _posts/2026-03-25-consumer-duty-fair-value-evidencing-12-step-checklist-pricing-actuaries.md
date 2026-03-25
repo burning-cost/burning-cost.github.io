@@ -269,7 +269,7 @@ from insurance_monitoring.interpretable_drift import InterpretableDriftDetector
 # InterpretableDriftDetector: upgraded TRIPODD with exposure weighting and FDR control
 detector = InterpretableDriftDetector(
     model=production_model,
-    feature_names=["driver_age", "vehicle_group", "ncd_years", "vehicle_age"],
+    features=["driver_age", "vehicle_group", "ncd_years", "vehicle_age"],
     error_control="fdr",       # Benjamini-Hochberg for d >= 10 factors
     loss="poisson_deviance",   # canonical GLM loss for frequency models
     n_bootstrap=200,
@@ -384,13 +384,14 @@ from insurance_fairness import (
 
 # Requires pre-computed aware and unaware premium columns
 pvs = ProxyVulnerabilityScore(
+    df=policy_df,
+    sensitive_col="gender",
     aware_col="h_aware",
     unaware_col="h_unaware",
-    protected_col="gender",
     exposure_col="exposure",
 )
 
-result = pvs.compute(df=policy_df)
+result = pvs.compute()
 print(f"Portfolio vulnerability:  {result.portfolio_vulnerability:.4f}")
 print(f"High-risk policyholders: {result.n_high_vulnerability} "
       f"({result.pct_high_vulnerability:.1%} of book)")

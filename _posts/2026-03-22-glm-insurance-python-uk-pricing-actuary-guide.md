@@ -351,16 +351,15 @@ uv add insurance-fairness
 ```
 
 ```python
-from insurance_fairness import ProxyDiscriminationTest
+from insurance_fairness import detect_proxies
 
-# Requires: predictions, a sensitive attribute (e.g., postcode ethnicity estimate),
-# and your rating factor predictions
-test = ProxyDiscriminationTest(
-    y_pred=y_pred_pp,
-    sensitive_attr=df["postcode_minority_pct"].to_numpy(),  # from Census lookup
-    method="optimal_transport",
+# Detect which rating factors act as statistical proxies for a protected attribute
+result = detect_proxies(
+    df=df_pl,
+    protected_col="postcode_minority_pct",   # from Census lookup, in your Polars df
+    factor_cols=freq_features,
+    exposure_col="exposure",
 )
-result = test.run()
 print(result.summary())
 ```
 
@@ -381,17 +380,18 @@ uv add insurance-cv
 ```
 
 ```python
-from insurance_cv import TemporalSplit
+from insurance_cv import walk_forward_split, InsuranceCV
 import polars as pl
 
-# df must have an accident_year or inception_year column
-splitter = TemporalSplit(
-    date_col="inception_year",   # or accident_year
-    n_splits=4,
-    development_buffer_months=6, # exclude last 6 months from each training set
+# Build walk-forward folds — expanding training window, 6-month IBNR buffer
+splits = walk_forward_split(
+    df=df,
+    date_col="inception_year",
+    ibnr_buffer_months=6,
 )
+cv = InsuranceCV(splits=splits, df=df)
 
-for fold, (train_idx, test_idx) in enumerate(splitter.split(df)):
+for fold, (train_idx, test_idx) in enumerate(cv.split(X_enc)):
     X_train = X_enc[train_idx]
     X_test  = X_enc[test_idx]
     y_train = y_freq[train_idx]
@@ -507,7 +507,7 @@ cb_model.fit(train_pool)
 
 # 2. Extract SHAP relativities
 sr = SHAPRelativities(model=cb_model, X=df.select(freq_features))
-relativities = sr.extract()
+relativities = sr.extract_relativities()
 age_curve = sr.extract_continuous_curve("DrivAge")
 
 # 3. Surrogate GLM

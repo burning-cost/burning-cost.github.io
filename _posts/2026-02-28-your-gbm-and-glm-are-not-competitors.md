@@ -160,18 +160,27 @@ The blend is a new model for model risk management purposes. It goes in the mode
 ```python
 from insurance_governance import ModelValidationReport, ValidationModelCard, ModelInventory, MRMModelCard, RiskTierScorer
 
-# Build a model card for the blend
+# Build a model card for the blend (MRM inventory record)
 card = MRMModelCard(
-    name="motor_freq_blend_2026q1",
-    version="1.0",
-    purpose="GLM-GBM blend for UK motor frequency pricing",
-    methodology="Poisson GLM (35%) + CatBoost (65%) blend, CV-derived weights",
-    owner="Pricing Team",
+    model_id="motor-freq-blend-2026q1",
+    model_name="Motor Frequency GLM-GBM Blend 2026 Q1",
+    version="1.0.0",
+    intended_use="GLM-GBM blend for UK motor frequency pricing",
+    model_type="Poisson GLM (35%) + CatBoost (65%) blend, CV-derived weights",
+    developer="Pricing Team",
+    customer_facing=True,
 )
 
-# Score risk tier
+# Score risk tier — RiskTierScorer takes explicit model attributes, not a card object
 scorer = RiskTierScorer()
-tier_result = scorer.score(card)
+tier_result = scorer.score(
+    gwp_impacted=25_000_000,
+    model_complexity="high",
+    deployment_status="challenger",
+    regulatory_use=False,
+    external_data=False,
+    customer_facing=True,
+)
 
 # Register in the model inventory (JSON file, version-controlled)
 inv = ModelInventory("governance/model_inventory.json")
@@ -179,13 +188,13 @@ inv.register(card, tier_result)
 
 # Run validation report against blend predictions
 val_card = ValidationModelCard(
-    name=card.name,
+    name=card.model_name,
     version=card.version,
-    purpose=card.purpose,
-    methodology=card.methodology,
+    purpose=card.intended_use,
+    methodology=card.model_type,
     target="claim_freq",
     features=FEATURES,
-    owner=card.owner,
+    owner=card.developer,
 )
 report = ModelValidationReport(
     model_card=val_card,

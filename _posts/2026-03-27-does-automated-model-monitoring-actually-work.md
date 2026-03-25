@@ -88,15 +88,15 @@ report = MonitoringReport(
     reference_predicted=pred_ref,
     current_actual=act_cur,
     current_predicted=pred_cur,
-    features_reference=feat_ref,   # pl.DataFrame with named rating factors
-    features_current=feat_cur,
-    exposure_reference=exp_ref,
-    exposure_current=exp_cur,
+    feature_df_reference=feat_ref,   # pl.DataFrame with named rating factors
+    feature_df_current=feat_cur,
+    reference_exposure=exp_ref,
+    exposure=exp_cur,
 )
 
-result = report.run()
-print(result.recommendation)   # REFIT / RECALIBRATE / NO_ACTION
-print(result.summary_table())  # traffic-light per check
+# MonitoringReport runs all checks on construction
+print(report.recommendation)   # REFIT / RECALIBRATE / NO_ACTION
+print(report.to_polars())      # traffic-light per check
 ```
 
 The `recommendation` is deliberately opinionated: REFIT means ranking has degraded and a new model is required; RECALIBRATE means ranking is intact but predictions are off-scale and a multiplicative adjustment will fix it. That distinction is worth weeks of effort — recalibration is a morning's work, a full refit is a project.

@@ -133,14 +133,16 @@ from insurance_conformal.risk import IntervalWidthController
 
 # upper_cal, lower_cal: conformal intervals on calibration set
 iwc = IntervalWidthController(
-    alpha=0.15,    # expected width ≤ 15% of the scale budget
-    scale=5000.0,  # normalisation: max plausible interval width in £
+    width_target=0.15,  # expected normalised width ≤ 0.15 of the scale budget
+    scale=5000.0,       # normalisation: max plausible interval width in £
 )
-iwc.calibrate(lower_cal, upper_cal)
+# calibrate_from_widths takes an array of (upper - lower) interval widths
+widths_cal = upper_cal - lower_cal
+iwc.calibrate_from_widths(widths_cal)
 print(f"Optimal quantile: {iwc.lambda_hat_:.3f}")  # e.g., 0.923
 ```
 
-The controller finds the quantile level `λ*` such that the expected normalised width `E[(upper - lower) / scale] ≤ α`. Higher quantile = wider intervals = smaller `λ*` minimises width subject to the risk bound.
+The controller finds the quantile level `λ*` such that the expected normalised width `E[(upper - lower) / scale] ≤ width_target`. Higher quantile = wider intervals = smaller `λ*` minimises width subject to the risk bound.
 
 ---
 

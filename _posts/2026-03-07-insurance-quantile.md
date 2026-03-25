@@ -57,11 +57,11 @@ from insurance_quantile import QuantileGBM, per_risk_tvar, large_loss_loading, i
 
 # Fit a quantile model on severity (non-zero claims only)
 # For a zero-inflated book, model frequency separately with Tweedie
+# CatBoost hyperparameters are passed as **kwargs to QuantileGBM
+catboost_params = {"iterations": 500, "learning_rate": 0.05, "depth": 6}
 model = QuantileGBM(
     quantiles=[0.5, 0.75, 0.9, 0.95, 0.99],
-    iterations=500,
-    learning_rate=0.05,
-    depth=6,
+    **catboost_params,
 )
 model.fit(X_train, y_severity_train, exposure=exposure_train)
 
@@ -233,17 +233,19 @@ The library does not handle the frequency/severity split automatically; that dec
 If your calibration report shows systematic undercoverage, CQR is the fix. It does not improve the quantile model's accuracy — it adjusts the thresholds so that observed coverage matches the stated level on held-out calibration data.
 
 ```python
-from insurance_conformal import InsuranceConformalPredictor
+from insurance_conformal import ConformalisedQuantileRegression
 
-# Use the quantile GBM as the base model for CQR
-cp = InsuranceConformalPredictor(
-    model=model,
-    nonconformity="cqr",
-    quantile_lower=0.05,
-    quantile_upper=0.95,
-)
-cp.calibrate(X_cal, y_cal)
-intervals = cp.predict_interval(X_test, alpha=0.10)
+# Fit separate lower and upper quantile models for CQR
+catboost_params = {"iterations": 500, "learning_rate": 0.05, "depth": 6}
+model_lo = QuantileGBM(quantiles=[0.05], **catboost_params)
+model_hi = QuantileGBM(quantiles=[0.95], **catboost_params)
+model_lo.fit(X_train, y_severity_train)
+model_hi.fit(X_train, y_severity_train)
+
+# CQR calibrates the interval width with a distribution-free coverage guarantee
+cqr = ConformalisedQuantileRegression(model_lo=model_lo, model_hi=model_hi)
+cqr.calibrate(X_cal, y_cal)
+intervals = cqr.predict_interval(X_test, alpha=0.10)
 ```
 
 This is the right combination for any application where the coverage guarantee matters for regulatory or capital purposes: the GBM learns the conditional distribution efficiently, CQR provides the distributional-free coverage certificate.
