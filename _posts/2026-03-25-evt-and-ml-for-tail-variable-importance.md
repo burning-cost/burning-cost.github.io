@@ -107,7 +107,7 @@ The `EQRNModel` in `insurance-quantile` implements exactly this — a neural net
 ```python
 from insurance_quantile.eqrn import EQRNModel
 
-# Two-step: Step 1 fits intermediate quantile via LightGBM K-fold OOF
+# Two-step: Step 1 fits intermediate quantile via CatBoost K-fold OOF
 # Step 2 trains GPD neural net on exceedances only
 model = EQRNModel(
     tau_0=0.85,           # train GPD on top 15% of claims

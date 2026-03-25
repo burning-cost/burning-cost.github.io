@@ -3,7 +3,7 @@ layout: post
 title: "Conformalised Quantile Regression: Prediction Intervals That Actually Adapt to Risk"
 date: 2026-03-24
 categories: [techniques]
-tags: [conformal-prediction, quantile-regression, prediction-intervals, insurance-conformal, catboost, lightgbm, motor, reserving, reinsurance, uk-motor]
+tags: [conformal-prediction, quantile-regression, prediction-intervals, insurance-conformal, catboost, xgboost, motor, reserving, reinsurance, uk-motor]
 description: "ConformalisedQuantileRegression in insurance-conformal v0.6.2 gives you statistically guaranteed prediction intervals that are wide for high-risk segments and narrow for low-risk ones. Here is how to use it."
 author: Burning Cost
 ---
@@ -58,7 +58,7 @@ Quantile regression does not have this problem. For a low-risk policy, the 5th p
 
 ## The API
 
-`ConformalisedQuantileRegression` takes two pre-fitted quantile models — one for the lower tail, one for the upper — and a calibration set. It works with any quantile objective: CatBoost `Quantile:alpha=`, LightGBM `objective="quantile"`, sklearn `GradientBoostingRegressor(loss="quantile")`.
+`ConformalisedQuantileRegression` takes two pre-fitted quantile models — one for the lower tail, one for the upper — and a calibration set. It works with any quantile objective: CatBoost `Quantile:alpha=`, XGBoost `objective="reg:quantileerror"`, sklearn `GradientBoostingRegressor(loss="quantile")`.
 
 ```python
 from catboost import CatBoostRegressor
@@ -140,25 +140,28 @@ What you do not want to see: `coverage` in decile 10 dropping well below 0.90. S
 
 ---
 
-## LightGBM alternative
+## XGBoost alternative
 
-If you are using LightGBM, the setup is identical in structure:
+`ConformalisedQuantileRegression` accepts anything with a `predict(X)` method, so XGBoost works directly:
 
 ```python
-import lightgbm as lgb
+import xgboost as xgb
 from insurance_conformal import ConformalisedQuantileRegression
 
-params_lo = {
-    "objective": "quantile",
-    "alpha": 0.05,
-    "n_estimators": 500,
-    "num_leaves": 63,
-    "verbose": -1,
-}
-params_hi = {**params_lo, "alpha": 0.95}
-
-lo = lgb.LGBMRegressor(**params_lo)
-hi = lgb.LGBMRegressor(**params_hi)
+lo = xgb.XGBRegressor(
+    objective="reg:quantileerror",
+    quantile_alpha=0.05,
+    n_estimators=500,
+    max_depth=6,
+    verbosity=0,
+)
+hi = xgb.XGBRegressor(
+    objective="reg:quantileerror",
+    quantile_alpha=0.95,
+    n_estimators=500,
+    max_depth=6,
+    verbosity=0,
+)
 lo.fit(X_train, y_train)
 hi.fit(X_train, y_train)
 
@@ -167,7 +170,7 @@ cqr.calibrate(X_cal, y_cal)
 intervals = cqr.predict_interval(X_test, alpha=0.10)
 ```
 
-The class accepts anything with a `predict(X)` method. Polars and pandas DataFrames and numpy arrays all work as inputs.
+Polars and pandas DataFrames and numpy arrays all work as inputs.
 
 ---
 
