@@ -48,9 +48,10 @@ Before you can respond to a deteriorating market, you need to know your book is 
 ```python
 from insurance_monitoring import ae_ratio, ae_ratio_ci, MonitoringReport
 
-# ae_ratio returns the A/E scalar; ae_ratio_ci adds bootstrap confidence intervals
-ratio = ae_ratio(actual=paid_claims, expected=model_expected)
-lower, upper = ae_ratio_ci(actual=paid_claims, expected=model_expected, alpha=0.05)
+# ae_ratio returns the A/E scalar; ae_ratio_ci adds Poisson confidence intervals
+ratio = ae_ratio(actual=paid_claims, predicted=model_expected)
+result = ae_ratio_ci(actual=paid_claims, predicted=model_expected, alpha=0.05)
+lower, upper = result["lower"], result["upper"]
 
 print(f"A/E: {ratio:.3f}  95% CI: [{lower:.3f}, {upper:.3f}]")
 ```
@@ -80,14 +81,16 @@ print(f"Vehicle age PSI: {psi_value:.4f}")
 from insurance_monitoring import MonitoringReport
 
 report = MonitoringReport(
-    y_true=current_claims,
-    y_pred=model_expected,
-    features_reference=reference_features,
-    features_current=current_features,
+    reference_actual=reference_claims,
+    reference_predicted=reference_expected,
+    current_actual=current_claims,
+    current_predicted=model_expected,
+    feature_df_reference=reference_features,
+    feature_df_current=current_features,
     exposure=current_exposure,
 )
-report.run()
-print(report.summary())
+print(report.recommendation)
+print(report.to_dict())
 ```
 
 The output distinguishes between calibration failure (A/E outside thresholds) and discrimination failure (Gini drift), which matters for deciding whether the response is a scalar adjustment or a model refit.
@@ -105,19 +108,19 @@ from insurance_causal.rate_change import RateChangeEvaluator, make_rate_change_d
 
 evaluator = RateChangeEvaluator(
     outcome_col="loss_ratio",
-    treatment_period=9,          # month index when market hardened
+    change_period=9,             # month index when market hardened
     unit_col="segment",
-    weight_col="earned_exposure",
+    exposure_col="earned_exposure",
 )
-result = evaluator.fit(df)
-print(result.summary())
+result = evaluator.fit(df).summary()
+print(result)
 ```
 
 If your deterioration tracks the market (EY's 111% NCR trajectory), you have a pricing adequacy problem. If your deterioration exceeds the market, you have a portfolio selection problem as well.
 
 **Rate adequacy by segment.** A portfolio-level rate increase decision made without segment-level profitability analysis will produce an uneven outcome: adequately priced segments will be pushed past competitive rates and lose volume, while underpriced segments get inadequate correction. The standard approach is to compute technical loss ratios at segment level — by vehicle group, age band, and channel — then apply rate change factors calibrated to the technical premium gap.
 
-**Constrained rate optimisation.** The FCA's Consumer Duty framework (PS22/9) constrains how you can move rates, particularly on renewal books where existing customers may face significant increases. `insurance-optimise` handles this directly — you specify loss ratio targets, maximum rate change limits per policy, volume retention floors, and the ENBP constraint from PS21/11, and it solves for the profit-maximising premium set within those constraints:
+**Constrained rate optimisation.** The FCA's Consumer Duty framework (PS22/9) constrains how you can move rates, particularly on renewal books where existing customers may face significant increases. `insurance-optimise` handles this directly — you specify loss ratio targets, maximum rate change limits per policy, volume retention floors, and the ENBP constraint from PS21/5, and it solves for the profit-maximising premium set within those constraints:
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
@@ -126,7 +129,7 @@ config = ConstraintConfig(
     lr_max=0.75,            # target loss ratio: pull back from current trajectory
     retention_min=0.82,     # minimum volume retention
     max_rate_change=0.25,   # cap rate increases at 25% per policy
-    enbp_buffer=0.01,       # PS21/11 margin
+    enbp_buffer=0.01,       # PS21/5 margin
 )
 
 opt = PortfolioOptimiser(
@@ -141,7 +144,7 @@ opt = PortfolioOptimiser(
 
 result = opt.optimise()
 print(f"Expected profit: £{result.profit:,.0f}")
-print(f"Volume retention: {result.volume_retention:.1%}")
+print(f"Volume retention: {result.expected_retention:.1%}")
 ```
 
 The key constraint tension in the current market is `lr_max` versus `max_rate_change`. A 111% NCR implies you need material rate increases to return to adequacy, but Consumer Duty limits how much you can move in a single renewal cycle. The optimiser surfaces this tension explicitly: if the constraints are infeasible, it tells you, which is more useful than a number that looks right but reflects an impossible set of requirements.
