@@ -2,6 +2,7 @@
 layout: post
 title: "Discrimination-Insensitive Pricing: Beyond Removing the Protected Variable"
 date: 2026-03-25
+published: false
 categories: [fairness, techniques, tutorials]
 tags: [proxy-discrimination, fairness, reweighting, kl-divergence, propensity-scores, insurance-fairness, fca, consumer-duty, equality-act, uk-motor, tutorial]
 description: "insurance-fairness v0.6.3 ships DiscriminationInsensitiveReweighter. Here's why dropping the protected column doesn't work, how propensity-based reweighting does, and what the API looks like."
