@@ -66,7 +66,7 @@ segments = pd.cut(df["ncd_years"], bins=[0, 1, 3, 5], labels=["NCD0-1", "NCD2-3"
 segment_results = model.effect_by_segment(segments)
 
 for seg in segment_results:
-    print(f"{seg.label}: AME={seg.ate:.3f} (CI: {seg.ci_lower:.3f}, {seg.ci_upper:.3f})")
+    print(f"{seg.segment_name}: AME={seg.result.estimate:.3f} (CI: {seg.result.ci_low:.3f}, {seg.result.ci_high:.3f})")
 # NCD0-1:  AME=-0.68  (most sensitive — the segment walking their renewal)
 # NCD2-3:  AME=-0.38
 # NCD4-5:  AME=-0.19  (least sensitive — loyal customers who do not shop around)
@@ -297,11 +297,11 @@ gov_report = GovernanceReport(
     },
 )
 
-gov_report.to_html("renewal_optimiser_governance_2026Q1.html")
+gov_report.save_html("renewal_optimiser_governance_2026Q1.html")
 gov_report.to_dict()   # for Confluence or MRC portal ingestion
 ```
 
-The `to_html()` output is self-contained (no CDN dependencies), print-to-PDF ready, and covers model identity, risk tier, validation RAG, assumptions register with risk ratings, and outstanding issues. It is what the FCA would expect to see if they asked for your pricing model governance documentation.
+The `save_html()` method writes a self-contained HTML file (no CDN dependencies), print-to-PDF ready, and covers model identity, risk tier, validation RAG, assumptions register with risk ratings, and outstanding issues. It is what the FCA would expect to see if they asked for your pricing model governance documentation.
 
 ---
 

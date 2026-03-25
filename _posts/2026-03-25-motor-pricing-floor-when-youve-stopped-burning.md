@@ -125,8 +125,8 @@ The practical question is what A/E threshold triggers action. We use a simple ru
 from insurance_monitoring.calibration import ae_ratio_ci
 
 # For the under-25 segment: 412 actual claims, 318 expected
-ci = ae_ratio_ci(actual_claims=412, expected_claims=318, confidence=0.95)
-print(f"A/E 95% CI: ({ci[0]:.3f}, {ci[1]:.3f})")
+result_ci = ae_ratio_ci(412, 318, alpha=0.05)
+print(f"A/E 95% CI: ({result_ci['lower']:.3f}, {result_ci['upper']:.3f})")
 # A/E 95% CI: (1.177, 1.419) — entirely above 1.0
 # The deterioration is real, not noise
 ```
@@ -149,10 +149,10 @@ from insurance_monitoring.discrimination import GiniDriftBootstrapTest
 # exposure: earned car-years per policy
 
 gini_test = GiniDriftBootstrapTest(
-    reference_gini=0.41,          # Gini at model training time (stored scalar)
-    predicted=predicted_rate,
-    actual=actual_claims,
-    exposure=exposure,
+    training_gini=0.41,           # Gini at model training time (stored scalar)
+    monitor_predicted=predicted_rate,
+    monitor_actual=actual_claims,
+    monitor_exposure=exposure,
     n_bootstrap=2000,
     alpha=0.10,                   # one-sigma rule for monitoring (earlier signal)
 )

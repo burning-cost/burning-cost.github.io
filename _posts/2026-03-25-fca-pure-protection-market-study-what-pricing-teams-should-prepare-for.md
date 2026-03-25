@@ -109,22 +109,17 @@ The income protection claims ratio concern is specific, but the general principl
 `insurance-monitoring` has calibration and discrimination tooling that covers this. The A/E ratio by segment is the starting point:
 
 ```python
-from insurance_monitoring.calibration import ae_ratio, CalibrationChecker
+from insurance_monitoring.calibration import ae_ratio
 
 # Per-segment A/E monitoring
-checker = CalibrationChecker(
-    thresholds_amber=0.15,   # >15% deviation triggers amber
-    thresholds_red=0.25,
-)
-
 for segment in ["standard_lives", "substandard_lives", "over50s"]:
     seg = df[df["segment"] == segment]
-    result = ae_ratio(
-        actual=seg["claims_incurred"],
-        expected=seg["model_expected"],
-        exposure=seg["exposure"],
+    ae = ae_ratio(
+        actual=seg["claims_incurred"].values,
+        predicted=seg["model_expected"].values,
+        exposure=seg["exposure"].values,
     )
-    print(f"{segment}: A/E = {result.ratio:.3f}, p = {result.p_value:.4f}")
+    print(f"{segment}: A/E = {ae:.3f}")
 ```
 
 For ongoing production monitoring without repeated-testing inflation - which is the right framework for monthly monitoring cycles - `PITMonitor` provides anytime-valid calibration change detection (Henzi, Murph & Ziegel, 2025):
@@ -134,13 +129,12 @@ from insurance_monitoring import PITMonitor
 
 monitor = PITMonitor(alpha=0.05)
 
-# Reference period: fit on training data PITs
-monitor.fit(pit_scores_reference)
-
-# Each month, update with new PITs — alarm fires only if genuinely uncalibrated
-alarm = monitor.update(pit_scores_new_cohort)
-if alarm.triggered:
-    print(f"Calibration shift detected: {alarm.statistic:.4f} > {alarm.threshold:.4f}")
+# Each month, update with new PITs one at a time — alarm fires only if genuinely uncalibrated
+for pit in pit_scores_new_cohort:
+    alarm = monitor.update(float(pit))
+    if alarm.triggered:
+        print(f"Calibration shift detected: e-value {alarm.e_value:.4f} > threshold {alarm.threshold:.4f}")
+        break
 ```
 
 The point is to build a documented trail that shows segment-level claims ratios are being tracked in something close to real time, not reconstructed after a regulatory request.
