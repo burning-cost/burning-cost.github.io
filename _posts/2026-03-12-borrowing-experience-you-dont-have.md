@@ -45,7 +45,7 @@ The effect is that where the target data is consistent with the source, the debi
 from insurance_thin_data.transfer import GLMTransfer
 
 # source = main book, target = young driver segment
-model = GLMTransfer(family="poisson", alpha=0.1)
+model = GLMTransfer(family="poisson", lambda_pool=0.1)
 model.fit(X_source, y_source, X_target, y_target, exposure_source, exposure_target)
 
 # coefficients show where young drivers differ from main book
@@ -54,7 +54,7 @@ print(model.coef_)           # final coefficients (pooled + delta)
 predict = model.predict(X_new, exposure_new)
 ```
 
-The `alpha` parameter controls the l1 penalty in step one. Tune it via cross-validation on the target data; the library provides a `GLMTransferCV` wrapper that does this.
+The `lambda_pool` parameter controls the l1 penalty in step one. Tune it via cross-validation on the target data; the library provides a `GLMTransferCV` wrapper that does this.
 
 ### 2. GBMTransfer: source as offset
 
@@ -67,17 +67,14 @@ This is something sophisticated actuaries already do informally - "start from th
 ```python
 from insurance_thin_data.transfer import GBMTransfer
 
-# pre-train on main book
-source_model = GBMTransfer()
-source_model.fit_source(X_source, y_source, exposure_source)
+# pre-train on main book using a standard CatBoost model (source step)
+# then pass the fitted source model to GBMTransfer
+source_catboost = ...  # your pre-trained CatBoost frequency model on main book
+transfer = GBMTransfer(source_model=source_catboost)
 
 # fine-tune on young driver segment — source predictions become log-offset
-source_model.fit_target(X_target, y_target, exposure_target)
-predict = source_model.predict(X_new, exposure_new)
-
-# or: bring your own pre-trained CatBoost model
-transfer = GBMTransfer(source_model=pretrained_catboost)
-transfer.fit_target(X_target, y_target, exposure_target)
+transfer.fit(X_target, y_target, exposure_target)
+predict = transfer.predict(X_new, exposure_new)
 ```
 
 The offset approach constrains the target model: it cannot wander far from the source predictions without strong evidence. With 300 policies, that constraint is usually a feature.
@@ -91,9 +88,9 @@ This is closest in spirit to how transfer learning works in NLP - a large langua
 ```python
 from insurance_thin_data.transfer import CANNTransfer
 
-model = CANNTransfer(hidden_layers=[64, 32], freeze_after="layer_2")
+model = CANNTransfer(hidden_sizes=[64, 32], finetune_strategy="head_only")
 model.fit_source(X_source, y_source, exposure_source)
-model.fine_tune(X_target, y_target, exposure_target, epochs=50, lr=1e-4)
+model.fit(X_target, y_target, exposure_target)
 predict = model.predict(X_new)
 ```
 
@@ -113,7 +110,7 @@ Transfer learning can go wrong. If the source and target distributions are too d
 from insurance_thin_data.transfer import CovariateShiftTest
 
 test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
-result = test.fit(X_source, X_target)
+result = test.test(X_source, X_target)
 print(result.mmd_statistic)   # higher = more distribution shift
 print(result.p_value)         # test against permutation null
 ```
@@ -123,8 +120,9 @@ print(result.p_value)         # test against permutation null
 ```python
 from insurance_thin_data.transfer import NegativeTransferDiagnostic
 
-diag = NegativeTransferDiagnostic(transfer_model=glm_transfer, baseline_family="poisson")
-result = diag.evaluate(X_target_test, y_target_test, exposure_test)
+diag = NegativeTransferDiagnostic()
+result = diag.evaluate(X_target_test, y_target_test, exposure_test,
+                       transfer_model=glm_transfer, target_only_model=target_glm)
 print(result.ntg)             # deviance(transfer) - deviance(target_only)
 if result.negative_transfer:
     print("Use target-only model")
@@ -140,20 +138,21 @@ This is not optional. We have seen cases - particularly in specialty lines where
 from insurance_thin_data.transfer import TransferPipeline, GLMTransfer
 
 pipeline = TransferPipeline(
-    method=GLMTransfer(family="poisson"),
-    shift_threshold=0.05,        # p-value threshold for shift test
-    diagnose=True,
+    method="glm",
+    glm_params={"family": "poisson"},
+    shift_test=True,
+    run_diagnostic=True,
     categorical_cols=["vehicle_group", "area", "nc_bonus"],
 )
 
-result = pipeline.fit(
-    X_source, y_source, exposure_source,
+result = pipeline.run(
     X_target, y_target, exposure_target,
+    X_source=X_source, y_source=y_source, exposure_source=exposure_source,
 )
 
-print(result.shift_detected)    # did MMD flag a distribution shift?
-print(result.method_used)       # which method was actually fitted
-print(result.negative_transfer) # did transfer help or hurt?
+print(result.shift_p_value)        # p-value from MMD shift test
+print(result.method_used)          # which method was actually fitted
+print(result.transfer_is_beneficial) # did transfer help or hurt?
 predict = result.model.predict(X_new, exposure_new)
 ```
 

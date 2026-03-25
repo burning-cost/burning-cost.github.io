@@ -45,8 +45,8 @@ The benchmark result on synthetic data: OLS relative bias of 20–80% against th
 The diagnostic that distinguishes `insurance-elasticity` from a generic DML wrapper is `ElasticityDiagnostics`. When Var(D̃) / Var(D) < 10% - less than 10% of price variation is exogenous after conditioning on X - you have near-deterministic treatment. The confidence intervals blow up and the point estimate is noise. You need to know this before fitting, not after.
 
 ```python
-from insurance_elasticity.data import make_renewal_data
-from insurance_elasticity.diagnostics import ElasticityDiagnostics
+from insurance_causal.elasticity.data import make_renewal_data
+from insurance_causal.elasticity.diagnostics import ElasticityDiagnostics
 
 df = make_renewal_data(n=50_000)
 
@@ -72,7 +72,7 @@ This diagnostic is not optional on UK motor data. Formula-rated books routinely 
 ## Fitting the elasticity model
 
 ```python
-from insurance_elasticity.fit import RenewalElasticityEstimator
+from insurance_causal.elasticity.fit import RenewalElasticityEstimator
 
 confounders = ["age", "ncd_years", "vehicle_group", "region", "channel"]
 
@@ -119,7 +119,7 @@ The pattern here - elasticity declining in magnitude with NCD - is structurally 
 The elasticity surface shows two dimensions simultaneously:
 
 ```python
-from insurance_elasticity.surface import ElasticitySurface
+from insurance_causal.elasticity.surface import ElasticitySurface
 
 surface = ElasticitySurface(est)
 fig = surface.plot_surface(df, dims=["ncd_years", "age_band"])
@@ -137,7 +137,7 @@ Since January 2022, UK GI firms cannot quote a renewing customer a price above t
 `RenewalPricingOptimiser` builds the ENBP constraint directly into the profit-maximising optimisation:
 
 ```python
-from insurance_elasticity.optimise import RenewalPricingOptimiser
+from insurance_causal.elasticity.optimise import RenewalPricingOptimiser
 
 opt = RenewalPricingOptimiser(
     est,
@@ -161,7 +161,7 @@ The optimiser maximises expected profit subject to three hard constraints per po
 The demand curve shows the trade-off between renewal rate and expected profit across a range of uniform price changes. It is the first thing a pricing committee asks for when evaluating an elasticity model:
 
 ```python
-from insurance_elasticity.demand import demand_curve
+from insurance_causal.elasticity.demand import demand_curve
 
 demand_df = demand_curve(est, df, price_range=(-0.25, 0.25, 50))
 # DataFrame: price_change, predicted_renewal_rate, expected_profit
