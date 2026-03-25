@@ -80,11 +80,13 @@ The practical implication: on a real 30-scheme book, you should expect B-S to ov
 
 ## Where it works
 
-Thin segments are where B-S earns its keep. A scheme with 200 policy-years has had a bad year, and the raw experience says loss rate 0.95. The portfolio average says 0.65. The B-S estimate, with Z roughly 0.25 on a K_hat of 8, says 0.72. That 0.72 is closer to the true rate than either alternative.
+Thin segments are where B-S earns its keep. Take the smallest scheme in the benchmark: approximately 150 total policy-years across 5 years -- about 30 vehicles per year. It has had a bad year; the raw exposure-weighted experience says loss rate 0.95. The portfolio average says 0.65. With K_hat=8.36 and w_i=150, Z = 150/(150+8.36) = 0.947. The B-S estimate is 0.947 × 0.95 + 0.053 × 0.65 = 0.934. That 0.934 is closer to the true underlying rate than the raw 0.95 when one bad year inflated the observed average.
 
-The mechanism matters here: B-S is not smoothing across time, it is weighting between the scheme's evidence and the portfolio's evidence. The exposure weighting is the critical difference from a flat NCD table. A scheme with 200 policy-years earns more credibility than a scheme with 80 policy-years even if both had identical claim counts per year, because the larger scheme has provided more statistical evidence about its true underlying rate.
+The margin looks small -- 0.015 compared to the spread between raw and portfolio -- but it compounds. A fleet pricing team setting rates on twenty thin schemes simultaneously, each with noisy experience, systematically prices closer to truth if every one gets this correction. The aggregate improvement over raw experience, confirmed in the benchmark table, is 7% MAE reduction on the thin tier.
 
-The individual experience rating side of the library follows the same logic at policy level. For commercial motor with kappa typically in the 3-8 range, 3 full vehicle-years gives roughly 30-50% credibility. A flat 5-step NCD table assigns maximum discount regardless of whether the policy has 0.5 vehicle-years or 5 - it ignores the information entirely.
+The mechanism matters: B-S is not smoothing across time, it is weighting between the scheme's evidence and the portfolio's evidence. The exposure weighting is the critical difference from a flat manual Z table. A scheme with 150 policy-years earns more credibility than a scheme with 80 policy-years even if both had identical claim counts per year, because the larger scheme has provided more statistical evidence about its true underlying rate.
+
+The individual experience rating side of the library follows the same logic at policy level. For commercial motor with kappa typically in the 3-8 range, a policy with 3 full vehicle-years gives Z = 3/(3+8) = 0.27 -- roughly 27% credibility. That policy's B-S rate is 27% own experience, 73% portfolio mean. A flat 5-step NCD table assigns maximum discount regardless of whether the policy has 0.5 vehicle-years or 5 - it ignores the information entirely.
 
 ---
 
