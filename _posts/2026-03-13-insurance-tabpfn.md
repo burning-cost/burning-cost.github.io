@@ -60,10 +60,7 @@ from insurance_thin_data.tabpfn import InsuranceTabPFN
 
 model = InsuranceTabPFN(
     backend="tabicl",          # or "tabpfn" for v2
-    task="regression",
-    exposure_col="earned_years",
-    n_ensemble=8,
-    conformal_alpha=0.1,       # 90% prediction intervals
+    conformal_coverage=0.9,    # 90% prediction intervals
 )
 
 model.fit(X_train, y_train)     # y = claim frequency or pure premium
@@ -72,9 +69,9 @@ preds = model.predict(X_test)
 intervals = model.predict_interval(X_test)   # split conformal, finite-sample guarantee
 ```
 
-The `exposure_col` argument handles the standard insurance problem that you are modelling a rate, not a count. There is no native exposure offset in TabPFN — the library implements a log-rate workaround: the target is log(claims / exposure), the model fits on log-rate, and predictions are exponentiated back to rate. This is a genuine limitation: it is not the same as a proper Poisson offset, and it will not produce well-calibrated Poisson deviance scores. We document this explicitly in every committee report the library generates.
+The `exposure` argument to `fit()` handles the standard insurance problem that you are modelling a rate, not a count. There is no native exposure offset in TabPFN — the library implements a log-rate workaround: the target is log(claims / exposure), the model fits on log-rate, and predictions are exponentiated back to rate. This is a genuine limitation: it is not the same as a proper Poisson offset, and it will not produce well-calibrated Poisson deviance scores. We document this explicitly in every committee report the library generates.
 
-The prediction intervals use split conformal prediction — the same approach as [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal), adapted for regression. The coverage guarantee is finite-sample and distribution-free: if you specify `conformal_alpha=0.1`, the intervals will contain the true value at least 90% of the time on exchangeable test data, regardless of the true data-generating process.
+The prediction intervals use split conformal prediction — the same approach as [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal), adapted for regression. The coverage guarantee is finite-sample and distribution-free: if you specify `conformal_coverage=0.9`, the intervals will contain the true value at least 90% of the time on exchangeable test data, regardless of the true data-generating process.
 
 ---
 
@@ -89,14 +86,15 @@ from sklearn.linear_model import TweedieRegressor
 glm = TweedieRegressor(power=1, alpha=0.01, link="log")
 glm.fit(X_train, y_train)
 
-bench = GLMBenchmark(
-    glm=glm,
-    foundation=model,
-    exposure=X_test["earned_years"],
+bench = GLMBenchmark()
+bench.fit(X_train, y_train, exposure=X_train["earned_years"].to_numpy())
+results = bench.compare(
+    X_test, y_test,
+    tabpfn_predictions=model.predict(X_test),
+    exposure_test=X_test["earned_years"].to_numpy(),
 )
-results = bench.evaluate(X_test, y_test)
 
-print(results.summary())
+print(results.to_dataframe())
 # Metric           GLM       TabICLv2    Delta
 # Gini             0.312     0.351       +0.039
 # Poisson deviance 0.418     0.391       -0.027
@@ -119,15 +117,18 @@ A foundation model is not interpretable in the GLM sense. There is no `coef_` ve
 ```python
 from insurance_thin_data.tabpfn import RelativitiesExtractor
 
-extractor = RelativitiesExtractor(model, exposure_col="earned_years")
-rels = extractor.extract(X_train, features=["vehicle_age", "driver_age", "ncd_years"])
+extractor = RelativitiesExtractor(model)
+rels = {
+    feat: extractor.extract(X_train, feature=feat)
+    for feat in ["vehicle_age", "driver_age", "ncd_years"]
+}
 
-# Returns a dict of DataFrames: feature -> (value, relativity, lower_90, upper_90)
+# Returns a dict of DataFrames: feature -> (feature_value, mean_prediction, relativity)
 rels["vehicle_age"]
-#    vehicle_age  relativity  lower_90  upper_90
-# 0            1        1.42      1.28      1.58
-# 1            2        1.31      1.19      1.44
-# 2            3        1.18      1.09      1.29
+#    feature_value  mean_prediction  relativity
+# 0            1.0            0.081        1.42
+# 1            2.0            0.075        1.31
+# 2            3.0            0.068        1.18
 # ...
 ```
 
@@ -146,8 +147,11 @@ Every use of `insurance-thin-data` in a pricing process needs sign-off. The `Com
 ```python
 from insurance_thin_data.tabpfn import CommitteeReport
 
-report = CommitteeReport(model, bench_results, rels)
-report.generate("tabpfn_review.html")
+report = CommitteeReport(model)
+report.add_benchmark(results)
+html = report.to_html()
+with open("tabpfn_review.html", "w") as f:
+    f.write(html)
 ```
 
 The five mandatory limitations are:

@@ -246,15 +246,14 @@ from insurance_conformal import InsuranceConformalPredictor
 
 cp = InsuranceConformalPredictor(
     model=catboost_model,
-    score_type="pearson_weighted",
-    coverage=0.90,
+    nonconformity="pearson_weighted",
 )
 cp.calibrate(X_cal, y_cal)
 
-intervals = cp.predict_interval(X_test)
-# pl.DataFrame: prediction, lower, upper, width
+intervals = cp.predict_interval(X_test, alpha=0.10)
+# pl.DataFrame: lower, point, upper
 
-print(cp.empirical_coverage(y_test, intervals))
+print(cp.coverage_by_decile(X_test, y_test)["coverage"].mean())
 # 0.903   ← guaranteed >= 0.90 by construction
 ```
 
@@ -280,9 +279,9 @@ config = ConstraintConfig(
 opt = PortfolioOptimiser(
     technical_price=technical_price,      # from EBM or surrogate GLM
     expected_loss_cost=expected_loss_cost,
-    p_renewal=p_renewal,
-    price_elasticity=price_elasticity,    # from insurance-causal or manual estimate
-    is_renewal=is_renewal,
+    p_demand=p_demand,
+    elasticity=elasticity,                # from insurance-causal or manual estimate
+    renewal_flag=renewal_flag,
     enbp=enbp_ceiling,
     constraints=config,
 )
@@ -294,7 +293,9 @@ print(result.summary())
 # Retention:         82.4%
 # ENBP violations:   0
 
-frontier = opt.efficient_frontier(n_points=20)
+from insurance_optimise import EfficientFrontier
+ef = EfficientFrontier(opt, sweep_param="volume_retention", sweep_range=(0.80, 0.99), n_points=20)
+frontier = ef.run()
 # Profit-retention Pareto curve for the pricing committee
 ```
 
