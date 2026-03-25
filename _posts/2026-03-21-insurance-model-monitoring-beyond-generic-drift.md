@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "Insurance Model Monitoring Beyond Generic Data Drift"
+title: "Insurance Model Monitoring in Python: Beyond Generic Data Drift"
 date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, tutorials]
-description: "Evidently and NannyML are excellent tools. They do not understand exposure weighting, development lags, or the Gini drift test. insurance-monitoring does."
+description: "Insurance model monitoring in Python that understands exposure weighting, development lags, and Gini drift. Why Evidently and NannyML miss what matters for pricing, and what insurance-monitoring adds."
 canonical_url: "/2026/03/21/insurance-model-monitoring-beyond-generic-drift/"
 tags: [insurance-model-monitoring-python, model-monitoring, PSI, CSI, ae-ratio, gini-drift, sequential-testing, mSPRT, insurance-monitoring, Evidently, NannyML, model-risk, pricing, python, uk-insurance, polars]
 ---
 
-Generic drift detection tools are built for the modal ML use case: tabular or unstructured data, i-i-d records, binary or regression targets. They work well for churn models, credit scoring pipelines, and fraud detection. They work less well for insurance pricing, and the failure modes are not cosmetic.
+Insurance model monitoring in Python is a specific problem that generic drift detection tools solve only partially. Those tools — Evidently, NannyML, and their equivalents — are built for the modal ML use case: tabular or unstructured data, i-i-d records, binary or regression targets. They work well for churn models, credit scoring pipelines, and fraud detection. They work less well for insurance pricing, and the failure modes are not cosmetic.
 
 The problem is not that tools like Evidently or NannyML are badly engineered. The problem is that insurance data has structure those tools do not model:
 

@@ -1,18 +1,18 @@
 ---
 layout: post
-title: "Extracting Rating Relativities from GBMs with SHAP"
+title: "SHAP Relativities for Insurance GBMs: GLM-Format Factor Tables in Python"
 date: 2026-02-17
 featured: true
 categories: [techniques]
 tags: [shap, gbm, catboost, relativities, pricing, python]
-description: "Extract multiplicative rating relativities from CatBoost using SHAP - same exp(beta) format as a GLM. UK personal lines Python with confidence intervals."
+description: "How to extract SHAP relativities from insurance GBMs. Multiplicative factor tables in GLM exp(beta) format, with confidence intervals and exposure weighting. Python, CatBoost, UK personal lines."
 ---
 
 Many UK pricing teams find themselves in some version of the same situation: a GBM sitting on a server somewhere outperforming the production GLM, but nobody can get the relativities out of it. The regulator wants a factor table. Radar needs an import file. The head of pricing wants to challenge the model in terms they recognise.
 
 So the GBM sits in a notebook. The GLM goes to production. And the team loses the lift.
 
-We built `shap-relativities` to close that gap. It extracts multiplicative rating relativities from CatBoost models using SHAP values - the same format as `exp(beta)` from a GLM, with confidence intervals, exposure weighting, and a validation check that the numbers actually reconstruct the model's predictions.
+We built `shap-relativities` to close that gap. It extracts SHAP relativities from insurance GBMs — multiplicative rating factors in the same `exp(beta)` format as a GLM, with confidence intervals, exposure weighting, and a validation check that the numbers actually reconstruct the model's predictions.
 
 ---
 
