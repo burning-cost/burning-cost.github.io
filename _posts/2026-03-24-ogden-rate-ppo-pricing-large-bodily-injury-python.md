@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Ogden Rate and PPOs: Pricing Large Bodily Injury in Python"
-date: 2027-01-14
+date: 2026-03-24
 categories: [pricing, techniques, tutorials]
 tags: [ogden-rate, ppo, bodily-injury, large-loss, reserving, discount-rate, lump-sum, motor-liability, employers-liability, uk-liability, python, insurance-conformal, insurance-governance, tutorial]
 description: "How the Ogden discount rate and Periodical Payment Orders change the maths of large BI pricing in the UK — with Python code to calculate lump sum equivalents, discount PPO cash flows, and stress-test Ogden sensitivity."

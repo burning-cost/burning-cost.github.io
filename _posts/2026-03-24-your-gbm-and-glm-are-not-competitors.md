@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your GBM and GLM Are Not Competitors"
-date: 2026-06-14
+date: 2026-03-24
 categories: [pricing, techniques]
 tags: [GLM, GBM, model-blending, stacking, catboost, insurance-cv, shap-relativities, insurance-governance, pra-ss123, python, temporal-cv]
 description: "How to combine GLM and GBM predictions for production pricing: cross-validated blend weights, PRA interpretability, and when blending actually helps."
