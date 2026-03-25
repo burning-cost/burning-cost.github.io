@@ -159,7 +159,7 @@ model.fit(X_train, y_train, exposure=exp_train)
 
 # Exact Shapley decomposition — not SHAP
 shap_vals = model.shapley_values(X_test, X_background=X_train[:500])
-# Returns Polars DataFrame: one column per feature, exact additive attribution
+# Returns dict mapping feature_name -> np.ndarray of shape (n_test,)
 ```
 
 We will publish a separate PIN benchmark post when we have run it through the same calibration table analysis as above.

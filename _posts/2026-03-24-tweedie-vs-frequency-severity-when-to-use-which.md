@@ -123,7 +123,7 @@ model = JointFreqSev(freq_glm=freq_glm, sev_glm=sev_glm)
 model.fit(train_df, n_col="claim_count", s_col="avg_severity")
 
 print(f"Omega: {model.omega_:.3f}  ({model.omega_ci_[0]:.3f}, {model.omega_ci_[1]:.3f})")
-print(f"Spearman rho (N,S): {model.rho_s_:.3f}")
+print(f"Spearman rho (N,S): {model.rho_:.3f}")
 
 # Step 3: Apply correction factors at scoring time
 corrections = model.premium_correction(X_new)

@@ -147,10 +147,9 @@ from insurance_conformal import LocallyWeightedConformal
 
 lw = LocallyWeightedConformal(
     model=model,
-    nonconformity="pearson_weighted",
     tweedie_power=1.5,
 )
-lw.fit_spread(X_train, y_train)   # fits the secondary spread model
+lw.fit(X_train, y_train)   # fits the secondary spread model
 lw.calibrate(X_cal, y_cal)
 
 intervals = lw.predict_interval(X_test, alpha=0.10)
