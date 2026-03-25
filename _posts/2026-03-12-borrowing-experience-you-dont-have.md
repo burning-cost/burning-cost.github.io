@@ -45,12 +45,11 @@ The effect is that where the target data is consistent with the source, the debi
 from insurance_thin_data.transfer import GLMTransfer
 
 # source = main book, target = young driver segment
-model = GLMTransfer(family="poisson", alpha=0.1)
+# lambda_pool: L1 penalty on the pooled step
+# lambda_debias: L1 penalty on the debiasing step
+model = GLMTransfer(family="poisson", lambda_pool=0.1, lambda_debias=0.05)
 model.fit(X_source, y_source, X_target, y_target, exposure_source, exposure_target)
 
-# coefficients show where young drivers differ from main book
-print(model.delta_)          # the debiasing correction
-print(model.coef_)           # final coefficients (pooled + delta)
 predict = model.predict(X_new, exposure_new)
 ```
 
@@ -67,17 +66,11 @@ This is something sophisticated actuaries already do informally — "start from 
 ```python
 from insurance_thin_data.transfer import GBMTransfer
 
-# pre-train on main book
-source_model = GBMTransfer()
-source_model.fit_source(X_source, y_source, exposure_source)
-
-# fine-tune on young driver segment — source predictions become log-offset
-source_model.fit_target(X_target, y_target, exposure_target)
-predict = source_model.predict(X_new, exposure_new)
-
-# or: bring your own pre-trained CatBoost model
-transfer = GBMTransfer(source_model=pretrained_catboost)
-transfer.fit_target(X_target, y_target, exposure_target)
+# GBMTransfer takes a pre-trained source model and uses it as a log-offset
+# when fitting on the target segment
+transfer = GBMTransfer(source_model=pretrained_catboost, mode="offset")
+transfer.fit(X_target, y_target, sample_weight=exposure_target)
+predict = transfer.predict(X_new, exposure_new)
 ```
 
 The offset approach constrains the target model: it cannot wander far from the source predictions without strong evidence. With 300 policies, that constraint is usually a feature.
@@ -91,9 +84,16 @@ This is closest in spirit to how transfer learning works in NLP — a large lang
 ```python
 from insurance_thin_data.transfer import CANNTransfer
 
-model = CANNTransfer(hidden_layers=[64, 32], freeze_after="layer_2")
+# hidden_sizes: layer widths; finetune_strategy controls which layers are frozen
+model = CANNTransfer(
+    hidden_sizes=[64, 32],
+    finetune_strategy="head_only",  # freeze main network, retrain output layer only
+    finetune_epochs=50,
+    learning_rate=1e-4,
+)
 model.fit_source(X_source, y_source, exposure_source)
-model.fine_tune(X_target, y_target, exposure_target, epochs=50, lr=1e-4)
+# fit() on target data runs the fine-tuning step
+model.fit(X_target, y_target, sample_weight=exposure_target)
 predict = model.predict(X_new)
 ```
 
@@ -112,10 +112,10 @@ Transfer learning can go wrong. If the source and target distributions are too d
 ```python
 from insurance_thin_data.transfer import CovariateShiftTest
 
-test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
-result = test.fit(X_source, X_target)
-print(result.mmd_statistic)   # higher = more distribution shift
-print(result.p_value)         # test against permutation null
+shift_test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
+shift_result = shift_test.test(X_source, X_target)
+print(shift_result.test_statistic)  # MMD statistic — higher = more distribution shift
+print(shift_result.p_value)         # test against permutation null
 ```
 
 **NegativeTransferDiagnostic** does the direct comparison: fit both a transfer model and a target-only model, then compare Poisson deviance on held-out target data. The NTG metric (negative transfer gain) is the deviance difference: negative means the transfer model is better, positive means target-only wins. If it is positive, use the target-only model.
@@ -123,8 +123,15 @@ print(result.p_value)         # test against permutation null
 ```python
 from insurance_thin_data.transfer import NegativeTransferDiagnostic
 
-diag = NegativeTransferDiagnostic(transfer_model=glm_transfer, baseline_family="poisson")
-result = diag.evaluate(X_target_test, y_target_test, exposure_test)
+# NegativeTransferDiagnostic compares transfer vs target-only via deviance
+# Provide both model predictions at evaluate time
+diag = NegativeTransferDiagnostic(metric="poisson_deviance")
+result = diag.evaluate(
+    y_true=y_target_test,
+    y_transfer=glm_transfer.predict(X_target_test, exposure_test),
+    y_baseline=glm_target_only.predict(X_target_test, exposure_test),
+    exposure=exposure_test,
+)
 print(result.ntg)             # deviance(transfer) - deviance(target_only)
 if result.negative_transfer:
     print("Use target-only model")
@@ -140,13 +147,14 @@ This is not optional. We have seen cases — particularly in specialty lines whe
 from insurance_thin_data.transfer import TransferPipeline, GLMTransfer
 
 pipeline = TransferPipeline(
-    method=GLMTransfer(family="poisson"),
-    shift_threshold=0.05,        # p-value threshold for shift test
-    diagnose=True,
+    method="glm",
+    glm_params={"family": "poisson"},
+    shift_test=True,
+    run_diagnostic=True,
     categorical_cols=["vehicle_group", "area", "nc_bonus"],
 )
 
-result = pipeline.fit(
+result = pipeline.run(
     X_source, y_source, exposure_source,
     X_target, y_target, exposure_target,
 )

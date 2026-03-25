@@ -25,10 +25,12 @@ Five libraries that cover the most common failure modes. A pricing team that use
 Your GBM is sitting in a notebook because you cannot get a multiplicative factor table out of it. `shap-relativities` closes that gap. It uses SHAP additive decomposition to extract exposure-weighted, confidence-interval-equipped relativities in `exp(β)` format from any CatBoost model — the format your pricing committee and Radar both understand.
 
 ```python
-from shap_relativities import ShapRelativities
+from shap_relativities import SHAPRelativities
 
-sr = ShapRelativities(model=catboost_model, X=X_train, exposure=exposure)
-tables = sr.extract(factors=["driver_age_band", "vehicle_group", "area"])
+sr = SHAPRelativities(model=catboost_model, X=X_train, exposure=exposure)
+tables = sr.extract_relativities(
+    categorical_features=["driver_age_band", "vehicle_group", "area"]
+)
 tables["driver_age_band"].write_csv("age_relativities.csv")
 ```
 
@@ -45,15 +47,19 @@ Standard k-fold CV is wrong for insurance data. Policies from 2020 land in the s
 `insurance-cv` implements walk-forward validation with configurable development buffers and IBNR guards.
 
 ```python
-from insurance_cv import WalkForwardCV
+from insurance_cv import InsuranceCV, walk_forward_split
+from sklearn.model_selection import cross_val_score
 
-cv = WalkForwardCV(
-    n_splits=4,
-    train_min_years=2,
-    test_window_months=12,
+cv_splits = walk_forward_split(
+    df,
+    date_col="inception_date",
+    min_train_months=24,
+    test_months=12,
     ibnr_buffer_months=6,
+    step_months=12,
 )
-scores = cv.cross_val_score(model, X, y, exposure=exposure, date_col="inception_date")
+cv = InsuranceCV(splits=cv_splits, df=df)
+scores = cross_val_score(model, X, y, cv=cv)
 ```
 
 The full diagnosis of how k-fold breaks on insurance data is in [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/).
@@ -67,11 +73,15 @@ The full diagnosis of how k-fold breaks on insurance data is in [Why Your Cross-
 A pricing model is not complete when it goes live. It starts degrading from day one. `insurance-monitoring` tracks population stability (PSI), feature drift (KS/Cramér's V), and modelled-to-actual ratios across your rating factors on a configurable cadence. It writes structured alerts your existing monitoring infrastructure can ingest.
 
 ```python
-from insurance_monitoring import PricingMonitor
+from insurance_monitoring import psi
 
-monitor = PricingMonitor(baseline=train_df, feature_cols=rating_factors)
-report = monitor.run(current=live_df, prediction_col="pure_premium")
-report.flag_drifted()  # returns factors with PSI > 0.2
+# PSI per feature: flag factors with PSI > 0.2
+drifted = {
+    col: psi(train_df[col].values, live_df[col].values)
+    for col in rating_factors
+    if psi(train_df[col].values, live_df[col].values) > 0.2
+}
+print(f"Drifted factors: {list(drifted.keys())}")
 ```
 
 [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)
@@ -106,11 +116,23 @@ audit.run().save_report("fairness_audit_2026Q1.md")
 Every code example in this stack uses `insurance-datasets`. It generates realistic synthetic UK personal lines portfolios with configurable size, rating factor distributions, and known ground truth parameters. You can test your code before your data is available and verify your implementations produce the right answer.
 
 ```python
-from insurance_datasets import MotorPortfolio
+# uv add insurance-datasets  # github.com/burning-cost/insurance-datasets
+# from insurance_datasets import load_motor
+# df = load_motor(n_policies=50_000, seed=42)
 
-df = MotorPortfolio(n_policies=50_000, seed=42).generate()
-# Returns Polars DataFrame with: driver_age_band, vehicle_group, area,
-# ncd_years, claim_count, exposure, pure_premium
+# Alternatively, generate structured synthetic data directly:
+import numpy as np, pandas as pd
+rng = np.random.default_rng(42)
+n = 50_000
+df = pd.DataFrame({
+    "driver_age_band": rng.choice(["17-21","22-25","26-35","36-50","51+"], n),
+    "vehicle_group": rng.choice([f"G{i}" for i in range(1,17)], n),
+    "area": rng.choice([f"R{i}" for i in range(1,13)], n),
+    "ncd_years": rng.integers(0, 9, n),
+    "exposure": rng.uniform(0.1, 1.0, n),
+    "claim_count": rng.poisson(0.08, n),
+    "pure_premium": rng.exponential(150, n),
+})
 ```
 
 [github.com/burning-cost/insurance-datasets](https://github.com/burning-cost/insurance-datasets)
@@ -151,11 +173,16 @@ Territory banding by eye from a modelled loss cost map is the most common approa
 `insurance-spatial` uses BYM2 spatial models (Riebler et al. 2016) to estimate geographically smoothed loss cost surfaces that respect postcode district adjacency structure, then applies graph-based clustering to derive rate bands with minimum within-band variance.
 
 ```python
-from insurance_spatial import SpatialRateModel
+from insurance_spatial import BYM2Model, build_grid_adjacency
 
-spatial = SpatialRateModel(geo_col="postcode_district", adjacency="uk_pcd")
-spatial.fit(df, outcome="claim_count", exposure="exposure")
-bands = spatial.derive_bands(n_bands=8)
+# BYM2Model estimates spatially smoothed loss costs respecting adjacency
+spatial = BYM2Model()
+spatial.fit(
+    y=df["claim_count"].values,
+    E=df["exposure"].values,
+    adjacency=build_grid_adjacency(df["postcode_district"]),
+)
+# derive_bands would be a downstream clustering step
 ```
 
 See [Your Territory Banding is Wrong](/2026/02/27/your-territory-banding-is-wrong/) for what the BYM2 model finds that choropleth maps miss.
@@ -169,11 +196,19 @@ See [Your Territory Banding is Wrong](/2026/02/27/your-territory-banding-is-wron
 Adding interaction terms to a GLM is guesswork without a systematic search. A portfolio with 20 rating factors has 190 possible pairwise interactions. `insurance-interactions` uses a three-stage pipeline: a Combined Actuarial Neural Network (CANN) trained on GLM residuals, Neural Interaction Detection (NID) scoring from the CANN weight matrices to rank all candidate pairs, and GLM likelihood-ratio testing on the top-K shortlist. The result is a ranked interaction table with deviance improvement, AIC/BIC, and Bonferroni-corrected p-values — not a list of guesses.
 
 ```python
-from insurance_interactions import InteractionDetector
+from insurance_interactions import build_glm_with_interactions, test_interactions
 
-detector = InteractionDetector(family='poisson')
-detector.fit(X_train, y_train, glm_predictions=mu_glm, exposure=exposure)
-print(detector.interaction_table())  # ranked by NID score with LR test results
+# test_interactions ranks candidate pairs by NID score and runs LR tests
+candidates = test_interactions(
+    X_train, y_train, exposure=exposure, family="poisson", n_top=20
+)
+print(candidates)  # ranked by NID score with LR test results and Bonferroni-corrected p-values
+
+# build_glm_with_interactions adds the significant pairs to a new GLM
+glm_with_ints, glm_df = build_glm_with_interactions(
+    X_train, y_train, exposure=exposure,
+    interaction_pairs=candidates.head(5)[["feature_a", "feature_b"]].to_dicts(),
+)
 ```
 
 See [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) for why the standard approach misses most of the signal.
@@ -187,13 +222,17 @@ See [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interacti
 Two specific GLM problems that statsmodels does not solve. First: nested GLMs, where you want to segment the portfolio into clusters and fit separate GLMs per cluster, with the cluster structure itself estimated from data rather than defined by hand. Second: GLM coefficient smoothing via Whittaker-Henderson, for when raw GLM factor relativities oscillate implausibly across ordered bands (age, vehicle age, NCD).
 
 ```python
-from insurance_glm_tools import ClusteredGLM, WhittakerSmoother
+from insurance_glm_tools import FactorClusterer, NestedGLMPipeline
 
-cglm = ClusteredGLM(n_clusters=4, family="poisson")
-cglm.fit(X_train, y_train, exposure=exposure)
+# FactorClusterer groups sparse factor levels into defensible composite levels
+# lambda_ controls regularisation: 'bic' selects it automatically
+clusterer = FactorClusterer(family="poisson", lambda_="bic")
+clusterer.fit(X_train["vehicle_group"], y_train, exposure=exposure)
+level_map = clusterer.level_map  # mapping from original levels to clusters
 
-smoother = WhittakerSmoother(lam=100)
-smooth_rels = smoother.fit_transform(raw_relativities["driver_age_band"])
+# NestedGLMPipeline fits segment-specific GLMs with data-driven cluster structure
+pipe = NestedGLMPipeline(family="poisson")
+pipe.fit(X_train, y_train, exposure=exposure)
 ```
 
 [github.com/burning-cost/insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools)
@@ -205,11 +244,14 @@ smooth_rels = smoother.fit_transform(raw_relativities["driver_age_band"])
 Explainable Boosting Machines (EBMs, Lou et al. 2013) are additive models with interaction terms that are fully interpretable by construction. Each feature contribution is a learned shape function. For a pricing actuary, EBMs sit between a GLM (fully interpretable, constrained functional form) and a GBM (maximum lift, black box). On UK motor data, EBMs typically close 60-70% of the Gini gap between GLM and GBM while remaining directly explainable without post-hoc tools.
 
 ```python
-from insurance_gam import InsuranceEBM
+# insurance-gam provides EBM tooling via the interpret package integration
+# The package wraps EBM setup for insurance Poisson/Tweedie objectives
+# uv add insurance-gam  # github.com/burning-cost/insurance-gam
+from interpret.glassbox import ExplainableBoostingRegressor
 
-ebm = InsuranceEBM(interactions=5, objective="poisson")
-ebm.fit(X_train, y_train, exposure=exposure)
-ebm.plot_shape("driver_age_band")  # shows the learned age curve
+ebm = ExplainableBoostingRegressor(interactions=5, objective="poisson")
+ebm.fit(X_train, y_train, sample_weight=exposure)
+ebm.explain_local(X_train[:5])  # shows per-prediction shape contributions
 ```
 
 [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam)
@@ -242,11 +284,13 @@ model.fit(claims_df)
 A point estimate of pure premium is not enough when you are setting capital requirements or evaluating risk-adequate pricing for volatile segments. `insurance-distributional` fits distributional regression models — GAMLSS-style, where location, scale, and shape parameters are all functions of rating factors — to give you a full predictive distribution per policy, not just a conditional mean.
 
 ```python
-from insurance_distributional import DistributionalGLM
+from insurance_distributional import TweedieGBM
 
-dglm = DistributionalGLM(family="tweedie", parameter_features=["exposure_log"])
-dglm.fit(X_train, y_train)
-loc, scale = dglm.predict_params(X_test)  # both are policy-level predictions
+# TweedieGBM predicts the full Tweedie distribution per risk
+dglm = TweedieGBM()
+dglm.fit(X_train, y_train, sample_weight=exposure_train)
+pred = dglm.predict(X_test)
+# pred.mean() is the point estimate; pred.quantile(0.95) is the 95th percentile
 ```
 
 [github.com/burning-cost/insurance-distributional](https://github.com/burning-cost/insurance-distributional)
@@ -285,16 +329,20 @@ print(f"Model tier: {tier.tier} (score: {tier.score}/100)")
 A well-specified pricing model should satisfy the balance property: the sum of predicted premiums should equal the sum of actual losses in aggregate, and within every rating factor band. Failures of calibration within bands reveal systematic mispricing by segment that aggregate metrics hide. `insurance-calibration` runs the full suite of calibration tests — actual-to-expected by factor, Hosmer-Lemeshow bins, calibration curves — and flags the bands where your model is consistently above or below one.
 
 ```python
-from insurance_calibration import CalibrationReport
+from insurance_monitoring import CalibrationReport, check_balance, check_auto_calibration, murphy_decomposition
 
+# check_balance: does E[predicted] == E[actual] per segment?
+bal = check_balance(y_val, y_pred, exposure=exposure_val)
+# CalibrationReport bundles balance, auto-calibration and Murphy decomposition
 report = CalibrationReport(
-    y_true=y_val,
-    y_pred=y_pred,
-    exposure=exposure_val,
-    factor_df=X_val,
-    factor_cols=["driver_age_band", "vehicle_group"],
+    balance=bal,
+    auto_calibration=check_auto_calibration(y_val, y_pred, exposure=exposure_val),
+    murphy=murphy_decomposition(y_val, y_pred, distribution="poisson"),
+    distribution="poisson",
+    n_policies=len(y_val),
+    total_exposure=float(exposure_val.sum()),
 )
-report.run().plot_calibration_by_factor()
+print(report.verdict())
 ```
 
 [github.com/burning-cost/insurance-calibration](https://github.com/burning-cost/insurance-calibration)
@@ -359,11 +407,16 @@ You applied a 15% rate increase to a segment six months ago. The loss ratio on t
 `insurance-causal-policy` implements difference-in-differences and synthetic control designs for insurance rate changes, using adjacent unexposed segments as controls and adjusting for exposure-period mix changes.
 
 ```python
-from insurance_causal_policy import RateChangeDiD
+from insurance_causal_policy import SDIDEstimator, PolicyPanelBuilder
 
-did = RateChangeDiD(treated_segment="sports_car_london", control_segments=["sports_car_other"])
-result = did.fit(df, rate_change_date="2025-04-01", outcome="loss_ratio")
-print(result.att, result.p_value)  # average treatment effect on treated
+# Build a Polars panel DataFrame from policy-level data
+panel = PolicyPanelBuilder().build(df, unit_col="policy_segment", period_col="period",
+                                   outcome_col="loss_ratio", treatment_col="is_treated")
+
+# SDIDEstimator: synthetic difference-in-differences for insurance rate change evaluation
+sdid = SDIDEstimator(panel, outcome="loss_ratio")
+result = sdid.fit()   # returns SDIDResult directly
+print(result.att, result.se)  # average treatment effect on treated
 ```
 
 [github.com/burning-cost/insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy)
@@ -393,11 +446,18 @@ The standard pricing cycle applies rate changes manually: technical model produc
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
 
-config = ConstraintConfig(
+constraints = ConstraintConfig(
     lr_max=0.70, retention_min=0.85, max_rate_change=0.20, enbp_buffer=0.01,
 )
-opt = PortfolioOptimiser(config=config)
-result = opt.run(technical_price=df["tc"], elasticity=df["elasticity"], enbp=df["enbp"])
+opt = PortfolioOptimiser(
+    technical_price=df["tc"].values,
+    expected_loss_cost=df["expected_loss"].values,
+    p_demand=df["p_renewal"].values,
+    elasticity=df["elasticity"].values,
+    enbp=df["enbp"].values,
+    constraints=constraints,
+)
+result = opt.optimise()
 print(result.optimal_multipliers)  # per-policy price multipliers
 ```
 
@@ -414,11 +474,15 @@ Before you can run `insurance-optimise`, you need elasticity estimates. `insuran
 The library wraps CausalForestDML for the causal component, with treatment variation diagnostics that flag the near-deterministic price problem before you fit. If your pricing grid leaves no residual variation in price after conditioning on risk factors, the elasticity estimate is noise.
 
 ```python
-from insurance_demand import RenewalElasticityModel
+from insurance_demand import ElasticityEstimator
 
-elast = RenewalElasticityModel(confounders=["age", "ncd_years", "vehicle_group", "area"])
-elast.fit(df, treatment="log_price_ratio", outcome="renewed")
-df["elasticity"] = elast.predict_cate(df)  # individual-level semi-elasticities
+elast = ElasticityEstimator(
+    feature_cols=["age", "ncd_years", "vehicle_group", "area"],
+    treatment_col="log_price_ratio",
+    outcome_col="renewed",
+)
+elast.fit(df)
+df["elasticity"] = elast.effect(df)  # individual-level semi-elasticities
 ```
 
 [github.com/burning-cost/insurance-demand](https://github.com/burning-cost/insurance-demand)
@@ -430,12 +494,22 @@ df["elasticity"] = elast.predict_cate(df)  # individual-level semi-elasticities
 A pricing model without a structured champion/challenger framework has no way to prove it outperforms its predecessor. `insurance-deploy` implements the full champion/challenger infrastructure: traffic splitting (by volume or stratified by risk segment), a hold-out audit trail for FCA review, lift calculation between the challenger GBM and the champion GLM on the same live population, and a model registry with version control for pricing committee sign-off.
 
 ```python
-from insurance_deploy import ChampionChallenger
+from insurance_deploy import Experiment, ModelRegistry, ModelVersion
 
-cc = ChampionChallenger(champion=glm_model, challenger=catboost_model)
-cc.register_split(challenger_share=0.10, stratify_by="vehicle_group", seed=42)
-cc.assign_cohort(df, policy_id_col="policy_id")
-# Returns df with "cohort" column: "champion" or "challenger"
+registry = ModelRegistry(path="/data/model_registry.db")
+champ_v = registry.register("glm_v3", glm_model)
+challgr_v = registry.register("catboost_v1", catboost_model)
+
+# Experiment routes quotes deterministically by policy_id hash
+cc = Experiment(
+    name="glm_vs_catboost",
+    champion=champ_v,
+    challenger=challgr_v,
+    challenger_pct=0.10,
+    mode="live",
+)
+df["cohort"] = df["policy_id"].map(lambda pid: "challenger"
+                                   if cc.route(pid) == challgr_v else "champion")
 ```
 
 [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy)

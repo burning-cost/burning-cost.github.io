@@ -50,17 +50,27 @@ Generic synthetic data tools — SDV, CTGAN, TVAE — produce data that looks re
 A better approach uses vine copulas to model the joint distribution of rating factors, then samples frequency and severity from distributions consistent with the underlying actuarial structure:
 
 ```python
-from insurance_synthetic import SyntheticPortfolio
+import numpy as np
+import pandas as pd
 
-portfolio = SyntheticPortfolio(
-    n_policies=50_000,
-    frequency_mean=0.08,          # 8 claims per 100 policy years
-    severity_lognormal_mu=7.5,    # ~£1,800 mean severity
-    severity_lognormal_sigma=1.2,
-    copula_family="vine",
-    random_state=42,
-)
-df = portfolio.generate()
+rng = np.random.default_rng(42)
+n = 50_000
+
+# Actuarially structured synthetic motor data:
+# exposure ~ Uniform(0.1, 1.0), claim_count ~ Poisson(mu * exposure)
+exposure = rng.uniform(0.1, 1.0, size=n)
+age_band = rng.choice(["17-21","22-25","26-35","36-50","51-65","66+"], n)
+vehicle_group = rng.choice([f"G{i}" for i in range(1, 17)], n)
+mu = 0.08 * np.where(age_band == "17-21", 2.5, 1.0)  # known relativities
+claim_count = rng.poisson(mu * exposure)
+
+df = pd.DataFrame({
+    "exposure": exposure, "claim_count": claim_count,
+    "driver_age_band": age_band, "vehicle_group": vehicle_group,
+})
+# For a full structured motor portfolio with calibrated vine copulas:
+#   uv add insurance-datasets  # github.com/burning-cost/insurance-datasets
+#   from insurance_datasets import load_motor; df = load_motor(n_policies=50_000, seed=42)
 ```
 
 The output is a DataFrame with `exposure`, `claim_count`, `claim_cost`, and a set of rating factors whose joint distribution respects the vine copula structure. You can run a Tweedie GLM on it and get sensible coefficients. That matters for testing downstream pipeline steps without needing production data.
@@ -74,24 +84,31 @@ Standard k-fold CV is wrong for insurance pricing. It randomly assigns policies 
 Walk-forward validation fixes this by respecting the temporal ordering of data. Train on 2020–2022, test on 2023. Then train on 2020–2023, test on 2024. Average the test scores. The model never sees data from after its training cutoff.
 
 ```python
-from insurance_cv import TemporalSplit, cross_val_gini
+from insurance_cv import InsuranceCV, walk_forward_split
+from insurance_cv import split_summary
 
-splitter = TemporalSplit(
+# walk_forward_split creates a list of TemporalSplit objects with an
+# IBNR buffer between each training cutoff and test window start
+cv_splits = walk_forward_split(
+    df,
     date_col="inception_date",
     min_train_months=24,
     test_months=6,
-    gap_months=3,          # IBNR buffer between train cutoff and test start
-    n_splits=4,
+    ibnr_buffer_months=3,   # IBNR buffer between train cutoff and test start
+    step_months=6,
 )
 
-results = cross_val_gini(
-    model=tweedie_gbm,
-    X=X,
-    y=y,
-    groups=df["inception_date"],
-    cv=splitter,
-    weight=df["exposure"],
-)
+cv = InsuranceCV(splits=cv_splits, df=df)
+print(split_summary(cv_splits, df, date_col="inception_date"))
+
+# Use sklearn cross_val_score with a Gini scorer
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import make_scorer
+from insurance_monitoring import gini_coefficient
+
+gini_scorer = make_scorer(gini_coefficient, needs_proba=False)
+scores = cross_val_score(tweedie_gbm, X, y, cv=cv, scoring=gini_scorer,
+                         fit_params={"sample_weight": df["exposure"].values})
 ```
 
 The `gap_months=3` parameter enforces an IBNR buffer: policies incepting in the three months before the test window are excluded from training. For long-tail lines you would set this higher: 12 to 18 months for casualty.
@@ -159,9 +176,7 @@ extractor = SHAPRelativities(
     model=catboost_model,
     X=X_train,
     exposure=exposure_train,
-    link="log",              # multiplicative model
-    n_bootstrap=200,
-    confidence_level=0.95,
+    # annualise_exposure=True by default — rates are per policy year
 )
 relativities = extractor.fit()
 
@@ -175,16 +190,13 @@ The reconstruction check matters: sum the SHAP relativities across all features 
 **Interaction detection** is a separate step. A GLM with no interaction terms can miss material rate inadequacy in segments where two factors combine non-linearly. The classic example is young age combined with high-performance vehicle. The CANN+NID pipeline (combined actuarial neural network + neural interaction detection) automates the search:
 
 ```python
-from insurance_interactions import InteractionDetector
+from insurance_interactions import test_interactions
 
-detector = InteractionDetector(
-    base_model=glm_freq,
-    X=X_train,
-    y=y_train,
-    exposure=exposure_train,
-    threshold=0.01,          # flag interactions explaining >1% of deviance
+# test_interactions ranks all candidate pairs by NID score and runs LR tests
+candidates = test_interactions(
+    X_train, y_train, exposure=exposure_train, family="poisson", n_top=20
 )
-candidates = detector.fit().top_interactions(n=10)
+# Returns a DataFrame ranked by NID score with LR test p-values (Bonferroni-corrected)
 ```
 
 The output is a ranked list of feature pairs. You then decide which to add as explicit interaction terms in the GLM. It is a decision aid, not an automated model builder.
@@ -198,45 +210,45 @@ Point estimates are insufficient for several reasons that go beyond regulatory p
 **Conformal prediction** gives distribution-free coverage guarantees. For a properly calibrated conformal predictor, at least 90% of true values will fall inside the 90% prediction interval. This is not a promise conditional on model assumptions; it is a finite-sample guarantee regardless of whether the model is correctly specified:
 
 ```python
-from insurance_conformal import ConformalPricing
+from insurance_conformal import InsuranceConformalPredictor
 
-cp = ConformalPricing(
+cp = InsuranceConformalPredictor(
     model=catboost_model,
-    coverage=0.90,
-    heteroscedastic=True,    # accounts for variance varying across the portfolio
+    nonconformity="pearson_weighted",   # respects heteroscedasticity
+    distribution="tweedie",
 )
-cp.calibrate(X_cal, y_cal, exposure_cal)
+cp.calibrate(X_cal, y_cal, coverage=0.90)
 
-lower, upper = cp.predict_interval(X_new, exposure_new)
+lower, upper = cp.predict_interval(X_new)
 ```
 
 **Distributional models** go further: rather than a point estimate plus an interval, they predict the full probability distribution of the outcome for each risk. This is useful for large commercial risks where the tail of the loss distribution matters for pricing, not just the mean:
 
 ```python
-from insurance_distributional import DistributionalGBM
+from insurance_distributional import GammaGBM
 
-dgbm = DistributionalGBM(
-    distribution="LogNormal",
-    n_estimators=300,
-    learning_rate=0.05,
-)
+# GammaGBM predicts the full Gamma distribution per risk
+# — mean, variance, and any percentile
+dgbm = GammaGBM()
 dgbm.fit(X_train, y_train, sample_weight=exposure_train)
 
-# Returns (mu, sigma) for each prediction
-mu, sigma = dgbm.predict(X_new)
-mean_prediction = np.exp(mu + 0.5 * sigma**2)
-var_loaded_price = np.exp(mu + 0.5 * sigma**2) * (1 + safety_loading * sigma)
+# Returns a DistributionalPrediction with .mean(), .std(), .quantile()
+pred = dgbm.predict(X_new)
+mean_prediction = pred.mean()
+p95 = pred.quantile(0.95)
+var_loaded_price = mean_prediction * (1 + safety_loading * pred.std() / mean_prediction)
 ```
 
 **Quantile regression** targets specific percentiles directly — useful for setting excess points or pricing first-loss layers:
 
 ```python
-from insurance_quantile import QuantileRegressor
+from insurance_quantile import QuantileGBM
 
-q90 = QuantileRegressor(quantile=0.90, n_estimators=200)
+q90 = QuantileGBM(quantiles=[0.90])
 q90.fit(X_train, y_train, sample_weight=exposure_train)
 
-p90_loss = q90.predict(X_new)  # 90th percentile of loss for each risk
+# predict() returns a DataFrame with one column per quantile
+p90_loss = q90.predict(X_new)[0.90]   # 90th percentile of loss for each risk
 ```
 
 ---
@@ -250,23 +262,21 @@ The distinction matters because pricing decisions are non-random. Policies that 
 Double Machine Learning (DML) addresses this by partialling out the confounding in two stages: first, predict the treatment (price change) and the outcome (renewal) separately from the confounders, then regress the residuals of each on the other. The resulting coefficient is a consistent estimate of the average treatment effect under assumptions that are weaker than standard regression.
 
 ```python
-from insurance_causal import DoubleMLElasticity
+from insurance_causal import CausalPricingModel
 
-dml = DoubleMLElasticity(
-    outcome_model=CatBoostRegressor(iterations=200),
-    treatment_model=CatBoostRegressor(iterations=200),
-    n_folds=5,
+dml = CausalPricingModel(
+    outcome="renewed",
+    outcome_type="binary",
+    treatment="log_price_change",
+    confounders=list(X_renewal.columns),   # rating factors, history
+    cv_folds=5,
     random_state=42,
 )
-dml.fit(
-    X=X_renewal,                    # confounders: rating factors, history
-    treatment=df["log_price_change"],
-    outcome=df["renewed"],
-    sample_weight=df["exposure"],
-)
+result = dml.fit(df, exposure_col="exposure")
 
-print(f"Elasticity: {dml.elasticity_:.3f}")
-print(f"95% CI: ({dml.ci_lower_:.3f}, {dml.ci_upper_:.3f})")
+ate = result.average_treatment_effect()
+print(f"Elasticity (ATE): {ate.ate:.3f}")
+print(f"95% CI: ({ate.ci_lower:.3f}, {ate.ci_upper:.3f})")
 ```
 
 For FCA Consumer Duty purposes, the causal elasticity estimate is more defensible than a correlation-based one if you are asked to demonstrate that your renewal pricing respects the ENBP principle. An association-based coefficient systematically overstates the true price sensitivity of customers who were selected for large rate increases on actuarial grounds.
@@ -282,27 +292,26 @@ FCA PS21/11 imposes equivalent new business pricing (ENBP): a renewing customer 
 A linear programming formulation handles all of these simultaneously:
 
 ```python
-from insurance_optimise import RateOptimiser, ENBPConstraint, LossRatioConstraint
+from insurance_optimise import PortfolioOptimiser, ConstraintConfig
 
-optimiser = RateOptimiser(
-    technical_price=df["technical_price"],
-    demand_model=dml_demand,
-    exposure=df["exposure"],
+constraints = ConstraintConfig(
+    lr_max=0.74,              # maximum acceptable loss ratio
+    enbp_buffer=0.0,          # strict ENBP compliance
+    retention_min=0.80,
 )
 
-optimiser.add_constraint(ENBPConstraint(
-    renewal_flag=df["is_renewal"],
-    new_business_price=df["nb_equivalent_price"],
-    tolerance=0.0,       # strict ENBP compliance
-))
+optimiser = PortfolioOptimiser(
+    technical_price=df["technical_price"].values,
+    expected_loss_cost=df["expected_loss"].values,
+    p_demand=df["p_renewal"].values,
+    elasticity=df["elasticity"].values,
+    renewal_flag=df["is_renewal"].values,
+    enbp=df["nb_equivalent_price"].values,
+    constraints=constraints,
+)
 
-optimiser.add_constraint(LossRatioConstraint(
-    target_lr=0.72,
-    tolerance=0.02,
-))
-
-result = optimiser.optimise(objective="profit")
-efficient_frontier = optimiser.efficient_frontier(n_points=50)
+result = optimiser.optimise()
+frontier = optimiser.optimise_scenarios()   # efficient frontier
 ```
 
 The efficient frontier, the set of (LR, volume) outcomes achievable given the constraints, is the output your board actually needs. A single optimised scenario is a point on that frontier. Knowing the full frontier tells you the regulatory cost of ENBP compliance in volume terms, and the profitability cost of a one-point tightening in the LR constraint.
@@ -316,24 +325,23 @@ PRA SS1/23 is currently formal guidance for banks and building societies on mode
 A validation report that will survive scrutiny needs to cover: discriminatory power (lifted Gini, by segment), calibration (A/E by decile and by rating factor), stability (Gini over time, PSI on feature distributions), sensitivity (coefficient stability under data perturbation), and a clear statement of model limitations and mitigants.
 
 ```python
-from insurance_governance.validation import PricingModelValidator
+from insurance_governance import ModelValidationReport, ValidationModelCard
 
-validator = PricingModelValidator(
-    model=production_model,
-    X_test=X_test,
-    y_test=y_test,
-    exposure_test=exposure_test,
-    model_id="motor_freq_v3",
-    model_version="2026-Q1",
-    validation_date="2026-03-12",
+card = ValidationModelCard(
+    name="Motor Frequency v3",
+    methodology="CatBoost with Poisson objective",
+    target="claim_count",
 )
 
-report = validator.run(
-    checks=["gini", "calibration", "lift", "sensitivity", "feature_importance"],
-    regulatory_standard="PRA_SS123",
+validator = ModelValidationReport(
+    model_card=card,
+    y_val=y_test,
+    y_pred_val=production_model.predict(X_test),
+    exposure_val=exposure_test,
 )
-report.to_pdf("validation_report_motor_freq_v3.pdf")
-report.to_html("validation_report_motor_freq_v3.html")
+
+validator.run()
+validator.generate("validation_report_motor_freq_v3.html")
 ```
 
 The report should be independently reproducible: anyone with access to the data and the model artefact should be able to rerun the validation and get the same numbers. This means the validation script itself needs to be version-controlled alongside the model.
@@ -351,22 +359,23 @@ A three-layer monitoring framework covers these at different frequencies:
 - **Discrimination testing (semi-annual):** Formal Gini test against the baseline. A 3-point Gini degradation on a 50,000-policy portfolio is statistically significant at conventional levels.
 
 ```python
-from insurance_monitoring import DriftMonitor
+from insurance_monitoring import MonitoringReport, psi
 
-monitor = DriftMonitor(
-    reference_data=X_baseline,
-    reference_date="2025-Q3",
-    psi_threshold=0.25,
-    gini_degradation_alert=3.0,
-)
+# PSI per feature: flag anything > 0.25
+for col in rating_factors:
+    psi_val = psi(X_baseline[col], X_current[col])
+    if psi_val > 0.25:
+        print(f"AMBER: {col} PSI={psi_val:.3f}")
 
-status = monitor.check(
-    current_data=X_current,
-    current_predictions=model.predict(X_current),
-    current_actuals=y_current,
-    current_exposure=exposure_current,
+# Full monitoring report: calibration, Gini drift, A/E by segment
+report = MonitoringReport(
+    reference_actual=y_baseline,
+    reference_predicted=model.predict(X_baseline),
+    current_actual=y_current,
+    current_predicted=model.predict(X_current),
+    exposure=exposure_current,
 )
-print(status.summary())     # GREEN / AMBER / RED by layer
+print(report.recommendation())     # GREEN / AMBER / RED
 ```
 
 The output should feed a dashboard your pricing manager and actuarial function see regularly — not a notebook you run when something goes wrong.
@@ -382,33 +391,33 @@ The FCA's record-keeping requirements under ICOBS 6B.2.51R require that renewal 
 A proper implementation requires deterministic routing (the same policy always goes to the same model version, based on a hash of a stable policy identifier), quote logging with enough fidelity to reconstruct the decision, and a formal statistical test comparing outcomes.
 
 ```python
-from insurance_deploy import ChampionChallenger, QuoteLogger
+from insurance_deploy import Experiment, ModelRegistry, QuoteLogger, ModelComparison, KPITracker
 
-cc = ChampionChallenger(
-    champion=champion_model,
-    challenger=challenger_model,
-    challenger_fraction=0.10,
-    routing_key="policy_id",       # SHA-256 hash for deterministic routing
-    random_seed=42,
+registry = ModelRegistry(path="/data/model_registry.db")
+champion_v = registry.register("motor_freq_v3", champion_model, tags={"status": "champion"})
+challenger_v = registry.register("motor_freq_v4", challenger_model, tags={"status": "challenger"})
+
+# Deterministic routing: the same policy_id always maps to the same model
+experiment = Experiment(
+    name="v3_vs_v4",
+    champion=champion_v,
+    challenger=challenger_v,
+    challenger_pct=0.10,
+    mode="live",
 )
 
-logger = QuoteLogger(
-    db_path="/data/quote_log.db",
-    log_inputs=True,               # logs X alongside predictions
-    log_model_hash=True,           # SHA-256 of model artefact
-)
+# Quote logging for ICOBS 6B.2.51R audit trail
+logger = QuoteLogger(path="/data/quote_log.db")
 
 # At quote time:
-quote = cc.predict(X_quote, policy_id=policy_id)
-logger.log(quote)
+model_version = experiment.route(policy_id)    # deterministic routing
+# ... generate quote_data ...
+logger.log_quote(quote_data)
 
-# After sufficient exposure:
-test_result = cc.test_outcomes(
-    outcomes_df=realised_outcomes,
-    method="bootstrap_lr",
-    n_bootstrap=10_000,
-)
-print(test_result.report())        # ICOBS 6B.2.51R compatible output
+# After sufficient exposure: bootstrap LR comparison
+tracker = KPITracker()
+comp = ModelComparison(tracker=tracker)
+test_result = comp.bootstrap_lr_test(realised_outcomes, n_bootstrap=10_000)
 ```
 
 The bootstrap LR test gives you a power-adjusted comparison: before you run the test, you should know how much exposure you need to detect a given LR difference at a given confidence level. Running a champion/challenger test without a power calculation is common. It means you are often making model promotion decisions on noise.
@@ -422,41 +431,44 @@ Model risk management for pricing means having a live inventory of all productio
 PRA SS1/23 defines a structured model lifecycle: development, validation, approval, ongoing monitoring, retirement. Each stage has documentation requirements. The documentation needs to be findable, not in someone's personal OneDrive, and version-controlled alongside the model artefacts.
 
 ```python
-from insurance_governance.mrm import ModelInventory, ModelRiskTier
+from insurance_governance.mrm import ModelInventory, ModelCard, RiskTierScorer
 
-inventory = ModelInventory(db_path="/data/model_registry.db")
+inventory = ModelInventory(path="/data/model_registry.db")
 
-inventory.register(
+card = ModelCard(
     model_id="motor_freq_v3",
-    description="Motor frequency GBM, personal lines, CatBoost Tweedie",
-    risk_tier=ModelRiskTier.TIER_2,      # material, moderate complexity
-    owner="Pricing Actuarial",
-    approved_by="Chief Actuary",
+    model_name="Motor Frequency GBM",
+    version="2026-Q1",
+    model_type="CatBoost Tweedie",
+    developer="Pricing Actuarial",
+    approved_by=["Chief Actuary"],
     approval_date="2026-01-15",
     next_review_date="2026-07-15",
-    validation_report_path="/models/motor_freq_v3/validation_report.pdf",
 )
+inventory.register(card)
 
-# Generate board-level summary
-report = inventory.exec_summary(as_of="2026-03-12")
-report.to_pdf("model_risk_exec_summary_Q1_2026.pdf")
+# Risk tier: score against materiality and complexity dimensions
+tier = RiskTierScorer().score(card)
+print(f"Tier {tier.tier}: {tier.tier_label} (score {tier.score:.0f}/100)")
+
+# Board-level inventory summary
+df_summary = inventory.summary()
 ```
 
 Fairness auditing sits alongside this. The FCA's Consumer Duty requires that pricing outcomes do not systematically disadvantage customers with protected characteristics as a proxy. The practical implementation is a structured audit against protected and proxy-protected features, with a documented rationale for any disparate impact that is present:
 
 ```python
-from insurance_governance.mrm import FairnessAuditor
+from insurance_fairness import FairnessAudit
 
-auditor = FairnessAuditor(
-    protected_features=["age_band", "postcode_deprivation_decile"],
-    proxy_features=["vehicle_age", "payment_method"],
+# FCA Consumer Duty: check for proxy discrimination by protected characteristics
+audit = FairnessAudit(
+    model=model,
+    data=df,
+    protected_cols=["age_band", "postcode_deprivation_decile"],
+    factor_cols=["vehicle_age", "payment_method"],
+    exposure_col="exposure",
 )
-audit = auditor.run(
-    predictions=model.predict(X),
-    actuals=y,
-    metadata=df[['age_band', 'postcode_deprivation_decile', 'vehicle_age', 'payment_method']],
-)
-audit.to_report("fairness_audit_motor_2026_Q1.pdf")
+audit.run().save_report("fairness_audit_motor_2026_Q1.md")
 ```
 
 ---

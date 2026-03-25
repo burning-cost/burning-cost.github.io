@@ -55,12 +55,12 @@ import numpy as np
 
 estimator = BunchingEstimator(
     z=declared_mileage,
-    zstar=10_000,
-    bw=200,                  # bin width (miles)
-    poly_order=7,            # counterfactual polynomial degree
-    excl_below=500,          # exclusion window below threshold (miles)
-    excl_above=1_000,        # exclusion window above threshold (miles)
-    mode='notch',            # discrete premium jump at threshold
+    threshold=10_000,
+    binwidth=200,            # bin width (miles)
+    poly_degree=7,           # counterfactual polynomial degree
+    excl_left=3,             # exclusion window: bins left of threshold
+    excl_right=5,            # exclusion window: bins right of threshold
+    notch=True,              # discrete premium jump at threshold
     n_boot=500,              # bootstrap iterations for SE
 )
 
@@ -92,14 +92,14 @@ from insurance_bunching import ExposureWeightedBunching
 # columns: declared_mileage, earned_years, vehicle_age, ncd_level, ...
 
 ewb = ExposureWeightedBunching(
-    df=motor_policies,
+    data=motor_policies,
     running_var='declared_mileage',
     exposure_col='earned_years',
-    zstar=10_000,
-    bw=200,
-    excl_below=500,
-    excl_above=1_000,
-    mode='notch',
+    threshold=10_000,
+    binwidth=200,
+    excl_left=3,
+    excl_right=5,
+    threshold_type='notch',
 )
 
 result = ewb.fit()
@@ -121,12 +121,12 @@ from insurance_bunching import MultiThresholdScanner
 
 scanner = MultiThresholdScanner(
     z=declared_mileage,
-    exposure=earned_years,
     thresholds=[5_000, 10_000, 15_000, 20_000],
-    bw=200,
-    excl_below=500,
-    excl_above=1_000,
-    mode='notch',
+    weights=earned_years,    # exposure weights per observation
+    binwidth=200,
+    excl_left=3,
+    excl_right=5,
+    notch=True,
     fdr_level=0.05,
 )
 
@@ -154,13 +154,14 @@ FCA Consumer Duty requires insurers to demonstrate that pricing outcomes are fai
 from insurance_bunching import BunchingReport
 
 report = BunchingReport(
-    scanner_results=results,          # MultiThresholdScanner output
-    portfolio_name='UK Motor 2025 Q4',
-    regulatory_context='FCA Consumer Duty — mileage declaration integrity',
-    output_path='bunching_report_q4.html',
+    results=results.results,          # list of BunchingResult from scanner
+    title='Bunching Analysis — UK Motor 2025 Q4',
+    product_line='Motor',
+    analysis_date='2025-12-31',
+    fdr_level=0.05,
 )
 
-report.generate()
+report.save('bunching_report_q4.html')
 ```
 
 The report includes: density plots with counterfactual overlays for each threshold, B-hat estimates with confidence intervals, BH-adjusted p-values, and a summary table with pass/fail against the configured FDR level. All charts are base64-embedded PNGs — the HTML file is fully self-contained, with no CDN dependencies that break in regulatory archives three years from now.

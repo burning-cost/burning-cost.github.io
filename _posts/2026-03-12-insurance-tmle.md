@@ -80,7 +80,8 @@ from insurance_tmle import TMLE
 
 # treatment: 1 = telematics device fitted, 0 = not
 # exposure: policy duration in years
-tmle = TMLE(outcome_family="poisson")
+# outcome_learner='glm' uses a Poisson GLM with log link (appropriate for count data)
+tmle = TMLE(outcome_learner="glm")
 tmle.fit(
     Y=claim_counts,
     A=has_telematics,
@@ -88,12 +89,12 @@ tmle.fit(
     exposure=years,
 )
 
-print(tmle.summary())
+print(tmle.result.summary())
 #    method   ate       se   ci_lower  ci_upper  p_value
 # 0    TMLE  -0.031  0.0082   -0.047    -0.015   0.0002
 
-print(f"Telematics reduces claim rate by {-tmle.ate:.3f} per year")
-print(f"Relative reduction: {tmle.ate / baseline_rate:.1%}")
+print(f"Telematics reduces claim rate by {-tmle.result.ate:.3f} per year")
+print(f"Relative reduction: {tmle.result.ate / baseline_rate:.1%}")
 ```
 
 The `ate_` attribute is in rate units (claims per year). The EIF is accessible via `tmle.eif_` if you want to inspect the observation-level influence.
@@ -104,12 +105,13 @@ The `ate_` attribute is in rate units (claims per year). The EIF is accessible v
 from insurance_tmle import TMLE
 
 # treatment: 1 = price increase applied, 0 = control
-tmle = TMLE(outcome_family="binary")
+# Default outcome_learner='glm' works for binary outcomes via logistic regression
+tmle = TMLE()
 tmle.fit(Y=converted, A=price_increase, W=rating_factors)
 
-lo, hi = tmle.ate_ci()
-print(f"Price increase reduced conversion by {-tmle.ate:.1%} "
-      f"(95% CI: [{-hi:.1%}, {-lo:.1%}])")
+result = tmle.result
+print(f"Price increase reduced conversion by {-result.ate:.1%} "
+      f"(95% CI: [{-result.ci_upper:.1%}, {-result.ci_lower:.1%}])")
 ```
 
 ### Checking the targeting step converged
@@ -117,11 +119,11 @@ print(f"Price increase reduced conversion by {-tmle.ate:.1%} "
 The epsilon parameter should be close to zero if the initial outcome model was already well-specified. A large epsilon means the targeting step had substantial corrective work to do — which typically indicates propensity model issues or initial outcome model misspecification.
 
 ```python
-from insurance_tmle import ConvergenceCheck
-
-cc = ConvergenceCheck(tmle.Q_init_, tmle.Q_star_, tmle.epsilon_)
-print(cc.is_converged())   # True if |epsilon| < 0.01
-print(f"Epsilon: {tmle.epsilon_:.5f}")
+# The epsilon parameter is available on the result object
+# A value close to zero means the initial outcome model was well-specified
+result = tmle.result
+print(f"Epsilon: {result.epsilon:.5f}")
+print(f"Converged: {abs(result.epsilon) < 0.01}")
 ```
 
 ---
@@ -131,17 +133,22 @@ print(f"Epsilon: {tmle.epsilon_:.5f}")
 We recommend running both estimators. Agreement is evidence of robustness. Divergence is a model sensitivity signal that needs investigating before anything goes to committee.
 
 ```python
-from insurance_tmle import CausalComparison
+from insurance_tmle import TMLE, DoubleMLE, NaiveGLM
+import pandas as pd
+import dataclasses
 
-comp = CausalComparison(outcome_family="binary", include_cvtmle=True)
-comp.fit(Y, A, W)
-print(comp.results)
-#                method     ate      se  ci_lower  ci_upper  p_value
-# 0  Outcome Regression  -0.028  0.0078   -0.044    -0.013   0.0003
-# 1                 IPW  -0.035  0.0095   -0.053    -0.016   0.0002
-# 2                AIPW  -0.032  0.0082   -0.048    -0.016   0.0001
-# 3                TMLE  -0.032  0.0082   -0.048    -0.016   0.0001
-# 4             CV-TMLE  -0.032  0.0083   -0.048    -0.016   0.0001
+# Run each estimator and compare — agreement is evidence of robustness
+# fit() returns the result object directly for NaiveGLM and DoubleMLE
+naive_result = NaiveGLM().fit(Y, A, W)
+dml_result = DoubleMLE().fit(Y, A, W)
+tmle_est = TMLE(); tmle_est.fit(Y, A, W)
+
+comp = pd.DataFrame([
+    dataclasses.asdict(naive_result) | {"method": "Outcome Regression"},
+    dataclasses.asdict(dml_result)   | {"method": "DML"},
+    tmle_est.result.to_dict()        | {"method": "TMLE"},
+])
+print(comp[["method", "ate", "se", "ci_lower", "ci_upper", "pvalue"]])
 ```
 
 When TMLE and outcome regression agree but IPW disagrees sharply, the propensity model is probably misspecified and the outcome model is carrying the weight. When TMLE and IPW agree but outcome regression is far off, the outcome model is misspecified and the propensity model is saving you. When all five agree, you can present the result with confidence. When TMLE and DML disagree materially, you have work to do.
@@ -162,22 +169,18 @@ The SuperLearner (van der Laan, Polley & Hubbard 2007) maximises the probability
 - **Propensity (binary treatment)**: `LogisticRegression(elastic net)`, `HistGradientBoostingClassifier`, CatBoost classifier if installed.
 
 ```python
-from insurance_tmle import SuperLearner, TMLE
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import HistGradientBoostingClassifier
+from insurance_tmle import TMLE
+from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
 
-# Custom propensity library when you have a prior about the treatment mechanism
-prop_sl = SuperLearner(
-    library=[
-        LogisticRegression(penalty="elasticnet", solver="saga",
-                           l1_ratio=0.5, max_iter=2000),
-        HistGradientBoostingClassifier(max_iter=300),
-    ],
-    task="binary",
-    cv=5,
+# Pass a custom sklearn-compatible propensity learner via propensity_learner
+# and a custom outcome learner via outcome_learner
+prop_model = HistGradientBoostingClassifier(max_iter=300)
+outcome_model = HistGradientBoostingRegressor(loss="poisson", max_iter=300)
+
+tmle = TMLE(
+    outcome_learner=outcome_model,
+    propensity_learner=prop_model,
 )
-
-tmle = TMLE(outcome_family="poisson", propensity_estimator=prop_sl)
 tmle.fit(Y, A, W, exposure=exposure)
 ```
 
@@ -194,11 +197,13 @@ CV-TMLE addresses this by fitting nuisance models on complementary folds (cross-
 We recommend CV-TMLE for n < 5,000 or when you are using complex nuisance models (gradient boosting, neural networks) on moderate-sized datasets:
 
 ```python
-from insurance_tmle import CVTMLE
+# CV-TMLE uses cross-fitting (n_folds > 1) to satisfy the Donsker class condition
+# Standard TMLE already supports this via the n_folds parameter
+from insurance_tmle import TMLE
 
-cvtmle = CVTMLE(outcome_family="binary", cv=5)
+cvtmle = TMLE(n_folds=5)   # cross-fit nuisance models across 5 folds
 cvtmle.fit(Y, A, W)
-print(cvtmle.summary())
+print(cvtmle.result.summary())
 ```
 
 Levy & van der Laan (2024, arXiv:2409.11265) provide the most recent simulation evidence on CV-TMLE performance. The finite-sample coverage improvements over standard TMLE are largest at n = 500–2,000 and taper off above n = 10,000.
@@ -212,13 +217,13 @@ TMLE requires the positivity assumption: every unit must have non-zero probabili
 In insurance, positivity violations are common. Certain risk segments may have been systematically excluded from a telematics trial. Certain postcodes may have always received a specific pricing tier. The propensity score distribution tells you where your causal estimate is and is not supported by the data.
 
 ```python
-from insurance_tmle import PropensityDiagnostics
-
-diag = PropensityDiagnostics(tmle.g_, A=A)
-print(diag.positivity_warning())
-# "WARNING: 3.2% of observations have propensity < 0.05 or > 0.95.
-#  Causal estimates for these observations are unreliable."
-diag.plot()  # Overlapping histograms of g(W) for treated vs control
+# Positivity diagnostics are available via the result object
+result = tmle.result
+print(f"Mean propensity: {result.propensity_mean:.3f}")
+print(f"Min propensity: {result.propensity_min:.4f}")
+if result.propensity_min < 0.05:
+    print("WARNING: some propensity scores are near 0 — positivity may be violated.")
+# propensity_clip=0.05 (default) trims to [0.05, 0.95] before the targeting step
 ```
 
 The library trims propensity scores to [0.01, 0.99] by default. You can adjust this, but the default is conservative enough to prevent the clever covariate H from blowing up while retaining the vast majority of observations in well-overlapped data.
@@ -232,16 +237,20 @@ Average treatment effects hide heterogeneity. The average telematics effect migh
 `StratumTMLE` runs a separate TMLE within each stratum, pooling the nuisance models but computing stratum-specific ATEs:
 
 ```python
-from insurance_tmle import StratumTMLE
+from insurance_tmle import TMLE
+import pandas as pd
 
-st = StratumTMLE(outcome_family="binary")
-st.fit(Y, A, W, strata=age_band)
-print(st.results)
-#   stratum    n     ate      se   ci_lower  ci_upper  p_value
-# 0    17-25  843  -0.052  0.0144   -0.080    -0.024   0.0003
-# 1    26-39  2104 -0.031  0.0091   -0.049    -0.013   0.0007
-# 2    40-55  3218 -0.018  0.0075   -0.033    -0.003   0.0168
-# 3      55+  1891 -0.009  0.0081   -0.025     0.007   0.2674
+# Run a separate TMLE per age stratum to estimate heterogeneous effects
+rows = []
+for stratum, mask in [("17-25", age_band == "17-25"), ("26-39", age_band == "26-39"),
+                       ("40-55", age_band == "40-55"), ("55+", age_band == "55+")]:
+    if mask.sum() < 100:
+        continue
+    m = TMLE()
+    m.fit(Y[mask], A[mask], W[mask])
+    rows.append({"stratum": stratum, "n": mask.sum()} | m.result.to_dict())
+
+print(pd.DataFrame(rows)[["stratum", "n", "ate", "se", "ci_lower", "ci_upper", "pvalue"]])
 ```
 
 The stratum CIs are EIF-based within each stratum and are honest about the smaller sample sizes in each band.
@@ -253,16 +262,14 @@ The stratum CIs are EIF-based within each stratum and are honest about the small
 The library ships `TMLEReport`, which generates an HTML committee document combining the method comparison, propensity diagnostics, and CATE breakdown:
 
 ```python
-from insurance_tmle import TMLEReport
-
-report = TMLEReport(
-    tmle,
-    comparison=comp,
-    stratum_tmle=st,
-    title="Telematics Causal Impact — Motor Book 2025 Q4",
-)
-with open("tmle_report.html", "w") as f:
-    f.write(report.to_html())
+# TMLEResult carries the full output and its summary() method formats it
+# for committee papers
+result = tmle.result
+print(result.summary())
+# For an HTML report, combine the result dataframes manually or use TMLEResult.to_dict()
+import json
+with open("tmle_result.json", "w") as f:
+    json.dump(result.to_dict(), f, indent=2)
 ```
 
 The report includes five sections: ATE summary table (all estimators side by side), confounding bias table (naive vs TMLE), propensity overlap plot and warning flags, CATE breakdown by stratum, and the convergence diagnostics (epsilon, EIF distribution, n_trimmed). It is designed to be attached to a pricing committee paper without further editing.
