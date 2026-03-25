@@ -130,10 +130,10 @@ current_gini = gini_coefficient(
 # One-sample bootstrap test: is the current Gini significantly lower
 # than the training Gini? (Algorithm 3, arXiv:2510.04556)
 result = gini_drift_test_onesample(
-    actual=claim_counts_current,
-    predicted=model_frequency_current,
-    exposure=car_years_current,
-    reference_gini=training_gini,
+    training_gini=training_gini,
+    monitor_actual=claim_counts_current,
+    monitor_predicted=model_frequency_current,
+    monitor_exposure=car_years_current,
     n_bootstrap=1000,
     alpha=0.05,
 )
