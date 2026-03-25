@@ -222,13 +222,13 @@ The library implements two approaches. **Difference-in-Differences (DiD)** when 
 from insurance_causal.rate_change import RateChangeEvaluator, make_rate_change_data
 
 # Synthetic panel: 40 segments, 20 post periods, true ATT = -5%
-df = make_rate_change_data(n_segments=40, true_att=-0.05, seed=0)
+df = make_rate_change_data(n_segments=40, true_att=-0.05, random_state=0)
 
 evaluator = RateChangeEvaluator(
     outcome_col="outcome",
-    treatment_period=9,           # period in which rate change took effect
+    change_period=9,              # period in which rate change took effect
     unit_col="segment",           # for cluster-robust SEs
-    weight_col="earned_exposure", # strongly recommended
+    exposure_col="earned_exposure", # strongly recommended
 )
 result = evaluator.fit(df)
 print(result.summary())
@@ -239,22 +239,23 @@ The evaluator automatically selects DiD or ITS based on whether the `treated` co
 The `UK_INSURANCE_SHOCKS` dictionary in the library lists ten UK market events between 2017 and 2024 that can confound rate change estimates: the Ogden rate cuts in 2017-Q1, GIPP implementation in 2022-Q1, the motor claims inflation peak in 2023-Q1, and others. If your `treatment_period` falls within two quarters of any of these, the library emits a warning automatically.
 
 ```python
-from insurance_causal.rate_change import UK_INSURANCE_SHOCKS, check_shock_proximity
+from insurance_causal.rate_change import UK_INSURANCE_SHOCKS
+from insurance_causal.rate_change._shocks import check_shock_proximity
 
 # Check if our treatment period is near any known shock
-warnings = check_shock_proximity("2022-Q2", proximity_quarters=2)
+nearby = check_shock_proximity("2022-Q2", proximity_quarters=2)
 ```
 
 ### ITS for whole-book changes
 
 ```python
-df_its = make_rate_change_data(mode="its", true_level_shift=-0.02, seed=0)
+from insurance_causal.rate_change import make_its_data
+df_its = make_its_data(true_level_shift=-0.02, random_state=0)
 
 evaluator = RateChangeEvaluator(
     outcome_col="outcome",
-    treatment_period=9,
-    weight_col="earned_exposure",
-    add_seasonality=True,
+    change_period=9,
+    exposure_col="earned_exposure",
 )
 result = evaluator.fit(df_its)
 ```

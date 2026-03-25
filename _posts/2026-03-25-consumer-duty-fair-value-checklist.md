@@ -267,19 +267,23 @@ csi_results = {
 # A/E ratio: calibration check
 ae = ae_ratio(
     actual=validation_claims,
-    expected=model_predictions,
+    predicted=model_predictions,
     exposure=validation_exposure,
 )
 print(f"A/E ratio: {ae:.3f}")  # Target 0.95-1.05
 
 # Combined monitoring report
+# MonitoringReport is a dataclass: pass reference and current period arrays.
+# It runs all checks automatically in __post_init__; no .run() call needed.
 report = MonitoringReport(
-    psi=psi_result,
-    csi=csi_results,
-    ae=ae,
-    period="2025-Q4",
-).run()
-report.print_summary()
+    reference_actual=train_claims,
+    reference_predicted=train_predictions,
+    current_actual=validation_claims,
+    current_predicted=model_predictions,
+    exposure=validation_exposure,
+)
+print(report.recommendation)   # 'NO_ACTION' | 'RECALIBRATE' | 'REFIT' | 'INVESTIGATE'
+print(report.to_dict())        # full metrics dict with traffic-light bands
 ```
 
 **Good:** PSI below 0.10 on overall score distribution. CSI below 0.10 on all material rating factors. A/E ratio between 0.95 and 1.05 at aggregate level.
@@ -393,7 +397,7 @@ report.to_json("validation_report_2026.json")
 
 # Governance report for MRC pack
 governance = GovernanceReport(
-    card=mrm_card,
+    card=card,
     validation_results=report.to_dict()["summary"],
     monitoring_results={
         "period": "2025-Q4",

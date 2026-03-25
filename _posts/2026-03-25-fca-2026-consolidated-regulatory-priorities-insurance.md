@@ -81,22 +81,32 @@ from insurance_monitoring.calibration import ae_ratio_ci
 
 # Outcome monitoring: is the model still fair and calibrated
 # across the book, including vulnerable segments?
+# MonitoringReport is a dataclass: pass reference and current period arrays directly.
+# It runs all checks in __post_init__ — no .run() call needed.
 report = MonitoringReport(
-    y_true=claims,
-    y_pred=predicted_premiums,
-    X=rating_factors,
+    reference_actual=reference_claims,
+    reference_predicted=reference_predictions,
+    current_actual=claims,
+    current_predicted=predicted_premiums,
     exposure=exposure,
     gini_bootstrap=True,   # bootstrap CIs for Gini drift governance
 )
-report.run()
-report.print_summary()   # RAG status per metric
+print(report.recommendation)   # 'NO_ACTION' | 'RECALIBRATE' | 'REFIT' | 'INVESTIGATE'
+print(report.to_dict())        # full metrics dict with traffic-light bands
 
 # Anytime-valid calibration check — no scheduled review required,
 # no look-schedule inflation of type I error
+from scipy.stats import poisson as sp_poisson
+
 monitor = PITMonitor(alpha=0.05)
-monitor.update(y_true=new_claims, y_pred=new_predictions)
-if monitor.alarm:
-    print(f"Calibration alarm at t={monitor.t}: recalibrate or investigate")
+# PITMonitor.update() takes a single pre-computed PIT float in [0, 1].
+# Compute Poisson PIT for each new observation:
+for claim_i, lambda_hat_i, exposure_i in zip(new_claims, new_predictions, new_exposure):
+    pit = float(sp_poisson.cdf(int(claim_i), mu=exposure_i * lambda_hat_i))
+    alarm = monitor.update(pit)
+    if alarm:
+        print(f"Calibration alarm at t={alarm.time}: recalibrate or investigate")
+        break
 ```
 
 **Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. `insurance-fairness` v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
@@ -107,10 +117,13 @@ from insurance_fairness.diagnostics import ProxyDiscriminationAudit
 
 # Step 1: detect proxies before the FCA finds them for you
 proxy_audit = ProxyDiscriminationAudit(
-    protected_col="local_area_ethnicity_index",   # or any proxy candidate
-    factor_cols=["postcode_sector", "breed_group", "age_band"],
+    model=pricing_model,
+    X=df,
+    y=df["claim_cost"],
+    sensitive_col="local_area_ethnicity_index",   # or any proxy candidate
+    rating_factors=["postcode_sector", "breed_group", "age_band"],
 )
-proxy_result = proxy_audit.run(df)
+proxy_result = proxy_audit.fit()
 print(proxy_result.summary())   # D_proxy scalar + Shapley attribution
 
 # Step 2: double fairness — action AND outcome

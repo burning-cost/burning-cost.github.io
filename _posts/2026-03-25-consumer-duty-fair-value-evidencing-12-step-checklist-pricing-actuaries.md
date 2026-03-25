@@ -129,7 +129,7 @@ print(f"Score:                {murphy.score:.6f}")
 checker = CalibrationChecker(distribution="poisson", alpha=0.05)
 checker.fit(y=claims_count, y_hat=freq_predicted, exposure=exposure)
 report = checker.check(y=claims_count, y_hat=freq_predicted, exposure=exposure)
-print(report.verdict())  # "RECALIBRATE" | "REFIT" | "ACCEPTABLE"
+print(report.verdict())  # "OK" | "MONITOR" | "RECALIBRATE" | "REFIT"
 ```
 
 If the verdict is `REFIT`, the pricing actuary's evidence pack must include a timeline for model redevelopment. A `RECALIBRATE` verdict is lower urgency but still requires documented action with a deadline.
@@ -299,38 +299,35 @@ The output tells the evidence pack reader not just that drift exists but which f
 
 ---
 
-## Step 8: Run proxy discrimination audit — `IndirectDiscriminationAudit`
+## Step 8: Run proxy discrimination audit — `ProxyDiscriminationAudit`
 
 **Requirement:** Test whether the pricing model indirectly discriminates against customers sharing protected characteristics (age, gender, disability, ethnicity — Equality Act 2010, Section 19). This is not optional under PRIN 2A: the FCA has been explicit since TR24/2 that indirect discrimination through proxies is a live supervisory concern.
 
-**Why it matters:** A model that does not use gender as a rating factor can still discriminate by gender if vehicle group, occupation, or postcode are correlated with gender. `IndirectDiscriminationAudit` fits the five benchmark premiums from Côté, Côté & Charpentier (2025) and computes a proxy vulnerability score: the mean absolute gap between what the unaware model charges and what a gender-aware model would charge. If the unaware model is exploiting proxies, that gap will be large.
+**Why it matters:** A model that does not use gender as a rating factor can still discriminate by gender if vehicle group, occupation, or postcode are correlated with gender. `ProxyDiscriminationAudit` computes D_proxy — a normalised L2-distance from the fitted price to the admissible (discrimination-free) price set (Lindholm, Richman, Tsanakas & Wüthrich, EJOR 2026) — and decomposes it across rating factors via Shapley effects. A D_proxy above 0.05 warrants investigation.
 
 **Code:**
 
 ```python
-import pandas as pd
-from insurance_fairness import IndirectDiscriminationAudit
+import polars as pl
+from insurance_fairness.diagnostics import ProxyDiscriminationAudit
 
-# X_train must contain the protected attribute (gender) plus all rating factors
-# y_train: observed pure premium or claim frequency (regression target)
-audit = IndirectDiscriminationAudit(
-    protected_attr="gender",
-    proxy_features=["postcode_district", "occupation_band"],
+# X must contain all rating factors; sensitive_col is the protected attribute
+# y: observed pure premium or claim frequency
+audit = ProxyDiscriminationAudit(
+    model=pricing_model,
+    X=policy_df,
+    y=policy_df["claim_cost"],
+    sensitive_col="gender",
+    rating_factors=["postcode_district", "occupation_band", "vehicle_group"],
     exposure_col="exposure",
-    random_state=42,
 )
 
-result = audit.fit(
-    X_train=X_train_df,   # pandas DataFrame
-    y_train=y_train,
-    X_test=X_test_df,
-    y_test=y_test,
-)
+result = audit.fit()
 
-print(f"Portfolio proxy vulnerability: {result.proxy_vulnerability:.4f}")
-print("\nSegment report (ranked by vulnerability):")
-print(result.segment_report[["segment", "n", "mean_proxy_vulnerability",
-                               "mean_unaware", "mean_aware"]].head(10))
+print(f"D_proxy: {result.d_proxy:.4f} ({result.rag})")
+print("\nShapley attribution (which factors drive proxy discrimination):")
+for factor, effect in result.shapley_effects.items():
+    print(f"  {factor}: phi={effect.phi:.3f} ({effect.rag})")
 ```
 
 A proxy vulnerability above 0.05 (5% mean absolute gap between aware and unaware premiums) should be flagged in the fair value assessment with analysis of which factors are driving it. The `proxy_free` benchmark additionally shows how much of the vulnerability survives even when known proxies are removed — the residual is harder to explain away.
@@ -481,8 +478,8 @@ evidence_pack = {
                               "unc": murphy.unc, "verdict": report.verdict()},
     # Step 4
     "calibration_stability": {"pit_alarm_triggered": summary.alarm_triggered,
-                               "max_e_value": summary.max_e_value,
-                               "n_monthly_updates": summary.n_updates},
+                               "evidence": summary.evidence,
+                               "n_observations": summary.n_observations},
     # Step 5
     "psi_results": psi_results,
     # Step 6
@@ -541,7 +538,7 @@ All three libraries require Python 3.10+ and have no heavy dependencies beyond n
 
 The libraries are at:
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, CSI, A/E, GiniDrift, PITMonitor, TRIPODD
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — IndirectDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — ProxyDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — prediction intervals, PremiumSufficiencyController
 
 ---
