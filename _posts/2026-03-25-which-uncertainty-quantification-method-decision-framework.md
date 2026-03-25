@@ -237,11 +237,13 @@ from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
 
 ebm = InsuranceEBM(
     loss="tweedie",
-    tweedie_power=1.5,
-    outer_bags=8,   # bagging for uncertainty estimates on shape functions
-    inner_bags=0,   # set >0 for within-bag uncertainty (slower)
-    max_bins=256,
-    interactions=5, # number of pairwise interaction terms to fit
+    variance_power=1.5,
+    interactions=5,  # number of pairwise interaction terms to fit
+    ebm_kwargs={
+        "outer_bags": 8,    # bagging for uncertainty estimates on shape functions
+        "inner_bags": 0,    # set >0 for within-bag uncertainty (slower)
+        "max_bins": 256,
+    },
 )
 
 ebm.fit(X_train, y_train, exposure=exposure_train)
@@ -251,8 +253,8 @@ mu_hat = ebm.predict(X_test, exposure=exposure_test)
 
 # Shape function relativities with confidence bands from outer bagging
 rel = RelativitiesTable(ebm)
-rel.for_feature("driver_age")
-# Returns a DataFrame: bin | relativity | lower_95 | upper_95
+rel.table("driver_age")
+# Returns a DataFrame: feature | level | relativity | lower_ci | upper_ci | n_obs
 
 # For pricing use: actuary can inspect and constrain any shape function
 # before generating the final relativity table

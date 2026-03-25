@@ -369,15 +369,16 @@ from insurance_governance.mrm.report import GovernanceReport
 from insurance_governance.mrm.model_card import ModelCard as MRMCard
 
 # Validation report (SS1/23-aligned)
-val_card = ModelCard(
-    name="Motor Frequency v4.1",
+card = ModelCard(
+    model_id="motor-freq-v4.1",
+    model_name="Motor Frequency v4.1",
     version="4.1.0",
-    purpose="Predict claim frequency for UK motor portfolio — champion model",
-    methodology="CatBoost with Poisson objective, monotonicity constraints on NCD",
-    target="claim_count",
-    features=["driver_age", "vehicle_group", "area_code", "ncd_years", "annual_mileage"],
+    intended_use="Predict claim frequency for UK motor portfolio — champion model",
+    model_type="CatBoost with Poisson objective, monotonicity constraints on NCD",
+    target_variable="claim_count",
+    rating_factors=["driver_age", "vehicle_group", "area_code", "ncd_years", "annual_mileage"],
     limitations=["No telematics data", "Postcode is coarsest geographic unit"],
-    owner="Pricing Team",
+    developer="Pricing Team",
 )
 
 report = ModelValidationReport(
@@ -388,7 +389,7 @@ report = ModelValidationReport(
     exposure_val=exposure_val,
     X_train=X_train,
     X_val=X_val,
-    model_card=val_card,
+    model_card=card,
 )
 
 report.generate("validation_report_2026.html")

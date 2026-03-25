@@ -146,10 +146,12 @@ from insurance_governance import MRMModelCard, RiskTierScorer, ModelInventory
 
 # Document the model
 card = MRMModelCard(
+    model_id="pet-pricing-gbm-v2",
     model_name="PetInsurancePricingGBM_v2",
+    version="2.0.0",
     model_type="CatBoost frequency-severity",
-    use_case="Pure premium rating for UK pet insurance",
-    owner="Pricing Actuary",
+    intended_use="Pure premium rating for UK pet insurance",
+    developer="Pricing Actuary",
     assumptions=[
         "Breed group is a legitimate risk factor under Equality Act s.22 exception",
         "Geographic factors are not proxies for protected characteristics",

@@ -151,7 +151,8 @@ from shap_relativities import SHAPRelativities
 
 sr = SHAPRelativities(cb_model, X_train)
 sr.fit()
-ncd_gbm_table = sr.factor_table("ncd_f")
+all_rels = sr.extract_relativities()
+ncd_gbm_table = all_rels.filter(all_rels["feature"] == "ncd_f")
 ```
 
 This lets you compare the GBM's implicit factor structure against the GLM's explicit one. Divergence at extreme levels - say, the GBM giving NCD-0 a relativity of 1.65 where the GLM gives 1.39 - flags either a non-linear effect the GLM is missing or a thin-data artefact in the GBM.

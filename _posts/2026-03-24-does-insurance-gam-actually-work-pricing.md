@@ -103,7 +103,7 @@ This is the other half of the EBM's value proposition, and it is the part that d
 ```python
 from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
 
-model = InsuranceEBM(loss="poisson", interactions="3x", random_state=42)
+model = InsuranceEBM(loss="poisson", interactions="3x", ebm_kwargs={"random_state": 42})
 model.fit(X_train, y_train, exposure=exp_train)
 
 rt = RelativitiesTable(model)

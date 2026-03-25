@@ -44,7 +44,7 @@ Maximum Mean Discrepancy (MMD) is a kernel-based measure of how different two di
 
 ```python
 import numpy as np
-from insurance_thin_data.transfer import CovariateShiftTest
+from insurance_transfer import CovariateShiftTest
 
 # X_source: features for ICE policies (n=80000 after removing EVs)
 # X_target: features for EV policies (n=1200)
@@ -105,7 +105,7 @@ for idx, score in top_drifted:
 The final coefficients are pooled + delta — a data-driven blend that is simultaneously informed by the large source sample and corrected for systematic differences.
 
 ```python
-from insurance_thin_data.transfer import GLMTransfer
+from insurance_transfer import GLMTransfer
 
 model = GLMTransfer(
     family="poisson",
@@ -205,7 +205,7 @@ The age and NCD effects are largely inherited from the source. That is the corre
 Never deploy without running this.
 
 ```python
-from insurance_thin_data.transfer import NegativeTransferDiagnostic
+from insurance_transfer import NegativeTransferDiagnostic, GLMTransfer
 
 # Split target into train/test before fitting
 from sklearn.model_selection import train_test_split
@@ -215,21 +215,24 @@ X_tr, X_te, y_tr, y_te, exp_tr, exp_te = train_test_split(
     test_size=0.25, random_state=42,
 )
 
-# Fit a target-only baseline for comparison
-from insurance_thin_data import GLMTransfer
-target_only = GLMTransfer(family="poisson", lambda_pool=0.0, lambda_debias=0.0)
-target_only.fit(X_tr, y_tr, exp_tr)
+# Refit the transfer model on training split only
+transfer_model = GLMTransfer(family="poisson", lambda_pool=0.005, lambda_debias=0.02, scale_features=True)
+transfer_model.fit(X_tr, y_tr, exp_tr, X_source=X_source, y_source=y_source, exposure_source=exposure_source)
+
+# Target-only baseline — needed for the negative transfer gap (NTG)
+target_only_model = GLMTransfer(family="poisson", lambda_pool=0.0, lambda_debias=0.01, scale_features=True)
+target_only_model.fit(X_tr, y_tr, exp_tr)
 
 diag = NegativeTransferDiagnostic()
 result = diag.evaluate(
     X_test=X_te,
     y_test=y_te,
     exposure_test=exp_te,
-    transfer_model=model,
-    target_only_model=target_only,
+    transfer_model=transfer_model,
+    target_only_model=target_only_model,
 )
 
-print(result)
+print(diag.summary_table(result))
 ```
 
 ```

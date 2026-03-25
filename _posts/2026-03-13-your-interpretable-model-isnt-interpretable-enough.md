@@ -78,17 +78,14 @@ The sklearn-compatible API makes the transition from GLM or GBM straightforward:
 from insurance_gam.anam import ANAM
 
 model = ANAM(
-    loss="poisson",          # or "tweedie", "gamma"
-    tweedie_power=1.5,       # only used if loss="tweedie"
-    monotone_features={
-        "vehicle_age": "increasing",
-        "driver_age_young": "decreasing",   # frequency decreasing with age 25-70
-        "sum_insured": "increasing",
-    },
-    lambda_smooth=1e-4,      # smoothness regularisation
-    lambda_l1=1e-5,          # feature sparsity
-    hidden_sizes=[64, 32],   # subnetwork architecture
-    interactions=[           # optional pairwise terms
+    loss="poisson",              # or "tweedie", "gamma"
+    tweedie_p=1.5,               # only used if loss="tweedie"
+    monotone_increasing=["vehicle_age", "sum_insured"],
+    monotone_decreasing=["driver_age_young"],  # frequency decreasing with age 25-70
+    lambda_smooth=1e-4,          # smoothness regularisation
+    lambda_l1=1e-5,              # feature sparsity
+    hidden_sizes=[64, 32],       # subnetwork architecture
+    interaction_pairs=[          # optional pairwise terms
         ("driver_age_band", "vehicle_group"),
     ],
 )
@@ -96,7 +93,7 @@ model = ANAM(
 model.fit(X_train, y_train, sample_weight=exposure_train)
 ```
 
-The `monotone_features` dict specifies which features have constrained directions. Every feature listed there is guaranteed to be monotone after `fit()` completes. Features not listed are unconstrained.
+The `monotone_increasing` and `monotone_decreasing` lists specify which features have constrained directions. Every feature listed there is guaranteed to be monotone after `fit()` completes. Features not listed are unconstrained.
 
 Prediction and scoring follow standard sklearn conventions:
 

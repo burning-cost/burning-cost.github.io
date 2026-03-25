@@ -78,12 +78,9 @@ from insurance_gam.anam import ANAM
 
 model = ANAM(
     loss="tweedie",
-    tweedie_power=1.5,
-    monotone_features={
-        "vehicle_age": "increasing",
-        "driver_age_young": "decreasing",
-        "ncd_years": "decreasing",
-    },
+    tweedie_p=1.5,
+    monotone_increasing=["vehicle_age"],
+    monotone_decreasing=["driver_age_young", "ncd_years"],
     lambda_smooth=1e-4,
     hidden_sizes=[64, 32],
 )

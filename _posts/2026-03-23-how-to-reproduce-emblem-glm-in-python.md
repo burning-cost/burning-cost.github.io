@@ -464,7 +464,9 @@ from shap_relativities import SHAPRelativities
 sr = SHAPRelativities(cb_model, df_pd[X_cols])
 sr.fit()
 
-ncd_gbm = sr.factor_table("ncd_band")
+# extract_relativities returns all features; filter to ncd_band
+all_rels = sr.extract_relativities()
+ncd_gbm = all_rels.filter(all_rels["feature"] == "ncd_band")
 
 # Compare GBM relativities against GLM relativities for NCD
 glm_ncd = ncd_table.rename({"relativity": "glm_rel"})

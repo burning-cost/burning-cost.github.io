@@ -58,7 +58,7 @@ The library provides three estimands for continuous treatment pricing questions.
 The AME answers: how does a £1 premium increase affect claims or retention, on average across the portfolio?
 
 ```python
-from insurance_causal.autodml import PremiumElasticity
+from insurance_autodml import PremiumElasticity
 
 model = PremiumElasticity(
     outcome_family="poisson",   # "tweedie" for pure premium, "gaussian" for log-transformed
@@ -95,7 +95,7 @@ The dose-response curve answers a different question: what would the average cla
 This uses the Colangelo-Lee kernel-DML approach (JBES 2025, arXiv:2004.03036), which wraps kernel-weighted doubly-robust scores around the cross-fitted nuisance:
 
 ```python
-from insurance_causal.autodml import DoseResponseCurve
+from insurance_autodml import DoseResponseCurve
 import numpy as np
 
 drc = DoseResponseCurve(
@@ -127,7 +127,7 @@ The bandwidth matters for the dose-response curve in a way it does not for the A
 The policy shift estimand answers the question pricing teams actually ask before an annual renewal cycle: if we increase all premiums by 5%, what happens to aggregate claims or retention?
 
 ```python
-from insurance_causal.autodml import PolicyShiftEffect
+from insurance_autodml import PolicyShiftEffect
 
 pse = PolicyShiftEffect(outcome_family="gaussian")
 pse.fit(X, D, Y)
@@ -161,7 +161,7 @@ This is the partial derivative of E[Y|D,X] with respect to D, evaluated at the o
 The default hyperparameters — 200 trees, max_depth=6, min_samples_leaf=10 — work well on motor and home renewal books in the 50k–500k policy range. For smaller books:
 
 ```python
-from insurance_causal.autodml import PremiumElasticity
+from insurance_autodml import PremiumElasticity
 
 model = PremiumElasticity(
     outcome_family="poisson",
@@ -198,7 +198,7 @@ If you estimate the AME naively on renewals, you understate the true causal effe
 `SelectionCorrectedElasticity` handles this. The identification follows the recent extension of the Riesz framework to missing outcomes (arXiv:2601.08643). A selection model P(S=1 | X, D) is estimated jointly with the outcome nuisance, and the EIF score is IPW-corrected:
 
 ```python
-from insurance_causal.autodml import SelectionCorrectedElasticity
+from insurance_autodml import SelectionCorrectedElasticity
 
 # S: renewal indicator (1 = renewed, 0 = lapsed)
 # Y: claims — for S=0 observations, Y is ignored (can be 0 or NaN)
@@ -239,15 +239,14 @@ If the estimate is stable across Gamma=1 through Gamma=2, you have evidence that
 The `ElasticityReport` class generates HTML reports suitable for inclusion in a pricing review submission:
 
 ```python
-from insurance_causal.autodml.report import ElasticityReport
+from insurance_autodml import ElasticityReport
 
 report = ElasticityReport(
-    model=model,
+    estimator=model,
     segment_results=model.effect_by_segment(df["vehicle_group"]),
     sensitivity_bounds=bounds,          # optional: from SelectionCorrectedElasticity
-    dose_response=drc.predict(d_grid),  # optional: from DoseResponseCurve
 )
-report.save("elasticity_report.html")
+report.to_html("elasticity_report.html")
 ```
 
 The HTML output includes the overall AME with confidence interval and p-value, the segment table, sensitivity analysis plots, and a plain-English methodology section written for a regulatory audience. The methodology notes explain the Riesz approach without requiring the reader to know what a Riesz representer is — which is the right level for an FCA evidence pack.

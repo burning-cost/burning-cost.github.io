@@ -361,8 +361,8 @@ from insurance_monitoring import DriftAttributor
 
 attributor = DriftAttributor(
     model=fitted_catboost,
-    feature_names=["driver_age", "vehicle_group", "area_code", "ncd_years"],
-    loss_fn="poisson_deviance",
+    features=["driver_age", "vehicle_group", "area_code", "ncd_years"],
+    loss="poisson_deviance",
     alpha=0.05,              # Bonferroni-corrected type I error
     n_bootstrap=200,
 )

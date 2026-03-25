@@ -92,22 +92,21 @@ from insurance_conformal_ts import EnbPI
 from insurance_conformal_ts.nonconformity import NegBinomPearsonScore
 
 # NegBinomPearsonScore requires a dispersion estimate from the calibration data
-score_nb = NegBinomPearsonScore(dispersion=2.8)  # estimated from residuals
+score_nb = NegBinomPearsonScore(phi=2.8)  # estimated from residuals
 
 enbpi = EnbPI(
-    forecaster_factory=lambda: ccc._forecaster.__class__(),  # factory producing new unfitted instances
+    forecaster_factory=lambda: ccc._forecaster.__class__(**ccc._forecaster.get_params()),
     score=score_nb,
-    B=50,         # 50 bootstrap forecasters
-    window_size=10,  # replace 10 oldest residuals per step (controls forgetting)
+    B=50,          # 50 bootstrap forecasters
+    window_size=50, # rolling window; controls forgetting
 )
 
 enbpi.fit(y_train)
-enbpi.calibrate(y_cal, alpha=0.10)
 
 lower_enbpi, upper_enbpi = enbpi.predict_interval(y_test, alpha=0.10)
 ```
 
-The `s` parameter is critical. Each time step, EnbPI discards the `s` oldest residuals from its calibration window and replaces them with the most recent observation. Larger `s` means faster adaptation to regime shift — but also higher variance in the interval estimates. For a series with gradual trend and an annual seasonality, `s=10` on a window of 50 is a reasonable starting point. For a series with a sharp regime shift, increase `s` to 20-25.
+The `window_size` parameter controls how many residuals are retained in the calibration window. Smaller windows mean faster adaptation to regime shift — but also higher variance in the interval estimates. For a series with gradual trend and an annual seasonality, `window_size=50` is a reasonable starting point. For a series with a sharp regime shift, reduce to 20-25.
 
 EnbPI is the most expensive method in the library. With B=50 and a Poisson GLM base forecaster, it takes 2-4 minutes on a typical 60-period training set. ACI takes under a second. The question is whether the tighter intervals justify the cost. On our UK motor benchmark: EnbPI reduced mean interval width by 8% relative to ACI at the same 90% coverage, using a GLM base forecaster. If you replace the GLM with a more informative seasonal model, the gap widens — ensemble variance captures more of the true predictive uncertainty, and the intervals shrink accordingly. If the base forecaster has low signal (random walk, seasonal mean), EnbPI offers little over ACI.
 
@@ -167,7 +166,7 @@ dispersion_est = max(
     0.1   # floor: if dispersion_est < 0, data is underdispersed; use Poisson
 )
 
-score_nb = NegBinomPearsonScore(dispersion=dispersion_est)
+score_nb = NegBinomPearsonScore(phi=dispersion_est)
 
 from insurance_conformal_ts import ACI
 
