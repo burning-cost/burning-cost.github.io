@@ -294,15 +294,15 @@ hierarchy = InsuranceHierarchy.uk_home()
 reconciler = InsuranceReconciler(hierarchy, earned_premium=ep_df.mean())
 
 report = reconciler.check_coherence(lc_df, ep_df)
-if report.is_incoherent:
+if not report.is_coherent:
     print(f"Max discrepancy: {report.max_discrepancy_pct:.1f}%")
-    print(report.worst_violations(n=3).to_string())
+    print(report.worst_series(n=3))
 
 # Step 2: reconcile
 result = reconciler.reconcile(lc_df, ep_df)
 
 # Step 3: attribution
-print(result.attribution.summary().to_string())
+print(result.attribution.to_string())
 
 # Step 4: coherent forecasts, ready for the rate filing
 lc_reconciled = result.reconciled_df
