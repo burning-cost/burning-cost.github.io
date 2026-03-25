@@ -161,7 +161,7 @@ model_zip.fit(X_train, y_train, exposure=exposure_train)
 
 pred_zip = model_zip.predict(X_test, exposure=exposure_test)
 print(pred_zip.mean)      # E[Y | X] = (1 - pi) * lambda * exposure
-print(pred_zip.prob_zero) # P(Y = 0 | X) = pi + (1-pi) * exp(-lambda * exposure)
+print(pred_zip.pi)        # structural zero probability per risk
 ```
 
 XGBoostLSS does support zero-inflated Poisson (ZIP), but not Tweedie. If your line has both zero-inflation and continuous severity (which is the typical case — claims are rare events with continuous amounts), you need either two separate models or a Tweedie approximation. `insurance-distributional` gives you the Tweedie path natively.

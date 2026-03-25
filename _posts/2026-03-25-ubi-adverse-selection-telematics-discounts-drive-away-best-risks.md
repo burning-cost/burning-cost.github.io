@@ -162,13 +162,13 @@ from insurance_monitoring.calibration import CalibrationChecker
 # A rising A/E indicates the residual book is worse than the model expects
 reference_ae = ae_ratio(
     actual=reference_claims["n_claims"].to_numpy(),
-    expected=reference_claims["glm_predicted"].to_numpy(),
+    predicted=reference_claims["glm_predicted"].to_numpy(),
     exposure=reference_claims["exposure_years"].to_numpy(),
 )
 
 current_ae = ae_ratio(
     actual=current_claims["n_claims"].to_numpy(),
-    expected=current_claims["glm_predicted"].to_numpy(),
+    predicted=current_claims["glm_predicted"].to_numpy(),
     exposure=current_claims["exposure_years"].to_numpy(),
 )
 
@@ -197,15 +197,15 @@ The full `MonitoringReport` ties these checks together:
 
 ```python
 report = MonitoringReport(
-    actual=current_claims["n_claims"].to_numpy(),
-    expected=current_claims["glm_predicted"].to_numpy(),
-    scores=current_claims["glm_score"].to_numpy(),
+    reference_actual=reference_claims["n_claims"].to_numpy(),
+    reference_predicted=reference_claims["glm_predicted"].to_numpy(),
+    current_actual=current_claims["n_claims"].to_numpy(),
+    current_predicted=current_claims["glm_predicted"].to_numpy(),
     exposure=current_claims["exposure_years"].to_numpy(),
-    gini_reference=0.41,        # Gini from the training cohort
-    ae_reference=1.00,          # baseline A/E at launch
 )
-report.run()
-print(report.summary())
+# Results computed on construction — no run() call needed
+print(report.results_["ae_ratio"])   # A/E with CI and traffic-light band
+print(report.recommendation)         # PASS / RECALIBRATE / REFIT
 ```
 
 Run this monthly on the non-telematics cohort and set an A/E alert at 1.05. If you hit that threshold within 6 months of launching a generous UBI discount, your opt-in rate has a selection problem.
