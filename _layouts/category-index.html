@@ -46,7 +46,7 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ── Navigation ──────────────────────────────────────────────── */
+    /* Navigation */
 
     .nav {
       position: sticky;
@@ -76,7 +76,6 @@
     }
 
     .nav-logo:hover { text-decoration: none; color: var(--white); }
-
     .nav-logo span { color: var(--accent); }
 
     .nav-links {
@@ -103,18 +102,9 @@
     }
 
     .nav-links a.active { color: var(--text-primary); }
-
-    .nav-cta {
-      background: var(--accent) !important;
-      color: var(--white) !important;
-      padding: 0.4rem 0.9rem !important;
-    }
-
-    .nav-cta:hover { background: var(--accent-hover) !important; }
-
     .nav-hamburger { display: none; }
 
-    /* ── Page header ─────────────────────────────────────────────── */
+    /* Page header */
 
     .page-header {
       background: linear-gradient(160deg, #0f1117 0%, #131928 55%, #0d1520 100%);
@@ -136,9 +126,36 @@
     }
 
     .page-header-inner {
-      max-width: 780px;
+      max-width: 1100px;
       margin: 0 auto;
       position: relative;
+    }
+
+    .page-header-breadcrumb {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header-breadcrumb a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .page-header-breadcrumb a:hover { color: var(--accent); text-decoration: none; }
+
+    .page-header-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,126,248,0.25);
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
     }
 
     .page-header h1 {
@@ -153,149 +170,135 @@
     .page-header-desc {
       font-size: 1rem;
       color: var(--text-secondary);
-      line-height: 1.65;
       max-width: 620px;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
     }
 
-    /* ── Page body ───────────────────────────────────────────────── */
+    /* Topic grid (back to all topics) */
 
-    .page-body {
-      padding: 3rem 1.5rem 4rem;
+    .topic-nav {
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .topic-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .topic-nav-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-right: 0.5rem;
+      white-space: nowrap;
+    }
+
+    .topic-pill {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
       background: var(--surface);
+      text-decoration: none;
+      transition: all 0.15s;
+      white-space: nowrap;
     }
 
-    .page-content {
-      max-width: 780px;
+    .topic-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .topic-pill.current {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    /* Archive layout */
+
+    .archive-body {
+      background: var(--surface);
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .archive-inner {
+      max-width: 1100px;
       margin: 0 auto;
     }
 
-    /* Prose typography */
-
-    .page-content p {
-      font-size: 1.0rem;
-      line-height: 1.8;
-      color: #2d3148;
-      margin-bottom: 1.5rem;
-    }
-
-    .page-content h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #1a1d2e;
-      margin: 2.5rem 0 1rem;
-      line-height: 1.3;
-    }
-
-    .page-content h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: #1a1d2e;
-      margin: 2rem 0 0.75rem;
-      line-height: 1.4;
-    }
-
-    .page-content h4 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #1a1d2e;
-      margin: 1.5rem 0 0.5rem;
-    }
-
-    .page-content ul,
-    .page-content ol {
-      padding-left: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .page-content li {
-      font-size: 1.0rem;
-      line-height: 1.75;
-      color: #2d3148;
-      margin-bottom: 0.35rem;
-    }
-
-    .page-content hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2.5rem 0;
-    }
-
-    .page-content blockquote {
-      border-left: 3px solid var(--accent);
-      padding: 0.75rem 1.25rem;
-      margin: 1.75rem 0;
-      background: var(--surface-alt);
-      border-radius: 0 var(--radius) var(--radius) 0;
-    }
-
-    .page-content blockquote p {
-      margin-bottom: 0;
-      color: #3d4463;
-      font-style: italic;
-    }
-
-    /* Inline code */
-    .page-content code {
-      font-family: var(--mono);
-      font-size: 0.845em;
-      background: #f1f3fa;
-      color: #3b4170;
-      padding: 0.15em 0.4em;
-      border-radius: 4px;
-      border: 1px solid #dde1ed;
-    }
-
-    /* Code blocks */
-    .page-content pre {
-      background: #0d1117;
-      border: 1px solid var(--navy-border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      overflow-x: auto;
-      margin: 1.75rem 0;
-      line-height: 1.6;
-    }
-
-    .page-content pre code {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: #c9d1d9;
-      background: none;
-      border: none;
-      padding: 0;
-    }
-
-    /* Tables */
-    .page-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.75rem 0;
-      font-size: 0.9rem;
-    }
-
-    .page-content th {
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+    .results-count {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      padding: 0.65rem 1rem;
-      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.5rem;
     }
 
-    .page-content td {
-      padding: 0.65rem 1rem;
-      border-bottom: 1px solid var(--border);
-      color: #3d4463;
-      vertical-align: top;
+    .post-list {
+      list-style: none;
     }
 
-    .page-content tr:last-child td { border-bottom: none; }
+    .post-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--surface-alt);
+      transition: background 0.1s;
+    }
 
-    /* ── Footer ──────────────────────────────────────────────────── */
+    .post-row:last-child { border-bottom: none; }
+
+    .post-row:hover {
+      background: var(--surface-alt);
+      margin: 0 -0.75rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      border-radius: var(--radius);
+    }
+
+    .post-row-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      padding-top: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .post-row-title {
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: #1a1d2e;
+      line-height: 1.4;
+      margin-bottom: 0.3rem;
+    }
+
+    .post-row-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .post-row-title a:hover { color: var(--accent); }
+
+    .post-row-excerpt {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Footer */
 
     .footer {
       background: var(--navy);
@@ -313,19 +316,9 @@
       gap: 1rem;
     }
 
-    .footer-brand {
-      font-weight: 700;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
+    .footer-brand { font-weight: 700; color: var(--text-secondary); font-size: 0.9rem; }
     .footer-brand span { color: var(--accent); }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
 
     .footer-links a {
       color: var(--text-muted);
@@ -346,32 +339,20 @@
       border-top: 1px solid var(--navy-border);
     }
 
-    /* ── Responsive ──────────────────────────────────────────────── */
+    /* Responsive */
 
     @media (max-width: 768px) {
       .page-header { padding: 2.5rem 1.25rem 2rem; }
+      .post-row { grid-template-columns: 1fr; gap: 0.25rem; }
+      .post-row-date { display: inline-block; margin-bottom: 0.25rem; }
       .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(15,17,23,0.98); border-bottom: 1px solid #1e2535; padding: 0.75rem 1rem; gap: 0; z-index: 99; }
       .nav-links.open { display: flex; }
       .nav-links li { width: 100%; }
       .nav-links a { display: block; padding: 0.6rem 0.75rem; }
       .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
-      .page-body { padding: 2rem 1.25rem 3rem; }
+      .topic-nav-inner { gap: 0.35rem; }
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": {{ page.title | jsonify }},
-    "description": {{ page.description | default: site.description | jsonify }},
-    "url": {{ page.url | absolute_url | jsonify }},
-    "publisher": {
-      "@type": "Organization",
-      "name": "Burning Cost",
-      "url": "{{ site.url }}"
-    }
-  }
-  </script>
 </head>
 <body>
 
@@ -382,10 +363,9 @@
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/blog/" class="active">Blog</a></li>
                 <li><a href="/stack/">Stack</a></li>
         <li><a href="/tools/">Tools</a></li>
-        <li><a href="/course/">Course</a></li>
       </ul>
     </div>
   <script>
@@ -404,6 +384,10 @@
   <!-- Page header -->
   <div class="page-header">
     <div class="page-header-inner">
+      <div class="page-header-breadcrumb">
+        <a href="/blog/">Articles</a> &rsaquo; Topics
+      </div>
+      <div class="page-header-label">Topic</div>
       <h1>{{ page.title }}</h1>
       {% if page.description %}
       <p class="page-header-desc">{{ page.description }}</p>
@@ -411,10 +395,82 @@
     </div>
   </div>
 
-  <!-- Page body -->
-  <div class="page-body">
-    <div class="page-content">
-      {{ content }}
+  <!-- Topic navigation strip -->
+  <div class="topic-nav">
+    <div class="topic-nav-inner">
+      <span class="topic-nav-label">Topics:</span>
+      <a href="/blog/topics/" class="topic-pill">All Topics</a>
+      <a href="/blog/techniques/" class="topic-pill{% if page.category_slug == 'techniques' %} current{% endif %}">Techniques</a>
+      <a href="/blog/validation/" class="topic-pill{% if page.category_slug == 'validation' %} current{% endif %}">Validation</a>
+      <a href="/blog/comparisons/" class="topic-pill{% if page.category_slug == 'comparisons' %} current{% endif %}">Comparisons</a>
+      <a href="/blog/regulation/" class="topic-pill{% if page.category_slug == 'regulation' %} current{% endif %}">Regulation &amp; Fairness</a>
+      <a href="/blog/monitoring/" class="topic-pill{% if page.category_slug == 'monitoring' %} current{% endif %}">Monitoring</a>
+      <a href="/blog/how-to/" class="topic-pill{% if page.category_slug == 'how-to' %} current{% endif %}">How-To</a>
+      <a href="/blog/getting-started/" class="topic-pill{% if page.category_slug == 'getting-started' %} current{% endif %}">Getting Started</a>
+    </div>
+  </div>
+
+  <!-- Post list -->
+  <div class="archive-body">
+    <div class="archive-inner">
+
+      {% assign match_tags = page.match_tags %}
+      {% assign match_cats = page.match_categories %}
+      {% assign match_slugs = page.match_slugs %}
+
+      {% assign matched_posts = "" | split: "" %}
+      {% for post in site.posts %}
+        {% assign include_post = false %}
+
+        {% if match_tags %}
+          {% for tag in post.tags %}
+            {% if match_tags contains tag %}
+              {% assign include_post = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if match_cats and include_post == false %}
+          {% for cat in post.categories %}
+            {% if match_cats contains cat %}
+              {% assign include_post = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if match_slugs and include_post == false %}
+          {% for slug in match_slugs %}
+            {% if post.url contains slug %}
+              {% assign include_post = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if include_post %}
+          {% assign matched_posts = matched_posts | push: post %}
+        {% endif %}
+      {% endfor %}
+
+      <div class="results-count">{{ matched_posts | size }} articles in this topic</div>
+
+      <ul class="post-list">
+        {% for post in matched_posts %}
+        <li class="post-row">
+          <div class="post-row-date">{{ post.date | date: "%d %b %Y" }}</div>
+          <div class="post-row-body">
+            <div class="post-row-title">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </div>
+            {% if post.description %}
+            <div class="post-row-excerpt">{{ post.description | truncate: 180 }}</div>
+            {% elsif post.excerpt %}
+            <div class="post-row-excerpt">{{ post.excerpt | strip_html | truncate: 180 }}</div>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
     </div>
   </div>
 
@@ -424,6 +480,7 @@
       <div class="footer-brand">Burning<span>Cost</span></div>
       <ul class="footer-links">
         <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
+        <li><a href="/tools/">Tools</a></li>
       </ul>
       <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
     </div>

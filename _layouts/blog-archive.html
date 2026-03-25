@@ -498,7 +498,69 @@
       .nav-links a { display: block; padding: 0.6rem 0.75rem; }
       .nav-hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: #f0f2f7; font-size: 1.4rem; padding: 0.25rem 0.5rem; line-height: 1; }
     }
+
+    /* ── Topics strip ──────────────────────────────────────────── */
+
+    .topics-strip {
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.5rem;
+    }
+
+    .topics-strip-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .topics-strip-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-right: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .topic-pill {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--surface);
+      text-decoration: none;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .topic-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -508,8 +570,10 @@
       <a href="/" class="nav-logo">Burning<span>Cost</span></a>
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
       <ul class="nav-links">
-        <li><a href="/libraries/">Libraries</a></li>
-        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/" class="active">Blog</a></li>
+                <li><a href="/stack/">Stack</a></li>
+        <li><a href="/tools/">Tools</a></li>
       </ul>
     </div>
   <script>
@@ -534,8 +598,22 @@
       <p class="page-header-desc">{{ page.description }}</p>
       {% endif %}
       <div class="page-header-meta">
-        {{ site.posts | size }} articles &middot; <a href="/tags/">Browse by tag</a>
       </div>
+    </div>
+  </div>
+
+  <!-- Browse by topic strip -->
+  <div class="topics-strip">
+    <div class="topics-strip-inner">
+      <span class="topics-strip-label">Browse by topic:</span>
+      <a href="/blog/topics/" class="topic-pill">All Topics</a>
+      <a href="/blog/techniques/" class="topic-pill">Techniques</a>
+      <a href="/blog/validation/" class="topic-pill">Validation</a>
+      <a href="/blog/comparisons/" class="topic-pill">Comparisons</a>
+      <a href="/blog/regulation/" class="topic-pill">Regulation &amp; Fairness</a>
+      <a href="/blog/monitoring/" class="topic-pill">Monitoring</a>
+      <a href="/blog/how-to/" class="topic-pill">How-To</a>
+      <a href="/blog/getting-started/" class="topic-pill">Getting Started</a>
     </div>
   </div>
 
@@ -642,9 +720,7 @@
       <div class="footer-brand">Burning<span>Cost</span></div>
       <ul class="footer-links">
         <li><a href="https://github.com/burning-cost" target="_blank">GitHub</a></li>
-        <li><a href="/libraries/">Libraries</a></li>
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="mailto:pricing.frontier@gmail.com">Contact</a></li>
+        <li><a href="/tools/">Tools</a></li>
       </ul>
       <div class="footer-copy">Open-source pricing tools for UK insurance teams. Built by practitioners.</div>
     </div>
