@@ -52,11 +52,17 @@ The tails - outcomes below the lowest cutpoint or above the highest - use the ba
 ```python
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
 from insurance_severity.drn import DRN, GLMBaseline
 
-# Fit a Gamma GLM baseline
-baseline = GLMBaseline(family='gamma', link='log')
-baseline.fit(X_train, y_train)
+# GLMBaseline wraps a fitted statsmodels GLM — fit the GLM first
+sm_glm = smf.glm(
+    "claim_amount ~ age_band + vehicle_group + ncd + region",
+    data=df_train,
+    family=sm.families.Gamma(sm.families.links.Log()),
+).fit()
+baseline = GLMBaseline(sm_glm)
 
 # Wrap with DRN
 drn = DRN(
@@ -65,7 +71,7 @@ drn = DRN(
     num_hidden_layers=2,
     dropout_rate=0.2,
     baseline_start=True,   # initialise at baseline — recommended
-    learning_rate=1e-3,
+    lr=1e-3,
     max_epochs=200,
     patience=20,           # early stopping
 )
@@ -80,11 +86,11 @@ The loss function is joint binary cross-entropy (JBCE) over bin indicators, not 
 
 ## Extracting distributions
 
-The output of `drn.predict(X)` is an `ExtendedHistogramBatch` - a vectorised object representing one full predictive distribution per policy. All operations are vectorised across the batch.
+The output of `drn.predict_distribution(X)` is an `ExtendedHistogramBatch` - a vectorised object representing one full predictive distribution per policy. All operations are vectorised across the batch.
 
 ```python
 # Predict full distributions for 10,000 policies
-dist = drn.predict(X_holdout)   # ExtendedHistogramBatch of shape (10_000,)
+dist = drn.predict_distribution(X_holdout)   # ExtendedHistogramBatch of shape (10_000,)
 
 # Conditional mean — should match GLM closely if baseline is well-calibrated
 means = dist.mean()             # shape (10_000,)
@@ -144,11 +150,11 @@ DRN is a neural network, which raises the usual model risk questions. The `adjus
 factors = drn.adjustment_factors(X_holdout)
 # shape: (n_policies, K) — values > 1 mean DRN assigns more mass than GLM
 
-# For a specific high-risk policy profile
-young_driver_idx = X_holdout.index[X_holdout['age'] < 22][0]
-af = factors[young_driver_idx]
+# For a specific high-risk policy profile (factors is a Polars DataFrame)
+young_driver_idx = int((X_holdout['age'] < 22).arg_true()[0])
+af = factors.row(young_driver_idx)
 
-cutpoints = drn.cutpoints_  # K+1 values
+cutpoints = drn.cutpoints  # K+1 values
 bin_centres = 0.5 * (cutpoints[:-1] + cutpoints[1:])
 
 import matplotlib.pyplot as plt

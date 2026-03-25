@@ -55,7 +55,7 @@ naive_coef = float(glm.coef_[feature_cols.index("log_price_change")])
 model = CausalPricingModel(
     outcome="renewed",
     outcome_type="binary",
-    treatment=PriceChangeTreatment(column="log_price_change", scale="identity"),
+    treatment=PriceChangeTreatment(column="log_price_change", scale="linear"),
     confounders=CONFOUNDERS,
     cv_folds=5,
 )
@@ -216,7 +216,7 @@ Work through this before running DML on real portfolio data.
 
 **Validity checks**
 
-- Run `sensitivity_analysis()` from `insurance_causal.diagnostics`. An estimate that flips sign at gamma=1.25 is fragile and should not drive a pricing decision without explicit documentation of that fragility.
+- Run `confounding_bias_report()` from `insurance_causal.diagnostics` to quantify sensitivity to unobserved confounding. `sensitivity_analysis()` has been removed from the library pending a redesign; use the confounding bias report and manual robustness checks instead.
 - Run `confounding_bias_report()` and document the naive vs DML comparison. Agreement within 10% means confounding is not material. Divergence above 30% needs explanation before the DML estimate enters a pricing model.
 - Check for bad controls: does including NCD change the estimate materially? If it does, consider whether NCD is acting as a mediator in this analysis.
 

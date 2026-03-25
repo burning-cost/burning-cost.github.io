@@ -61,7 +61,7 @@ There is a bias correction step. The marginalised premium h*(X) has a slightly d
 The LindholmCorrector in insurance-fairness implements this:
 
 ```python
-from insurance_fairness.optimal_transport import LindholmCorrector
+from insurance_fairness_ot import LindholmCorrector
 import polars as pl
 
 # X_calib: non-protected features. D_calib: protected attribute column(s).
@@ -114,7 +114,7 @@ The Lindholm marginalisation applied to the full DAG removes paths 1 and 2 while
 In insurance-fairness, the DAG specification uses the CausalGraph builder:
 
 ```python
-from insurance_fairness.optimal_transport import CausalGraph, PathDecomposer, DiscriminationFreePrice
+from insurance_fairness_ot import CausalGraph, PathDecomposer, DiscriminationFreePrice
 
 # UK motor example
 graph = (CausalGraph()
@@ -175,7 +175,7 @@ In 1D with two groups this is algebraically identical to the Lindholm formula. T
 For GLM models, the correction operates in log(mu) space -- the eta scale -- then exponentiates. This preserves the multiplicative structure of GLM-based pricing. The WassersteinCorrector also computes the pre-correction Wasserstein distance between group prediction distributions, which is a useful diagnostic: a W2 distance of 0.02 on the log scale is barely worth reporting; a distance of 0.15 is a material disparity that needs addressing.
 
 ```python
-from insurance_fairness.optimal_transport import WassersteinCorrector
+from insurance_fairness_ot import WassersteinCorrector
 import numpy as np
 
 corrector_ot = WassersteinCorrector(
@@ -217,7 +217,7 @@ The correct approach -- which is what insurance-fairness implements by default -
 The DiscriminationFreePrice class orchestrates graph specification, Lindholm correction, optional OT correction, and bias adjustment:
 
 ```python
-from insurance_fairness.optimal_transport import (
+from insurance_fairness_ot import (
     CausalGraph,
     DiscriminationFreePrice,
     FairnessReport,
@@ -305,7 +305,7 @@ The original [insurance-fairness library](https://github.com/burning-cost/insura
 
 insurance-fairness is an audit tool. It measures proxy correlation, runs disparate impact tests, and tells you whether your model has a problem. It does not produce corrected premiums. Use it to answer "do we have a discrimination issue?"
 
-insurance-fairness is a pricing correction tool. It assumes you already know you have (or might have) an issue -- either from an insurance-fairness audit or from a governance decision about protected attributes in your market -- and produces the discrimination-free price. The causal graph specification forces you to be explicit about which effects you consider justified and which you are removing. That explicitness is itself regulatory value: when the FCA asks why you are charging what you charge, "we applied the Lindholm marginalisation after a governance-approved causal graph sign-off" is a more defensible answer than "we removed postcode and hoped for the best."
+insurance-fairness-ot is a pricing correction tool. It assumes you already know you have (or might have) an issue -- either from an insurance-fairness audit or from a governance decision about protected attributes in your market -- and produces the discrimination-free price. The causal graph specification forces you to be explicit about which effects you consider justified and which you are removing. That explicitness is itself regulatory value: when the FCA asks why you are charging what you charge, "we applied the Lindholm marginalisation after a governance-approved causal graph sign-off" is a more defensible answer than "we removed postcode and hoped for the best."
 
 The other comparable Python tool is EquiPy (arXiv:2503.09866, March 2025, from UQAM and SCOR). EquiPy implements the Wasserstein barycenter approach and is theoretically sound. It lacks exposure weighting, causal graph integration, GLM-compatible output, and UK regulatory framing. It also has a sklearn 1.3.0 version pin that conflicts with modern environments. We built this optimal transport module because EquiPy is not fit for purpose in a UK personal lines pricing context.
 

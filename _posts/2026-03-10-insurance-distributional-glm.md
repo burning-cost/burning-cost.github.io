@@ -73,20 +73,20 @@ This outer cycle repeats until all parameters have converged jointly. The inner 
 The implementation includes backtracking: if a parameter update would decrease the log-likelihood, the step is halved until it does not. This makes the algorithm robust to poor initialisations and difficult distributional families.
 
 ```python
-from insurance_distributional_glm import GAMLSSModel, Gamma
+from insurance_distributional_glm import DistributionalGLM
+from insurance_distributional_glm.families import Gamma
 
-model = GAMLSSModel(
+model = DistributionalGLM(
     family=Gamma(),
-    mu_formula="age + vehicle_group + ncb + region",
-    sigma_formula="age + vehicle_group",  # dispersion varies by age and vehicle
-    max_iter=100,
-    tol=1e-6,
-    backtrack=True,
+    formulas={
+        "mu":    ["age", "vehicle_group", "ncb", "region"],
+        "sigma": ["age", "vehicle_group"],  # dispersion varies by age and vehicle
+    },
 )
-model.fit(X_train, y_train)
+model.fit(X_train, y_train, max_iter=100, tol=1e-6)
 ```
 
-The `mu_formula` and `sigma_formula` take Patsy-compatible formula strings. The same formula interface you use with statsmodels. Different features can appear in each formula — modelling dispersion with a subset of the covariates that drive the mean is both valid and common.
+The `formulas` dict maps each distribution parameter to the list of column names to include as covariates. The intercept is added automatically. Different features can appear in each parameter's formula — modelling dispersion with a subset of the covariates that drive the mean is both valid and common.
 
 ---
 
@@ -95,18 +95,17 @@ The `mu_formula` and `sigma_formula` take Patsy-compatible formula strings. The 
 After fitting, prediction returns the full set of distributional parameters for each observation:
 
 ```python
-# Predict all parameters
-params = model.predict_params(X_holdout)
-# params is a dict: {'mu': array, 'sigma': array}
+# Predict individual parameters
+mu    = model.predict(X_holdout, parameter='mu')    # E[Y|X]
+sigma = model.predict(X_holdout, parameter='sigma') # dispersion
 
-# Or get derived quantities
+# Or derived quantities
 means     = model.predict_mean(X_holdout)
 variances = model.predict_variance(X_holdout)
 
-# Full distribution object per observation
-dist = model.predict_distribution(X_holdout)
-p95  = dist.ppf(0.95)   # 95th percentile per policy
-crps = dist.crps(y_holdout)
+# Full scipy distribution list (one per observation)
+dists = model.predict_distribution(X_holdout)
+p95   = dists[0].ppf(0.95)   # 95th percentile for observation 0
 ```
 
 The `predict_distribution` method returns a scipy-compatible distribution object vectorised over the batch. CDF, quantile, log-probability, and CRPS are all available. For a Gamma family, this is a `scipy.stats.gamma` object parameterised by the policy-specific mu and sigma. For ZIP, it is a custom mixture object.
@@ -148,18 +147,16 @@ What R's `gamlss` has that this library does not: penalised splines (P-splines) 
 Three diagnostics are worth running after every GAMLSS fit:
 
 ```python
-from insurance_distributional_glm import GAMLSSDiagnostics
-
-diag = GAMLSSDiagnostics(model)
+from insurance_distributional_glm import quantile_residuals, worm_plot
 
 # Randomised quantile residuals — should look N(0,1)
-diag.quantile_residual_plot(X_holdout, y_holdout)
+resids = quantile_residuals(model, X_holdout, y_holdout)
 
-# Convergence trace — confirm the RS algorithm converged
-diag.convergence_plot()
+# Convergence summary — check model.converged before using results
+print(f'Converged: {model.converged}')
 
 # Worm plot — deviation from N(0,1) stratified by fitted value
-diag.worm_plot(X_holdout, y_holdout)
+worm_plot(model, X_holdout, y_holdout)
 ```
 
 Randomised quantile residuals (Dunn and Smyth, 1996) are the standard GAMLSS diagnostic. For a continuous distribution, the quantile residual `r_i = Phi^{-1}(F(y_i | x_i))` should be standard normal if the model is correctly specified. The worm plot — a detrended Q-Q plot stratified by fitted value — reveals where in the distribution the model is misfitting.
@@ -175,7 +172,8 @@ The use case that motivated building this library:
 ```python
 import numpy as np
 import pandas as pd
-from insurance_distributional_glm import GAMLSSModel, Gamma
+from insurance_distributional_glm import DistributionalGLM
+from insurance_distributional_glm.families import Gamma
 
 # Claim severity dataset — each row is a paid claim
 n = 10_000
@@ -185,25 +183,27 @@ X = pd.DataFrame({
     'ncb':            np.random.choice([0, 1, 2, 3, 4, 5], n),
 })
 
-# Fit GAMLSS Gamma: model both mean and dispersion
-model = GAMLSSModel(
+# Fit DistributionalGLM Gamma: model both mean and dispersion
+model = DistributionalGLM(
     family=Gamma(),
-    mu_formula="age_band + vehicle_group + ncb",
-    sigma_formula="age_band + vehicle_group",
+    formulas={
+        "mu":    ["age_band", "vehicle_group", "ncb"],
+        "sigma": ["age_band", "vehicle_group"],
+    },
 )
 model.fit(X_train, y_train)
 
 # Coefficients for the dispersion sub-model
-print(model.sigma_coef_)
-#  Intercept       -2.341
-#  age_band[22-25]  0.089
-#  age_band[17-21]  0.312   <-- young drivers: materially higher dispersion
-#  vehicle_group[E] 0.198
+sigma_betas = model.coefficients['sigma']
+# array([-2.341,  0.089,  0.312,  0.198, ...])
+# Index order: intercept, age_band levels, vehicle_group levels
+# age_band[17-21] coefficient 0.312 -> young drivers: materially higher dispersion
+print(model.relativities(parameter='sigma'))
 
 # Variance loading: E[Y] + k * Var[Y]^0.5
 k = 0.5
 mu    = model.predict_mean(X_holdout)
-sigma = model.predict_params(X_holdout)['sigma']
+sigma = model.predict(X_holdout, parameter='sigma')
 var   = mu**2 * sigma**2   # Gamma variance formula
 technical_premium = mu + k * np.sqrt(var)
 
