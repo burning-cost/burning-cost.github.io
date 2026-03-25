@@ -7,7 +7,7 @@ tags: [transfer-learning, GLMTransfer, GBMTransfer, CANNTransfer, thin-data, MMD
 description: "Transfer learning for thin-segment UK insurance pricing: Tian-Feng GLM algorithm, CatBoost source-as-offset, CANN fine-tuning, negative transfer diagnostics."
 ---
 
-Every pricing actuary has faced this problem. A segment exists — young drivers, exotic pets, a brand-new telematics portfolio — where the exposure is thin enough that fitting a standalone model produces something embarrassing. The confidence intervals are wide, the parameters are unstable, and you are essentially guessing. The standard response is to credibility-blend with the main book, which works up to a point, but credibility weighting is a blunt instrument when what you actually need is a model that borrows structure, not just a scalar adjustment.
+Every pricing actuary has faced this problem. A segment exists - young drivers, exotic pets, a brand-new telematics portfolio - where the exposure is thin enough that fitting a standalone model produces something embarrassing. The confidence intervals are wide, the parameters are unstable, and you are essentially guessing. The standard response is to credibility-blend with the main book, which works up to a point, but credibility weighting is a blunt instrument when what you actually need is a model that borrows structure, not just a scalar adjustment.
 
 Transfer learning is the more principled answer. [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) implements three approaches drawn from the academic literature, wrapped in a consistent API.
 
@@ -21,7 +21,7 @@ uv add insurance-thin-data
 
 A segment with 300 policies and 18 claims has about as much information content as it sounds. Fit a GLM with eight rating factors and you will get coefficient standard errors that span the meaningful range of the factor. Your frequency estimate for a 19-year-old male with three months of driving history will be dominated by the prior you implicitly chose when you decided which data to include, not by the data itself.
 
-The instinct is to pool. Include everyone aged 17–25 to get better frequency estimates for the 17–25 segment. That is transfer learning by another name, and it usually helps — but it also introduces systematic bias. If the young driver segment differs structurally from the main book (different vehicle mix, different annual mileage distribution, different claim reporting behaviour), then naively pooling will push your young driver coefficients toward the main book values even where the difference is real.
+The instinct is to pool. Include everyone aged 17–25 to get better frequency estimates for the 17–25 segment. That is transfer learning by another name, and it usually helps - but it also introduces systematic bias. If the young driver segment differs structurally from the main book (different vehicle mix, different annual mileage distribution, different claim reporting behaviour), then naively pooling will push your young driver coefficients toward the main book values even where the difference is real.
 
 The question is not whether to borrow from a larger source dataset. The question is how to borrow in a way that preserves genuine differences while stabilising estimates where the thin segment genuinely agrees with the main book.
 
@@ -33,11 +33,11 @@ The question is not whether to borrow from a larger source dataset. The question
 
 Tian and Feng (JASA, 2023, 118(544), 2684–2697) formalised a two-step transfer procedure for high-dimensional GLMs. The paper's innovation is the debiasing step.
 
-Step one: pool source and target data and fit a regularised GLM (l1 penalty) to get an initial coefficient vector. This is the transfer step — the large source dataset stabilises your estimates.
+Step one: pool source and target data and fit a regularised GLM (l1 penalty) to get an initial coefficient vector. This is the transfer step - the large source dataset stabilises your estimates.
 
-Step two: fit a second model using target data only, where the response variable is the residual from step one. This debiasing step estimates delta — the difference between the pooled coefficients and what the target data actually supports. The final coefficients are the pooled estimate plus the debiased correction.
+Step two: fit a second model using target data only, where the response variable is the residual from step one. This debiasing step estimates delta - the difference between the pooled coefficients and what the target data actually supports. The final coefficients are the pooled estimate plus the debiased correction.
 
-The effect is that where the target data is consistent with the source, the debiasing correction is near zero and you retain the stability of the pooled estimate. Where the target genuinely differs, the debiasing correction pulls the coefficient away from the source. It is Bayesian in spirit — the source acts as a prior, and the target data updates it — but it is implemented as a two-stage frequentist estimator, which makes it easier to reason about and to audit.
+The effect is that where the target data is consistent with the source, the debiasing correction is near zero and you retain the stability of the pooled estimate. Where the target genuinely differs, the debiasing correction pulls the coefficient away from the source. It is Bayesian in spirit - the source acts as a prior, and the target data updates it - but it is implemented as a two-stage frequentist estimator, which makes it easier to reason about and to audit.
 
 `GLMTransfer` is the first Python implementation. The R package `glmtrans` (on CRAN) covers the Gaussian and binomial families; this library adds Poisson and Gamma for frequency and severity modelling.
 
@@ -45,31 +45,35 @@ The effect is that where the target data is consistent with the source, the debi
 from insurance_thin_data.transfer import GLMTransfer
 
 # source = main book, target = young driver segment
-# lambda_pool: L1 penalty on the pooled step
-# lambda_debias: L1 penalty on the debiasing step
-model = GLMTransfer(family="poisson", lambda_pool=0.1, lambda_debias=0.05)
+model = GLMTransfer(family="poisson", lambda_pool=0.1)
 model.fit(X_source, y_source, X_target, y_target, exposure_source, exposure_target)
 
+# coefficients show where young drivers differ from main book
+print(model.delta_)          # the debiasing correction
+print(model.coef_)           # final coefficients (pooled + delta)
 predict = model.predict(X_new, exposure_new)
 ```
 
-The `alpha` parameter controls the l1 penalty in step one. Tune it via cross-validation on the target data; the library provides a `GLMTransferCV` wrapper that does this.
+The `lambda_pool` parameter controls the l1 penalty in step one. Tune it via cross-validation on the target data; the library provides a `GLMTransferCV` wrapper that does this.
 
 ### 2. GBMTransfer: source as offset
 
-Gradient boosted machines are not naturally amenable to the Tian-Feng approach — you cannot easily decompose a GBM fit into a pooled component and a debiasing correction. But there is a simpler pattern that works well in practice: pre-train on the source data, then use those predictions as a log-offset when fitting on the target.
+Gradient boosted machines are not naturally amenable to the Tian-Feng approach - you cannot easily decompose a GBM fit into a pooled component and a debiasing correction. But there is a simpler pattern that works well in practice: pre-train on the source data, then use those predictions as a log-offset when fitting on the target.
 
 The intuition: if your source model gives you a reasonable estimate of the baseline risk for any given set of covariates, then the target model only needs to learn the residual. With a thin target segment, learning residuals is easier than learning the full risk structure from scratch.
 
-This is something sophisticated actuaries already do informally — "start from the main book rate and fit adjustments for the young driver segment" — but `GBMTransfer` formalises it with CatBoost and makes the offset construction explicit.
+This is something sophisticated actuaries already do informally - "start from the main book rate and fit adjustments for the young driver segment" - but `GBMTransfer` formalises it with CatBoost and makes the offset construction explicit.
 
 ```python
 from insurance_thin_data.transfer import GBMTransfer
 
-# GBMTransfer takes a pre-trained source model and uses it as a log-offset
-# when fitting on the target segment
-transfer = GBMTransfer(source_model=pretrained_catboost, mode="offset")
-transfer.fit(X_target, y_target, sample_weight=exposure_target)
+# pre-train on main book using a standard CatBoost model (source step)
+# then pass the fitted source model to GBMTransfer
+source_catboost = ...  # your pre-trained CatBoost frequency model on main book
+transfer = GBMTransfer(source_model=source_catboost)
+
+# fine-tune on young driver segment — source predictions become log-offset
+transfer.fit(X_target, y_target, exposure_target)
 predict = transfer.predict(X_new, exposure_new)
 ```
 
@@ -79,43 +83,36 @@ The offset approach constrains the target model: it cannot wander far from the s
 
 Combined Actuarial Neural Networks (CANN, Schelldorfer and Wüthrich 2019) pair a GLM embedding with a neural network that learns residuals. `CANNTransfer` extends this to the transfer setting: pre-train the CANN on source data, freeze the main network layers, then fine-tune only the output layer on target data.
 
-This is closest in spirit to how transfer learning works in NLP — a large language model is pre-trained on a broad corpus, then fine-tuned on a small task-specific dataset. The difference is that insurance pricing has domain structure (the GLM embedding) that anchors the fine-tuning and keeps the model from drifting into implausible territory.
+This is closest in spirit to how transfer learning works in NLP - a large language model is pre-trained on a broad corpus, then fine-tuned on a small task-specific dataset. The difference is that insurance pricing has domain structure (the GLM embedding) that anchors the fine-tuning and keeps the model from drifting into implausible territory.
 
 ```python
 from insurance_thin_data.transfer import CANNTransfer
 
-# hidden_sizes: layer widths; finetune_strategy controls which layers are frozen
-model = CANNTransfer(
-    hidden_sizes=[64, 32],
-    finetune_strategy="head_only",  # freeze main network, retrain output layer only
-    finetune_epochs=50,
-    learning_rate=1e-4,
-)
+model = CANNTransfer(hidden_sizes=[64, 32], finetune_strategy="head_only")
 model.fit_source(X_source, y_source, exposure_source)
-# fit() on target data runs the fine-tuning step
-model.fit(X_target, y_target, sample_weight=exposure_target)
+model.fit(X_target, y_target, exposure_target)
 predict = model.predict(X_new)
 ```
 
-`CANNTransfer` works best when the source and target covariates are structurally similar — same features, different distribution. If the target segment uses a genuinely different feature set, you will need to rebuild the pre-training setup rather than fine-tune.
+`CANNTransfer` works best when the source and target covariates are structurally similar - same features, different distribution. If the target segment uses a genuinely different feature set, you will need to rebuild the pre-training setup rather than fine-tune.
 
 ---
 
 ## The diagnostics matter as much as the methods
 
-Transfer learning can go wrong. If the source and target distributions are too different, pooling information from the source will hurt more than it helps — a failure mode called negative transfer.
+Transfer learning can go wrong. If the source and target distributions are too different, pooling information from the source will hurt more than it helps - a failure mode called negative transfer.
 
 `insurance-thin-data` includes two diagnostic tools that we consider mandatory parts of any transfer workflow.
 
-**CovariateShiftTest** uses a mixed-kernel Maximum Mean Discrepancy (MMD) test to measure how different the source and target covariate distributions are. The kernel is RBF for continuous variables and indicator-based for categorical — this handles the typical insurance feature mix without pre-processing. A high MMD statistic is a warning: the source data may be misleading.
+**CovariateShiftTest** uses a mixed-kernel Maximum Mean Discrepancy (MMD) test to measure how different the source and target covariate distributions are. The kernel is RBF for continuous variables and indicator-based for categorical - this handles the typical insurance feature mix without pre-processing. A high MMD statistic is a warning: the source data may be misleading.
 
 ```python
 from insurance_thin_data.transfer import CovariateShiftTest
 
-shift_test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
-shift_result = shift_test.test(X_source, X_target)
-print(shift_result.test_statistic)  # MMD statistic — higher = more distribution shift
-print(shift_result.p_value)         # test against permutation null
+test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
+result = test.test(X_source, X_target)
+print(result.mmd_statistic)   # higher = more distribution shift
+print(result.p_value)         # test against permutation null
 ```
 
 **NegativeTransferDiagnostic** does the direct comparison: fit both a transfer model and a target-only model, then compare Poisson deviance on held-out target data. The NTG metric (negative transfer gain) is the deviance difference: negative means the transfer model is better, positive means target-only wins. If it is positive, use the target-only model.
@@ -123,21 +120,15 @@ print(shift_result.p_value)         # test against permutation null
 ```python
 from insurance_thin_data.transfer import NegativeTransferDiagnostic
 
-# NegativeTransferDiagnostic compares transfer vs target-only via deviance
-# Provide both model predictions at evaluate time
-diag = NegativeTransferDiagnostic(metric="poisson_deviance")
-result = diag.evaluate(
-    y_true=y_target_test,
-    y_transfer=glm_transfer.predict(X_target_test, exposure_test),
-    y_baseline=glm_target_only.predict(X_target_test, exposure_test),
-    exposure=exposure_test,
-)
+diag = NegativeTransferDiagnostic()
+result = diag.evaluate(X_target_test, y_target_test, exposure_test,
+                       transfer_model=glm_transfer, target_only_model=target_glm)
 print(result.ntg)             # deviance(transfer) - deviance(target_only)
 if result.negative_transfer:
     print("Use target-only model")
 ```
 
-This is not optional. We have seen cases — particularly in specialty lines where the source portfolio is commercial and the target is personal — where transfer learning actively degraded predictions. The diagnostic catches it.
+This is not optional. We have seen cases - particularly in specialty lines where the source portfolio is commercial and the target is personal - where transfer learning actively degraded predictions. The diagnostic catches it.
 
 ---
 
@@ -155,17 +146,17 @@ pipeline = TransferPipeline(
 )
 
 result = pipeline.run(
-    X_source, y_source, exposure_source,
     X_target, y_target, exposure_target,
+    X_source=X_source, y_source=y_source, exposure_source=exposure_source,
 )
 
-print(result.shift_detected)    # did MMD flag a distribution shift?
-print(result.method_used)       # which method was actually fitted
-print(result.negative_transfer) # did transfer help or hurt?
+print(result.shift_p_value)        # p-value from MMD shift test
+print(result.method_used)          # which method was actually fitted
+print(result.transfer_is_beneficial) # did transfer help or hurt?
 predict = result.model.predict(X_new, exposure_new)
 ```
 
-The pipeline runs the shift test first. If the shift is large enough to be concerning, it logs a warning but continues — you may still want to transfer, but with eyes open. After fitting, it runs the negative transfer diagnostic automatically.
+The pipeline runs the shift test first. If the shift is large enough to be concerning, it logs a warning but continues - you may still want to transfer, but with eyes open. After fitting, it runs the negative transfer diagnostic automatically.
 
 ---
 
@@ -187,7 +178,7 @@ The pipeline runs the shift test first. If the shift is large enough to be conce
 
 **GBMTransfer** is the right choice when you have already invested in CatBoost models for the main book and want to extend them to a thin segment without rebuilding. The offset pattern is simple enough to explain to non-technical stakeholders ("we start from the main book rate and fit adjustments") and robust in practice. It is not as theoretically elegant as GLMTransfer but it is fast and it works.
 
-**CANNTransfer** is for teams already using neural network architectures for pricing — typically telematics or behaviour-based products where the feature space is richer than conventional rating factors support. It requires more careful hyperparameter management and is harder to audit, so we would not use it where regulatory explainability is the primary concern.
+**CANNTransfer** is for teams already using neural network architectures for pricing - typically telematics or behaviour-based products where the feature space is richer than conventional rating factors support. It requires more careful hyperparameter management and is harder to audit, so we would not use it where regulatory explainability is the primary concern.
 
 Run the CovariateShiftTest before any of them. If the MMD statistic is very high, treat the transfer result with scepticism regardless of which method you use. Run the NegativeTransferDiagnostic after any of them. If it flags negative transfer, use the target-only model.
 
@@ -201,7 +192,7 @@ Tian and Feng (JASA, 2023, 118(544), 2684–2697) is the core reference for `GLM
 
 ---
 
-**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI. For the segments your main book has never seen.
+**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** - MIT-licensed, PyPI. For the segments your main book has never seen.
 
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
 - [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/)

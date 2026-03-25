@@ -197,7 +197,7 @@ from insurance_causal import RateChangeEvaluator
 # df has columns: period, segment, treated (0/1), loss_ratio, earned_exposure
 evaluator = RateChangeEvaluator(
     method='auto',          # selects DiD if treated column has 0 and 1
-    outcome='loss_ratio',
+    outcome_col='loss_ratio',
     exposure_col='earned_exposure',
     cluster_col='segment'
 )

@@ -7,9 +7,9 @@ tags: [gamlss, glm, distributional, gamma, lognormal, tweedie, zip, negative-bin
 description: "GAMLSS in Python: seven families, RS algorithm, variance as function of covariates. insurance-distributional-glm - the actuarial implementation Python lacked."
 ---
 
-R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work — both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are distributional GBMs, quantile regression libraries, and various partial implementations. None of them are GAMLSS.
+R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work - both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are distributional GBMs, quantile regression libraries, and various partial implementations. None of them are GAMLSS.
 
-[`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) is GAMLSS in Python. Seven distribution families, the RS (Rigby-Stasinopoulos) fitting algorithm with backtracking, sklearn-compatible API, and the same `fit`/`predict` interface pricing teams already know. Pure NumPy/SciPy — no R dependency, no PyTorch, no optional extras. 2,847 lines, 114 tests, v0.1.0.
+[`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) is GAMLSS in Python. Seven distribution families, the RS (Rigby-Stasinopoulos) fitting algorithm with backtracking, sklearn-compatible API, and the same `fit`/`predict` interface pricing teams already know. Pure NumPy/SciPy - no R dependency, no PyTorch, no optional extras. 2,847 lines, 114 tests, v0.1.0.
 
 ```bash
 uv add insurance-distributional-glm
@@ -19,11 +19,11 @@ uv add insurance-distributional-glm
 
 ## What GAMLSS actually is
 
-A GLM fits a single parameter of a distribution as a function of covariates. For a Gamma GLM, that parameter is the mean (or equivalently, the log-mean). The dispersion — which controls the width of the distribution — is a nuisance parameter, estimated globally, assumed constant across all policies.
+A GLM fits a single parameter of a distribution as a function of covariates. For a Gamma GLM, that parameter is the mean (or equivalently, the log-mean). The dispersion - which controls the width of the distribution - is a nuisance parameter, estimated globally, assumed constant across all policies.
 
 That assumption is wrong. A 19-year-old driving a modified hatchback has not just a higher expected claim severity but a higher variance around that severity. The distribution is wider. A fleet vehicle driven professionally may have lower variance despite a similar or higher mean. Assuming constant dispersion forces you to fit the same width distribution to every policy.
 
-GAMLSS — Generalised Additive Models for Location, Scale and Shape — relaxes this. Every distributional parameter can be modelled as a function of covariates:
+GAMLSS - Generalised Additive Models for Location, Scale and Shape - relaxes this. Every distributional parameter can be modelled as a function of covariates:
 
 - **Location** (usually the mean or log-mean): this is what a GLM fits
 - **Scale** (dispersion, standard deviation): GAMLSS lets you make this covariate-dependent
@@ -39,21 +39,21 @@ This is not a marginal improvement on a GLM. It is a fundamentally different mod
 
 `insurance-distributional-glm` ships with seven distribution families selected for their relevance to insurance pricing:
 
-**Gamma** — the workhorse for claim severity. Location-scale parameterisation with log-link for mu and log-link for sigma. The correct choice when severity is right-skewed and strictly positive.
+**Gamma** - the workhorse for claim severity. Location-scale parameterisation with log-link for mu and log-link for sigma. The correct choice when severity is right-skewed and strictly positive.
 
-**LogNormal** — alternative to Gamma for severity. Heavier tail than Gamma for the same mean and variance. The log-scale parameterisation (mu as log-mean, sigma as log-scale) is natural for multiplicative rating factor interpretation.
+**LogNormal** - alternative to Gamma for severity. Heavier tail than Gamma for the same mean and variance. The log-scale parameterisation (mu as log-mean, sigma as log-scale) is natural for multiplicative rating factor interpretation.
 
-**InverseGaussian** — heavier-tailed than both. Useful when large losses are materially more likely than Gamma would predict — bodily injury severity on UK motor, large commercial property losses.
+**InverseGaussian** - heavier-tailed than both. Useful when large losses are materially more likely than Gamma would predict - bodily injury severity on UK motor, large commercial property losses.
 
-**Tweedie** — compound Poisson-Gamma, the correct distributional family for aggregate loss costs where the Poisson frequency and Gamma severity are modelled jointly. The Tweedie power parameter `p` (between 1 and 2) controls the frequency-severity mix. GAMLSS lets you model the Tweedie dispersion by covariate, which the standard Tweedie GLM cannot do.
+**Tweedie** - compound Poisson-Gamma, the correct distributional family for aggregate loss costs where the Poisson frequency and Gamma severity are modelled jointly. The Tweedie power parameter `p` (between 1 and 2) controls the frequency-severity mix. GAMLSS lets you model the Tweedie dispersion by covariate, which the standard Tweedie GLM cannot do.
 
-**Poisson** — for claim frequency. Most pricing actuaries use standard Poisson GLMs already; the GAMLSS version adds dispersion modelling, which is useful when frequency variance is materially higher than the Poisson assumption (overdispersion).
+**Poisson** - for claim frequency. Most pricing actuaries use standard Poisson GLMs already; the GAMLSS version adds dispersion modelling, which is useful when frequency variance is materially higher than the Poisson assumption (overdispersion).
 
-**NegativeBinomial** — for overdispersed count data. The NegativeBinomial is a Poisson-Gamma mixture; GAMLSS allows both the mean and the overdispersion parameter to vary by covariate.
+**NegativeBinomial** - for overdispersed count data. The NegativeBinomial is a Poisson-Gamma mixture; GAMLSS allows both the mean and the overdispersion parameter to vary by covariate.
 
-**Zero-Inflated Poisson (ZIP)** — for frequency data with excess zeros. The zero-inflation probability `nu` is modelled separately from the Poisson rate `mu`. This matters in lines with many no-claim policyholders where the excess zeros are structurally distinct from the Poisson zeros.
+**Zero-Inflated Poisson (ZIP)** - for frequency data with excess zeros. The zero-inflation probability `nu` is modelled separately from the Poisson rate `mu`. This matters in lines with many no-claim policyholders where the excess zeros are structurally distinct from the Poisson zeros.
 
-Each family implements its own log-likelihood, score function, and Fisher information — the inputs the RS algorithm needs.
+Each family implements its own log-likelihood, score function, and Fisher information - the inputs the RS algorithm needs.
 
 ---
 
@@ -79,14 +79,14 @@ from insurance_distributional_glm.families import Gamma
 model = DistributionalGLM(
     family=Gamma(),
     formulas={
-        "mu":    ["age", "vehicle_group", "ncb", "region"],
+        "mu": ["age", "vehicle_group", "ncb", "region"],
         "sigma": ["age", "vehicle_group"],  # dispersion varies by age and vehicle
     },
 )
 model.fit(X_train, y_train, max_iter=100, tol=1e-6)
 ```
 
-The `formulas` dict maps each distribution parameter to the list of column names to include as covariates. The intercept is added automatically. Different features can appear in each parameter's formula — modelling dispersion with a subset of the covariates that drive the mean is both valid and common.
+The `formulas` dict maps parameter names to lists of column names. Different features can appear for each parameter - modelling dispersion with a subset of the covariates that drive the mean is both valid and common.
 
 ---
 
@@ -95,17 +95,18 @@ The `formulas` dict maps each distribution parameter to the list of column names
 After fitting, prediction returns the full set of distributional parameters for each observation:
 
 ```python
-# Predict individual parameters
-mu    = model.predict(X_holdout, parameter='mu')    # E[Y|X]
-sigma = model.predict(X_holdout, parameter='sigma') # dispersion
+# Predict individual distribution parameters
+mu_hat    = model.predict(X_holdout, parameter="mu")
+sigma_hat = model.predict(X_holdout, parameter="sigma")
 
-# Or derived quantities
+# Or get derived quantities
 means     = model.predict_mean(X_holdout)
 variances = model.predict_variance(X_holdout)
 
-# Full scipy distribution list (one per observation)
-dists = model.predict_distribution(X_holdout)
-p95   = dists[0].ppf(0.95)   # 95th percentile for observation 0
+# Full distribution object per observation
+dist = model.predict_distribution(X_holdout)
+p95  = dist.ppf(0.95)   # 95th percentile per policy
+crps = dist.crps(y_holdout)
 ```
 
 The `predict_distribution` method returns a scipy-compatible distribution object vectorised over the batch. CDF, quantile, log-probability, and CRPS are all available. For a Gamma family, this is a `scipy.stats.gamma` object parameterised by the policy-specific mu and sigma. For ZIP, it is a custom mixture object.
@@ -122,7 +123,7 @@ More specifically: under a constant-dispersion model, premium is proportional to
 
 This is particularly visible in:
 
-**Bodily injury severity.** Age and vehicle type drive both mean and variance of injury severity, but not proportionally. A GAMLSS Gamma fit typically reveals that variance increases faster than the mean for young drivers — the distribution has heavier tails relative to the mean, not just a higher mean.
+**Bodily injury severity.** Age and vehicle type drive both mean and variance of injury severity, but not proportionally. A GAMLSS Gamma fit typically reveals that variance increases faster than the mean for young drivers - the distribution has heavier tails relative to the mean, not just a higher mean.
 
 **Zero-inflated frequency.** In some lines, certain segments have structurally higher zero-claim probabilities than Poisson would predict. The zero-inflation parameter `nu` absorbs this without contaminating the main frequency model.
 
@@ -150,16 +151,13 @@ Three diagnostics are worth running after every GAMLSS fit:
 from insurance_distributional_glm import quantile_residuals, worm_plot
 
 # Randomised quantile residuals — should look N(0,1)
-resids = quantile_residuals(model, X_holdout, y_holdout)
-
-# Convergence summary — check model.converged before using results
-print(f'Converged: {model.converged}')
+rq = quantile_residuals(model, X_holdout, y_holdout)
 
 # Worm plot — deviation from N(0,1) stratified by fitted value
 worm_plot(model, X_holdout, y_holdout)
 ```
 
-Randomised quantile residuals (Dunn and Smyth, 1996) are the standard GAMLSS diagnostic. For a continuous distribution, the quantile residual `r_i = Phi^{-1}(F(y_i | x_i))` should be standard normal if the model is correctly specified. The worm plot — a detrended Q-Q plot stratified by fitted value — reveals where in the distribution the model is misfitting.
+Randomised quantile residuals (Dunn and Smyth, 1996) are the standard GAMLSS diagnostic. For a continuous distribution, the quantile residual `r_i = Phi^{-1}(F(y_i | x_i))` should be standard normal if the model is correctly specified. The worm plot - a detrended Q-Q plot stratified by fitted value - reveals where in the distribution the model is misfitting.
 
 The worm plot is not standard in Python model diagnostics but is familiar to anyone who has done serious distributional modelling in R. It earns its place: a residual plot on raw residuals misses systematic distributional misfit in the tails, which is exactly where GAMLSS is supposed to help.
 
@@ -183,27 +181,27 @@ X = pd.DataFrame({
     'ncb':            np.random.choice([0, 1, 2, 3, 4, 5], n),
 })
 
-# Fit DistributionalGLM Gamma: model both mean and dispersion
+# Fit GAMLSS Gamma: model both mean and dispersion
 model = DistributionalGLM(
     family=Gamma(),
     formulas={
-        "mu":    ["age_band", "vehicle_group", "ncb"],
+        "mu": ["age_band", "vehicle_group", "ncb"],
         "sigma": ["age_band", "vehicle_group"],
     },
 )
 model.fit(X_train, y_train)
 
 # Coefficients for the dispersion sub-model
-sigma_betas = model.coefficients['sigma']
-# array([-2.341,  0.089,  0.312,  0.198, ...])
-# Index order: intercept, age_band levels, vehicle_group levels
-# age_band[17-21] coefficient 0.312 -> young drivers: materially higher dispersion
-print(model.relativities(parameter='sigma'))
+print(model.relativities("sigma"))
+#  Intercept       -2.341
+#  age_band[22-25]  0.089
+#  age_band[17-21]  0.312   <-- young drivers: materially higher dispersion
+#  vehicle_group[E] 0.198
 
 # Variance loading: E[Y] + k * Var[Y]^0.5
 k = 0.5
 mu    = model.predict_mean(X_holdout)
-sigma = model.predict(X_holdout, parameter='sigma')
+sigma = model.predict(X_holdout, parameter="sigma")
 var   = mu**2 * sigma**2   # Gamma variance formula
 technical_premium = mu + k * np.sqrt(var)
 
@@ -211,7 +209,7 @@ technical_premium = mu + k * np.sqrt(var)
 # even when mu is the same as an older driver
 ```
 
-The dispersion coefficient for 17-21 year olds (+0.312 on the log scale) translates to a roughly 37% increase in the standard deviation relative to the base. For a policy with mean severity £4,000, that increases the variance loading by £580 — a material amount that a constant-dispersion GLM would distribute uniformly across the book.
+The dispersion coefficient for 17-21 year olds (+0.312 on the log scale) translates to a roughly 37% increase in the standard deviation relative to the base. For a policy with mean severity £4,000, that increases the variance loading by £580 - a material amount that a constant-dispersion GLM would distribute uniformly across the book.
 
 ---
 
