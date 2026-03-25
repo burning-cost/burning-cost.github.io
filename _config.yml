@@ -26,6 +26,7 @@ minima:
 header_pages:
   - course.md
   - tools.md
+  - topics.md
   - blog.md
   - consulting.md
   - resources.md

@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "DML for Insurance: Practical Benchmarks and Pitfalls"
+title: "Double Machine Learning for Insurance Pricing: Benchmarks and Pitfalls"
 date: 2026-03-09
 featured: true
 author: Burning Cost
 categories: [techniques, causal-inference]
 tags: [DML, double-machine-learning, causal-inference, catboost, polars, insurance-causal, insurance-causal-policy, motor, benchmarks, python]
-description: "Where double machine learning beats naive regression in UK motor pricing - and where it costs more than it gains. Benchmarks on synthetic data."
+description: "Where double machine learning beats naive regression for insurance pricing — and where it does not. Benchmarks on 100,000-policy synthetic UK motor data with known ground truth. DML via insurance-causal."
 ---
 
-We have written before about why DML works conceptually -- the Neyman orthogonality argument, the confounding bias report, the bad controls problem. This post is not that. It is about the parts nobody writes up: how DML actually performs against naive alternatives on real-structured data, where it breaks down, and what the failure looks like before it is too late to notice.
+We have written before about why double machine learning works conceptually -- the Neyman orthogonality argument, the confounding bias report, the bad controls problem. This post is not that. It is about the parts nobody writes up: how double machine learning for insurance pricing actually performs against naive alternatives on real-structured data, where it breaks down, and what the failure looks like before it is too late to notice.
 
 All benchmarks below are on synthetic motor data generated with `insurance-synthetic`, calibrated to UK personal lines structure: nonlinear age curve, correlated postcode and vehicle group effects, and treatment (price change) that is 70-80% determined by the observed risk factors. That last property -- high treatment predictability -- is exactly what makes motor renewal data hard for DML and soft for naive methods.
 
