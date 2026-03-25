@@ -97,7 +97,7 @@ const_phi_model = DGLM(
 )
 result_const = const_phi_model.fit()
 
-print(f"Estimated phi: {result_const.phi_scalar:.3f}")
+print(f"Estimated phi: {result_const.phi_.mean():.3f}")
 
 # LRT: constant phi vs. phi varying by channel and limit band
 full_model = DGLM(
