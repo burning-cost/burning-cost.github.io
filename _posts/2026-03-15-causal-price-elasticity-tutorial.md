@@ -22,13 +22,13 @@ uv add insurance-causal
 
 ## Step 1: Why OLS elasticity is wrong in a formula-rated book
 
-The confounding structure is precise. Your risk model produces a technical premium `c_i` for each customer. At renewal, pricing applies loadings and commercial adjustments to produce an offer price `p_i`. A customer with a worsening risk profile — an at-fault claim, a birthday moving them into a higher age band — receives a larger premium increase. That same customer is also more likely to lapse, independently of price, because their circumstances have changed.
+The confounding structure is precise. Your risk model produces a technical premium `c_i` for each customer. At renewal, pricing applies loadings and commercial adjustments to produce an offer price `p_i`. A customer with a worsening risk profile - an at-fault claim, a birthday moving them into a higher age band - receives a larger premium increase. That same customer is also more likely to lapse, independently of price, because their circumstances have changed.
 
-Formally: `price_change_i = f(risk_factors_i) + noise`. The risk factors are confounders — they affect both the treatment (price change) and the outcome (renewal). OLS on `P(renew) ~ price_change + confounders` does not solve this, even with a rich confounder set. The issue is not omitted variables in the regression; it is that the treatment itself is a function of the confounders in the training data. When you include both, the regression cannot separate the causal effect of price from the risk-driven component of the price change.
+Formally: `price_change_i = f(risk_factors_i) + noise`. The risk factors are confounders - they affect both the treatment (price change) and the outcome (renewal). OLS on `P(renew) ~ price_change + confounders` does not solve this, even with a rich confounder set. The issue is not omitted variables in the regression; it is that the treatment itself is a function of the confounders in the training data. When you include both, the regression cannot separate the causal effect of price from the risk-driven component of the price change.
 
 The standard illustration. Suppose high-risk customers (NCB 0, recent claim) receive on average +15% at renewal and have a 65% baseline renewal rate. Low-risk customers (NCB 5+, no claims) receive on average +4% and have an 88% baseline renewal rate. OLS sees: bigger price increases correlate with lower renewal rates. That is true. But it is mostly the risk-driven correlation, not the price causal effect. The OLS slope on price change is picking up `E[risk | price_change]`, not `causal_effect(price_change)`.
 
-The fix: partial out the risk model from both the renewal outcome and the price change, then regress the residuals. This is the partially linear regression model (Robinson 1988, Econometrica 56(4): 931-954), estimated via Double Machine Learning (Chernozhukov et al. 2018, Econometrics Journal 21(1): C1-C68). The residualised price change `D_tilde = price_change - E[price_change | X]` is the component of your pricing decisions that was not determined by the risk model — commercial rate adjustments, timing effects, manual overrides, competitor rate movements that affected all customers equally. That is the variation DML uses to identify the causal effect.
+The fix: partial out the risk model from both the renewal outcome and the price change, then regress the residuals. This is the partially linear regression model (Robinson 1988, Econometrica 56(4): 931-954), estimated via Double Machine Learning (Chernozhukov et al. 2018, Econometrics Journal 21(1): C1-C68). The residualised price change `D_tilde = price_change - E[price_change | X]` is the component of your pricing decisions that was not determined by the risk model - commercial rate adjustments, timing effects, manual overrides, competitor rate movements that affected all customers equally. That is the variation DML uses to identify the causal effect.
 
 ---
 
@@ -53,7 +53,7 @@ print(df["log_price_change"].describe())
 # std:  0.089
 ```
 
-Define your confounders — everything that entered the risk model and the commercial pricing decision. For a UK motor portfolio this is a minimum set; real implementations add more:
+Define your confounders - everything that entered the risk model and the commercial pricing decision. For a UK motor portfolio this is a minimum set; real implementations add more:
 
 ```python
 confounders = [
@@ -131,7 +131,7 @@ print(gate_ncd)
 # └───────────┴───────────┴───────────┴───────────┴───────┘
 ```
 
-This is the pattern you should expect: long-tenure customers with full NCB are more price-sensitive. They have been shopping the market for years, know what comparable cover costs, and their loyalty is not infinite. Customers at NCB 0 — often post-claim — are less price-sensitive not because they are happy to pay more, but because their alternatives are expensive and they have limited shopping power.
+This is the pattern you should expect: long-tenure customers with full NCB are more price-sensitive. They have been shopping the market for years, know what comparable cover costs, and their loyalty is not infinite. Customers at NCB 0 - often post-claim - are less price-sensitive not because they are happy to pay more, but because their alternatives are expensive and they have limited shopping power.
 
 Do the same for vehicle group:
 
@@ -139,7 +139,7 @@ Do the same for vehicle group:
 gate_veh = est.gate(df, by="vehicle_group")
 ```
 
-The output here tends to show performance vehicles (group 40+) as less elastic than small city cars (group 1-10). The mechanism: high-group vehicles are harder to insure competitively, fewer alternative quotes, and the customer has less market power. This is actuarially intuitive and the DML estimate is capturing it correctly — not because we told it to, but because the heterogeneity is in the data.
+The output here tends to show performance vehicles (group 40+) as less elastic than small city cars (group 1-10). The mechanism: high-group vehicles are harder to insure competitively, fewer alternative quotes, and the customer has less market power. This is actuarially intuitive and the DML estimate is capturing it correctly - not because we told it to, but because the heterogeneity is in the data.
 
 Per-customer CATEs from the forest:
 
@@ -150,7 +150,7 @@ df = df.with_columns(
 )
 ```
 
-The CATE distribution matters for the optimiser in step 5. If the distribution is narrow, a single ATE is adequate for segmented pricing. If it is wide — say, a 10th-to-90th percentile range of more than 1.5 — you have material heterogeneity and should use the per-customer estimates.
+The CATE distribution matters for the optimiser in step 5. If the distribution is narrow, a single ATE is adequate for segmented pricing. If it is wide - say, a 10th-to-90th percentile range of more than 1.5 - you have material heterogeneity and should use the per-customer estimates.
 
 ---
 
@@ -158,7 +158,7 @@ The CATE distribution matters for the optimiser in step 5. If the distribution i
 
 CausalForestDML is our primary estimator. It is not infallible: it requires the overlap assumption (discussed in step 6), it uses a specific forest structure, and the honest estimation approach has finite-sample properties that depend on tree depth. Before trusting the GATEs, run the DR-Learner as an independent check.
 
-The DR-Learner (Kennedy 2023, Annals of Statistics 51(2): 958-981) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified — not both. The `insurance_causal.elasticity` module wraps it with the same interface:
+The DR-Learner (Kennedy 2023, Annals of Statistics 51(2): 958-981) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified - not both. The `insurance_causal.elasticity` module wraps it with the same interface:
 
 ```python
 est_dr = RenewalElasticityEstimator(
@@ -191,7 +191,7 @@ We do not recommend choosing between the two estimators based on which gives a b
 
 ## Step 5: ENBP-constrained renewal pricing optimisation
 
-The ICOBS 6B.2 constraint (FCA PS21/11, effective January 2022) is a hard ceiling: the renewal offer cannot exceed the Equivalent New Business Price through the same channel. The library's optimiser takes ENBP as a pre-computed column — it is not in the business of running your new-business model. You provide it.
+The ICOBS 6B.2 constraint (FCA PS21/11, effective January 2022) is a hard ceiling: the renewal offer cannot exceed the Equivalent New Business Price through the same channel. The library's optimiser takes ENBP as a pre-computed column - it is not in the business of running your new-business model. You provide it.
 
 ```python
 from insurance_causal.elasticity.optimise import RenewalPricingOptimiser
@@ -240,13 +240,13 @@ The optimiser solves policy-by-policy using the per-customer CATE from the fores
 p*_i = c_i - 1 / (cate_i * (1/p_bar_i))
 ```
 
-where `p_bar_i` is the baseline renewal probability at last year's price. The ENBP cap is enforced after solving — if `p*_i > ENBP_i`, the offer is set to `ENBP_i`. The `enbp_binding` flag records which customers hit the ceiling.
+where `p_bar_i` is the baseline renewal probability at last year's price. The ENBP cap is enforced after solving - if `p*_i > ENBP_i`, the offer is set to `ENBP_i`. The `enbp_binding` flag records which customers hit the ceiling.
 
-A practical note on the kink. When ENBP is binding for a large fraction of the book — typically for customers previously priced above ENBP who were repriced down to ENBP at GIPP implementation — the demand curve has a structural break at ENBP. The DML estimate of elasticity near the ENBP level is less reliable because the price variation around that point is constrained. We flag this in the diagnostics.
+A practical note on the kink. When ENBP is binding for a large fraction of the book - typically for customers previously priced above ENBP who were repriced down to ENBP at GIPP implementation - the demand curve has a structural break at ENBP. The DML estimate of elasticity near the ENBP level is less reliable because the price variation around that point is constrained. We flag this in the diagnostics.
 
 ---
 
-## Step 6: Diagnostics — overlap, balance, variation_fraction
+## Step 6: Diagnostics - overlap, balance, variation_fraction
 
 Three diagnostics before you trust any of the above.
 
@@ -264,7 +264,7 @@ if diag.variation_fraction < 0.10:
     print("Consider restricting to periods with exogenous rate movements")
 ```
 
-The 10% threshold is not a formal test statistic — it is a rule of thumb. Below 10%, the standard errors on ATE will be large and GATEs will be unreliable. The correct response is to find more exogenous variation, not to proceed regardless.
+The 10% threshold is not a formal test statistic - it is a rule of thumb. Below 10%, the standard errors on ATE will be large and GATEs will be unreliable. The correct response is to find more exogenous variation, not to proceed regardless.
 
 **Overlap.** Every risk profile in the data must have had some realistic chance of receiving a range of different prices (the positivity assumption). CausalForest's `min_samples_leaf` implicitly handles some of this, but you should check directly:
 
@@ -280,7 +280,7 @@ print(diag.overlap_summary())
 #          assignments. CATEs for these policies should be interpreted cautiously.
 ```
 
-Policies with near-deterministic price assignments are typically those subject to underwriting rules — high-risk postcodes, young drivers in high-group vehicles where pricing discretion is limited. The CATEs for these policies are unreliable. Flag them; do not use them as input to the optimiser.
+Policies with near-deterministic price assignments are typically those subject to underwriting rules - high-risk postcodes, young drivers in high-group vehicles where pricing discretion is limited. The CATEs for these policies are unreliable. Flag them; do not use them as input to the optimiser.
 
 **Balance.** After cross-fitting, the correlation between the residualised treatment `D_tilde` and the confounders should be near zero. If it is not, either the treatment model is misspecified or CatBoost is not capturing the true treatment assignment mechanism.
 
@@ -303,7 +303,7 @@ diag.plot(
 
 ## Step 7: ICOBS 6B.2 evidence trail for renewal pricing
 
-The FCA's ICOBS 6B.2 requires that firms can demonstrate, for any renewal offer, that the price did not exceed the ENBP. It does not require you to document your demand model methodology in the same level of detail — but Consumer Duty (PS22/9) and SS1/23 together create a strong expectation that pricing models, including elasticity models used to set discounts, are documented and their limitations understood.
+The FCA's ICOBS 6B.2 requires that firms can demonstrate, for any renewal offer, that the price did not exceed the ENBP. It does not require you to document your demand model methodology in the same level of detail - but Consumer Duty (PS22/9) and SS1/23 together create a strong expectation that pricing models, including elasticity models used to set discounts, are documented and their limitations understood.
 
 The library generates a compliance-facing summary. This is a factual record, not a legal opinion. It goes in the pricing governance pack.
 
@@ -331,7 +331,7 @@ Treatment variation fraction: 0.18
 Overlap verdict: ADEQUATE (4.9% near-deterministic)
 ```
 
-What to add in the governance narrative — the text the audit report does not write for you:
+What to add in the governance narrative - the text the audit report does not write for you:
 
 - What was the source of the exogenous price variation used to identify the causal effect? Rate review periods, manual override campaigns, PCW repricing events that affected all customers in a segment identically.
 - What is the estimation period, and does it span the GIPP implementation date? Post-January 2022 data only; the demand structure before and after the dual pricing ban is different.
@@ -344,15 +344,15 @@ The FCA has not, as of March 2026, issued specific guidance on DML-based demand 
 
 `insurance-causal` is open source under MIT at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal). The elasticity module (`insurance_causal.elasticity`) requires Python 3.10+, CatBoost 1.2+, EconML 0.16+, and Polars 0.20+.
 
-- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) — when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
-- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) — what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process
-- [Channel Mix Drift Your Model Didn't Notice](/2026/03/06/channel-mix-drift-your-model-didnt-notice/) — PCW customers are more elastic; a model trained on a channel mix you no longer have will overstate overall elasticity
+- [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) - when book mix shifts, your elasticity data shifts with it; density ratio correction before refitting
+- [Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) - what the PRA's SS1/23 expects from model documentation and the actuarial sign-off process
+- [Channel Mix Drift Your Model Didn't Notice](/2026/03/06/channel-mix-drift-your-model-didnt-notice/) - PCW customers are more elastic; a model trained on a channel mix you no longer have will overstate overall elasticity
 
 ---
 
 ## See also
 
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the theoretical foundations this tutorial builds on
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) — the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
-- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library used throughout this tutorial
-- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) - the theoretical foundations this tutorial builds on
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) - the structural diagnosis: why OLS is confounded in a formula-rated book, before the DML fix
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) - the `insurance-causal` library used throughout this tutorial
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) - thin segment extensions; applies the approach here to books where individual segments have fewer than 5,000 renewals

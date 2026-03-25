@@ -132,7 +132,7 @@ The REML log-likelihood for the one-way random effects model decomposes as:
            + log(Σ_g 1/v_g)                                     (REML correction)
 ```
 
-where `v_g = tau2 + sigma2/n_g`. We optimise this via L-BFGS-B with Henderson method-of-moments starting values. During development, we found that the within-group log-determinant term — the `(n_g - 1) log(sigma2)` piece — is easy to omit and catastrophic when omitted: without it, the optimiser has no penalty for inflating `sigma2` to absorb all variance, and `tau2` collapses to zero. The Bühlmann-Straub framework tells you something. The something collapses to nothing. We wrote this up in detail because it is the kind of bug that produces plausible-looking output — the optimiser converges, the estimates look reasonable, everything is just wrong.
+where `v_g = tau2 + sigma2/n_g`. We optimise this via L-BFGS-B with Henderson method-of-moments starting values. During development, we found that the within-group log-determinant term - the `(n_g - 1) log(sigma2)` piece - is easy to omit and catastrophic when omitted: without it, the optimiser has no penalty for inflating `sigma2` to absorb all variance, and `tau2` collapses to zero. The Bühlmann-Straub framework tells you something. The something collapses to nothing. We wrote this up in detail because it is the kind of bug that produces plausible-looking output - the optimiser converges, the estimates look reasonable, everything is just wrong.
 
 ## New brokers at prediction time
 
@@ -207,9 +207,9 @@ The Bühlmann-Straub framework has been in actuarial syllabuses since the 1970s.
 
 ## When to use which credibility approach
 
-This library is the right tool when you need to adjust for group-level residuals from a GBM pricing model — broker, scheme, or territory effects that the risk model cannot capture. The two-stage CatBoost + REML architecture keeps the stages clean and produces credibility-weighted adjustments that compose multiplicatively with the technical price.
+This library is the right tool when you need to adjust for group-level residuals from a GBM pricing model - broker, scheme, or territory effects that the risk model cannot capture. The two-stage CatBoost + REML architecture keeps the stages clean and produces credibility-weighted adjustments that compose multiplicatively with the technical price.
 
-For segment-level credibility pricing without a GBM stage — where you want to blend thin segment loss experience with a portfolio prior using explicit EPV/VHM decomposition and K factors — see [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/). For full Bayesian posteriors with multiple crossed rating dimensions and Poisson or Gamma likelihoods, see [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/).
+For segment-level credibility pricing without a GBM stage - where you want to blend thin segment loss experience with a portfolio prior using explicit EPV/VHM decomposition and K factors - see [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/). For full Bayesian posteriors with multiple crossed rating dimensions and Poisson or Gamma likelihoods, see [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/).
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)

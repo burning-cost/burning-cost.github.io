@@ -11,7 +11,7 @@ Large bodily injury claims do not behave like ordinary claims. A TPBI settlement
 
 Extreme Value Theory exists precisely for this. The Pickands-Balkema-de Haan theorem gives us a rigorous basis for modelling exceedances above a high threshold: under mild regularity conditions, the excess distribution converges to a Generalised Pareto Distribution (GPD) as the threshold rises. This is not an empirical observation but a mathematical result, which is why EVT is the right framework for large loss pricing, capital modelling, and reinsurance layer pricing.
 
-The Python ecosystem has not caught up. `pyextremes` is the most complete existing library, but it requires a `DatetimeIndex` — it was built for time series of environmental extremes. Insurance claim severity data is not a time series: it is a cross-sectional array of settled amounts with an open/closed flag. `scipy.stats.genpareto` has the distribution but none of the workflow. R users have had `ReIns` (with censored MLE and ExcessGPD) since 2017. Python actuarial teams have had nothing.
+The Python ecosystem has not caught up. `pyextremes` is the most complete existing library, but it requires a `DatetimeIndex` - it was built for time series of environmental extremes. Insurance claim severity data is not a time series: it is a cross-sectional array of settled amounts with an open/closed flag. `scipy.stats.genpareto` has the distribution but none of the workflow. R users have had `ReIns` (with censored MLE and ExcessGPD) since 2017. Python actuarial teams have had nothing.
 
 [`insurance-evt`](https://github.com/burning-cost/insurance-evt) fills that gap.
 
@@ -23,7 +23,7 @@ uv add insurance-evt
 
 ## The threshold problem
 
-Everything in GPD fitting depends on the threshold. Set it too low and the GPD approximation is not yet valid — you get biased parameter estimates. Set it too high and you have too few exceedances to estimate anything precisely. There is no clean analytical solution; the standard diagnostic workflow is three plots examined in sequence.
+Everything in GPD fitting depends on the threshold. Set it too low and the GPD approximation is not yet valid - you get biased parameter estimates. Set it too high and you have too few exceedances to estimate anything precisely. There is no clean analytical solution; the standard diagnostic workflow is three plots examined in sequence.
 
 The Hill estimator comes first. It estimates 1/xi (the tail index) using only the top-k order statistics, and gives you a quick read on whether the tail is Pareto-type at all. A stable plateau at positive values confirms a heavy tail; a plot that trends steadily downward as k increases suggests either a lighter-tailed distribution or contamination.
 
@@ -41,7 +41,7 @@ sel.mrl_plot(ax=axes[1])
 sel.parameter_stability_plot(ax=axes[2])
 ```
 
-The Mean Residual Life (MRL) plot is the workhorse. Under the GPD approximation, `E[X - u | X > u]` should be linear in `u` above the true threshold. You look for the lowest threshold where the plot becomes convincingly linear — that is your starting point. The parameter stability plot then shows whether xi and the modified scale `sigma* = sigma - xi*u` are stable across a range of thresholds. Stability is a necessary (not sufficient) condition.
+The Mean Residual Life (MRL) plot is the workhorse. Under the GPD approximation, `E[X - u | X > u]` should be linear in `u` above the true threshold. You look for the lowest threshold where the plot becomes convincingly linear - that is your starting point. The parameter stability plot then shows whether xi and the modified scale `sigma* = sigma - xi*u` are stable across a range of thresholds. Stability is a necessary (not sufficient) condition.
 
 `auto_threshold()` is available but it is a sanity check, not a verdict:
 
@@ -67,7 +67,7 @@ If your fitted xi falls well outside `(0.30, 0.55)` for UK motor TPBI, that is a
 
 ## Censored MLE for open claims
 
-This is the feature that motivated the library. UK motor TPBI claims above £500k typically have 15-30% open at any point in time. These are not missing data — they are lower bounds on the ultimate settlement. Treating them as settled claims biases xi upward, sometimes substantially. Poudyal and Brazauskas (2023) showed the magnitude of this bias and derived the corrected censored likelihood.
+This is the feature that motivated the library. UK motor TPBI claims above £500k typically have 15-30% open at any point in time. These are not missing data - they are lower bounds on the ultimate settlement. Treating them as settled claims biases xi upward, sometimes substantially. Poudyal and Brazauskas (2023) showed the magnitude of this bias and derived the corrected censored likelihood.
 
 The fix is straightforward: open claims contribute `log(1 - F(x))` to the likelihood (the log-survival function at the current reported amount) rather than `log f(x)` (the log-density). The parameter estimates then reflect that the claim will ultimately exceed the current amount.
 
@@ -87,7 +87,7 @@ print(result)
 #              n=94, n_censored=22, threshold=£500k)
 ```
 
-The `n_censored` field tells you how many claims triggered the censored likelihood path. If that number is large relative to `n` — say, above 10% — the censoring correction is material and the difference from naive MLE is worth documenting.
+The `n_censored` field tells you how many claims triggered the censored likelihood path. If that number is large relative to `n` - say, above 10% - the censoring correction is material and the difference from naive MLE is worth documenting.
 
 For reinsurance teams who only see claims above their attachment point (a left-truncation problem rather than a right-censoring one):
 
@@ -106,7 +106,7 @@ The likelihood is conditioned on the claim exceeding the attachment point, givin
 
 ## Profile likelihood confidence intervals
 
-Standard practice is to report xi with a symmetric Wald confidence interval: `xi ± 1.96 * xi_se`. This is wrong for tail parameters, and wrong in a systematic direction. The log-likelihood for xi is right-skewed — there is more uncertainty about how heavy the tail could be than about how light it could be. Wald intervals miss this asymmetry entirely.
+Standard practice is to report xi with a symmetric Wald confidence interval: `xi ± 1.96 * xi_se`. This is wrong for tail parameters, and wrong in a systematic direction. The log-likelihood for xi is right-skewed - there is more uncertainty about how heavy the tail could be than about how light it could be. Wald intervals miss this asymmetry entirely.
 
 The profile likelihood CI is the correct approach (Coles, 2001; McNeil, Frey, Embrechts, 2005). You fix xi at a candidate value, maximise the likelihood over sigma, and find the set of xi values where the profile log-likelihood exceeds `L_max - chi2(1, 0.95)/2 = L_max - 1.92`. The upper bound of a profile likelihood CI is typically wider than the Wald upper bound. For capital work, that is the number you should be using.
 
@@ -240,7 +240,7 @@ The domain of attraction test checks whether the data is consistent with Frechet
 
 ## Where it fits in the toolkit
 
-`insurance-evt` sits at the extreme end of the severity distribution. It models the part of the distribution that determines capital requirements and reinsurance costs. For the bulk of the severity distribution — the part that drives the average claim and GLM pricing factors — the better tools are [`insurance-severity`](https://github.com/burning-cost/insurance-severity) (spliced body/tail with covariate-dependent thresholds) and [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) (increased limits factors with bootstrap confidence intervals).
+`insurance-evt` sits at the extreme end of the severity distribution. It models the part of the distribution that determines capital requirements and reinsurance costs. For the bulk of the severity distribution - the part that drives the average claim and GLM pricing factors - the better tools are [`insurance-severity`](https://github.com/burning-cost/insurance-severity) (spliced body/tail with covariate-dependent thresholds) and [`insurance-ilf`](https://github.com/burning-cost/insurance-ilf) (increased limits factors with bootstrap confidence intervals).
 
 The typical large loss workflow we would use:
 
@@ -254,15 +254,15 @@ The key thing the library does not do: non-stationary EVT. For flood and subside
 
 ---
 
-**[insurance-evt on GitHub](https://github.com/burning-cost/insurance-evt)** — MIT-licensed, PyPI. 2,744 lines, 144 tests, 9 modules.
+**[insurance-evt on GitHub](https://github.com/burning-cost/insurance-evt)** - MIT-licensed, PyPI. 2,744 lines, 144 tests, 9 modules.
 
 ---
 
 ## See Also
 
-- **[insurance-severity](/2026/03/13/insurance-composite/)** — Composite severity regression for the full distribution, with covariate-dependent thresholds and TVaR
-- **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)** — Increased limits factors from severity distributions with bootstrap CIs; use alongside EVT for excess layer rating factor benchmarks
-- **[insurance-quantile](/2026/03/07/insurance-quantile/)** — Quantile GBMs for tail risk, when you want covariate-dependent tail modelling rather than unconditional EVT
+- **[insurance-severity](/2026/03/13/insurance-composite/)** - Composite severity regression for the full distribution, with covariate-dependent thresholds and TVaR
+- **[insurance-ilf](https://github.com/burning-cost/insurance-ilf)** - Increased limits factors from severity distributions with bootstrap CIs; use alongside EVT for excess layer rating factor benchmarks
+- **[insurance-quantile](/2026/03/07/insurance-quantile/)** - Quantile GBMs for tail risk, when you want covariate-dependent tail modelling rather than unconditional EVT
 
 ---
 

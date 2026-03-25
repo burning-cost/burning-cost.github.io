@@ -11,7 +11,7 @@ Every UK motor pricing team runs a Poisson GLM for frequency and a Gamma GLM for
 
 You might also have prediction intervals. If you use `insurance-conformal`, you have a frequency interval and a severity interval, each with 95% marginal coverage. Run both intervals to 95% and you have given yourself two separate statements: "the true frequency is in [0.03, 0.17] with 95% probability" and "the true severity is in [£1,100, £4,200] with 95% probability." Both statements are valid.
 
-Their conjunction is not guaranteed. If frequency and severity each have 5% miscoverage probability, the probability that at least one of them fails could be as high as 10%. It depends on the dependence structure between the two errors — and you have no control over it.
+Their conjunction is not guaranteed. If frequency and severity each have 5% miscoverage probability, the probability that at least one of them fails could be as high as 10%. It depends on the dependence structure between the two errors - and you have no control over it.
 
 This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements joint coverage control for multi-output insurance models.
 
@@ -25,7 +25,7 @@ uv add insurance-conformal
 
 Conformal prediction produces a finite-sample valid marginal interval for a scalar output Y: if you run the method at level α = 0.05, the true value falls outside the interval on at most 5% of future observations. The guarantee holds under exchangeability, with no distributional assumption. It is the only way to get that kind of finite-sample statement out of a GBM.
 
-When your model has two outputs — frequency N and severity C — the corresponding prediction sets are:
+When your model has two outputs - frequency N and severity C - the corresponding prediction sets are:
 
 ```
 P(N ∈ [L_freq, U_freq]) ≥ 0.95      [marginal, frequency]
@@ -69,7 +69,7 @@ Then the standardized scalar score is:
 S_i = max_j  (E_j^i - μ̂_j) / σ̂_j
 ```
 
-After standardization, frequency z-scores and severity z-scores are both in units of "standard deviations from the mean calibration residual." A frequency residual of 0.8 (which is 2.3 standard deviations above the mean) scores higher than a severity residual of £1,200 (which is 0.5 standard deviations above the mean) — correctly, because the frequency outcome is the more extreme one.
+After standardization, frequency z-scores and severity z-scores are both in units of "standard deviations from the mean calibration residual." A frequency residual of 0.8 (which is 2.3 standard deviations above the mean) scores higher than a severity residual of £1,200 (which is 0.5 standard deviations above the mean) - correctly, because the frequency outcome is the more extreme one.
 
 The calibration quantile is taken from this scalar score distribution, and the prediction intervals for each dimension are back-transformed to original units using σ̂_j. Both dimensions get meaningful constraints.
 
@@ -77,13 +77,13 @@ The calibration quantile is taken from this scalar score distribution, and the p
 
 ## The GWC/LWC correction
 
-There is a subtlety. If you compute μ̂ and σ̂ from the calibration set and then apply them to the calibration set to rank scores, the test point's residual will be standardized by different statistics than the calibration residuals. Exchangeability — the property that makes conformal valid — is broken.
+There is a subtlety. If you compute μ̂ and σ̂ from the calibration set and then apply them to the calibration set to rank scores, the test point's residual will be standardized by different statistics than the calibration residuals. Exchangeability - the property that makes conformal valid - is broken.
 
 Fan & Sesia's GWC (global worst-case) and LWC (local worst-case) algorithms fix this without requiring access to the test point's residual before prediction.
 
-GWC computes a conservative quantile threshold that remains valid regardless of where the test residual falls. It is O(dn) — fast, and always valid, but slightly wider intervals than necessary.
+GWC computes a conservative quantile threshold that remains valid regardless of where the test residual falls. It is O(dn) - fast, and always valid, but slightly wider intervals than necessary.
 
-LWC partitions the residual space using order statistics and computes targeted thresholds per partition region. It is O(d²n log n) — for d=2 and n=10,000, that is under a second — and produces intervals 20–35% narrower than Bonferroni while maintaining finite-sample joint coverage:
+LWC partitions the residual space using order statistics and computes targeted thresholds per partition region. It is O(d²n log n) - for d=2 and n=10,000, that is under a second - and produces intervals 20–35% narrower than Bonferroni while maintaining finite-sample joint coverage:
 
 ```
 P(Y_new ∈ Ĉ(X_new)) ≥ 1 - α
@@ -168,15 +168,15 @@ print(report)
 # }
 ```
 
-Joint coverage is 96.2% against the 95% target — valid by 1.2 percentage points. The marginal coverages are higher than necessary, as expected: LWC distributes the coverage budget efficiently without forcing each marginal to 97.5%.
+Joint coverage is 96.2% against the 95% target - valid by 1.2 percentage points. The marginal coverages are higher than necessary, as expected: LWC distributes the coverage budget efficiently without forcing each marginal to 97.5%.
 
 ---
 
 ## Zero-claim masking for severity
 
-Policies with no claims in the observation period have unobserved severity — there is nothing to compute a severity residual from. This is the zero-inflation problem, and it is more severe in home insurance (subsidence frequency around 0.1% annually) than motor.
+Policies with no claims in the observation period have unobserved severity - there is nothing to compute a severity residual from. This is the zero-inflation problem, and it is more severe in home insurance (subsidence frequency around 0.1% annually) than motor.
 
-The library uses severity masking: for zero-claim calibration observations, the severity residual is set to zero before standardization. This is conservative — it narrows the severity contribution to the max-score, making the severity interval wider than necessary. But it is valid and requires no assumption about the missing severity distribution.
+The library uses severity masking: for zero-claim calibration observations, the severity residual is set to zero before standardization. This is conservative - it narrows the severity contribution to the max-score, making the severity interval wider than necessary. But it is valid and requires no assumption about the missing severity distribution.
 
 ```python
 # Three handling strategies, all valid:
@@ -195,7 +195,7 @@ predictor.calibrate(
 )
 ```
 
-For the three-dimensional case (flood, fire, subsidence), coordinate-wise standardization across all three perils is automatic. A home policy in Lincolnshire might produce: flood [£2,000, £38,000], fire [£800, £7,400], subsidence [£0, £19,000]. That is the joint 95% prediction set — all three bounds hold simultaneously.
+For the three-dimensional case (flood, fire, subsidence), coordinate-wise standardization across all three perils is automatic. A home policy in Lincolnshire might produce: flood [£2,000, £38,000], fire [£800, £7,400], subsidence [£0, £19,000]. That is the joint 95% prediction set - all three bounds hold simultaneously.
 
 ---
 
@@ -225,13 +225,13 @@ for method, r in results.items():
 # lwc          joint_cov=0.962  freq_width=0.254  sev_width=7022
 ```
 
-All three achieve joint coverage above 95%. LWC gives frequency intervals 13% narrower than Bonferroni and severity intervals 13% narrower, at the same joint coverage level. On a £250 annual premium, a 13% tighter severity interval translates to a narrower quoted price range — real information, not a statistical curiosity.
+All three achieve joint coverage above 95%. LWC gives frequency intervals 13% narrower than Bonferroni and severity intervals 13% narrower, at the same joint coverage level. On a £250 annual premium, a 13% tighter severity interval translates to a narrower quoted price range - real information, not a statistical curiosity.
 
 ---
 
 ## Solvency II SCR at 99.5%
 
-The most direct regulatory application is capital estimation. Solvency II Article 101 requires the SCR to equal the 99.5% Value at Risk of the one-year loss distribution. Standard formula uses prescribed correlation matrices — multivariate normal aggregation that may misestimate joint tail dependence.
+The most direct regulatory application is capital estimation. Solvency II Article 101 requires the SCR to equal the 99.5% Value at Risk of the one-year loss distribution. Standard formula uses prescribed correlation matrices - multivariate normal aggregation that may misestimate joint tail dependence.
 
 Hong (arXiv:2503.03659, March 2025) demonstrated this gap explicitly: on personal injury claims data, a GLM-based internal model achieved only 70.2% empirical coverage at its stated "99.5%" confidence level. The conformal approach achieved 99.6% coverage with no distributional assumption.
 
@@ -265,9 +265,9 @@ print(result.summary())
 # }
 ```
 
-At n=999 calibration observations, the finite-sample bound is 1/(n+1) = 0.001. The coverage guarantee is exactly ≥99.5%, with at most 0.1% excess conservatism. Compare this with a parametric internal model, which has only asymptotic guarantees — valid as n → ∞, with no finite-sample statement.
+At n=999 calibration observations, the finite-sample bound is 1/(n+1) = 0.001. The coverage guarantee is exactly ≥99.5%, with at most 0.1% excess conservatism. Compare this with a parametric internal model, which has only asymptotic guarantees - valid as n → ∞, with no finite-sample statement.
 
-The practical note for PRA submissions: a conformal SCR bound has strictly stronger statistical grounding than a parametric internal model at the same calibration sample size. The tradeoff is that the intervals are wider — the conservatism is honest about uncertainty rather than hiding it behind a distribution assumption.
+The practical note for PRA submissions: a conformal SCR bound has strictly stronger statistical grounding than a parametric internal model at the same calibration sample size. The tradeoff is that the intervals are wider - the conservatism is honest about uncertainty rather than hiding it behind a distribution assumption.
 
 Bootstrap confidence intervals for the aggregate SCR are available via `result.bootstrap_ci(n_bootstrap=1000)`. For a UK motor book of 50,000 policies with n=999 calibration data, expect the aggregate SCR 95% CI to be roughly ±8% around the point estimate.
 
@@ -277,7 +277,7 @@ Bootstrap confidence intervals for the aggregate SCR are available via `result.b
 
 The FCA's June 2024 multi-firm review of insurance Consumer Duty monitoring found that most firms lacked statistically rigorous thresholds for determining when outcomes were poor. The review noted firms were relying on simple benchmark comparisons rather than evidence-based statistical triggers.
 
-Joint conformal prediction sets are the obvious answer to this: they provide distribution-free, finite-sample valid tolerance regions for multi-dimensional outcome vectors. For a customer segment, predict the joint distribution of (claims acceptance rate, average settlement days, complaint rate). If the observed outcomes for that segment fall outside the 95% joint prediction set, you have a calibrated, auditable statistical signal that something is wrong — not a "we compared to last year" narrative.
+Joint conformal prediction sets are the obvious answer to this: they provide distribution-free, finite-sample valid tolerance regions for multi-dimensional outcome vectors. For a customer segment, predict the joint distribution of (claims acceptance rate, average settlement days, complaint rate). If the observed outcomes for that segment fall outside the 95% joint prediction set, you have a calibrated, auditable statistical signal that something is wrong - not a "we compared to last year" narrative.
 
 This application uses the same `JointConformalPredictor` API with outcome metrics as outputs rather than frequency and severity. The coverage guarantee is identical.
 
@@ -288,9 +288,9 @@ This application uses the same `JointConformalPredictor` API with outcome metric
 | Dimension | Score | Rationale |
 |---|---|---|
 | Pricing relevance | 5/5 | Direct F/S joint intervals; Solvency II SCR; Consumer Duty outcome monitoring. Three live UK use cases, all with regulatory hooks. |
-| Python gap | 4/5 | Complete gap confirmed: MAPIE, crepes, nonconformist, puncc, TorchCP — none implement joint multi-output conformal prediction with GLM/GBM base models. Score 4 not 5 because Fan & Sesia's research code exists on GitHub, just unpackaged. |
+| Python gap | 4/5 | Complete gap confirmed: MAPIE, crepes, nonconformist, puncc, TorchCP - none implement joint multi-output conformal prediction with GLM/GBM base models. Score 4 not 5 because Fan & Sesia's research code exists on GitHub, just unpackaged. |
 | Build feasibility | 4/5 | Algorithm is mathematically explicit (O(d²n log n) LWC). numpy-only. Delivered in 198 tests across 7 modules. |
-| Novelty | 4/5 | Coordinate-wise standardization for F/S scale mismatch, insurance GLM/GBM hooks, Solvency II mode — genuinely new combination. Score 4 not 5 as Fan & Sesia did the core mathematics. |
+| Novelty | 4/5 | Coordinate-wise standardization for F/S scale mismatch, insurance GLM/GBM hooks, Solvency II mode - genuinely new combination. Score 4 not 5 as Fan & Sesia did the core mathematics. |
 
 Three bugs found during build are worth noting: a deviance-as-width units error in early score implementation, zero-claim sigma deflation when the mask was applied before rather than after standardization, and an overclaim in the LWC-vs-Bonferroni efficiency comparison (corrected to 20–35% from an initial 30–40% estimate). These are documented in the library changelog.
 
@@ -315,6 +315,6 @@ Source at [github.com/burning-cost/insurance-conformal](https://github.com/burni
 
 ## See also
 
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — univariate conformal prediction for single-output insurance models. If you have a Tweedie model or a single combined GBM, start here. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — controls expected monetary loss rather than coverage probability. PremiumSufficiencyController bounds E[shortfall/premium] ≤ α. Composable with joint intervals: use `insurance-conformal` for the joint set, then `PremiumSufficiencyController` on the upper severity bound. [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
-- [`insurance-evt`](https://github.com/burning-cost/insurance-evt) — when the tail is the point. Extreme value theory for XL layer pricing and return level estimation. EVT models the marginal tail; multivariate conformal quantifies joint uncertainty across outputs. [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - univariate conformal prediction for single-output insurance models. If you have a Tweedie model or a single combined GBM, start here. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - controls expected monetary loss rather than coverage probability. PremiumSufficiencyController bounds E[shortfall/premium] ≤ α. Composable with joint intervals: use `insurance-conformal` for the joint set, then `PremiumSufficiencyController` on the upper severity bound. [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [`insurance-evt`](https://github.com/burning-cost/insurance-evt) - when the tail is the point. Extreme value theory for XL layer pricing and return level estimation. EVT models the marginal tail; multivariate conformal quantifies joint uncertainty across outputs. [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)

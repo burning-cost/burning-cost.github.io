@@ -9,7 +9,7 @@ canonical_url: "/2026/03/19/stress-test-resampling-vine-copula/"
 tags: [vine-copula, synthetic-data, stress-testing, capital-modelling, solvency-ii, tail-dependence, tvar, internal-model, insurance-synthetic, python, resampling, diversification]
 ---
 
-There is a step in most capital model validation workflows that nobody talks about much. You need a stress test portfolio: a collection of synthetic policies that looks like your real book but is either larger, shifted towards high-risk exposure, or configured to probe a specific tail scenario. You cannot use your real data — it's too small, or it contains live policyholder records, or the peer review team is external.
+There is a step in most capital model validation workflows that nobody talks about much. You need a stress test portfolio: a collection of synthetic policies that looks like your real book but is either larger, shifted towards high-risk exposure, or configured to probe a specific tail scenario. You cannot use your real data - it's too small, or it contains live policyholder records, or the peer review team is external.
 
 So you resample it. You draw rows from your portfolio with replacement, maybe apply some perturbations, and feed the result to your internal model. The model produces a Solvency II 99.5th percentile VaR. You present it to the independent validator. Nobody asks how the stress portfolio was generated.
 
@@ -19,17 +19,17 @@ The problem: resampling destroys tail dependence. And tail dependence is precise
 
 ## Three methods that look reasonable and are not
 
-**Bootstrap resampling** draws rows with replacement from your real portfolio. It preserves marginal distributions almost exactly — the KS statistic for each individual column is near zero, because you are literally sampling from the empirical distribution. The joint distribution is also preserved in the body. But bootstrap resampling cannot extrapolate beyond the joint support of your observed data. Your 99.5th percentile scenario requires combinations of risk factors that co-occur more severely than anything in your seed portfolio. A bootstrap sample has never seen those combinations and cannot generate them. The tail you care about for Solvency II is a tail the bootstrap has structurally excluded.
+**Bootstrap resampling** draws rows with replacement from your real portfolio. It preserves marginal distributions almost exactly - the KS statistic for each individual column is near zero, because you are literally sampling from the empirical distribution. The joint distribution is also preserved in the body. But bootstrap resampling cannot extrapolate beyond the joint support of your observed data. Your 99.5th percentile scenario requires combinations of risk factors that co-occur more severely than anything in your seed portfolio. A bootstrap sample has never seen those combinations and cannot generate them. The tail you care about for Solvency II is a tail the bootstrap has structurally excluded.
 
-**Independent marginals** fits each column separately and draws independently. This is even more common than bootstrapping because it is easy to implement: fit a Gamma to claim severity, fit a NegBin to claim count, draw from each independently. The marginals are right. The joint distribution is rubbish. Our benchmark on an 8,000-policy UK motor portfolio shows a Spearman correlation of +0.001 (real: +0.502) for driver age versus NCD years. The correlation is not attenuated — it is gone. The result is 2.30% impossible combinations (young drivers with high NCD) against 0.32% in the real data: seven times the rate of physically implausible policies. A capital model run on this portfolio will produce a diversification credit it has not earned, because the risk factors are pretending to be independent when they are not.
+**Independent marginals** fits each column separately and draws independently. This is even more common than bootstrapping because it is easy to implement: fit a Gamma to claim severity, fit a NegBin to claim count, draw from each independently. The marginals are right. The joint distribution is rubbish. Our benchmark on an 8,000-policy UK motor portfolio shows a Spearman correlation of +0.001 (real: +0.502) for driver age versus NCD years. The correlation is not attenuated - it is gone. The result is 2.30% impossible combinations (young drivers with high NCD) against 0.32% in the real data: seven times the rate of physically implausible policies. A capital model run on this portfolio will produce a diversification credit it has not earned, because the risk factors are pretending to be independent when they are not.
 
-**Gaussian copula** captures marginal correlation but imposes asymptotic independence in the tails. In the body of the joint distribution, a Gaussian copula is often adequate. In the tail — where Solvency II lives — it fails structurally. Two risk factors with Gaussian dependence become independent as you condition on increasingly extreme values. The bivariate Clayton copula, by contrast, has lower tail dependence: extreme values co-occur more than the marginal rates predict. Gumbel has upper tail dependence. The insurance joint tail is not Gaussian, and a capital model built on a Gaussian copula stress portfolio will systematically underestimate joint extremes.
+**Gaussian copula** captures marginal correlation but imposes asymptotic independence in the tails. In the body of the joint distribution, a Gaussian copula is often adequate. In the tail - where Solvency II lives - it fails structurally. Two risk factors with Gaussian dependence become independent as you condition on increasingly extreme values. The bivariate Clayton copula, by contrast, has lower tail dependence: extreme values co-occur more than the marginal rates predict. Gumbel has upper tail dependence. The insurance joint tail is not Gaussian, and a capital model built on a Gaussian copula stress portfolio will systematically underestimate joint extremes.
 
 ---
 
 ## What vine copulas do differently
 
-An R-vine factorises a multivariate copula into a sequence of bivariate copulas, one per edge in a sequence of trees. Each bivariate copula can be selected from a family set: Gaussian, Student-t, Clayton, Gumbel, Frank, Joe, and their rotations. The algorithm (via [pyvinecopulib](https://github.com/vinecopulib/pyvinecopulib)) selects the best family for each pair by AIC. For pairs with tail dependence — young drivers and zero NCD, high vehicle group and high claim frequency — it will select Clayton or Gumbel rather than Gaussian. The tail structure is then explicitly encoded in the fitted vine.
+An R-vine factorises a multivariate copula into a sequence of bivariate copulas, one per edge in a sequence of trees. Each bivariate copula can be selected from a family set: Gaussian, Student-t, Clayton, Gumbel, Frank, Joe, and their rotations. The algorithm (via [pyvinecopulib](https://github.com/vinecopulib/pyvinecopulib)) selects the best family for each pair by AIC. For pairs with tail dependence - young drivers and zero NCD, high vehicle group and high claim frequency - it will select Clayton or Gumbel rather than Gaussian. The tail structure is then explicitly encoded in the fitted vine.
 
 `insurance-synthetic` wraps this into a portfolio-level API:
 
@@ -49,13 +49,13 @@ synth.fit(
 synth.summary()
 ```
 
-The `summary()` output shows which bivariate family was selected at each tree level. If you see Clayton at the driver_age / ncd_years edge, the vine has captured lower tail dependence for that pair — precisely the relationship that drives extreme scenarios. This is auditable: you can show the peer review team exactly what dependence structure the stress portfolio encodes, and why.
+The `summary()` output shows which bivariate family was selected at each tree level. If you see Clayton at the driver_age / ncd_years edge, the vine has captured lower tail dependence for that pair - precisely the relationship that drives extreme scenarios. This is auditable: you can show the peer review team exactly what dependence structure the stress portfolio encodes, and why.
 
 ---
 
 ## Generating a high-risk stress scenario
 
-For a capital stress test you typically want a portfolio tilted towards high-risk exposure — young drivers, high vehicle groups, adverse weather regions — while remaining physically plausible. The `constraints` argument handles this:
+For a capital stress test you typically want a portfolio tilted towards high-risk exposure - young drivers, high vehicle groups, adverse weather regions - while remaining physically plausible. The `constraints` argument handles this:
 
 ```python
 schema = uk_motor_schema()
@@ -102,7 +102,7 @@ print(f"TVaR ratio (claim_count, 99th pct): {tvar:.3f}")
 print(report.to_markdown())
 ```
 
-For a stress scenario, you are deliberately generating a portfolio with higher tail risk than the seed. The `tvar_ratio` will be above 1.0 and that is correct. What you want is the `correlation_report` to show low Frobenius norm — the relationship between risk factors should look like your real book, even as the marginal risk level is elevated.
+For a stress scenario, you are deliberately generating a portfolio with higher tail risk than the seed. The `tvar_ratio` will be above 1.0 and that is correct. What you want is the `correlation_report` to show low Frobenius norm - the relationship between risk factors should look like your real book, even as the marginal risk level is elevated.
 
 ---
 
@@ -116,17 +116,17 @@ These are the published benchmark results from the `insurance-synthetic` README,
 
 **Impossible combinations (young driver, high NCD):** real = 0.32%, vine = 0.26%, naive = 2.30%. The vine suppresses physically implausible policies through its correlation structure. Naive sampling generates seven times as many impossible rows as the real portfolio.
 
-**TSTR Gini gap:** vine = 0.0006, naive = 0.0016. A CatBoost frequency model trained on either synthetic dataset generalises nearly as well as one trained on real data — the vine is not introducing spurious patterns that would confuse a pricing model.
+**TSTR Gini gap:** vine = 0.0006, naive = 0.0016. A CatBoost frequency model trained on either synthetic dataset generalises nearly as well as one trained on real data - the vine is not introducing spurious patterns that would confuse a pricing model.
 
 ---
 
 ## The capital modelling application
 
-The Solvency II standard formula is notoriously insensitive to the internal correlation structure of a portfolio — it uses fixed correlation matrices between lines of business, not between individual risk factors. If you are running an internal model, though, the 99.5th percentile VaR is highly sensitive to joint tail behaviour. A capital model that treats risk factors as independent will overestimate diversification credit and understate required capital.
+The Solvency II standard formula is notoriously insensitive to the internal correlation structure of a portfolio - it uses fixed correlation matrices between lines of business, not between individual risk factors. If you are running an internal model, though, the 99.5th percentile VaR is highly sensitive to joint tail behaviour. A capital model that treats risk factors as independent will overestimate diversification credit and understate required capital.
 
 The practical workflow for internal model peer review:
 
-1. Fit `InsuranceSynthesizer` on your real portfolio. Audit the vine structure with `summary()` — confirm that Clayton or Gumbel families are selected at the high-dependence edges.
+1. Fit `InsuranceSynthesizer` on your real portfolio. Audit the vine structure with `summary()` - confirm that Clayton or Gumbel families are selected at the high-dependence edges.
 
 2. Generate a stress portfolio with the risk profile your capital model is designed to probe. Use constraints to represent the exposure profile of the stress scenario.
 
@@ -140,11 +140,11 @@ For independent validators reviewing an internal model, the vine summary is a di
 
 ## Limitations
 
-**99.9th percentile underestimation.** The vine over-estimates tail risk at the 99th percentile by 59% (TVaR ratio 1.59), but for very extreme percentiles — 99.9th and beyond — the vine tends to underestimate. The fitted bivariate families are calibrated on the body of the joint distribution; extreme quantile extrapolation depends on the tail index of the selected family, which may not match the true tail behaviour of your book. Do not use this tool for 1-in-1000 catastrophe scenarios without further validation.
+**99.9th percentile underestimation.** The vine over-estimates tail risk at the 99th percentile by 59% (TVaR ratio 1.59), but for very extreme percentiles - 99.9th and beyond - the vine tends to underestimate. The fitted bivariate families are calibrated on the body of the joint distribution; extreme quantile extrapolation depends on the tail index of the selected family, which may not match the true tail behaviour of your book. Do not use this tool for 1-in-1000 catastrophe scenarios without further validation.
 
-**Small book attenuation.** The vine is fitted on a seed portfolio. With fewer than roughly 5,000 policies, the correlation estimates become noisy and the fitted vine attenuates strong correlations — on our 8,000-policy benchmark, the age/NCD Spearman drops from 0.502 to 0.400 even in the vine case. For small books, generate more seed data from a synthetic portfolio with a known DGP (see [insurance-datasets](https://github.com/burning-cost/insurance-datasets)) before fitting the vine.
+**Small book attenuation.** The vine is fitted on a seed portfolio. With fewer than roughly 5,000 policies, the correlation estimates become noisy and the fitted vine attenuates strong correlations - on our 8,000-policy benchmark, the age/NCD Spearman drops from 0.502 to 0.400 even in the vine case. For small books, generate more seed data from a synthetic portfolio with a known DGP (see [insurance-datasets](https://github.com/burning-cost/insurance-datasets)) before fitting the vine.
 
-**Time-varying dependence.** The vine is a static model. It captures the average dependence structure over the period your seed portfolio was written. If your book has been shifting — perhaps because new distribution channels attract a different risk profile — the fitted vine reflects the historical mix, not the current composition. For a capital model run annually, this is usually acceptable. For a stress test that is supposed to represent an adverse future state, you should check whether the dependence structure of recent vintages differs from the historical average.
+**Time-varying dependence.** The vine is a static model. It captures the average dependence structure over the period your seed portfolio was written. If your book has been shifting - perhaps because new distribution channels attract a different risk profile - the fitted vine reflects the historical mix, not the current composition. For a capital model run annually, this is usually acceptable. For a stress test that is supposed to represent an adverse future state, you should check whether the dependence structure of recent vintages differs from the historical average.
 
 ---
 
@@ -153,6 +153,6 @@ For independent validators reviewing an internal model, the vine summary is a di
 ---
 
 **Related posts:**
-- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — the basics: exposure semantics, marginal fitting, TSTR fidelity, and why SDV and CTGAN produce portfolios that break the moment you run a pricing model on them
-- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) — another case where a naive approximation gives structurally incorrect results in the tail
-- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions
+- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) - the basics: exposure semantics, marginal fitting, TSTR fidelity, and why SDV and CTGAN produce portfolios that break the moment you run a pricing model on them
+- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) - another case where a naive approximation gives structurally incorrect results in the tail
+- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - complementary monitoring: once you have a stress portfolio and a capital model, this is how you detect when the real portfolio has drifted away from the stress scenario assumptions

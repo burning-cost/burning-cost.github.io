@@ -8,11 +8,11 @@ description: "Alibi Detect is a solid general-purpose drift detection library. I
 tags: [alibi-detect-insurance, model-drift-insurance-pricing, alibi-detect-vs, insurance-model-monitoring-python, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, insurance-monitoring, model-risk, PRA-SS3-17, python, uk-insurance, polars]
 ---
 
-If you search "model drift detection Python", Alibi Detect appears near the top. It deserves to. SeldonIO have built a serious library: Kolmogorov-Smirnov, Maximum Mean Discrepancy, Chi-squared, Least-Squares Density Difference — the standard statistical tests, cleanly implemented, with good documentation and around 2,200 GitHub stars at time of writing. For a general ML pipeline monitoring tabular models, text, or images, Alibi Detect is a reasonable default.
+If you search "model drift detection Python", Alibi Detect appears near the top. It deserves to. SeldonIO have built a serious library: Kolmogorov-Smirnov, Maximum Mean Discrepancy, Chi-squared, Least-Squares Density Difference - the standard statistical tests, cleanly implemented, with good documentation and around 2,200 GitHub stars at time of writing. For a general ML pipeline monitoring tabular models, text, or images, Alibi Detect is a reasonable default.
 
 For insurance pricing model monitoring, it misses the point almost entirely.
 
-This is the direct comparison — what each library does, where they diverge, and when to use which. If you are not monitoring insurance pricing models, stop here and use Alibi Detect. The remainder of this post is for the people who are.
+This is the direct comparison - what each library does, where they diverge, and when to use which. If you are not monitoring insurance pricing models, stop here and use Alibi Detect. The remainder of this post is for the people who are.
 
 ---
 
@@ -31,7 +31,7 @@ print(result["data"]["is_drift"])   # True/False
 print(result["data"]["p_val"])      # per-feature p-values
 ```
 
-That works. The statistical tests are correctly implemented. Alibi Detect also has `MMDDrift` (Maximum Mean Discrepancy, appropriate for high-dimensional features), `LSDDDrift` (Least-Squares Density Difference), and `ClassifierDrift` (uses a trained binary classifier to distinguish reference from current data — powerful for catching complex multivariate shift that marginal tests miss).
+That works. The statistical tests are correctly implemented. Alibi Detect also has `MMDDrift` (Maximum Mean Discrepancy, appropriate for high-dimensional features), `LSDDDrift` (Least-Squares Density Difference), and `ClassifierDrift` (uses a trained binary classifier to distinguish reference from current data - powerful for catching complex multivariate shift that marginal tests miss).
 
 It integrates with Seldon Deploy, which matters if you're in a Seldon MLOps shop. The documentation is thorough. The library is actively maintained.
 
@@ -41,9 +41,9 @@ None of this is relevant to what insurance pricing teams actually need from a mo
 
 ## Problem 1: PSI without exposure weighting
 
-Population Stability Index is the operational standard for insurance pricing drift monitoring. Every major UK insurer uses some variant of it. Alibi Detect does not implement PSI — it uses KS and chi-squared. This is not a criticism: KS and chi-squared are statistically sounder. But insurance teams inherited PSI thresholds from decades of regulatory practice. A PSI above 0.25 triggers a model review. That convention is embedded in governance frameworks, validation committees, and Lloyd's syndicate oversight processes.
+Population Stability Index is the operational standard for insurance pricing drift monitoring. Every major UK insurer uses some variant of it. Alibi Detect does not implement PSI - it uses KS and chi-squared. This is not a criticism: KS and chi-squared are statistically sounder. But insurance teams inherited PSI thresholds from decades of regulatory practice. A PSI above 0.25 triggers a model review. That convention is embedded in governance frameworks, validation committees, and Lloyd's syndicate oversight processes.
 
-More importantly: even if Alibi Detect's KS tests are statistically preferable, they still treat every row equally. For insurance, rows are policies — and policies vary enormously in how much exposure they represent.
+More importantly: even if Alibi Detect's KS tests are statistically preferable, they still treat every row equally. For insurance, rows are policies - and policies vary enormously in how much exposure they represent.
 
 A fleet policy covering 80 vehicles that ran for 12 months contributes one row to KS's test. A 30-day moped policy also contributes one row. They are not equivalent observations. The fleet policy represents roughly 80 car-years of claims exposure; the moped represents 0.08 car-years. Treating them identically means your drift detector has its signal contaminated by short-duration policies that barely had time to generate claims.
 
@@ -68,7 +68,7 @@ print(f"Unweighted PSI: {psi_unweighted:.3f}")  # 0.18 — amber
 print(f"Weighted PSI:   {psi_weighted:.3f}")    # 0.27 — red
 ```
 
-In the `insurance-monitoring` benchmark (50,000 training policies, 2019–2021 reference, 2023 current cohort with 2x young driver oversampling): unweighted PSI reads amber at 0.18, exposure-weighted PSI reads red at 0.27. These are different governance conclusions. The weighted version is correct — the young drivers entering via comparison sites are on short-term monthly policies and each count once regardless of their actual exposure contribution.
+In the `insurance-monitoring` benchmark (50,000 training policies, 2019–2021 reference, 2023 current cohort with 2x young driver oversampling): unweighted PSI reads amber at 0.18, exposure-weighted PSI reads red at 0.27. These are different governance conclusions. The weighted version is correct - the young drivers entering via comparison sites are on short-term monthly policies and each count once regardless of their actual exposure contribution.
 
 ---
 
@@ -76,7 +76,7 @@ In the `insurance-monitoring` benchmark (50,000 training policies, 2019–2021 r
 
 Alibi Detect monitors statistical properties of feature distributions and model outputs. It does not know what an A/E ratio is.
 
-A/E (actual claims divided by expected claims) is the primary operational metric for pricing model calibration. An aggregate A/E of 1.00 tells you your model is correctly priced on average. An aggregate A/E of 1.00 composed of 1.55 in the under-25 cohort and 0.85 in the over-50 cohort tells you your model is misfiring badly by segment and will generate adverse selection — good risks leave because they're overpriced, bad risks stay.
+A/E (actual claims divided by expected claims) is the primary operational metric for pricing model calibration. An aggregate A/E of 1.00 tells you your model is correctly priced on average. An aggregate A/E of 1.00 composed of 1.55 in the under-25 cohort and 0.85 in the over-50 cohort tells you your model is misfiring badly by segment and will generate adverse selection - good risks leave because they're overpriced, bad risks stay.
 
 Alibi Detect's prediction drift test will not catch this. It can tell you that the distribution of your model outputs has shifted; it cannot tell you whether actual experience is tracking your predictions at segment level.
 
@@ -96,7 +96,7 @@ seg = ae_ratio(actual, predicted, exposure=exposure, segments=age_bands)
 # 50+     |    61  |      72  |    0.85  |       901
 ```
 
-The Garwood interval is not cosmetic. At 30 observed claims — a realistic monitoring window for a specialist product or a new entrant cohort — a normal approximation understates the confidence interval by 15–20%. Teams running monitoring with normal approximations will generate spurious "significant" A/E deviations on thin segments, train their actuaries to discount alerts, and miss real problems.
+The Garwood interval is not cosmetic. At 30 observed claims - a realistic monitoring window for a specialist product or a new entrant cohort - a normal approximation understates the confidence interval by 15–20%. Teams running monitoring with normal approximations will generate spurious "significant" A/E deviations on thin segments, train their actuaries to discount alerts, and miss real problems.
 
 ---
 
@@ -104,9 +104,9 @@ The Garwood interval is not cosmetic. At 30 observed claims — a realistic moni
 
 This is the failure mode that destroys books silently.
 
-A pricing model can maintain a stable aggregate A/E — it is correctly priced on average — while losing its ability to rank risks. The mechanism is covariate shift: as the portfolio composition changes, the model's relativities become stale. It still predicts the right mean but can no longer separate a good risk from a bad risk within any cohort. The consequence is adverse selection. Alibi Detect monitors prediction drift (has the distribution of your model outputs shifted?). That is not the same question.
+A pricing model can maintain a stable aggregate A/E - it is correctly priced on average - while losing its ability to rank risks. The mechanism is covariate shift: as the portfolio composition changes, the model's relativities become stale. It still predicts the right mean but can no longer separate a good risk from a bad risk within any cohort. The consequence is adverse selection. Alibi Detect monitors prediction drift (has the distribution of your model outputs shifted?). That is not the same question.
 
-`insurance-monitoring` implements the Gini drift z-test from arXiv 2510.04556 — a hypothesis test based on the asymptotic normality of the sample Gini, with bootstrap variance estimation:
+`insurance-monitoring` implements the Gini drift z-test from arXiv 2510.04556 - a hypothesis test based on the asymptotic normality of the sample Gini, with bootstrap variance estimation:
 
 ```python
 from insurance_monitoring.discrimination import gini_coefficient, gini_drift_test
@@ -125,7 +125,7 @@ result = gini_drift_test(
 # GiniDriftResult(z_statistic=-1.93, p_value=0.054, gini_change=-0.03, significant=False)
 ```
 
-The default alpha is 0.32 — the one-sigma rule. The rationale, from arXiv 2510.04556, is that the cost of missing a Gini decline is measurable in loss ratio; the cost of a false positive investigation is two actuarial days. We agree with this. The governance output is a `GiniDriftBootstrapTest` with a `.plot()` method that produces a standard IFoA/PRA model validation deliverable — bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation.
+The default alpha is 0.32 - the one-sigma rule. The rationale, from arXiv 2510.04556, is that the cost of missing a Gini decline is measurable in loss ratio; the cost of a false positive investigation is two actuarial days. We agree with this. The governance output is a `GiniDriftBootstrapTest` with a `.plot()` method that produces a standard IFoA/PRA model validation deliverable - bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation.
 
 ---
 
@@ -167,7 +167,7 @@ The same benchmark: 25% FPR for the monthly-peeking t-test, ~1% FPR for mSPRT. U
 
 ## Problem 5: no PIT-based calibration monitoring
 
-Alibi Detect monitors distributional drift in features and predictions. It does not have a framework for testing whether the model's calibration — the correspondence between predicted rates and observed claims frequencies — has changed.
+Alibi Detect monitors distributional drift in features and predictions. It does not have a framework for testing whether the model's calibration - the correspondence between predicted rates and observed claims frequencies - has changed.
 
 The naive approach is Hosmer-Lemeshow applied monthly. Applied monthly for 12 months on a perfectly calibrated model, the false alarm rate is not 5%. It is 46%. After 24 months: 71%. Teams learn to distrust their monitoring output, which is worse than having no monitoring.
 
@@ -199,7 +199,7 @@ In the benchmark (500 calibrated observations, then 500 with 15% rate inflation)
 
 Alibi Detect is a data science library. It produces drift statistics. It has no concept of PRA SS3/17, Consumer Duty, model risk management, or governance artefacts.
 
-PRA SS3/17 — the supervisory statement on model risk management — requires UK insurers to demonstrate ongoing model monitoring with documented, structured evidence. "The KS test p-value for driver age was 0.03" is not that evidence. "A/E ratio 1.08 [1.031, 1.137], amber threshold exceeded, recommendation: recalibrate" is.
+PRA SS3/17 - the supervisory statement on model risk management - requires UK insurers to demonstrate ongoing model monitoring with documented, structured evidence. "The KS test p-value for driver age was 0.03" is not that evidence. "A/E ratio 1.08 [1.031, 1.137], amber threshold exceeded, recommendation: recalibrate" is.
 
 `insurance-monitoring`'s `MonitoringReport` produces a structured Polars DataFrame designed to be written to a database and cited in governance documentation:
 
@@ -229,7 +229,7 @@ print(report.to_polars())
 # recommendation         | nan    | RECALIBRATE
 ```
 
-The Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025) is what drives the `RECALIBRATE` vs `REFIT` verdict. If global miscalibration dominates, apply a multiplier — hours of work. If local miscalibration dominates, refit — weeks of work. Getting this wrong in either direction is expensive. Alibi Detect cannot make this distinction.
+The Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025) is what drives the `RECALIBRATE` vs `REFIT` verdict. If global miscalibration dominates, apply a multiplier - hours of work. If local miscalibration dominates, refit - weeks of work. Getting this wrong in either direction is expensive. Alibi Detect cannot make this distinction.
 
 ---
 
@@ -237,11 +237,11 @@ The Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2
 
 The gaps above are real. But Alibi Detect has genuine strengths `insurance-monitoring` does not try to replicate.
 
-**Breadth of drift methods.** MMD and LSDD are theoretically superior to PSI for detecting complex multivariate drift. Alibi Detect's `ClassifierDrift` — train a binary classifier to distinguish reference from current data, use classification accuracy as the drift statistic — is an elegant method that catches non-linear distributional shifts that marginal column-by-column tests miss. `insurance-monitoring` has `InterpretableDriftDetector` (TRIPODD, Panda et al. 2025) for feature-interaction-aware drift attribution, but does not implement MMD or LSDD.
+**Breadth of drift methods.** MMD and LSDD are theoretically superior to PSI for detecting complex multivariate drift. Alibi Detect's `ClassifierDrift` - train a binary classifier to distinguish reference from current data, use classification accuracy as the drift statistic - is an elegant method that catches non-linear distributional shifts that marginal column-by-column tests miss. `insurance-monitoring` has `InterpretableDriftDetector` (TRIPODD, Panda et al. 2025) for feature-interaction-aware drift attribution, but does not implement MMD or LSDD.
 
 **Non-tabular data.** If you are building a claims image classifier, a fraud text model, or an NLP underwriting tool, Alibi Detect handles image and text drift detection with proper kernel methods. `insurance-monitoring` is tabular-only.
 
-**Seldon Deploy integration.** If you are in a Seldon MLOps shop, Alibi Detect connects directly to Seldon Deploy for production monitoring pipelines. `insurance-monitoring` integrates with Databricks and produces Polars DataFrames — right for UK pricing teams, not for a Seldon deployment.
+**Seldon Deploy integration.** If you are in a Seldon MLOps shop, Alibi Detect connects directly to Seldon Deploy for production monitoring pipelines. `insurance-monitoring` integrates with Databricks and produces Polars DataFrames - right for UK pricing teams, not for a Seldon deployment.
 
 **Community.** Alibi Detect has ~2,200 GitHub stars and a maintainer team at SeldonIO. `insurance-monitoring` is a niche library for the UK actuarial community. At 11pm when your monitoring pipeline is broken, Alibi Detect has the Stack Overflow thread.
 
@@ -290,20 +290,20 @@ Polars-native. No scikit-learn dependency. Python 3.10+. Version 0.7.1 at time o
 ---
 
 **Related:**
-- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — the same comparison against Evidently, the more common alternative
-- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — detailed walkthrough of each monitoring layer
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
-- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model
+- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - the same comparison against Evidently, the more common alternative
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - detailed walkthrough of each monitoring layer
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) - why aggregate A/E is a lagging indicator for covariate shift
+- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) - why most insurers never properly test their champion model
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

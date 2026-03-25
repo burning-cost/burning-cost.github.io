@@ -11,7 +11,7 @@ tags: [insurance-model-monitoring-python, Evidently, model-drift-detection, PSI,
 
 Evidently is the obvious first choice when a team needs open-source ML monitoring. It's well-engineered, actively maintained, has 20+ drift detection methods, clean HTML reports, and integrations with MLflow and other standard MLOps infrastructure. If you're monitoring a churn model, a credit propensity score, or a fraud classifier, it will serve you well.
 
-For insurance pricing model monitoring, it leaves you with gaps that are not cosmetic. This post is a direct comparison — not to dismiss Evidently, but to be clear about where the domain-specific requirements of insurance pricing diverge from what a general-purpose tool can cover.
+For insurance pricing model monitoring, it leaves you with gaps that are not cosmetic. This post is a direct comparison - not to dismiss Evidently, but to be clear about where the domain-specific requirements of insurance pricing diverge from what a general-purpose tool can cover.
 
 ```bash
 uv add insurance-monitoring
@@ -23,7 +23,7 @@ uv add insurance-monitoring
 
 It's worth being explicit about what you're giving up if you don't use it.
 
-Evidently's `DataDriftPreset` runs across all your feature columns automatically, selects an appropriate statistical test per column type (PSI for categorical, K-L divergence or Wasserstein for continuous), and renders a report you can share with non-technical stakeholders. Setup is ten lines of code. The HTML report is genuinely readable. The ecosystem integrations — MLflow, Grafana, Prefect — are mature.
+Evidently's `DataDriftPreset` runs across all your feature columns automatically, selects an appropriate statistical test per column type (PSI for categorical, K-L divergence or Wasserstein for continuous), and renders a report you can share with non-technical stakeholders. Setup is ten lines of code. The HTML report is genuinely readable. The ecosystem integrations - MLflow, Grafana, Prefect - are mature.
 
 For engineering teams standing up a first monitoring pipeline, Evidently's breadth and approachability are real advantages. We're not arguing you shouldn't use it for those use cases.
 
@@ -33,7 +33,7 @@ For engineering teams standing up a first monitoring pipeline, Evidently's bread
 
 ### 1. Exposure-weighted PSI
 
-Standard PSI treats every row equally. For an insurance portfolio, rows are policies — and policies vary enormously in how much exposure they represent. An annual fleet policy covering 80 vehicles contributes the same to an unweighted PSI bin count as a 30-day social/domestic policy on a single hatchback. They are not the same from a claims exposure perspective.
+Standard PSI treats every row equally. For an insurance portfolio, rows are policies - and policies vary enormously in how much exposure they represent. An annual fleet policy covering 80 vehicles contributes the same to an unweighted PSI bin count as a 30-day social/domestic policy on a single hatchback. They are not the same from a claims exposure perspective.
 
 The problem is acute when young drivers are overrepresented in your short-period business (comparison sites, monthly-pay schemes) and underrepresented in your annual renewals. Unweighted PSI will underestimate the distributional shift in driver age, because the short-period young-driver policies each count once despite contributing 0.25 car-years of exposure.
 
@@ -64,7 +64,7 @@ In the synthetic UK motor benchmark on 50,000 training policies (2019–2021) mo
 
 Evidently's model performance monitoring tracks prediction drift and can compare actual vs predicted at aggregate level for regression targets. It does not understand what A/E means to an actuary: actual claims divided by expected claims, at segment level, with exact Poisson confidence intervals, tracked against exposure.
 
-The aggregate A/E problem is well-known in pricing. A model that is 15% cheap on under-25s and 15% expensive on over-60s will read 1.00 at portfolio level. A generic prediction drift alert will not fire. The under-25 cohort continues to be mispriced until the age-banded quarterly review catches it — typically 6–12 months later.
+The aggregate A/E problem is well-known in pricing. A model that is 15% cheap on under-25s and 15% expensive on over-60s will read 1.00 at portfolio level. A generic prediction drift alert will not fire. The under-25 cohort continues to be mispriced until the age-banded quarterly review catches it - typically 6–12 months later.
 
 ```python
 from insurance_monitoring.calibration import ae_ratio, ae_ratio_ci
@@ -86,11 +86,11 @@ The Garwood interval matters at low policy counts. For a new entrant cohort or a
 
 ### 3. Gini drift testing
 
-A pricing model can maintain a stable aggregate A/E while losing its ability to rank risks. The mechanism is covariate shift: as portfolio composition changes, the model's relativities become stale. It still predicts the right mean (cheap errors and expensive errors cancel) but can no longer separate good risks from bad. The consequence is adverse selection — good risks leave because they're overpriced, bad risks stay — which is economically equivalent to mispricing but proceeds silently until retention data reveals the pattern.
+A pricing model can maintain a stable aggregate A/E while losing its ability to rank risks. The mechanism is covariate shift: as portfolio composition changes, the model's relativities become stale. It still predicts the right mean (cheap errors and expensive errors cancel) but can no longer separate good risks from bad. The consequence is adverse selection - good risks leave because they're overpriced, bad risks stay - which is economically equivalent to mispricing but proceeds silently until retention data reveals the pattern.
 
 Evidently monitors prediction drift (has the distribution of your model outputs shifted?). That is not the same as Gini drift. A model can have stable prediction distribution and falling Gini simultaneously.
 
-`insurance-monitoring` implements the Gini drift z-test from [arXiv 2510.04556](https://arxiv.org/abs/2510.04556) — a proper hypothesis test based on the asymptotic normality of the sample Gini, with bootstrap variance estimation:
+`insurance-monitoring` implements the Gini drift z-test from [arXiv 2510.04556](https://arxiv.org/abs/2510.04556) - a proper hypothesis test based on the asymptotic normality of the sample Gini, with bootstrap variance estimation:
 
 ```python
 from insurance_monitoring.discrimination import gini_coefficient, gini_drift_test
@@ -115,11 +115,11 @@ The decision thresholds (p < 0.32 triggers `INVESTIGATE`, p < 0.10 triggers `REF
 
 This is the gap that costs the most when it's wrong.
 
-If your monitoring fires an alert, you face a binary: recalibration (apply a scalar multiplier to all predictions — hours of work) or refit (rebuild the model on recent data — weeks of work). Getting this wrong in either direction is expensive.
+If your monitoring fires an alert, you face a binary: recalibration (apply a scalar multiplier to all predictions - hours of work) or refit (rebuild the model on recent data - weeks of work). Getting this wrong in either direction is expensive.
 
 Evidently cannot help you make this decision. It can tell you that model performance has degraded, but not whether the degradation is from a global scale error (cheap to fix) or a broken ranking (expensive to fix).
 
-The Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025) resolves this. It decomposes forecast error into uncertainty (irreducible noise), discrimination (ranking skill), and miscalibration. Miscalibration further splits into GMCB (global — fixed by a multiplier) and LMCB (local — requires a refit). If GMCB dominates, recalibrate. If LMCB dominates, refit.
+The Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025) resolves this. It decomposes forecast error into uncertainty (irreducible noise), discrimination (ranking skill), and miscalibration. Miscalibration further splits into GMCB (global - fixed by a multiplier) and LMCB (local - requires a refit). If GMCB dominates, recalibrate. If LMCB dominates, refit.
 
 ```python
 from insurance_monitoring.calibration import murphy_decomposition
@@ -135,7 +135,7 @@ In the 10,000/4,000 policy benchmark with 30% randomised predictions (simulating
 
 ### 5. Anytime-valid sequential testing for champion/challenger
 
-Evidently does not have a statistical testing framework for A/B experiments. Most teams run champion/challenger experiments outside their monitoring tools entirely — which is fine. But the testing problem we're describing happens in that gap.
+Evidently does not have a statistical testing framework for A/B experiments. Most teams run champion/challenger experiments outside their monitoring tools entirely - which is fine. But the testing problem we're describing happens in that gap.
 
 UK motor teams typically check champion/challenger results monthly. Under a standard two-sample test, checking monthly for 12 months at p < 0.05 inflates the actual false positive rate to roughly 25%. In 10,000 Monte Carlo simulations under the null hypothesis (no real effect), a monthly-peeking fixed-horizon t-test produces spurious "significant" results one in four times.
 
@@ -169,7 +169,7 @@ The same benchmark that produces 25% FPR for the peeking t-test produces ~1% FPR
 
 ### 6. Anytime-valid calibration change detection
 
-Evidently monitors whether your model's output distribution has drifted. A subtler problem is whether the model's *calibration* has changed — not that predictions are at different levels, but that the correspondence between predicted probabilities and observed frequencies has broken down.
+Evidently monitors whether your model's output distribution has drifted. A subtler problem is whether the model's *calibration* has changed - not that predictions are at different levels, but that the correspondence between predicted probabilities and observed frequencies has broken down.
 
 The standard approach is Hosmer-Lemeshow, applied at each monitoring interval. Applied monthly, the false alarm rate is not 5%. With 12 monthly checks on a perfectly calibrated model, it's 46%. After two years: 71%. Teams that use this approach correctly learn to distrust their monitoring system, which is the worst possible outcome.
 
@@ -202,9 +202,9 @@ In the benchmark (500 calibrated observations, then 500 with 15% rate inflation)
 
 The gaps above are real. But Evidently has genuine strengths that `insurance-monitoring` doesn't try to replicate:
 
-**Dashboard and visualisation.** Evidently's HTML reports and monitoring dashboards are production-ready. `insurance-monitoring` produces Polars DataFrames and matplotlib figures — appropriate for governance artefacts and programmatic use, not for a self-serve monitoring portal.
+**Dashboard and visualisation.** Evidently's HTML reports and monitoring dashboards are production-ready. `insurance-monitoring` produces Polars DataFrames and matplotlib figures - appropriate for governance artefacts and programmatic use, not for a self-serve monitoring portal.
 
-**LLM and text monitoring.** Evidently has substantial tooling for large language model evaluation — semantic similarity, retrieval relevance, toxicity. Irrelevant for pricing model monitoring; valuable if your firm is deploying LLM-based underwriting tools alongside your GLM.
+**LLM and text monitoring.** Evidently has substantial tooling for large language model evaluation - semantic similarity, retrieval relevance, toxicity. Irrelevant for pricing model monitoring; valuable if your firm is deploying LLM-based underwriting tools alongside your GLM.
 
 **Ecosystem integration.** Evidently integrates directly with MLflow, Grafana, Prefect, and Airflow. `insurance-monitoring` integrates with Databricks (there's a ready-to-import monitoring notebook), but does not have first-class connectors to the broader MLOps stack.
 
@@ -284,19 +284,19 @@ What we'd resist is the assumption that Evidently covers the monitoring problem 
 ---
 
 **Related posts:**
-- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — detailed walkthrough of each monitoring layer with worked examples
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
-- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) — why most insurers never properly test their champion model
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - detailed walkthrough of each monitoring layer with worked examples
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) - why aggregate A/E is a lagging indicator for covariate shift
+- [Champion Model, Unchallenged](/2026/03/17/champion-model-unchallenged/) - why most insurers never properly test their champion model
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

@@ -11,7 +11,7 @@ UK home insurance is a bundle: fire, flood, subsidence, theft, escape of water, 
 
 It is also wrong.
 
-The additive model assumes the perils are independent — that flood risk and subsidence risk for the same property are unrelated. This assumption fails systematically in clay-soil postcodes, which cover much of the English Midlands, East Anglia, and parts of South East England. Clay soil shrinks when dry and swells when wet. A prolonged dry summer drives subsidence; the following winter's heavy rain drives surface flooding. The same household faces elevated risk on both perils at the same time, and the joint probability of a flood claim and a subsidence claim in the same policy year is materially higher than the product of the individual probabilities.
+The additive model assumes the perils are independent - that flood risk and subsidence risk for the same property are unrelated. This assumption fails systematically in clay-soil postcodes, which cover much of the English Midlands, East Anglia, and parts of South East England. Clay soil shrinks when dry and swells when wet. A prolonged dry summer drives subsidence; the following winter's heavy rain drives surface flooding. The same household faces elevated risk on both perils at the same time, and the joint probability of a flood claim and a subsidence claim in the same policy year is materially higher than the product of the individual probabilities.
 
 If you are using the additive model, you are underpricing that household. Aas et al. (2009) formulated the pair-copula construction (PCC) that allows you to do better. Yang et al. (2024) applied it to UK-style home data and found a 9% revenue lift from using PCC versus the independence assumption. That is not a rounding error.
 
@@ -29,14 +29,14 @@ Sklar's theorem says any multivariate joint distribution can be decomposed into 
 
 For UK home insurance, the relevant dependence structure is roughly:
 
-- **Flood and subsidence**: positively correlated in clay-soil areas (Kendall's tau ~ 0.3–0.5 in high-shrink postcodes). Both driven by soil moisture through different mechanisms — flood by excess water, subsidence by deficit.
+- **Flood and subsidence**: positively correlated in clay-soil areas (Kendall's tau ~ 0.3–0.5 in high-shrink postcodes). Both driven by soil moisture through different mechanisms - flood by excess water, subsidence by deficit.
 - **Storm and escape of water**: positively correlated (tau ~ 0.2–0.3). Wind-driven rain enters via roof damage, creating the conditions for internal water escape.
 - **Fire and flood**: near-independent (tau ~ 0.02). Different physical drivers; slightly negative correlation at the margin because flood-damaged properties are less likely to have the dry conditions that cause fires.
 - **Theft and any weather peril**: effectively independent (tau < 0.05).
 
-A vine copula captures all of these simultaneously. The vine decomposes the multivariate distribution into a cascade of bivariate copulas — one per pair of perils, arranged in a tree structure. Each bivariate copula can be a different family: a Gumbel copula for flood-storm (upper tail dependence, joint large losses), a Clayton for flood-subsidence (lower tail, simultaneous small-to-medium losses), a Gaussian for near-independent pairs. Bedford and Cooke (2002) showed that this vine decomposition is not an approximation: any multivariate distribution has such a representation, and with enough trees it is exact.
+A vine copula captures all of these simultaneously. The vine decomposes the multivariate distribution into a cascade of bivariate copulas - one per pair of perils, arranged in a tree structure. Each bivariate copula can be a different family: a Gumbel copula for flood-storm (upper tail dependence, joint large losses), a Clayton for flood-subsidence (lower tail, simultaneous small-to-medium losses), a Gaussian for near-independent pairs. Bedford and Cooke (2002) showed that this vine decomposition is not an approximation: any multivariate distribution has such a representation, and with enough trees it is exact.
 
-The practical gain is not from modelling the average case more precisely — the average-case additive premium is approximately right. The gain is from correctly pricing the tail: the policies where two or three correlated perils hit together. Those policies are the ones your additive model underprices relative to what a well-specified joint model would charge.
+The practical gain is not from modelling the average case more precisely - the average-case additive premium is approximately right. The gain is from correctly pricing the tail: the policies where two or three correlated perils hit together. Those policies are the ones your additive model underprices relative to what a well-specified joint model would charge.
 
 ---
 
@@ -59,9 +59,9 @@ peril_vine.fit(losses=losses_df, exposure=exposure_series)
 
 The `fit()` call does three things:
 
-1. **PIT transform**: converts peril losses to uniform [0,1] pseudo-observations using `pyvinecopulib.to_pseudo_obs()`, rank-based by default. Exposure weights propagate through `FitControlsVinecop(weights=exposure_series.values)` — this is natively supported by pyvinecopulib 0.7+ and means short-tenure policies correctly contribute less to the dependence structure.
+1. **PIT transform**: converts peril losses to uniform [0,1] pseudo-observations using `pyvinecopulib.to_pseudo_obs()`, rank-based by default. Exposure weights propagate through `FitControlsVinecop(weights=exposure_series.values)` - this is natively supported by pyvinecopulib 0.7+ and means short-tenure policies correctly contribute less to the dependence structure.
 
-2. **Structure selection**: BIC-penalised maximum spanning tree at each vine level (Dißmann et al. 2013). The default truncation level is 3 — for 5–6 perils, the 4th and 5th trees add negligible dependence information while tripling the parameter count. You can override this.
+2. **Structure selection**: BIC-penalised maximum spanning tree at each vine level (Dißmann et al. 2013). The default truncation level is 3 - for 5–6 perils, the 4th and 5th trees add negligible dependence information while tripling the parameter count. You can override this.
 
 3. **Family selection**: pyvinecopulib tests each bivariate copula family (Gaussian, Student-t, Clayton, Gumbel, Frank, Joe) for each pair and selects by BIC. The Gumbel family captures upper tail dependence (both perils having large losses simultaneously); Clayton captures lower tail dependence. The final vine structure tells you which family governs each pair, which is itself diagnostic.
 
@@ -126,7 +126,7 @@ print(cond_loss)
 
 The implementation is accept-reject Monte Carlo: simulate from the joint copula, keep the samples where the flood uniform exceeds the threshold quantile, apply marginal inverse CDFs, compute the mean. This is computationally heavier than the closed-form D-vine approach (Kraus and Czado 2017), but it works for any vine structure without requiring the response to be a leaf node in tree 1.
 
-The `marginals_dict` specifies the marginal distributions per peril: `{"flood": scipy.stats.lognorm(s=1.2, scale=3400), ...}`. These should come from your GLM-fitted marginal severity models — ideally from [`insurance-severity`](https://github.com/burning-cost/insurance-severity), which fits spliced body/tail distributions with covariate-dependent thresholds. The correct statistical flow is: fit marginal GLMs per peril, compute GLM residuals, fit the vine to PIT-transformed residuals, then use the GLM predictions as the marginals for conditional pricing. The vine captures residual dependence after the systematic effects are removed.
+The `marginals_dict` specifies the marginal distributions per peril: `{"flood": scipy.stats.lognorm(s=1.2, scale=3400), ...}`. These should come from your GLM-fitted marginal severity models - ideally from [`insurance-severity`](https://github.com/burning-cost/insurance-severity), which fits spliced body/tail distributions with covariate-dependent thresholds. The correct statistical flow is: fit marginal GLMs per peril, compute GLM residuals, fit the vine to PIT-transformed residuals, then use the GLM predictions as the marginals for conditional pricing. The vine captures residual dependence after the systematic effects are removed.
 
 ---
 
@@ -156,7 +156,7 @@ print(result.summary())
 # Storm-EoW correlation drives 4.8% of the 99.5 VaR uplift
 ```
 
-The 18.2% VaR loading at 99.5% is the number that changes your cat XL purchasing decision. The independence assumption is not a conservative choice for aggregate PML — it is an optimistic one. If you are buying £30m xs £20m reinsurance based on a VaR estimated under independence, you are buying too little cover.
+The 18.2% VaR loading at 99.5% is the number that changes your cat XL purchasing decision. The independence assumption is not a conservative choice for aggregate PML - it is an optimistic one. If you are buying £30m xs £20m reinsurance based on a VaR estimated under independence, you are buying too little cover.
 
 The ABI confirmed in 2024 that flood-subsidence correlation is material and rising with climate change. As BGS updates its shrink-swell susceptibility maps and Flood Re's transition away from household flood subsidies approaches 2039, the case for standalone peril pricing with a credible dependence structure grows stronger every year.
 
@@ -184,7 +184,7 @@ For model governance purposes, the JSON envelope records which BIC-selected stru
 
 The intended workflow connects three libraries:
 
-1. **[`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic)** generates a synthetic portfolio preserving the joint distribution of policy features. It uses pyvinecopulib internally for the joint tabular distribution — but that vine models correlations between risk features (age, NCD, vehicle group), not peril losses.
+1. **[`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic)** generates a synthetic portfolio preserving the joint distribution of policy features. It uses pyvinecopulib internally for the joint tabular distribution - but that vine models correlations between risk features (age, NCD, vehicle group), not peril losses.
 
 2. **`insurance-copula`** then fits a separate vine to peril-level losses, conditioned on policy covariates. These are two different vines modelling two different dependence structures: feature space versus loss space.
 
@@ -213,13 +213,13 @@ pyvinecopulib 0.7.x wheels are available for x86_64 Linux, macOS, and Windows, b
 
 On Databricks, install pyvinecopulib with `--only-binary=:all:` after the kernel restart that `%pip install insurance-copula[vine]` triggers. Editable installs from `/tmp` do not survive kernel restarts; install from PyPI.
 
-The `trunc_lvl=3` default is deliberate. For six perils, a full vine uses five trees and fifteen pair-copulas. Trees 4 and 5 model conditional dependence given four conditioning variables — on typical insurance datasets of 50,000–500,000 policy-years, those parameters are estimated from a handful of observations each. BIC will often select independence (Gaussian with rho=0) for the higher trees anyway; `trunc_lvl=3` enforces this as a prior.
+The `trunc_lvl=3` default is deliberate. For six perils, a full vine uses five trees and fifteen pair-copulas. Trees 4 and 5 model conditional dependence given four conditioning variables - on typical insurance datasets of 50,000–500,000 policy-years, those parameters are estimated from a handful of observations each. BIC will often select independence (Gaussian with rho=0) for the higher trees anyway; `trunc_lvl=3` enforces this as a prior.
 
 ---
 
 ## Where the 9% comes from
 
-Yang et al. (2024, *Journal of Econometrics*) fitted a six-peril vine to UK residential property claim data and compared total technical premiums under PCC versus independence assumption. The 9% revenue lift is not a modelling artifact — it reflects genuine cross-subsidy that the additive model creates. High flood risk postcodes pay too little because their elevated subsidence risk (due to clay shrinkage) is not charged. Low flood risk, stable-soil postcodes pay too much.
+Yang et al. (2024, *Journal of Econometrics*) fitted a six-peril vine to UK residential property claim data and compared total technical premiums under PCC versus independence assumption. The 9% revenue lift is not a modelling artifact - it reflects genuine cross-subsidy that the additive model creates. High flood risk postcodes pay too little because their elevated subsidence risk (due to clay shrinkage) is not charged. Low flood risk, stable-soil postcodes pay too much.
 
 The ABI data supports this directionally: postcodes with high BGS shrink-swell susceptibility (classification H3/H4) have subsidence claim frequencies 2.8–4.2× the national average, and those same postcodes are disproportionately in flood-prone river corridors. The independence assumption forces you to price these separately when the underlying physics connects them.
 
@@ -227,20 +227,20 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ---
 
-**[insurance-copula on GitHub](https://github.com/burning-cost/insurance-copula)** — MIT-licensed, PyPI. 174 tests, 7 modules.
+**[insurance-copula on GitHub](https://github.com/burning-cost/insurance-copula)** - MIT-licensed, PyPI. 174 tests, 7 modules.
 
 ---
 
 ## See Also
 
-- [Spliced Severity Distributions: When One Distribution Isn't Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) — composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
-- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) — when the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
-- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow
+- [Spliced Severity Distributions: When One Distribution Isn't Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) - composite severity regression for marginal distributions per peril; use alongside insurance-copula to separate body/tail correctly before feeding into the vine
+- [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) - when the tail of an individual peril matters for Solvency II capital or reinsurance layer pricing, rather than for multi-peril joint pricing
+- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) - vine copula synthetic portfolio generation; the tabular-feature vine that precedes the peril-loss vine in the full workflow
 
 ---
 
 ## Related articles
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — modelling the full conditional distribution of a single peril rather than the joint distribution across perils
-- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) — per-segment TVaR estimation from a single-peril model; complements the vine copula approach for multi-peril portfolios
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — a related independence assumption that fails in NCD-heavy motor books; the Sarmanov copula for the two-part model rather than multi-peril dependence
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - modelling the full conditional distribution of a single peril rather than the joint distribution across perils
+- [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/) - per-segment TVaR estimation from a single-peril model; complements the vine copula approach for multi-peril portfolios
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) - a related independence assumption that fails in NCD-heavy motor books; the Sarmanov copula for the two-part model rather than multi-peril dependence

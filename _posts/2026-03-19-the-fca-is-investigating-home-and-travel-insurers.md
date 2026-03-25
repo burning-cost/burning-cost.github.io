@@ -9,7 +9,7 @@ canonical_url: "/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/"
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
 ---
 
-Following the Which? super-complaint on home and travel insurance, the FCA has indicated — according to market commentary and its own published supervisory communications — that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
+Following the Which? super-complaint on home and travel insurance, the FCA has indicated - according to market commentary and its own published supervisory communications - that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
 
 This is not a hypothetical compliance risk.
 

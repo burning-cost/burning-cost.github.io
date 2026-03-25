@@ -159,7 +159,7 @@ shape: (5, 5)
 └────────────────────┴──────────┴───────────────────┴────────────────────┴───────┘
 ```
 
-The proxy R-squared for `postcode_district` is 0.38 — a CatBoost model trained on postcode alone explains 38% of the variance in the ethnicity proportion proxy. That is not marginal. Occupation at 0.11 sits just above the amber threshold (the library flags anything above 0.10). Age and NCD are not significant proxies here.
+The proxy R-squared for `postcode_district` is 0.38 - a CatBoost model trained on postcode alone explains 38% of the variance in the ethnicity proportion proxy. That is not marginal. Occupation at 0.11 sits just above the amber threshold (the library flags anything above 0.10). Age and NCD are not significant proxies here.
 
 This table is your evidence base. If you can show the regulator that occupation had proxy R-squared of 0.11 and that you investigated it, that is a substantially better position than having no record of the analysis.
 
@@ -186,15 +186,15 @@ Group means: {'0': 0.0412, '1': 0.0540}
 Max calibration disparity from A/E=1: 0.0841 [GREEN]
 ```
 
-The disparate impact ratio compares mean predicted frequency between groups. A ratio below 0.80 is flagged amber — not because the US four-fifths rule applies in UK law (it does not), but as a diagnostic threshold. The calibration check is separately green: the model is not systematically miscalibrated within groups, which means the disparity in mean predictions largely reflects genuine risk variation rather than model error.
+The disparate impact ratio compares mean predicted frequency between groups. A ratio below 0.80 is flagged amber - not because the US four-fifths rule applies in UK law (it does not), but as a diagnostic threshold. The calibration check is separately green: the model is not systematically miscalibrated within groups, which means the disparity in mean predictions largely reflects genuine risk variation rather than model error.
 
-The key discipline here: a disparate impact ratio of 0.76 is not automatically discrimination. Risk genuinely varies by postcode. The question is how much of the disparity is genuine risk variation versus demographic correlation. Use the discrimination-free pricing step in `insurance-fairness.optimal_transport` to decompose it — that library takes these audit findings and produces corrected premiums.
+The key discipline here: a disparate impact ratio of 0.76 is not automatically discrimination. Risk genuinely varies by postcode. The question is how much of the disparity is genuine risk variation versus demographic correlation. Use the discrimination-free pricing step in `insurance-fairness.optimal_transport` to decompose it - that library takes these audit findings and produces corrected premiums.
 
 ---
 
 ## Step 3: producing the audit report
 
-The library outputs structured data rather than a PDF — the right format depends on your governance infrastructure:
+The library outputs structured data rather than a PDF - the right format depends on your governance infrastructure:
 
 ```python
 import json
@@ -229,7 +229,7 @@ This is true, in theory. In practice, the magnitude is smaller than the theory i
 
 First, the genuine risk information in postcode - urban density, road quality, theft rates, traffic patterns - is not removed. Only the component of the postcode effect that is not explained by risk-relevant features but is explained by demographic composition gets adjusted. If your model already includes urban density, road type, and crime statistics, the residual postcode-ethnicity correlation being removed is smaller.
 
-Second, the calibration check in the audit already shows you whether the model is miscalibrated within groups. If the max calibration disparity is 0.08 (as in the example above), the model's predictions are well-calibrated for each group — the pricing disparity reflects genuine risk, not systematic mispricing. That is the output that justifies the analysis to a regulator.
+Second, the calibration check in the audit already shows you whether the model is miscalibrated within groups. If the max calibration disparity is 0.08 (as in the example above), the model's predictions are well-calibrated for each group - the pricing disparity reflects genuine risk, not systematic mispricing. That is the output that justifies the analysis to a regulator.
 
 The library's `calibration_by_group()` function can be called independently on a holdout period to verify that calibration holds out-of-sample:
 
@@ -247,7 +247,7 @@ cal_holdout = calibration_by_group(
 print(f"Holdout max calibration disparity: {cal_holdout.max_disparity:.4f} [{cal_holdout.rag.upper()}]")
 ```
 
-When the proxy discrimination component is genuinely a proxy and not causal, the discrimination-free adjustment should not materially damage predictive accuracy. If calibration deteriorates sharply after the adjustment, that is information: postcode's predictive power is not purely proxy. You should investigate what genuine causal channel postcode is capturing that your other features are not — and consider adding those features (urban density index, road quality scores, telematics) to reduce the proxy correlation at source.
+When the proxy discrimination component is genuinely a proxy and not causal, the discrimination-free adjustment should not materially damage predictive accuracy. If calibration deteriorates sharply after the adjustment, that is information: postcode's predictive power is not purely proxy. You should investigate what genuine causal channel postcode is capturing that your other features are not - and consider adding those features (urban density index, road quality scores, telematics) to reduce the proxy correlation at source.
 
 ---
 
@@ -277,7 +277,7 @@ Three things to be honest about.
 
 **The protected proxy is imperfect.** We use postcode-level ONS ethnicity proportions as a proxy for individual protected characteristics because insurers do not collect individual-level ethnicity data. This means our estimates of p(S | X) are noisy, particularly in mixed postcodes. The proxy audit will underestimate proxy correlation where demographic mixing is high. That is a conservative bias - actual proxy discrimination may be higher than measured.
 
-**Multiple protected characteristics.** This post focuses on ethnicity because it has the most prominent evidence base (the Citizens Advice analysis) and the clearest postcode proxy. The same methods apply to disability, religion, and sex — pass multiple column names to `protected_cols` and `FairnessAudit` runs them all. But building the proxies requires different data sources and is harder. The library supports custom proxy columns: if you have a disability proxy from your distribution data, you can use it.
+**Multiple protected characteristics.** This post focuses on ethnicity because it has the most prominent evidence base (the Citizens Advice analysis) and the clearest postcode proxy. The same methods apply to disability, religion, and sex - pass multiple column names to `protected_cols` and `FairnessAudit` runs them all. But building the proxies requires different data sources and is harder. The library supports custom proxy columns: if you have a disability proxy from your distribution data, you can use it.
 
 **The LRTW framework assumes your model is predictively correct.** The audit checks calibration within groups, but if training data is sparse for some demographic groups, the model may be miscalibrated within those groups in ways the decile analysis does not catch. Both proxy discrimination and within-group miscalibration are worth solving; they require different tools.
 
@@ -293,7 +293,7 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-f
 
 Start with a `FairnessAudit` on your current production model. If `report.overall_rag` comes back green and the flagged_factors list is empty, document that and file it. If the overall status is amber or red, you need to understand the disparity decomposition before your next Consumer Duty review.
 
-The fairness-accuracy trade-off is real. But "we did not audit this because we were worried about our loss ratio" is not a position you can sustain with the regulator. The Citizens Advice analysis is public. The FCA's expectations are documented. The question is not whether you will address this — it is whether you address it now or after a letter arrives from Stratford.
+The fairness-accuracy trade-off is real. But "we did not audit this because we were worried about our loss ratio" is not a position you can sustain with the regulator. The Citizens Advice analysis is public. The FCA's expectations are documented. The question is not whether you will address this - it is whether you address it now or after a letter arrives from Stratford.
 
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/)
 - [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/)

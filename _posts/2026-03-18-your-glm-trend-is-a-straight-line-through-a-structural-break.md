@@ -9,27 +9,27 @@ canonical_url: "/2026/03/18/your-glm-trend-is-a-straight-line-through-a-structur
 tags: [changepoint, bocpd, pelt, bayesian, structural-break, trend, rate-indication, insurance-dynamics, python, uk-motor, ogden, whiplash, inflation, actuarial]
 ---
 
-There is a standard piece of actuarial work that almost every UK pricing team does every year: fit a development trend to loss experience, project it forward, and use that projection in the rate indication. The trend is usually log-linear — a straight line on a log scale. Sometimes it is a simple year-over-year link ratio. Occasionally someone is more elaborate and fits a regression on accident quarter or underwriting year. But the shape is always the same: a single line, fitted across all available history, averaged over whatever happened during that history.
+There is a standard piece of actuarial work that almost every UK pricing team does every year: fit a development trend to loss experience, project it forward, and use that projection in the rate indication. The trend is usually log-linear - a straight line on a log scale. Sometimes it is a simple year-over-year link ratio. Occasionally someone is more elaborate and fits a regression on accident quarter or underwriting year. But the shape is always the same: a single line, fitted across all available history, averaged over whatever happened during that history.
 
-The problem is that insurance loss experience does not generate straight lines. It generates regimes. There is a level, and then something happens — a court ruling, a legislative reform, a macro cost shock — and the level shifts. You now have two regimes. Fitting a single log-linear trend across both regimes does not give you the average of two trends; it gives you a line that is wrong in both directions. In the pre-break period, the line is too steep. In the post-break period, it underestimates the new level. Your projected rate indication is based on a number that does not describe either the world you came from or the world you are pricing into.
+The problem is that insurance loss experience does not generate straight lines. It generates regimes. There is a level, and then something happens - a court ruling, a legislative reform, a macro cost shock - and the level shifts. You now have two regimes. Fitting a single log-linear trend across both regimes does not give you the average of two trends; it gives you a line that is wrong in both directions. In the pre-break period, the line is too steep. In the post-break period, it underestimates the new level. Your projected rate indication is based on a number that does not describe either the world you came from or the world you are pricing into.
 
-UK motor is a particularly clear example because the breaks are documented. The Ogden discount rate dropped from 2.5% to -0.75% in March 2017: immediate step-up in bodily injury reserves for every insurer on the market. The Civil Liability Act revised it to -0.25% in August 2019: partial reversal, second break. The whiplash reforms in May 2021 restructured small claims PI, reducing PSLA frequency materially. Then in 2022 and into 2023, parts and labour inflation ran at 15-20% year-on-year — a severity step-change driven by supply chain disruption that did not unwind quickly. Four structural breaks in seven years. A single log-linear trend across that period is not a simplification; it is a fiction.
+UK motor is a particularly clear example because the breaks are documented. The Ogden discount rate dropped from 2.5% to -0.75% in March 2017: immediate step-up in bodily injury reserves for every insurer on the market. The Civil Liability Act revised it to -0.25% in August 2019: partial reversal, second break. The whiplash reforms in May 2021 restructured small claims PI, reducing PSLA frequency materially. Then in 2022 and into 2023, parts and labour inflation ran at 15-20% year-on-year - a severity step-change driven by supply chain disruption that did not unwind quickly. Four structural breaks in seven years. A single log-linear trend across that period is not a simplification; it is a fiction.
 
 ---
 
 ## What BOCPD does
 
-Bayesian Online Changepoint Detection — BOCPD, following Adams and MacKay (2007) — addresses this directly. The algorithm maintains a probability distribution over the current "run length": how many periods have elapsed since the last structural break. Each period, it updates this distribution using Bayes' rule. The predictive distribution for the next observation is a mixture over run lengths, and the posterior probability of a break at each period is a direct output of the algorithm.
+Bayesian Online Changepoint Detection - BOCPD, following Adams and MacKay (2007) - addresses this directly. The algorithm maintains a probability distribution over the current "run length": how many periods have elapsed since the last structural break. Each period, it updates this distribution using Bayes' rule. The predictive distribution for the next observation is a mixture over run lengths, and the posterior probability of a break at each period is a direct output of the algorithm.
 
 For insurance claim frequency specifically, the Poisson-Gamma conjugate pair makes the algorithm exact. No MCMC, no approximation. Claim counts are Poisson with rate λ; the prior on λ is Gamma(α, β); the conjugate update is closed-form; the predictive is Negative Binomial. The key extension for insurance data is exposure weighting: each period has a different number of earned vehicle-years (or policy-years, or earned premium), and the algorithm accounts for this correctly. A period with 800 earned vehicle-years tells you less per claim than a period with 1,200.
 
-For retrospective analysis — locating historical breaks and measuring their size — PELT (Pruned Exact Linear Time, Killick et al. 2012) gives you break locations with bootstrap confidence intervals. BOCPD runs forward in time; PELT finds the globally optimal segmentation of a historical series. Both are implemented in `insurance-dynamics`.
+For retrospective analysis - locating historical breaks and measuring their size - PELT (Pruned Exact Linear Time, Killick et al. 2012) gives you break locations with bootstrap confidence intervals. BOCPD runs forward in time; PELT finds the globally optimal segmentation of a historical series. Both are implemented in `insurance-dynamics`.
 
 ---
 
 ## A worked example: UK motor frequency 2017–2025
 
-The setup is straightforward. We have monthly claim counts and exposures for a UK motor book covering the period from January 2017 through December 2025 — 108 months. The series contains four known structural events: Ogden March 2017, whiplash reform May 2021, and two severity-related inflation breaks. We use `FrequencyChangeDetector` from `insurance_dynamics.changepoint`, with the UK event calendar enabled to give the algorithm informative priors around known event dates.
+The setup is straightforward. We have monthly claim counts and exposures for a UK motor book covering the period from January 2017 through December 2025 - 108 months. The series contains four known structural events: Ogden March 2017, whiplash reform May 2021, and two severity-related inflation breaks. We use `FrequencyChangeDetector` from `insurance_dynamics.changepoint`, with the UK event calendar enabled to give the algorithm informative priors around known event dates.
 
 ```python
 import numpy as np
@@ -75,13 +75,13 @@ Breaks detected: 1
   DetectedBreak(period=2021-05-31, prob=0.847)
 ```
 
-The algorithm finds the whiplash reform break at May 2021 with posterior probability 0.847. The UK event calendar — which contains a hazard multiplier of 40x for the whiplash reform date — helped the algorithm focus; without it, on 108 months of data with a moderate-size break, detection probability would be lower. This is the right behaviour: you are not forcing a break, you are telling the algorithm that you know something about the world and it should incorporate that knowledge. If the data showed no change around May 2021, the posterior would remain low regardless of the event prior.
+The algorithm finds the whiplash reform break at May 2021 with posterior probability 0.847. The UK event calendar - which contains a hazard multiplier of 40x for the whiplash reform date - helped the algorithm focus; without it, on 108 months of data with a moderate-size break, detection probability would be lower. This is the right behaviour: you are not forcing a break, you are telling the algorithm that you know something about the world and it should incorporate that knowledge. If the data showed no change around May 2021, the posterior would remain low regardless of the event prior.
 
 ---
 
 ## Retrospective break finding with PELT
 
-For historical review of a longer series — say, when building a new pricing model — `RetrospectiveBreakFinder` gives you break locations with 95% bootstrap confidence intervals.
+For historical review of a longer series - say, when building a new pricing model - `RetrospectiveBreakFinder` gives you break locations with 95% bootstrap confidence intervals.
 
 ```python
 # Compute monthly observed frequency for the PELT input
@@ -106,7 +106,7 @@ PELT found 1 break(s)
   BreakInterval(break=2021-05-31, CI=[2021-02-28, 2021-08-30])
 ```
 
-The point estimate is month 52, with a 95% bootstrap CI spanning roughly three months either side. That is a tight interval on a single frequency break of this magnitude (0.082 to 0.064 annual, about 22%). For smaller breaks — Ogden's severity effect, or the 2019 revision — the CI would be wider.
+The point estimate is month 52, with a 95% bootstrap CI spanning roughly three months either side. That is a tight interval on a single frequency break of this magnitude (0.082 to 0.064 annual, about 22%). For smaller breaks - Ogden's severity effect, or the 2019 revision - the CI would be wider.
 
 ---
 
@@ -116,7 +116,7 @@ Now consider what happens when you build your frequency trend using five years o
 
 The conclusion is wrong. Frequency is not trending down. It was higher in one regime and lower in another. The post-reform level has been stable. If you project the spurious downward trend forward, you are expecting continued improvement that will not materialise. You will under-rate.
 
-The correct approach: identify the break, fit separate regime estimates, use the post-break regime level as your starting point for projection. If there is no evidence of a trend within the post-break regime, your trend loading is zero or informed by a genuine trend signal — not by the step-change you should have absorbed into the base rate.
+The correct approach: identify the break, fit separate regime estimates, use the post-break regime level as your starting point for projection. If there is no evidence of a trend within the post-break regime, your trend loading is zero or informed by a genuine trend signal - not by the step-change you should have absorbed into the base rate.
 
 ```python
 # The naive approach: fit a trend across the full post-2020 series
@@ -152,13 +152,13 @@ Within-regime trend: 0.004 log-points per year
 Within-regime 3-year projection factor: 1.013
 ```
 
-The naive trend gives a three-year projection factor of 0.76 — frequency falls by 24% from where you stand today. The changepoint-aware analysis gives a factor of 1.01 — essentially flat, with no evidence of a trend within the current regime. The rate indication difference between these two starting points is large enough to matter commercially.
+The naive trend gives a three-year projection factor of 0.76 - frequency falls by 24% from where you stand today. The changepoint-aware analysis gives a factor of 1.01 - essentially flat, with no evidence of a trend within the current regime. The rate indication difference between these two starting points is large enough to matter commercially.
 
 ---
 
 ## The severity side
 
-Everything above applies equally to severity. The March 2017 Ogden change (2.5% to -0.75%) was a sudden and permanent step-up in bodily injury reserves. The 2019 revision (-0.75% to -0.25%) was a partial reversal. The 2024 increase to +0.5% (effective January 2025) was a further move. None of these are trend — they are discrete structural shifts in the legal framework governing future-loss awards. A severity trend fitted across 2015–2024 that ignores these three break points is averaging three different Ogden regimes into a single slope. The projection will be wrong.
+Everything above applies equally to severity. The March 2017 Ogden change (2.5% to -0.75%) was a sudden and permanent step-up in bodily injury reserves. The 2019 revision (-0.75% to -0.25%) was a partial reversal. The 2024 increase to +0.5% (effective January 2025) was a further move. None of these are trend - they are discrete structural shifts in the legal framework governing future-loss awards. A severity trend fitted across 2015–2024 that ignores these three break points is averaging three different Ogden regimes into a single slope. The projection will be wrong.
 
 `SeverityChangeDetector` handles this directly. It uses a Normal-Gamma conjugate on log-severity, and the UK event calendar includes all three Ogden dates with hard confidence and high hazard multipliers. The analysis is identical to the frequency case: fit the detector, identify the break points, work within the current regime for your trend projection.
 
@@ -178,7 +178,7 @@ The practical workflow:
 
 5. For the rate indication, carry forward the current regime level, not the average across regimes.
 
-The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. Run this monthly. It is not a replacement for the analytical step above — you still need to interpret what the break means — but it ensures you are not missing a new regime shift between annual pricing reviews.
+The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. Run this monthly. It is not a replacement for the analytical step above - you still need to interpret what the break means - but it ensures you are not missing a new regime shift between annual pricing reviews.
 
 ---
 
@@ -187,6 +187,6 @@ The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both 
 ---
 
 **Related posts:**
-- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) — the GAS side of insurance-dynamics: continuous tracking of smooth parameter drift, complementary to discrete changepoint detection
-- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — monitoring framework for detecting when a model's input distribution has shifted, upstream of the loss ratio signal
-- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2026/03/17/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) — another case where averaging across time is wrong: static credibility weights all years equally, which fails when the risk has genuinely moved
+- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) - the GAS side of insurance-dynamics: continuous tracking of smooth parameter drift, complementary to discrete changepoint detection
+- [Your Model Drift Alert Is Too Late](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - monitoring framework for detecting when a model's input distribution has shifted, upstream of the loss ratio signal
+- [Bühlmann-Straub Treats Last Year the Same as Five Years Ago](/2026/03/17/buhlmann-straub-treats-last-year-the-same-as-five-years-ago/) - another case where averaging across time is wrong: static credibility weights all years equally, which fails when the risk has genuinely moved

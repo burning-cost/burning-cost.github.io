@@ -7,11 +7,11 @@ tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, 
 description: "Regression Discontinuity Design tests if UK motor risk drops at age 25. Exposure-weighted Poisson outcomes, geographic boundaries, Consumer Duty output."
 ---
 
-UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm — and what pricing teams almost never formally test — is whether the observed claims risk drops by the same factor at age 25, or whether the pricing premium far exceeds the causal risk change.
+UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm - and what pricing teams almost never formally test - is whether the observed claims risk drops by the same factor at age 25, or whether the pricing premium far exceeds the causal risk change.
 
 The distinction matters. If your tariff relativity at the age-25 boundary is 3.0 but the causal rate ratio is 1.6, you are overcharging drivers just below 25 relative to their actual risk contribution. That is a Consumer Duty exposure. But you do not know whether you are in that position unless you have run the test.
 
-[`insurance-rdd`](https://github.com/burning-cost/insurance-rdd) provides that test. It brings Regression Discontinuity Design — the standard econometric method for causal identification at thresholds — to Python for the first time with insurance-specific defaults: exposure weighting, Poisson and Gamma outcome families, geographic territory boundary analysis, and FCA Consumer Duty formatted output.
+[`insurance-rdd`](https://github.com/burning-cost/insurance-rdd) provides that test. It brings Regression Discontinuity Design - the standard econometric method for causal identification at thresholds - to Python for the first time with insurance-specific defaults: exposure weighting, Poisson and Gamma outcome families, geographic territory boundary analysis, and FCA Consumer Duty formatted output.
 
 ```bash
 uv add insurance-rdd
@@ -23,9 +23,9 @@ uv add insurance-rdd
 
 Regression Discontinuity Design exploits a simple fact: if treatment assignment switches at a threshold and nothing else changes discontinuously at that exact point, then any discontinuity in outcomes must be caused by the threshold crossing.
 
-For the age-25 boundary: driver age is externally verified by DVLA records and cannot be manipulated. The premium treatment switches at the cutoff. If claim frequency drops at age 25 — after controlling for everything else that varies smoothly with age — that drop is causal. If it does not drop, or drops by less than the premium, the pricing relativity is not justified by observed risk.
+For the age-25 boundary: driver age is externally verified by DVLA records and cannot be manipulated. The premium treatment switches at the cutoff. If claim frequency drops at age 25 - after controlling for everything else that varies smoothly with age - that drop is causal. If it does not drop, or drops by less than the premium, the pricing relativity is not justified by observed risk.
 
-The formal assumption is continuity of potential outcomes at the cutoff: absent the threshold treatment, the outcome trend would be smooth through the cutoff. For driver age, this is highly credible. For NCD level, where policyholders actively suppress claims near the maximum step boundary, it requires explicit caveats — and the library handles both cases.
+The formal assumption is continuity of potential outcomes at the cutoff: absent the threshold treatment, the outcome trend would be smooth through the cutoff. For driver age, this is highly credible. For NCD level, where policyholders actively suppress claims near the maximum step boundary, it requires explicit caveats - and the library handles both cases.
 
 The estimate is a Local Average Treatment Effect: the causal effect at the cutoff, for drivers right at the threshold. It is not an average over the full portfolio. That is a feature, not a limitation. The cutoff boundary is precisely where your tariff decision is most contestable.
 
@@ -33,7 +33,7 @@ The estimate is a Local Average Treatment Effect: the causal effect at the cutof
 
 ## The Python gap
 
-The core estimation methodology for RDD — the Cattaneo-Calonico-Titiunik (CCT) local polynomial estimator with bias-corrected robust inference — already exists in Python via the `rdrobust` package. We do not reimplement it.
+The core estimation methodology for RDD - the Cattaneo-Calonico-Titiunik (CCT) local polynomial estimator with bias-corrected robust inference - already exists in Python via the `rdrobust` package. We do not reimplement it.
 
 What `rdrobust` does not provide:
 
@@ -64,7 +64,7 @@ result = rd.fit()
 print(result.summary())
 ```
 
-The `AGE_25` preset does several things automatically. It sets a donut radius of 3 months — excluding observations between 297 and 303 months of age — because age reported in integer years creates a spike in the density at exactly 300 months that would otherwise distort the discontinuity estimate. It recommends bandwidth selection via `mserd` (mean-squared error optimal, separate bandwidths each side). And it carries the FCA context string for use in regulatory output.
+The `AGE_25` preset does several things automatically. It sets a donut radius of 3 months - excluding observations between 297 and 303 months of age - because age reported in integer years creates a spike in the density at exactly 300 months that would otherwise distort the discontinuity estimate. It recommends bandwidth selection via `mserd` (mean-squared error optimal, separate bandwidths each side). And it carries the FCA context string for use in regulatory output.
 
 The result gives you the log rate ratio `tau_bc` (bias-corrected), standard error, 95% confidence interval, p-value, and effective sample sizes on each side. The output you actually care about is one method call away:
 
@@ -73,13 +73,13 @@ rr = result.rate_ratio()
 # {'rate_ratio': 0.71, 'ci_lower': 0.58, 'ci_upper': 0.87, 'tau': -0.34, ...}
 ```
 
-A rate ratio of 0.71 means claim frequency drops by 29% at age 25. If your tariff relativity at the same boundary implies a 67% premium reduction — i.e., you charge twice as much below 25 as above — you have a gap to explain.
+A rate ratio of 0.71 means claim frequency drops by 29% at age 25. If your tariff relativity at the same boundary implies a 67% premium reduction - i.e., you charge twice as much below 25 as above - you have a gap to explain.
 
 ---
 
 ## Methodologically correct Poisson outcomes
 
-`InsuranceRD` with `outcome_type='poisson'` uses rdrobust's weighted OLS as an approximation. For sparse data near the threshold — common for age-specific cells at the boundary — the Gaussian assumption breaks down. `PoissonRD` implements the methodologically correct version: local polynomial Poisson regression with log-exposure offset.
+`InsuranceRD` with `outcome_type='poisson'` uses rdrobust's weighted OLS as an approximation. For sparse data near the threshold - common for age-specific cells at the boundary - the Gaussian assumption breaks down. `PoissonRD` implements the methodologically correct version: local polynomial Poisson regression with log-exposure offset.
 
 ```python
 from insurance_rdd import PoissonRD
@@ -97,7 +97,7 @@ result = rd.fit()
 print(result.rate_ratio())
 ```
 
-The local polynomial here is the Poisson score function — fitted separately on each side of the cutoff, with a kernel-weighted likelihood objective via `scipy.optimize`. The treatment effect `tau` is the difference in intercepts on the log scale; `exp(tau)` is the rate ratio at the boundary. This maps directly to the log-link GLM relativity framework pricing actuaries already use. The output is a number you can put next to your tariff factor on the same scale.
+The local polynomial here is the Poisson score function - fitted separately on each side of the cutoff, with a kernel-weighted likelihood objective via `scipy.optimize`. The treatment effect `tau` is the difference in intercepts on the log scale; `exp(tau)` is the rate ratio at the boundary. This maps directly to the log-link GLM relativity framework pricing actuaries already use. The output is a number you can put next to your tariff factor on the same scale.
 
 Bootstrap CIs are used throughout in v0.1.0. The analytical bias correction for non-Gaussian local regression requires the full CCT derivation adapted to the GLM score, which is non-trivial and is deferred to v0.2.
 
@@ -188,7 +188,7 @@ Our prior is that NCD level has weak causal effects on subsequent claims frequen
 
 The novel piece. No Python library implements geographic RDD. SpatialRDD does it in R (Lehner 2020, following Keele and Titiunik 2015), and there is nothing equivalent on PyPI.
 
-The methodology converts a 2D spatial problem into a 1D RDD by computing signed distance from each policy to the territory boundary: negative for territory A, positive for territory B. The cutoff is distance zero — the boundary itself. Policies right on either side of the boundary are otherwise similar; any discontinuity in claims frequency at the boundary is attributable to territory assignment rather than the gradual spatial variation in risk that exists further from the line.
+The methodology converts a 2D spatial problem into a 1D RDD by computing signed distance from each policy to the territory boundary: negative for territory A, positive for territory B. The cutoff is distance zero - the boundary itself. Policies right on either side of the boundary are otherwise similar; any discontinuity in claims frequency at the boundary is attributable to territory assignment rather than the gradual spatial variation in risk that exists further from the line.
 
 ```python
 from insurance_rdd import GeographicRD
@@ -208,7 +208,7 @@ geo_result = geo_rd.fit()
 print(geo_result.summary())
 ```
 
-The `boundary_file` is any geopandas-readable format — GeoJSON, Shapefile, WKT. The library computes geodetic distances from each policy centroid to the nearest boundary point, assigns sign based on territory membership, and then runs standard RDD on those distances. Border segment fixed effects divide the boundary into 10 segments (configurable) and add segment indicators as covariates, controlling for the fact that different parts of a boundary line may cross rivers, motorways, or urban-rural transitions that correlate with risk independently of territory assignment.
+The `boundary_file` is any geopandas-readable format - GeoJSON, Shapefile, WKT. The library computes geodetic distances from each policy centroid to the nearest boundary point, assigns sign based on territory membership, and then runs standard RDD on those distances. Border segment fixed effects divide the boundary into 10 segments (configurable) and add segment indicators as covariates, controlling for the fact that different parts of a boundary line may cross rivers, motorways, or urban-rural transitions that correlate with risk independently of territory assignment.
 
 The result tells you whether, for policies right at the boundary, being in territory B rather than territory A causes a measurable claims difference. If it does not, and your territory factors are substantially different either side of the line, that is a pricing question worth answering before the FCA asks it.
 
@@ -248,7 +248,7 @@ report_data = ThresholdReportData(
 print(ThresholdReport(report_data).markdown())
 ```
 
-The output is a Markdown section with the causal rate ratio, the tariff relativity, and a verdict: CONSISTENT, OVER-PRICED, or UNDER-PRICED. OVER-PRICED is flagged as a potential Consumer Duty concern. The report includes the formal statistical framing — bandwidth, effective sample size, CCT bias correction — that you would need in an actuarial sign-off document.
+The output is a Markdown section with the causal rate ratio, the tariff relativity, and a verdict: CONSISTENT, OVER-PRICED, or UNDER-PRICED. OVER-PRICED is flagged as a potential Consumer Duty concern. The report includes the formal statistical framing - bandwidth, effective sample size, CCT bias correction - that you would need in an actuarial sign-off document.
 
 We are explicit about what this is not: it is not a full actuarial review of a rating factor. It is one causal diagnostic, local to the threshold, for policies right at the boundary. A pricing team would combine this with portfolio-wide GLM analysis, market benchmarking, and claims data review. What RDD uniquely provides is the causal identification. A GLM relativity alone cannot claim that.
 
@@ -258,13 +258,13 @@ We are explicit about what this is not: it is not a full actuarial review of a r
 
 The insurance-rdd library addresses a specific question: at a rating threshold where your tariff changes discontinuously, does the underlying claims risk change by the same amount? This is a question pricing teams should be asking routinely and almost never do formally.
 
-The complementary tool is [`insurance-bunching`](https://github.com/burning-cost/insurance-bunching) — which asks not whether the threshold causes a risk change, but whether policyholders are bunching to game it. Bunching says: is the distribution of the running variable distorted at the threshold? RDD says: does crossing the threshold cause the outcome to change? The two are different questions with different implications. If you see bunching at NCD step 4 but no causal claims effect at that step, policyholders are optimising premium rather than risk. That is a different regulatory exposure than if bunching and risk both jump at the same point.
+The complementary tool is [`insurance-bunching`](https://github.com/burning-cost/insurance-bunching) - which asks not whether the threshold causes a risk change, but whether policyholders are bunching to game it. Bunching says: is the distribution of the running variable distorted at the threshold? RDD says: does crossing the threshold cause the outcome to change? The two are different questions with different implications. If you see bunching at NCD step 4 but no causal claims effect at that step, policyholders are optimising premium rather than risk. That is a different regulatory exposure than if bunching and risk both jump at the same point.
 
 Run them together on the same threshold.
 
 ---
 
-**[insurance-rdd on GitHub](https://github.com/burning-cost/insurance-rdd)** — MIT-licensed, PyPI. The first Python implementation of geographic RDD and the first RDD library with insurance-specific exposure, Poisson, and FCA Consumer Duty output.
+**[insurance-rdd on GitHub](https://github.com/burning-cost/insurance-rdd)** - MIT-licensed, PyPI. The first Python implementation of geographic RDD and the first RDD library with insurance-specific exposure, Poisson, and FCA Consumer Duty output.
 
 ---
 
@@ -272,6 +272,6 @@ Run them together on the same threshold.
 ---
 
 **Related reading:**
-- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) — the broader confounding problem in GLM rating factors; RDD is the tool when there is a sharp threshold in the running variable
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) — DML as the alternative causal method when no threshold discontinuity exists
-- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — SDID for evaluating rate changes when RDD is not applicable; the prospective complement to RDD's retrospective diagnosis
+- [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) - the broader confounding problem in GLM rating factors; RDD is the tool when there is a sharp threshold in the running variable
+- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) - DML as the alternative causal method when no threshold discontinuity exists
+- [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) - SDID for evaluating rate changes when RDD is not applicable; the prospective complement to RDD's retrospective diagnosis

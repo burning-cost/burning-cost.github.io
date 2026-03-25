@@ -93,7 +93,7 @@ print(tvar_result.values.describe())
 loading_over_var = tvar_result.loading_over_var  # TVaR - VaR per risk
 ```
 
-`per_risk_tvar` approximates TVaR by taking the mean of quantile predictions at levels strictly above alpha. The approximation improves with more quantile levels above alpha — for TVaR_0.95, you want q_0.95, q_0.975, q_0.99, q_0.995 in the model. For TVaR_0.99, include q_0.99, q_0.995.
+`per_risk_tvar` approximates TVaR by taking the mean of quantile predictions at levels strictly above alpha. The approximation improves with more quantile levels above alpha - for TVaR_0.95, you want q_0.95, q_0.975, q_0.99, q_0.995 in the model. For TVaR_0.99, include q_0.99, q_0.995.
 
 The additive large loss loading against a separate Tweedie mean model:
 
@@ -138,7 +138,7 @@ ilf_values = ilf(
 # Value of 2.3 means the £500k layer costs 2.3x the £100k rate
 ```
 
-The ILF is computed by numerically integrating the survival function derived from the quantile predictions: E[min(Y, L)] = ∫₀ᴸ S(x) dx. The integration uses 200 quadrature points by default, which is accurate for smooth exceedance curves. The survival function is interpolated from the quantile predictions — accuracy in the upper tail depends on having high quantile levels (q_0.99 or higher) in the model.
+The ILF is computed by numerically integrating the survival function derived from the quantile predictions: E[min(Y, L)] = ∫₀ᴸ S(x) dx. The integration uses 200 quadrature points by default, which is accurate for smooth exceedance curves. The survival function is interpolated from the quantile predictions - accuracy in the upper tail depends on having high quantile levels (q_0.99 or higher) in the model.
 
 For motor bodily injury, where claims can run into millions and the tail beyond £500k is material, fitting expectile mode and including q_0.995 is the right approach. The expectile provides a better-estimated upper tail than the quantile for heavy-tailed lines (more on this below).
 
@@ -230,7 +230,7 @@ The library does not handle the frequency/severity split automatically; that dec
 
 `QuantileGBM` output feeds directly into [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) for Conformalized Quantile Regression (CQR). CQR takes the raw quantile predictions from the GBM and applies a data-driven calibration step that provides distribution-free coverage guarantees on the adjusted intervals.
 
-If your calibration report shows systematic undercoverage, CQR is the fix. It does not improve the quantile model's accuracy — it adjusts the thresholds so that observed coverage matches the stated level on held-out calibration data.
+If your calibration report shows systematic undercoverage, CQR is the fix. It does not improve the quantile model's accuracy - it adjusts the thresholds so that observed coverage matches the stated level on held-out calibration data.
 
 ```python
 from insurance_conformal import ConformalisedQuantileRegression
@@ -254,7 +254,7 @@ This is the right combination for any application where the coverage guarantee m
 
 ## Practical recommendations by line
 
-**Motor own damage.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99]. Model severity on non-zero claims. Use large_loss_loading at alpha=0.95 to supplement the Tweedie technical premium. Check coverage on each development year separately — own damage severity trends materially.
+**Motor own damage.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99]. Model severity on non-zero claims. Use large_loss_loading at alpha=0.95 to supplement the Tweedie technical premium. Check coverage on each development year separately - own damage severity trends materially.
 
 **Motor bodily injury.** Expectile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99]. Use ILF curves for excess layer pricing. TVaR at alpha=0.99. BI claims have IBNR tails that extend years, so ensure your severity data is sufficiently developed before fitting.
 
@@ -287,7 +287,7 @@ Check the coverage report first, before touching the loading calculations. If q_
 
 The burning cost gives you the centre. The quantile model gives you the tail. Both are required. Using only the first is pricing for average experience. Average experience is not what determines whether you write a profitable book of motor BI.
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — when you need the full predictive distribution rather than specific quantiles: per-risk CoV, IFRS 17 risk adjustment, and capital allocation
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals with finite-sample coverage guarantees; the complement to quantile regression when parametric assumptions are uncertain
-- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — a worked tutorial applying this library to home BI and subsidence: TVaR computation, loading tables, and the comparison against a Gamma GLM baseline
-- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — how to check whether the quantile model's coverage is holding up on out-of-time data, using the Murphy decomposition and decile coverage diagnostics
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - when you need the full predictive distribution rather than specific quantiles: per-risk CoV, IFRS 17 risk adjustment, and capital allocation
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - distribution-free prediction intervals with finite-sample coverage guarantees; the complement to quantile regression when parametric assumptions are uncertain
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) - a worked tutorial applying this library to home BI and subsidence: TVaR computation, loading tables, and the comparison against a Gamma GLM baseline
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - how to check whether the quantile model's coverage is holding up on out-of-time data, using the Murphy decomposition and decile coverage diagnostics

@@ -10,7 +10,7 @@ author: Burning Cost
 
 Your deployed pricing model has a problem, and you probably do not know about it yet.
 
-It is not the kind of problem that Evidently or NannyML will catch. Those tools are good at what they do: detecting statistical drift in input feature distributions. They will correctly tell you that the distribution of driver ages in your portfolio has shifted, or that a new vehicle group has appeared in production data that was not in the training set. What they cannot tell you is whether your model's rank ordering — its fundamental purpose as a pricing tool — has degraded. That requires actuarial KPIs.
+It is not the kind of problem that Evidently or NannyML will catch. Those tools are good at what they do: detecting statistical drift in input feature distributions. They will correctly tell you that the distribution of driver ages in your portfolio has shifted, or that a new vehicle group has appeared in production data that was not in the training set. What they cannot tell you is whether your model's rank ordering - its fundamental purpose as a pricing tool - has degraded. That requires actuarial KPIs.
 
 The three metrics that matter for an insurance pricing model are: the Gini coefficient (is the model still rank-ordering risks correctly?), the A/E ratio by segment (is the model still calibrated for the segments that matter?), and the double-lift curve (when comparing a new model to the old one, which deciles does it improve on?). None of these are available in Evidently, NannyML, or any generic model monitoring library as of March 2026. They are available in `insurance-monitoring`.
 
@@ -22,7 +22,7 @@ This post covers each metric in turn, shows the code, and explains what the outp
 
 To be fair to Evidently and NannyML: they are solving a real problem, and they solve it well. Population Stability Index (PSI), Kolmogorov-Smirnov feature tests, and target distribution monitoring are all legitimate drift detection methods. If you are monitoring a credit scoring model or a demand forecasting system, they are probably sufficient.
 
-For an insurance pricing model, they miss the central question. The output of an insurance pricing model is not a classification or a regression prediction — it is a rate. The rate is multiplied by exposure and loaded for expenses to produce a premium that is filed with the regulator (for Lloyd's syndicates and commercial lines) or embedded in a rating algorithm reviewed under FCA Consumer Duty. The question is not "has the input distribution shifted?" The question is "is the model still pricing correctly, in the sense that the risks it thinks are cheap are actually cheap and the risks it thinks are expensive are actually expensive?"
+For an insurance pricing model, they miss the central question. The output of an insurance pricing model is not a classification or a regression prediction - it is a rate. The rate is multiplied by exposure and loaded for expenses to produce a premium that is filed with the regulator (for Lloyd's syndicates and commercial lines) or embedded in a rating algorithm reviewed under FCA Consumer Duty. The question is not "has the input distribution shifted?" The question is "is the model still pricing correctly, in the sense that the risks it thinks are cheap are actually cheap and the risks it thinks are expensive are actually expensive?"
 
 That is the Gini coefficient. And it is entirely absent from generic monitoring tools.
 
@@ -122,7 +122,7 @@ print(f"Monitoring Gini: {g_cur:.4f}")
 # Monitoring Gini: 0.3612
 ```
 
-The Gini has dropped from 0.384 to 0.361 — a fall of 2.3 Gini points. Is that significant, or within normal sampling variation? With 35,000 policies and an underlying Gini around 0.38, the standard error on the Gini estimate is roughly 0.004-0.006. A 2.3-point fall is potentially significant but not obviously so by eye. This is exactly what the bootstrap drift test is for.
+The Gini has dropped from 0.384 to 0.361 - a fall of 2.3 Gini points. Is that significant, or within normal sampling variation? With 35,000 policies and an underlying Gini around 0.38, the standard error on the Gini estimate is roughly 0.004-0.006. A 2.3-point fall is potentially significant but not obviously so by eye. This is exactly what the bootstrap drift test is for.
 
 ```python
 # Bootstrap test for Gini drift
@@ -147,9 +147,9 @@ print(f"p-value: {result.p_value:.3f}")
 # p-value: 0.041
 ```
 
-The one-sigma rule (`alpha=0.32`) is deliberately sensitive for monitoring: it triggers on changes that would pass a conventional 0.05 threshold, giving the monitoring system a chance to flag degradation early. A monitoring alert is not a refit decision — it is a prompt to investigate. The formal refit decision happens at quarterly model validation.
+The one-sigma rule (`alpha=0.32`) is deliberately sensitive for monitoring: it triggers on changes that would pass a conventional 0.05 threshold, giving the monitoring system a chance to flag degradation early. A monitoring alert is not a refit decision - it is a prompt to investigate. The formal refit decision happens at quarterly model validation.
 
-The `drift_test.plot()` method produces a bootstrap histogram with the reference Gini marked, the current Gini marked, and the confidence interval shaded — a standard governance deliverable for IFoA/PRA model validation committees.
+The `drift_test.plot()` method produces a bootstrap histogram with the reference Gini marked, the current Gini marked, and the confidence interval shaded - a standard governance deliverable for IFoA/PRA model validation committees.
 
 ---
 
@@ -192,7 +192,7 @@ print(ae_seg)
 # └──────────┴─────────┴──────────┴──────────┴────────────┘
 ```
 
-The 17-24 band shows A/E = 1.15 — the model is underpricing young drivers by 15%. The aggregate A/E is 1.032, which looks fine. This is exactly the pattern that catches teams out: green aggregate, red segment.
+The 17-24 band shows A/E = 1.15 - the model is underpricing young drivers by 15%. The aggregate A/E is 1.032, which looks fine. This is exactly the pattern that catches teams out: green aggregate, red segment.
 
 The FCA Consumer Duty implication: under PRIN 2A, systematic underpricing of a segment does not, by itself, constitute a Consumer Duty breach. Systematic overpricing of a segment might. But the obligation to monitor and document applies in both directions. If your model is persistently underpricing young drivers and you discover this 18 months after deployment, the governance question is why the monitoring process did not surface it sooner.
 
@@ -202,7 +202,7 @@ Run A/E checks monthly, but only on accident periods with at least 12 months of 
 
 ## Metric 3: Double-lift chart for champion/challenger
 
-The double-lift chart is the standard UK actuarial tool for comparing two models. You divide policies into deciles by the ratio of model A's prediction to model B's prediction. Then you compare the actual claims experience in each decile. If model A is better, policies where model A predicts higher than model B should also have higher actual experience — and vice versa.
+The double-lift chart is the standard UK actuarial tool for comparing two models. You divide policies into deciles by the ratio of model A's prediction to model B's prediction. Then you compare the actual claims experience in each decile. If model A is better, policies where model A predicts higher than model B should also have higher actual experience - and vice versa.
 
 The double-lift chart is particularly useful when introducing a new model: it shows the pricing committee exactly which segments the new model rates differently from the old one, and whether the observed experience validates that difference.
 
@@ -262,9 +262,9 @@ print(double_lift.select(
 #      9        0.841          0.999   <- champion overprices this decile
 ```
 
-Read the double-lift chart like this: deciles 0-2 are where the champion predicts higher than the challenger. The champion's A/E for those deciles is 1.14-1.22 — systematic underpricing. Deciles 7-9 are where the champion predicts lower than the challenger. The champion's A/E there is 0.84-0.92 — systematic overpricing. The challenger is close to 1.00 throughout. The challenger wins.
+Read the double-lift chart like this: deciles 0-2 are where the champion predicts higher than the challenger. The champion's A/E for those deciles is 1.14-1.22 - systematic underpricing. Deciles 7-9 are where the champion predicts lower than the challenger. The champion's A/E there is 0.84-0.92 - systematic overpricing. The challenger is close to 1.00 throughout. The challenger wins.
 
-A flat double-lift chart — A/E near 1.00 in all deciles for both models — means the models agree on risk ordering and the champion is not systematically wrong anywhere. That is a reason to keep the champion. A sloped chart like the one above is a reason to switch.
+A flat double-lift chart - A/E near 1.00 in all deciles for both models - means the models agree on risk ordering and the champion is not systematically wrong anywhere. That is a reason to keep the champion. A sloped chart like the one above is a reason to switch.
 
 ---
 
@@ -306,7 +306,7 @@ print(report.to_polars())
 
 The recommendation logic follows the decision tree from arXiv 2510.04556: Gini drift significant → REFIT, regardless of A/E. If A/E is amber but Gini is stable → RECALIBRATE. The CSI result for driver age confirms the portfolio composition has shifted (higher proportion of young drivers), consistent with the A/E pattern.
 
-The distinction between RECALIBRATE and REFIT matters operationally. Recalibration is adjusting the model's intercept to restore aggregate balance — an afternoon's work. A full refit means new data, new feature engineering decisions, a new validation exercise, and potentially a governance sign-off cycle that takes four to eight weeks. Getting the diagnosis right saves significant resource.
+The distinction between RECALIBRATE and REFIT matters operationally. Recalibration is adjusting the model's intercept to restore aggregate balance - an afternoon's work. A full refit means new data, new feature engineering decisions, a new validation exercise, and potentially a governance sign-off cycle that takes four to eight weeks. Getting the diagnosis right saves significant resource.
 
 ---
 
@@ -325,7 +325,7 @@ Evidently (v0.4.x as of March 2026) has a `DataDriftPreset` that runs PSI and KS
 | IBNR-adjusted A/E | No | No | Via development factors |
 | Insurance-specific thresholds | No | No | PSI 0.10/0.25, A/E 0.90/1.10 |
 
-NannyML's CBPE (confidence-based performance estimation) is genuinely clever — it estimates model performance without labels. On a classification model, that is useful. On an insurance frequency model, claims data takes 12-24 months to fully develop. CBPE does not understand IBNR. You cannot estimate the true claims frequency from proxy signals the way you can estimate binary classification performance from predicted probabilities.
+NannyML's CBPE (confidence-based performance estimation) is genuinely clever - it estimates model performance without labels. On a classification model, that is useful. On an insurance frequency model, claims data takes 12-24 months to fully develop. CBPE does not understand IBNR. You cannot estimate the true claims frequency from proxy signals the way you can estimate binary classification performance from predicted probabilities.
 
 The tools do different things. Use Evidently or NannyML for feature drift detection on input data; both have better tooling for that specific task than `insurance-monitoring`. Use `insurance-monitoring` for the actuarial KPIs that determine whether your model is still doing its job.
 
@@ -335,7 +335,7 @@ The tools do different things. Use Evidently or NannyML for feature drift detect
 
 Our recommendation: monthly PSI and segmented A/E on accident periods with 12+ months of development. Quarterly Gini bootstrap test. Annual full model validation including out-of-time backtesting and factor table comparison.
 
-Monthly is too frequent for the Gini test — sample sizes for a single month are typically too small for the bootstrap CI to be tight enough to detect economically meaningful drift. Quarterly gives sufficient volume, and quarterly rate review cycles provide a natural decision point.
+Monthly is too frequent for the Gini test - sample sizes for a single month are typically too small for the bootstrap CI to be tight enough to detect economically meaningful drift. Quarterly gives sufficient volume, and quarterly rate review cycles provide a natural decision point.
 
 The monthly segmented A/E is the early warning system. It will catch segment-level miscalibration before aggregate A/E moves into the amber zone, which is typically 3-6 months earlier than an aggregate monitor would flag the same issue.
 
@@ -347,7 +347,7 @@ The monthly segmented A/E is the early warning system. It will catch segment-lev
 uv add insurance-monitoring
 ```
 
-Source at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The full Databricks-ready monitoring notebook is at [burning-cost-examples/notebooks/monitoring_drift_detection.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py). It covers the complete workflow: monthly data ingestion, PSI/CSI per feature, segmented A/E with IBNR flagging, quarterly Gini test, and champion/challenger double-lift — in a format suitable for inclusion in a PRA SS3/17 model risk governance report.
+Source at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The full Databricks-ready monitoring notebook is at [burning-cost-examples/notebooks/monitoring_drift_detection.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py). It covers the complete workflow: monthly data ingestion, PSI/CSI per feature, segmented A/E with IBNR flagging, quarterly Gini test, and champion/challenger double-lift - in a format suitable for inclusion in a PRA SS3/17 model risk governance report.
 
 - [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)

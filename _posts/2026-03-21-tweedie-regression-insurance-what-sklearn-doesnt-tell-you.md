@@ -11,7 +11,7 @@ tags: [tweedie, GLM, exposure, offset, pure-premium, insurance-distributional, T
 
 Search "Tweedie regression insurance Python" and the top results will give you `sklearn.linear_model.TweedieRegressor`. It fits in six lines. The documentation is clean. The example works.
 
-And then you try to use it on a real motor book — where policies have mid-term adjustments, monthly direct debits, and exposure periods anywhere from two weeks to fourteen months — and the predictions are wrong in a way that is not immediately obvious.
+And then you try to use it on a real motor book - where policies have mid-term adjustments, monthly direct debits, and exposure periods anywhere from two weeks to fourteen months - and the predictions are wrong in a way that is not immediately obvious.
 
 The problem is exposure handling. Or rather, the absence of it. `TweedieRegressor` has no mechanism for an exposure offset. This is not a minor gap you can work around with a feature transformation. It is a fundamental architectural difference between a Tweedie model and a Tweedie *rate* model, and getting it wrong produces systematic errors across your portfolio that are invisible unless you specifically test for them.
 
@@ -31,7 +31,7 @@ What you want is a model for the rate: expected claims cost per unit exposure. T
 log(E[Y]) = log(exposure) + X * beta
 ```
 
-The `log(exposure)` term is the offset. It is not a feature — you do not fit a coefficient to it. It is fixed at 1.0 for every observation, built into the linear predictor structure so that the model predicts a rate, and the expected total cost is rate × exposure.
+The `log(exposure)` term is the offset. It is not a feature - you do not fit a coefficient to it. It is fixed at 1.0 for every observation, built into the linear predictor structure so that the model predicts a rate, and the expected total cost is rate × exposure.
 
 `sklearn.linear_model.TweedieRegressor` does not support offsets. There is a long-standing GitHub issue about this. As of now, it remains unfixed. If you pass `log(exposure)` as a feature, sklearn will fit a coefficient to it. That coefficient will not be 1.0. The model will learn a distorted approximation that happens to have good aggregate statistics on annual policies but fails on any book with genuine exposure variation.
 
@@ -39,7 +39,7 @@ The `log(exposure)` term is the offset. It is not a feature — you do not fit a
 
 ## Demonstrating the problem
 
-We use 10,000 synthetic motor policies with genuine exposure variation — roughly 30% of the book has exposure below 0.7 (monthly payers, mid-term cancellations, new business late in the year). The true model is a Tweedie compound Poisson-Gamma with p=1.5, clean covariate structure, and a true offset of exactly log(exposure).
+We use 10,000 synthetic motor policies with genuine exposure variation - roughly 30% of the book has exposure below 0.7 (monthly payers, mid-term cancellations, new business late in the year). The true model is a Tweedie compound Poisson-Gamma with p=1.5, clean covariate structure, and a true offset of exactly log(exposure).
 
 ```python
 import numpy as np
@@ -100,11 +100,11 @@ mu_rate_te = mu_rate[n_tr:]  # true annual rate for evaluation
 
 ## The wrong way: sklearn TweedieRegressor
 
-sklearn has no offset parameter. The workaround most practitioners discover is to divide the response by exposure — fitting on `y / exposure` — or to add `log(exposure)` as a feature. Neither is correct.
+sklearn has no offset parameter. The workaround most practitioners discover is to divide the response by exposure - fitting on `y / exposure` - or to add `log(exposure)` as a feature. Neither is correct.
 
-**Dividing by exposure** produces a rate-per-exposure-unit target, which is correct conceptually. But the resulting observations have different variances — a policy with 0.05 exposure has a highly noisy `y/exposure` observation compared to a full-year policy. When you fit without weights, you weight all observations equally, which gives disproportionate influence to short-period policies that happened to have claims. This is wrong. (You can partially correct it by weighting by exposure, but you still cannot separate the offset from the mean function without a proper offset term.)
+**Dividing by exposure** produces a rate-per-exposure-unit target, which is correct conceptually. But the resulting observations have different variances - a policy with 0.05 exposure has a highly noisy `y/exposure` observation compared to a full-year policy. When you fit without weights, you weight all observations equally, which gives disproportionate influence to short-period policies that happened to have claims. This is wrong. (You can partially correct it by weighting by exposure, but you still cannot separate the offset from the mean function without a proper offset term.)
 
-**Adding log(exposure) as a feature** lets sklearn fit a coefficient to it. In the true model, this coefficient is exactly 1.0 by construction. sklearn will estimate something close to 1.0 on a well-balanced portfolio, but it is not constrained to be 1.0, and on portfolios with unusual exposure distributions it drifts. More importantly, you are treating the offset as just another variable — it will interact with regularisation, affect feature importances, and contaminate anything downstream that uses the model structure.
+**Adding log(exposure) as a feature** lets sklearn fit a coefficient to it. In the true model, this coefficient is exactly 1.0 by construction. sklearn will estimate something close to 1.0 on a well-balanced portfolio, but it is not constrained to be 1.0, and on portfolios with unusual exposure distributions it drifts. More importantly, you are treating the offset as just another variable - it will interact with regularisation, affect feature importances, and contaminate anything downstream that uses the model structure.
 
 ```python
 from sklearn.linear_model import TweedieRegressor
@@ -136,7 +136,7 @@ print(f"sklearn (y/exp):          log-rate correlation {r_sk:.4f}")
 print(f"sklearn (log-exp feature): log-rate correlation {r_sk2:.4f}")
 ```
 
-The correlations will look reasonable — 0.85+. The issue is not that the model is badly wrong on average. It is that predictions for low-exposure policies are systematically biased. A policy with 0.05 exposure that happens to have a claim produces a `y/exposure` of 20× the claim amount. The model has no way to know this is a noisy observation; it tries to fit it.
+The correlations will look reasonable - 0.85+. The issue is not that the model is badly wrong on average. It is that predictions for low-exposure policies are systematically biased. A policy with 0.05 exposure that happens to have a claim produces a `y/exposure` of 20× the claim amount. The model has no way to know this is a noisy observation; it tries to fit it.
 
 ---
 
@@ -169,7 +169,7 @@ print(f"statsmodels GLM (offset):  log-rate correlation {r_glm:.4f}")
 print(result.summary())
 ```
 
-The offset is not fitted. It enters the linear predictor as a fixed constant and ensures the model is estimating the *rate* rather than the total expected cost. The coefficient on `log(exposure)` is exactly 1.0 by construction — it does not need to be estimated.
+The offset is not fitted. It enters the linear predictor as a fixed constant and ensures the model is estimating the *rate* rather than the total expected cost. The coefficient on `log(exposure)` is exactly 1.0 by construction - it does not need to be estimated.
 
 This is what `sklearn.TweedieRegressor` cannot do.
 
@@ -177,7 +177,7 @@ This is what `sklearn.TweedieRegressor` cannot do.
 
 ## Why p=1.5 to 1.7 for motor, and what happens when you get it wrong
 
-The Tweedie power parameter p controls the relationship between variance and mean: Var(Y) = phi * mu^p. For p between 1 and 2, Tweedie is the compound Poisson-Gamma distribution — a Poisson-distributed number of claims, each with Gamma-distributed severity. This is exactly the structure of insurance data.
+The Tweedie power parameter p controls the relationship between variance and mean: Var(Y) = phi * mu^p. For p between 1 and 2, Tweedie is the compound Poisson-Gamma distribution - a Poisson-distributed number of claims, each with Gamma-distributed severity. This is exactly the structure of insurance data.
 
 For UK private motor, typical estimated values of p are 1.5 to 1.7. The exact value depends on the claims mix: bodily injury-heavy books tend toward higher p because severity is more dispersed (longer Gamma tail); predominantly accidental damage books sit lower.
 
@@ -210,7 +210,7 @@ Getting p wrong by 0.3 produces systematically miscalibrated predictions across 
 
 ## Zero-inflation: why Tweedie handles this natively
 
-On a typical UK motor book, 75–85% of policyholders file zero claims in any given year. This is not a modelling problem to be solved — it is baked into the compound Poisson-Gamma structure.
+On a typical UK motor book, 75–85% of policyholders file zero claims in any given year. This is not a modelling problem to be solved - it is baked into the compound Poisson-Gamma structure.
 
 The Tweedie distribution with 1 < p < 2 has a point mass at zero. The probability of zero claims is:
 
@@ -218,11 +218,11 @@ The Tweedie distribution with 1 < p < 2 has a point mass at zero. The probabilit
 P(Y = 0) = exp(-lambda)
 ```
 
-where lambda = mu^(2-p) / (phi * (2-p)) is the Poisson claim count parameter. At typical motor parameters (mu ≈ 300, phi ≈ 0.8, p = 1.5), this gives P(Y=0) ≈ 0.83 — exactly the observed range.
+where lambda = mu^(2-p) / (phi * (2-p)) is the Poisson claim count parameter. At typical motor parameters (mu ≈ 300, phi ≈ 0.8, p = 1.5), this gives P(Y=0) ≈ 0.83 - exactly the observed range.
 
 You do not need a separate zero-inflation layer, a hurdle model, or a two-part frequency-severity approach to handle motor pure premium. Tweedie handles it. The zero-inflation is a consequence of the compound structure, not a separate modelling decision.
 
-This is also why zero-inflated Tweedie (ZITE) models exist for lines with *excess* zeros beyond what the Poisson-Gamma structure implies — pet insurance with structural non-claimers, for instance. But for motor, standard Tweedie is correct.
+This is also why zero-inflated Tweedie (ZITE) models exist for lines with *excess* zeros beyond what the Poisson-Gamma structure implies - pet insurance with structural non-claimers, for instance. But for motor, standard Tweedie is correct.
 
 ---
 
@@ -230,9 +230,9 @@ This is also why zero-inflated Tweedie (ZITE) models exist for lines with *exces
 
 When you move from GLMs to gradient boosting (CatBoost, LightGBM, XGBoost), the offset question becomes more complicated.
 
-**LightGBM and XGBoost** support an offset parameter natively. You can pass `offset=np.log(exposure)` and the boosting algorithm will treat it exactly as a GLM offset — fixed contribution to the linear predictor, not trained. This is the correct approach.
+**LightGBM and XGBoost** support an offset parameter natively. You can pass `offset=np.log(exposure)` and the boosting algorithm will treat it exactly as a GLM offset - fixed contribution to the linear predictor, not trained. This is the correct approach.
 
-**CatBoost** does not support a native offset. The standard workaround is to pass log(exposure) as a feature with a fixed coefficient — which requires some additional machinery — or to use `y / exposure` as the target with sample weights. The `insurance-distributional` library handles this internally.
+**CatBoost** does not support a native offset. The standard workaround is to pass log(exposure) as a feature with a fixed coefficient - which requires some additional machinery - or to use `y / exposure` as the target with sample weights. The `insurance-distributional` library handles this internally.
 
 The critical point: passing `log(exposure)` as a free feature in any boosting model is wrong for the same reason it is wrong in sklearn. The tree structure can split on log(exposure), interact it with other features, and assign it whatever coefficient minimises the training loss. On a training set with systematic exposure patterns, the model will learn spurious relationships.
 
@@ -261,15 +261,15 @@ print(f"TweedieGBM (exposure-correct): log-rate correlation {r_tgbm:.4f}")
 print(f"Mean CoV across test set: {pred.volatility_score().mean():.3f}")
 ```
 
-The `exposure` parameter is built into the model's objective function, not treated as a feature. The CatBoost objective uses the log(exposure) offset in the same way a GLM would — the model estimates the rate, and the predicted cost is rate × exposure.
+The `exposure` parameter is built into the model's objective function, not treated as a feature. The CatBoost objective uses the log(exposure) offset in the same way a GLM would - the model estimates the rate, and the predicted cost is rate × exposure.
 
-The dispersion model is what separates this from a standard Tweedie GBM. By default, `TweedieGBM` fits a second gradient boosting model for phi, using squared Pearson residuals as the target (Smyth & Jorgensen, ASTIN 2002). This gives you `pred.phi` and `pred.volatility_score()` — the coefficient of variation per risk, which no commercial pricing tool currently outputs.
+The dispersion model is what separates this from a standard Tweedie GBM. By default, `TweedieGBM` fits a second gradient boosting model for phi, using squared Pearson residuals as the target (Smyth & Jorgensen, ASTIN 2002). This gives you `pred.phi` and `pred.volatility_score()` - the coefficient of variation per risk, which no commercial pricing tool currently outputs.
 
 ---
 
 ## Adding conformal prediction intervals
 
-The `pred.mean` from `TweedieGBM` is a point estimate. For per-risk uncertainty — reinsurance attachment decisions, underwriter referral thresholds — you want a proper prediction interval.
+The `pred.mean` from `TweedieGBM` is a point estimate. For per-risk uncertainty - reinsurance attachment decisions, underwriter referral thresholds - you want a proper prediction interval.
 
 `insurance-conformal` provides distribution-free intervals using the Pearson-weighted non-conformity score. Because Var(Y) ~ mu^p for Tweedie, the correct score is `|y - yhat| / yhat^(p/2)`. This produces intervals that are narrower for low-mean risks and wider for high-mean risks, rather than a uniform width that overcovers cheap policies and undercovers expensive ones.
 
@@ -306,7 +306,7 @@ On a heteroskedastic book, conformal intervals are typically 10–15% narrower t
 | Situation | Approach |
 |-----------|----------|
 | Regulatory GLM required (Solvency II, Lloyd's) | statsmodels GLM with `offset=np.log(exposure)` |
-| Exploratory or prototype | statsmodels — clean, interpretable, fast |
+| Exploratory or prototype | statsmodels - clean, interpretable, fast |
 | Production pricing, annual book with limited exposure variation | Either, with sample weights by exposure |
 | Production pricing, mixed-duration or monthly-payment book | `TweedieGBM` from insurance-distributional |
 | Need per-risk uncertainty (safety loading, RI, IFRS 17) | `TweedieGBM` + `pred.volatility_score()` |
@@ -317,7 +317,7 @@ On a heteroskedastic book, conformal intervals are typically 10–15% narrower t
 
 ## The summary
 
-`sklearn.TweedieRegressor` is fine for datasets where exposure is uniform across observations. Insurance pricing data is never uniform on exposure. The absence of an offset parameter is not a quirk — it is a structural limitation that makes the model wrong for the task.
+`sklearn.TweedieRegressor` is fine for datasets where exposure is uniform across observations. Insurance pricing data is never uniform on exposure. The absence of an offset parameter is not a quirk - it is a structural limitation that makes the model wrong for the task.
 
 The correct GLM implementation is statsmodels with `offset=np.log(exposure)`. For gradient boosting, `insurance-distributional`'s `TweedieGBM` handles exposure internally and adds per-risk dispersion estimation on top.
 
@@ -327,13 +327,13 @@ If you are building or inheriting a pricing model and the word "offset" does not
 
 **Libraries used in this post:**
 
-- `insurance-distributional` v0.2+ — [github.com/burning-cost/insurance-distributional](https://github.com/burning-cost/insurance-distributional)
-- `insurance-conformal` — [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
-- `statsmodels` — standard GLM with Tweedie family, `offset` parameter
+- `insurance-distributional` v0.2+ - [github.com/burning-cost/insurance-distributional](https://github.com/burning-cost/insurance-distributional)
+- `insurance-conformal` - [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
+- `statsmodels` - standard GLM with Tweedie family, `offset` parameter
 
 **Related posts:**
 
-- [Your Technical Price Ignores Variance](/2026/03/05/insurance-distributional/) — distributional GBM: mean + CoV per risk
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals, why parametric Tweedie intervals fail on heterogeneous books
-- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the balance test and Murphy decomposition for deciding whether your Tweedie model needs recalibrating or a full refit
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to generate the structured validation documentation that a production Tweedie model needs before it goes near a rate change
+- [Your Technical Price Ignores Variance](/2026/03/05/insurance-distributional/) - distributional GBM: mean + CoV per risk
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - distribution-free intervals, why parametric Tweedie intervals fail on heterogeneous books
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - the balance test and Murphy decomposition for deciding whether your Tweedie model needs recalibrating or a full refit
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - how to generate the structured validation documentation that a production Tweedie model needs before it goes near a rate change

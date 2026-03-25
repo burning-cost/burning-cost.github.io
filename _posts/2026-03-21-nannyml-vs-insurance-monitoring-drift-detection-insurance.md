@@ -8,11 +8,11 @@ description: "NannyML is the best general-purpose ML monitoring library for team
 tags: [nannyml-insurance, nannyml-model-monitoring-insurance, NannyML, insurance-monitoring, CBPE, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, model-drift-insurance-pricing, PRA-SS3-17, python, uk-insurance, polars]
 ---
 
-If you search "ML model monitoring Python", NannyML appears at or near the top. It earns that position. The confidence-based performance estimation (CBPE) capability — estimating model performance metrics when ground truth labels are delayed or unavailable — is genuinely clever and has no close equivalent in the open-source ecosystem. The visualisations are the best in class across monitoring tools. For a data science team monitoring a classification model in a delayed-label setting, NannyML is probably the right default.
+If you search "ML model monitoring Python", NannyML appears at or near the top. It earns that position. The confidence-based performance estimation (CBPE) capability - estimating model performance metrics when ground truth labels are delayed or unavailable - is genuinely clever and has no close equivalent in the open-source ecosystem. The visualisations are the best in class across monitoring tools. For a data science team monitoring a classification model in a delayed-label setting, NannyML is probably the right default.
 
 For insurance pricing model monitoring, it misses the point in ways that compound.
 
-This post is the direct comparison: what NannyML does, where `insurance-monitoring` diverges, and the exact decision tree for which to use when. If you are not monitoring insurance pricing models, use NannyML — this post is not for you.
+This post is the direct comparison: what NannyML does, where `insurance-monitoring` diverges, and the exact decision tree for which to use when. If you are not monitoring insurance pricing models, use NannyML - this post is not for you.
 
 ---
 
@@ -20,7 +20,7 @@ This post is the direct comparison: what NannyML does, where `insurance-monitori
 
 The critique below is honest, so the credit should be too.
 
-NannyML's CBPE is its headline feature, and it deserves the attention. In a typical insurance model deployment the ground truth — actual claims experience — arrives 9 to 18 months after the policy inception. CBPE estimates model performance (AUC, accuracy, F1, or similar) using only the model's confidence scores on unlabelled analysis data, without waiting for ground truth. The API is minimal:
+NannyML's CBPE is its headline feature, and it deserves the attention. In a typical insurance model deployment the ground truth - actual claims experience - arrives 9 to 18 months after the policy inception. CBPE estimates model performance (AUC, accuracy, F1, or similar) using only the model's confidence scores on unlabelled analysis data, without waiting for ground truth. The API is minimal:
 
 ```python
 import nannyml as nml
@@ -38,7 +38,7 @@ estimated_performance = estimator.estimate(analysis_df)
 figure = estimated_performance.plot()
 ```
 
-The plots NannyML produces — chunked time series with alert shading, confidence bands, reference versus analysis overlays — are the kind of thing you could show to a CRO without explanation. Clean, well-designed, and correct.
+The plots NannyML produces - chunked time series with alert shading, confidence bands, reference versus analysis overlays - are the kind of thing you could show to a CRO without explanation. Clean, well-designed, and correct.
 
 The univariate drift detection is broad: KS, Jensen-Shannon, Wasserstein, Hellinger, chi-squared, and PSI are all available. The `UnivariateDriftCalculator` runs all features in one call and produces a ranked drift table:
 
@@ -51,9 +51,9 @@ calculator.fit(reference_df)
 drift = calculator.calculate(analysis_df)
 ```
 
-`AlertCountRanker` identifies which features have drifted most across chunks — useful for triage when you have 30 rating factors and need to know where to look first.
+`AlertCountRanker` identifies which features have drifted most across chunks - useful for triage when you have 30 rating factors and need to know where to look first.
 
-NannyML also has `DLE` (Direct Loss Estimation), which estimates regression model performance without ground truth — the regression analogue of CBPE. For a claims severity model where paid loss takes time to mature, this is a genuine capability.
+NannyML also has `DLE` (Direct Loss Estimation), which estimates regression model performance without ground truth - the regression analogue of CBPE. For a claims severity model where paid loss takes time to mature, this is a genuine capability.
 
 None of this changes what follows. NannyML is a well-engineered library with a clear design philosophy. The problem is that the philosophy does not transfer to insurance pricing without modification.
 
@@ -65,11 +65,11 @@ Three requirements distinguish insurance pricing from generic ML monitoring, and
 
 ### 1. Exposure-weighted PSI and CSI
 
-PSI is the operational standard for insurance model drift monitoring. Every major UK insurer, Lloyd's syndicate, and regulatory submission uses some version of it. NannyML implements PSI — but unweighted.
+PSI is the operational standard for insurance model drift monitoring. Every major UK insurer, Lloyd's syndicate, and regulatory submission uses some version of it. NannyML implements PSI - but unweighted.
 
 For insurance, rows in a monitoring dataset are policies, and policies vary enormously in how much claims exposure they represent. An annual fleet policy covering 80 vehicles that ran for twelve months contributes one row to NannyML's PSI calculation. A 30-day moped policy cancelled after a month also contributes one row. In claims exposure terms, these differ by a factor of roughly 100.
 
-The problem is not academic. UK comparison site business is disproportionately short-duration — monthly pay, annual intent, frequent lapse. Annual renewals are a different population. If young drivers are entering via monthly-pay comparison site policies while your reference data is annual renewals, unweighted PSI underestimates the driver age shift because the young-driver policies each count once despite contributing 0.25 car-years.
+The problem is not academic. UK comparison site business is disproportionately short-duration - monthly pay, annual intent, frequent lapse. Annual renewals are a different population. If young drivers are entering via monthly-pay comparison site policies while your reference data is annual renewals, unweighted PSI underestimates the driver age shift because the young-driver policies each count once despite contributing 0.25 car-years.
 
 `insurance-monitoring` exposes an `exposure_weights` parameter directly on the PSI and CSI functions:
 
@@ -106,11 +106,11 @@ csi_table = csi(feature_ref, feature_cur,
 # Returns: feature | csi | band
 ```
 
-In the `insurance-monitoring` benchmark — 50,000 training policies, 2019–2021 reference, 2023 current cohort with 2x young driver oversampling — unweighted PSI reads 0.18 (amber), exposure-weighted reads 0.27 (red). These produce different governance outputs. The weighted version is correct.
+In the `insurance-monitoring` benchmark - 50,000 training policies, 2019–2021 reference, 2023 current cohort with 2x young driver oversampling - unweighted PSI reads 0.18 (amber), exposure-weighted reads 0.27 (red). These produce different governance outputs. The weighted version is correct.
 
 ### 2. Actuarial A/E ratios with statistical calibration
 
-NannyML does not have a concept of A/E ratio. This is not a gap in implementation — it is out of scope for a general ML library.
+NannyML does not have a concept of A/E ratio. This is not a gap in implementation - it is out of scope for a general ML library.
 
 A/E (actual claims divided by expected claims) is the primary metric for insurance model calibration monitoring. An aggregate A/E of 1.00 is reassuring. An aggregate A/E of 1.00 that is composed of 1.55 in the under-25 cohort and 0.85 in the over-50 cohort means your model is generating adverse selection: good risks are leaving (overpriced) and bad risks are staying (underpriced). NannyML's prediction drift detection will tell you the distribution of your model outputs has shifted. It cannot tell you whether actual claims experience is tracking your predictions at segment level.
 
@@ -132,15 +132,15 @@ seg = ae_ratio(actual, predicted, exposure=exposure, segments=age_bands)
 # 50+     |    61  |      72  |    0.85  |       901
 ```
 
-The Garwood interval is not cosmetic. At 30 observed claims — a realistic monitoring window for a specialist product, a new entrant cohort, or a thinly traded perimeter — a normal approximation understates the confidence interval by 15–20%. Teams using normal approximations generate spurious significant deviations on thin segments, train their actuaries to discount alarms, and eventually miss real problems.
+The Garwood interval is not cosmetic. At 30 observed claims - a realistic monitoring window for a specialist product, a new entrant cohort, or a thinly traded perimeter - a normal approximation understates the confidence interval by 15–20%. Teams using normal approximations generate spurious significant deviations on thin segments, train their actuaries to discount alarms, and eventually miss real problems.
 
 ### 3. Gini discrimination drift testing
 
 This is the failure mode that destroys books silently, and it is invisible to every general-purpose monitoring tool including NannyML.
 
-A pricing model can maintain a stable aggregate A/E while losing its ability to rank risks. The mechanism is covariate shift: as portfolio composition changes, the model's relativities become stale. It predicts the right mean but can no longer separate a good risk from a bad risk within any cohort. The consequence is adverse selection. NannyML monitors whether the distribution of model outputs has shifted — which is useful but orthogonal to whether the model's *ranking* is still working.
+A pricing model can maintain a stable aggregate A/E while losing its ability to rank risks. The mechanism is covariate shift: as portfolio composition changes, the model's relativities become stale. It predicts the right mean but can no longer separate a good risk from a bad risk within any cohort. The consequence is adverse selection. NannyML monitors whether the distribution of model outputs has shifted - which is useful but orthogonal to whether the model's *ranking* is still working.
 
-`insurance-monitoring` implements the Gini drift z-test from arXiv 2510.04556 — a formal hypothesis test with bootstrap variance estimation:
+`insurance-monitoring` implements the Gini drift z-test from arXiv 2510.04556 - a formal hypothesis test with bootstrap variance estimation:
 
 ```python
 from insurance_monitoring.discrimination import gini_coefficient, gini_drift_test
@@ -159,7 +159,7 @@ result = gini_drift_test(
 # GiniDriftResult(z_statistic=-1.93, p_value=0.054, gini_change=-0.03, significant=False)
 ```
 
-The default alpha is 0.32 (the one-sigma rule), following the arXiv 2510.04556 recommendation. The rationale: the cost of missing a Gini decline is measurable in loss ratio; the cost of a false-positive investigation is two actuarial days. The test produces a governance deliverable — bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation — formatted to the standard expected in an IFoA model validation pack.
+The default alpha is 0.32 (the one-sigma rule), following the arXiv 2510.04556 recommendation. The rationale: the cost of missing a Gini decline is measurable in loss ratio; the cost of a false-positive investigation is two actuarial days. The test produces a governance deliverable - bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation - formatted to the standard expected in an IFoA model validation pack.
 
 ---
 
@@ -233,7 +233,7 @@ df = report.to_polars()
 # recommendation          | nan    | RECALIBRATE
 ```
 
-The `RECALIBRATE` vs `REFIT` verdict comes from the Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025): if global miscalibration (GMCB) dominates, a multiplier fix is all you need — hours of work; if local miscalibration (LMCB) dominates, the model's ranking is structurally broken — weeks of work to refit. Getting this wrong is expensive in either direction.
+The `RECALIBRATE` vs `REFIT` verdict comes from the Murphy decomposition (Lindholm & Wüthrich, Scandinavian Actuarial Journal 2025): if global miscalibration (GMCB) dominates, a multiplier fix is all you need - hours of work; if local miscalibration (LMCB) dominates, the model's ranking is structurally broken - weeks of work to refit. Getting this wrong is expensive in either direction.
 
 ---
 
@@ -241,9 +241,9 @@ The `RECALIBRATE` vs `REFIT` verdict comes from the Murphy decomposition (Lindho
 
 The one thing NannyML does that `insurance-monitoring` does not: CBPE.
 
-If you are monitoring a binary classification model — a churn predictor, a fraud classifier, an underwriting accept/decline — and ground truth labels are delayed, CBPE is useful. It estimates AUC and F1 from the model's confidence distribution without waiting for observed outcomes.
+If you are monitoring a binary classification model - a churn predictor, a fraud classifier, an underwriting accept/decline - and ground truth labels are delayed, CBPE is useful. It estimates AUC and F1 from the model's confidence distribution without waiting for observed outcomes.
 
-But for Poisson frequency and Gamma severity models — the standard UK motor pricing GLM setup — CBPE does not apply. CBPE requires calibrated probability outputs. Poisson frequency models output expected claim rates (events per unit exposure), not calibrated binary probabilities. NannyML's documentation explicitly scopes CBPE to classification.
+But for Poisson frequency and Gamma severity models - the standard UK motor pricing GLM setup - CBPE does not apply. CBPE requires calibrated probability outputs. Poisson frequency models output expected claim rates (events per unit exposure), not calibrated binary probabilities. NannyML's documentation explicitly scopes CBPE to classification.
 
 For insurance frequency models, the analogue of "waiting for ground truth" is the IBNR problem: monitoring recent accident months requires chain-ladder adjustment before the A/E ratio is reliable. This is an actuarial problem that NannyML does not address, and `insurance-monitoring`'s documentation explicitly flags: "the A/E ratio and balance test are only reliable on mature accident periods. For motor, at least 12 months of claims development. For liability, 24+ months."
 
@@ -255,9 +255,9 @@ Beyond CBPE, a few NannyML capabilities are worth naming explicitly.
 
 **Visualisation.** NannyML's plots are genuinely better than anything `insurance-monitoring` ships. The chunked time-series monitoring plot with alert highlighting and reference shading is the right format for an executive dashboard. `insurance-monitoring` outputs structured Polars DataFrames, which are right for actuary-built pipelines but require a dashboard layer on top.
 
-**Multivariate drift.** NannyML has `DataReconstructionDriftCalculator` — a PCA-based reconstruction error method that catches multivariate distributional shifts that column-by-column tests miss. `insurance-monitoring` has `InterpretableDriftDetector` (TRIPODD, Panda et al. 2025) for feature-attribution-aware drift, but does not implement PCA reconstruction.
+**Multivariate drift.** NannyML has `DataReconstructionDriftCalculator` - a PCA-based reconstruction error method that catches multivariate distributional shifts that column-by-column tests miss. `insurance-monitoring` has `InterpretableDriftDetector` (TRIPODD, Panda et al. 2025) for feature-attribution-aware drift, but does not implement PCA reconstruction.
 
-**Model-agnostic breadth.** NannyML works with any model that produces predictions and optionally confidence scores — sklearn, XGBoost, LightGBM, custom pipelines. `insurance-monitoring` assumes Poisson or Tweedie distributed targets (the standard non-life actuarial setup) and has less utility outside that context.
+**Model-agnostic breadth.** NannyML works with any model that produces predictions and optionally confidence scores - sklearn, XGBoost, LightGBM, custom pipelines. `insurance-monitoring` assumes Poisson or Tweedie distributed targets (the standard non-life actuarial setup) and has less utility outside that context.
 
 **DLE for regression.** Direct Loss Estimation allows performance estimation for regression models without ground truth. For a claims severity model this is relevant, though the 9–18 month lag before severity claims mature is handled differently by insurers (chain-ladder reserving) than by DLE's estimation approach.
 
@@ -282,7 +282,7 @@ Beyond CBPE, a few NannyML capabilities are worth naming explicitly.
 - You need `SequentialTest` for champion/challenger experiments that are checked monthly without FPR inflation
 - You need `MonitoringReport` producing a structured output for PRA SS3/17 model risk documentation
 
-The two tools are not alternatives for the same problem. NannyML is excellent for general ML monitoring with strong performance estimation and visualisation. `insurance-monitoring` is purpose-built for the actuarial monitoring workflow: exposure-weighted distributions, A/E by segment, Gini drift significance testing, and the RECALIBRATE-or-REFIT decision. A pricing team in a larger organisation might run both — NannyML for engineering-facing dashboards, `insurance-monitoring` for the actuarial outputs that feed model governance.
+The two tools are not alternatives for the same problem. NannyML is excellent for general ML monitoring with strong performance estimation and visualisation. `insurance-monitoring` is purpose-built for the actuarial monitoring workflow: exposure-weighted distributions, A/E by segment, Gini drift significance testing, and the RECALIBRATE-or-REFIT decision. A pricing team in a larger organisation might run both - NannyML for engineering-facing dashboards, `insurance-monitoring` for the actuarial outputs that feed model governance.
 
 ---
 
@@ -303,20 +303,20 @@ Polars-native throughout. No scikit-learn dependency. Python 3.10+.
 ---
 
 **Related:**
-- [Alibi Detect vs insurance-monitoring: Drift Detection for Insurance Pricing Models](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — the same comparison against Alibi Detect
-- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — comparison against Evidently
-- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — detailed walkthrough of each monitoring layer
-- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — why aggregate A/E is a lagging indicator for covariate shift
+- [Alibi Detect vs insurance-monitoring: Drift Detection for Insurance Pricing Models](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - the same comparison against Alibi Detect
+- [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - comparison against Evidently
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) - detailed walkthrough of each monitoring layer
+- [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) - why aggregate A/E is a lagging indicator for covariate shift
 
 ---
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) — causal graphs and refutation
-- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
-- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
+- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

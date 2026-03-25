@@ -43,7 +43,7 @@ feed:
 
 show_excerpts: true
 
-# Explicitly publish future-dated posts (github-pages gem sets this, but be explicit)
+# Do not publish future-dated posts.
 future: false
 
 markdown: kramdown

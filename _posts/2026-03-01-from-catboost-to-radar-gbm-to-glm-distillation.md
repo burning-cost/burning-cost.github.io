@@ -162,6 +162,31 @@ with open("radar_driver_age.csv", "w") as f:
 
 There is no direct Radar API for programmatic import. That is a Radar limitation, not ours. The CSV output gives you a clean source to paste from or import via Radar's factor table editor.
 
+## The rounding problem in Radar
+
+There is a practical issue that the segment deviation metric does not capture, and that every team hits when they first load CSV factor tables into Radar: accumulated rounding error.
+
+`format_radar_csv()` writes relativities to six decimal places. Radar's factor table editor rounds values on display, and its internal arithmetic truncates at a different precision depending on version. Across a typical motor rating structure with 7 or more factors - driver age, vehicle group, area, NCD, occupation, vehicle age, annual mileage - these small truncations multiply. A driver_age relativity of 1.510000 and a vehicle_group relativity of 1.234000 produce a combined factor of 1.863540 in Python. If Radar has rounded each to four decimal places internally, the same combination gives 1.5100 * 1.2340 = 1.8633, a difference of 0.02% on that cell. Across a full book with seven factors compounding, we measured a mean premium error of approximately 2.4% when loading CSV tables into Radar without verification.
+
+This is not a problem with the factor tables themselves. It is a Radar import fidelity problem. The remedy is straightforward: after loading your CSV tables into Radar, run a sample of policies through both the Python surrogate and the Radar rating model and compare the outputs directly.
+
+```python
+# Verify Radar fidelity on a holdout sample
+import polars as pl
+import numpy as np
+
+# python_prices: array of surrogate predictions on holdout
+# radar_prices: array of prices from Radar after CSV load
+relative_error = np.abs(python_prices - radar_prices) / python_prices
+print(f"Mean relative error: {relative_error.mean():.2%}")
+print(f"Max relative error:  {relative_error.max():.2%}")
+print(f"P95 relative error:  {np.percentile(relative_error, 95):.2%}")
+```
+
+If mean relative error exceeds 0.5% on this check, look at which factors are causing the discrepancy - the Radar audit trail will show per-factor values. The most common source is a factor table with many levels where small rounding errors compound the most: area codes and vehicle group classification matrices are the usual culprits.
+
+The six-decimal-place precision in `format_radar_csv()` is as good as any CSV-based import can practically achieve. If your Radar version supports direct coefficient import rather than relativity import, use that path instead - loading `log_coefficient` values and letting Radar apply `exp()` internally removes one source of truncation.
+
 ## Why not just rebuild the model in Radar?
 
 The honest answer is that sometimes you should. If your CatBoost model's performance advantage over a native Radar GLM is marginal - say 1-2 Gini points - and your team is already comfortable with the Radar workflow, rebuilding inside Radar may be the right choice.

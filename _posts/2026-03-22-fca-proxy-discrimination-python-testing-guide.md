@@ -17,15 +17,15 @@ This post explains what EP25/2 actually requires, why the general-purpose fairne
 
 EP25/2 does not specify a test statistic or a software tool. What it specifies is the question firms need to be able to answer, and the standard of evidence required to answer it.
 
-The core obligation, in plain terms: a firm using a pricing model must be able to demonstrate that its rating factors do not systematically proxy for protected characteristics in a way that produces discriminatory pricing outcomes. The word "systematically" matters — the FCA is not looking for zero correlation (which is impossible, since almost every rating factor correlates with something that correlates with something protected). It is looking for material correlation that has not been investigated and documented.
+The core obligation, in plain terms: a firm using a pricing model must be able to demonstrate that its rating factors do not systematically proxy for protected characteristics in a way that produces discriminatory pricing outcomes. The word "systematically" matters - the FCA is not looking for zero correlation (which is impossible, since almost every rating factor correlates with something that correlates with something protected). It is looking for material correlation that has not been investigated and documented.
 
 Three things follow from this that shape what a technical audit needs to produce.
 
-**First, the test is about factor-level correlation, not output-level disparity.** A model that charges different average premiums to men and women is not necessarily discriminating — risk differs. A model that uses a factor which is a strong predictor of gender, without having considered that relationship, is a problem. EP25/2 wants you to examine the inputs, not just compare the group average outputs.
+**First, the test is about factor-level correlation, not output-level disparity.** A model that charges different average premiums to men and women is not necessarily discriminating - risk differs. A model that uses a factor which is a strong predictor of gender, without having considered that relationship, is a problem. EP25/2 wants you to examine the inputs, not just compare the group average outputs.
 
-**Second, conditional independence is the legal standard.** The Lindholm, Richman, Tsanakas and Wüthrich (LRTW) framework, now the academic reference point for FCA enforcement discussions, defines discrimination as: a pricing model that is not conditionally independent of a protected attribute S given the observed rating factors X. In other words, if knowing a customer's protected characteristic tells you something about what the model will charge them — even after you know all their risk factors — the model is discriminating. This is a stricter and more precise test than demographic parity.
+**Second, conditional independence is the legal standard.** The Lindholm, Richman, Tsanakas and Wüthrich (LRTW) framework, now the academic reference point for FCA enforcement discussions, defines discrimination as: a pricing model that is not conditionally independent of a protected attribute S given the observed rating factors X. In other words, if knowing a customer's protected characteristic tells you something about what the model will charge them - even after you know all their risk factors - the model is discriminating. This is a stricter and more precise test than demographic parity.
 
-**Third, the audit trail is part of the obligation.** EP25/2 specifically criticised the quality of evidence submitted by firms in the preceding thematic review, TR24/2 (August 2024). "Too high level and lacking the granularity to adequately evidence good outcomes" is the FCA's summary of what it received. The audit needs to be reproducible, factor-level, and documented — not a one-line assertion that the model was reviewed.
+**Third, the audit trail is part of the obligation.** EP25/2 specifically criticised the quality of evidence submitted by firms in the preceding thematic review, TR24/2 (August 2024). "Too high level and lacking the granularity to adequately evidence good outcomes" is the FCA's summary of what it received. The audit needs to be reproducible, factor-level, and documented - not a one-line assertion that the model was reviewed.
 
 ---
 
@@ -33,9 +33,9 @@ Three things follow from this that shape what a technical audit needs to produce
 
 The two most widely used Python fairness libraries are Fairlearn (Microsoft) and AIF360 (IBM). Both are well-built. Neither was designed for this problem.
 
-**They implement demographic parity.** The core metric in both libraries is a comparison of model outputs across protected groups — are the average predictions, positive prediction rates, or error rates similar across groups? This is the right question for fraud classification or credit approval. For insurance pricing, it is the wrong question. UK insurers are explicitly permitted to charge different average premiums to different groups when risk differs. A pricing model that achieves demographic parity is not compliant — it is probably mispricing some risks.
+**They implement demographic parity.** The core metric in both libraries is a comparison of model outputs across protected groups - are the average predictions, positive prediction rates, or error rates similar across groups? This is the right question for fraud classification or credit approval. For insurance pricing, it is the wrong question. UK insurers are explicitly permitted to charge different average premiums to different groups when risk differs. A pricing model that achieves demographic parity is not compliant - it is probably mispricing some risks.
 
-**They do not test rating factor inputs.** Fairlearn's `MetricFrame` and AIF360's `ClassificationMetric` both take model outputs and ask how those outputs vary by protected characteristic. They cannot tell you whether `occupation` carries ethnicity information, or whether `postcode_district` is a stronger predictor of the protected characteristic than it is of claim frequency. Factor-level proxy detection — the thing EP25/2 requires — is not in either library's scope.
+**They do not test rating factor inputs.** Fairlearn's `MetricFrame` and AIF360's `ClassificationMetric` both take model outputs and ask how those outputs vary by protected characteristic. They cannot tell you whether `occupation` carries ethnicity information, or whether `postcode_district` is a stronger predictor of the protected characteristic than it is of claim frequency. Factor-level proxy detection - the thing EP25/2 requires - is not in either library's scope.
 
 **They do not handle exposure weights.** Insurance portfolios are not rows. A single-month policy contributes a twelfth of the exposure of an annual policy on the same risk. Both libraries treat every row equally. For calibration-by-group or demographic parity computations in insurance, unweighted metrics are wrong.
 
@@ -100,7 +100,7 @@ report.summary()
 The audit runs three complementary proxy detection methods for each (factor, protected characteristic) pair:
 
 - **CatBoost proxy R-squared**: fits a gradient boosting model to predict `ethnicity_prop` from each rating factor alone, using exposure as sample weights. The held-out R-squared measures how much a single factor explains of the protected characteristic proxy. The amber threshold is 0.05; red is 0.10.
-- **Mutual information**: model-free, captures non-linear dependencies. A postcode band that is not monotonically ordered with ethnicity proportion — higher in inner London, lower in the Home Counties, higher again in Bradford — will show up here when a linear or rank correlation misses it. Measured in nats.
+- **Mutual information**: model-free, captures non-linear dependencies. A postcode band that is not monotonically ordered with ethnicity proportion - higher in inner London, lower in the Home Counties, higher again in Bradford - will show up here when a linear or rank correlation misses it. Measured in nats.
 - **Partial Pearson-residualised Spearman correlation**: the association between a factor and the protected characteristic after controlling for the other rating factors. This answers: does postcode carry ethnicity information *beyond* what vehicle group, occupation, and NCD already explain?
 
 All three are exposure-weighted throughout.
@@ -149,13 +149,13 @@ shape: (5, 5)
 
 What each result means in practice:
 
-**`postcode_district`, proxy R-squared 0.38, red.** A CatBoost model trained on postcode district alone explains 38% of the variance in the ethnicity proxy. This is not a borderline result. Postcode encodes substantial demographic information; the model's postcode relativity is doing pricing work that partially reflects ethnicity. This does not automatically mean the model is unlawfully discriminating — postcode also reflects urban density, theft rates, road quality, and traffic patterns that genuinely predict claims. But it means the factor warrants full decomposition: how much of the postcode premium variation is genuine risk, and how much is demographic correlation?
+**`postcode_district`, proxy R-squared 0.38, red.** A CatBoost model trained on postcode district alone explains 38% of the variance in the ethnicity proxy. This is not a borderline result. Postcode encodes substantial demographic information; the model's postcode relativity is doing pricing work that partially reflects ethnicity. This does not automatically mean the model is unlawfully discriminating - postcode also reflects urban density, theft rates, road quality, and traffic patterns that genuinely predict claims. But it means the factor warrants full decomposition: how much of the postcode premium variation is genuine risk, and how much is demographic correlation?
 
 **`occupation`, proxy R-squared 0.08, amber.** Sits between the amber threshold (0.05) and the red threshold (0.10). Manual occupations correlate with socioeconomic status, which correlates with multiple protected characteristics. An amber result means: document this, monitor it, understand the evidence. It does not mean remove occupation from the model.
 
-**`age_band` and `ncd_years`, green.** These factors have low proxy R-squared for ethnicity. That is the expected result — NCD years and driver age are not strong proxies for ethnicity in UK motor data.
+**`age_band` and `ncd_years`, green.** These factors have low proxy R-squared for ethnicity. That is the expected result - NCD years and driver age are not strong proxies for ethnicity in UK motor data.
 
-The partial correlation for `occupation` (0.19) is noticeably higher than its proxy R-squared (0.08). This indicates occupation carries ethnicity-correlated information *beyond* what the other factors explain — after controlling for postcode, vehicle group, and NCD, occupation still tells you something about ethnicity. Worth investigating whether your occupation banding creates avoidable concentration.
+The partial correlation for `occupation` (0.19) is noticeably higher than its proxy R-squared (0.08). This indicates occupation carries ethnicity-correlated information *beyond* what the other factors explain - after controlling for postcode, vehicle group, and NCD, occupation still tells you something about ethnicity. Worth investigating whether your occupation banding creates avoidable concentration.
 
 The overall report also contains the calibration-by-group check: actual-to-expected claim rates within each decile of the protected characteristic proxy. A well-calibrated model with a high proxy R-squared for postcode means the price variation is tracking genuine risk, not systematic mispricing. A miscalibrated model on top of a high proxy R-squared is the worst outcome.
 
@@ -165,13 +165,13 @@ The overall report also contains the calibration-by-group check: actual-to-expec
 
 The FCA does not require a zero-proxy model. It requires evidence of engagement.
 
-For a **red** result (proxy R-squared above 0.10): the factor needs explicit investigation and documentation. The minimum requirement is: quantify how much of the factor's premium variation is attributable to genuine risk differentiation versus demographic correlation. The `insurance-fairness.optimal_transport` subpackage handles this — it implements the LRTW discrimination-free pricing calculation, which marginalises the model's output over the conditional distribution of the protected characteristic given the non-protected features. This produces a decomposition: here is the discrimination-free price, here is the adjustment relative to the uncorrected model, here is the magnitude of the proxy discrimination channel.
+For a **red** result (proxy R-squared above 0.10): the factor needs explicit investigation and documentation. The minimum requirement is: quantify how much of the factor's premium variation is attributable to genuine risk differentiation versus demographic correlation. The `insurance-fairness.optimal_transport` subpackage handles this - it implements the LRTW discrimination-free pricing calculation, which marginalises the model's output over the conditional distribution of the protected characteristic given the non-protected features. This produces a decomposition: here is the discrimination-free price, here is the adjustment relative to the uncorrected model, here is the magnitude of the proxy discrimination channel.
 
 For an **amber** result: document the finding, the proxy R-squared, the mutual information, and the calibration result. Record the conclusion: either "the calibration is strong, the factor reflects genuine risk, and we are monitoring it at each model review" or "we are taking the following mitigation action." Either conclusion is defensible if it is documented.
 
 For **green** results: the audit trail records that the test was run and passed. File it.
 
-The specific trigger for deeper investigation should be: amber or red proxy R-squared *combined* with a calibration disparity above the amber threshold (0.10). That combination — a factor that proxies for a protected characteristic and a model that is systematically miscalibrating one demographic group — is the pattern that the FCA's enforcement concern is focused on.
+The specific trigger for deeper investigation should be: amber or red proxy R-squared *combined* with a calibration disparity above the amber threshold (0.10). That combination - a factor that proxies for a protected characteristic and a model that is systematically miscalibrating one demographic group - is the pattern that the FCA's enforcement concern is focused on.
 
 If remediation is required, the options in order of preference are: (1) add features that capture the legitimate causal channel more directly, reducing the proxy correlation at source (urban density index, telematics features, road quality scores instead of raw postcode); (2) apply LRTW marginalisation to correct the prices directly; (3) document the justification that the remaining correlation reflects genuine risk variation under Equality Act 2010 Section 19 indirect discrimination's proportionate means / legitimate aim defence.
 
@@ -207,13 +207,13 @@ The EP25/2 obligation is ongoing. The FCA is explicit that Consumer Duty monitor
 
 ## The data engineering question
 
-The biggest practical obstacle for most firms is not the statistical method — it is assembling the protected characteristic proxy column.
+The biggest practical obstacle for most firms is not the statistical method - it is assembling the protected characteristic proxy column.
 
 For ethnicity in UK motor and home insurance, the standard approach is the ONS Census 2021 ethnic group tables at Lower Layer Super Output Area (LSOA) level, joined to your policy data via postcode-to-LSOA lookup. The ONS publishes both: the `TS021` ethnic group tables and the National Statistics Postcode Lookup (NSPL). The join is a standard left join on postcode sector. The result is a floating-point ethnicity proportion per policy, which you pass as `ethnicity_prop` in the protected characteristic column. The library handles continuous protected characteristic proxies natively; you do not need to binarise.
 
 For gender, the situation has changed since the Gender Directive (2013). Insurers no longer hold gender at quote, so building a gender proxy requires either a name-based estimation method or a proxy from fleet composition data. This is harder and the proxies are noisier.
 
-For disability, the Equality Act 2010 definition covers a broad range of conditions that insurers do not ask about and would not be permitted to use. A disability proxy requires either self-reported data or area-level DWP statistics. The library accepts any numeric column as a protected characteristic — the statistical machinery is the same regardless of which protected characteristic the column represents.
+For disability, the Equality Act 2010 definition covers a broad range of conditions that insurers do not ask about and would not be permitted to use. A disability proxy requires either self-reported data or area-level DWP statistics. The library accepts any numeric column as a protected characteristic - the statistical machinery is the same regardless of which protected characteristic the column represents.
 
 ---
 
@@ -231,7 +231,7 @@ Source and issue tracker at [github.com/burning-cost/insurance-fairness](https:/
 
 **Related posts:**
 
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the LRTW framework, the Citizens Advice data, and the full audit workflow
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — direct comparison of why general-purpose ML fairness tools miss the FCA's specific concern
-- [Discrimination-Free Pricing in Python](/2026/03/10/insurance-fairness-ot/) — LRTW marginalisation and causal path decomposition for correcting proxy discrimination
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — governance integration for fairness audit outputs
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the LRTW framework, the Citizens Advice data, and the full audit workflow
+- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - direct comparison of why general-purpose ML fairness tools miss the FCA's specific concern
+- [Discrimination-Free Pricing in Python](/2026/03/10/insurance-fairness-ot/) - LRTW marginalisation and causal path decomposition for correcting proxy discrimination
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - governance integration for fairness audit outputs

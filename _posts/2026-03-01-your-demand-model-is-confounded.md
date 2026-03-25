@@ -45,7 +45,7 @@ Post-PS21/11, this matters even more. The FCA's GIPP remedies (PS21/11, effectiv
 
 DML isolates the causal effect by partialling out confounders from both the treatment and the outcome using flexible ML models. For the full mathematical procedure and theoretical guarantees, see [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/).
 
-The practical upshot: the residualised treatment `D_tilde` is the part of the price variation not explained by risk characteristics — the exogenous variation from seasonal rate changes, portfolio rebalancing, and manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect and produces a valid confidence interval.
+The practical upshot: the residualised treatment `D_tilde` is the part of the price variation not explained by risk characteristics - the exogenous variation from seasonal rate changes, portfolio rebalancing, and manual underwriting adjustments. Regressing residualised outcomes on residualised treatment isolates the causal price effect and produces a valid confidence interval.
 
 ---
 
@@ -225,7 +225,7 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-o
 
 ## See also
 
-- [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — benchmark results across simulated and real insurance datasets; where DML outperforms OLS and where it does not
-- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) — the `insurance-causal` library that implements the DML pipeline described here, with automatic nuisance model selection
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) — why the confounding problem in renewal pricing is structural, not a data quality issue
-- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) — a step-by-step tutorial applying DML to a UK renewal book, with all the data engineering and validation steps
+- [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) - benchmark results across simulated and real insurance datasets; where DML outperforms OLS and where it does not
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) - the `insurance-causal` library that implements the DML pipeline described here, with automatic nuisance model selection
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) - why the confounding problem in renewal pricing is structural, not a data quality issue
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) - a step-by-step tutorial applying DML to a UK renewal book, with all the data engineering and validation steps

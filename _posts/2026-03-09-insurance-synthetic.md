@@ -19,7 +19,7 @@ We built [`insurance-synthetic`](https://github.com/burning-cost/insurance-synth
 
 The core problem is not technical sophistication. CTGAN is genuinely clever, and TABSYN (Amazon Science, ICLR 2024) produces impressive statistical fidelity on benchmark tabular datasets. The problem is that none of the generic tools model the semantics of an insurance portfolio.
 
-**Exposure handling.** A UK motor book has policies with exposure anywhere from 0.01 to 1.0 policy years: mid-term cancellations, new business incepted partway through the observation window, policies still active at the reporting date. The claim count for a policy with 0.1 years' exposure should be drawn from Poisson(λ × 0.1), not from the same marginal as a full-year policy. When SDV fits a joint distribution across your columns and samples from it, it has no mechanism to enforce this. The frequency/exposure relationship degrades. A synthetic portfolio that looks balanced in aggregate will have annualised claim rates that vary wildly across exposure bands — exactly backwards from how the real data behaves.
+**Exposure handling.** A UK motor book has policies with exposure anywhere from 0.01 to 1.0 policy years: mid-term cancellations, new business incepted partway through the observation window, policies still active at the reporting date. The claim count for a policy with 0.1 years' exposure should be drawn from Poisson(λ × 0.1), not from the same marginal as a full-year policy. When SDV fits a joint distribution across your columns and samples from it, it has no mechanism to enforce this. The frequency/exposure relationship degrades. A synthetic portfolio that looks balanced in aggregate will have annualised claim rates that vary wildly across exposure bands - exactly backwards from how the real data behaves.
 
 **Zero-inflated severity.** Insurance losses are zero-inflated: most policies have no claims, and those that do produce right-skewed severity. CTGAN's mode-specific normalisation was designed for multimodal continuous distributions. It handles skewness, but it systematically underestimates the heaviest tails. The 99th percentile of simulated claim amounts tends to sit materially below the real 99th percentile. For a frequency model this is cosmetic. For pricing work (where your technical premium depends on expected large losses), it is a calibration error.
 
@@ -254,7 +254,7 @@ synth_high_risk = synth.generate(
 # Does the model price this segment consistently?
 ```
 
-The vine copula means this is not just a random sample of young drivers: it samples from the full joint distribution of all columns conditional on the constraint. A 23-year-old in the constrained sample will have a realistic joint distribution of vehicle age, annual mileage, region, and payment method — not an implausible combination that a simple filter on age would produce.
+The vine copula means this is not just a random sample of young drivers: it samples from the full joint distribution of all columns conditional on the constraint. A 23-year-old in the constrained sample will have a realistic joint distribution of vehicle age, annual mileage, region, and payment method - not an implausible combination that a simple filter on age would produce.
 
 ### Thin data augmentation
 
