@@ -401,3 +401,11 @@ Source and notebooks at [github.com/burning-cost/insurance-covariate-shift](http
 
 - `notebooks/benchmark_covariate_shift.py` -- the benchmark results referenced in the README: PSI improvement, A/E decile correction, metric estimation error for a 5,000-policy source vs 3,000-policy broker acquisition scenario
 - Full docstrings on all three classes with minimal runnable examples
+
+---
+
+**Related posts**
+
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — operational cadence for running shift detection as a recurring monthly check
+- [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/05/14/recalibrate-or-refit/) — once shift is detected, Murphy decomposition determines whether a scale fix or a full refit is needed
+- [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — benchmark of detection methods against planted failures in a 50,000-policy book
