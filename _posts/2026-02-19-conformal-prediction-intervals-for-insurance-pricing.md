@@ -185,11 +185,13 @@ Run the full diagnostic and plot with:
 ```python
 cp.summary(X_test, y_test, alpha=0.10)
 
-fig = cp.coverage_plot(X_test, y_test, alpha=0.10)
-fig.savefig("coverage_by_decile.png", dpi=150)
+# coverage_by_decile() returns a Polars DataFrame; plot the coverage column
+# against decile using your preferred plotting library
+decile_df = cp.coverage_by_decile(X_test, y_test, alpha=0.10)
+print(decile_df)
 ```
 
-`coverage_plot()` draws the decile coverage series with Wilson score confidence bands, which correctly propagate finite-sample uncertainty in the coverage estimate. With 400 observations per decile, those bands are roughly ±4pp - enough to distinguish a 65% coverage reading from a 90% one unambiguously.
+`summary()` prints marginal coverage and per-decile breakdown. `coverage_by_decile()` returns a Polars DataFrame — use it with matplotlib or polars.plot() to produce the governance chart. With 400 observations per decile, the Wilson score bands on individual coverage estimates are roughly ±4pp, enough to distinguish a 65% coverage reading from a 90% one unambiguously.
 
 ---
 

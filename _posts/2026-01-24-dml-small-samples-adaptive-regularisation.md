@@ -193,32 +193,22 @@ What v0.3.1 changes is this: below 50,000 policies, DML used to be actively harm
 
 ---
 
-## Sensitivity analysis after the causal estimate
+## Confounding bias report
 
-The causal estimate depends on the assumption that all relevant confounders are observed. In insurance that is always partially wrong — claim reporting behaviour, actual annual mileage, attitude to switching are confounders you rarely measure. Run the sensitivity analysis to see how fragile your conclusion is:
+The causal estimate depends on the assumption that all relevant confounders are observed. In insurance that is always partially wrong — claim reporting behaviour, actual annual mileage, attitude to switching are confounders you rarely measure. Use `confounding_bias_report()` to quantify how much a naive GLM estimate differs from the DML estimate:
 
 ```python
-from insurance_causal.diagnostics import sensitivity_analysis
-
 ate = model.average_treatment_effect()
-report = sensitivity_analysis(
-    ate=ate.estimate,
-    se=ate.std_error,
-    gamma_values=[1.0, 1.25, 1.5, 2.0, 3.0],
-)
-print(report[["gamma", "conclusion_holds", "ci_lower", "ci_upper"]])
+bias_report = model.confounding_bias_report(naive_coefficient=-0.041)
+print(bias_report[["treatment", "outcome", "naive_estimate", "causal_estimate", "bias_pct", "interpretation"]])
 ```
 
 ```
-gamma  conclusion_holds  ci_lower  ci_upper
-1.00   True              -0.0380   -0.0102
-1.25   True              -0.0410   -0.0072
-1.50   True              -0.0441   -0.0041
-2.00   True              -0.0502    0.0020
-3.00   False             -0.0624    0.0142
+treatment         outcome  naive_estimate  causal_estimate  bias_pct  interpretation
+pct_price_change  renewal         -0.0410          -0.0241    -70.1%  Naive model overstates sensitivity
 ```
 
-The conclusion holds to gamma=1.5. At gamma=2.0 the upper confidence bound just crosses zero. This means: if an unobserved confounder doubled the odds of receiving a large price increase for some policyholders, the estimated effect becomes fragile. For a Consumer Duty evidence pack that needs to demonstrate price fairness, a result robust to gamma=1.5 is reasonable — it means the unmeasured confounding would have to be substantial to overturn the direction of the effect. Document it that way.
+The GLM overstates sensitivity by 70%. If your optimiser uses -0.041 as the elasticity, it will grant too much discount to customers who would have renewed at higher prices. The `confounding_bias_report()` gives you the factual basis for explaining to a governance committee why a naive regression and a causal estimate diverge — and what the commercial consequence of using the biased number would be.
 
 ---
 

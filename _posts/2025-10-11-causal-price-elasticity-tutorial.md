@@ -79,7 +79,6 @@ est = RenewalElasticityEstimator(
     n_folds=5,
     catboost_iterations=800,
     binary_outcome=True,
-    log_price=True,      # treatment = log(offer/last_year), theta = elasticity
     random_state=42,
 )
 
@@ -168,7 +167,6 @@ est_dr = RenewalElasticityEstimator(
     n_folds=5,
     catboost_iterations=800,
     binary_outcome=True,
-    log_price=True,
     random_state=42,
 )
 est_dr.fit(df, outcome="renewed", treatment="log_price_change", confounders=confounders)

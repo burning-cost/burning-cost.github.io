@@ -92,7 +92,8 @@ report = MonitoringReport(
     murphy_distribution="poisson",
 )
 
-print(report.summary())
+print(report.recommendation)
+print(report.to_dict())
 ```
 
 What this returns:
@@ -140,21 +141,25 @@ The Gini drift z-test addresses a failure mode that neither PSI nor A/E can catc
 This happens when the model's learned monotonic relationships erode at the margins — typically due to interactions between a shifted variable and a stable one. The model correctly prices the average risk; it incorrectly ranks the tails. In a competitive pricing market, this means you are cheap on the highest-risk segment within each band, and expensive on the lowest-risk segment. You attract the wrong customers within every rating cell.
 
 ```python
-from insurance_monitoring.discrimination import gini_drift_test
+from insurance_monitoring.discrimination import gini_coefficient, gini_drift_test
+
+ref_gini = gini_coefficient(act_ref / exposure_ref, pred_ref)
+cur_gini = gini_coefficient(act_cur / exposure_cur, pred_cur)
 
 result = gini_drift_test(
+    reference_gini=ref_gini,
+    current_gini=cur_gini,
     reference_actual=act_ref / exposure_ref,
     reference_predicted=pred_ref,
     current_actual=act_cur / exposure_cur,
     current_predicted=pred_cur,
     n_bootstrap=2000,
-    seed=42,
 )
 
-print(f"Reference Gini: {result.gini_reference:.3f}")
-print(f"Current Gini:   {result.gini_current:.3f}")
+print(f"Reference Gini: {result.reference_gini:.3f}")
+print(f"Current Gini:   {result.current_gini:.3f}")
 print(f"z-statistic:    {result.z_statistic:.2f}")
-print(f"Status:         {result.status}")
+print(f"Significant:    {result.significant}")
 ```
 
 In this synthetic example the Gini degradation is mild — the age shift introduces only moderate ranking deterioration. In real portfolios, discrimination drift often precedes A/E movement because it is driven by the same composition change, but manifests faster: ranking is affected as soon as the new risk profiles enter the book, while A/E requires those profiles to generate claims.

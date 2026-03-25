@@ -65,19 +65,26 @@ history = ClaimsHistory(
     prior_premium=480.0,
 )
 
-model = DynamicPoissonGammaModel(
-    sigma_eta=0.15,    # state volatility: how fast risk can shift year-on-year
-    prior_alpha=4.0,   # Gamma prior shape
-    prior_beta=50.0,   # Gamma prior rate (implies prior mean 4/50 = 0.08 claims/veh-yr)
-)
+model = DynamicPoissonGammaModel()  # fits p and q by empirical Bayes
 model.fit([history])
 
-posterior = model.predict(history)
+# predict() returns the credibility factor (float): posterior_premium = cf * prior_premium
+credibility_factor = model.predict(history)
+posterior_premium = credibility_factor * history.prior_premium
 
-print(f"Posterior mean rate:  {posterior.lambda_mean:.4f}")
-print(f"95% credible interval: [{posterior.ci_lower:.4f}, {posterior.ci_upper:.4f}]")
-print(f"Credibility weight:   {posterior.credibility_weight:.3f}")
-print(f"Implied renewal loading: {posterior.renewal_multiplier:.3f}x prior premium")
+# For posterior uncertainty: retrieve Gamma params (alpha, beta)
+alpha_t, beta_t = model.predict_posterior_params(history)
+posterior_mean_rate = alpha_t / beta_t
+
+# 95% credible interval from the Gamma posterior
+from scipy.stats import gamma as gamma_dist
+ci_lower = gamma_dist.ppf(0.025, a=alpha_t, scale=1.0 / beta_t)
+ci_upper = gamma_dist.ppf(0.975, a=alpha_t, scale=1.0 / beta_t)
+
+print(f"Posterior mean rate:  {posterior_mean_rate:.4f}")
+print(f"95% credible interval: [{ci_lower:.4f}, {ci_upper:.4f}]")
+print(f"Credibility factor:   {credibility_factor:.3f}")
+print(f"Implied renewal loading: {credibility_factor:.3f}x prior premium")
 ```
 
 ```
@@ -129,18 +136,17 @@ where $\rho < 1$ is a discount factor derived from $\sigma^2_\eta$ and the expos
 You can see the implied weights for any fitted history:
 
 ```python
-weights = model.seniority_weights(history)
+from insurance_credibility import seniority_weights
+
+# seniority_weights is a module-level function: pass n_periods, fitted p and q
+weights = seniority_weights(
+    n_periods=len(history.periods),
+    p=model.p_,
+    q=model.q_,
+    exposures=history.exposures,
+)
 print(weights)
-# shape: (5, 2)
-# ┌────────┬────────────┐
-# │ period ┆ weight     │
-# ╞════════╪════════════╡
-# │      1 ┆ 0.147      │
-# │      2 ┆ 0.158      │
-# │      3 ┆ 0.165      │
-# │      4 ┆ 0.250      │
-# │      5 ┆ 0.280      │
-# └────────┴────────────┘
+# array([0.147, 0.158, 0.165, 0.250, 0.280])  — most recent period last
 ```
 
 This is directly auditable. When your underwriter asks why the renewal loading has increased, you can point to the weights and show that years 4 and 5 (with combined rates of 0.059 and 0.070) represent 53% of the evidence for the posterior rate, versus 38% under uniform weighting.
@@ -170,8 +176,12 @@ The main implementation decision is $\sigma_\eta$, the state volatility. The lib
 model = DynamicPoissonGammaModel()
 model.fit(histories)   # fits sigma_eta jointly from all histories in the portfolio
 
-print(f"Estimated sigma_eta: {model.sigma_eta_:.4f}")
-# Estimated sigma_eta: 0.1312
+# After fitting, the optimised parameters are model.p_ and model.q_
+# (The state volatility is implicitly encoded in these two parameters)
+print(f"Fitted p: {model.p_:.4f}")
+print(f"Fitted q: {model.q_:.4f}")
+# Fitted p: 0.8831
+# Fitted q: 0.8021
 ```
 
 The joint estimation uses the marginal likelihood. It is stable when you have 15 or more histories with three or more periods each. Below that, the likelihood surface is flat and the default prior (sigma_eta = 0.10) should be used explicitly.
@@ -189,24 +199,25 @@ A fleet scheme with claim_counts=[14, 16] in its last two years has a wide poste
 For pricing at the 75th percentile of the posterior - the conservative approach for a scheme with deteriorating loss history - you want the distribution. For explaining to a broker why you are not offering a flat renewal, the trajectory of the smoothed posterior (did the deterioration accelerate, plateau, or reverse?) is as useful as the headline number.
 
 ```python
-# Full posterior distribution at the renewal point
-dist = model.posterior_distribution(history)
-print(f"Median rate:        {dist.median:.4f}")
-print(f"75th percentile:    {dist.quantile(0.75):.4f}")
-print(f"95th percentile:    {dist.quantile(0.95):.4f}")
+# Full posterior at the renewal point: Gamma(alpha_t, beta_t)
+alpha_t, beta_t = model.predict_posterior_params(history)
 
-# Smoothed trajectory: how has the risk evolved?
-trajectory = model.smoothed_trajectory(history)
-print(trajectory)
-# ┌────────┬──────────────┬───────────────┬───────────────┐
-# │ period ┆ smoothed_rate ┆ ci_lower      ┆ ci_upper      │
-# ╞════════╪══════════════╪═══════════════╪═══════════════╡
-# │      1 ┆ 0.0368        ┆ 0.0241        ┆ 0.0543        │
-# │      2 ┆ 0.0339        ┆ 0.0225        ┆ 0.0494        │
-# │      3 ┆ 0.0351        ┆ 0.0238        ┆ 0.0503        │
-# │      4 ┆ 0.0548        ┆ 0.0392        ┆ 0.0748        │
-# │      5 ┆ 0.0641        ┆ 0.0524        ┆ 0.0775        │
-# └────────┴──────────────┴───────────────┴───────────────┘
+# Percentile credible intervals from the Gamma posterior
+from scipy.stats import gamma as gamma_dist
+print(f"Median rate:        {gamma_dist.ppf(0.50, a=alpha_t, scale=1/beta_t):.4f}")
+print(f"75th percentile:    {gamma_dist.ppf(0.75, a=alpha_t, scale=1/beta_t):.4f}")
+print(f"95th percentile:    {gamma_dist.ppf(0.95, a=alpha_t, scale=1/beta_t):.4f}")
+
+# Per-period scoring: predict_batch shows credibility factor and posterior premium
+# for each history in a portfolio
+batch = model.predict_batch([history])
+print(batch)
+# ┌────────────┬───────────────┬────────────────────┬───────────────────┐
+# │ policy_id  ┆ credibility_  ┆ posterior_premium  ┆ posterior_        │
+# │            ┆ factor        ┆                    ┆ variance          │
+# ╞════════════╪═══════════════╪════════════════════╪═══════════════════╡
+# │ FLEET_ABC  ┆ 1.283         ┆ 615.87             ┆ 0.0000041         │
+# └────────────┴───────────────┴────────────────────┴───────────────────┘
 ```
 
 The smoothed trajectory shows the step-change at period 4 clearly. A flat-weighted average obscures it. When you are presenting this renewal to a pricing manager or underwriter, the trajectory is the conversation.
