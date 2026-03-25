@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Physical Climate Risk in UK Home Insurance Pricing"
-date: 2027-03-25
+date: 2026-03-25
 categories: [pricing, techniques, tutorials]
 tags: [climate-risk, flood, weather, home-insurance, ukcp18, flood-re, whittaker, conformal, monitoring, insurance-whittaker, insurance-conformal, insurance-monitoring, trend, peril-modelling, uk-personal-lines, python]
 description: "How UK home insurers should model physical climate risk: UKCP18 projections, Flood Re's 2039 exit, ABI claims data, and practical code using insurance-whittaker, insurance-conformal, and insurance-monitoring."
