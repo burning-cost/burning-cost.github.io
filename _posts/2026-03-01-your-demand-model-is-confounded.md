@@ -113,16 +113,16 @@ Once you have an elasticity estimate, `DemandCurve` converts it into a callable 
 ```python
 from insurance_optimise.demand import DemandCurve, OptimalPrice
 
-curve = DemandCurve.from_estimator(
-    estimator=est,
-    base_conversion_rate=0.18,  # current book average
-    form="semi_log",
+curve = DemandCurve(
+    elasticity=est.elasticity_,
+    base_price=1.0,             # price_ratio of 1.0 = at technical premium
+    base_prob=0.18,             # current book average conversion rate
+    functional_form="semi_log",
 )
 
 # Conversion probability at different price levels relative to technical
-import polars as pl
-prices = pl.Series("price_ratio", [0.9, 1.0, 1.1, 1.2, 1.3])
-print(curve.predict(prices))
+prices, probs = curve.evaluate(price_range=(0.9, 1.3), n_points=5)
+print(probs)
 # [0.217, 0.180, 0.149, 0.124, 0.102]
 ```
 
@@ -166,16 +166,16 @@ The ENBP calculation is channel-specific. A customer who originally came via Con
 from insurance_optimise.demand.compliance import ENBPChecker
 
 checker = ENBPChecker(
-    new_business_price_col="nb_price",
+    nb_price_col="nb_price",
     renewal_price_col="renewal_price",
     channel_col="channel",
     tolerance=0.0,  # strict: renewal must be <= NB price
 )
 
-violations = checker.check(df_renewals)
-print(violations.shape[0], "policies with renewal_price > ENBP")
-print(violations.select(["policy_id", "channel", "renewal_price",
-                          "nb_price", "excess"]))
+report = checker.check(df_renewals)
+print(report.n_breaches, "policies with renewal_price > ENBP")
+print(report.breach_detail[["policy_id", "channel", "renewal_price",
+                             "nb_price", "breach_amount"]])
 ```
 
 Run this check before any renewal batch. If you have violations, fix them before renewal invitations go out. The FCA's multi-firm reviews have found implementation failures in ENBP calculation methodology - usually because new business prices were pulled from the wrong channel or because cashback incentives were not netted off correctly. The `ENBPChecker` is a systematic audit against these failure modes.

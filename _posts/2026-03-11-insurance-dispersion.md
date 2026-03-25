@@ -68,9 +68,10 @@ model = DGLM(
     formula="claim_severity ~ age_band + vehicle_group + ncb",
     dformula="~ age_band + vehicle_group",
     family=fam.Gamma(),
+    data=df_train,
     method="reml",      # REML correction on by default
 )
-result = model.fit(df_train, maxit=30)
+result = model.fit()
 ```
 
 The `method='reml'` default applies the Smyth-Verbyla (1999) correction. It adjusts the dispersion pseudo-responses by the hat diagonal from the mean model — removing the contribution of estimating the mean parameters from the dispersion likelihood. For insurance mean models with many factor levels, REML materially reduces the bias in phi estimates. We use it by default.
@@ -100,7 +101,7 @@ The SCR calculation at 99.5th percentile requires `Var[Y_i]` at individual polic
 The DGLM delivers individual-level variance with a workflow that plugs into existing GLM infrastructure. The result object exposes this directly:
 
 ```python
-result = model.fit(df_train)
+result = model.fit()
 
 # Per-policy variance prediction
 var_pred = result.predict(df_holdout, which="variance")
@@ -124,19 +125,19 @@ With phi_i varying by segment, the Tweedie dispersion absorbs segment-specific v
 After fitting, the result object gives you the same outputs you would expect from a GLM, plus the dispersion-specific ones:
 
 ```python
-result = model.fit(df_train, response="claim_severity")
+result = model.fit()
 
 # Fitted phi per training observation
 result.phi_                 # array of length n_train
 
-# Log-likelihood and deviance
-result.mean_deviance_
-result.dispersion_deviance_
+# Log-likelihood
+result.loglik
+result.aic
 
 # Predict on new data
-mu_hat  = result.predict_mean(df_holdout)
-phi_hat = result.predict_dispersion(df_holdout)
-var_hat = result.predict_variance(df_holdout)
+mu_hat  = result.predict(df_holdout, which="mean")
+phi_hat = result.predict(df_holdout, which="dispersion")
+var_hat = result.predict(df_holdout, which="variance")
 ```
 
 ---
@@ -148,10 +149,10 @@ Before committing to a DGLM, you want to test whether dispersion actually varies
 ```python
 lrt = result.overdispersion_test()
 
-print(lrt)
-# {'statistic': 187.4, 'df': 6, 'p_value': 0.0, 'conclusion': 'Reject constant phi (dispersion varies by covariates)'}
-# H0: phi is constant (standard GLM)
-# H1: phi varies with dispersion covariates
+print(f"LRT statistic: {lrt['statistic']:.1f}  df: {lrt['df']}  p-value: {lrt['p_value']:.3e}")
+print(lrt['conclusion'])
+# LRT statistic: 187.4  df: 6  p-value: < 0.001
+# Reject constant phi (dispersion varies by covariates)
 ```
 
 The test statistic is -2 times the difference in log-likelihoods between the DGLM and the constrained model (constant phi). Under H0 it is asymptotically chi-squared with degrees of freedom equal to the number of dispersion parameters minus one (the intercept). A p-value below 0.05 tells you the constant-phi assumption is rejected.
@@ -212,6 +213,7 @@ The dispersion relativities are multiplicative in the same sense as the mean rel
 import numpy as np
 import pandas as pd
 from insurance_dispersion import DGLM
+import insurance_dispersion.families as fam
 
 # UK motor severity dataset — one row per paid claim
 np.random.seed(42)
@@ -234,9 +236,10 @@ model = DGLM(
     formula="claim_severity ~ age_band + vehicle_group + ncb",
     dformula="~ age_band + vehicle_group",
     family=fam.Gamma(),
+    data=train,
     method="reml",
 )
-result = model.fit(train)
+result = model.fit()
 
 # Overdispersion test first — confirm we need the DGLM
 lrt = result.overdispersion_test()
@@ -306,8 +309,9 @@ model = DGLM(
     formula="claim_severity ~ age_band + vehicle_group + ncb + region",
     dformula="~ age_band + vehicle_group",
     family=fam.Gamma(),
+    data=df_train,
 )
-result = model.fit(df_train)
+result = model.fit()
 
 # Test whether DGLM is warranted
 lrt = result.overdispersion_test()
