@@ -2,7 +2,7 @@
 layout: post
 title: "Discrimination-Insensitive Pricing: Beyond Removing the Protected Variable"
 date: 2026-03-25
-published: false
+published: true
 categories: [fairness, techniques, tutorials]
 tags: [proxy-discrimination, fairness, reweighting, kl-divergence, propensity-scores, insurance-fairness, fca, consumer-duty, equality-act, uk-motor, tutorial]
 description: "insurance-fairness v0.6.3 ships DiscriminationInsensitiveReweighter. Here's why dropping the protected column doesn't work, how propensity-based reweighting does, and what the API looks like."
@@ -52,24 +52,23 @@ The ratio behaves as follows: observations that are "predictable" from their fea
 
 After reweighting, any model trained with `sample_weight=weights` cannot achieve a loss reduction by exploiting A, either directly or via proxy features. The mathematical guarantee is X ⊥ A under the reweighted measure.
 
-One subtlety worth flagging: the propensity score itself is a diagnostic. If your logistic regression achieves 85% accuracy predicting gender from your feature matrix, that is telling you your features are strong gender proxies. That's information. The `diagnostics()` method in the reweighter surfaces exactly this.
+One subtlety worth flagging: the propensity score itself is a diagnostic. If your logistic regression achieves 85% accuracy predicting gender from your feature matrix, that is telling you your features are strong gender proxies. That's information. The `.diagnostics` property in the reweighter surfaces exactly this.
 
 ---
 
 ## The API
 
-`DiscriminationInsensitiveReweighter` takes the training DataFrame — including the protected column — and returns sample weights. Everything else in your training pipeline stays the same.
+`DiscriminationInsensitiveReweighter` takes the feature matrix X and the protected attribute array A separately, and returns sample weights. Everything else in your training pipeline stays the same.
 
 ```python
 from insurance_fairness import DiscriminationInsensitiveReweighter
 
 rw = DiscriminationInsensitiveReweighter(
-    protected_col="gender",   # column name for protected attribute
     method="logistic",        # 'logistic' (default) or 'forest'
     clip_quantile=0.99,       # clip top 1% of weights (recommended for production)
     random_state=42,
 )
-weights = rw.fit_transform(X_train)
+weights = rw.fit_transform(X_train, A_train)
 ```
 
 The `method` parameter controls propensity estimation. `'logistic'` is faster, interpretable, and appropriate when the relationship between features and the protected attribute is roughly linear. `'forest'` (random forest) captures non-linear proxy relationships and is worth trying if you have categorical features with complex interactions — occupation × region type combinations, for instance.
@@ -111,26 +110,26 @@ log_mu = (
 )
 claims = rng.poisson(np.exp(log_mu))
 
-df = pd.DataFrame({
-    "gender": gender,
+# X: features excluding the protected attribute
+X = pd.DataFrame({
     "age": age,
     "occupation_risk": occupation_risk,
     "vehicle_value": vehicle_value,
     "annual_mileage": annual_mileage,
 })
+A = pd.Series(gender, name="gender")
 y = claims
 
 # ── Step 1: fit the reweighter ──────────────────────────────────────────────
 rw = DiscriminationInsensitiveReweighter(
-    protected_col="gender",
     method="logistic",
     clip_quantile=0.99,
     random_state=42,
 )
-weights = rw.fit_transform(df)
+weights = rw.fit_transform(X, A)
 
 # ── Step 2: inspect diagnostics ─────────────────────────────────────────────
-diag = rw.diagnostics(df)
+diag = rw.diagnostics
 print(f"Propensity model accuracy: {diag.propensity_model_score:.3f}")
 # High accuracy (e.g. 0.73) means features are strong gender proxies.
 # That's the problem we're solving.
@@ -141,21 +140,20 @@ print(f"Effective sample size: {diag.weight_stats['effective_n']:.0f} / {n}")
 print(f"Weight range: [{diag.weight_stats['min']:.3f}, {diag.weight_stats['max']:.3f}]")
 
 # ── Step 3: train without reweighting (naive baseline) ──────────────────────
-X_model = df.drop(columns=["gender"])
 glm_base = PoissonRegressor(max_iter=300)
-glm_base.fit(X_model, y)
-pred_base = glm_base.predict(X_model)
+glm_base.fit(X, y)
+pred_base = glm_base.predict(X)
 
 # ── Step 4: train with reweighting ──────────────────────────────────────────
 glm_fair = PoissonRegressor(max_iter=300)
-glm_fair.fit(X_model, y, sample_weight=weights)
-pred_fair = glm_fair.predict(X_model)
+glm_fair.fit(X, y, sample_weight=weights)
+pred_fair = glm_fair.predict(X)
 
 # ── Step 5: compare demographic parity ──────────────────────────────────────
 # demographic_parity_ratio: mean(pred | group=1) / mean(pred | group=0)
 # A value far from 1.0 indicates pricing differences not explained by risk.
-dpr_base = demographic_parity_ratio(pred_base, df["gender"])
-dpr_fair = demographic_parity_ratio(pred_fair, df["gender"])
+dpr_base = demographic_parity_ratio(pred_base, A)
+dpr_fair = demographic_parity_ratio(pred_fair, A)
 
 print(f"Demographic parity ratio — baseline: {dpr_base:.4f}")
 print(f"Demographic parity ratio — reweighted: {dpr_fair:.4f}")
@@ -170,7 +168,7 @@ Note that we never remove `occupation_risk` from the model. It remains a feature
 
 ## Reading the diagnostics
 
-The `diagnostics()` method returns a `ReweighterDiagnostics` dataclass with five fields that matter:
+The `.diagnostics` property returns a `ReweighterDiagnostics` dataclass with five fields that matter:
 
 **`propensity_model_score`** — accuracy of the propensity model on training data. Chance level for binary protected attribute is 0.5. A score of 0.75 means your features explain 50% of the above-chance variation in group membership. That's a substantial proxy problem.
 
@@ -215,7 +213,7 @@ Reweighting achieves statistical independence X ⊥ A under the training measure
 
 For pure proxy discrimination — where A affects Y only through X — the approach is exact. For mixed cases, the choice of approach depends on your causal graph. The `optimal_transport.CausalGraph` module in insurance-fairness implements the Lindholm causal decomposition if you need finer-grained control over which paths to block.
 
-The propensity model is estimated from training data. If the propensity model is misspecified — if the true relationship between X and A is non-linear and you're using logistic regression — the weights will be approximate. `method='forest'` is more flexible here at the cost of interpretability. In either case, `diagnostics()` tells you whether the propensity model is well-calibrated, which is a reasonable proxy for whether the weights are reliable.
+The propensity model is estimated from training data. If the propensity model is misspecified — if the true relationship between X and A is non-linear and you're using logistic regression — the weights will be approximate. `method='forest'` is more flexible here at the cost of interpretability. In either case, `.diagnostics` tells you whether the propensity model is well-calibrated, which is a reasonable proxy for whether the weights are reliable.
 
 ---
 
