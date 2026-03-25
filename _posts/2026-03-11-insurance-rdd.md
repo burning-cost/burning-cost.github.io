@@ -90,8 +90,7 @@ rd = PoissonRD(
     cutoff=300,
     exposure='exposure_years',
     data=df,
-    bandwidth=24.0,    # months; or let it select via cross-validation
-    poly_order=1,
+    h=24.0,    # bandwidth in months; omit to use cross-validated selection
     n_boot=500,
 )
 result = rd.fit()
@@ -167,14 +166,13 @@ mc_rd = MultiCutoffRD(
     outcome_type='poisson',
     exposure='exposure_years',
     data=df,
-    discrete=True,    # integer NCD levels — uses rdlocrand randomisation inference
 )
 mc_result = mc_rd.fit()
 
 print(mc_result.pooled_effect())
 # Pooled rate ratio: 0.94 (95% CI: 0.88, 1.01) — not significant at 5%
 
-print(mc_result.cutoff_effects())
+print(mc_result.cutoff_effects_df)
 # NCD 0→1:  rate ratio 0.92, p=0.12
 # NCD 1→2:  rate ratio 0.96, p=0.38
 # NCD 2→3:  rate ratio 0.91, p=0.09

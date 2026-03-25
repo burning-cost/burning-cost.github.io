@@ -134,8 +134,8 @@ The ICL improvement over the base CT ensemble is about 0.03 Poisson deviance uni
 ## Quick start
 
 ```python
-from insurance_credibility_transformer import CredibilityTransformer
-import pandas as pd
+from insurance_credibility_transformer import CredibilityTransformer, CredibilityTransformerTrainer
+import numpy as np
 
 # df: policy-level DataFrame
 # Claims column: integer claim counts
@@ -144,26 +144,27 @@ import pandas as pd
 # Continuous columns: standardised internally
 
 ct = CredibilityTransformer(
-    embedding_dim=5,
+    cat_cardinalities=[6, 12, 2, 22],  # cardinality of each categorical feature
+    n_num_features=5,                  # number of continuous features
+    embed_dim=5,
     alpha=0.90,
-    n_runs=5,
-    loss="poisson_deviance",
 )
 
-ct.fit(
-    df_train,
-    claims_col="claim_count",
-    exposure_col="exposure",
-    categorical_cols=["area", "vehicle_brand", "fuel_type", "region"],
-    continuous_cols=["vehicle_power", "vehicle_age", "driver_age", "bonus_malus", "density"],
+trainer = CredibilityTransformerTrainer(model=ct, loss="poisson", n_ensemble=5)
+trainer.fit(
+    x_cat=x_cat_train,
+    x_num=x_num_train,
+    y=y_train,
+    exposure=exposure_train,
 )
 
-# Ensemble mean of n_runs models
-mu_hat = ct.predict(df_test)
+# Ensemble mean of n_ensemble models
+mu_hat = trainer.predict(x_cat=x_cat_test, x_num=x_num_test, exposure=exposure_test)
 
 # Inspect attention-as-credibility weights
-# P_i: credibility weight for each test observation
-P = ct.credibility_weights(df_test)
+# P_i: credibility weight for each test observation (CLS self-attention weight)
+_, attn = ct.encode(x_cat=x_cat_test, x_num=x_num_test, return_attn=True)
+P = attn[-1][:, -1, -1].detach().numpy()   # last layer, CLS-to-CLS weight
 print(f"Mean P: {P.mean():.3f}  (range {P.min():.3f}–{P.max():.3f})")
 ```
 
@@ -172,23 +173,34 @@ The `credibility_weights()` method returns P for each observation — the CLS se
 For ICL-CT:
 
 ```python
-from insurance_credibility_transformer import ICLCredibilityTransformer
+from insurance_credibility_transformer import ICLCredibilityTransformer, ICLTrainer
 
 icl_ct = ICLCredibilityTransformer(
     base_ct=ct,  # pre-trained phase 1 model
-    context_k=64,
-    context_pool_size=1000,
+    icl_layers=2,
     kappa_init=1.0,
 )
 
-# Phase 2 training
-icl_ct.fit_icl(df_train, claims_col="claim_count", exposure_col="exposure")
+# Phase 2 training via ICLTrainer
+icl_trainer = ICLTrainer(model=icl_ct, context_size=64)
+icl_trainer.fit(
+    x_cat=x_cat_train, x_num=x_num_train,
+    y=y_train, exposure=exposure_train,
+)
 
-# Inference: retrieves context automatically
-mu_icl = icl_ct.predict(df_test, reference_pool=df_train)
+# Inference: pass context pool explicitly
+mu_icl = icl_trainer.predict(
+    x_cat_target=x_cat_test, x_num_target=x_num_test, exposure_target=exposure_test,
+    x_cat_context=x_cat_train, x_num_context=x_num_train,
+    y_context=y_train, exposure_context=exposure_train,
+)
 
-# Zero-shot: works even if df_new contains vehicle models not in df_train
-mu_new = icl_ct.predict(df_new, reference_pool=df_train)
+# Zero-shot: works even if x_cat_new contains vehicle models not in training set
+mu_new = icl_trainer.predict(
+    x_cat_target=x_cat_new, x_num_target=x_num_new, exposure_target=exposure_new,
+    x_cat_context=x_cat_train, x_num_context=x_num_train,
+    y_context=y_train, exposure_context=exposure_train,
+)
 ```
 
 ---

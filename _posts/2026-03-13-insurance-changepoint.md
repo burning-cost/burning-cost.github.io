@@ -54,10 +54,10 @@ from insurance_dynamics.changepoint import FrequencyChangeDetector
 import numpy as np
 
 detector = FrequencyChangeDetector(
-    hazard=0.1,       # Prior probability of a changepoint at any period
-    alpha0=1.0,       # Gamma prior shape for claim rate
-    beta0=10.0,       # Gamma prior rate for claim rate
-    threshold=0.5,    # Posterior probability threshold to flag a break
+    hazard=0.1,           # Prior probability of a changepoint at any period
+    prior_alpha=1.0,      # Gamma prior shape for claim rate
+    prior_beta=10.0,      # Gamma prior rate for claim rate
+    threshold=0.5,        # Posterior probability threshold to flag a break
 )
 
 # Quarterly data: 20 quarters of BI frequency
@@ -67,7 +67,7 @@ exposure = np.array([920, 910, 935, 905, 915, 900, 925, 930, 910, 920,
                      890, 905, 920, 895, 910, 885, 915, 900, 895, 880])
 periods = [f"Q{q}" for q in range(1, 21)]
 
-result = detector.fit(claims=claims, exposure=exposure, periods=periods)
+result = detector.fit(claim_counts=claims, earned_exposure=exposure, periods=periods)
 
 print(f"Detected breaks: {result.n_breaks}")
 for brk in result.detected_breaks:
@@ -77,7 +77,7 @@ for brk in result.detected_breaks:
 
 The `ChangeResult` object carries the full posterior: `changepoint_probs` is a length-T array of P(changepoint at t) for every period, `run_length_probs` is the T×T matrix of run-length posteriors, and `detected_breaks` is the list of periods where the posterior exceeded the threshold.
 
-The Gamma prior parameters `alpha0` and `beta0` encode your prior belief about the claim rate. `alpha0=1.0, beta0=10.0` means a prior mean rate of α/β = 0.10 claims per vehicle-year — roughly in the right ballpark for UK motor BI frequency. These are weakly informative priors; after even a few quarters of data the likelihood dominates. If you have a historical estimate of your frequency you can set them to reflect it: `alpha0=2.0, beta0=25.0` implies a prior mean of 0.08 with tighter concentration.
+The Gamma prior parameters `prior_alpha` and `prior_beta` encode your prior belief about the claim rate. `prior_alpha=1.0, prior_beta=10.0` means a prior mean rate of α/β = 0.10 claims per vehicle-year — roughly in the right ballpark for UK motor BI frequency. These are weakly informative priors; after even a few quarters of data the likelihood dominates. If you have a historical estimate of your frequency you can set them to reflect it: `prior_alpha=2.0, prior_beta=25.0` implies a prior mean of 0.08 with tighter concentration.
 
 For severity monitoring, `SeverityChangeDetector` uses a Normal-Normal conjugate (or Normal-InverseGamma for unknown variance) applied to log-transformed claim amounts. The API is identical.
 
@@ -93,15 +93,15 @@ Bayesian change-point detection is more powerful when you have prior knowledge a
 from insurance_dynamics.changepoint import FrequencyChangeDetector, UKEventPrior
 
 prior = UKEventPrior(
-    events=["whiplash_reform", "ogden_2017", "ogden_2021",
-            "gipp", "covid_q1_2020", "storm_ciara"],
-    spike_multiplier=3.0,   # hazard × 3.0 at event periods
-    spike_width=1,          # apply spike to the event quarter ± 1 period
+    lines=["motor"],                  # filter to motor-relevant events
+    components=["frequency"],         # only frequency events (not severity)
 )
 
 detector = FrequencyChangeDetector(
     hazard=0.1,
-    uk_event_prior=prior,
+    uk_events=True,
+    event_lines=["motor"],
+    event_components=["frequency"],
     threshold=0.5,
 )
 ```
@@ -128,12 +128,12 @@ result = detector.fit(
 
 # Quarter ends; new data arrives
 new_result = detector.update(
-    claims=np.array([22]),
-    exposure=np.array([870]),
+    n=22,
+    exposure=870,
     period="Q21",
 )
 
-print(f"P(changepoint at Q21): {new_result.changepoint_probs[-1]:.3f}")
+print(f"P(changepoint at Q21): {new_result:.3f}")
 # P(changepoint at Q21): 0.127
 # No alert — consistent with ongoing low-frequency regime
 ```
@@ -157,14 +157,15 @@ from insurance_dynamics.changepoint import RetrospectiveBreakFinder
 
 finder = RetrospectiveBreakFinder(
     penalty=3.0,        # BIC-style penalty; higher -> fewer breaks
-    model="poisson",    # Poisson cost function for count data
+    model="l2",         # cost function for the segmentation
     n_bootstraps=500,   # Bootstrap resamples for CI estimation
-    ci_level=0.95,
+    confidence=0.95,
 )
 
+# Compute claim frequency rate as the series to analyse
+frequency = claims / exposure
 break_result = finder.fit(
-    claims=claims,
-    exposure=exposure,
+    series=frequency,
     periods=periods,
 )
 
@@ -189,17 +190,16 @@ A loss ratio regime change is usually driven by either frequency, severity, or b
 ```python
 from insurance_dynamics.changepoint import LossRatioMonitor
 
-monitor = LossRatioMonitor(
-    frequency_hazard=0.1,
-    severity_hazard=0.1,
-    uk_event_prior=prior,
+lr_monitor = LossRatioMonitor(
+    hazard=0.1,
+    uk_events=True,
     threshold=0.5,
 )
 
-monitor_result = monitor.fit(
-    claims=claims,
-    exposure=exposure,
-    avg_claim_amounts=severities,
+monitor_result = lr_monitor.monitor(
+    claim_counts=claims,
+    exposures=exposure,
+    mean_severities=severities,
     periods=periods,
 )
 
@@ -226,16 +226,17 @@ from insurance_dynamics.changepoint import ConsumerDutyReport
 
 report = ConsumerDutyReport(
     result=monitor_result,
-    model_name="Motor BI Frequency Model v3.2",
-    reporting_period="Q4 2025",
-    analyst="J. Smith",
+    product="Motor BI",
+    segment="All segments",
+    monitoring_frequency="quarterly",
+    reviewed_by="J. Smith",
 )
 
 report.to_html("motor_bi_monitoring_Q4_2025.html")
-report.to_csv("motor_bi_monitoring_Q4_2025.csv")
+print(report.to_dict())  # structured output for data retention
 ```
 
-The HTML report is formatted for inclusion in a model governance pack. The CSV is for data retention. Both are generated from the same `MonitorResult` object, so there is no discrepancy between what was computed and what was reported.
+The HTML report is formatted for inclusion in a model governance pack. `to_dict()` returns a structured Python dictionary for data retention and downstream processing. Both are generated from the same `MonitorResult` object, so there is no discrepancy between what was computed and what was reported.
 
 We want to be clear about what this does and does not do. It does not make a Consumer Duty compliance decision for you. Consumer Duty compliance requires a firm-level governance framework that goes well beyond a single monitoring report. What `ConsumerDutyReport` does is operationalise the monitoring evidence generation — the part that is currently being done informally, inconsistently, and incompletely at most UK insurers.
 

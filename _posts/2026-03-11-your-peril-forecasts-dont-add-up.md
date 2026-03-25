@@ -105,7 +105,7 @@ MinTrace with `W = diag(earned_premium)` encodes this directly: high-EP series a
 `PremiumWeightedMinTrace` implements this:
 
 ```python
-from insurance_reconcile.reconcile import PremiumWeightedMinTrace
+from insurance_reconcile import PremiumWeightedMinTrace
 
 ep = {
     'Home':             8_000_000,
@@ -177,7 +177,6 @@ from insurance_reconcile.reconcile import FreqSevReconciler
 
 fs_reconciler = FreqSevReconciler(
     earned_premium=ep,
-    freq_weight=0.5,   # relative weight on frequency vs severity adjustment
 )
 
 freq_reconciled, sev_reconciled = fs_reconciler.reconcile(
@@ -188,7 +187,7 @@ freq_reconciled, sev_reconciled = fs_reconciler.reconcile(
 )
 ```
 
-The `freq_weight` parameter controls how the adjustment is split between frequency and severity. `freq_weight=0.5` splits equally; `freq_weight=0.8` means 80% of the adjustment is absorbed by frequency and 20% by severity. In practice, if your severity model is more stable than your frequency model — which is typical for attritional motor BI — you would set `freq_weight` above 0.5.
+The frequency and severity adjustments are handled independently in the log-space transform. In practice, if your severity model is more stable than your frequency model — which is typical for attritional motor BI — you can pass a custom `sev_reconciler` with tighter penalty to limit severity adjustments relative to frequency.
 
 ---
 
