@@ -239,22 +239,20 @@ uv add insurance-monitoring
 ```
 
 ```python
-from insurance_monitoring import ModelMonitor
+from insurance_monitoring import MonitoringReport
 
-monitor = ModelMonitor(
-    model=surrogate,
-    reference_data=X_train,
-    reference_period="2023",
-)
-
-# Run on new quarter
-report = monitor.check(
-    new_data=X_2024q1,
-    actuals=claims_2024q1,
+# Run on new quarter — MonitoringReport is a dataclass, no .run() call needed
+report = MonitoringReport(
+    reference_actual=reference_claims,
+    reference_predicted=surrogate.model.predict(X_train),
+    current_actual=claims_2024q1,
+    current_predicted=surrogate.model.predict(X_2024q1),
     exposure=exposure_2024q1,
+    feature_df_reference=X_train,
+    feature_df_current=X_2024q1,
 )
 
-print(report.summary())
+print(report.recommendation)  # NO_ACTION | RECALIBRATE | REFIT | INVESTIGATE
 # Flags: covariate drift on veh_group (PSI=0.14), AE ratio 1.08 (warning threshold 1.05)
 ```
 

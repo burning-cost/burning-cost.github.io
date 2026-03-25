@@ -108,9 +108,9 @@ from insurance_causal.rate_change import RateChangeEvaluator, make_rate_change_d
 
 evaluator = RateChangeEvaluator(
     outcome_col="loss_ratio",
-    change_period=9,             # month index when market hardened
+    treatment_period=9,          # month index when market hardened
     unit_col="segment",
-    exposure_col="earned_exposure",
+    weight_col="earned_exposure",
 )
 result = evaluator.fit(df).summary()
 print(result)

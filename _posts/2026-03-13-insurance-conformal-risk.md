@@ -21,21 +21,21 @@ E[L(Y, d(X))] ≤ α
 
 where `L` is your loss function and `α` is the risk level. Not the probability that `L` exceeds a threshold — the expected value of `L` itself.
 
-[`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this for UK pricing workflows. Three controllers, each targeting a different risk the pricing team cares about.
+[`insurance-conformal-risk`](https://github.com/burning-cost/insurance-conformal-risk) implements this for UK pricing workflows. Three controllers, each targeting a different risk the pricing team cares about.
 
 ```bash
-pip install insurance-conformal
+pip install insurance-conformal-risk
 ```
 
 ---
 
 ## The confusion worth clearing up
 
-`insurance-conformal` and `insurance-conformal` address different questions. They are related but distinct.
+`insurance-conformal` and `insurance-conformal-risk` address different questions. They are related but distinct.
 
 `insurance-conformal` controls **coverage probability**: the claim falls within the prediction interval on at least `1 - α` of policies. It finds the smallest interval such that `P(Y ≤ upper) ≥ 1 - α`. The output is an interval. The guarantee is about frequency of inclusion.
 
-`insurance-conformal` controls **expected monetary loss**: the expected shortfall from underpriced policies, as a fraction of premium income, is at most `α`. It finds the smallest loading multiplier λ such that `E[max(claim - λ·premium, 0) / premium] ≤ α`. The output is a loading factor. The guarantee is about financial exposure.
+`insurance-conformal-risk` controls **expected monetary loss**: the expected shortfall from underpriced policies, as a fraction of premium income, is at most `α`. It finds the smallest loading multiplier λ such that `E[max(claim - λ·premium, 0) / premium] ≤ α`. The output is a loading factor. The guarantee is about financial exposure.
 
 Coverage control suits regulators who think in terms of miscoverage rates. Risk control suits actuaries who think in terms of loss ratios.
 
@@ -58,7 +58,7 @@ where `y` is the actual claim, `p` is the base premium, and `λ` is the loading 
 `PremiumSufficiencyController` finds the smallest `λ*` such that the expected shortfall does not exceed `α`:
 
 ```python
-from insurance_conformal.risk import PremiumSufficiencyController
+from insurance_conformal_risk import PremiumSufficiencyController
 import numpy as np
 
 # y_cal: claims on calibration set
@@ -129,7 +129,7 @@ The second controller addresses a different optimisation problem. You have confo
 This is relevant in any workflow where interval width is the cost. Underwriting might quote on the basis of the upper bound: wider intervals mean higher quoted premiums, which means less competitive pricing on well-priced risks. The width budget is a business constraint.
 
 ```python
-from insurance_conformal.risk import IntervalWidthController
+from insurance_conformal_risk import IntervalWidthController
 
 # upper_cal, lower_cal: conformal intervals on calibration set
 iwc = IntervalWidthController(
@@ -153,7 +153,7 @@ The third controller solves a structurally different problem: selective acceptan
 This is SCRC-I from arXiv:2512.12844 (Selective Conformal Risk Control) with a DKW-based correction on the selection rate.
 
 ```python
-from insurance_conformal.risk import SelectiveRiskController
+from insurance_conformal_risk import SelectiveRiskController
 
 # Loss function: fraction of accepted policies with large claims
 def large_claim_loss(y, scores):
@@ -203,7 +203,7 @@ The library is designed to stack with `insurance-conformal` intervals. A typical
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
-from insurance_conformal.risk import PremiumSufficiencyController
+from insurance_conformal_risk import PremiumSufficiencyController
 
 # Step 1: conformal intervals
 cp = InsuranceConformalPredictor(model=fitted_gbm)
@@ -240,15 +240,15 @@ If calibration fails entirely — `RuntimeError: No lambda controls expected ris
 - 121 tests, MIT-licensed, Python 3.10+
 
 ```bash
-pip install insurance-conformal
+pip install insurance-conformal-risk
 ```
 
-Source at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).
+Source at [github.com/burning-cost/insurance-conformal-risk](https://github.com/burning-cost/insurance-conformal-risk).
 
 ---
 
 ## See also
 
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — coverage probability control, conformal prediction intervals, SCR upper bounds. The sibling library that controls frequency of error rather than magnitude. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — coverage probability control, conformal prediction intervals, SCR upper bounds. The companion library that controls frequency of error rather than magnitude. [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
 - [`insurance-evt`](https://github.com/burning-cost/insurance-evt) — when the shortfall you care about is in the extreme tail, EVT gives you return levels and XL layer pricing from the GPD. [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/)
 - [`insurance-dro`](https://github.com/burning-cost/insurance-dro) — distributional robustness at the optimisation stage. DRO protects the rate recommendation against demand model misspecification; CRC protects the premium against claims model error. Different problems, complementary tools. [Robust Rate Optimisation: Pricing Against Demand Model Misspecification](/2026/03/13/insurance-dro/)

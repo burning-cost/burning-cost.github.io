@@ -140,7 +140,7 @@ For overdispersed frequency data — fleet motor, commercial property with multi
 from insurance_distributional import NegBinomialGBM
 
 # Fleet motor: overdispersed claim counts
-nb_model = NegBinomialGBM(r_model=False, random_state=42)
+nb_model = NegBinomialGBM(model_r=False, random_state=42)
 nb_model.fit(X_fleet, y_fleet, exposure=exposure_fleet)
 
 nb_pred = nb_model.predict(X_fleet, exposure=exposure_fleet)

@@ -266,7 +266,7 @@ report = ModelValidationReport(
     exposure_val=np.ones(len(y_large_bi_val)),
 )
 report.run()
-report.to_html("large_bi_severity_validation.html")
+report.to_json("large_bi_severity_validation.json")
 ```
 
 The `limitations` field is where the Ogden and PPO assumptions belong. PRA supervisory visits to large motor insurers have increasingly focused on whether large BI reserving models have documented their Ogden rate assumptions explicitly — not as a footnote, but as a named limitation with a stated sensitivity range. A governance report that shows the model is hard-coded to the current rate, with no mechanism to update it when the rate changes, is a finding.

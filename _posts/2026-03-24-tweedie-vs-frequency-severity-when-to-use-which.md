@@ -127,8 +127,9 @@ print(f"Spearman rho (N,S): {model.rho_:.3f}")
 
 # Step 3: Apply correction factors at scoring time
 corrections = model.premium_correction(X_new)
-# corrections is a numpy array of multiplicative factors, one per policy
-# corrected_premium = freq_prediction * sev_prediction * corrections
+# corrections is a pandas DataFrame with columns: correction_factor, premium_joint, etc.
+# corrected_premium = freq_prediction * sev_prediction * corrections["correction_factor"].to_numpy()
+
 ```
 
 The omega parameter is the Sarmanov dependence parameter. A negative omega means high-frequency risks have lower conditional severity - consistent with the NCD suppression story. On a synthetic UK motor book with planted negative dependence (omega = -1.5), the library recovers omega within about 20% on 20,000+ policies.

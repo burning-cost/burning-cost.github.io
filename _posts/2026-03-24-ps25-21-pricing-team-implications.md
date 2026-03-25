@@ -92,9 +92,10 @@ card = MRMModelCard(
 review_months = {1: 6, 2: 12, 3: 18}  # Tier 1 = highest risk, shortest cycle
 import datetime
 next_review = datetime.date.today() + datetime.timedelta(days=30 * review_months[tier.tier])
+card.next_review_date = str(next_review)
 
-inventory.register(card, tier=tier, next_review_date=str(next_review))
-print(inventory.list_overdue())
+inventory.register(card, tier=tier)
+print(inventory.overdue())
 ```
 
 The `tier.tier` value comes from the six-dimension composite score — GWP, model complexity, deployment status, regulatory use, external data use, customer-facing. A model touching £85m of GWP, using external telematics data, and directly pricing customers will score Tier 1 regardless of how benign you think it is. A legacy book-pricing model in run-off, limited customer exposure, no external data, might legitimately score Tier 3 — and under the harm-proportionate framework, you now have a documented, auditable basis for an 18-month review cycle rather than an annual one.

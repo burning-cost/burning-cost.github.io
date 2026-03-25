@@ -215,18 +215,18 @@ X_tr, X_te, y_tr, y_te, exp_tr, exp_te = train_test_split(
     test_size=0.25, random_state=42,
 )
 
+# Fit a target-only baseline for comparison
+from insurance_thin_data import GLMTransfer
+target_only = GLMTransfer(family="poisson", lambda_pool=0.0, lambda_debias=0.0)
+target_only.fit(X_tr, y_tr, exp_tr)
+
 diag = NegativeTransferDiagnostic()
-result = diag.run(
+result = diag.evaluate(
     X_test=X_te,
     y_test=y_te,
     exposure_test=exp_te,
     transfer_model=model,
-    X_train=X_tr,
-    y_train=y_tr,
-    exposure_train=exp_tr,
-    X_source=X_source,
-    y_source=y_source,
-    exposure_source=exposure_source,
+    target_only_model=target_only,
 )
 
 print(result)

@@ -489,12 +489,13 @@ uv add insurance-cv
 ```
 
 ```python
-from insurance_cv import TemporalCV, evaluate_glm
+from insurance_cv import walk_forward_split, InsuranceCV
 
-# Assumes df has an accident_year column
-# tcv = TemporalCV(n_folds=4, gap_periods=1)
-# scores = evaluate_glm(freq_formula, df, tcv, family="poisson")
-# print(scores)
+# Assumes df has an inception_date column
+# splits = walk_forward_split(df, date_col="inception_date", min_train_months=24, test_months=6)
+# cv = InsuranceCV(splits=splits, df=df)
+# for split in cv.splits:
+#     print(split.label, split.train_start, split.test_end)
 ```
 
 Standard k-fold treats insurance observations as exchangeable across time. They are not: a model trained on 2022-2024 data and evaluated on 2022-2024 test policies will see the same trends, IBNR patterns, and seasonal effects in both splits. The correct approach holds out the most recent period(s) as test data and trains only on prior periods. We made the full case for this in [the post on why k-fold is wrong for insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/).

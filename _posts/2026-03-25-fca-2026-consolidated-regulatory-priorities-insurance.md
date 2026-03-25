@@ -130,9 +130,9 @@ print(proxy_result.summary())   # D_proxy scalar + Shapley attribution
 double_audit = DoubleFairnessAudit(n_alphas=20)
 double_audit.fit(
     X_train,
-    y_premium=pure_premium,
-    y_loss_ratio=claims / premium,
-    S_group=protected_indicator,
+    pure_premium,
+    claims / premium,
+    protected_indicator,
 )
 result = double_audit.audit()
 print(result.summary())
@@ -162,13 +162,19 @@ card = MRMModelCard(
 
 # Score risk tier — higher tiers require more governance
 scorer = RiskTierScorer()
-tier = scorer.score(card)
+tier = scorer.score(
+    gwp_impacted=15_000_000,
+    model_complexity="gbm",
+    deployment_status="production",
+    regulatory_use=True,
+    external_data=False,
+    customer_facing=True,
+)
 print(f"Risk tier: {tier.tier} — {tier.rationale}")
 
 # Add to inventory for model risk committee reporting
-inventory = ModelInventory.load("model_inventory.json")
-inventory.add(card)
-inventory.save("model_inventory.json")
+inventory = ModelInventory("model_inventory.json")
+inventory.register(card)
 ```
 
 ---

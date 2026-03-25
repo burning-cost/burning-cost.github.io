@@ -63,14 +63,17 @@ model = CausalPricingModel(
     outcome="renewal",
     confounders=["driver_age", "ncb_years", "region", "vehicle_group"],
     outcome_type="binary",
-    n_folds=5,
+    cv_folds=5,
 )
 model.fit(df)
-result = model.estimate()
-print(result.summary())
+ate = model.average_treatment_effect()
+print(ate.estimate, ate.ci_lower, ate.ci_upper)
 # treatment_effect: -0.023
 # 95% CI: [-0.031, -0.015]
-# confounding_bias_report: naive_ols=0.045, dml=0.023, bias_fraction=0.49
+bias_df = model.confounding_bias_report()
+print(bias_df)
+# naive_coefficient  dml_estimate  bias_fraction
+# 0.045              0.023         0.49
 ```
 
 The `confounding_bias_report` is the number to put in front of the pricing committee. It shows the naive estimate alongside the causal estimate, with the fraction attributable to confounding.

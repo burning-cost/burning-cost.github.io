@@ -314,8 +314,8 @@ from insurance_quantile import ilf
 X_std = X_val.filter(pl.col("construction") == 1.0)
 X_lst = X_val.filter(pl.col("construction") == 3.0)
 
-ilf_std = ilf(qmodel, X_std, limit_lower=100_000, limit_upper=500_000)
-ilf_lst = ilf(qmodel, X_lst, limit_lower=100_000, limit_upper=500_000)
+ilf_std = ilf(qmodel, X_std, basic_limit=100_000, higher_limit=500_000)
+ilf_lst = ilf(qmodel, X_lst, basic_limit=100_000, higher_limit=500_000)
 
 print(f"ILF(100k, 500k) -- standard construction:  {ilf_std:.4f}")
 print(f"ILF(100k, 500k) -- listed construction:    {ilf_lst:.4f}")
@@ -337,7 +337,7 @@ Before the loading goes into live pricing, verify calibration on the validation 
 ```python
 from insurance_quantile import coverage_check
 
-calib = coverage_check(y_val, preds_val)
+calib = coverage_check(y_val, preds_val, quantiles=[0.5, 0.75, 0.9, 0.95, 0.99])
 print(calib)
 ```
 
