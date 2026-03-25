@@ -129,20 +129,29 @@ A random 80/20 split mixes accident years in training and validation. A 2022 pol
 [`insurance-cv`](https://github.com/burning-cost/insurance-cv) implements walk-forward temporal splits that respect the insurance time structure: train on accident years 2019-2021, validate on 2022; train on 2019-2022, validate on 2023. The library also handles the IBNR buffer - by default it excludes the most recent 12 months from any training fold, because late-reported claims in the most recent period will be systematically under-counted, biasing severity models downward. Forget this and your severity model will look better in cross-validation than it will on unseen data:
 
 ```python
-from insurance_cv import TemporalSplit
+from insurance_cv import walk_forward_split
 
-splitter = TemporalSplit(
-    time_column="accident_year",
-    train_years=3,          # rolling 3-year training window
-    ibnr_buffer_months=12,  # exclude last 12 months from each training fold
+# Generate walk-forward temporal splits — expanding window, 12-month IBNR buffer
+# Note: walk_forward_split requires a date column, not an integer year column.
+# Convert accident_year to a date first (use Jan 1 of each year).
+df_pd = df.with_columns(
+    pl.date(pl.col("accident_year"), 1, 1).alias("accident_date")
+).to_pandas()
+
+splits = walk_forward_split(
+    df=df_pd,
+    date_col="accident_date",
+    min_train_months=36,        # rolling 3-year minimum training window
+    test_months=12,
+    ibnr_buffer_months=12,      # exclude last 12 months from each training fold
 )
 
-# insurance-cv works with numpy arrays
+# insurance-cv works with index arrays
 X_np = df.select(features).to_numpy()
 y_np = df["claim_count"].to_numpy()
-df_pd = df.to_pandas()  # for index-based splitting
 
-for fold_n, (train_idx, val_idx) in enumerate(splitter.split(df_pd)):
+for fold_n, split in enumerate(splits):
+    train_idx, val_idx = split.get_indices(df_pd)
     X_tr, X_val = X_np[train_idx], X_np[val_idx]
     y_tr, y_val = y_np[train_idx], y_np[val_idx]
     w_tr = df["exposure_years"].to_numpy()[train_idx]

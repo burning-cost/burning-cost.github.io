@@ -158,10 +158,10 @@ This is the notation that mirrors Bühlmann-Straub deliberately. The tau2/sigma2
 The diagnostic you want from insurance-multilevel is the ICC -- the intraclass correlation coefficient -- which tells you what fraction of total premium variance sits between groups rather than within them. If ICC is below 2%, the group structure is probably not worth the additional complexity. If it is above 10%, treating groups as random effects will materially improve both accuracy and stability.
 
 ```python
-from insurance_multilevel import diagnostics
+from insurance_multilevel import icc
 
 vc = model._variance_components["broker_id"]
-icc = diagnostics.icc(vc, group_col="broker_id")
+icc_val = icc(vc, group_col="broker_id")
 # 0.087 -- 8.7% of variance between brokers, worth modelling separately
 ```
 

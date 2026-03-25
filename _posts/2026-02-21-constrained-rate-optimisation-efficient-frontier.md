@@ -92,9 +92,20 @@ The shadow price on the LR constraint is the Lagrange multiplier: the marginal p
 Tracing the frontier makes this concrete:
 
 ```python
-frontier = EfficientFrontier(opt)
-frontier_df = frontier.trace(lr_range=(0.68, 0.78), n_points=20)
-print(frontier.shadow_price_summary())
+frontier = EfficientFrontier(
+    optimiser=opt,
+    sweep_param="lr_max",
+    sweep_range=(0.68, 0.78),
+    n_points=20,
+)
+frontier_result = frontier.run()
+print(frontier_result.data)
+# Shadow prices per point are on each OptimisationResult:
+for pt in frontier_result.points:
+    if pt.result.converged:
+        lr_shadow = pt.result.shadow_prices.get("lr_max", 0.0)
+        vol_shadow = pt.result.shadow_prices.get("retention_min", 0.0)
+        print(f"lr_target={pt.epsilon:.2f}  shadow_lr={lr_shadow:.2f}  shadow_vol={vol_shadow:.2f}")
 ```
 
 ```

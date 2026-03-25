@@ -35,24 +35,25 @@ Standard k-fold randomly assigns policies to folds. On a motor book where claims
 `insurance-cv` handles this correctly:
 
 ```python
-from insurance_cv import TemporalSplit
+from insurance_cv import walk_forward_split
 
-cv = TemporalSplit(
+# Generate walk-forward temporal splits with a 3-month IBNR buffer
+splits = walk_forward_split(
+    df=df,
     date_col="inception_date",
-    target_col="claim_freq",
-    exposure_col="exposure",
-    n_folds=5,
-    gap_months=3,          # respect 3-month reporting lag
-    min_train_months=24,   # require at least 2 years of history
+    min_train_months=24,        # require at least 2 years of history
+    test_months=3,
+    ibnr_buffer_months=3,       # respect 3-month reporting lag
 )
 
-for fold in cv.split(df):
-    train, test = fold.train, fold.test
+for split in splits:
+    train_idx, test_idx = split.get_indices(df)
+    train, test = df[train_idx], df[test_idx]
     # fit GLM on train, predict on test
     # fit GBM on train, predict on test
 ```
 
-The `gap_months=3` parameter is important. It creates a buffer between the end of each training window and the start of the test window, preventing IBNR-contaminated claims from appearing in both. Without this gap, a policy that incepted near the fold boundary appears in training with partially-developed claims, and in the test set with those same claims at a slightly earlier development stage. The model learns the development pattern as if it were a rating factor.
+The `ibnr_buffer_months=3` parameter is important. It creates a buffer between the end of each training window and the start of the test window, preventing IBNR-contaminated claims from appearing in both. Without this gap, a policy that incepted near the fold boundary appears in training with partially-developed claims, and in the test set with those same claims at a slightly earlier development stage. The model learns the development pattern as if it were a rating factor.
 
 ---
 
@@ -135,8 +136,8 @@ sr = SHAPRelativities(
 sr.fit()
 
 # Get multiplicative relativities from the GBM component
-gbm_factors = sr.relativities(
-    factors=["driver_age_band", "vehicle_group", "ncd_years", "postcode_area"],
+# Note: features to include are controlled via X at construction time
+gbm_factors = sr.extract_relativities(
     base_levels={"driver_age_band": "30-39", "ncd_years": "5"},
     ci_level=0.95,
 )
@@ -157,29 +158,50 @@ The blend is a new model for model risk management purposes. It goes in the mode
 `insurance-governance` runs the standard battery — Gini CI, actual/expected, Hosmer-Lemeshow calibration, PSI on input distributions, double-lift — against both the pure GLM and the blend, so the committee can see the incremental lift and what it cost in complexity:
 
 ```python
-from insurance_governance import ModelValidator, ModelInventory
+from insurance_governance import ModelValidationReport, ValidationModelCard, ModelInventory, MRMModelCard, RiskTierScorer
 
-validator = ModelValidator(
-    model_name="motor_freq_blend_2026q1",
-    model_type="blend_glm_gbm",
-    risk_tier=2,          # Tier 2: significant but not systemic
+# Build a model card for the blend
+card = MRMModelCard(
+    name="motor_freq_blend_2026q1",
+    version="1.0",
+    purpose="GLM-GBM blend for UK motor frequency pricing",
+    methodology="Poisson GLM (35%) + CatBoost (65%) blend, CV-derived weights",
+    owner="Pricing Team",
 )
 
-report = validator.run(
-    y_true=df_holdout["actual"],
-    y_pred_blend=df_holdout["blend_pred"],
-    y_pred_glm=df_holdout["glm_pred"],
-    exposure=df_holdout["exposure"],
+# Score risk tier
+scorer = RiskTierScorer()
+tier_result = scorer.score(card)
+
+# Register in the model inventory (JSON file, version-controlled)
+inv = ModelInventory("governance/model_inventory.json")
+inv.register(card, tier_result)
+
+# Run validation report against blend predictions
+val_card = ValidationModelCard(
+    name=card.name,
+    version=card.version,
+    purpose=card.purpose,
+    methodology=card.methodology,
+    target="claim_freq",
+    features=FEATURES,
+    owner=card.owner,
 )
-
-report.save("validation/motor_freq_blend_2026q1.json")
-
-inv = ModelInventory.load("governance/model_inventory.json")
-inv.register(report)
-inv.save()
+report = ModelValidationReport(
+    model_card=val_card,
+    y_val=df_holdout["actual"].to_numpy(),
+    y_pred_val=df_holdout["blend_pred"].to_numpy(),
+    exposure_val=df_holdout["exposure"].to_numpy(),
+    y_train=df_train["actual"].to_numpy(),
+    y_pred_train=df_train["blend_pred_train"].to_numpy(),
+    exposure_train=df_train["exposure"].to_numpy(),
+    X_val=df_holdout.select(FEATURES).to_pandas(),
+    X_train=df_train.select(FEATURES).to_pandas(),
+)
+report.to_json("validation/motor_freq_blend_2026q1.json")
 ```
 
-The `risk_tier=2` setting maps to PRA SS1/23's materiality thresholds. A blend that is rate-setting for a significant book is almost certainly Tier 2. The generated report includes the RAG status the PRA executive pack needs, cross-referenced to the validation metrics, with the `run_id` linking the validation output to the inventory record.
+`RiskTierScorer` maps the model to a materiality tier aligned with PRA SS1/23. A blend that is rate-setting for a significant book is almost certainly Tier 2. The generated report includes the RAG status the PRA executive pack needs, cross-referenced to the validation metrics, with the `run_id` linking the validation output to the inventory record.
 
 ---
 

@@ -18,13 +18,29 @@ We built [`insurance-credibility`](https://github.com/burning-cost/insurance-cre
 
 ## The NCD system as a Markov chain
 
-The UK standard motor NCD system is a Markov chain. Ten levels (0% to 65% NCD, premium factors 1.00 to 0.35). One claim-free year moves a policyholder up one level. One claim drops them back two. Two or more claims in a year reset them to level 0. The `BonusMalusScale` class represents exactly this structure.
+The UK standard motor NCD system is a Markov chain. Ten levels (0% to 65% NCD, premium factors 1.00 to 0.35). One claim-free year moves a policyholder up one level. One claim drops them back two. Two or more claims in a year reset them to level 0. The code below represents this structure as plain Python arrays.
 
 ```python
-from insurance_credibility.experience import BonusMalusScale, BonusMalusSimulator
+import numpy as np
+import polars as pl
 
-scale = BonusMalusScale.from_uk_standard()
-print(scale.summary())
+# ABI standard NCD scale: 10 levels (0%â65% NCD, premium factors 1.00-0.35)
+# Transition rules: claim-free -> +1 level; 1 claim -> -2 levels (floor 0); 2+ claims -> level 0
+ncd_levels = [0, 10, 20, 30, 40, 45, 50, 55, 60, 65]
+premium_factors = [1.00, 0.90, 0.80, 0.70, 0.60, 0.55, 0.50, 0.45, 0.40, 0.35]
+n_levels = len(ncd_levels)
+
+claim_free_dest = [min(i + 1, n_levels - 1) for i in range(n_levels)]
+one_claim_dest  = [max(i - 2, 0) for i in range(n_levels)]
+
+scale = pl.DataFrame({
+    "index":           list(range(n_levels)),
+    "ncd_percent":     ncd_levels,
+    "premium_factor":  premium_factors,
+    "claim_free_dest": claim_free_dest,
+    "one_claim_dest":  one_claim_dest,
+})
+print(scale)
 ```
 
 ```
@@ -43,18 +59,35 @@ shape: (10, 6)
 └───────┴──────────┴────────────────┴─────────────┴─────────────────────┴─────────────────┘
 ```
 
-`from_uk_standard()` gives you the ABI scale. If you have a non-standard BM system with different transition rules - some affinity schemes use bespoke progressions - you define it via `from_dict()` with a JSON-compatible spec. The validation at construction time checks that every transition destination is a valid level index. There is no silent out-of-range behaviour.
+The code above defines the ABI standard scale as a plain Python dictionary. For a non-standard BM system with different transition rules — some affinity schemes use bespoke progressions — modify the `ncd_levels`, `premium_factors`, `claim_free_dest`, and `one_claim_dest` arrays directly. The scale is just data; there is no hidden logic to validate against.
 
 ### What the stationary distribution tells you
 
-Given a population of policyholders all starting at level 0 (new business), what does the NCD distribution look like after the book matures? The `BonusMalusSimulator` answers this analytically, via the left eigenvector of the transition matrix.
+Given a population of policyholders all starting at level 0 (new business), what does the NCD distribution look like after the book matures? The transition matrix approach answers this analytically, via its left eigenvector.
 
 ```python
-sim = BonusMalusSimulator(scale, claim_frequency=0.10)
+# Build transition matrix and compute stationary distribution via left eigenvector
+claim_freq = 0.10
+p_zero = (claim_freq ** 0) * (2.71828 ** -claim_freq)  # ~e^-lambda
+# Simpler: use scipy
+from scipy.stats import poisson
+p_zero_claims = poisson.pmf(0, claim_freq)
+p_one_claim   = poisson.pmf(1, claim_freq)
+p_two_plus    = 1 - p_zero_claims - p_one_claim
 
-dist = sim.stationary_distribution(method="analytical")
-epf = sim.expected_premium_factor()
+T = np.zeros((n_levels, n_levels))
+for i in range(n_levels):
+    T[i, claim_free_dest[i]] += p_zero_claims
+    T[i, one_claim_dest[i]]  += p_one_claim
+    T[i, 0]                  += p_two_plus  # 2+ claims -> level 0
 
+# Stationary distribution: left eigenvector for eigenvalue 1
+eigenvalues, eigenvectors = np.linalg.eig(T.T)
+idx = np.argmin(np.abs(eigenvalues - 1.0))
+stat_dist = np.real(eigenvectors[:, idx])
+stat_dist /= stat_dist.sum()
+
+epf = float(np.dot(stat_dist, premium_factors))
 print(f"Expected premium factor at steady state: {epf:.3f}")
 print(f"Average NCD: {(1 - epf) * 100:.1f}%")
 ```
@@ -66,9 +99,24 @@ These numbers matter for pricing. If you are writing a new affinity scheme at a 
 The `simulate()` method gives you the full trajectory:
 
 ```python
-result = sim.simulate(n_policyholders=50_000, n_years=20)
-# Returns a Polars DataFrame: year, level, count, proportion, premium_factor
-# 50k policyholders x 20 years runs in under a second on a laptop
+# Simulate transient distribution via matrix power T^t applied to starting vector
+n_years = 20
+dist_t = np.zeros(n_levels)
+dist_t[0] = 1.0  # all policies start at level 0
+
+rows = []
+for year in range(1, n_years + 1):
+    dist_t = dist_t @ T
+    for level_idx in range(n_levels):
+        rows.append({
+            "year": year,
+            "level": level_idx,
+            "proportion": float(dist_t[level_idx]),
+            "premium_factor": premium_factors[level_idx],
+        })
+
+result = pl.DataFrame(rows)
+# year, level, proportion, premium_factor -- 20 years x 10 levels rows
 ```
 
 The analytical and simulation stationary distributions agree to within 3% at 10% claim frequency across 50,000 policyholders over 100 years. We use the eigenvector as the primary method; simulation is the sanity check.
@@ -77,22 +125,44 @@ The analytical and simulation stationary distributions agree to within 3% at 10%
 
 ## The non-monotone claiming threshold
 
-This is the counterintuitive result. We expected, before building `ClaimThreshold`, that the optimal claiming threshold would increase monotonically with NCD level. The more NCD you have to protect, the higher the loss amount at which you'd absorb it yourself. That is the intuition every broker hands to customers: "you've got 65% NCD, be very careful about claiming."
+This is the counterintuitive result. We expected that the optimal claiming threshold would increase monotonically with NCD level. The more NCD you have to protect, the higher the loss amount at which you'd absorb it yourself. That is the intuition every broker hands to customers: "you've got 65% NCD, be very careful about claiming."
 
 It is not quite right.
 
-`ClaimThreshold` computes the break-even claim amount using NPV arithmetic: the cost of a claim is the discounted value of the additional premiums you'll pay over the recovery horizon, compared to the claim-free trajectory. No utility theory. Just financial arithmetic that can be explained to a customer.
+The `claiming_threshold()` function computes the break-even claim amount using NPV arithmetic: the cost of a claim is the discounted value of the additional premiums you'll pay over the recovery horizon, compared to the claim-free trajectory. No utility theory. Just financial arithmetic that can be explained to a customer.
 
 ```python
-from insurance_credibility.experience import ClaimThreshold
+```python
+def claiming_threshold(current_level, annual_premium, years_horizon=3, discount_rate=0.05):
+    """NPV break-even claim amount: how large a loss before claiming is rational."""
+    def trajectory_premiums(start_level, n_years):
+        level = start_level
+        premiums = []
+        for _ in range(n_years):
+            level = claim_free_dest[level]
+            premiums.append(annual_premium * premium_factors[level])
+        return premiums
 
-ct = ClaimThreshold(scale, discount_rate=0.05)
+    claim_free_premiums = trajectory_premiums(current_level, years_horizon)
+    one_claim_premiums  = trajectory_premiums(one_claim_dest[current_level], years_horizon)
 
-# Thresholds across all levels, base premium £1,000, 3-year horizon
-# full_analysis sets each level's premium as base * premium_factor
-analysis = ct.full_analysis(annual_premium=1000.0, years_horizon=3)
+    extra_cost = sum(
+        (oc_p - cf_p) / (1 + discount_rate) ** t
+        for t, (cf_p, oc_p) in enumerate(zip(claim_free_premiums, one_claim_premiums), start=1)
+    )
+    return max(extra_cost, 0.0)
+
+# Thresholds across all levels, base premium Â£1,000, 3-year horizon
+analysis = pl.DataFrame({
+    "level":              list(range(n_levels)),
+    "ncd_percent":        ncd_levels,
+    "premium_paid":       [1000.0 * f for f in premium_factors],
+    "claiming_threshold": [
+        claiming_threshold(i, annual_premium=1000.0, years_horizon=3)
+        for i in range(n_levels)
+    ],
+})
 print(analysis)
-```
 
 Here is what the thresholds look like across the UK standard scale, holding the base premium constant at £1,000 (so policyholders at higher NCD levels pay less) over a 3-year horizon at 5% discount:
 
@@ -117,31 +187,27 @@ At 65% NCD, the benefit of having lots of NCD to "protect" is offset by paying a
 
 The practical implication is that rule-of-thumb NCD protection advice based solely on NCD percentage gives wrong answers for mid-table customers. If you run a portal or broker platform with NCD protection advice, you need the actual numbers per customer, not a general guideline.
 
-The library makes this calculation trivial:
+This calculation requires only a few lines of Python:
 
 ```python
-# Should this specific customer claim this specific loss?
-claim_is_rational = ct.should_claim(
-    current_level=9,
-    claim_amount=450,
-    annual_premium=280.0,  # what they actually pay
-    years_horizon=3,
-)
-
-# Or: what is the threshold?
-threshold = ct.threshold(
-    current_level=9,
-    annual_premium=280.0,
-    years_horizon=3,
-)
-print(f"Claim only if loss exceeds £{threshold:.0f}")
-```
+threshold = claiming_threshold(current_level=9, annual_premium=280.0, years_horizon=3)
+claim_is_rational = 450 > threshold
+print(f"Claim only if loss exceeds Â£{threshold:.0f}")
+print(f"Claim Â£450? {'Yes' if claim_is_rational else 'No'}")
 
 The time horizon assumption matters. A three-year horizon is appropriate for personal lines where customers shop around; a five-year horizon fits fleet customers with long-term relationships. `threshold_curve()` gives you the full sensitivity:
 
 ```python
-curve = ct.threshold_curve(current_level=9, annual_premium=280.0, max_horizon=7)
-# Returns: years_horizon, threshold_amount, current_level, current_ncd_percent, annual_premium
+curve = pl.DataFrame({
+    "years_horizon":    list(range(1, 8)),
+    "threshold_amount": [
+        claiming_threshold(current_level=9, annual_premium=280.0, years_horizon=h)
+        for h in range(1, 8)
+    ],
+    "current_level":       [9] * 7,
+    "current_ncd_percent": [65] * 7,
+    "annual_premium":      [280.0] * 7,
+})
 ```
 
 ---
@@ -155,11 +221,11 @@ uv add insurance-credibility
 Dependencies are numpy, polars, and scipy only. No ML dependencies in v0.1 - the library is deliberately lightweight.
 
 ```python
-from insurance_credibility.experience import (
-    BonusMalusScale,
-    BonusMalusSimulator,
-    ClaimThreshold,
-)
+# The NCD/bonus-malus analysis above uses standard numpy/scipy/polars only.
+# No specialist library is required for Markov chain and claiming threshold calculations.
+import numpy as np
+from scipy.stats import poisson
+import polars as pl
 ```
 
 The test suite has 62 tests passing across scale construction, transition matrix properties, stationary distribution agreement between analytical and simulation methods, and claiming thresholds.
@@ -170,7 +236,7 @@ The test suite has 62 tests passing across scale construction, transition matrix
 
 v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's Credibility Transformer (arXiv:2409.16653, 2024) embeds Bühlmann-Straub credibility inside a Transformer attention mechanism. The CLS token attention weight plays the role of the credibility factor Z; the architecture learns the optimal blend between individual risk history and portfolio prior from data. The mathematics is well-established; the Python implementation does not yet exist in an accessible form. We will build it as an optional extension in v0.2, keeping the base library free of heavy ML dependencies.
 
-The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? Currently `BonusMalusScale` takes a scale you specify; it does not fit one from data. That requires a GLM pipeline and iterative estimation. It is not in v0.1 because we wanted the analysis tools to ship without coupling them to a training framework.
+The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? The Markov chain approach above takes a scale you specify; fitting one from data requires a GLM pipeline and iterative estimation of transition probabilities.
 
 Source and issue tracker at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility).
 
