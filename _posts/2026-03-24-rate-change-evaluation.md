@@ -196,28 +196,35 @@ from insurance_causal import RateChangeEvaluator
 # DiD: segment-specific rate change
 # df has columns: period, segment, treated (0/1), loss_ratio, earned_exposure
 evaluator = RateChangeEvaluator(
-    method='auto',          # selects DiD if treated column has 0 and 1
     outcome_col='loss_ratio',
-    exposure_col='earned_exposure',
-    cluster_col='segment'
+    treatment_period='2025-Q1',
+    unit_col='segment',
+    weight_col='earned_exposure',
 )
 
-did_result = evaluator.fit(df, treatment_period='2025-Q1')
+evaluator.fit(df)
 
+did_result = evaluator._result.did
 print(did_result.att)           # average treatment effect on treated
-print(did_result.att_ci)        # 95% confidence interval
-did_result.plot_event_study()   # pre-trend test
+print(did_result.ci_lower, did_result.ci_upper)  # 95% confidence interval
+evaluator.plot_event_study()    # pre-trend test
 
 # ITS: whole-book rate change
 # ts_df has columns: period (datetime), loss_ratio, earned_exposure
-its_result = evaluator.fit(ts_df, treatment_period='2025-Q1', method='its')
+evaluator_its = RateChangeEvaluator(
+    outcome_col='loss_ratio',
+    treatment_period='2025-Q1',
+    weight_col='earned_exposure',
+)
+evaluator_its.fit(ts_df)
 
+its_result = evaluator_its._result.its
 print(its_result.level_shift)   # β₂: immediate effect
 print(its_result.slope_change)  # β₃: change in trend
-its_result.plot_counterfactual() # observed vs extrapolated pre-trend
+evaluator_its.plot_its(ts_df)   # observed vs extrapolated pre-trend
 ```
 
-The `method='auto'` selector checks whether the data has a treated/control split. If it does, it runs DiD. If it does not, it runs ITS and prints a warning about the stronger identification assumptions.
+The evaluator selects DiD if the data has both treated (1) and control (0) observations in the `treated` column. If all units are treated — or there is no `treated` column — it runs ITS and prints a warning about the stronger identification assumptions.
 
 ---
 

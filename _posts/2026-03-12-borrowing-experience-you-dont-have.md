@@ -111,7 +111,7 @@ from insurance_thin_data.transfer import CovariateShiftTest
 
 test = CovariateShiftTest(categorical_cols=["vehicle_group", "area"])
 result = test.test(X_source, X_target)
-print(result.mmd_statistic)   # higher = more distribution shift
+print(result.test_statistic)   # MMD² statistic; higher = more distribution shift
 print(result.p_value)         # test against permutation null
 ```
 
@@ -124,7 +124,7 @@ diag = NegativeTransferDiagnostic()
 result = diag.evaluate(X_target_test, y_target_test, exposure_test,
                        transfer_model=glm_transfer, target_only_model=target_glm)
 print(result.ntg)             # deviance(transfer) - deviance(target_only)
-if result.negative_transfer:
+if not result.transfer_is_beneficial:
     print("Use target-only model")
 ```
 

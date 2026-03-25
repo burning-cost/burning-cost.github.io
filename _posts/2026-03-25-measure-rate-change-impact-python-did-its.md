@@ -40,9 +40,9 @@ from insurance_causal.rate_change import make_rate_change_data
 df = make_rate_change_data(
     n_segments=40,
     n_periods=16,
-    change_period=9,
+    treatment_period=9,
     true_att=-0.05,
-    random_state=0,
+    seed=0,
 )
 
 print(df.columns.tolist())
@@ -67,13 +67,13 @@ This is the standard case: a motor segment received a 12% rate increase in Q1 20
 ```python
 from insurance_causal.rate_change import RateChangeEvaluator, make_rate_change_data
 
-df = make_rate_change_data(n_segments=40, true_att=-0.05, random_state=0)
+df = make_rate_change_data(n_segments=40, true_att=-0.05, seed=0)
 
 evaluator = RateChangeEvaluator(
     outcome_col='outcome',
-    change_period=9,
+    treatment_period=9,
     unit_col='segment',
-    exposure_col='earned_exposure',
+    weight_col='earned_exposure',
 )
 
 evaluator.fit(df)
@@ -139,12 +139,12 @@ for seg in segments_of_interest:
     df_sub = df[df['segment'].isin([seg] + control_segments)]
     ev = RateChangeEvaluator(
         outcome_col='outcome',
-        change_period=9,
+        treatment_period=9,
         unit_col='segment',
-        exposure_col='earned_exposure',
+        weight_col='earned_exposure',
     )
     ev.fit(df_sub)
-    result = ev._result.method_detail
+    result = ev._result.did
     print(f"{seg}: ATT={result.att:+.4f} (p={result.p_value:.3f})")
 ```
 
@@ -157,21 +157,22 @@ Note that running a separate estimator per segment reduces cluster count — the
 Sometimes there is no control group. A market-wide claims inflation response, a book-wide re-rating after an Ogden change, a simultaneous repricing across all channels because the old rates were simply wrong. When `treated` is all ones — or when you do not pass `treated_col` at all — `RateChangeEvaluator` selects ITS automatically and raises a warning:
 
 ```python
-from insurance_causal.rate_change import make_its_data, RateChangeEvaluator
+from insurance_causal.rate_change import make_rate_change_data, RateChangeEvaluator
 
-df_its = make_its_data(
+df_its = make_rate_change_data(
     n_periods=20,
-    change_period=9,
+    treatment_period=9,
     true_level_shift=-0.02,
     true_slope_change=-0.003,
-    random_state=0,
+    seed=0,
+    mode='its',
 )
 
 # No unit_col needed for ITS — this is aggregate time series data
 evaluator_its = RateChangeEvaluator(
     outcome_col='outcome',
-    change_period=9,
-    exposure_col='earned_exposure',
+    treatment_period=9,
+    weight_col='earned_exposure',
 )
 
 evaluator_its.fit(df_its)
@@ -216,10 +217,10 @@ ITS decomposes the rate change effect into two components:
 You can access `effect_at_k()` directly on the `ITSResult` object:
 
 ```python
-its_result = evaluator_its._result.method_detail
+its_result = evaluator_its._result.its
 
 for k in [0, 1, 2, 4, 8]:
-    print(f"k={k}: {its_result.effect_at_periods.get(k, float('nan')):+.4f}")
+    print(f"k={k}: {its_result.effect_at_k(k):+.4f}")
 
 # k=0: -0.0208
 # k=1: -0.0237
@@ -232,7 +233,7 @@ The `plot_its()` method shows the observed series against the counterfactual (pr
 
 ```python
 fig, ax = plt.subplots(figsize=(9, 4))
-evaluator_its.plot_pre_post(ax=ax)
+evaluator_its.plot_its(df_its, ax=ax)
 ax.set_title("ITS: book-wide re-rating, Q1 2023")
 plt.tight_layout()
 plt.savefig("its_counterfactual.png", dpi=150)

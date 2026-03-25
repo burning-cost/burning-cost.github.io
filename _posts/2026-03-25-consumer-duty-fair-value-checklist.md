@@ -256,13 +256,12 @@ psi_result = psi(
 print(f"PSI: {psi_result:.4f}")  # <0.10 good, 0.10-0.25 monitor, >0.25 escalate
 
 # CSI: characteristic stability for key rating factors
-csi_results = {
-    feat: csi(
-        reference=train_data[feat].to_numpy(),
-        current=current_data[feat].to_numpy(),
-    )
-    for feat in ["vehicle_age", "driver_age", "ncd_years", "annual_mileage"]
-}
+csi_df = csi(
+    reference_df=train_data[["vehicle_age", "driver_age", "ncd_years", "annual_mileage"]],
+    current_df=current_data[["vehicle_age", "driver_age", "ncd_years", "annual_mileage"]],
+    features=["vehicle_age", "driver_age", "ncd_years", "annual_mileage"],
+)
+csi_results = dict(zip(csi_df["feature"].to_list(), csi_df["csi"].to_list()))
 
 # A/E ratio: calibration check
 ae = ae_ratio(
@@ -370,7 +369,7 @@ from insurance_governance.mrm.report import GovernanceReport
 from insurance_governance.mrm.model_card import ModelCard as MRMCard
 
 # Validation report (SS1/23-aligned)
-card = ModelCard(
+val_card = ModelCard(
     name="Motor Frequency v4.1",
     version="4.1.0",
     purpose="Predict claim frequency for UK motor portfolio — champion model",
@@ -389,16 +388,21 @@ report = ModelValidationReport(
     exposure_val=exposure_val,
     X_train=X_train,
     X_val=X_val,
-    model_card=card,
+    model_card=val_card,
 )
 
 report.generate("validation_report_2026.html")
 report.to_json("validation_report_2026.json")
 
-# Governance report for MRC pack
+# Governance report for MRC pack — requires MRM ModelCard (model_id mandatory)
+mrm_card = MRMCard(
+    model_id="motor-freq-v4.1",
+    model_name="Motor Frequency v4.1",
+    version="4.1.0",
+)
 governance = GovernanceReport(
-    card=card,
-    validation_results=report.to_dict()["summary"],
+    card=mrm_card,
+    validation_results=report.to_dict(),
     monitoring_results={
         "period": "2025-Q4",
         "ae_ratio": 1.02,

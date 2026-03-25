@@ -288,7 +288,7 @@ result = detector.test(
 )
 
 print("Significant drift factors:")
-for factor in result.significant_features:
+for factor in result.attributed_features:
     print(f"  {factor}")
 
 print(f"\nDrift attribution summary:")
@@ -488,9 +488,9 @@ evidence_pack = {
                     "gini_monitor": result.gini_monitor,
                     "delta": result.delta, "p_value": result.p_value},
     # Step 7
-    "drift_attribution": {"significant_factors": result.significant_features},
+    "drift_attribution": {"attributed_features": result.attributed_features},
     # Step 8
-    "proxy_vulnerability": {"portfolio_score": result.proxy_vulnerability},
+    "proxy_vulnerability": {"d_proxy": result.d_proxy},
     # Step 9
     "double_fairness": {"action_gap": "see evidence/09_double_fairness_pareto.png"},
     # Step 10
