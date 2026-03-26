@@ -232,6 +232,6 @@ Source and issue tracker at [github.com/burning-cost/insurance-fairness](https:/
 **Related posts:**
 
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the LRTW framework, the Citizens Advice data, and the full audit workflow
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - direct comparison of why general-purpose ML fairness tools miss the FCA's specific concern
+- [Fairlearn vs insurance-fairness](/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - direct comparison of why general-purpose ML fairness tools miss the FCA's specific concern
 - [Discrimination-Free Pricing in Python](/2026/03/10/insurance-fairness-ot/) - LRTW marginalisation and causal path decomposition for correcting proxy discrimination
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - governance integration for fairness audit outputs

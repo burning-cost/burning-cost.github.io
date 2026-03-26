@@ -281,7 +281,7 @@ If you want to try Python pricing on your own book before committing to a full m
 4. Add a CatBoost challenger and look at the lift chart
 5. Once you trust the Python output, use `insurance-distill` to generate the Radar-ready factor tables
 
-The [Python insurance pricing cookbook](/2026/03/22/python-insurance-pricing-cookbook/) covers the full environment setup including Databricks cluster configuration. The [complete toolkit post](/2026/03/22/complete-python-insurance-pricing-toolkit-2026/) lists every library we use and why.
+The [Python insurance pricing cookbook](/2026/03/22/python-insurance-pricing-cookbook/) covers the full environment setup including Databricks cluster configuration. The complete toolkit post lists every library we use and why.
 
 ---
 

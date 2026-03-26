@@ -276,5 +276,5 @@ The specific failure mode: credibility blending a scalar frequency per risk cell
 `insurance-thin-data` is open source under MIT at [github.com/burning-cost/insurance-thin-data](https://github.com/burning-cost/insurance-thin-data). Install with `pip install insurance-thin-data`. The transfer module requires Python 3.10+, NumPy, SciPy, and scikit-learn; no PyTorch dependency unless you are using the CANN fine-tuning backend.
 
 - [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/) — when you have no related source book at all, TabICLv2 in-context learning works directly from the target data
-- [Your New Business Mix Changed. Your Model Didn't Notice.](/2027/02/15/channel-mix-drift-your-model-didnt-notice/) — covariate shift detection when the portfolio composition drifts without a new segment being added
-- [Your Group Factors Are Not All Worth Modelling](/2027/03/15/multilevel-group-factors/) — ICC diagnostics for deciding which group effects are worth the modelling overhead
+- [Your New Business Mix Changed. Your Model Didn't Notice.](/2025/03/30/channel-mix-drift-your-model-didnt-notice/) — covariate shift detection when the portfolio composition drifts without a new segment being added
+- [Your Group Factors Are Not All Worth Modelling](/2025/04/14/multilevel-group-factors/) — ICC diagnostics for deciding which group effects are worth the modelling overhead

@@ -276,4 +276,4 @@ Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning
 - Hong (2025), "Conformal prediction of future insurance claims in the regression problem." [arXiv:2503.03659](https://arxiv.org/abs/2503.03659)
 - [Conformal Prediction for Solvency II Capital](/2026/03/25/conformal-prediction-solvency-ii-capital/) — the `SCRReport` workflow for regulatory submission and coverage validation tables
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — CQR and heteroscedastic interval construction
-- [Which Uncertainty Quantification Method?](/2026/03/25/which-uncertainty-quantification-method/) — decision flowchart for choosing between conformal, GAMLSS, and distributional GBMs
+- [Which Uncertainty Quantification Method?](/2026/03/25/which-uncertainty-quantification-method-decision-framework/) — decision flowchart for choosing between conformal, GAMLSS, and distributional GBMs

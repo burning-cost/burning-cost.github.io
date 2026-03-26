@@ -406,6 +406,6 @@ uv add insurance-severity
 
 Source: [github.com/burning-cost/insurance-severity](https://github.com/burning-cost/insurance-severity)
 
-- [How to Build a Large Loss Loading Model for Home Insurance](/2026/10/14/large-loss-loading-for-home-insurance/) -- quantile GBM approach to the same problem of tail heterogeneity
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) -- modelling variance rather than quantiles at the individual risk level
-- [Shared Frailty Models for Repeat Claimants](/2026/08/14/shared-frailty-models-for-repeat-claimants/) -- frequency side of the compound loss model
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) -- quantile GBM approach to the same problem of tail heterogeneity
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) -- modelling variance rather than quantiles at the individual risk level
+- Shared Frailty Models for Repeat Claimants -- frequency side of the compound loss model

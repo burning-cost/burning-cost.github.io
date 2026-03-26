@@ -254,7 +254,7 @@ The young driver bin (`<25`) will show a positive residual correlating with vehi
 
 **Severity models.** Everything above applies to frequency. For severity, replace Poisson deviance with Gamma deviance and use log-link — the architecture is identical.
 
-**Interpreting the NN component.** After training, you can apply Neural Interaction Detection (Tsang et al., 2018) to the CANN's weight matrices to extract which feature pairs have the strongest interaction signal. This is exactly the workflow in `insurance-interactions` — CANN residuals are used to surface GLM interaction candidates. See the post on [GLM interaction detection](/2026/11/14/how-to-detect-covariate-interactions-your-glm-missed/) for that pipeline.
+**Interpreting the NN component.** After training, you can apply Neural Interaction Detection (Tsang et al., 2018) to the CANN's weight matrices to extract which feature pairs have the strongest interaction signal. This is exactly the workflow in `insurance-interactions` — CANN residuals are used to surface GLM interaction candidates. See the post on [GLM interaction detection](/2026/03/04/how-to-detect-covariate-interactions-your-glm-missed/) for that pipeline.
 
 ---
 

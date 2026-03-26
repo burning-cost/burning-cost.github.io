@@ -224,7 +224,7 @@ print(report.recommendation)  # "CONTINUE" | "RECALIBRATE" | "REFIT"
 print(report.to_polars())     # Write to Delta table for audit trail
 ```
 
-The three-way recommendation — Continue / Recalibrate / Refit — maps cleanly to Article 15's requirement for documented responses to accuracy degradation. Our post on [when to recalibrate versus refit](/2026/05/14/recalibrate-or-refit/) covers the Murphy decomposition logic that drives this decision.
+The three-way recommendation — Continue / Recalibrate / Refit — maps cleanly to Article 15's requirement for documented responses to accuracy degradation. Our post on [when to recalibrate versus refit](/2026/02/28/recalibrate-or-refit/) covers the Murphy decomposition logic that drives this decision.
 
 ---
 

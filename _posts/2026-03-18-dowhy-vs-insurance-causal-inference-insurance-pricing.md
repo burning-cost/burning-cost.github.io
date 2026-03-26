@@ -333,7 +333,7 @@ The gap for insurance pricing is the same gap we see with EconML: neither librar
 ---
 
 **Related posts:**
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — the same analysis for EconML: stronger on heterogeneous effects, same gap on insurance-specific structure
+- [EconML vs insurance-causal](/2026/03/19/econml-vs-insurance-causal-inference-pricing/) — the same analysis for EconML: stronger on heterogeneous effects, same gap on insurance-specific structure
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — foundational post on why DML beats naive GLM for causal price elasticity
 - [Your demand model is confounded](/2026/03/01/your-demand-model-is-confounded/) — the problem this library solves, explained without library comparisons
 
@@ -341,11 +341,11 @@ The gap for insurance pricing is the same gap we see with EconML: neither librar
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) — optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
+- [Fairlearn vs insurance-fairness](/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) — proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/19/equipy-vs-insurance-fairness/) — optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/20/mapie-vs-insurance-conformal-prediction-intervals/) — conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/19/econml-vs-insurance-causal-inference-pricing/) — causal inference for pricing
 - [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
+- [NannyML vs insurance-monitoring](/2026/03/21/nannyml-vs-insurance-monitoring-drift-detection-insurance/) — drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/) — statistical drift tests
 - [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) — distributional regression

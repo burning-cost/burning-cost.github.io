@@ -176,6 +176,6 @@ That is a better answer than "we used 7%, consistent with last year."
 
 `insurance-quantile` is open source under MIT at [github.com/burning-cost/insurance-quantile](https://github.com/burning-cost/insurance-quantile). Requires Python 3.10+, CatBoost 1.2+, and Polars 1.0+.
 
-- [Your Model Validation Is a Checklist, Not a Test](/2026/03/11/model-validation-pra-ss123/) - building a defensible sign-off process alongside the technical output
+- [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) - building a defensible sign-off process alongside the technical output
 - [Your Severity Model Assumes the Wrong Variance](/2026/03/10/your-severity-model-assumes-the-wrong-variance/) - why the Tweedie variance function matters and when to use a Gamma or inverse Gaussian instead
-- [Spliced Severity Distributions: When One Distribution Is Not Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) - parametric alternative for closed-form ILFs
+- [Spliced Severity Distributions: When One Distribution Is Not Enough](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) - parametric alternative for closed-form ILFs

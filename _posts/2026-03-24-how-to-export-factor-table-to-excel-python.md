@@ -274,6 +274,6 @@ If your portfolio has many thin levels — small commercial lines, niche vehicle
 
 Source at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities).
 
-- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/07/14/how-to-extract-rating-factors-from-catboost/) — the upstream step: fitting the model and running `extract_relativities()`
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/) — the upstream step: fitting the model and running `extract_relativities()`
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — the conceptual background
-- [Your GBM and GLM Are Not Competitors](/2026/06/14/your-gbm-and-glm-are-not-competitors/) — when the factor tables diverge and what to do about it
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — when the factor tables diverge and what to do about it
