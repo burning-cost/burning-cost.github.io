@@ -1,0 +1,47 @@
+{% comment %}
+  structured-data.html
+  --------------------
+  Emits schema.org JSON-LD for every page on the site.
+
+  Organization: rendered on every page — tells Google who runs this site.
+  WebSite:      rendered on the homepage (landing layout) only — enables
+                SearchAction sitelinks and anchors the site entity.
+
+  BlogPosting schema lives inline in _layouts/post.html (where it can access
+  page.date, page.tags, etc. directly). WebPage schema lives in page.html.
+  This include handles the site-level entities only.
+{% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Burning Cost",
+  "url": "{{ site.url }}",
+  "description": "Open-source Python tools for UK personal lines insurance pricing",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "{{ site.url }}/assets/og-image.png"
+  },
+  "sameAs": [
+    "https://github.com/burning-cost"
+  ]
+}
+</script>
+
+{% if page.layout == "landing" or page.url == "/" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site.title }}",
+  "url": "{{ site.url }}",
+  "description": {{ site.description | jsonify }},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  }
+}
+</script>
+{% endif %}
