@@ -21,6 +21,8 @@ A collected reference for pricing teams getting started, going deeper, or evalua
 
 ## Reference
 
+[**Python Packages for Insurance Pricing**](/python-insurance-tools/) — Comprehensive task-framed guide mapping common pricing problems to the Python packages that solve them. Covers Burning Cost libraries and third-party alternatives (MAPIE, EconML, Fairlearn, Evidently, NGBoost, and more). Honest about gaps.
+
 [**Databricks Notebooks**](/notebooks/) — Ten production-ready Databricks notebooks covering the full pricing workflow. Each runs on synthetic UK motor data with no external dependencies. Download individually or as a zip.
 
 [**Proxy Discrimination Audit Guide**](/ep25-2-guide/) — Step-by-step compliance guide for UK personal lines teams. Covers the Consumer Duty and Equality Act 2010 obligations, how to conduct a defensible proxy audit, and what the board needs to see.
