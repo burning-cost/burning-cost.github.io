@@ -159,7 +159,7 @@ You need working Python knowledge. You do not need actuarial qualifications or p
   <li><strong>End-to-end pipeline</strong> — raw tabular data to filed rates; MLflow tracking, model registry, and a signed-off audit trail in a single Databricks workflow</li>
   <li><strong>Demand elasticity</strong> — Double ML causal estimation of own-price elasticity for renewal pricing; deconfounding with CausalForestDML</li>
   <li><strong>Interaction detection</strong> — SHAP interaction values, dependence plots, and partial dependence to find what your GLM missed</li>
-  <li><strong>Exposure curves</strong> — increased limits factors, ILF credibility, and Lee diagram construction for commercial and home severity modelling</li>
+  <li><strong>Model monitoring and drift detection</strong> — exposure-weighted PSI/CSI, A/E drift ratios, sequential testing for early warnings, PIT calibration checks; when to retrain and when to leave it alone</li>
   <li><strong>Spatial territory rating</strong> — geospatial smoothing with BYM2, Voronoi banding from postcode centroids, borough-level risk surfaces</li>
 </ol>
 
