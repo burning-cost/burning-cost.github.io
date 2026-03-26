@@ -193,3 +193,6 @@ One honest caveat: distributional GBMs are not always better than a well-calibra
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free prediction intervals via conformal prediction; no distributional assumption required, valid coverage guarantees by construction
 
 Source: Chevalier, D. & Côté, M.-P. (2025). From point to probabilistic gradient boosting for claim frequency and severity prediction. *European Actuarial Journal*. doi:10.1007/s13385-025-00428-5. arXiv:2412.14916.
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the `insurance-distributional` library that implements the So & Valdez (2024) approach benchmarked in this comparison
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals as an alternative when parametric distributional assumptions are uncertain

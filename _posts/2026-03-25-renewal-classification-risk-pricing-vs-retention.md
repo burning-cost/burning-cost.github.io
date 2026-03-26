@@ -216,3 +216,6 @@ The libraries referenced in this post — [`insurance-survival`](https://github.
 ```bash
 uv add insurance-survival insurance-causal insurance-optimise
 ```
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` demand model with DML elasticity estimation and FCA ENBP compliance checker
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — how to monitor whether the retention model's Gini coefficient has remained stable as the renewal book evolves

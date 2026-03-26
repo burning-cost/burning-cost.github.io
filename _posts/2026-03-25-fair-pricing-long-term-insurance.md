@@ -113,3 +113,6 @@ The Lim et al. framework gives actuaries the mathematical tools. The obligation 
 ---
 
 *arXiv:2602.04791 — 'Fair Pricing in Long-Term Insurance: A Unified Framework', Lim, Xu, and Zhou (February 2026). [Abstract on arXiv.](https://arxiv.org/abs/2602.04791)*
+
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library and the LRTW framework that the Lim et al. multi-state extension builds on
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance documentation layer for multi-state protection models where fairness audit results must be registered in the MRM inventory

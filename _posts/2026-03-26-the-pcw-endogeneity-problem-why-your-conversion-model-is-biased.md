@@ -157,6 +157,11 @@ Post 2 shows the implementation using `doubleml` and our `insurance-causal` libr
 
 ---
 
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that implements the DML fix described in this post, with full renewal pricing pipeline
+- [Estimating PCW Conversion Elasticity with Double Machine Learning](/2026/03/26/estimating-pcw-conversion-elasticity-with-double-machine-learning/) — part 2: the Python implementation of the IV-DML pipeline
+
+---
+
 - FCA: [Evaluation Paper 25/2 (July 2025)](https://www.fca.org.uk/publications/corporate-documents/evaluation-paper-25-2-general-insurance-pricing-practices-remedies)
 - Narayanan & Kalyanam (2015), *Marketing Science* 34(3):388–407 — RDD for position effects in search advertising
 - Ronayne (2021), *International Economic Review* 62(3):1081–1110 — PCW welfare paradox

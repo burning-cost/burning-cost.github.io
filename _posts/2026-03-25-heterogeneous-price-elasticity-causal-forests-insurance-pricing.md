@@ -257,3 +257,6 @@ print(rate.summary())
 ```
 
 Install with `uv add insurance-causal`. The causal forest dependencies (econml, catboost) are declared as optional extras; `uv add insurance-causal[causal_forest]` pulls them in.
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that packages the global DML elasticity pipeline and the ENBP-compliant renewal optimiser the CATE estimates feed into
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring whether the heterogeneous elasticity estimates remain stable as book mix shifts

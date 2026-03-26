@@ -126,3 +126,6 @@ The practical message is not "add IV to your DML pipeline." The practical messag
 Before trusting any IV estimate in a pricing evaluation, we would run the DML-based weak instrument test from this paper. Not because Panel IV DML is the estimation method you will use, but because the diagnostic is more honest than the standard Staiger-Stock threshold applied to a linear first stage.
 
 The paper is at [arXiv:2603.20464](https://arxiv.org/abs/2603.20464). The R package is [xtdml on CRAN](https://cran.r-project.org/package=xtdml) for the non-IV panel DML case.
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that implements the cross-sectional DML pipeline; Panel IV DML is the extension for multi-period panel data
+- [The PCW Endogeneity Problem: Why Your Conversion Model Is Biased](/2026/03/26/the-pcw-endogeneity-problem-why-your-conversion-model-is-biased/) — the causal structure that motivates instrumental variable estimation in insurance demand models

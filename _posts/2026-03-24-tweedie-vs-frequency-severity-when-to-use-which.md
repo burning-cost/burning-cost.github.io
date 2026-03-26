@@ -178,3 +178,6 @@ Neither model is universally right. The decision rule above will steer you corre
 | Regulatory subsidy analysis needed? | Difficult | Straightforward |
 
 For the dependence testing and Sarmanov correction, see [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity). The `DependenceTest` class should be standard practice before finalising any pure premium modelling approach on a UK motor book.
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if neither Tweedie nor frequency-severity gives you per-risk conditional variance, distributional GBMs model the dispersion parameter as a function of covariates
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals that work around the parametric assumptions of both modelling approaches

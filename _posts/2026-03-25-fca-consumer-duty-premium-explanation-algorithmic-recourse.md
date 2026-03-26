@@ -29,6 +29,9 @@ This creates a specific technical requirement. Your counterfactual search needs 
 pip install insurance-recourse
 ```
 
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the fairness audit step that should precede the recourse generation: if a feature is a proxy, its counterfactual should not suggest customers change their demographics
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the MRM governance layer that links the recourse audit trail to the model's validation record
+
 ---
 
 ## What a naive counterfactual search gets wrong
@@ -239,3 +242,6 @@ What it is: a systematic, auditable way to discharge a specific FCA obligation t
 ```bash
 pip install insurance-recourse
 ```
+
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the fairness audit step that should precede the recourse generation: if a feature is a proxy, its counterfactual should not suggest customers change their demographics
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the MRM governance layer that links the recourse audit trail to the model's validation record

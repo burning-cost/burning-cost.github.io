@@ -314,3 +314,6 @@ The common thread: decisions that look obvious from aggregate data fall apart un
 ---
 
 `insurance-causal-policy` is on PyPI at v0.2.0. Install with `uv add insurance-causal-policy`. Full worked example at [`causal_rate_change_evaluation.py`](https://github.com/burning-cost/burning-cost-examples/blob/main/examples/causal_rate_change_evaluation.py).
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library for prospective demand modelling; this post covers retrospective causal evaluation of rate changes already made
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the monitoring framework that catches model deterioration between formal causal evaluations

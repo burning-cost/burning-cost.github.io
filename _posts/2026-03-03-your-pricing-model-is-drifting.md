@@ -254,3 +254,5 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - the Murphy decomposition that tells you whether the fix is a scalar recalibration or a full refit
 - [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — importance weighting to correct prediction error estimates when portfolio mix has changed
+- [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — benchmark results showing the three-layer framework detecting planted failures that aggregate A/E cannot see

@@ -229,3 +229,7 @@ Use XGBoost when:
 The Kaggle community default has historically been XGBoost, then LightGBM. Neither was designed with actuarial use cases as a primary constraint. CatBoost was, in effect, designed for exactly the problems UK pricing analysts face: high cardinality categoricals, exposure weighting, and a need for well-calibrated outputs from relatively small datasets.
 
 That is why we default to it, and why you probably should too.
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the CatBoost-based distributional regression library that models per-risk dispersion alongside the mean
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — when GBM accuracy is not enough and you need a model that prints factor tables directly
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals that wrap any sklearn-compatible GBM

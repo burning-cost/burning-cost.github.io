@@ -441,4 +441,11 @@ We said in post 1 that there are three problems, and this post addresses two of 
 - Chernozhukov et al. (2020), *Review of Economic Studies* 87(1) — GATES/BLP inference
 - Schultz et al. (2023), arXiv:2312.15282 — causal forecasting for pricing, directly applicable
 - Muijsson (2022), *Expert Systems with Applications* — DML for insurance renewal, the closest published insurance application
+---
+
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that packages the DML elasticity pipeline for portfolio pricing, with the ENBP compliance checker
+- [The PCW Endogeneity Problem: Why Your Conversion Model Is Biased](/2026/03/26/the-pcw-endogeneity-problem-why-your-conversion-model-is-biased/) — part 1 of this series: the causal structure behind the bias this post fixes
+
+---
+
 - FCA: [Evaluation Paper 25/2 (July 2025)](https://www.fca.org.uk/publications/corporate-documents/evaluation-paper-25-2-general-insurance-pricing-practices-remedies)

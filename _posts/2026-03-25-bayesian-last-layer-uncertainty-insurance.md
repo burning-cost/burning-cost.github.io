@@ -326,7 +326,7 @@ The paper: Felix Fiedler and Sergio Lucia, "Improved Uncertainty Quantification 
 
 ## Further reading
 
-- Conformal Prediction for Insurance Claims: Distribution-Free Coverage with insurance-conformal — the insurance-conformal library, split conformal for Tweedie data, Solvency II SCR bounds
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the `insurance-conformal` library, split conformal for Tweedie data, and coverage-by-decile diagnostics
 - [insurance-conformal documentation](https://burning-cost.github.io/insurance-conformal) — `InsuranceConformalPredictor`, `SCRReport`, `LocallyWeightedConformal`, `ConformalisedQuantileRegression`
 - Fiedler & Lucia (2023), arXiv:2302.10975 — the BLL paper
 - Immer et al. (2021), arXiv:2008.08400 — linearised Laplace for full networks

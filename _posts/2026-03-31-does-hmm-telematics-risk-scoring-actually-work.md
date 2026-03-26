@@ -53,7 +53,7 @@ In practice: a top-decile group with raw averages might contain 40% truly aggres
 
 On a 10,000-policy telematics book with a 30% discount for the bottom two risk deciles, misclassifying 15% of aggressive drivers into lower deciles costs roughly 3-4 loss ratio points on those discounted policies. That is not catastrophic but it is real and it compounds: drivers who know they drive aggressively will self-select into telematics schemes if the scheme cannot identify them, and your book-level Gini will deteriorate over time as adverse selection builds.
 
-The HMM also provides a structural audit trail. If a regulator or oversight function asks why a driver is priced in a particular band, "fraction of time in aggressive driving state = 0.34, versus portfolio mean of 0.12" is a defensible explanation. "Mean harsh braking rate = 0.07 events/km" is defensible too, but it compresses information that the HMM preserves.
+The HMM also provides a structural audit trail. If a regulator or oversight function asks why a driver is priced in a particular band, "fraction of time in aggressive driving state = 0.34, versus portfolio mean of 0.12" is a defensible explanation. Telematics models typically sit at Tier 2 under most MRM frameworks — see [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) for the governance documentation this requires. "Mean harsh braking rate = 0.07 events/km" is defensible too, but it compresses information that the HMM preserves.
 
 ---
 
@@ -119,5 +119,6 @@ uv add insurance-telematics
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-telematics). The full validation notebook is at `notebooks/databricks_validation.py`; the smaller benchmark is `benchmarks/run_benchmark.py` (seed=42 for reproducible output).
 
-- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/)
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/) — the full library post covering CTHMM implementation and the pipeline from raw trip data to GLM features
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — once HMM regime scores are available, distributional GBMs can estimate per-risk CoV that varies by driving profile
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/)

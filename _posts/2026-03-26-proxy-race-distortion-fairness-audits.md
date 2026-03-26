@@ -95,5 +95,6 @@ The `insurance-fairness` library is at [github.com/burning-cost/insurance-fairne
 
 **Related posts:**
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — the PrivatizedFairnessAudit approach using local differential privacy, which avoids proxy imputation entirely
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library: LRTW framework, proxy R² detection, and discrimination-free pricing
 - [FCA Proxy Discrimination Testing in Python: A Practical Guide](/2026/03/22/fca-proxy-discrimination-python-testing-guide/) — EP25/2 conformant audit workflow with `FairnessAudit`
 - [Three Ways to Detect Proxy Discrimination: When They Agree and When They Don't](/2026/03/22/three-methods-proxy-discrimination-detection-compared/) — mutual information, proxy R-squared, and SHAP proxy scores: what they each measure and when they diverge

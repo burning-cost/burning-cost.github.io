@@ -131,5 +131,6 @@ uv add insurance-optimise
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-optimise). Start with `benchmarks/benchmark.py` for the head-to-head against uniform rate change, then `benchmarks/benchmark_pareto.py` for the Consumer Duty Pareto surface.
 
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the full library post covering the DML elasticity pipeline that feeds the optimiser in this benchmark
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/)
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/)

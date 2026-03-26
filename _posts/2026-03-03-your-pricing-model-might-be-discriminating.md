@@ -298,3 +298,5 @@ The fairness-accuracy trade-off is real. But "we did not audit this because we w
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/)
 - [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/)
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
+- [Fair Pricing in Long-Term Insurance](/2026/03/25/fair-pricing-long-term-insurance/) — the multi-state extension of the LRTW framework to income protection and PMI products
+- [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — benchmark showing Spearman correlation misses postcode as ethnicity proxy; CatBoost proxy R² catches it in 100% of runs

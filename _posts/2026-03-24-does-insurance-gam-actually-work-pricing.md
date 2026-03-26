@@ -203,3 +203,6 @@ We think `InsuranceEBM` should replace the GLM for any team that has features wi
 ANAM is the right choice when you need a combined frequency-severity Tweedie model with provably monotone constraints. PIN is the right choice when the interaction surface itself needs to be auditable. All three are in the same install.
 
 The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in `benchmarks/run_benchmark_databricks.py`, runnable on Databricks serverless Free Edition in under three minutes.
+
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — the full library post covering all three architectures, the decision framework, and the regulatory argument for interpretable models
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to register a GAM model with shape function documentation in the MRM inventory

@@ -108,3 +108,5 @@ For a UK team entering pet insurance, embedded cover, or any other line where co
 *Goffard, P.-O., Piette, P., and Peters, G. W. (2025). Market-based insurance ratemaking: application to pet insurance. ASTIN Bulletin. arXiv:2502.04082.*
 
 *The `insurance-credibility` and `insurance-thin-data` libraries are open source and available via `uv add`. IsoPriceR is available on the paper's GitHub repository.*
+
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the underlying credibility framework that `insurance-thin-data`'s `BorrowStrength` builds on

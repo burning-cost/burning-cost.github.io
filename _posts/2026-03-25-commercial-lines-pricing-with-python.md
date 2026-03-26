@@ -411,3 +411,8 @@ All five packages are available on PyPI and work with Python 3.10+. They use Pol
 - Clark, D.R. (2014). Basics of Reinsurance Pricing. CAS Study Note.
 - Albrecher, H., Beirlant, J. & Teugels, J. (2025). Extremes for insurance losses with censoring. *arXiv:2511.22272*.
 - Biessy, G. (2026). Whittaker-Henderson Smoothing Revisited. *ASTIN Bulletin*. arXiv:2306.06932.
+
+---
+
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the `insurance-credibility` library for the credibility weighting of fleet and commercial segments
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — model governance documentation for commercial lines models, which typically sit at Tier 1 given higher GWP per model

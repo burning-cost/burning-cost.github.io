@@ -176,3 +176,6 @@ uv add insurance-conformal
 ```
 
 Key papers: Hong (arXiv:2503.03659), Hong (arXiv:2601.21153), Manna et al. (arXiv:2507.06921), Graziadei et al. (arXiv:2307.13124), Retzlaff et al. (ICML 2025).
+
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the core `insurance-conformal` library post: pearson_weighted scores, coverage-by-decile diagnostics, and the finite-sample coverage guarantee
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance documentation layer: how to register a Solvency II conformal validation run in the MRM inventory

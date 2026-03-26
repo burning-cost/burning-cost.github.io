@@ -319,3 +319,6 @@ Pass it anywhere sklearn expects a CV object. It handles both Polars and Pandas 
 ---
 
 The search query "walk-forward cross-validation insurance GLM Python" returns a lot of generic tutorials and sklearn documentation that have nothing to say about IBNR buffers, temporal leakage specific to insurance, or how to think about fold count when your data has a 6-month tail. This post and `insurance-cv` are the practitioner answer. If you run into edge cases -- unusual valuation dates, partially-developed accident years, multi-year policy terms -- the [`accident_year_split()`](https://github.com/burning-cost/insurance-cv) function handles development-aware splits and the `temporal_leakage_check()` function will catch anything you missed.
+
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — uses the same temporal split logic for calibration: calibrate on recent data, test on more recent data
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the post-deployment equivalent: walk-forward monitoring after the model is live

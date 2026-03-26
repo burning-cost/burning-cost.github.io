@@ -350,3 +350,4 @@ Hedges, C.E. (December 2025). "A Theoretical Framework Bridging Model Validation
 
 - [Sequential A/B Testing for Insurance Champion/Challenger Experiments](/2026/03/24/sequential-ab-testing-insurance-champion-challenger/) — for verifying that a Gini improvement is statistically real before committing to a model swap
 - [Does GBM-to-GLM Distillation Actually Work?](/2026/03/24/does-gbm-glm-distillation-work-insurance-pricing/) — benchmark results that feed directly into the LRE calculation
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring whether the Gini improvement evidenced at deployment persists in production

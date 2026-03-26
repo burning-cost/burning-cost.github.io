@@ -130,5 +130,6 @@ uv add insurance-monitoring
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-monitoring). Start with `benchmarks/benchmark.py` for the failure-mode detection matrix, then `benchmarks/benchmark_sequential.py` for the champion/challenger results.
 
-- Your Model Drift Alert Is Too Late
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the full technical post explaining PSI, segmented A/E, and the Gini z-test that powers this benchmark
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance layer: how to register model monitoring findings in the MRM inventory
 - [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/)

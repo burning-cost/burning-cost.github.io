@@ -126,5 +126,6 @@ uv add insurance-conformal
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-conformal). The CatBoost benchmark (`benchmarks/benchmark_gbm.py`) is the one that produces the interesting result; `benchmarks/benchmark.py` shows the well-matched baseline where parametric intervals do fine.
 
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the full library post covering the pearson_weighted non-conformity score, coverage-by-decile diagnostics, and design choices
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if you need a full conditional distribution rather than a prediction interval, distributional GBMs model per-risk dispersion directly
 - [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/)

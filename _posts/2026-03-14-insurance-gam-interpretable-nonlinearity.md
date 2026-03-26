@@ -245,3 +245,4 @@ The repository is at [github.com/burning-cost/insurance-gam](https://github.com/
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Does insurance-gam Actually Work for Insurance Pricing?](/2026/03/24/does-insurance-gam-actually-work-pricing/) — benchmark results on freMTPL2: EBM versus CatBoost versus GLM across Gini, double-lift, and A/E
