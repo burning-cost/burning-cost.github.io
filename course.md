@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Insurance Pricing in Python: A Practitioner's Course"
-description: "12-module written training course covering GLMs, GBMs, SHAP relativities, conformal prediction, causal elasticity, spatial ratemaking, and rate optimisation. Python notebooks. £97."
+description: "Free 12-module written training course covering GLMs, GBMs, SHAP relativities, conformal prediction, causal elasticity, spatial ratemaking, and rate optimisation. Python notebooks. Open source."
 permalink: /course/
 ---
 
@@ -138,7 +138,7 @@ permalink: /course/
 </div>
 
 <div class="credibility-strip">
-Built by the team behind <strong>59 open-source insurance pricing libraries on PyPI</strong> — including <code>shap-relativities</code>, <code>insurance-causal</code>, and <code>insurance-conformal</code>. The course uses these libraries throughout; you get access to the same tools used in production at UK insurers.
+Built by the team behind <strong>34 open-source insurance pricing libraries on PyPI</strong> — including <code>shap-relativities</code>, <code>insurance-causal</code>, and <code>insurance-conformal</code>. The course uses these libraries throughout.
 </div>
 
 ---
@@ -169,7 +169,7 @@ A written course: twelve self-contained modules delivered as Markdown tutorials 
 </ul>
 </div>
 
-No video. No subscription. No content dripped out week by week. You get the full zip on purchase and work through it at your own pace.
+No video. No subscription. No login required. The full course is on GitHub — clone it and work through it at your own pace.
 
 ---
 
@@ -227,40 +227,39 @@ The rate optimisation module (Module 7) covers FCA ENBP enforcement in code. The
 </div>
 
 <div class="faq-item">
-<strong>Can I expense this?</strong>
-£97 + VAT is well within the CPD budget of most UK insurance firms. We issue a receipt on purchase. If you need an invoice for your finance team, email us.
+<strong>Is it really free?</strong>
+Yes. The entire course is MIT-licensed and available on GitHub. No registration, no paywall, no upsell. We built it to help pricing teams adopt Python tooling faster.
 </div>
 
 ---
 
-## Free previews
+## Related blog posts
 
-These posts cover the same ground as three of the course modules, so you can get a sense of the depth and style before buying.
+These posts cover the same ground as three of the course modules, if you want a preview of the style and depth.
 
 <div class="preview-posts">
   <div class="preview-post">
     <a href="/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/">Extracting Rating Relativities from GBMs with SHAP</a>
-    <p>Covers the same ground as Module 4 — SHAP decomposition, multiplicative factor tables, confidence intervals. The course module adds exercises and a worked pipeline from raw CatBoost model to Radar-importable file.</p>
+    <p>Covers the same ground as Module 4 — SHAP decomposition, multiplicative factor tables, confidence intervals.</p>
   </div>
   <div class="preview-post">
     <a href="/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/">Conformal Prediction Intervals for Insurance Pricing Models</a>
-    <p>The theoretical foundation for Module 5. The course extends this with heteroscedasticity handling, temporal exchangeability, and a worked calibration exercise on a real frequency/severity split.</p>
+    <p>The theoretical foundation for Module 5 — conformal prediction with coverage guarantees.</p>
   </div>
   <div class="preview-post">
     <a href="/2026/02/21/constrained-rate-optimisation-efficient-frontier/">Constrained Rate Optimisation and the Efficient Frontier</a>
-    <p>The rate optimisation post that underpins Module 7. The course module adds the demand elasticity coupling, FCA ENBP enforcement code, and a full scenario comparison exercise.</p>
+    <p>The rate optimisation approach behind Module 7 — FCA ENBP enforcement and the efficient frontier.</p>
   </div>
 </div>
 
 ---
 
-## Buy the course
+## Get the course
 
 <div class="cta-block">
-  <p>Written course &middot; 12 modules &middot; Python notebooks &middot; &pound;97 one-off payment</p>
-  <a class="cta-button" href="mailto:pricing.frontier@gmail.com?subject=Insurance%20Pricing%20Course%20%E2%80%94%20Purchase&body=I'd%20like%20to%20purchase%20the%20Insurance%20Pricing%20in%20Python%20course%20(%C2%A397).%20Please%20send%20payment%20details.">Buy &mdash; &pound;97</a>
-  <p style="color: #c8ccdc; font-size: 0.95rem; margin-top: 1rem; margin-bottom: 0.5rem;">Payment by card via Gumroad — link coming shortly. For now, email to purchase and we will send a payment link within one working day.</p>
-  <p class="refund-note">No questions asked refund within 30 days. Email us and we refund in full.</p>
+  <p>Free &middot; 12 modules &middot; Python notebooks &middot; MIT licensed</p>
+  <a class="cta-button" href="https://github.com/burning-cost/course">Get the course on GitHub</a>
+  <p style="color: #c8ccdc; font-size: 0.95rem; margin-top: 1rem; margin-bottom: 0;">Clone the repository and start with Module 1. No registration required.</p>
 </div>
 
 Questions? Ask on [GitHub Discussions](https://github.com/orgs/burning-cost/discussions) or email [pricing.frontier@gmail.com](mailto:pricing.frontier@gmail.com).
