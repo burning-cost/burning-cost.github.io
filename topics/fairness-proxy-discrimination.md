@@ -30,7 +30,7 @@ The [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) l
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — proxy testing without holding gender or ethnicity data
 - [Discrimination-Insensitive Pricing: Beyond Removing the Protected Variable](/2026/03/25/discrimination-insensitive-pricing/) — the limitations of simply dropping a correlated feature and what to do instead
 - [Fair Pricing in Long-Term Insurance: What arXiv:2602.04791 Means for UK Actuaries](/2026/03/25/fair-pricing-long-term-insurance/) — multi-state fairness for income protection and PMI under the pure protection market study
-- [Multi-Objective Pricing: The Pareto Front of Fairness and Profit](/2026/03/25/multi-objective-pricing-pareto-front-fairness-profit/) — optimising rate change across fairness constraints and loss ratio targets simultaneously
+- [Multi-Objective Pricing: The Pareto Front of Fairness and Profit](/2026/03/25/multi-objective-pareto-insurance-pricing-nsga2/) — optimising rate change across fairness constraints and loss ratio targets simultaneously
 
 ---
 

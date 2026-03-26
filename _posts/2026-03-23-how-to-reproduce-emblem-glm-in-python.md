@@ -8,7 +8,7 @@ description: "Reproduce an Emblem frequency-severity GLM in Python: factor table
 tags: [glm, emblem, statsmodels, catboost, polars, frequency-severity, factor-tables, relativities, deviance-residuals, lift-chart, one-way-analysis, python, uk-insurance, motor-pricing, pricing-actuary, shap-relativities, insurance-cv]
 ---
 
-This is the final post in our five-part "How to do X in Python" series for pricing actuaries. The other four cover the [exposure-weighted Gini coefficient](/2026/03/23/exposure-weighted-gini-coefficient-python/), [one-way analysis](/2026/03/23/one-way-analysis-python-pricing-actuary/), [factor tables to Excel](/2026/03/23/catboost-factor-table-radar-45-minutes/), and [double-lift charts](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/).
+This is the final post in our five-part "How to do X in Python" series for pricing actuaries. The other four cover the [exposure-weighted Gini coefficient](/2026/03/23/exposure-weighted-gini-coefficient-python/), [one-way analysis](/2026/03/23/one-way-analysis-python-pricing-actuary/), [factor tables to Excel](/2026/03/24/how-to-export-factor-table-to-excel-python/), and [double-lift charts](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/).
 
 If you have spent any time in Emblem, you know the workflow: load data, define the model structure, fit Poisson and Gamma GLMs, inspect factor tables, run one-way diagnostics, check deviance residuals, produce a lift chart, iterate. This post reproduces that workflow end-to-end in Python using statsmodels for the GLMs, CatBoost as a GBM challenger, and Polars for data handling.
 
@@ -225,7 +225,7 @@ shape: (6, 5)
 └───────┴─────────┴────────────┴────────┴────────┘
 ```
 
-This is the same information Emblem shows in its factor table panel: the base level anchored at 1.0, relativities above and below, and confidence intervals. To format this for a governance review pack in Excel -- colour-coded by significance, one sheet per factor -- see [post #138 on factor tables to Excel](/2026/03/23/catboost-factor-table-radar-45-minutes/).
+This is the same information Emblem shows in its factor table panel: the base level anchored at 1.0, relativities above and below, and confidence intervals. To format this for a governance review pack in Excel -- colour-coded by significance, one sheet per factor -- see [post #138 on factor tables to Excel](/2026/03/24/how-to-export-factor-table-to-excel-python/).
 
 ---
 
@@ -538,7 +538,7 @@ This workflow reproduces the core of what an Emblem user does during model devel
 What it does not reproduce:
 
 - Emblem's interactive factor smoothing GUI. Smoothing can be done programmatically (cubic splines, isotonic regression, GAMs via [insurance-gam](https://github.com/burning-cost/insurance-gam)), but there is no point-and-click interface.
-- Emblem's native Radar export. For that, see [insurance-distill](https://github.com/burning-cost/insurance-distill) and the [CatBoost factor table to Radar post](/2026/03/23/catboost-factor-table-radar-45-minutes/).
+- Emblem's native Radar export. For that, see [insurance-distill](https://github.com/burning-cost/insurance-distill) and the [CatBoost factor table to Radar post](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/).
 - Emblem's integrated data management and audit trail. In Python, version control is handled separately (git for code, DVC or equivalent for data).
 
 The modelling is equivalent. The workflow is more code-heavy but also more reproducible -- the entire analysis above is a script you can re-run, diff, and review in a pull request.

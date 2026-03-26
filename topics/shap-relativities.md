@@ -21,7 +21,7 @@ Extracting relativities is step one. The next step — for teams who want to mov
 
 - [SHAP Relativities for Insurance GBMs: GLM-Format Factor Tables in Python](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — the foundational tutorial: extracting a motor frequency factor table from a CatBoost model
 - [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/) — step-by-step guide with exposure weighting and confidence intervals
-- [CatBoost Factor Table to Radar in 45 Minutes](/2026/03/23/catboost-factor-table-radar-45-minutes/) — end-to-end workflow from fitted model to Radar-importable factor schedule
+- [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/) — end-to-end workflow from fitted model to Radar-importable factor schedule
 
 ---
 

@@ -88,7 +88,7 @@ For claims inflation on the large-loss book, `insurance-trend`'s `SeverityTrendF
 
 ## Monitoring settlement pattern shifts
 
-The MoJ review expected in Spring 2026 may adjust the tariff schedule. Our March 2026 post on [BI claims trajectory under reform uncertainty](/2026/03/25/bi-claims-trajectory-whiplash-reform-uncertainty.html) assigned 45% probability to tariffs uprated with inflation (~17%), 25% to scope expansion, and 30% to partial reversion — the last scenario being the most dangerous for reserve adequacy despite having the second-lowest probability, because its distribution of outcomes is fat-tailed.
+The MoJ review expected in Spring 2026 may adjust the tariff schedule. Our March 2026 post on [BI claims trajectory under reform uncertainty](/2026/03/25/how-to-model-bi-claims-trajectory-under-whiplash-reform-uncertainty/) assigned 45% probability to tariffs uprated with inflation (~17%), 25% to scope expansion, and 30% to partial reversion — the last scenario being the most dangerous for reserve adequacy despite having the second-lowest probability, because its distribution of outcomes is fat-tailed.
 
 A multi-state model gives you a natural monitoring structure: track the empirical transition rates quarter on quarter and test whether the OICPortal → SettledPaid rate has shifted. If the MoJ changes the £5,000 portal threshold to £7,500 (a plausible scenario B outcome), a cohort of claims currently in the litigation pathway would instead route through the portal. The transition matrix shifts, and reserves built on the pre-change Q matrix are immediately stale.
 

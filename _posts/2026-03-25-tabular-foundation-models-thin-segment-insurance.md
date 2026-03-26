@@ -126,4 +126,4 @@ We will revisit this once we have run our own evaluation on a synthetic thin-seg
 
 - [HMM-Based Telematics Risk Scoring for Insurance Pricing](https://burning-cost.github.io/2026/03/13/insurance-telematics/) — the `insurance-telematics` library, including the credibility weighting approach for new-joiner drivers that TabPFN could complement
 - [Spliced Severity Distributions: When One Distribution Isn't Enough](https://burning-cost.github.io/2027/01/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) — `insurance-severity`, relevant when thin-segment severity uncertainty is the binding constraint
-- [Your Group Factors Are Not All Worth Modelling](/2025/04/14/multilevel-group-factors/) — how to diagnose which thin-group problems are genuine signal versus noise before reaching for a foundation model
+- [Your Group Factors Are Not All Worth Modelling](/2026/03/06/multilevel-group-factors/) — how to diagnose which thin-group problems are genuine signal versus noise before reaching for a foundation model
