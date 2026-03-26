@@ -1,0 +1,253 @@
+---
+layout: page
+title: "Categories"
+description: "All 231 articles organised by category. Find posts on pricing, techniques, libraries, regulation, fairness, causal inference, monitoring, validation, and more."
+permalink: /categories/
+---
+
+<style>
+  .categories-intro {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.65;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .cat-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    background: var(--surface);
+  }
+
+  .cat-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(79,126,248,0.1);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  .cat-card-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .cat-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1d2e;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .cat-card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .cat-card-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover { color: var(--accent); text-decoration: none; }
+
+  .section-heading {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+</style>
+
+<a href="/blog/" class="back-link">&larr; All articles</a>
+
+<p class="categories-intro">231 articles across 19 categories. The counts reflect actual post frontmatter — a post tagged in multiple categories appears in each relevant archive.</p>
+
+<p class="section-heading">Core disciplines</p>
+
+<div class="categories-grid">
+
+  <a href="/categories/pricing/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Pricing</div>
+    <div class="cat-card-desc">Rate adequacy, burning cost models, credibility weighting, GLM structure, and the decisions that determine whether a book makes money.</div>
+    <div class="cat-card-count">123 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/techniques/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Techniques</div>
+    <div class="cat-card-desc">Statistical and ML methods evaluated on whether they actually deliver in a UK pricing context. Not a textbook — a field report.</div>
+    <div class="cat-card-count">81 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/libraries/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Libraries</div>
+    <div class="cat-card-desc">Coverage of specific Python libraries: what they do, how they work, and when to reach for them versus writing something yourself.</div>
+    <div class="cat-card-count">98 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/tutorials/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Tutorials</div>
+    <div class="cat-card-desc">Step-by-step worked examples with real code. Designed to run end-to-end. Motor pricing, credibility weighting, factor tables, GLM diagnostics.</div>
+    <div class="cat-card-count">45 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/glm/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">GLM</div>
+    <div class="cat-card-desc">GLM structure, offset terms, interaction handling, and the gap between what Emblem does and what the underlying statistics says.</div>
+    <div class="cat-card-count">5 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/severity/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Severity</div>
+    <div class="cat-card-desc">Large loss loading, spliced distributions, extreme value theory, and the frequency-severity independence assumption most GLMs get wrong.</div>
+    <div class="cat-card-count">6 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/insurance-pricing/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Insurance Pricing</div>
+    <div class="cat-card-desc">The broader craft of pricing — rate review process, technical price construction, multi-factor interaction, and the strategic questions above the modelling.</div>
+    <div class="cat-card-count">5 articles &rarr;</div>
+  </a>
+
+</div>
+
+<p class="section-heading">Advanced methods</p>
+
+<div class="categories-grid">
+
+  <a href="/categories/causal-inference/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Causal Inference</div>
+    <div class="cat-card-desc">DML, causal forests, TMLE, and regression discontinuity applied to pricing. When correlation isn't enough and you need to know what actually drives loss.</div>
+    <div class="cat-card-count">12 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/machine-learning/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Machine Learning</div>
+    <div class="cat-card-desc">GBMs, neural networks, embeddings, and foundation models applied to pricing. With honest assessments of whether the complexity pays off.</div>
+    <div class="cat-card-count">6 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/research/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Research</div>
+    <div class="cat-card-desc">Academic papers and research directions relevant to UK insurance pricing, with field notes on whether the methods survive real-world data.</div>
+    <div class="cat-card-count">6 articles &rarr;</div>
+  </a>
+
+</div>
+
+<p class="section-heading">Governance &amp; risk</p>
+
+<div class="categories-grid">
+
+  <a href="/categories/regulation/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Regulation</div>
+    <div class="cat-card-desc">FCA Consumer Duty, PRA SS1/23, proxy discrimination, and model risk governance. Regulatory requirements translated into audit-ready Python workflows.</div>
+    <div class="cat-card-count">21 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/fairness/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Fairness</div>
+    <div class="cat-card-desc">Proxy discrimination, protected characteristics, indirect use detection, and long-run fairness under feedback loops in live pricing.</div>
+    <div class="cat-card-count">12 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/compliance/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Compliance</div>
+    <div class="cat-card-desc">Model documentation, audit trails, and explainability requirements. Python tools that produce the evidence files regulators ask for.</div>
+    <div class="cat-card-count">9 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/model-risk/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Model Risk</div>
+    <div class="cat-card-desc">MRM under PRA SS1/23. Risk tiering, inventory management, monitoring obligations, and how to defend a model under challenge.</div>
+    <div class="cat-card-count">8 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/model-validation/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Model Validation</div>
+    <div class="cat-card-desc">Independent validation — the process, required evidence, and tests that catch problems GLM diagnostics miss. Designed around PRA SS1/23 expectations.</div>
+    <div class="cat-card-count">5 articles &rarr;</div>
+  </a>
+
+</div>
+
+<p class="section-heading">Operations &amp; quality</p>
+
+<div class="categories-grid">
+
+  <a href="/categories/validation/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Validation</div>
+    <div class="cat-card-desc">Gini, double-lift, calibration, out-of-time testing, and the failure modes standard ML metrics miss on insurance data.</div>
+    <div class="cat-card-count">11 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/monitoring/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Monitoring</div>
+    <div class="cat-card-desc">Model drift, champion/challenger testing, PSI, A/E ratios, and covariate shift detection in live pricing. The discipline most teams under-invest in.</div>
+    <div class="cat-card-count">12 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/comparisons/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Comparisons</div>
+    <div class="cat-card-desc">Head-to-head evaluations: insurance-specific tools versus generic ML libraries, Python versus R, different approaches on the same dataset.</div>
+    <div class="cat-card-count">7 articles &rarr;</div>
+  </a>
+
+  <a href="/categories/python/" class="cat-card">
+    <div class="cat-card-label">Category</div>
+    <div class="cat-card-title">Python</div>
+    <div class="cat-card-desc">Python-specific tooling, package selection, Databricks integration, and running Python in a regulated pricing environment.</div>
+    <div class="cat-card-count">8 articles &rarr;</div>
+  </a>
+
+</div>
