@@ -379,6 +379,6 @@ The insurance-monitoring library is at [github.com/burning-cost/insurance-monito
 ---
 
 **Related posts:**
-- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/) — the four KPIs pricing teams actually track
+- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — the four KPIs pricing teams actually track
 - [Why Evidently Isn't Enough for Insurance Pricing Model Monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) — gap analysis against generic tools
 - [How to Build a Burning Cost Model for Insurance Pricing in Python](/2026/03/23/burning-cost-model-insurance-python/) — the model that feeds the monitoring workflow

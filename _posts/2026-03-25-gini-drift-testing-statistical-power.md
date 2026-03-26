@@ -281,6 +281,6 @@ A/E green. Gini drift test red. This is the scenario that matters — and it is 
 
 **Related posts:**
 - [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — the full monitoring stack: exposure-weighted PSI, A/E with Garwood intervals, Murphy decomposition, mSPRT sequential testing
-- [Insurance Model Monitoring: Gini, A/E and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/) — KPI reference: what each metric catches, when it fires, what to do
+- [Insurance Model Monitoring: Gini, A/E and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — KPI reference: what each metric catches, when it fires, what to do
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — the Murphy decomposition gives you a principled answer once the Gini test has flagged
 - [Your Pricing Model Is Drifting (and You Probably Can't Tell)](/2026/03/03/your-pricing-model-is-drifting/) — the original case for multi-layer monitoring

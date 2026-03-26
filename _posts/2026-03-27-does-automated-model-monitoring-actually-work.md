@@ -130,5 +130,5 @@ uv add insurance-monitoring
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-monitoring). Start with `benchmarks/benchmark.py` for the failure-mode detection matrix, then `benchmarks/benchmark_sequential.py` for the champion/challenger results.
 
-- [Your Model Drift Alert Is Too Late](/2028/11/15/your-model-drift-alert-is-too-late/)
+- Your Model Drift Alert Is Too Late
 - [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/)

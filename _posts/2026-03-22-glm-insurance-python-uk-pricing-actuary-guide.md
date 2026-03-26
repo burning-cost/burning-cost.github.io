@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [python, glm, insurance-pricing]
 tags: [glm, python, uk-insurance, glum, polars, catboost, freMTPL2, poisson, gamma, frequency-severity, exposure, NCD, ABI-group, postcode, FCA, Consumer-Duty, Emblem, Radar, IBNR, offsets, insurance-distill, shap-relativities, insurance-cv]
 description: "GLM insurance Python for UK pricing actuaries: exposure handling, Consumer Duty, frequency-severity split, and Emblem/Radar deployment with glum."
-canonical_url: "https://burning-cost.github.io/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/"
 ---
 
 Every GLM insurance Python tutorial does the same thing. Load freMTPL2, fit a Poisson with sklearn, plot a lift curve, call it a day. If you are a UK pricing actuary who has used Emblem or Radar professionally, those tutorials are missing about 80% of what you actually care about.

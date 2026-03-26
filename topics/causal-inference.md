@@ -17,7 +17,7 @@ A third application is rate change evaluation. Standard before/after analysis of
 
 ## Tutorials and introductions
 
-- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/01/17/causal-price-elasticity-tutorial/) — the foundational tutorial: DML price elasticity on a UK renewal book, with FCA PS21/5 compliance framing
+- [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) — the foundational tutorial: DML price elasticity on a UK renewal book, with FCA PS21/5 compliance framing
 - [Causal AI for Pricing Actuaries: A Practical Guide](/2026/03/25/causal-ai-for-pricing-actuaries/) — broader introduction to causal methods for pricing teams: DML, causal forests, DiD, interrupted time series
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — why naive elasticity estimation fails and how DML fixes it
 
@@ -25,7 +25,7 @@ A third application is rate change evaluation. Standard before/after analysis of
 
 ## Techniques and extensions
 
-- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/01/24/dml-small-samples-adaptive-regularisation/) — adaptive regularisation for thin segments where standard DML overfits the nuisance models
+- [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — adaptive regularisation for thin segments where standard DML overfits the nuisance models
 - [Your Pricing Model Knows the Average Effect. That Is Not Enough.](/2026/03/24/heterogeneous-treatment-effects-causal-forests-insurance/) — causal forests for heterogeneous treatment effects across the portfolio
 - [Your Pricing Model Knows the Average. Your Customers Don't Care About the Average.](/2026/03/25/heterogeneous-price-elasticity-causal-forests-insurance-pricing/) — GATES and CLAN for characterising which segments are most price-sensitive
 - [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — BCF with BART for credible intervals on heterogeneous effects in small samples
@@ -37,7 +37,7 @@ A third application is rate change evaluation. Standard before/after analysis of
 ## Benchmarks and validation
 
 - [Double Machine Learning for Insurance Pricing: Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) — simulation results on synthetic UK motor data with known treatment effects
-- [Does DML causal inference actually work for insurance pricing?](/2026/03/23/does-dml-causal-inference-work-insurance-pricing/) — empirical validation of DML on realistic insurance data
+- [Does DML causal inference actually work for insurance pricing?](/2026/03/25/does-dml-causal-inference-actually-work/) — empirical validation of DML on realistic insurance data
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/) — extended benchmark with GLM comparison
 
 ---

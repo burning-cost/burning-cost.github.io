@@ -273,6 +273,6 @@ uv add insurance-fairness insurance-governance
 ---
 
 **Related posts:**
-- [Model Governance for UK Insurance Pricing: Building the MRC Pack](/2026/03/14/model-governance-mrc-pack/) — the full `insurance-governance` walkthrough: ModelCard, RiskTierScorer, GovernanceReport
-- [Proxy Discrimination in Insurance Pricing: The Côté Toolbox](/2026/03/20/proxy-discrimination-cote-toolbox/) — per-policyholder proxy vulnerability metrics, PremiumSpectrum, and the parity cost decomposition
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — PSI-based drift detection that integrates with the monitoring trigger framework
+- Model Governance for UK Insurance Pricing: Building the MRC Pack — the full `insurance-governance` walkthrough: ModelCard, RiskTierScorer, GovernanceReport
+- Proxy Discrimination in Insurance Pricing: The Côté Toolbox — per-policyholder proxy vulnerability metrics, PremiumSpectrum, and the parity cost decomposition
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — PSI-based drift detection that integrates with the monitoring trigger framework

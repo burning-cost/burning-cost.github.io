@@ -200,6 +200,6 @@ The modelling problem is tractable. The bigger challenge is that the industry's 
 
 Source: [ABI property insurance payouts — year-to-date record £4.6 billion (Nov 2025)](https://www.abi.org.uk/news/news-articles/2025/11/year-to-date-property-insurance-payouts-hit-record-4.6-billion/) | [ABI full-year 2024 weather claims](https://www.abi.org.uk/news/news-articles/2025/2/more-action-needed-to-protect-properties-as-adverse-weather-takes-record-toll-on-insurance-claims-in-2024/) | [UKCP18 Marine and Land Projections](https://www.metoffice.gov.uk/research/approach/collaboration/ukcp/index)
 
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) — when a single Tweedie phi is not enough for variance-aware home pricing
-- [How to Build a Large Loss Loading Model for Home Insurance](/2026/10/14/large-loss-loading-for-home-insurance/) — the per-risk tail loading approach for high-sum-insured properties
-- [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/) — how to diagnose whether a drifting model needs a recalibration or a full rebuild
+- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — when a single Tweedie phi is not enough for variance-aware home pricing
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — the per-risk tail loading approach for high-sum-insured properties
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — how to diagnose whether a drifting model needs a recalibration or a full rebuild

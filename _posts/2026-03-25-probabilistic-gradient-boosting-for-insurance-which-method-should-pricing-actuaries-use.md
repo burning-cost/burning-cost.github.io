@@ -188,7 +188,7 @@ One honest caveat: distributional GBMs are not always better than a well-calibra
 
 ## Related
 
-- [Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Distributional GBM](/2026/12/14/per-risk-volatility-scoring-with-distributional-gbms/) — practical walkthrough of `TweedieGBM` on a synthetic UK motor portfolio, including CoV calculations for safety loading
+- [Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Distributional GBM](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — practical walkthrough of `TweedieGBM` on a synthetic UK motor portfolio, including CoV calculations for safety loading
 - [`insurance-gam`](https://github.com/burning-cost/insurance-gam) — interpretable additive models for insurance pricing; the alternative to EGBM if you prefer the GAM family
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free prediction intervals via conformal prediction; no distributional assumption required, valid coverage guarantees by construction
 

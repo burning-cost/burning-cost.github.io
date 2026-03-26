@@ -11,7 +11,11 @@ twitter:
   username: burningcost
   card: summary_large_image
 
+# Used by jekyll-seo-tag for og:image and twitter:image
+image: /assets/og-image.png
 og_image: /assets/og-image.png
+
+logo: /assets/og-image.png
 
 social:
   name: Burning Cost
@@ -64,6 +68,9 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor/
+  - workbench/
+  - scripts/
+  - README.md
 
 # Editorial rules (2026-03-19 quality audit)
 # - Moratorium on new "Your X" titles. 31% of posts (33/107) already use this

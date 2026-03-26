@@ -195,6 +195,6 @@ Source: [github.com/burning-cost/insurance-monitoring](https://github.com/burnin
 
 ---
 
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — monitoring for covariate drift, which determines whether your calibrated η is still valid
-- [Your GBM and GLM Are Not Competitors](/2026/06/14/your-gbm-and-glm-are-not-competitors/) — the mean model whose ρ you are measuring here
-- [Recalibrate or Refit?](/2026/05/14/recalibrate-or-refit/) — when model degradation is large enough that a full refit changes the LRE picture materially
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — monitoring for covariate drift, which determines whether your calibrated η is still valid
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — the mean model whose ρ you are measuring here
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — when model degradation is large enough that a full refit changes the LRE picture materially

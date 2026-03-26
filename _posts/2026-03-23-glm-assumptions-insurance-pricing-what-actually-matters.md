@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [pricing, techniques, tutorials]
 tags: [GLM, assumptions, Tweedie, Poisson, gamma, quasi-likelihood, overdispersion, residuals, diagnostics, link-function, dispersion, insurance-conformal, insurance-gam, motor-insurance, home-insurance, python, uk-insurance]
 description: "Which GLM assumptions actually matter for insurance pricing, which ones you routinely violate without consequence, and the diagnostics worth running before signing off a production model."
-canonical_url: "/2026/03/23/glm-assumptions-insurance-pricing-what-actually-matters/"
 ---
 
 Every GLM textbook lists the assumptions. The response follows a particular distribution family. The link function is correctly specified. The observations are independent. The systematic component is linear in the parameters. All four are routinely violated in real insurance pricing work. Two of those violations matter a great deal. Two of them you can mostly ignore. Knowing which is which is what separates a pricing actuary who validates models from one who recites them.
@@ -179,7 +178,7 @@ It does not matter for:
 - Deviance residuals as a diagnostic
 - GLM vs GBM Gini comparisons
 
-For Gamma severity, the analogous issue is that Gamma Var = phi * mu^2 requires estimating the dispersion phi. Statsmodels estimates phi from the Pearson chi-squared by default. If you have reason to believe phi varies across your book (heterogeneous volatility by claim type or driver segment), a distributional GLM with a sigma submodel is warranted. We described how to validate that in [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2025-05-29-validating-gamlss-sigma-models %}).
+For Gamma severity, the analogous issue is that Gamma Var = phi * mu^2 requires estimating the dispersion phi. Statsmodels estimates phi from the Pearson chi-squared by default. If you have reason to believe phi varies across your book (heterogeneous volatility by claim type or driver segment), a distributional GLM with a sigma submodel is warranted. We described how to validate that in [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2026-03-08-validating-gamlss-sigma-models %}).
 
 ---
 
@@ -339,7 +338,7 @@ For prediction intervals - coverage-guaranteed uncertainty bands per risk - the 
 
 **Related:**
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2025-05-14-frequency-severity-independence-is-costing-you-premium %}) - empirical evidence and a Python implementation of Sarmanov copula marginals
-- [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2025-05-29-validating-gamlss-sigma-models %}) - when the constant-dispersion assumption fails in a severity model and how to validate a sigma submodel
+- [How Do You Know Your Sigma Model Is Working?]({{ site.baseurl }}{% post_url 2026-03-08-validating-gamlss-sigma-models %}) - when the constant-dispersion assumption fails in a severity model and how to validate a sigma submodel
 - [Finding the Interactions Your GLM Missed]({{ site.baseurl }}{% post_url 2026-02-27-finding-the-interactions-your-glm-missed %}) - testing for residual nonlinearity and interaction effects
 - [Conformal Prediction Intervals for Insurance Pricing Models]({{ site.baseurl }}{% post_url 2026-02-19-conformal-prediction-intervals-for-insurance-pricing %}) - distribution-free prediction intervals when your GLM assumptions are in doubt
 - [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure]({{ site.baseurl }}{% post_url 2026-03-21-tweedie-regression-insurance-what-sklearn-doesnt-tell-you %}) - the exposure offset problem and how to estimate p correctly

@@ -18,14 +18,14 @@ The [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitorin
 ## Tutorials and introductions
 
 - [Insurance Model Monitoring in Python: Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — the main library tutorial: PSI, CSI, and Gini drift on a deployed CatBoost model
-- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/) — end-to-end monitoring workflow with double-lift chart generation
+- [Insurance Model Monitoring in Python: Gini Drift, A/E Ratios and Double-Lift Curves](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — end-to-end monitoring workflow with double-lift chart generation
 - [Insurance Model Monitoring in Python: Gini, A/E, and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — companion post with full Python code walkthrough
 
 ---
 
 ## Techniques and problem framing
 
-- [Your Model Drift Alert Is Too Late](/2026/02/08/your-model-drift-alert-is-too-late/) — the case for monitoring inputs rather than outputs
+- Your Model Drift Alert Is Too Late — the case for monitoring inputs rather than outputs
 - [Three-Layer Drift Detection: What PSI and A&E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — the full monitoring stack: feature drift, score drift, and performance drift
 - [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — density-ratio methods for detecting and correcting covariate shift
 - [Motor Model Mispricing Caught by Monitoring: A Case Study](/2026/03/23/motor-model-mispricing-caught-by-monitoring/) — worked example of a real monitoring alert and the underlying cause
@@ -35,7 +35,7 @@ The [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitorin
 
 ## Benchmarks and validation
 
-- [Does automated model monitoring actually work for insurance pricing?](/2026/03/23/does-model-monitoring-work-insurance-pricing/) — empirical test of whether PSI/CSI alerts precede A/E deterioration
+- [Does automated model monitoring actually work for insurance pricing?](/2026/03/27/does-automated-model-monitoring-actually-work/) — empirical test of whether PSI/CSI alerts precede A/E deterioration
 - [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — extended validation on simulated drift scenarios
 
 ---

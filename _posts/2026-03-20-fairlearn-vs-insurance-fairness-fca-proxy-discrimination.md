@@ -6,7 +6,6 @@ featured: true
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "Fairlearn is excellent for classification fairness. It was not built for insurance pricing, the Equality Act 2010, or the FCA's specific concern: proxy discrimination in a multiplicative rating model. Here is what the difference means in practice."
-canonical_url: "/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/"
 tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
 ---
 
@@ -259,11 +258,11 @@ Use Fairlearn when you are doing classification and want to enforce demographic 
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [EquiPy vs insurance-fairness](/2026/03/19/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/20/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/19/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/18/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
 - [Evidently vs insurance-monitoring](/2026/03/22/insurance-model-monitoring-evidently-alternative/) - model monitoring
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [NannyML vs insurance-monitoring](/2026/03/21/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
 - [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

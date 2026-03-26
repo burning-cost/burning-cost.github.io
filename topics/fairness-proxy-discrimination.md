@@ -36,7 +36,7 @@ The [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) l
 
 ## Benchmarks and validation
 
-- [Does proxy discrimination testing actually work?](/2026/03/23/does-proxy-discrimination-testing-work-insurance/) — sensitivity and specificity of detection methods on synthetic data with known discrimination
+- [Does proxy discrimination testing actually work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — sensitivity and specificity of detection methods on synthetic data with known discrimination
 - [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — extended empirical validation across different proxy strengths and portfolio sizes
 
 ---

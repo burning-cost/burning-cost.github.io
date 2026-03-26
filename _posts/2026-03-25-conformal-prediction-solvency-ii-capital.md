@@ -238,5 +238,5 @@ The right use is as a distribution-free lower bound on what your capital require
 Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
 
 - Hong (2025), "Conformal prediction of future insurance claims in the regression problem." [arXiv:2503.03659](https://arxiv.org/abs/2503.03659)
-- [Conformalized Quantile Regression for Insurance](/2026/03/24/conformalized-quantile-regression-insurance/) — the CQR implementation shipped in v0.6.2, which produces heteroscedastic bounds directly useful for per-risk volatility
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — covers `RetroAdj` for handling the exchangeability violations that matter most for SCR calibration
+- Conformalized Quantile Regression for Insurance — the CQR implementation shipped in v0.6.2, which produces heteroscedastic bounds directly useful for per-risk volatility
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — covers `RetroAdj` for handling the exchangeability violations that matter most for SCR calibration

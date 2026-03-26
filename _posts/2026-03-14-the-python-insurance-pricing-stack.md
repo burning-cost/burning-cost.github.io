@@ -185,7 +185,7 @@ spatial.fit(
 # derive_bands would be a downstream clustering step
 ```
 
-See [Your Territory Banding is Wrong](/2026/02/27/your-territory-banding-is-wrong/) for what the BYM2 model finds that choropleth maps miss.
+See Your Territory Banding is Wrong for what the BYM2 model finds that choropleth maps miss.
 
 [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial)
 
@@ -394,7 +394,7 @@ result = model.fit(df, exposure_col="exposure")
 print(result.ate, result.ci_95)  # average treatment effect + confidence interval
 ```
 
-For the mechanism and a worked motor example, see [Your Rating Factor Might Be Confounded](/2026/03/06/your-rating-factor-might-be-confounded/).
+For the mechanism and a worked motor example, see Your Rating Factor Might Be Confounded.
 
 [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal)
 
@@ -461,7 +461,7 @@ result = opt.optimise()
 print(result.optimal_multipliers)  # per-policy price multipliers
 ```
 
-For the full treatment of the constrained rate optimisation problem and the efficient frontier interpretation, see [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/06/constrained-rate-optimisation-and-the-efficient-frontier/).
+For the full treatment of the constrained rate optimisation problem and the efficient frontier interpretation, see Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement.
 
 [github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 

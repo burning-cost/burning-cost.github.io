@@ -30,7 +30,7 @@ Conformal prediction offers a different kind of guarantee. It makes no assumptio
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control for premium sufficiency rather than interval coverage
 - [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2025/12/30/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for non-exchangeable (trending) claims data
 - [GAMLSS vs Conformal: Head-to-Head on the Same Dataset](/2026/03/25/gamlss-vs-conformal-head-to-head/) — empirical comparison of parametric and distribution-free uncertainty methods
-- [Your Reserve Range Has No Frequentist Guarantee](/2026/02/14/reserve-range-conformal-guarantee/) — applying conformal coverage guarantees to reserving range estimation
+- [Your Reserve Range Has No Frequentist Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — applying conformal coverage guarantees to reserving range estimation
 - [Conformal Prediction for Solvency II Capital Requirements: Model-Free SCR Estimation](/2026/03/25/conformal-prediction-solvency-ii-scr-model-free-estimation/) — using conformal intervals for capital modelling without distribution assumptions
 - [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — conformal validity as a monitoring signal for book mix changes
 
@@ -39,8 +39,8 @@ Conformal prediction offers a different kind of guarantee. It makes no assumptio
 ## Benchmarks and validation
 
 - [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — empirical coverage results on held-out UK motor data
-- [Does conformal prediction actually work for insurance pricing?](/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — validation of coverage guarantees under realistic insurance conditions
-- [Which Uncertainty Quantification Method Should You Use?](/2026/03/25/which-uncertainty-quantification-method/) — benchmark comparison across methods on the same dataset
+- [Does conformal prediction actually work for insurance pricing?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — validation of coverage guarantees under realistic insurance conditions
+- [Which Uncertainty Quantification Method Should You Use?](/2026/03/25/which-uncertainty-quantification-method-decision-framework/) — benchmark comparison across methods on the same dataset
 
 ---
 

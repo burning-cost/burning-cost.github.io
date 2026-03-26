@@ -5,6 +5,7 @@ date: 2026-03-24
 categories: [pricing]
 tags: [claims-inflation, trend, cpi, ogden, motor, home, severity, frequency, loss-cost, insurance-trend, superimposed-inflation, ons, pricing-actuary]
 excerpt: "CPI-adjusting your historical claims data before fitting a pricing model introduces systematic bias - here is what to use instead."
+description: "CPI-adjusting your historical claims data before fitting a pricing model introduces systematic bias. How to apply line-specific inflation indices for motor and home insurance in Python."
 ---
 
 Many pricing teams CPI-adjust their historical claims data before fitting a frequency-severity model. The logic is sensible: claims from 2019 are not directly comparable to claims from 2024 in nominal terms, so you inflate them to today's money before fitting. The problem is that CPI is the wrong index, and in some lines it is badly wrong.

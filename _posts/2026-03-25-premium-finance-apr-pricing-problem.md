@@ -211,5 +211,5 @@ Sources: [insurance-fairness](https://github.com/burning-cost/insurance-fairness
 
 ---
 
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/09/14/your-book-has-shifted-and-your-model-doesnt-know/) — the drift monitoring toolkit that applies equally to APR calibration monitoring
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — the drift monitoring toolkit that applies equally to APR calibration monitoring
 - [Model Value in Pounds: Translating Gini Improvement to Loss Ratio](/2027/01/14/model-value-in-pounds-translating-gini-improvement-to-loss-ratio/) — quantifying what better segment calibration is worth commercially

@@ -238,5 +238,5 @@ The smoothed trajectory shows the step-change at period 4 clearly. A flat-weight
 
 **Related posts:**
 - [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) - the static model, structural parameter estimation, and scheme pricing mechanics
-- [How to Score Repeat Claimants with a Shared Frailty Model](/2026/03/02/shared-frailty-models-for-repeat-claimants/) - within-policyholder recurrence, not group experience
+- How to Score Repeat Claimants with a Shared Frailty Model - within-policyholder recurrence, not group experience
 - [Multilevel Group Factors](/2026/03/06/multilevel-group-factors/) - CatBoost + REML random effects when you have hundreds of brokers or schemes

@@ -5,11 +5,10 @@ date: 2026-03-23
 author: Burning Cost
 categories: [python, glm, insurance-pricing, tutorials]
 description: "Reproduce an Emblem frequency-severity GLM in Python: factor tables, one-way plots, deviance residuals, and lift charts using statsmodels, CatBoost, and Polars."
-canonical_url: "https://burning-cost.github.io/2026/03/23/how-to-reproduce-emblem-glm-in-python/"
 tags: [glm, emblem, statsmodels, catboost, polars, frequency-severity, factor-tables, relativities, deviance-residuals, lift-chart, one-way-analysis, python, uk-insurance, motor-pricing, pricing-actuary, shap-relativities, insurance-cv]
 ---
 
-This is the final post in our five-part "How to do X in Python" series for pricing actuaries. The other four cover the [exposure-weighted Gini coefficient](/2026/03/23/exposure-weighted-gini-coefficient-python/), [one-way analysis](/2026/03/23/one-way-analysis-python-pricing-actuary/), [factor tables to Excel](/2026/03/23/catboost-factor-table-radar-45-minutes/), and [double-lift charts](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/).
+This is the final post in our five-part "How to do X in Python" series for pricing actuaries. The other four cover the [exposure-weighted Gini coefficient](/2026/03/23/exposure-weighted-gini-coefficient-python/), [one-way analysis](/2026/03/23/one-way-analysis-python-pricing-actuary/), [factor tables to Excel](/2026/03/23/catboost-factor-table-radar-45-minutes/), and [double-lift charts](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/).
 
 If you have spent any time in Emblem, you know the workflow: load data, define the model structure, fit Poisson and Gamma GLMs, inspect factor tables, run one-way diagnostics, check deviance residuals, produce a lift chart, iterate. This post reproduces that workflow end-to-end in Python using statsmodels for the GLMs, CatBoost as a GBM challenger, and Polars for data handling.
 
@@ -552,4 +551,4 @@ The modelling is equivalent. The workflow is more code-heavy but also more repro
 uv add statsmodels catboost polars shap-relativities insurance-cv
 ```
 
-All five posts in this series use the same core stack. If you are building a Python pricing environment from scratch, the [Python insurance pricing toolkit post](/2026/03/22/complete-python-insurance-pricing-toolkit-2026/) covers the full dependency set and environment setup.
+All five posts in this series use the same core stack. If you are building a Python pricing environment from scratch, the Python insurance pricing toolkit post covers the full dependency set and environment setup.

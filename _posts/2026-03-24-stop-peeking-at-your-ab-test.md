@@ -5,7 +5,6 @@ date: 2026-03-24
 author: Burning Cost
 categories: [pricing, experimentation, libraries, champion-challenger]
 description: "Every insurance team checks their champion/challenger results monthly. Every month you look, you inflate the false positive rate. Here is how to do it correctly using sequential testing."
-canonical_url: "https://burning-cost.github.io/2026/03/24/stop-peeking-at-your-ab-test/"
 tags: [sequential-testing, msprt, e-values, champion-challenger, a-b-testing, claim-frequency, poisson, type-i-error, insurance-monitoring, motor, python, polars, gipp, fca]
 ---
 

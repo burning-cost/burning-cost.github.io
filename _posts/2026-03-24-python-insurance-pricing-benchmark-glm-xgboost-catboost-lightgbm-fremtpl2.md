@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [techniques, benchmarks]
 tags: [glm, xgboost, catboost, lightgbm, gbm, benchmark, fremtpl2, poisson-deviance, gini, calibration, frequency-modelling, python, insurance-pricing, statsmodels, motor, uk-insurance]
 description: "Definitive Python benchmark: Poisson GLM vs XGBoost vs CatBoost vs LightGBM for insurance frequency modelling on freMTPL2. Poisson deviance, Gini coefficient, and A/E calibration — all models, all code, honest conclusions."
-canonical_url: "https://burning-cost.github.io/2026/03/24/python-insurance-pricing-benchmark-glm-xgboost-catboost-lightgbm-fremtpl2/"
 ---
 
 If you are choosing a Python modelling approach for claim frequency, freMTPL2 is the dataset to use. It ships inside scikit-learn via OpenML, it has a known structure (Poisson counts with log-exposure offset), 678,013 policies, and enough volume to produce stable metric estimates. Every academic paper on insurance ML benchmarks against it. You should too.

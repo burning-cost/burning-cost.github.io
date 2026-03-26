@@ -5,7 +5,6 @@ date: 2026-03-25
 author: Burning Cost
 categories: [compliance, pricing, regulation]
 description: "The FCA has explicitly flagged pet insurance for monitoring in its 2026 regulatory priorities. FOS complaint upheld rates hit 52% in Q1 2025 — the highest of any UKGI business line. What pricing teams need to do before this moves from 'monitoring' to formal investigation."
-canonical_url: "/2026/03/25/pet-insurance-pricing-fca-watching/"
 tags: [FCA, Consumer-Duty, pet-insurance, fair-value, value-measures, vet-inflation, claims-inflation, insurance-monitoring, insurance-fairness, insurance-governance, pricing, uk-insurance]
 ---
 

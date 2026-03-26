@@ -5,7 +5,6 @@ date: 2026-03-20
 author: Burning Cost
 categories: [pricing, severity, libraries, tutorials]
 description: "Standard GPD fitting is biased when claims are capped by policy limits. Most actuaries know this and do it anyway. insurance-severity v0.2.0 fixes it."
-canonical_url: "/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/"
 tags: [EVT, extreme-value-theory, GPD, TruncatedGPD, CensoredHillEstimator, WeibullTemperedPareto, policy-limits, truncation, censoring, severity, tail-index, insurance-severity, v0.2.0, python, motor-bi, uk-insurance, reinsurance]
 ---
 
@@ -235,6 +234,6 @@ The 10.3% to 1.2% Q99 error reduction is free in the sense that it requires no a
 ---
 
 **Related posts:**
-- [Spliced Severity Distributions: When One Distribution Isn't Enough](/2026/03/06/spliced-severity-distributions-when-one-distribution-isnt-enough/) - the body-tail composite model in insurance-severity v0.1.0; start here if you are new to the library
+- [Spliced Severity Distributions: When One Distribution Isn't Enough](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) - the body-tail composite model in insurance-severity v0.1.0; start here if you are new to the library
 - [Extreme Value Theory for UK Motor Large Loss Pricing](/2026/03/13/insurance-evt/) - EVT workflow for threshold selection, censored MLE for open claims, and XL layer pricing via insurance-evt
 - [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) - quantile GBM approach when you want per-risk loadings from conditional tail quantiles rather than parametric EVT

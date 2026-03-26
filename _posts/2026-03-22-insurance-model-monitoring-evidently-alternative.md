@@ -5,7 +5,6 @@ date: 2026-03-22
 author: Burning Cost
 categories: [monitoring, model-risk, libraries]
 description: "Evidently is excellent for generic ML monitoring. It doesn't do exposure-weighted PSI, Poisson A/E ratios, Gini drift testing, or anytime-valid sequential tests. For UK insurance pricing teams, those omissions matter."
-canonical_url: "/2026/03/22/insurance-model-monitoring-evidently-alternative/"
 tags: [insurance-model-monitoring-python, Evidently, model-drift-detection, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, insurance-monitoring, model-risk, pricing, python, uk-insurance, polars]
 ---
 
@@ -292,11 +291,11 @@ What we'd resist is the assumption that Evidently covers the monitoring problem 
 
 **More library comparisons:** How our insurance-specific libraries compare to popular open-source alternatives.
 
-- [Fairlearn vs insurance-fairness](/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
-- [EquiPy vs insurance-fairness](/2026/03/22/equipy-vs-insurance-fairness/) - optimal transport fairness
-- [MAPIE vs insurance-conformal](/2026/03/22/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
-- [EconML vs insurance-causal](/2026/03/22/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
-- [DoWhy vs insurance-causal](/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
-- [NannyML vs insurance-monitoring](/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
-- [Alibi Detect vs insurance-monitoring](/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
+- [Fairlearn vs insurance-fairness](/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/) - proxy discrimination auditing
+- [EquiPy vs insurance-fairness](/2026/03/19/equipy-vs-insurance-fairness/) - optimal transport fairness
+- [MAPIE vs insurance-conformal](/2026/03/20/mapie-vs-insurance-conformal-prediction-intervals/) - conformal prediction intervals
+- [EconML vs insurance-causal](/2026/03/19/econml-vs-insurance-causal-inference-pricing/) - causal inference for pricing
+- [DoWhy vs insurance-causal](/2026/03/18/dowhy-vs-insurance-causal-inference-insurance-pricing/) - causal graphs and refutation
+- [NannyML vs insurance-monitoring](/2026/03/21/nannyml-vs-insurance-monitoring-drift-detection-insurance/) - drift detection
+- [Alibi Detect vs insurance-monitoring](/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/) - statistical drift tests
 - [sklearn TweedieRegressor vs insurance-distributional](/2026/03/22/sklearn-tweedie-vs-insurance-distributional-regression/) - distributional regression

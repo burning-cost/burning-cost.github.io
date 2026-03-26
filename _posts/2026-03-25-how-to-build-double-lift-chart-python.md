@@ -274,7 +274,7 @@ uv add insurance-distill
 ```
 
 - [Insurance Model Monitoring: Gini, A/E, and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — the full monitoring context around the double-lift chart
-- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/07/14/how-to-extract-rating-factors-from-catboost/) — once the challenger wins, extract its factor table
-- [Your GBM and GLM Are Not Competitors](/2026/06/14/your-gbm-and-glm-are-not-competitors/) — why the champion/challenger framing is correct and the GLM-vs-GBM framing is not
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/) — once the challenger wins, extract its factor table
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — why the champion/challenger framing is correct and the GLM-vs-GBM framing is not
 - [`insurance-distill` source](https://github.com/burning-cost/insurance-distill) — for distilled pseudo-model workflows
 - [`insurance-monitoring` source](https://github.com/burning-cost/insurance-monitoring) — for the full production monitoring suite

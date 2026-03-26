@@ -268,6 +268,6 @@ It is the 73rd library in the Burning Cost open-source portfolio.
 - **[insurance-fairness](https://github.com/burning-cost/insurance-fairness)** - Proxy discrimination diagnostics for fitted pricing models. Complements BCFAuditReport for Consumer Duty evidence packs.
 - **[insurance-dynamics](https://github.com/burning-cost/insurance-dynamics)** - Detect when your loss experience regime changed. Segment the dataset before fitting BCF if a structural break is present.
 
-- [Causal Inference for Insurance Pricing](/2026/02/25/causal-inference-for-insurance-pricing/)
+- Causal Inference for Insurance Pricing
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)

@@ -51,7 +51,7 @@ The authors demonstrate the framework on data from the University of Michigan He
 
 The FCA's Consumer Duty [Principle 12 and PRIN 2A] requires firms to deliver good outcomes to retail customers, including fair value. For pure protection products, the FCA's interim report on MS24/1 (published 29 January 2026) flagged specific concerns about income protection claims ratios running at approximately 40% — well below what fair value assessments should tolerate — and about premium trajectories that leave customers worse off over the life of the contract than a rational expectations analysis would suggest.
 
-[We wrote about the MS24/1 implications for pricing teams here.](/2026/03/25/fca-pure-protection-market-study-what-pricing-teams-should-prepare-for.html)
+[We wrote about the MS24/1 implications for pricing teams here.](/2026/03/25/fca-pure-protection-market-study-what-pricing-teams-should-prepare-for/)
 
 The connection to arXiv:2602.04791 is direct. If your IP or PMI pricing uses multi-state transition models — which it should, because it is the actuarially correct approach — then the fairness of those models is the fairness of your long-term pricing trajectory. Consumer Duty fair value assessments that document the technical model without examining its fairness properties across protected groups are, in our view, inadequate. The FCA has not said this explicitly yet, but the trajectory of Consumer Duty enforcement and the direction of the pure protection market study make it predictable.
 

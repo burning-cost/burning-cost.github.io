@@ -304,6 +304,6 @@ Sources: [GAD Ogden tables](https://www.gov.uk/actuaries-discount-rate) — [Civ
 
 **Related posts:**
 
-- [How to Build a Large Loss Loading Model for Home Insurance](/2026/10/14/large-loss-loading-for-home-insurance/) — quantile GBM approach to per-risk large loss loadings; the tail structure is directly applicable to large BI severity
+- [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — quantile GBM approach to per-risk large loss loadings; the tail structure is directly applicable to large BI severity
 - [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — the benchmark that shows why parametric intervals fail in the tail for heterogeneous books
 - [Your Model Risk Register Is a Spreadsheet](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) — why governance documentation for high-stakes models needs more than an Excel tab

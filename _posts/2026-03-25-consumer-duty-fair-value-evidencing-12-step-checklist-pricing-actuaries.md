@@ -6,7 +6,6 @@ featured: true
 author: Burning Cost
 categories: [compliance, fairness, monitoring, tutorials]
 description: "FCA PS24/1 confirms enhanced Consumer Duty requirements from April 2026. EP25/2 flags ongoing fair value supervision in motor and home. No single technical checklist exists for the pricing actuary's portion of the annual fair value assessment. Here is one."
-canonical_url: "/2026/03/25/consumer-duty-fair-value-evidencing-12-step-checklist-pricing-actuaries/"
 tags: [FCA, Consumer-Duty, PS24-1, EP25-2, PRIN-2A, fair-value, fairness, monitoring, calibration, proxy-discrimination, insurance-monitoring, insurance-fairness, insurance-conformal, pricing-actuary, compliance, uk-insurance, tutorial]
 ---
 

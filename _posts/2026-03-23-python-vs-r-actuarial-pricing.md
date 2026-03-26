@@ -5,7 +5,6 @@ date: 2026-03-23
 author: Burning Cost
 categories: [python, r, insurance-pricing, glm]
 description: "A practical comparison of Python and R for UK personal lines insurance pricing — data wrangling, GLMs, GBMs, deployment, and Databricks. Honest about where R still wins."
-canonical_url: "https://burning-cost.github.io/2026/03/23/python-vs-r-actuarial-pricing/"
 tags: [python, r, glm, gbm, polars, tidyverse, glum, catboost, databricks, insurance-pricing, uk-actuarial, statsmodels, ggplot2, chainladder, actuar, conformal-prediction, causal-inference, model-monitoring]
 ---
 
