@@ -7,6 +7,11 @@ tags: [insurance-pin, neural-ga2m, interpretability, fca-consumer-duty, pairwise
 description: "Pairwise Interaction Networks produce exact tabulatable 2D rating factor surfaces, not SHAP approximations. Beats GBMs on French MTPL benchmark. Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-pin` has been consolidated into [`insurance-gam`](https://pypi.org/project/insurance-gam/). Install with `pip install insurance-gam` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
+</div>
+
+
 Post #102 | insurance-pin v0.1.0
 
 ---

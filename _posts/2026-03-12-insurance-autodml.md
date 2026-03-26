@@ -7,6 +7,11 @@ tags: [causal-inference, double-machine-learning, price-elasticity, riesz-repres
 description: "Automatic Debiased ML via Riesz Representers for continuous price elasticity. insurance-causal - no GPS density blow-up at tails. UK personal lines Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-autodml` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+</div>
+
+
 Your pricing team has a demand model. It says retention drops as premium rises. What it almost certainly cannot tell you is: by exactly how much, with what uncertainty, and whether that effect is the same for young drivers in postcodes with thin data as it is for your core 40-year-old motor book.
 
 The standard approaches break down here in a predictable way. Binary treatment DML - split the portfolio into "high price" and "low price", apply CausalForestDML - works acceptably when the treatment is genuinely discrete. Premium is not discrete. Discretising it means choosing a cutpoint, and the cutpoint is arbitrary. Two otherwise identical analyses with cutpoints at the median versus the 60th percentile will give you different answers. You have introduced a researcher degree of freedom into what should be an estimation procedure.

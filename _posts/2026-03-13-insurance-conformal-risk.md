@@ -7,6 +7,11 @@ tags: [conformal-prediction, conformal-risk-control, premium-sufficiency, loadin
 description: "Conformal risk control for UK insurance: coverage calibrated to financial shortfall, not miscoverage rate. insurance-conformal - beyond standard intervals."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-conformal-risk` has been consolidated into [`insurance-conformal`](https://pypi.org/project/insurance-conformal/). Install with `pip install insurance-conformal` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-conformal)
+</div>
+
+
 Your conformal prediction interval covers 90% of outcomes. Standard conformal prediction guarantees that. The guarantee is finite-sample valid, distribution-free, and entirely appropriate for many applications.
 
 For insurance pricing, it is the wrong guarantee.

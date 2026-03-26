@@ -7,6 +7,11 @@ tags: [changepoint, BOCPD, PELT, regime-detection, Bayesian, Poisson-Gamma, expo
 description: "Bayesian Online Changepoint Detection for UK insurance loss ratios. Poisson-Gamma conjugates, regulatory event priors, Consumer Duty evidence pack - Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-changepoint` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+</div>
+
+
 There is a conversation that happens in almost every UK personal lines pricing team, usually in a quarterly experience review. Someone puts up the monthly frequency chart. There is a clear kink, somewhere around Q2 of last year. One actuary says it looks like something changed around April. Another says maybe June. A third points out that the storms in February could have influenced it. The team agrees that the trend has probably shifted, applies a judgement-based adjustment to the rate filing, and documents it as "technical pricing review, Q2 inflection noted."
 
 This is the entire monitoring methodology for detecting regime changes at most UK insurers. An eyeball test, a committee, and a sentence in a Word document.

@@ -7,6 +7,11 @@ tags: [EVT, extreme-value-theory, GPD, neural-networks, extreme-quantile, EQRN, 
 description: "EQRN covariate-dependent GPD tail modelling for XL pricing. Per-risk shape and scale via neural networks - insurance-quantile Python, Pasche and Engelke (2024)."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-eqrn` has been consolidated into [`insurance-quantile`](https://pypi.org/project/insurance-quantile/). Install with `pip install insurance-quantile` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-quantile)
+</div>
+
+
 Standard GPD fitting gives you one shape parameter and one scale parameter for the whole book. That is fine for portfolio capital reporting. It is not fine for per-risk XL pricing, TPBI reserving by driver profile, or any use case where tail heaviness varies across your portfolio. EQRN - Extreme Quantile Regression Neural Networks, from Pasche & Engelke's 2024 paper in the *Annals of Applied Statistics* - solves this. [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile) is the first Python implementation.
 
 ```bash

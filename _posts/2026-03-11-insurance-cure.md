@@ -7,6 +7,11 @@ tags: [mixture-cure-models, MCM, non-claimer-scoring, survival-analysis, EM-algo
 description: "Mixture cure models for UK motor: separates non-claimers from susceptibles. Per-policyholder cure fraction scoring - insurance-survival Python library."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+</div>
+
+
 A UK motor book typically has an observed claims frequency of around 8% per year. Run a Kaplan-Meier curve on policyholder tenure against first-claim indicator and watch what happens to the survival curve after year three: it levels off. The plateau never reaches zero. A substantial fraction of the portfolio will never claim regardless of how long you keep watching them. Standard survival models — exponential, Weibull, Cox — cannot fit a non-zero asymptote. They assume everyone eventually claims, given enough time. On a long-retention motor book, this assumption is demonstrably wrong.
 
 The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival — the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.

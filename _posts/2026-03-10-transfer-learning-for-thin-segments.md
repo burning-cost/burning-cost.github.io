@@ -7,6 +7,11 @@ tags: [transfer-learning, thin-data, GLMTransfer, MMD, covariate-shift, negative
 description: "GLMTransfer borrows statistical strength from a related source book to price thin target segments. Motor-to-fleet, home-to-landlord, and fleet roll-outs."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-transfer` has been consolidated into [`insurance-thin-data`](https://pypi.org/project/insurance-thin-data/). Install with `pip install insurance-thin-data` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-thin-data)
+</div>
+
+
 Every UK motor pricing team has at least one segment they are pricing badly. Not because the actuaries are incompetent. Because the segment is too thin to estimate reliably on its own, and nobody has found a satisfying method for borrowing strength from elsewhere.
 
 The usual options are: blend toward the book mean using credibility weights (defensible but primitive), use the same factors as the nearest analogue (usually another vehicle class or channel, justified by analogy rather than data), or accept the wide confidence intervals and apply a manual loading. None of these is wrong, exactly. None of them is principled.

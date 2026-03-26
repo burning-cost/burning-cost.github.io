@@ -8,6 +8,11 @@ tags: [fairness, discrimination-free-pricing, optimal-transport, causal-inferenc
 description: "Discrimination-free UK insurance pricing via Wasserstein barycenter and causal path decomposition. Satisfies FCA Consumer Duty proxy discrimination rules."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-fairness-ot` has been consolidated into [`insurance-fairness`](https://pypi.org/project/insurance-fairness/). Install with `pip install insurance-fairness` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-fairness)
+</div>
+
+
 Detecting proxy discrimination in your pricing model is the first problem. Fixing it is harder.
 
 Our earlier library, [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), handles the audit side: given a trained model, it tells you whether postcode is proxying for ethnicity, how much of the motor premium disparity between high- and low-BME postcodes is attributable to each rating factor, and what the Equality Act exposure looks like. That is useful. But the output of an audit is a finding, not a price. The question after the audit is: what do we charge instead?

@@ -7,6 +7,11 @@ tags: [gas, time-varying-parameters, trend, severity-inflation, frequency, catbo
 description: "GAS filters track claims frequency and severity trend between GLM refits. Step-by-step tutorial using insurance-gas on UK motor data."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-gas` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+</div>
+
+
 Most UK pricing teams refit their GLM or GBM annually, sometimes quarterly. In between, the model is static: it produces the same expected frequency for a 35-year-old male in SW6 with three years' NCD today as it did on the day it was fitted. Meanwhile, the world keeps moving. Parts inflation pushes average repair costs up 12% year-on-year. A cold winter lifts glass and escape-of-water claims. A competitor exits the PCW market and their book migrates to you, subtly shifting the mix. None of this appears in the model until the next refit.
 
 The standard response is a trend index: a scalar multiplier updated periodically from actual vs. expected analysis, applied as a loading on top of the model output. Most teams build these in Excel. A few build them as Poisson regressions on a time dummy. Both approaches work, in the sense that they produce a number. What they cannot do is tell you whether the trend is accelerating, how confident you should be in the current level, or whether the pattern in your residuals suggests a step change rather than a gradual drift.

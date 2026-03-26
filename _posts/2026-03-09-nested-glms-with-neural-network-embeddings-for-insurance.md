@@ -8,6 +8,11 @@ tags: [glm, neural-network, embeddings, territory, clustering, ratemaking, motor
 description: "Handle 800+ vehicle makes and 9,000+ postcode sectors in a multiplicative GLM using neural embeddings and spatial clustering. Auditable Python pipeline."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). Install with `pip install insurance-glm-tools` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
+</div>
+
+
 Every UK motor pricing team has a version of this problem. The base GLM is running vehicle make, driver age, NCD, vehicle age. It handles those well. Then someone asks: can we get more out of vehicle make? We have 800-plus levels. Can we use postcode sector properly instead of banding into 12 crude territories?
 
 The honest answer, within a standard GLM framework, has always been no. A GLM with 800 vehicle make parameters is not a reliable model. Most makes have sparse data. The parameter estimates are noisy. The confidence intervals are wide. You either cap at a manageable number of levels by merging makes into coarse groups, losing discriminatory power, or you let the GLM try to fit 800 parameters and get unreliable estimates for most of them.
