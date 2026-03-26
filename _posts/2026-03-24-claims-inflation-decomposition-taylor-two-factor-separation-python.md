@@ -439,6 +439,6 @@ Source and notebooks: [github.com/burning-cost/insurance-whittaker](https://gith
 
 **Related posts:**
 
-- [Whittaker-Henderson Smoothing for Insurance Pricing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) — the library introduction
+- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) — the library introduction
 - [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — separate treatment of tail severity, which the inflation index feeds into
 - [Reserve Range with a Conformal Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — a different approach to reserving uncertainty, complementary to trend extraction

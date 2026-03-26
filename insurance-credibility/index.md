@@ -3,6 +3,9 @@ layout: page
 title: "insurance-credibility"
 description: "Bühlmann-Straub group credibility and Bayesian individual policy experience rating for UK non-life insurance pricing."
 permalink: /insurance-credibility/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-credibility"
+pypi_package: "insurance-credibility"
 ---
 
 Credibility models for UK non-life insurance pricing: Bühlmann-Straub group credibility for scheme and large account pricing, and Bayesian experience rating at individual policy level.

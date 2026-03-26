@@ -188,8 +188,11 @@ One honest caveat: distributional GBMs are not always better than a well-calibra
 
 ## Related
 
-- [Per-Risk Volatility Scoring: How to Replace Your Constant Phi with a Distributional GBM](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — practical walkthrough of `TweedieGBM` on a synthetic UK motor portfolio, including CoV calculations for safety loading
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — practical walkthrough of `TweedieGBM` on a synthetic UK motor portfolio, including CoV calculations for safety loading
 - [`insurance-gam`](https://github.com/burning-cost/insurance-gam) — interpretable additive models for insurance pricing; the alternative to EGBM if you prefer the GAM family
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free prediction intervals via conformal prediction; no distributional assumption required, valid coverage guarantees by construction
 
 Source: Chevalier, D. & Côté, M.-P. (2025). From point to probabilistic gradient boosting for claim frequency and severity prediction. *European Actuarial Journal*. doi:10.1007/s13385-025-00428-5. arXiv:2412.14916.
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the `insurance-distributional` library that implements the So & Valdez (2024) approach benchmarked in this comparison
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals as an alternative when parametric distributional assumptions are uncertain

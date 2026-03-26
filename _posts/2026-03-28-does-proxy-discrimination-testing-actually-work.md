@@ -66,6 +66,10 @@ audit = FairnessAudit(
 
 report = audit.run()
 report.summary()
+# Per-characteristic demographic parity, calibration disparity, proxy flags
+
+# Per-factor proxy scores:
+print(report.results["diversity_score"].proxy_detection.scores)
 # postcode_area: proxy_r2=0.62, mi=0.41, flag=RED
 # vehicle_group: proxy_r2=0.08, mi=0.06, flag=GREEN
 
@@ -88,7 +92,7 @@ The `DoubleFairnessAudit` class in the library computes the Pareto front across 
 
 ## The FCA context
 
-TR24/2 (August 2024) found most insurers' Fair Value Assessments were "high-level summaries with little substance". Six Consumer Duty investigations are open; two directly involve insurers on fair value grounds. This is live enforcement risk, not theoretical.
+TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". As of mid-2024, six Consumer Duty investigations were open, at least two involving insurers on fair value grounds. This is live enforcement risk, not theoretical.
 
 Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor — and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
 
@@ -117,5 +121,6 @@ uv add insurance-fairness
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-fairness). The Monte Carlo sensitivity benchmark (`benchmarks/benchmark_sensitivity.py`) runs 50 seeds and produces the detection rate table.
 
-- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the full library post covering the LRTW framework, disparate impact measurement, and discrimination-free pricing
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to register a fairness audit result in the MRM inventory and link it to the model record
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)

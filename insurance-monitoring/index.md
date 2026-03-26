@@ -3,6 +3,9 @@ layout: page
 title: "insurance-monitoring"
 description: "Model drift detection for deployed insurance pricing models. PSI/CSI, Gini drift z-test, anytime-valid A/B testing via mSPRT, PITMonitor for calibration drift. Current: v0.8.0."
 permalink: /insurance-monitoring/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-monitoring"
+pypi_package: "insurance-monitoring"
 ---
 
 Model drift detection, calibration monitoring, and champion/challenger testing for deployed insurance pricing models. Polars-native throughout. Current version: v0.8.0.

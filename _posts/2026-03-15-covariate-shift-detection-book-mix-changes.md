@@ -201,5 +201,5 @@ The point is not that you abandon the model. The point is that you know, months 
 
 ## See also
 
-- [Correcting for Covariate Shift When You Acquire an MGA Book](/2026/03/13/insurance-covariate-shift/) - the library introduction: how density ratio estimation works and the LR-QR method for applying importance weights to conformal prediction intervals
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — the foundational post covering detection, correction, the postcode problem, and extending conformal intervals to a shifted book
 - [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book

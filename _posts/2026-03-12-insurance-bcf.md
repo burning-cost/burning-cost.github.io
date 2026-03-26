@@ -7,6 +7,11 @@ tags: [BCF, bayesian-causal-forest, BART, CATE, heterogeneous-treatment-effects,
 description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insurance pricing. Segment-level elasticity with posteriors - insurance-bcf wrapping stochtree."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-bcf` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — Bayesian Causal Forests are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+</div>
+
+
 Your motor book took an 8% rate increase last October. Aggregate lapse rose 1.8 percentage points. The GLM returned an elasticity of −0.22. The pricing team noted it in the experience review and moved on.
 
 That number is probably wrong for most of your book - and wrong in ways that are costing you margin. If young price comparison website customers are lapsing at three times the rate of mature direct customers under the same increase, the average elasticity tells you nothing useful about where to push rates and where to hold back. The segments with high lapse sensitivity need a softer increase. The segments that barely noticed need more. Pricing to the average means you are simultaneously leaving margin on the table and over-lapsin the customers you most want to keep.

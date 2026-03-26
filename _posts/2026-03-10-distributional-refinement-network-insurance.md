@@ -7,6 +7,11 @@ tags: [drn, distributional, neural-network, glm, quantile, solvency-ii, scr, crp
 description: "Distributional Refinement Networks wrap any GLM to produce a full predictive distribution. insurance-severity - neural severity modelling for UK motor pricing."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+</div>
+
+
 Here is the problem with GLMs: they are correct on average. That is not a backhanded compliment. It is a precise statement of what a GLM does. Given a set of covariates, it predicts the conditional mean of the response. If your Gamma GLM is well-specified, the mean prediction for a 19-year-old male driving a modified hatchback will be accurate in expectation. The mean is fine.
 
 The tail is not fine.

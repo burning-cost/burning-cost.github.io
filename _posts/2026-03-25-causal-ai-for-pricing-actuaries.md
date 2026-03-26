@@ -296,6 +296,9 @@ GLM price coefficients are confounded. DML removes that confounding by partialli
 
 The library is at `pip install insurance-causal`. The source is on GitHub at [insurance-causal](https://github.com/burningcost/insurance-causal). If you are reading this having come from the Actuary Magazine piece and want to talk through an application to your book, [get in touch](/work-with-us/).
 
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the full library post with the complete DML pipeline: conversion model, retention model, ENBP compliance checker, and demand curves
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — post-deployment monitoring that tells you whether the causal elasticity estimate has remained stable as the portfolio shifts
+
 ---
 
 *References: Chernozhukov et al. (2018) "Double/Debiased Machine Learning," Econometrics Journal 21(1): C1-C68. Chernozhukov et al. (2022) "Automatic Debiased Machine Learning," Econometrica 90(3): 967-1027. Athey, Tibshirani & Wager (2019) "Generalized Random Forests," Annals of Statistics 47(2): 1148-1178. Chernozhukov, Demirer, Duflo & Fernandez-Val (2020/2025) "Generic Machine Learning Inference on Heterogeneous Treatment Effects," Econometrica (forthcoming). Wager & Athey (2018) "Estimation and Inference of Heterogeneous Treatment Effects using Random Forests," JASA 113(523): 1228-1242.*

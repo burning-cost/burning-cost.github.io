@@ -121,7 +121,7 @@ mu_i = exp( b + sum_j f_j(x_j) + sum_{j<k} f_{jk}(x_j, x_k) )
 where each pairwise term `f_{jk}` is a two-dimensional surface - the BonusMalus × VehBrand interaction, as a table - not a SHAP approximation but the model's actual output.
 
 ```python
-from insurance_pin import PINModel, PINEnsemble, PINDiagnostics
+from insurance_gam import PINModel, PINEnsemble, PINDiagnostics
 
 features = {
     "age_driver":  "continuous",
@@ -245,3 +245,4 @@ The repository is at [github.com/burning-cost/insurance-gam](https://github.com/
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
+- [Does insurance-gam Actually Work for Insurance Pricing?](/2026/03/24/does-insurance-gam-actually-work-pricing/) — benchmark results on freMTPL2: EBM versus CatBoost versus GLM across Gini, double-lift, and A/E

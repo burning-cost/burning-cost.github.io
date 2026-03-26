@@ -267,3 +267,7 @@ Five months is enough time. But only just.
 ---
 
 *The libraries referenced in this post — [`insurance-governance`](https://github.com/burning-cost/insurance-governance), [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), and [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — are open source and available on PyPI.*
+
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the `insurance-governance` library: model inventory, risk tier scoring, and the executive pack for Model Risk Committee sign-off
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the `insurance-monitoring` library: PSI, segmented A/E, Gini drift test, and REFIT vs RECALIBRATE recommendation
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library: proxy R², disparate impact measurement, and discrimination-free pricing

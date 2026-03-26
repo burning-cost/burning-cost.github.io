@@ -8,6 +8,11 @@ description: "Joint longitudinal-survival model for telematics: driving trajecto
 post_number: 71
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-jlm` has been consolidated into [`insurance-telematics`](https://pypi.org/project/insurance-telematics/). Install with `pip install insurance-telematics` — joint longitudinal-survival models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-telematics)
+</div>
+
+
 There are approximately one million active black box policies in the UK. Every insurer running a telematics book is doing roughly the same thing with the resulting data: taking the most recent driving score, feeding it into a GLM as a static covariate, and pricing on that.
 
 This discards trajectory information. Two drivers at a score of 68 — one who has been at 72 for three months and is declining, one who was at 58 three months ago and is improving — present materially different claim risks. The standard GLM cannot tell them apart. It treats both as equivalent risks because it sees only the current value, not the path.

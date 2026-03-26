@@ -267,3 +267,6 @@ The computational profile is sensible: MODWT on a 10-minute trip at 1Hz takes 60
 ---
 
 The paper is at [arXiv:2603.15839](https://arxiv.org/abs/2603.15839). We plan to implement the wavelet risk index module for `insurance-telematics` v0.2.0 — the API sketch in KB has the design.
+
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/) — the current `insurance-telematics` library that the wavelet risk index will extend, with CTHMM-based driving state features
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the conjugate Bayes updating in the Lee et al. framework shares its structure with Bühlmann-Straub credibility

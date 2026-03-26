@@ -8,6 +8,11 @@ tags: [EBM, interpretML, GAM, GLM, Poisson, Tweedie, Gamma, monotonicity, relati
 description: "insurance-gam wraps EBM for UK pricing teams: Poisson/Tweedie loss, exposure offsets, RelativitiesTable, MonotonicityEditor, GLM comparison diagnostics."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-ebm` has been consolidated into [`insurance-gam`](https://pypi.org/project/insurance-gam/). Install with `pip install insurance-gam` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
+</div>
+
+
 *This post is an EBM deep-dive: how Explainable Boosting Machines work, how to fit them for Poisson/Gamma/Tweedie insurance targets, and the full actuarial workflow - relativity tables, monotonicity editing, GLM comparison, Gini diagnostics. If you want to understand the ANAM architecture, read [Actuarial Neural Additive Models](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/). If you want to choose between EBM, ANAM, and PIN, read the [comparison guide](/2026/03/14/insurance-gam-interpretable-nonlinearity/).*
 
 

@@ -50,7 +50,7 @@ match_slugs:
   - your-rating-table-smoothing-is-wrong
   - tweedie-regression-insurance-what-sklearn-doesnt-tell-you
   - catboost-frequency-severity-fremtpl2-insurance-pricing
-  - per-risk-volatility-scoring-with-distributional-gbms
+  - insurance-distributional
   - how-to-detect-covariate-interactions-your-glm-missed
   - finding-the-interactions-your-glm-missed
   - from-catboost-to-radar-databricks-workflow

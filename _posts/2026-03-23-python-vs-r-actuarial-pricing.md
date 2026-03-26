@@ -327,3 +327,7 @@ Know which tool does which job. Use both.
 ---
 
 *Libraries mentioned in this post: [glum](https://github.com/Quantco/glum), [insurance-causal](https://github.com/burning-cost/insurance-causal), [insurance-conformal](https://github.com/burning-cost/insurance-conformal), [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring), [insurance-fairness](https://github.com/burning-cost/insurance-fairness). All Burning Cost Python libraries are on [PyPI](https://pypi.org/search/?q=insurance-) and [GitHub](https://github.com/burning-cost).*
+
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the `insurance-conformal` library: distribution-free prediction intervals with coverage-by-decile diagnostics
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the `insurance-monitoring` library: PSI, segmented A/E, Gini z-test
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the `insurance-credibility` library: the R actuar::cm() equivalent in Python

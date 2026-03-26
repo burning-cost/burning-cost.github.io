@@ -293,6 +293,20 @@ Python pricing teams have not had access to it. The statsmodels issue asking for
 
 ---
 
+---
+
+## Why flat phi underprices reinsurance layers
+
+The practical consequence is most visible in excess-of-loss layer pricing. The expected cost of a per-risk XL layer (d xs retention R) is:
+
+```
+E[max(Y - R, 0)] - E[max(Y - R - d, 0)]
+```
+
+Both expectations integrate over the severity distribution. For a Gamma(mu, phi), these are closed-form functions of the regularised incomplete gamma function. The tail weight of the distribution scales with phi: higher phi means a fatter tail and a higher expected layer cost for any given attachment point and limit.
+
+On a book with direct and broker-placed commercial risks, the portfolio-average phi is a blend that is correct for nothing in particular. For a £150k xs £100k layer on a broker-large account with true phi of 1.90, the flat-phi model (using phi = 0.682, the portfolio average) underestimates the expected layer cost by approximately 31%. That is not a rounding error on the reinsurance premium. It is the systematic cost of pricing from a scalar dispersion parameter when per-account dispersion genuinely varies.
+
 ## Getting started
 
 ```bash
@@ -330,7 +344,7 @@ One scalar phi for the whole portfolio is an assumption, not a fact. The DGLM le
 
 
 - [GAMLSS in Python, Finally](/2026/03/10/insurance-distributional-glm/) - the broader framework when you need shape and zero-inflation parameters, not just dispersion
-- [Distributional GBMs for insurance pricing](/2026/03/05/insurance-distributional/) - per-risk dispersion estimation via gradient boosting rather than GLMs
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - per-risk dispersion estimation via gradient boosting rather than GLMs
 - [GLMs Predict Means. DRN Predicts Everything Else.](/2026/03/10/distributional-refinement-network-insurance/) - neural refinement of GLM/GBM predictive distributions
 - [Quantile GBMs for insurance tail risk](/2026/03/07/insurance-quantile/) - TVaR and ILF estimation without distributional assumptions
 - [Conformal prediction intervals for insurance pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - distribution-free coverage guarantees when parametric assumptions are uncertain

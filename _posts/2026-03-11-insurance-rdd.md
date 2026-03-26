@@ -7,6 +7,11 @@ tags: [RDD, regression-discontinuity, causal-inference, age-25, NCD, territory, 
 description: "Regression Discontinuity Design tests if UK motor risk drops at age 25. Exposure-weighted Poisson outcomes, geographic boundaries, Consumer Duty output."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-rdd` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — regression discontinuity design is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+</div>
+
+
 UK motor insurers charge under-25s approximately three times the premium of 25-30 drivers. The ABI's own data confirms the scale of that cliff. What it does not confirm - and what pricing teams almost never formally test - is whether the observed claims risk drops by the same factor at age 25, or whether the pricing premium far exceeds the causal risk change.
 
 The distinction matters. If your tariff relativity at the age-25 boundary is 3.0 but the causal rate ratio is 1.6, you are overcharging drivers just below 25 relative to their actual risk contribution. That is a Consumer Duty exposure. But you do not know whether you are in that position unless you have run the test.

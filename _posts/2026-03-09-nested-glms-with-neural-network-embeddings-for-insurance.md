@@ -8,6 +8,11 @@ tags: [glm, neural-network, embeddings, territory, clustering, ratemaking, motor
 description: "Handle 800+ vehicle makes and 9,000+ postcode sectors in a multiplicative GLM using neural embeddings and spatial clustering. Auditable Python pipeline."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). Install with `pip install insurance-glm-tools` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
+</div>
+
+
 Every UK motor pricing team has a version of this problem. The base GLM is running vehicle make, driver age, NCD, vehicle age. It handles those well. Then someone asks: can we get more out of vehicle make? We have 800-plus levels. Can we use postcode sector properly instead of banding into 12 crude territories?
 
 The honest answer, within a standard GLM framework, has always been no. A GLM with 800 vehicle make parameters is not a reliable model. Most makes have sparse data. The parameter estimates are noisy. The confidence intervals are wide. You either cap at a manageable number of levels by merging makes into coarse groups, losing discriminatory power, or you let the GLM try to fit 800 parameters and get unreliable estimates for most of them.
@@ -39,15 +44,15 @@ The nesting is what makes this work. The embedding and territory steps extract s
 ## In practice
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[spatial]"    # geopandas + spopt for territory clustering
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[spatial]"    # geopandas + spopt for territory clustering
 ```
 
 The geo optional dependency pulls in geopandas and spopt (the spatial optimisation library that provides SKATER). This is the part with GDAL friction. If you do not have GDAL installed system-wide, the geopandas install will fail. On Ubuntu:
 
 ```bash
 sudo apt-get install gdal-bin libgdal-dev
-uv add "insurance-nested-glm[spatial]"
+uv add "insurance-glm-tools[spatial]"
 ```
 
 On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[geo]` works fine.
@@ -62,7 +67,7 @@ uv add insurance-glm-tools --extra-index-url https://download.pytorch.org/whl/cp
 
 ```python
 import pandas as pd
-from insurance_nested_glm import NestedGLMPipeline
+from insurance_glm_tools import NestedGLMPipeline
 
 # df: a DataFrame with one row per policy-year
 # X: feature DataFrame (rating factors); y: claim counts; exposure: policy years
@@ -132,7 +137,7 @@ The Phase 2 embedding is where the statistical novelty sits. It is worth underst
 The `EmbeddingTrainer` takes the Phase 1 GLM predictions as an offset and trains a neural network where the only learned parameters are the embedding vectors for the high-cardinality categoricals. The network architecture is intentionally minimal: an embedding lookup, a log-sum aggregation of the active embedding vectors, added to the log of the GLM offset. The loss is Poisson deviance.
 
 ```python
-from insurance_nested_glm import EmbeddingTrainer
+from insurance_glm_tools import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
     cat_cols=["vehicle_make", "postcode_sector"],
@@ -185,7 +190,7 @@ This is NP-hard in general. SKATER uses a heuristic that is fast in practice but
 The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with less than `min_exposure` earned exposure is merged into its spatially adjacent neighbour with the most similar embedding centroid.
 
 ```python
-from insurance_nested_glm import TerritoryClusterer
+from insurance_glm_tools import TerritoryClusterer
 
 clusterer = TerritoryClusterer(
     n_clusters=40,
@@ -247,11 +252,11 @@ This is also why the nested GLM is different from simply running a GLM on target
 ## Get the library
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[spatial]"    # adds geopandas + spopt
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[spatial]"    # adds geopandas + spopt
 ```
 
-Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
+Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
 
 ---
 

@@ -7,6 +7,11 @@ tags: [calibration, balance-property, murphy-decomposition, auto-calibration, gl
 description: "The full calibration framework for insurance pricing: balance property test, auto-calibration by price cohort, and Murphy decomposition..."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-calibration` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+</div>
+
+
 There is a class of pricing model error that does not show up in the Gini coefficient. The model ranks risks correctly (low-risk policies get lower prices than high-risk ones), but the price levels are wrong. The aggregate predicted premium is 7% below actual claims cost. The GBM discriminates well but miscalibrates consistently, and nobody has put a test in the validation pipeline that would catch it.
 
 This happens because most validation pipelines stop at discrimination. Gini, lift chart, double lift, maybe a decile plot. These all measure whether the model ranks risks correctly. None of them measure whether it prices them at the right level. A model can pass all of these tests and still produce a portfolio loss ratio 10 points worse than the actuarial assumption, because the prediction scale is off in a way that the ranking metrics do not penalise.

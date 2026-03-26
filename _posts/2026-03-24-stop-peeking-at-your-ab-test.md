@@ -170,3 +170,6 @@ The hard thing about peeking is not the statistics — it is that the people ask
 Sequential testing does not require you to change how often you look at data. It requires you to change the test statistic you use when you do. Monthly MI, quarterly reviews, ad-hoc checks when a line goes adverse — all of that is still permitted. The Lambda_n e-process is valid at every one of those checkpoints simultaneously.
 
 `insurance-monitoring` is on [GitHub](https://github.com/burning-cost/insurance-monitoring). The `sequential` module has no external dependencies beyond polars, scipy and numpy.
+
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the `insurance-monitoring` library's broader framework: PSI, segmented A/E, and Gini drift detection alongside the sequential testing module
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to register champion/challenger test results in the MRM inventory with a machine-readable audit trail

@@ -7,6 +7,11 @@ tags: [nowcasting, IBNR, EM-algorithm, XGBoost, reporting-delay, completion-fact
 description: "Covariate-conditioned IBNR completion by risk segment using ML-EM algorithm. insurance-nowcast corrects aggregate LDF bias from your actual recent risk mix."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-nowcast` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring` — covariate-conditioned IBNR completion is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+</div>
+
+
 Every UK pricing actuary building a frequency GLM on motor BI data has a version of this conversation with their reserving colleague. You want to include Q3 and Q4 of the most recent accident year - you have 18 months of data and throwing it away feels wasteful. The reserving team hands you a set of LDFs from the quarterly triangle. You apply them. You move on.
 
 The problem is not the LDFs themselves. The problem is that aggregate LDFs assume your recent business has the same risk profile as your historical average. If you've written more fleet in the last 18 months - or more high-NCD motor at the younger end of the age distribution - the aggregate factor will mismatch. Fleet motor PD has a median reporting delay of around 2 months. Young driver motor BI runs closer to 4–5 months with a long right tail extending past 18 months. These are not the same development pattern. Averaging them gives you a factor that is wrong for both.
@@ -179,5 +184,5 @@ If your completion factors diverge materially from the reserving team's LDFs, in
 **[insurance-nowcast on GitHub](https://github.com/burning-cost/insurance-nowcast)** - 171 tests, MIT-licensed, PyPI. Library #40.
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
-- [Why Your Cross-Validation Is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [Calibration Testing for Insurance Pricing Models](/2026/03/09/insurance-calibration/)

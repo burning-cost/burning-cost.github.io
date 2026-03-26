@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Conformal Prediction for Solvency II Capital Requirements: Model-Free SCR Estimation"
+title: "Conformal Prediction for Solvency II Capital Requirements: Model-Free SCR Estimation and Governance Validation"
 date: 2026-03-25
 categories: [capital, solvency-ii, techniques]
 tags: [conformal-prediction, solvency-ii, scr, capital-modelling, insurance-conformal, distribution-free, actuarial, regulatory, uk, pipeline, solvency-capital-range]
-description: "How solvency_capital_range() in insurance-conformal produces model-free 99.5% SCR bounds with finite-sample guarantees — and why the interval_width field is the number you should be showing your CRO."
+description: "How solvency_capital_range() produces model-free 99.5% SCR bounds, how SCRReport produces the coverage validation table for regulatory submission, and why interval_width is the number you should be showing your CRO."
 ---
 
 Solvency II Article 101 requires you to hold capital at the 99.5th percentile of the distribution of basic own funds over a one-year period. Every internal model achieves this by choosing a distributional form — lognormal, Pareto, Burr, Gaussian copula — and estimating its parameters from data. The regulator approves the model. The model produces a number. The number is the SCR.
@@ -145,7 +145,60 @@ def price_xl_layer(predictor, X, attachment, limit):
     return in_layer.mean()  # expected layer loss at the 99.5% scenario
 ```
 
-**Use `SCRReport`** when you are producing a regulatory submission and need a coverage validation table demonstrating that empirical coverage meets the 99.5% requirement across multiple alpha levels, formatted for a model governance committee. `SCRReport.to_markdown()` produces that output. See the companion post [Conformal Prediction for Solvency II Capital](/2026/03/25/conformal-prediction-solvency-ii-capital/) for the full `SCRReport` workflow.
+**Use `SCRReport`** when you are producing a regulatory submission and need a coverage validation table demonstrating that empirical coverage meets the 99.5% requirement across multiple alpha levels, formatted for a model governance committee.
+
+`SCRReport` wraps any fitted and calibrated conformal predictor and adds the SCR-specific output columns:
+
+```python
+from insurance_conformal import InsuranceConformalPredictor
+from insurance_conformal.scr import SCRReport
+
+cp = InsuranceConformalPredictor(
+    model=fitted_model,
+    nonconformity="pearson_weighted",
+    tweedie_power=1.5,
+)
+cp.calibrate(X_cal, y_cal)
+
+scr = SCRReport(predictor=cp, policy_ids=policy_ids_test)
+scr_bounds = scr.solvency_capital_requirement(X_test, alpha=0.005)
+# Returns a Polars DataFrame:
+# policy_id | expected_loss | upper_bound_99.5pct | scr_component | coverage_level
+
+agg = scr.aggregate_scr()
+# Returns: total_expected_loss, total_scr, scr_ratio, n_risks, alpha
+print(f"Portfolio SCR ratio: {agg['scr_ratio']:.2f}x")
+```
+
+For regulatory conservatism, add a buffer over the bare Solvency II requirement:
+
+```python
+# 99.7% bound instead of 99.5% — requires >= 333 calibration observations
+scr_conservative = scr.solvency_capital_requirement(X_test, alpha=0.003)
+```
+
+The coverage validation table is the output that matters for a model governance committee or regulator. Run it on a held-out set not used for training or calibration:
+
+```python
+val_table = scr.coverage_validation_table(X_test, y_test)
+print(scr.to_markdown())
+```
+
+```
+## SCR Coverage Validation Report
+
+| Alpha | Target | Empirical | N Covered | N Total | Shortfall | Meets Req |
+|-------|--------|-----------|-----------|---------|-----------|-----------|
+| 0.005 | 99.5%  | 99.600%   | 498       | 500     | 0.000%    | Yes       |
+| 0.010 | 99.0%  | 99.200%   | 496       | 500     | 0.000%    | Yes       |
+| 0.050 | 95.0%  | 95.400%   | 477       | 500     | 0.000%    | Yes       |
+| 0.100 | 90.0%  | 90.600%   | 453       | 500     | 0.000%    | Yes       |
+| 0.200 | 80.0%  | 80.800%   | 404       | 500     | 0.000%    | Yes       |
+```
+
+The `meets_requirement` column uses a 2pp tolerance reflecting finite-sample variation: with 500 test observations at alpha = 0.005, you expect 2–3 exceedances and coverage will bounce around 99.5% ± 0.5pp by chance alone. If `coverage_shortfall` is non-zero at alpha = 0.005, your calibration set is too small or your exchangeability assumption is violated.
+
+`to_markdown()` formats the full table for inclusion in model governance documentation. The calibration set size guideline for 99.5%: at least 200 observations (strictly `ceil(0.995 * 201) = 200`), though 2,000 produces materially tighter bounds. For 99.9% you need at least 1,000.
 
 Both call the same underlying conformal machinery. The choice is about what you are doing with the output.
 
@@ -220,6 +273,24 @@ The coverage guarantee is identical: at least 99.5% of risks will have their act
 
 ---
 
+## When to use conformal SCR over parametric approaches
+
+Use conformal SCR bounds when:
+
+- You want a robustness check on your internal model that requires no additional distributional assumptions.
+- You are entering a new line of business where you do not yet have sufficient data to justify a parametric tail choice, but you have access to analogous historical data for calibration.
+- Your model governance process requires a quantitative demonstration that coverage claims are borne out on held-out data — the `coverage_validation_table()` output is exactly that.
+- You have a book where the tail behaviour is genuinely uncertain: commercial property with heterogeneous construction types where neither lognormal nor Pareto provides a clean fit to large loss data.
+
+Do not use conformal SCR bounds when:
+
+- Your calibration set has fewer than 500 observations. Below that the 99.5% bound is determined by too few order statistics and will be unreliably wide.
+- You have strong, well-validated prior knowledge of the tail distribution from a long run of historical data. Parametric models exploit this information efficiently; conformal prediction does not. If you genuinely know the tail is Pareto with shape 1.5 because you have 20 years of data confirming it, use the parametric model.
+- You need a portfolio-level SCR that incorporates correlation structure. This library gives you marginal per-risk bounds.
+
+The right use is as a distribution-free lower bound on what your capital requirement must be, plus a validation tool to test whether your parametric internal model's stated coverage is actually achieved on real data.
+
+
 ## Limitations
 
 **Per-risk, not portfolio.** The 99.5% guarantee is per-risk and marginal. When you sum `scr_estimate` across risks to get `total_scr`, you are implicitly assuming perfect correlation — the worst case. For portfolio-level SCR that incorporates diversification, you still need a dependence model. Conformal prediction provides the marginal tail distributions; the aggregation is your problem.
@@ -274,6 +345,5 @@ uv add insurance-conformal
 Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
 
 - Hong (2025), "Conformal prediction of future insurance claims in the regression problem." [arXiv:2503.03659](https://arxiv.org/abs/2503.03659)
-- [Conformal Prediction for Solvency II Capital](/2026/03/25/conformal-prediction-solvency-ii-capital/) — the `SCRReport` workflow for regulatory submission and coverage validation tables
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — CQR and heteroscedastic interval construction
 - [Which Uncertainty Quantification Method?](/2026/03/25/which-uncertainty-quantification-method-decision-framework/) — decision flowchart for choosing between conformal, GAMLSS, and distributional GBMs

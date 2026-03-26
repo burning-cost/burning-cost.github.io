@@ -215,3 +215,8 @@ This is the correct structure for a specialty lines aggregate model where the ze
 - Vuong, Q.H. (1989). *Likelihood Ratio Tests for Model Selection and Non-Nested Hypotheses*. Econometrica 57(2):307-333.
 - Kleiber, C. & Zeileis, A. (2016). *Visualizing Count Data Regressions Using Rootograms*. The American Statistician 70(3):296-303.
 - Lambert, D. (1992). *Zero-Inflated Poisson Regression, with an Application to Defects in Manufacturing*. Technometrics 34(1):1-14.
+
+---
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the `ZIPGBM` and `TweedieGBM` classes implementing the So & Valdez (2024) approach referenced above
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals that complement ZIP and hurdle models when parametric coverage assumptions are uncertain

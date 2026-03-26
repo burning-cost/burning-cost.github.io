@@ -7,6 +7,11 @@ tags: [competing-risks, Fine-Gray, subdistribution-hazard, CIF, Aalen-Johansen, 
 description: "Fine-Gray subdistribution hazard for UK insurance competing risks. Separates lapse, MTC, and NTU correctly - insurance-survival Python, not naive censoring."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-competing-risks` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+</div>
+
+
 There is a mistake buried in most UK insurers' retention models. It is not exotic: it is a standard decision made in lifelines or scikit-survival when you set up a Cox proportional hazards model and treat every exit event the same way. When a policyholder leaves via mid-term cancellation rather than voluntary lapse, you mark them as censored for the lapse analysis and move on. The same pattern appears in home insurance peril modelling - fire claim analysis treats the policy that had an escape of water as censored. Motor claim models treat the windscreen claimant as censored for the own-damage analysis.
 
 This is the competing risks problem, and treating it as censoring biases your estimated event probabilities upward. The scale of the bias depends on how common the competing events are; in retention, where MTC, NTU, and lapse may each account for a quarter or more of exits, the effect is not small.

@@ -3,6 +3,9 @@ layout: page
 title: "insurance-frequency-severity"
 description: "Sarmanov copula joint frequency-severity modelling for UK personal lines insurance. Tests the independence assumption your pricing model makes."
 permalink: /insurance-frequency-severity/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-frequency-severity"
+pypi_package: "insurance-frequency-severity"
 ---
 
 Sarmanov copula joint frequency-severity modelling with GLM marginals. Tests and corrects for the dependence between claim count and average severity — the assumption every standard two-model GLM pricing framework makes and almost certainly gets wrong.

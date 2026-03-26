@@ -387,6 +387,75 @@ What this gives the pricing actuary in a Consumer Duty review is exactly the doc
 
 ---
 
+## Which fairness metric belongs on the Pareto axis?
+
+Before running the NSGA-II search, you need to decide what "fairness" means in your Pareto surface. The choice matters for regulatory defensibility.
+
+**Demographic parity ratio** measures exposure-weighted mean price differences between groups. A ratio of 1.0 means groups pay the same on average. This is the easiest to defend in a board presentation; it is not the most defensible under the Equality Act.
+
+**Calibration by group (sufficiency)** measures actual-to-expected ratios within pricing deciles, separately by group. A model equally calibrated for all groups does not systematically over-charge any group — price differences reflect genuine risk differences. This is the most defensible criterion under Equality Act 2010 Section 19: indirect discrimination requires that a neutral criterion (your pricing model) produces a disproportionate outcome not justified by a legitimate aim applied proportionately. Equal calibration is your proportionality argument.
+
+**Disparate impact ratio** (mean price for the more expensive group divided by the less expensive group) is a useful headline number but should not be read against the US EEOC 4/5ths rule in a UK context — apply it directionally, not mechanically.
+
+**Theil index decomposition** separates within-group inequality (risk heterogeneity — acceptable) from between-group inequality (systematic group loading — the thing you need to explain). When T_between / T_total is high, pricing inequality is driven by group membership rather than individual risk. It belongs in the FCA evidence pack alongside the Pareto front.
+
+For Consumer Duty purposes, run calibration by group as the primary metric — it survives scrutiny under UK law — and use demographic parity ratio as the secondary monitor.
+
+---
+
+## The lightweight Pareto front for a governance presentation
+
+The NSGA-II workflow above is the right tool for model selection and optimisation at build time. For presenting trade-offs to a pricing committee, `insurance-optimise` v0.4.5 ships a lighter-weight `ParetoFront` class in `insurance_optimise.pareto_front`. Give it two arrays of objective values from any parameter sweep and it identifies the non-dominated subset, computes the hypervolume indicator, and plots the staircase frontier.
+
+```python
+import numpy as np
+from insurance_optimise import ParetoFront
+
+# 20-point sweep over loss ratio targets, collecting profit and disparity at each
+# (see insurance-optimise docs for the full PortfolioOptimiser sweep)
+profits = np.array([31650, 30100, 28940, ...])         # £ per cycle
+disparity_ratios = np.array([1.168, 1.121, 1.043, ...])
+
+pf = ParetoFront(
+    obj1=profits,
+    obj2=disparity_ratios,
+    maximize1=True,
+    maximize2=False,   # lower disparity = more fair
+    obj1_name="Expected Profit (£)",
+    obj2_name="Demographic Parity Ratio",
+)
+
+summary = pf.summary()
+# ParetoFrontSummary(n_frontier=12, n_total=20,
+#   ideal=(31650.00, 1.01), nadir=(22180.00, 1.17), hypervolume=2.84e+04)
+
+ax = pf.plot(annotate_extremes=True)
+```
+
+On a representative UK motor book, the three canonical operating points from a loss-ratio sweep look like this:
+
+| Operating point | Expected profit | Disparity ratio | Notes |
+|---|---|---|---|
+| Max-profit (LR 62%) | £31,650 | 1.168 | Most deprived quintile pays 16.8% more |
+| Balanced (LR 67%) | £28,940 | 1.043 | 9% profit cost, 74% of disparity eliminated |
+| Min-disparity (LR 74%) | £22,180 | 1.011 | 30% profit cost, near-parity |
+
+The governance decision — which of those three to choose — belongs with the pricing committee. The actuary's job is to put the numbers on the table.
+
+---
+
+## The FCA enforcement context
+
+The FCA's current posture makes this urgent rather than optional.
+
+Consumer Duty Outcome 4 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. TR24/2 (August 2024) found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
+
+`insurance-fairness` v0.6.0 ships `DoubleFairnessAudit`, which computes the Pareto front across action fairness (pricing equality at quoting time) and outcome fairness (claims ratio equality post-sale) simultaneously. This directly addresses TR24/2's finding that firms were auditing at quoting time and missing the post-sale obligation. The audit JSON from `DoubleFairnessAudit` is structured for inclusion in the FCA evidence pack alongside the NSGA-II and optimise outputs above.
+
+A firm that can show the Pareto surface — the set of non-dominated trade-offs considered before choosing an operating point — and document why they chose that point is in a materially better position than a firm that can only show a single demographic parity ratio.
+
+---
+
 ## What this is not
 
 The NSGA-II approach works over model blending weights, not per-policy decisions. It will not find every point on the true Pareto front — it finds good approximations. For the insurance-optimise side, the `ParetoFrontier` uses SLSQP with analytical gradients on price multipliers, which is exact at each grid point but covers a pre-specified grid rather than a continuous surface.
@@ -404,3 +473,14 @@ Multi-objective Pareto optimisation changes the structure of the fairness conver
 The `insurance-fairness` library implements this in under 30 lines of calling code. The `insurance-optimise` library handles the downstream portfolio pricing with an analogous Pareto surface over retention and deprivation-based premium disparity. Both produce JSON audit trails that satisfy FCA Consumer Duty auditability requirements.
 
 The paper (Bellamy et al., arXiv:2512.24747) is worth reading in full for the theoretical grounding. The practical upshot is: stop solving the fairness problem one criterion at a time. Map the front first.
+
+---
+
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/) — the full `PortfolioOptimiser` benchmark and 3-objective `ParetoFrontier` results
+- [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — postcode as ethnicity proxy: CatBoost proxy R² = 0.62, detection rate 0/50 vs 50/50
+- [What Can I Change to Lower My Premium?](/2026/03/25/fca-consumer-duty-premium-explanation-algorithmic-recourse/) — Consumer Duty recourse obligation: `insurance-recourse` for constrained counterfactual search
+
+```bash
+uv add insurance-optimise
+uv add insurance-fairness
+```

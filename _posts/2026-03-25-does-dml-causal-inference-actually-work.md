@@ -108,4 +108,5 @@ uv add insurance-causal
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-causal). Run `benchmarks/run_benchmark.py` (seed=42) for reproducible output.
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
+- [Causal Price Elasticity for UK Renewal Pricing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — a step-by-step tutorial applying DML to a UK renewal book, with data engineering and validation
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)

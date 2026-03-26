@@ -11,7 +11,7 @@ published: true
 
 If you run standard k-fold cross-validation on an insurance pricing model, you will get a number. It will look plausible. Your Gini will be encouraging, your Poisson deviance improvement over the null model will seem solid, and everyone in the review meeting will nod approvingly. Then the model goes live and the modelled-to-actual ratio starts drifting after two quarters.
 
-The CV result was not wrong due to overfitting in the usual sense. It was wrong because k-fold on insurance data contains structural leakage that makes the evaluation optimistic by construction. We have written about [why k-fold fails for insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) and the [mechanisms behind the leakage in detail](/2026/02/23/why-your-cross-validation-is-lying-to-you/). This post is the practical complement: how walk-forward cross-validation works for insurance, how to implement it correctly using [`insurance-cv`](https://github.com/burning-cost/insurance-cv), and what the output looks like on realistic motor data.
+The CV result was not wrong due to overfitting in the usual sense. It was wrong because k-fold on insurance data contains structural leakage that makes the evaluation optimistic by construction. We have written about [why k-fold fails for insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) and the [mechanisms behind the leakage in detail](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/). This post is the practical complement: how walk-forward cross-validation works for insurance, how to implement it correctly using [`insurance-cv`](https://github.com/burning-cost/insurance-cv), and what the output looks like on realistic motor data.
 
 ---
 
@@ -319,3 +319,6 @@ Pass it anywhere sklearn expects a CV object. It handles both Polars and Pandas 
 ---
 
 The search query "walk-forward cross-validation insurance GLM Python" returns a lot of generic tutorials and sklearn documentation that have nothing to say about IBNR buffers, temporal leakage specific to insurance, or how to think about fold count when your data has a 6-month tail. This post and `insurance-cv` are the practitioner answer. If you run into edge cases -- unusual valuation dates, partially-developed accident years, multi-year policy terms -- the [`accident_year_split()`](https://github.com/burning-cost/insurance-cv) function handles development-aware splits and the `temporal_leakage_check()` function will catch anything you missed.
+
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — uses the same temporal split logic for calibration: calibrate on recent data, test on more recent data
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the post-deployment equivalent: walk-forward monitoring after the model is live

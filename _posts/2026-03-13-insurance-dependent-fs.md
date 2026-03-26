@@ -8,6 +8,11 @@ tags: [frequency-severity, dependence, neural-networks, two-part-model, shared-t
 description: "Shared-trunk neural model for frequency-severity dependence in UK motor pricing. Explicit dependence testing where two-part GLMs assume independence - Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-dependent-fs` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `pip install insurance-frequency-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
+</div>
+
+
 Your pricing model multiplies frequency by severity. It does this because that is the actuarial convention, and the convention is mathematically justified if frequency and severity are independent conditional on the covariates. In most UK personal lines books, they are not.
 
 The problem is not that actuaries are unaware of this. It is that the standard toolkit makes it hard to do anything about it. The copula approach is theoretically clean but computationally painful for mixed discrete-continuous distributions. Encoding the dependence parametrically via a single scalar works, but only captures the simplest possible dependence structure. And most off-the-shelf neural two-part models - including the NeurFS architecture from arXiv:2106.10770 - fit two separate networks and then link them with a scalar correction. That is better than independence, but it still leaves structure on the table.
@@ -81,7 +86,7 @@ The joint loss is the negative sum of the Poisson log-likelihood (over all polic
 ## Using the library
 
 ```python
-from insurance_dependent_fs import DependentFSModel, SharedTrunkConfig, DependentFSDiagnostics
+from insurance_frequency_severity import DependentFSModel, SharedTrunkConfig, DependentFSDiagnostics
 
 config = SharedTrunkConfig(hidden_dims=[64, 32], latent_dim=16)
 model = DependentFSModel(config=config, use_gamma=True)
@@ -155,7 +160,7 @@ We are not aware of a published UK-specific study that quantifies the premium im
 ## Installation and dependencies
 
 ```bash
-uv add insurance-dependent-fs
+uv add insurance-frequency-severity
 ```
 
 Python 3.10 or later. Dependencies: PyTorch, NumPy, SciPy, scikit-learn, Pandas. Matplotlib is optional, used only for diagnostic plots.

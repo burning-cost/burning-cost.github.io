@@ -275,4 +275,6 @@ uv add insurance-fairness insurance-governance
 **Related posts:**
 - Model Governance for UK Insurance Pricing: Building the MRC Pack — the full `insurance-governance` walkthrough: ModelCard, RiskTierScorer, GovernanceReport
 - Proxy Discrimination in Insurance Pricing: The Côté Toolbox — per-policyholder proxy vulnerability metrics, PremiumSpectrum, and the parity cost decomposition
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `FairnessAudit` and `DoubleFairnessAudit` classes that power the outcomes monitoring framework described here
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the MRM governance layer: `ModelInventory`, `RiskTierScorer`, and the `GovernanceReport` executive pack
 - [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — PSI-based drift detection that integrates with the monitoring trigger framework

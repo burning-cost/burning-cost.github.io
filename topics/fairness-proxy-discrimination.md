@@ -25,12 +25,12 @@ The [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) l
 
 ## Techniques and methods
 
-- [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) — optimal transport adjustment for discrimination-free premiums while preserving risk signal
+- [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) — optimal transport adjustment for discrimination-free premiums while preserving risk signal (now in [insurance-fairness](https://github.com/burning-cost/insurance-fairness) as `insurance_fairness.optimal_transport`)
 - [Three Ways to Detect Proxy Discrimination in Your Pricing Model: When They Agree and When They Don't](/2026/03/22/three-methods-proxy-discrimination-detection-compared/) — LRTW, correlation decomposition, and causal path testing compared on the same data
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — proxy testing without holding gender or ethnicity data
 - [Discrimination-Insensitive Pricing: Beyond Removing the Protected Variable](/2026/03/25/discrimination-insensitive-pricing/) — the limitations of simply dropping a correlated feature and what to do instead
 - [Fair Pricing in Long-Term Insurance: What arXiv:2602.04791 Means for UK Actuaries](/2026/03/25/fair-pricing-long-term-insurance/) — multi-state fairness for income protection and PMI under the pure protection market study
-- [Multi-Objective Pricing: The Pareto Front of Fairness and Profit](/2026/03/25/multi-objective-pricing-pareto-front-fairness-profit/) — optimising rate change across fairness constraints and loss ratio targets simultaneously
+- [Multi-Objective Pricing: The Pareto Front of Fairness and Profit](/2026/03/25/multi-objective-pareto-insurance-pricing-nsga2/) — optimising rate change across fairness constraints and loss ratio targets simultaneously
 
 ---
 

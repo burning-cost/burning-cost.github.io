@@ -7,6 +7,11 @@ tags: [GARCH, GJR-GARCH, claims-inflation, volatility, PRA, motor, home, time-se
 description: "GARCH for UK insurance claims inflation: time-varying variance in trend analysis. insurance-garch - Engle (1982) applied to actuarial trend and pricing models."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-garch` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics` — GARCH volatility modelling for claims inflation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+</div>
+
+
 Every pricing committee in the UK has seen the same slide. A chart with claims inflation on the y-axis, time on the x-axis, and a straight trend line drawn through the last twelve quarters. Maybe a dotted extension into the future. Maybe a label that says "3.8% p.a." Someone in the room asks about uncertainty. The actuary says something like "we think plus or minus a point is reasonable." Nobody writes it down. The committee nods and moves on.
 
 That is not a risk model. That is a point estimate wearing a blazer.
@@ -102,7 +107,7 @@ The pricing committee slide with a single trend line is still going to exist. Bu
 
 ---
 
-*insurance-garch is part of the Burning Cost open-source stack. Earlier libraries in the series: [insurance-trend](https://github.com/burning-cost/insurance-trend), [insurance-copula](https://github.com/burning-cost/insurance-copula), [insurance-conformal](https://github.com/burning-cost/insurance-conformal).*
+*insurance-garch is part of the Burning Cost open-source stack. Earlier libraries in the series: [insurance-trend](https://github.com/burning-cost/insurance-trend), [insurance-copula](https://github.com/burning-cost/insurance-copula) (archived), [insurance-conformal](https://github.com/burning-cost/insurance-conformal).*
 
 ---
 

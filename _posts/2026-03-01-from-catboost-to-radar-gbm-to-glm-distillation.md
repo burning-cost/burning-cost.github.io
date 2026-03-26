@@ -200,6 +200,35 @@ The honest answer is that sometimes you should. If your CatBoost model's perform
 
 In any of those situations, distillation is more productive than rebuilding.
 
+## Time budget for a first run
+
+On a motor frequency model with 50,000 policies and 7 rating features, the end-to-end workflow breaks down roughly as follows:
+
+| Step | Time |
+|------|------|
+| Data prep and feature decisions | 10 min |
+| CatBoost training (500 iterations, 50k rows) | 5 min |
+| SHAP extraction and validation | 15 min |
+| Distillation, quality checks, CSV export | 15 min |
+| **Total** | **45 min** |
+
+CatBoost training on 50,000 policies took 38 seconds on a modern laptop; under 15 seconds on Databricks serverless. The SHAP step dominates: 8 minutes for the `.fit()` call itself on 50k rows with 7 features, and 7 minutes for reading the validation output and deciding whether anything needed rerunning. On a 20,000-policy book the SHAP step drops to under 3 minutes.
+
+One observation worth logging from the SHAP step: NCD attribution is typically lower than the true underlying coefficient. A NCD=5 discount of `exp(-0.83) ≈ 0.437` against a true DGP coefficient of -0.12 per NCD year (implying `exp(-0.60) ≈ 0.549` for NCD=5 vs NCD=0) is characteristic behaviour. SHAP attribution for correlated features is shared across all tree splits that use them — when the GBM uses both age and NCD as separators, the NCD attribution gets diluted. The distillation step produces a GLM fit that respects the multiplicative structure more cleanly and typically recovers attribution closer to the true coefficient.
+
+---
+
+## What to leave for a second pass
+
+A first run through the distillation workflow should validate the main-effects GLM before adding complexity. The things commonly deferred to a second pass:
+
+**Interaction terms.** If max segment deviation is below 10% without them, leave them out. Add `interaction_pairs=[("driver_age", "area")]` only if the double-lift chart shows slope — a systematic pattern where the GLM and GBM disagree on risk ordering.
+
+**Temporal validation.** `surrogate.report()` validates on training data. For a production rating engine, pass a held-out accident year to `surrogate.report(X_val=..., y_val=..., exposure_val=...)` and confirm factor tables generalise out-of-time before loading into Radar.
+
+**High-cardinality features.** A binary flag for `has_convictions` works when exposure in the 3+ point bands is thin. If your book has meaningful exposure at 3+ points, pass `conviction_points` directly and let the distillation step find the cut-points automatically.
+
+
 ## The competitive context
 
 As of March 2026, there is no other Python open-source package that accepts an externally-fitted CatBoost model and outputs Radar-compatible GLM factor tables.

@@ -3,6 +3,9 @@ layout: page
 title: "insurance-telematics"
 description: "End-to-end pipeline from raw 1Hz GPS/accelerometer data to GLM-compatible risk scores for UK motor insurance pricing. HMM driving state classification."
 permalink: /insurance-telematics/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-telematics"
+pypi_package: "insurance-telematics"
 ---
 
 End-to-end pipeline from raw telematics trip data to GLM-compatible risk scores for UK motor insurance pricing. HMM-based driving state classification, Bühlmann-Straub credibility aggregation to driver level, Poisson GLM integration.

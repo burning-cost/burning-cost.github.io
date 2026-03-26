@@ -3,6 +3,9 @@ layout: page
 title: "insurance-gam"
 description: "Interpretable GAM toolkit for insurance pricing. EBM, Actuarial Neural Additive Model, and Pairwise Interaction Networks. Shape functions per rating factor with exact Shapley values."
 permalink: /insurance-gam/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-gam"
+pypi_package: "insurance-gam"
 ---
 
 Interpretable GAM toolkit for insurance pricing. Three modelling approaches — Explainable Boosting Machine, Actuarial Neural Additive Model, and Pairwise Interaction Networks — that sit between a GLM and a black-box gradient booster. All interpretable, all exposure-aware.

@@ -165,7 +165,7 @@ Importance weighting corrects for covariate shift: the case where the feature di
 
 The diagnostic helps here too. If you have even a few months of target labels - claims from the new channel - you can test the covariate shift assumption directly: fit the model using source labels and importance weights, compare to a model fitted on target labels, and check whether the weighted source model's predictions track the target model's in the segments where you have target data. If they diverge systematically, concept drift is the more likely culprit.
 
-That is the point where you need labelled target data and a transfer learning approach rather than pure importance weighting. We cover that in [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) and [insurance-transfer](https://github.com/burning-cost/insurance-transfer).
+That is the point where you need labelled target data and a transfer learning approach rather than pure importance weighting. We cover that in [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) and [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data).
 
 ---
 

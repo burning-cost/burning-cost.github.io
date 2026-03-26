@@ -234,3 +234,6 @@ The first rate review on a new product is not an annual event — it is triggere
 ---
 
 *The `insurance-credibility`, `insurance-thin-data`, and `insurance-monitoring` libraries are open source and available via `uv add`. All code in this post runs against current library versions as of March 2026.*
+
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the credibility weighting framework for blending sparse new-product experience with portfolio priors
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — how to monitor the new product's model performance as claims data accumulates

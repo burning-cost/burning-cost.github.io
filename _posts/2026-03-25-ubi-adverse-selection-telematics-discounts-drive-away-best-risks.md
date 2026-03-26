@@ -271,6 +271,7 @@ Run the monitoring. Set the alerts. Do not wait for the loss ratio to tell you w
 - [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) — HMM scoring pipeline for driver risk from raw trip data
 - [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — constrained portfolio optimisation with FCA PS21/11 compliance
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — A/E monitoring, Gini drift, and calibration checks for production pricing models
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/) — the `insurance-telematics` library: CTHMM fitting, state feature extraction, and GLM-ready driver risk features
 - [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/) — the benchmark post for the telematics scoring pipeline
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/) — the benchmark post for the optimisation library
 - [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — the benchmark post for the monitoring library

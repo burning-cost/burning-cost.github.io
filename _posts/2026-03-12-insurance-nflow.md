@@ -8,6 +8,11 @@ description: "Neural Spline Flows for bimodal UK motor BI severity - no family a
 post_number: 72
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-nflow` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity` — normalizing flow severity models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+</div>
+
+
 Every severity model we build is a bet. A lognormal is a bet that log-claims are roughly Gaussian. A gamma GLM is a bet that the coefficient of variation is constant across rating groups. A Pareto is a bet that the body does not matter and only the tail does.
 
 For UK motor bodily injury, every one of those bets loses money in the same place: the transition between soft-tissue claims and catastrophic injury. BI severity is bimodal. Soft-tissue claims - whiplash, minor orthopaedic - cluster around GBP 3,000–5,000 after the Civil Liability Act 2018 reforms compressed the lower end of that distribution. Catastrophic injury claims - spinal cord damage, traumatic brain injury, fatalities - follow a power law from GBP 100,000 upward, with no natural ceiling. A lognormal cannot represent this shape. It smooths over the valley between the two modes, misrepresents both peaks, and in the tail it decays too fast by an order of magnitude.
@@ -186,7 +191,7 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 uv add insurance-nflow
 ```
 
-Source and issue tracker: [github.com/burning-cost/insurance-nflow](https://github.com/burning-cost/insurance-nflow)
+Source and issue tracker: [github.com/burning-cost/insurance-nflow](https://github.com/burning-cost/insurance-nflow) (archived)
 
 ---
 

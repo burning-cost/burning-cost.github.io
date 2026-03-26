@@ -25,8 +25,8 @@ The answer to this determines the entire downstream choice more than any other f
 
 **Node 2: Is the regulatory output a per-risk bound or a portfolio aggregate?**
 
-- **Per-risk bound** (individual policy SCR component, individual risk XL pricing) → **Recommendation A: Conformal prediction**
-- **Portfolio aggregate** (internal model aggregate distribution, reinsurance aggregate) → **Recommendation B: Distributional GBM**
+- **Per-risk bound** (individual policy SCR component, individual risk XL pricing) → **Recommendation A: [Conformal prediction](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)**
+- **Portfolio aggregate** (internal model aggregate distribution, reinsurance aggregate) → **Recommendation B: [Distributional GBM](/2026/03/05/insurance-distributional/)**
 
 **Node 3: What is your model type?**
 
@@ -289,6 +289,11 @@ uv add insurance-credibility
 # GAM / EBM — interpretable shape functions with uncertainty
 uv add "insurance-gam[ebm]"
 ```
+
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
+- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/)
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/)
 
 The libraries are independent. Install only what you need. All four are compatible with polars DataFrames natively and with standard numpy arrays.
 

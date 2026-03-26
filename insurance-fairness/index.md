@@ -3,6 +3,9 @@ layout: page
 title: "insurance-fairness"
 description: "Proxy discrimination auditing for UK insurance pricing models. FCA Consumer Duty compliance, Equality Act 2010, and discrimination-free pricing."
 permalink: /insurance-fairness/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-fairness"
+pypi_package: "insurance-fairness"
 ---
 
 Proxy discrimination auditing for UK insurance pricing models. Produces documented, evidenced, FCA-mapped analysis that a pricing committee can sign off and that will stand up to an FCA file review.
@@ -188,4 +191,4 @@ The proxy R² approach catches what direct correlation measures miss. A factor c
 - [Fairness Auditing Without Sensitive Attributes](https://burning-cost.github.io/2026/03/20/fairness-auditing-without-sensitive-attributes/)
 - [insurance-fairness vs fairlearn](https://burning-cost.github.io/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/)
 - [insurance-fairness vs equiPy](https://burning-cost.github.io/2026/03/22/equipy-vs-insurance-fairness/)
-- [The FCA Consumer Duty Pricing Fairness Problem](https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/)
+- [Discrimination-Free Pricing via Optimal Transport](https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/) — the causal path decomposition and OT correction approach now implemented in `insurance_fairness.optimal_transport`

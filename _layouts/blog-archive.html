@@ -14,6 +14,7 @@
   <meta name="twitter:image" content="{{ site.url }}/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   {% endunless %}
+  {% include structured-data.html %}
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -619,6 +620,7 @@
       <a href="/blog/monitoring/" class="topic-pill">Monitoring</a>
       <a href="/blog/how-to/" class="topic-pill">How-To</a>
       <a href="/blog/getting-started/" class="topic-pill">Getting Started</a>
+      <a href="/categories/" class="topic-pill">Browse by Category</a>
     </div>
   </div>
 
@@ -651,6 +653,11 @@
             {% endfor %}
           </ul>
           <button class="clear-filters" id="clear-filters">Clear filters</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Browse by category</div>
+          <a href="/categories/" style="font-size:0.825rem;color:var(--accent);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">&rarr; All categories</a>
         </div>
 
         <div class="sidebar-section">

@@ -300,4 +300,5 @@ The leading indicators arrive in this order: PSI on NB mix, then segment A/E in 
 - [Sequential A/B Testing for Insurance Champion/Challenger](/2026/03/24/sequential-ab-testing-insurance-champion-challenger/) — full walkthrough of mSPRT with UK motor synthetic data
 - [Rate Change Evaluation with DiD and ITS](/2026/03/25/measure-rate-change-impact-python-did-its/) — for evaluating book-wide rate moves after the fact
 - [insurance-monitoring documentation](https://burning-cost.github.io/insurance-monitoring) — PSI, A/E, Gini drift, SequentialTest
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring discrimination and calibration as you operate near the pricing floor
 - [insurance-optimise documentation](https://burning-cost.github.io/insurance-optimise) — PortfolioOptimiser, ConstraintConfig, lr_min/lr_max

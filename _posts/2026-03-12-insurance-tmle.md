@@ -7,6 +7,11 @@ tags: [TMLE, targeted-learning, doubly-robust, SuperLearner, EIF, Poisson, causa
 description: "Doubly robust TMLE for insurance pricing with Poisson outcomes and exposure offsets. insurance-tmle - first Python library with the implementation AIPW lacks."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-tmle` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — TMLE doubly robust estimation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+</div>
+
+
 You ran a causal inference analysis on your telematics trial. You used Double Machine Learning, as you should. The DML pipeline gave you an ATE estimate of −0.031 with a tight 95% CI: [−0.048, −0.014]. Telematics devices reduce claim frequency by 3.1 claims per hundred policy-years. The result went into the business case.
 
 Now someone asks: how good is your propensity model?

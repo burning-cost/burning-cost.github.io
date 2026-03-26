@@ -106,7 +106,7 @@ The Spearman rho range for the Laplace-kernel Sarmanov with NB/Gamma margins is 
 
 Use Sarmanov copula correction if:
 - Your book is fleet or commercial motor where `DependenceTest` finds a statistically significant positive correlation between claim count and severity, or personal motor where NCD suppression creates a statistically significant negative correlation
-- You have at least 20,000 policies and 2,000 claims -- smaller than this and the omega estimate will be too noisy for per-policy corrections
+- You have at least 10,000 training policies and 2,000 claims -- smaller than this and the omega estimate will be too noisy for per-policy corrections
 - You want an analytically correct per-policy correction that re-ranks high-risk policies, not just a flat portfolio-level scalar
 
 Use `ConditionalFreqSev` (the Garrido, Genest & Schulz (2016) approach -- severity GLM with N as a covariate) if:

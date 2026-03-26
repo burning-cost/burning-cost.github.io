@@ -144,7 +144,7 @@ The neural network question is genuinely open. On 20,000 claims, linear regressi
 
 **Related posts:**
 - [Conformal Reserve Ranges: Finite-Sample Coverage Guarantees for IBNR Intervals](/2026/03/16/reserve-range-conformal-guarantee/) — putting distribution-free uncertainty bounds on reserve estimates
-- [Your Severity Model Assumes the Wrong Variance](/2026/03/10/your-severity-model-assumes-the-wrong-variance/) — per-policy dispersion modelling for the severity component that feeds reserving
+- [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) — per-policy dispersion modelling for the severity component that feeds reserving
 - [Spliced Severity Distributions: When One Distribution Isn't Enough](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) — tail treatment for the severity inputs to a claims reserving model
 - [Year-End Large Loss Loading](/2026/03/14/year-end-large-loss-loading/) — when severity tail uncertainty shows up in the aggregate reserve
 

@@ -283,4 +283,4 @@ Source: [github.com/burning-cost/insurance-interactions](https://github.com/burn
 
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) — frequency interaction detection: theory and three-stage pipeline
 - [GLM Interaction Detection: A Six-Step Walkthrough](/2026/03/04/how-to-detect-covariate-interactions-your-glm-missed/) — the practical frequency walkthrough with planted interactions
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — if severity interactions improve your Gamma model, the next step is modelling the dispersion too
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if severity interactions improve your Gamma model, the next step is modelling the dispersion too

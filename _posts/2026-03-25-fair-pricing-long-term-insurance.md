@@ -96,7 +96,7 @@ Three things the paper does not resolve, and where UK practitioners should be ca
 
 **The Equality Act test is not the same as the actuarial test.** Discrimination-free pricing in the Lindholm sense removes protected-characteristic information from the premium. But Section 19 of the Equality Act asks whether a provision, criterion, or practice puts a protected group at a particular disadvantage, and whether that disadvantage is proportionate to a legitimate aim. The actuarial correction and the legal test are related but not identical, and firms that run the Lim et al. adjustment and declare themselves compliant have skipped several steps.
 
-**The framework handles observed heterogeneity, not unobserved correlation.** If your transition rate models do not include occupation class or area because you dropped them on fairness grounds, the Poisson reformulation cannot audit for their residual influence through other covariates. You need the proxy discrimination diagnostic — `D_proxy` in `insurance-fairness-diag` — before and after the adjustment to check that you have not simply redistributed the problem.
+**The framework handles observed heterogeneity, not unobserved correlation.** If your transition rate models do not include occupation class or area because you dropped them on fairness grounds, the Poisson reformulation cannot audit for their residual influence through other covariates. You need the proxy discrimination diagnostic — `D_proxy` in `insurance-fairness` — before and after the adjustment to check that you have not simply redistributed the problem.
 
 **Long-term care data is not UK IP data.** The Health and Retirement Study demonstration in the paper is US-based and covers an older population than typical IP buyers. The mathematics transfers; the parameter values do not. UK practitioners need to apply the framework to CMI graduated rates and UK-specific morbidity data, which is less publicly available and more commercially sensitive.
 
@@ -113,3 +113,6 @@ The Lim et al. framework gives actuaries the mathematical tools. The obligation 
 ---
 
 *arXiv:2602.04791 — 'Fair Pricing in Long-Term Insurance: A Unified Framework', Lim, Xu, and Zhou (February 2026). [Abstract on arXiv.](https://arxiv.org/abs/2602.04791)*
+
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library and the LRTW framework that the Lim et al. multi-state extension builds on
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the governance documentation layer for multi-state protection models where fairness audit results must be registered in the MRM inventory

@@ -205,3 +205,5 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the inventory
+- [EU AI Act August 2026: What Insurance Pricing Teams Need to Do Now](/2026/03/25/eu-ai-act-august-2026-insurance-pricing/) — how the governance artefacts produced by this library satisfy the upcoming EU AI Act transparency requirements
+- [Consumer Duty Outcomes Monitoring: What Data to Collect and What to Report](/2026/03/25/consumer-duty-outcomes-monitoring/) — the Consumer Duty obligations layer built on top of this governance framework
