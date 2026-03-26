@@ -194,6 +194,6 @@ joint_set = predictor.predict(X_test)
 
 - [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)
 - [Conformal Risk Control for Insurance Reserves](https://burning-cost.github.io/2026/03/13/insurance-conformal-risk/)
-- [Multivariate Conformal Prediction for Joint Frequency-Severity](https://burning-cost.github.io/2026/03/13/insurance-multivariate-conformal/)
+- [Multivariate Conformal Prediction for Joint Frequency-Severity](https://burning-cost.github.io/2026/03/13/insurance-multivariate-conformal/) — joint frequency/severity intervals now implemented in `insurance_conformal.multivariate`
 - [Reserve Range with Conformal Coverage Guarantee](https://burning-cost.github.io/2026/03/16/reserve-range-conformal-guarantee/)
 - [Conformal Prediction for Non-Exchangeable Claims Time Series](https://burning-cost.github.io/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/)

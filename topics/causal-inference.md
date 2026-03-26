@@ -28,7 +28,7 @@ A third application is rate change evaluation. Standard before/after analysis of
 - [DML Works at 1,000 Policies Now. Here Is What Changed.](/2026/03/17/dml-small-samples-adaptive-regularisation/) — adaptive regularisation for thin segments where standard DML overfits the nuisance models
 - [Your Pricing Model Knows the Average Effect. That Is Not Enough.](/2026/03/24/heterogeneous-treatment-effects-causal-forests-insurance/) — causal forests for heterogeneous treatment effects across the portfolio
 - [Your Pricing Model Knows the Average. Your Customers Don't Care About the Average.](/2026/03/25/heterogeneous-price-elasticity-causal-forests-insurance-pricing/) — GATES and CLAN for characterising which segments are most price-sensitive
-- [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — BCF with BART for credible intervals on heterogeneous effects in small samples
+- [Heterogeneous Lapse Effects with Bayesian Causal Forests: Beyond the Average Elasticity](/2026/03/12/insurance-bcf/) — BCF with BART for credible intervals on heterogeneous effects in small samples (now in [insurance-causal](https://github.com/burning-cost/insurance-causal) as the `causal_forest` module)
 - [Rate Change Evaluation: Did the Premium Increase Cause the Lapses?](/2026/03/10/rate-change-lapse-evaluation-causal-inference/) — applying DiD to lapse attribution after a renewal rate change
 - [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) — SDiD using `insurance-causal-policy` for FCA evidence packs
 

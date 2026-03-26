@@ -26,7 +26,7 @@ Conformal prediction offers a different kind of guarantee. It makes no assumptio
 ## Techniques and extensions
 
 - [Conformalised Quantile Regression: Prediction Intervals That Actually Adapt to Risk](/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — CQR for heteroscedastic claims, better interval efficiency than split conformal
-- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction over frequency and severity simultaneously
+- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — joint conformal prediction over frequency and severity simultaneously (now in [insurance-conformal](https://github.com/burning-cost/insurance-conformal) as `insurance_conformal.multivariate`)
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control for premium sufficiency rather than interval coverage
 - [Your Conformal Intervals Are Wrong When the Claims Series Has Trend](/2025/12/30/conformal-prediction-for-non-exchangeable-claims-time-series/) — adaptive conformal inference for non-exchangeable (trending) claims data
 - [GAMLSS vs Conformal: Head-to-Head on the Same Dataset](/2026/03/25/gamlss-vs-conformal-head-to-head/) — empirical comparison of parametric and distribution-free uncertainty methods

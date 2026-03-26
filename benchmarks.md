@@ -648,7 +648,7 @@ Honest caveat: the CI narrowing is larger than the 30–60% stated in the README
 
 *Poisson deviance is higher for TabPFN at small n because the foundation model does not enforce the Poisson mean-variance relationship — the deviance metric penalises this. Gini is the correct metric at these sample sizes because the pricing use case is ranking, not absolute calibration. At n=300 the GLM has wide coefficient confidence intervals and the foundation model's pre-trained representations provide meaningful lift on ranking. At n=5,000+ the GLM has sufficient data and typically matches or beats the foundation model. Fit time: ~2s (TabPFN) vs <1s (GLM).
 
-[github.com/burning-cost/insurance-tabpfn](https://github.com/burning-cost/insurance-tabpfn)
+[github.com/burning-cost/insurance-thin-data](https://github.com/burning-cost/insurance-thin-data)
 
 ---
 
