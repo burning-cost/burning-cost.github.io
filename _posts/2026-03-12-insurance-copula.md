@@ -7,6 +7,11 @@ tags: [vine-copula, pyvinecopulib, multi-peril, flood, subsidence, escape-of-wat
 description: "Vine copulas for multi-peril UK home pricing. Flood-subsidence correlation costs ~9% in mispriced revenue. insurance-copula: BIC selection, PML simulation."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-copula` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `pip install insurance-frequency-severity` — vine copula dependence modelling is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
+</div>
+
+
 UK home insurance is a bundle: fire, flood, subsidence, theft, escape of water, storm. The standard pricing workflow prices each peril independently, using a GLM per peril, then adds the expected losses. Total technical premium = flood loading + subsidence loading + storm loading + everything else. Simple, auditable, defensible to the regulator.
 
 It is also wrong.

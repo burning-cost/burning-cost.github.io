@@ -7,6 +7,11 @@ tags: [dro, distributionally-robust-optimisation, wasserstein, ambiguity-set, pr
 description: "Distributionally robust rate optimisation: worst-case demand within a Wasserstein ball. Price-of-robustness curve for UK pricing committee papers - Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-dro` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise` — distributionally robust rate optimisation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
+</div>
+
+
 Every rate optimiser in UK personal lines works the same way. You estimate a demand model. You optimise rates against that model subject to your ENBP constraints and commercial guardrails. You get a rate recommendation. You present it to committee.
 
 The implicit assumption, never stated, is that your demand model is correct.

@@ -7,6 +7,11 @@ tags: [bunching, threshold-gaming, NCD, adverse-selection, mileage-fraud, public
 description: "Detect threshold gaming in UK insurance using bunching estimators (Saez 2010, Kleven 2016). Mileage declarations, age spikes, sum-insured clustering - Python."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-bunching` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring` — bunching estimators are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+</div>
+
+
 Public economists have known since Saez (2010) that people bunch at tax thresholds. When a taxpayer crosses an income bracket boundary, their marginal tax rate jumps, and the distribution of taxable income develops a spike just below that boundary. The density is not continuous at the kink: there is excess mass on one side, a deficit on the other, and the ratio of excess to counterfactual tells you how strongly people are responding.
 
 The statistical machinery to measure this - polynomial counterfactual density estimation, iterative correction for the deficit region, bootstrap standard errors - is mature in public economics. Diamond and Saez used it. Kleven formalised it in a 2016 handbook chapter that has become the field's reference implementation.

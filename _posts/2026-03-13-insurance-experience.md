@@ -7,6 +7,11 @@ tags: [experience-rating, credibility, Bühlmann-Straub, Bayesian, posterior, Po
 description: "Four-tier experience rating in Python: Buhlmann-Straub, Poisson-Gamma state-space, GBM surrogate, attention credibility. Policy-level multiplicative factors."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-experience` has been consolidated into [`insurance-credibility`](https://pypi.org/project/insurance-credibility/). Install with `pip install insurance-credibility` — individual experience rating models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
+</div>
+
+
 NCD has a clean actuarial logic behind it: your claims history tells us something about your risk level that the rating factors don't fully capture, and we want to adjust for it. The implementation, though, is not Bayesian posterior inference. It is a contractual mechanism with a transition matrix. The factor you get depends on how many claims you made last year and which NCD level you started at. The transition rules are chosen to be commercially sensible and regulatorily defensible, not to minimise posterior expected loss.
 
 This distinction matters for two reasons. First, FCA PS21/11 tightened the rules on how NCD discounts interact with the fair price obligation - the contractual structure of NCD can produce outcomes that are hard to defend under a posterior-risk framing when a long-term NCD holder at 65% discount is paying materially less than the posterior risk would suggest. Second, the NCD mechanism is only one specific instantiation of what should be a general facility: using the claims history of an individual policyholder to update the prior estimate of their risk level. There is no reason this has to take the form of a discrete transition matrix.

@@ -7,6 +7,11 @@ tags: [bandit, Thompson-Sampling, UCB1, LinUCB, GIPP, PS21-11, ICOBS, ENBP, FCA,
 description: "Bandit algorithms for FCA GIPP-compliant price experimentation in UK general insurance. ENBP constraints and compliance reporting built in - insurance-online."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-online` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise` — bandit pricing algorithms are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
+</div>
+
+
 The PRA's Dear Chief Actuary letter on claims inflation gets all the attention. The FCA's GIPP multi-firm review - 28 firms found with insufficient documentation of pricing controls in their 2023-24 cycle - gets treated as a compliance checkbox. What both regulators are circling around, without ever quite saying it directly, is that UK pricing teams operate a significant slice of their pricing on undocumented discretion.
 
 Consider the discretionary loading band. Your GLM produces a technical price. Your pricing team applies a loading: maybe -5% for a segment they think is overshooting, +10% for one they think is underpriced. The band is typically documented as a governance limit (-15% to +15% is common in motor). What is not documented is which loading, within that band, actually maximises the metric you care about. Conversion rate? Lifetime value? Combined ratio? Nobody tested it. The current loading exists because someone set it two years ago and nobody changed it.

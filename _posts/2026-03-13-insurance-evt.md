@@ -7,6 +7,11 @@ tags: [EVT, extreme-value-theory, GPD, GEV, threshold-selection, censored-MLE, p
 description: "EVT for UK motor large loss pricing: censored GPD for open TPBI claims, profile likelihood CIs, excess layer pure premiums. insurance-evt Python library."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-evt` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity` — extreme value theory for large loss pricing is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+</div>
+
+
 Large bodily injury claims do not behave like ordinary claims. A TPBI settlement for a catastrophic spinal injury can take fifteen years and run to tens of millions. The claim sits open on the register, its ultimate development unknown, while the actuary is expected to estimate the 1-in-200 year return level for the Solvency II internal model. Standard severity distributions fail at both ends of this problem: they cannot handle the censoring and they have no principled basis for extrapolation to return periods far outside the observed data.
 
 Extreme Value Theory exists precisely for this. The Pickands-Balkema-de Haan theorem gives us a rigorous basis for modelling exceedances above a high threshold: under mild regularity conditions, the excess distribution converges to a Generalised Pareto Distribution (GPD) as the threshold rises. This is not an empirical observation but a mathematical result, which is why EVT is the right framework for large loss pricing, capital modelling, and reinsurance layer pricing.

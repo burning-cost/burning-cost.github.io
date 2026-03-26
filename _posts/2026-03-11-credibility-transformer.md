@@ -7,6 +7,11 @@ tags: [credibility-transformer, Bühlmann-Straub, attention, transformer, CLS-to
 description: "Credibility Transformer attention is mathematically identical to Buhlmann-Straub credibility. PyTorch, 1,746 parameters, beats CAFTT (27K). 85 tests."
 ---
 
+<div class="notice--warning" markdown="1">
+**Package update:** `insurance-credibility-transformer` has been consolidated into [`insurance-credibility`](https://pypi.org/project/insurance-credibility/). Install with `pip install insurance-credibility` — the Credibility Transformer is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
+</div>
+
+
 There is a common pattern in machine learning papers applied to insurance. The authors train a neural network, show it beats a GLM on a benchmark, and then add a section titled "Interpretability" where they note that some internal representation "resembles" a credibility weight, or "can be interpreted as" a posterior probability, or "is analogous to" a Bühlmann parameter. The resemblance is gesturing at something real but the connection is always approximate, always informal, always one level of abstraction away from actually being true.
 
 The Credibility Transformer (Richman, Scognamiglio, Wüthrich, 2024; arXiv:2409.16653, published European Actuarial Journal 2025) does something different. The CLS token's self-attention weight is the Bühlmann-Straub credibility weight. Not resembles. Not is analogous to. Is. The mathematical identity is proven in the paper, not asserted.
