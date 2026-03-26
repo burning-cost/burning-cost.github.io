@@ -152,4 +152,4 @@ Tested on a synthetic UK motor age curve with realistic exposure per age band. L
 
 ## Related blog posts
 
-- [Whittaker-Henderson Smoothing for Insurance Pricing](https://burning-cost.github.io/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/)
+- [Your Rating Table Smoothing Is Wrong](https://burning-cost.github.io/2026/03/18/your-rating-table-smoothing-is-wrong/)

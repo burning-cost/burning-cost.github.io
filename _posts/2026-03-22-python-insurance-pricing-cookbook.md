@@ -677,7 +677,7 @@ All libraries are on PyPI and require Python 3.10+. CatBoost and Polars are core
 
 - [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)
-- [Your Cross-Validation Is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)

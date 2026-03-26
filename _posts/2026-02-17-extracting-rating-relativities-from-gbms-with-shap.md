@@ -210,5 +210,5 @@ rels = extract_relativities(
 Source and issue tracker on [GitHub](https://github.com/burning-cost/shap-relativities). If you find a case where extracted relativities diverge materially from your expected model behaviour, the `validate()` method is the first place to look.
 
 - [From GBM to Radar: A Complete Databricks Workflow for Pricing Actuaries](/2026/02/21/from-gbm-to-radar-databricks-workflow/)
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [From CatBoost to Radar in 50 Lines of Python](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)

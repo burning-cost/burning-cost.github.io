@@ -12,7 +12,7 @@ Every insurance pricing model we have ever seen was evaluated using k-fold cross
 
 This is not bad luck. It is a structural property of k-fold on temporally ordered data, and it is worse for insurance than for almost any other supervised learning application because insurance data has three distinct time axes - inception date, accident date, valuation date - each of which creates a different leakage mechanism.
 
-We wrote the [first version of this argument in 2026](/2026/02/23/why-your-cross-validation-is-lying-to-you/). That post explains the mechanisms. This post is the practitioner's guide: what exactly goes wrong, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
+This post is the complete guide: what exactly goes wrong with k-fold on insurance data, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
 
 ---
 
@@ -292,13 +292,12 @@ uv add insurance-cv
 
 The library is at [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv). The three split generators - `walk_forward_split`, `policy_year_split`, `accident_year_split` - cover the main use cases. `InsuranceCV` wraps them as a sklearn-compatible CV splitter. `temporal_leakage_check` and `split_summary` handle validation and documentation.
 
-The argument for insurance walk-forward cross-validation is not academic. K-fold cross-validation on insurance pricing data produces CV scores that look better than prospective performance because they cannot be anything else: temporal structure and IBNR development make look-ahead bias structurally unavoidable under random splitting. Walk-forward removes the bias at the cost of higher fold-level variance. That variance is real information. The k-fold precision is false precision.
+The argument for insurance walk-forward cross-validation is not academic. On real UK motor portfolios we have seen the gap between k-fold CV loss and prospective monitored loss run to 5-8 percentage points of Poisson deviance -- enough to make hyperparameter selection meaningfully wrong and model comparisons unreliable. K-fold cross-validation on insurance pricing data produces CV scores that look better than prospective performance because they cannot be anything else: temporal structure and IBNR development make look-ahead bias structurally unavoidable under random splitting. Walk-forward removes the bias at the cost of higher fold-level variance. That variance is real information. The k-fold precision is false precision.
 
 Run `split_summary` before you tune anything. If `gap_days` contains zeros, you have a problem.
 
 ---
 
 **Related posts:**
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/) - the first treatment of this topic; start here if the mechanisms are unfamiliar
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - what happens after deployment when the prospective evaluation was correctly done
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees

@@ -200,5 +200,5 @@ CQR is the right choice when you want interval width to be directly driven by th
 Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
 
 - [Conformal Prediction Intervals for Insurance: Getting Coverage Guarantees from Tweedie Models](/techniques/2025/12/insurance-conformal-split-conformal-tweedie/) -- the original library post
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) -- related approach to heteroscedastic modelling
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) -- related approach to heteroscedastic modelling
 - [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) -- practical context for the reinsurance and large loss use cases above

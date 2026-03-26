@@ -209,4 +209,4 @@ Source: Clémençon, S. & Sabourin, A. (2025). "Weak Signals and Heavy Tails." a
 - [insurance-severity](https://github.com/burning-cost/insurance-severity) — `TruncatedGPD`, `CensoredHillEstimator`, `WeibullTemperedPareto`
 - [insurance-quantile](https://github.com/burning-cost/insurance-quantile) — `EQRNModel` for covariate-dependent GPD tails
 - [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — applying these ideas to property
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — a complementary approach to variance-aware pricing
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — a complementary approach to variance-aware pricing

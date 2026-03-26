@@ -320,4 +320,4 @@ uv add insurance-conformal
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — full introduction to `insurance-conformal`
 - [MAPIE vs insurance-conformal](/2026/03/20/mapie-vs-insurance-conformal-prediction-intervals/) — why generic conformal breaks on insurance data
 - [Validating GAMLSS Sigma Models](/2026/03/08/validating-gamlss-sigma-models/) — diagnostics for the dispersion sub-model
-- [Per-risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) — a complementary approach using gradient boosting
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — a complementary approach using gradient boosting

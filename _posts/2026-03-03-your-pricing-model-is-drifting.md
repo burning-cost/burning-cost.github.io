@@ -252,5 +252,5 @@ The only thing we do not supply is the will to run it quarterly. That part is on
 
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - the Murphy decomposition that tells you whether the fix is a scalar recalibration or a full refit
-- [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

@@ -11,7 +11,7 @@ published: true
 
 If you run standard k-fold cross-validation on an insurance pricing model, you will get a number. It will look plausible. Your Gini will be encouraging, your Poisson deviance improvement over the null model will seem solid, and everyone in the review meeting will nod approvingly. Then the model goes live and the modelled-to-actual ratio starts drifting after two quarters.
 
-The CV result was not wrong due to overfitting in the usual sense. It was wrong because k-fold on insurance data contains structural leakage that makes the evaluation optimistic by construction. We have written about [why k-fold fails for insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) and the [mechanisms behind the leakage in detail](/2026/02/23/why-your-cross-validation-is-lying-to-you/). This post is the practical complement: how walk-forward cross-validation works for insurance, how to implement it correctly using [`insurance-cv`](https://github.com/burning-cost/insurance-cv), and what the output looks like on realistic motor data.
+The CV result was not wrong due to overfitting in the usual sense. It was wrong because k-fold on insurance data contains structural leakage that makes the evaluation optimistic by construction. We have written about [why k-fold fails for insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/) and the [mechanisms behind the leakage in detail](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/). This post is the practical complement: how walk-forward cross-validation works for insurance, how to implement it correctly using [`insurance-cv`](https://github.com/burning-cost/insurance-cv), and what the output looks like on realistic motor data.
 
 ---
 

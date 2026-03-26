@@ -308,5 +308,5 @@ The practical workflow: fit the GAS filter monthly on each key metric (frequency
 `insurance-gas` is open source under MIT at [github.com/burning-cost/insurance-gas](https://github.com/burning-cost/insurance-gas). Install with `uv add insurance-gas`. Requires Python 3.10+, NumPy, SciPy, and Pandas (Polars for the frames above).
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) - monitoring model performance and detecting when a refit is overdue
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty quantification at the policy level, complementary to aggregate trend tracking
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - uncertainty quantification at the policy level, complementary to aggregate trend tracking
 - [Your New Business Mix Changed. Your Model Didn't Notice.](/2026/03/06/channel-mix-drift-your-model-didnt-notice/) - covariate shift detection when the portfolio composition shifts between refits

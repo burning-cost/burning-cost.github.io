@@ -179,5 +179,5 @@ If your completion factors diverge materially from the reserving team's LDFs, in
 **[insurance-nowcast on GitHub](https://github.com/burning-cost/insurance-nowcast)** - 171 tests, MIT-licensed, PyPI. Library #40.
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)
-- [Why Your Cross-Validation Is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/)
+- [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
 - [Calibration Testing for Insurance Pricing Models](/2026/03/09/insurance-calibration/)

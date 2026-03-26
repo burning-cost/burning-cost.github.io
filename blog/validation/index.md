@@ -28,6 +28,5 @@ match_slugs:
   - does-insurance-gam-actually-work-pricing
   - dml-insurance-benchmarks
   - validating-gamlss-sigma-models
-  - why-your-cross-validation-is-lying-to-you
   - why-k-fold-cv-is-wrong-for-insurance
 ---

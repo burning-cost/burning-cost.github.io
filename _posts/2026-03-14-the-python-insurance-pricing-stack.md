@@ -62,7 +62,7 @@ cv = InsuranceCV(splits=cv_splits, df=df)
 scores = cross_val_score(model, X, y, cv=cv)
 ```
 
-The full diagnosis of how k-fold breaks on insurance data is in [Why Your Cross-Validation is Lying to You](/2026/02/23/why-your-cross-validation-is-lying-to-you/).
+The full diagnosis of how k-fold breaks on insurance data is in [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/).
 
 [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/insurance-cv)
 

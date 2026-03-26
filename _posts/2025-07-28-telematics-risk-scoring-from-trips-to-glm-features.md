@@ -200,4 +200,4 @@ We think the right use of this library is not as a silver bullet for frequency m
 
 - [When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segments](/2025/06/13/transfer-learning-for-thin-segments/) - credibility and borrowing strength for new or small books of business
 - [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) - once the telematics model is built, running the SS1/23 validation suite
-- [Per-Risk Volatility Scoring with Distributional GBMs](/2026/03/04/per-risk-volatility-scoring-with-distributional-gbms/) - uncertainty at the policy level, complementary to point-estimate frequency models
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - uncertainty at the policy level, complementary to point-estimate frequency models
