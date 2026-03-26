@@ -15,7 +15,7 @@ The question is how suboptimal, and whether the improvement from a constrained p
 
 ## The benchmark
 
-The scenario: 2,000 UK motor renewals. 55% PCW-acquired customers with mean price elasticity −2.0, 45% direct customers with mean elasticity −1.2. Mean technical premium £545. Constraints: loss ratio cap 68%, retention floor 78%, ±25% rate change limit per policy, FCA PS21/5 ENBP ceiling enforced per policy.
+The scenario: 2,000 UK motor renewals. 55% PCW-acquired customers with mean price elasticity −2.0, 45% direct customers with mean elasticity −1.2. Mean technical premium £545. Constraints: loss ratio cap 68%, retention floor 78%, ±25% rate change limit per policy, FCA PS21/11 ENBP ceiling enforced per policy.
 
 | Metric | Uniform +7% rate change | PortfolioOptimiser |
 |---|---|---|
@@ -96,7 +96,7 @@ frontier = EfficientFrontier(
     n_points=20,
 )
 frontier_result = frontier.run()
-frontier_df = frontier_result.summary()
+frontier_df = frontier_result.data
 ```
 
 The shadow price table is the output to put in front of a commercial director. It shows the marginal profit cost of tightening the loss ratio target by one percentage point, at every point on the frontier. When the shadow price on the LR constraint jumps from 0.15 to 0.72 between two adjacent LR targets, you are approaching the knee of the frontier — the point at which further tightening accelerates the volume cost sharply. This is a quantified, defensible position that no spreadsheet scenario analysis can produce.
@@ -115,7 +115,7 @@ The library also does not validate that your elasticity estimates are correct. T
 
 Use constrained rate optimisation if:
 - You have a renewal book with meaningful elasticity variation between PCW-acquired and direct customers — the profit advantage scales with elasticity dispersion across the portfolio
-- You have FCA PS21/5 ENBP obligations and are currently enforcing the ceiling post-hoc on the optimised output rather than inside the constraint set — you are likely violating the spirit of the regulation and your solver is not finding the true optimum
+- You have FCA PS21/11 ENBP obligations and are currently enforcing the ceiling post-hoc on the optimised output rather than inside the constraint set — you are likely violating the spirit of the regulation and your solver is not finding the true optimum
 - You want to take the efficient frontier to a commercial director as a quantified trade-off rather than a single scenario
 
 Do not expect it to:

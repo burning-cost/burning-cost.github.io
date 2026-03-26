@@ -90,6 +90,7 @@ report = MonitoringReport(
     current_predicted=pred_cur,
     feature_df_reference=feat_ref,   # pl.DataFrame with named rating factors
     feature_df_current=feat_cur,
+    features=["driver_age", "vehicle_age", "ncd_years"],
     reference_exposure=exp_ref,
     exposure=exp_cur,
 )
@@ -109,7 +110,7 @@ The benchmark uses synthetic data with planted failures. In practice, covariate 
 
 The Gini drift z-test requires a bootstrap step (200 replicates by default) for statistical inference. At 50k reference / 15k monitoring policies this takes 3–5 minutes. For weekly monitoring on large books run this on Databricks; local runs are comfortable at 10k/4k.
 
-The Murphy decomposition (REFIT vs RECALIBRATE) uses the Lindholm-Wüthrich (SAJ 2025) framework and requires Poisson or Tweedie outcomes. For binary outcomes (renewal/lapse), use the Gini drift z-test as the discrimination check and segment A/E for calibration.
+The Murphy decomposition (REFIT vs RECALIBRATE) uses the Wüthrich-Ziegel (SAJ 2024) framework and requires Poisson or Tweedie outcomes. For binary outcomes (renewal/lapse), use the Gini drift z-test as the discrimination check and segment A/E for calibration.
 
 ---
 
