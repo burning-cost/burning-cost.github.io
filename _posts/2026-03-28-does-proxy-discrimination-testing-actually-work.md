@@ -88,7 +88,7 @@ The `DoubleFairnessAudit` class in the library computes the Pareto front across 
 
 ## The FCA context
 
-TR24/2 (August 2024) found most insurers' Fair Value Assessments were "high-level summaries with little substance". Six Consumer Duty investigations are open; two directly involve insurers on fair value grounds. This is live enforcement risk, not theoretical.
+TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". As of early 2026, FCA Consumer Duty investigations are open across the sector; some directly involve insurers on fair value grounds. This is live enforcement risk, not theoretical.
 
 Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor — and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
 

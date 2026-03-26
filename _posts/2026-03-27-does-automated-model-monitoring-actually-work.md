@@ -90,6 +90,7 @@ report = MonitoringReport(
     current_predicted=pred_cur,
     feature_df_reference=feat_ref,   # pl.DataFrame with named rating factors
     feature_df_current=feat_cur,
+    features=["driver_age", "vehicle_age", "ncd_years", "vehicle_group", "postcode_area"],
     reference_exposure=exp_ref,
     exposure=exp_cur,
 )
