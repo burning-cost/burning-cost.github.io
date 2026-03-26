@@ -3,6 +3,9 @@ layout: page
 title: "insurance-optimise"
 description: "Constrained portfolio rate optimisation with demand modelling. SLSQP, FCA ENBP constraints, Pareto frontier across profit, retention, and fairness."
 permalink: /insurance-optimise/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-optimise"
+pypi_package: "insurance-optimise"
 ---
 
 [GitHub](https://github.com/burning-cost/insurance-optimise) &middot; `pip install insurance-optimise` &middot; [Full documentation](https://github.com/burning-cost/insurance-optimise#readme)

@@ -3,6 +3,9 @@ layout: page
 title: "insurance-causal"
 description: "Causal inference for insurance pricing. Double machine learning removes confounding bias from rating factors. Causal forest for heterogeneous treatment effects."
 permalink: /insurance-causal/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-causal"
+pypi_package: "insurance-causal"
 ---
 
 Causal inference for insurance pricing. Double Machine Learning removes confounding bias from observational data. Causal forest estimates segment-level heterogeneous treatment effects for renewal pricing and price elasticity.

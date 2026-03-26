@@ -3,6 +3,9 @@ layout: page
 title: "insurance-distill"
 description: "GBM-to-GLM distillation. Fits a surrogate Poisson/Gamma GLM to CatBoost predictions and exports multiplicative factor tables for Radar/Emblem."
 permalink: /insurance-distill/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-distill"
+pypi_package: "insurance-distill"
 ---
 
 [GitHub](https://github.com/burning-cost/insurance-distill) &middot; `pip install insurance-distill` &middot; [Full documentation](https://github.com/burning-cost/insurance-distill#readme)

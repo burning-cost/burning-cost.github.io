@@ -3,6 +3,9 @@ layout: page
 title: "insurance-whittaker"
 description: "Whittaker-Henderson smoothing for insurance pricing tables. REML lambda selection, Bayesian credible intervals, 1D/2D/Poisson variants. Polars-native."
 permalink: /insurance-whittaker/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-whittaker"
+pypi_package: "insurance-whittaker"
 ---
 
 Whittaker-Henderson smoothing for insurance experience rating tables. 1D, 2D, and Poisson variants with automatic REML lambda selection and Bayesian credible intervals. The tool every UK pricing actuary is doing in Excel is now properly packaged in Python.

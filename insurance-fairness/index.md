@@ -3,6 +3,9 @@ layout: page
 title: "insurance-fairness"
 description: "Proxy discrimination auditing for UK insurance pricing models. FCA Consumer Duty compliance, Equality Act 2010, and discrimination-free pricing."
 permalink: /insurance-fairness/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-fairness"
+pypi_package: "insurance-fairness"
 ---
 
 Proxy discrimination auditing for UK insurance pricing models. Produces documented, evidenced, FCA-mapped analysis that a pricing committee can sign off and that will stand up to an FCA file review.

@@ -3,6 +3,9 @@ layout: page
 title: "insurance-conformal"
 description: "Distribution-free prediction intervals for insurance GBM and GLM pricing models. Finite-sample coverage guarantees. Insurance-specific non-conformity scores for Tweedie and Poisson claims."
 permalink: /insurance-conformal/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-conformal"
+pypi_package: "insurance-conformal"
 ---
 
 Distribution-free prediction intervals for insurance pricing models. The only requirement is exchangeable calibration and test data — no distributional assumptions, no model specification requirements. Current version: v0.6.0.

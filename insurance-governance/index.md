@@ -3,6 +3,9 @@ layout: page
 title: "insurance-governance"
 description: "Unified model governance for UK insurance pricing. PRA SS1/23 model validation reports and MRM governance packs in one install."
 permalink: /insurance-governance/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/insurance-governance"
+pypi_package: "insurance-governance"
 ---
 
 Unified model governance for UK insurance pricing teams. Combines statistical model validation and model risk management into one package, with outputs structured to align with PRA SS1/23 principles.

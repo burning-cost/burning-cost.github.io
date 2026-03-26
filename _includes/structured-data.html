@@ -3,13 +3,15 @@
   --------------------
   Emits schema.org JSON-LD for every page on the site.
 
-  Organization: rendered on every page — tells Google who runs this site.
-  WebSite:      rendered on the homepage (landing layout) only — enables
-                SearchAction sitelinks and anchors the site entity.
+  Organization:        rendered on every page — tells Google who runs this site.
+  WebSite:             rendered on the homepage (landing layout) only — enables
+                       SearchAction sitelinks and anchors the site entity.
+  SoftwareApplication: rendered on individual library pages that set
+                       `schema: SoftwareApplication` in their front matter.
 
   BlogPosting schema lives inline in _layouts/post.html (where it can access
   page.date, page.tags, etc. directly). WebPage schema lives in page.html.
-  This include handles the site-level entities only.
+  This include handles the site-level entities and opt-in page types.
 {% endcomment %}
 
 <script type="application/ld+json">
@@ -42,6 +44,33 @@
     "name": "Burning Cost",
     "url": "{{ site.url }}"
   }
+}
+</script>
+{% endif %}
+
+{% if page.schema == "SoftwareApplication" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | jsonify }},
+  "applicationCategory": "Finance",
+  "operatingSystem": "Any",
+  "programmingLanguage": "Python",
+  "url": {{ page.url | absolute_url | jsonify }},
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "GBP"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  }{% if page.github_repo %},
+  "codeRepository": {{ page.github_repo | jsonify }}{% endif %}{% if page.pypi_package %},
+  "downloadUrl": {{ page.pypi_package | prepend: "https://pypi.org/project/" | append: "/" | jsonify }}{% endif %}
 }
 </script>
 {% endif %}
