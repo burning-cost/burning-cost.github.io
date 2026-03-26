@@ -85,7 +85,7 @@ UK non-standard construction data is thin. If your book has 3,000 timber-frame p
 
 We find the limitations section more useful than the headline results, so here it is in full.
 
-**Conditional effects at the tail.** TIEE estimates the marginal QTE — the shift in the full distribution's tau-quantile under treatment versus control. It does not answer 'given policyholder X with profile x, by how much does treatment shift their personal tail?' That is a conditional average treatment effect at the tail, sometimes called CATE-at-the-tail, and it requires a different tool. Our EQRN implementation (insurance-eqrn, covering Pasche and Chavez-Demoulin 2022) does this for the covariate-conditional extreme quantile. TIEE and EQRN answer genuinely different questions.
+**Conditional effects at the tail.** TIEE estimates the marginal QTE — the shift in the full distribution's tau-quantile under treatment versus control. It does not answer 'given policyholder X with profile x, by how much does treatment shift their personal tail?' That is a conditional average treatment effect at the tail, sometimes called CATE-at-the-tail, and it requires a different tool. Our EQRN implementation (insurance-quantile, covering Pasche and Chavez-Demoulin 2022) does this for the covariate-conditional extreme quantile. TIEE and EQRN answer genuinely different questions.
 
 **Continuous treatments.** D must be binary. Deductible levels, rebuild cost bands, vehicle power — all continuous in practice. An IEE framework for continuous treatments exists in the econometrics literature, but TIEE specifically is binary. If your question requires a dose-response curve, TIEE is not the tool.
 

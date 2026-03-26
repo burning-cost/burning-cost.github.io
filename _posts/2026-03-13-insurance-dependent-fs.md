@@ -86,7 +86,7 @@ The joint loss is the negative sum of the Poisson log-likelihood (over all polic
 ## Using the library
 
 ```python
-from insurance_dependent_fs import DependentFSModel, SharedTrunkConfig, DependentFSDiagnostics
+from insurance_frequency_severity import DependentFSModel, SharedTrunkConfig, DependentFSDiagnostics
 
 config = SharedTrunkConfig(hidden_dims=[64, 32], latent_dim=16)
 model = DependentFSModel(config=config, use_gamma=True)
@@ -160,7 +160,7 @@ We are not aware of a published UK-specific study that quantifies the premium im
 ## Installation and dependencies
 
 ```bash
-uv add insurance-dependent-fs
+uv add insurance-frequency-severity
 ```
 
 Python 3.10 or later. Dependencies: PyTorch, NumPy, SciPy, scikit-learn, Pandas. Matplotlib is optional, used only for diagnostic plots.

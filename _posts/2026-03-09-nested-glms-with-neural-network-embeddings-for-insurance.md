@@ -44,15 +44,15 @@ The nesting is what makes this work. The embedding and territory steps extract s
 ## In practice
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[spatial]"    # geopandas + spopt for territory clustering
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[spatial]"    # geopandas + spopt for territory clustering
 ```
 
 The geo optional dependency pulls in geopandas and spopt (the spatial optimisation library that provides SKATER). This is the part with GDAL friction. If you do not have GDAL installed system-wide, the geopandas install will fail. On Ubuntu:
 
 ```bash
 sudo apt-get install gdal-bin libgdal-dev
-uv add "insurance-nested-glm[spatial]"
+uv add "insurance-glm-tools[spatial]"
 ```
 
 On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[geo]` works fine.
@@ -67,7 +67,7 @@ uv add insurance-glm-tools --extra-index-url https://download.pytorch.org/whl/cp
 
 ```python
 import pandas as pd
-from insurance_nested_glm import NestedGLMPipeline
+from insurance_glm_tools import NestedGLMPipeline
 
 # df: a DataFrame with one row per policy-year
 # X: feature DataFrame (rating factors); y: claim counts; exposure: policy years
@@ -137,7 +137,7 @@ The Phase 2 embedding is where the statistical novelty sits. It is worth underst
 The `EmbeddingTrainer` takes the Phase 1 GLM predictions as an offset and trains a neural network where the only learned parameters are the embedding vectors for the high-cardinality categoricals. The network architecture is intentionally minimal: an embedding lookup, a log-sum aggregation of the active embedding vectors, added to the log of the GLM offset. The loss is Poisson deviance.
 
 ```python
-from insurance_nested_glm import EmbeddingTrainer
+from insurance_glm_tools import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
     cat_cols=["vehicle_make", "postcode_sector"],
@@ -190,7 +190,7 @@ This is NP-hard in general. SKATER uses a heuristic that is fast in practice but
 The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with less than `min_exposure` earned exposure is merged into its spatially adjacent neighbour with the most similar embedding centroid.
 
 ```python
-from insurance_nested_glm import TerritoryClusterer
+from insurance_glm_tools import TerritoryClusterer
 
 clusterer = TerritoryClusterer(
     n_clusters=40,
@@ -252,11 +252,11 @@ This is also why the nested GLM is different from simply running a GLM on target
 ## Get the library
 
 ```bash
-uv add insurance-nested-glm
-uv add "insurance-nested-glm[spatial]"    # adds geopandas + spopt
+uv add insurance-glm-tools
+uv add "insurance-glm-tools[spatial]"    # adds geopandas + spopt
 ```
 
-Source is on [GitHub](https://github.com/burning-cost/insurance-nested-glm). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
+Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The library is at v0.1.0: 780 lines, 58 tests across 5 modules. The pipeline, embedding, clustering, and GLM components are stable. Planned next: support for CatBoost and XGBoost offsets in the CANN layer, and a Polars-native data path to replace the current pandas internals.
 
 ---
 

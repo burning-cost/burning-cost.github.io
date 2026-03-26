@@ -16,10 +16,10 @@ A UK motor book typically has an observed claims frequency of around 8% per year
 
 The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival — the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.
 
-[`insurance-cure`](https://github.com/burning-cost/insurance-cure) fills that gap.
+[`insurance-cure`](https://github.com/burning-cost/insurance-survival) fills that gap.
 
 ```bash
-pip install insurance-cure
+pip install insurance-survival
 ```
 
 ---
@@ -51,7 +51,7 @@ The MCM has an identifiability problem. If your observation window is short rela
 Maller and Zhou (1996) proposed the Qn statistic to test for sufficient follow-up before trusting any cure fraction estimate. The statistic measures the proportion of censored observations whose tenure exceeds the final event time. Under the null hypothesis of no cure fraction (standard exponential tail), this proportion converges to zero. A significant Qn provides evidence that the observed plateau reflects a genuine immune fraction.
 
 ```python
-from insurance_cure.diagnostics import sufficient_followup_test
+from insurance_survival.diagnostics import sufficient_followup_test
 
 qn = sufficient_followup_test(df["tenure_months"], df["claimed"])
 print(qn.summary())
@@ -81,9 +81,9 @@ The primary workhorse is `WeibullMixtureCure`. The Weibull AFT latency is the ri
 
 ```python
 import pandas as pd
-from insurance_cure import WeibullMixtureCure
-from insurance_cure.diagnostics import sufficient_followup_test, CureScorecard
-from insurance_cure.simulate import simulate_motor_panel
+from insurance_survival import WeibullMixtureCure
+from insurance_survival.diagnostics import sufficient_followup_test, CureScorecard
+from insurance_survival.simulate import simulate_motor_panel
 
 # Synthetic motor panel: 3000 policies, 5-year window, 40% true cure fraction
 df = simulate_motor_panel(n_policies=3000, cure_fraction=0.40, seed=42)
@@ -239,7 +239,7 @@ For lines where structural zeros are the main story — UK flood home insurance,
 ## See Also
 
 - **[insurance-survival](/2026/03/11/survival-models-for-insurance-retention/)** — Retention and lapse modelling with competing risks; the customer lifetime value counterpart to the pricing-focused MCM
-- **[insurance-experience](https://github.com/burning-cost/insurance-experience)** — Individual policy-level Bayesian posterior experience rating; use alongside cure scores for policyholders with observed claim history
+- **[insurance-credibility](https://github.com/burning-cost/insurance-credibility)** — Individual policy-level Bayesian posterior experience rating; use alongside cure scores for policyholders with observed claim history
 - **[insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools)** — GLM with cluster-robust standard errors; relevant when you introduce cure scores as new features and need correct inference on their coefficients
 
 ---

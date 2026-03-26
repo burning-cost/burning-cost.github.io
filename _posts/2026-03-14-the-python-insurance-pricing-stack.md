@@ -429,7 +429,7 @@ print(result.att, result.se)  # average treatment effect on treated
 
 Not every customer responds equally to a price change. A 5% premium increase may have near-zero effect on a long-tenure, direct-debit paying customer and a large effect on a price-comparison website customer who shopped aggressively last year. Treating the whole book as one segment leaves retention profit on the table.
 
-The archived library estimated heterogeneous treatment effects on renewal probability using causal forests (Wager and Athey 2018), segmented the book by response profile, and constructed the optimal individualised retention intervention. The same causal forest machinery is available via `insurance-demand` for the elasticity estimation use case.
+The archived library estimated heterogeneous treatment effects on renewal probability using causal forests (Wager and Athey 2018), segmented the book by response profile, and constructed the optimal individualised retention intervention. The same causal forest machinery is available via `insurance-optimise` for the elasticity estimation use case.
 
 ---
 
@@ -467,14 +467,14 @@ For the full treatment of the constrained rate optimisation problem and the effi
 
 ---
 
-### insurance-demand - price elasticity
+### insurance-optimise - price elasticity (formerly insurance-demand)
 
-Before you can run `insurance-optimise`, you need elasticity estimates. `insurance-demand` fits price elasticity models on renewal and new business data, with the confounding correction that naive logistic regression omits: risk factors drive both the price charged and the renewal decision, so OLS conflates the causal price effect with risk-driven selection.
+Before you can run `insurance-optimise`, you need elasticity estimates. `insurance-optimise` fits price elasticity models on renewal and new business data, with the confounding correction that naive logistic regression omits: risk factors drive both the price charged and the renewal decision, so OLS conflates the causal price effect with risk-driven selection.
 
 The library wraps CausalForestDML for the causal component, with treatment variation diagnostics that flag the near-deterministic price problem before you fit. If your pricing grid leaves no residual variation in price after conditioning on risk factors, the elasticity estimate is noise.
 
 ```python
-from insurance_demand import ElasticityEstimator
+from insurance_optimise import ElasticityEstimator
 
 elast = ElasticityEstimator(
     feature_cols=["age", "ncd_years", "vehicle_group", "area"],
@@ -485,7 +485,7 @@ elast.fit(df)
 df["elasticity"] = elast.effect(df)  # individual-level semi-elasticities
 ```
 
-[github.com/burning-cost/insurance-demand](https://github.com/burning-cost/insurance-demand)
+[github.com/burning-cost/insurance-optimise](https://github.com/burning-cost/insurance-optimise)
 
 ---
 
@@ -530,19 +530,19 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 - [insurance-trend](https://github.com/burning-cost/insurance-trend): Log-linear trend fitting for frequency and severity, with structural break detection (COVID lockdown, Ogden rate changes), ONS index integration for severity deflation, and piecewise refit on detected breaks. UK motor claims inflation ran 34% from 2019 to 2023 versus CPI of 21%. That is a 13-point superimposed component that CPI alone will not capture.
 
-- [insurance-changepoint](https://github.com/burning-cost/insurance-changepoint): Bayesian change-point detection for pricing time series. When you need to know whether a shift in your loss ratio is structural or noise, before you take rate.
+- [insurance-dynamics](https://github.com/burning-cost/insurance-dynamics): Bayesian change-point detection for pricing time series. When you need to know whether a shift in your loss ratio is structural or noise, before you take rate.
 
 **Fairness and equity**
 
-- [insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot): Optimal transport-based discrimination-free pricing using the Lindholm-Richman-Tsanakas-Wüthrich causal path decomposition. Decomposes premium differences between groups into the component justified by risk and the component that cannot be justified.
+- [insurance-fairness](https://github.com/burning-cost/insurance-fairness): Optimal transport-based discrimination-free pricing using the Lindholm-Richman-Tsanakas-Wüthrich causal path decomposition. Decomposes premium differences between groups into the component justified by risk and the component that cannot be justified.
 
 - [insurance-fair-longterm](https://github.com/burning-cost/insurance-fair-longterm): Multi-state fairness for long-term insurance products. First Python implementation of the arXiv:2602.04791 framework (February 2026).
 
 **Severity and large loss**
 
-- [insurance-nflow](https://github.com/burning-cost/insurance-nflow): Normalising flows for severity distribution modelling. When a Pareto or Lognormal tail does not fit your large loss data and you need a more flexible parametric form.
+- [insurance-nflow](https://github.com/burning-cost/insurance-nflow) (archived): Normalising flows for severity distribution modelling. When a Pareto or Lognormal tail does not fit your large loss data and you need a more flexible parametric form.
 
-- [insurance-eqrn](https://github.com/burning-cost/insurance-eqrn): Extreme quantile regression neural networks. For when you care about the 99th percentile of the severity distribution, not just the mean. That matters for excess of loss treaty pricing and capital allocation.
+- [insurance-quantile](https://github.com/burning-cost/insurance-quantile): Extreme quantile regression neural networks. For when you care about the 99th percentile of the severity distribution, not just the mean. That matters for excess of loss treaty pricing and capital allocation.
 
 **Survival and lapse**
 
@@ -564,7 +564,7 @@ The remaining libraries cover problems that are real but less universal. Brief d
 
 - [insurance-conformal](https://github.com/burning-cost/insurance-conformal) (`insurance_conformal.multivariate`): Joint conformal prediction intervals for multi-output models. Use it when you need simultaneous coverage for frequency and severity, not just marginal intervals for each. The multivariate functionality is part of `insurance-conformal` v0.4.0+.
 
-- [insurance-copula](https://github.com/burning-cost/insurance-copula): D-vine temporal dependence and two-part occurrence/severity copula models for cases where the Sarmanov structure in `insurance-frequency-severity` is insufficient.
+- [insurance-copula](https://github.com/burning-cost/insurance-copula) (archived): D-vine temporal dependence and two-part occurrence/severity copula models for cases where the Sarmanov structure in `insurance-frequency-severity` is insufficient.
 
 ---
 

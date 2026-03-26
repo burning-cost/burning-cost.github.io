@@ -121,7 +121,7 @@ mu_i = exp( b + sum_j f_j(x_j) + sum_{j<k} f_{jk}(x_j, x_k) )
 where each pairwise term `f_{jk}` is a two-dimensional surface - the BonusMalus × VehBrand interaction, as a table - not a SHAP approximation but the model's actual output.
 
 ```python
-from insurance_pin import PINModel, PINEnsemble, PINDiagnostics
+from insurance_gam import PINModel, PINEnsemble, PINDiagnostics
 
 features = {
     "age_driver":  "continuous",

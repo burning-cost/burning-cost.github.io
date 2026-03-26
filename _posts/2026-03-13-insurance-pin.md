@@ -24,7 +24,7 @@ Richman, Scognamiglio, and Wuthrich (arXiv:2508.15678, August 2025) have a diffe
 
 It also produces the best published out-of-sample Poisson deviance on the French MTPL benchmark (freMTPL2freq, n=678,007). Better than GLMs, GBMs, CANNs, and the Credibility Transformer. With 4,147 parameters.
 
-We have built [`insurance-pin`](https://github.com/burning-cost/insurance-pin).
+We have built [`insurance-pin`](https://github.com/burning-cost/insurance-gam).
 
 ---
 
@@ -76,7 +76,7 @@ Features are specified as a plain dict mapping feature name to either `"continuo
 
 ```python
 import polars as pl
-from insurance_pin import PINModel, PINDiagnostics
+from insurance_gam import PINModel, PINDiagnostics
 
 features = {
     "DrivAge": "continuous",
@@ -139,7 +139,7 @@ To see which pairs are worth modelling at all, rank by importance before committ
 fig, ax, importance_dict = diag.weighted_importance(X_train, top_n=10)
 
 # Fit an ensemble of 10 models for variance reduction (recommended for production)
-from insurance_pin import PINEnsemble
+from insurance_gam import PINEnsemble
 
 ensemble = PINEnsemble(
     n_models=10,
@@ -186,7 +186,7 @@ Do not use PIN as a first model. Start with a GLM to understand your main effect
 
 The library is PyTorch throughout. The authors released a ZIP archive at github.com/wueth/Tree-Like-PIN that appears to be Keras/TensorFlow -- consistent with Wuthrich group conventions. We have re-implemented from the paper equations in PyTorch, tested against the reference parameter count of 4,147 as a regression anchor.
 
-The repository is at [github.com/burning-cost/insurance-pin](https://github.com/burning-cost/insurance-pin).
+The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam).
 
 ---
 

@@ -26,10 +26,10 @@ where `f_t` is the log-rate (for Poisson) or log-mean (for Gamma) at period t, `
 
 Critically, the likelihood is closed-form. There is no Kalman filter, no MCMC, no expectation-maximisation. The filter path is a deterministic function of past data, and maximum likelihood is a standard L-BFGS-B optimisation. On 60 monthly observations, it fits in under five seconds.
 
-[`insurance-gas`](https://github.com/burning-cost/insurance-gas) implements GAS for the distributions actuaries actually use: Poisson and NegBin for frequency, Gamma and log-normal for severity, Beta for loss ratios, ZIP for zero-inflated data. It exposes the filter path as a trend index - base period = 100 - which is the format pricing teams already understand from development factor analysis.
+[`insurance-gas`](https://github.com/burning-cost/insurance-dynamics) implements GAS for the distributions actuaries actually use: Poisson and NegBin for frequency, Gamma and log-normal for severity, Beta for loss ratios, ZIP for zero-inflated data. It exposes the filter path as a trend index - base period = 100 - which is the format pricing teams already understand from development factor analysis.
 
 ```bash
-uv add insurance-gas
+uv add insurance-dynamics
 ```
 
 ---
@@ -41,8 +41,8 @@ The library ships synthetic datasets that match realistic UK motor patterns: sea
 ```python
 import polars as pl
 import numpy as np
-from insurance_gas import GASModel
-from insurance_gas.datasets import load_motor_frequency
+from insurance_dynamics import GASModel
+from insurance_dynamics.datasets import load_motor_frequency
 
 # 60 monthly periods, Poisson GAS(1,1)
 # trend_break=True inserts a +40% step at period 30
@@ -110,7 +110,7 @@ The filter correctly picks up the 40% step increase at period 30 and tracks the 
 Frequency and severity trend are different problems with different statistical structure. Frequency is Poisson (or NegBin); severity is continuous and right-skewed, typically Gamma or log-normal. The GAS framework handles both through the same API.
 
 ```python
-from insurance_gas.datasets import load_severity_trend
+from insurance_dynamics.datasets import load_severity_trend
 
 # 40 quarterly periods, 5% quarterly inflation
 sev_data = load_severity_trend(T=40, seed=42, inflation_rate=0.05)
@@ -183,7 +183,7 @@ A single trend index over the whole book conceals heterogeneous behaviour across
 
 ```python
 import pandas as pd
-from insurance_gas import GASPanel
+from insurance_dynamics import GASPanel
 
 # Construct a minimal panel: period, cell_id, claims, exposure
 # In practice this comes from your claims extract
@@ -256,7 +256,7 @@ If the Ljung-Box p-value is below 0.05, the filter is not adapting fast enough. 
 For short series (under 30 periods), use bootstrap confidence intervals on the filter path rather than the Hessian-based standard errors:
 
 ```python
-from insurance_gas import bootstrap_ci
+from insurance_dynamics import bootstrap_ci
 
 boot_ci = bootstrap_ci(result, n_boot=500, confidence=0.90)
 # boot_ci.filter_lower, boot_ci.filter_upper: DataFrames with same shape as filter_path
@@ -310,7 +310,7 @@ The practical workflow: fit the GAS filter monthly on each key metric (frequency
 
 ---
 
-`insurance-gas` is open source under MIT at [github.com/burning-cost/insurance-gas](https://github.com/burning-cost/insurance-gas). Install with `uv add insurance-gas`. Requires Python 3.10+, NumPy, SciPy, and Pandas (Polars for the frames above).
+`insurance-gas` is open source under MIT at [github.com/burning-cost/insurance-dynamics](https://github.com/burning-cost/insurance-dynamics). Install with `uv add insurance-dynamics`. Requires Python 3.10+, NumPy, SciPy, and Pandas (Polars for the frames above).
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) - monitoring model performance and detecting when a refit is overdue
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - uncertainty quantification at the policy level, complementary to aggregate trend tracking

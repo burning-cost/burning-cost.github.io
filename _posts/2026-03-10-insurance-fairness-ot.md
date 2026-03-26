@@ -17,12 +17,12 @@ Detecting proxy discrimination in your pricing model is the first problem. Fixin
 
 Our earlier library, [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), handles the audit side: given a trained model, it tells you whether postcode is proxying for ethnicity, how much of the motor premium disparity between high- and low-BME postcodes is attributable to each rating factor, and what the Equality Act exposure looks like. That is useful. But the output of an audit is a finding, not a price. The question after the audit is: what do we charge instead?
 
-That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) answers. It computes discrimination-free premiums by (a) decomposing the effect of a protected attribute on the price into causal paths, (b) removing only the paths that constitute discrimination, and (c) handling the multi-attribute case -- where you are adjusting for gender and disability status simultaneously -- via Wasserstein barycenter correction. The result is a corrected premium that can go straight into a GLM tariff table as a set of multiplicative relativities.
+That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness) answers. It computes discrimination-free premiums by (a) decomposing the effect of a protected attribute on the price into causal paths, (b) removing only the paths that constitute discrimination, and (c) handling the multi-attribute case -- where you are adjusting for gender and disability status simultaneously -- via Wasserstein barycenter correction. The result is a corrected premium that can go straight into a GLM tariff table as a set of multiplicative relativities.
 
 ```bash
 uv add insurance-fairness
 # or
-uv add insurance-fairness-ot
+uv add insurance-fairness
 ```
 
 ---
@@ -66,7 +66,7 @@ There is a bias correction step. The marginalised premium h*(X) has a slightly d
 The LindholmCorrector in insurance-fairness implements this:
 
 ```python
-from insurance_fairness_ot import LindholmCorrector
+from insurance_fairness import LindholmCorrector
 import polars as pl
 
 # X_calib: non-protected features. D_calib: protected attribute column(s).
@@ -119,7 +119,7 @@ The Lindholm marginalisation applied to the full DAG removes paths 1 and 2 while
 In insurance-fairness, the DAG specification uses the CausalGraph builder:
 
 ```python
-from insurance_fairness_ot import CausalGraph, PathDecomposer, DiscriminationFreePrice
+from insurance_fairness import CausalGraph, PathDecomposer, DiscriminationFreePrice
 
 # UK motor example
 graph = (CausalGraph()
@@ -180,7 +180,7 @@ In 1D with two groups this is algebraically identical to the Lindholm formula. T
 For GLM models, the correction operates in log(mu) space -- the eta scale -- then exponentiates. This preserves the multiplicative structure of GLM-based pricing. The WassersteinCorrector also computes the pre-correction Wasserstein distance between group prediction distributions, which is a useful diagnostic: a W2 distance of 0.02 on the log scale is barely worth reporting; a distance of 0.15 is a material disparity that needs addressing.
 
 ```python
-from insurance_fairness_ot import WassersteinCorrector
+from insurance_fairness import WassersteinCorrector
 import numpy as np
 
 corrector_ot = WassersteinCorrector(
@@ -222,7 +222,7 @@ The correct approach -- which is what insurance-fairness implements by default -
 The DiscriminationFreePrice class orchestrates graph specification, Lindholm correction, optional OT correction, and bias adjustment:
 
 ```python
-from insurance_fairness_ot import (
+from insurance_fairness import (
     CausalGraph,
     DiscriminationFreePrice,
     FairnessReport,
@@ -328,7 +328,7 @@ Our view: the DAG should be agreed between the Chief Actuary, the Compliance fun
 
 ---
 
-`insurance-fairness-ot` is open source under the MIT licence at [github.com/burning-cost/insurance-fairness-ot](https://github.com/burning-cost/insurance-fairness-ot). Install with `uv add insurance-fairness-ot`. Python 3.11+, NumPy, SciPy, networkx, POT (Python Optimal Transport), and Polars.
+`insurance-fairness-ot` is open source under the MIT licence at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Install with `uv add insurance-fairness`. Python 3.11+, NumPy, SciPy, networkx, POT (Python Optimal Transport), and Polars.
 
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) - the audit side: how to detect discrimination using insurance-fairness before reaching for the correction tool
 - [Causal Inference for Insurance Pricing](/2026/03/01/your-demand-model-is-confounded/) - the do-calculus foundations that underpin the causal path decomposition here

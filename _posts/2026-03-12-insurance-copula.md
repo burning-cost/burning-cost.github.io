@@ -20,7 +20,7 @@ The additive model assumes the perils are independent - that flood risk and subs
 
 If you are using the additive model, you are underpricing that household. Aas et al. (2009) formulated the pair-copula construction (PCC) that allows you to do better. Yang et al. (2024) applied it to UK-style home data and found a 9% revenue lift from using PCC versus the independence assumption. That is not a rounding error.
 
-[`insurance-copula`](https://github.com/burning-cost/insurance-copula) is a Python library that wraps pyvinecopulib with an insurance-specific workflow: exposure-weighted vine fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and portfolio aggregate PML simulation. It is the piece that was missing between "pyvinecopulib exists" and "we can use vine copulas in our pricing system."
+[`insurance-copula`](https://github.com/burning-cost/insurance-copula) (archived) is a Python library that wraps pyvinecopulib with an insurance-specific workflow: exposure-weighted vine fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and portfolio aggregate PML simulation. It is the piece that was missing between "pyvinecopulib exists" and "we can use vine copulas in our pricing system."
 
 ```bash
 uv add insurance-copula[vine]
@@ -232,7 +232,7 @@ Whether 9% is the right number for your book depends on your portfolio's geograp
 
 ---
 
-**[insurance-copula on GitHub](https://github.com/burning-cost/insurance-copula)** - MIT-licensed, PyPI. 174 tests, 7 modules.
+**[insurance-copula on GitHub](https://github.com/burning-cost/insurance-copula) (archived)** - MIT-licensed, PyPI. 174 tests, 7 modules.
 
 ---
 

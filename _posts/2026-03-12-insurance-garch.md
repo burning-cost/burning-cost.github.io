@@ -107,7 +107,7 @@ The pricing committee slide with a single trend line is still going to exist. Bu
 
 ---
 
-*insurance-garch is part of the Burning Cost open-source stack. Earlier libraries in the series: [insurance-trend](https://github.com/burning-cost/insurance-trend), [insurance-copula](https://github.com/burning-cost/insurance-copula), [insurance-conformal](https://github.com/burning-cost/insurance-conformal).*
+*insurance-garch is part of the Burning Cost open-source stack. Earlier libraries in the series: [insurance-trend](https://github.com/burning-cost/insurance-trend), [insurance-copula](https://github.com/burning-cost/insurance-copula) (archived), [insurance-conformal](https://github.com/burning-cost/insurance-conformal).*
 
 ---
 

@@ -16,10 +16,10 @@ NCD has a clean actuarial logic behind it: your claims history tells us somethin
 
 This distinction matters for two reasons. First, FCA PS21/11 tightened the rules on how NCD discounts interact with the fair price obligation - the contractual structure of NCD can produce outcomes that are hard to defend under a posterior-risk framing when a long-term NCD holder at 65% discount is paying materially less than the posterior risk would suggest. Second, the NCD mechanism is only one specific instantiation of what should be a general facility: using the claims history of an individual policyholder to update the prior estimate of their risk level. There is no reason this has to take the form of a discrete transition matrix.
 
-[`insurance-experience`](https://github.com/burning-cost/insurance-experience) is the actuarially correct alternative. It implements individual Bayesian a posteriori experience rating across four model tiers, producing a multiplicative credibility factor with the balance property that slots directly into Emblem or Radar as a rating factor. 125 tests, MIT-licensed, on PyPI.
+[`insurance-experience`](https://github.com/burning-cost/insurance-credibility) is the actuarially correct alternative. It implements individual Bayesian a posteriori experience rating across four model tiers, producing a multiplicative credibility factor with the balance property that slots directly into Emblem or Radar as a rating factor. 125 tests, MIT-licensed, on PyPI.
 
 ```bash
-uv add insurance-experience
+uv add insurance-credibility
 ```
 
 ---
@@ -47,7 +47,7 @@ For a new policyholder with no history, Z = 0 and the estimate is the portfolio 
 The important actuarial fact is that Bühlmann-Straub credibility is equivalent to a mixed linear model with a random intercept. You can fit it with REML, which gives you exact standard errors on the structural parameters rather than moment-based estimates. `StaticCredibilityModel` does this.
 
 ```python
-from insurance_experience import StaticCredibilityModel
+from insurance_credibility import StaticCredibilityModel
 
 model = StaticCredibilityModel()
 model.fit(
@@ -78,7 +78,7 @@ The Poisson-gamma conjugacy means the posterior distribution of λ_t given obser
 This is the first Python implementation of this model. The R literature has it; nothing on pip does.
 
 ```python
-from insurance_experience import DynamicPoissonGammaModel
+from insurance_credibility import DynamicPoissonGammaModel
 
 model = DynamicPoissonGammaModel(decay=0.85)
 model.fit(df, policy_col="policy_id", period_col="year",
@@ -104,7 +104,7 @@ This is the tier you want when:
 - The Poisson-gamma conjugacy fails (e.g., over-dispersed data with zero-inflation)
 
 ```python
-from insurance_experience import SurrogateModel
+from insurance_credibility import SurrogateModel
 
 model = SurrogateModel(n_is_samples=500, wls_correction=True)
 model.fit(df, policy_col="policy_id", period_col="year",
@@ -123,7 +123,7 @@ This is not interpretable in the same way the other tiers are. You cannot extrac
 Requires `torch`. Optional dependency - if PyTorch is not installed, importing `DeepAttentionModel` raises a clear error message.
 
 ```python
-from insurance_experience import DeepAttentionModel
+from insurance_credibility import DeepAttentionModel
 
 model = DeepAttentionModel(d_model=64, n_heads=4, n_layers=2)
 model.fit(df, policy_col="policy_id", period_col="year",
@@ -162,7 +162,7 @@ FCA PS21/11 (September 2021) introduced the fair value requirement for general i
 ## Usage: full workflow
 
 ```python
-from insurance_experience import (
+from insurance_credibility import (
     StaticCredibilityModel,
     DynamicPoissonGammaModel,
     ExperienceRatingEvaluator,
@@ -210,7 +210,7 @@ This library does not implement group-level credibility (Bühlmann at broker or 
 
 ---
 
-**[insurance-experience on GitHub](https://github.com/burning-cost/insurance-experience)** - 125 tests, MIT-licensed, PyPI. Library #43.
+**[insurance-experience on GitHub](https://github.com/burning-cost/insurance-credibility)** - 125 tests, MIT-licensed, PyPI. Library #43.
 
 ---
 

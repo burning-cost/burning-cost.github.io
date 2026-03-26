@@ -14,10 +14,10 @@ A UK motor renewal book has a structural problem that corrupts every naive price
 
 The result is a biased elasticity. Not slightly biased - in our benchmarks on synthetic UK motor data with a realistic data-generating process, OLS relative bias against the true elasticity is 20–80%. A renewal optimiser built on that number is optimising on a false premise.
 
-[`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) is our causal price elasticity library: CausalForestDML and LinearDML for heterogeneous semi-elasticity estimation, a diagnostic that catches the near-deterministic price problem before you fit, a full elasticity surface across two portfolio dimensions, and a profit-maximising ENBP-constrained optimiser for FCA PS21/5 compliance.
+[`insurance-elasticity`](https://github.com/burning-cost/insurance-causal) is our causal price elasticity library: CausalForestDML and LinearDML for heterogeneous semi-elasticity estimation, a diagnostic that catches the near-deterministic price problem before you fit, a full elasticity surface across two portfolio dimensions, and a profit-maximising ENBP-constrained optimiser for FCA PS21/5 compliance.
 
 ```bash
-uv add "insurance-elasticity[all]"
+uv add "insurance-causal[all]"
 ```
 
 ---
@@ -177,9 +177,9 @@ Three libraries touch elasticity in this stack. They are not redundant.
 
 [`insurance-causal`](https://github.com/burning-cost/insurance-causal) is the general causal inference library: DML for any treatment and outcome in insurance, with the confounding bias report, DAG validation, sensitivity analysis, and CATE by arbitrary segment. The right tool when your question is "how much of this GLM coefficient is actually causal?" across a broad range of factors.
 
-[`insurance-demand`](https://github.com/burning-cost/insurance-demand) is the demand modelling library: conversion, retention, demand curve construction, and portfolio-level price sensitivity. The right tool when you want the full conversion + renewal demand model and demand curve.
+[`insurance-demand`](https://github.com/burning-cost/insurance-optimise) is the demand modelling library: conversion, retention, demand curve construction, and portfolio-level price sensitivity. The right tool when you want the full conversion + renewal demand model and demand curve.
 
-[`insurance-elasticity`](https://github.com/burning-cost/insurance-elasticity) is the causal price elasticity specialist: CausalForestDML for heterogeneous semi-elasticity, the near-deterministic price diagnostic, the elasticity surface, and the ENBP-constrained optimiser. The right tool when you specifically need a defensible, per-customer elasticity estimate for renewal pricing decisions and FCA compliance documentation.
+[`insurance-elasticity`](https://github.com/burning-cost/insurance-causal) is the causal price elasticity specialist: CausalForestDML for heterogeneous semi-elasticity, the near-deterministic price diagnostic, the elasticity surface, and the ENBP-constrained optimiser. The right tool when you specifically need a defensible, per-customer elasticity estimate for renewal pricing decisions and FCA compliance documentation.
 
 If your question is renewal pricing for a UK personal lines book under PS21/5, start here.
 
