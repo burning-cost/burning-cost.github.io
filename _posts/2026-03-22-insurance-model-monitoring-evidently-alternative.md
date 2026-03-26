@@ -5,7 +5,6 @@ date: 2026-03-22
 author: Burning Cost
 categories: [monitoring, model-risk, libraries]
 description: "Evidently is excellent for generic ML monitoring. It doesn't do exposure-weighted PSI, Poisson A/E ratios, Gini drift testing, or anytime-valid sequential tests. For UK insurance pricing teams, those omissions matter."
-canonical_url: "/2026/03/22/insurance-model-monitoring-evidently-alternative/"
 tags: [insurance-model-monitoring-python, Evidently, model-drift-detection, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, insurance-monitoring, model-risk, pricing, python, uk-insurance, polars]
 ---
 

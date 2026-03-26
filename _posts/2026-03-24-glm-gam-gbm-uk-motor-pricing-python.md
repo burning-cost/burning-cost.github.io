@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [pricing]
 tags: [glm, gam, gbm, catboost, poisson, motor-pricing, python, uk-insurance, freMTPL2, exposure, NCD, interpretability, shap-relativities, insurance-gam, insurance-distill, insurance-cv, insurance-monitoring, insurance-fairness, gini, statsmodels, EBM]
 description: "The Python equivalent of the IFoA MLR Working Party's R tutorial: Poisson GLM baseline, EBM GAM, and CatBoost GBM on UK motor data, with the full pipeline from data to governance."
-canonical_url: "https://burning-cost.github.io/2026/03/24/glm-gam-gbm-uk-motor-pricing-python/"
 ---
 
 In July 2021, the IFoA Machine Learning in Reserving Working Party published a tutorial covering GLM, GAM, and XGBoost for general insurance pricing. It remains the most-cited practical ML reference in UK actuarial pricing. It is entirely R-based.

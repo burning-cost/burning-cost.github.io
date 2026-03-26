@@ -5,7 +5,6 @@ date: 2026-03-19
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Resampling your real portfolio to generate stress test scenarios destroys the joint tail structure that capital models depend on."
-canonical_url: "/2026/03/19/stress-test-resampling-vine-copula/"
 tags: [vine-copula, synthetic-data, stress-testing, capital-modelling, solvency-ii, tail-dependence, tvar, internal-model, insurance-synthetic, python, resampling, diversification]
 ---
 

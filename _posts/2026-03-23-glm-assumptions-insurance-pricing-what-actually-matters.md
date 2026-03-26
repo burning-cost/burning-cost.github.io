@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [pricing, techniques, tutorials]
 tags: [GLM, assumptions, Tweedie, Poisson, gamma, quasi-likelihood, overdispersion, residuals, diagnostics, link-function, dispersion, insurance-conformal, insurance-gam, motor-insurance, home-insurance, python, uk-insurance]
 description: "Which GLM assumptions actually matter for insurance pricing, which ones you routinely violate without consequence, and the diagnostics worth running before signing off a production model."
-canonical_url: "/2026/03/23/glm-assumptions-insurance-pricing-what-actually-matters/"
 ---
 
 Every GLM textbook lists the assumptions. The response follows a particular distribution family. The link function is correctly specified. The observations are independent. The systematic component is linear in the parameters. All four are routinely violated in real insurance pricing work. Two of those violations matter a great deal. Two of them you can mostly ignore. Knowing which is which is what separates a pricing actuary who validates models from one who recites them.

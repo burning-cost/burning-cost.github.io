@@ -5,7 +5,6 @@ date: 2026-03-23
 author: Burning Cost
 categories: [gbm, machine-learning, insurance-pricing]
 description: "A practical comparison of CatBoost and XGBoost for UK personal lines insurance pricing — categorical handling, Tweedie support, and why we default to CatBoost."
-canonical_url: "https://burning-cost.github.io/2026/03/23/catboost-vs-xgboost-insurance-pricing/"
 tags: [catboost, xgboost, gbm, insurance-pricing, python, machine-learning]
 ---
 

@@ -5,7 +5,6 @@ date: 2026-03-18
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Pricing teams fit log-linear trends through experience with structural breaks. The straight line is wrong on both sides. How to detect and correct it."
-canonical_url: "/2026/03/18/your-glm-trend-is-a-straight-line-through-a-structural-break/"
 tags: [changepoint, bocpd, pelt, bayesian, structural-break, trend, rate-indication, insurance-dynamics, python, uk-motor, ogden, whiplash, inflation, actuarial]
 ---
 

@@ -5,7 +5,6 @@ date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, tutorials]
 description: "Insurance model monitoring in Python that understands exposure weighting, development lags, and Gini drift. Why Evidently and NannyML miss what matters for pricing, and what insurance-monitoring adds."
-canonical_url: "/2026/03/21/insurance-model-monitoring-beyond-generic-drift/"
 tags: [insurance-model-monitoring-python, model-monitoring, PSI, CSI, ae-ratio, gini-drift, sequential-testing, mSPRT, insurance-monitoring, Evidently, NannyML, model-risk, pricing, python, uk-insurance, polars]
 ---
 

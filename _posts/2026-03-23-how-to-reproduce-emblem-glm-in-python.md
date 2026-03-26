@@ -5,7 +5,6 @@ date: 2026-03-23
 author: Burning Cost
 categories: [python, glm, insurance-pricing, tutorials]
 description: "Reproduce an Emblem frequency-severity GLM in Python: factor tables, one-way plots, deviance residuals, and lift charts using statsmodels, CatBoost, and Polars."
-canonical_url: "https://burning-cost.github.io/2026/03/23/how-to-reproduce-emblem-glm-in-python/"
 tags: [glm, emblem, statsmodels, catboost, polars, frequency-severity, factor-tables, relativities, deviance-residuals, lift-chart, one-way-analysis, python, uk-insurance, motor-pricing, pricing-actuary, shap-relativities, insurance-cv]
 ---
 

@@ -6,7 +6,6 @@ author: Burning Cost
 categories: [pricing, tutorials, glm]
 tags: [GLM, poisson, gamma, statsmodels, frequency-severity, exposure, offset, overdispersion, factor-table, AE-ratio, deviance, quasi-poisson, motor-insurance, uk-insurance, python, tutorial, insurance-glm-tools, insurance-dispersion, insurance-datasets]
 description: "A practical statsmodels tutorial for pricing actuaries: Poisson frequency model with exposure offset, Gamma severity model, overdispersion tests, factor table extraction, and A/E validation on synthetic UK motor data."
-canonical_url: "/2026/03/24/fitting-motor-insurance-glm-statsmodels-poisson-gamma/"
 ---
 
 Every UK motor insurer runs a GLM. Most of those GLMs were built in Emblem, or in R using `glm()`, by actuaries who have now been asked to "do it in Python." The Python documentation for Tweedie regression points at sklearn. The sklearn documentation does not mention exposure offsets. The statsmodels documentation does not mention insurance pricing.

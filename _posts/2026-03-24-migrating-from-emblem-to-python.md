@@ -5,6 +5,7 @@ date: 2026-03-24
 categories: [pricing]
 tags: [emblem, python, glm, polars, catboost, statsmodels, shap-relativities, insurance-distill, insurance-monitoring, radar, migration, workflow, pricing-actuary]
 excerpt: "If you are considering moving your GLM workflow from Emblem to Python, the modelling is not the hard part - here is what is."
+description: "Migrating from Emblem to Python for insurance GLM pricing: what changes in workflow, what gets easier, what gets harder, and what the transition actually looks like in practice."
 ---
 
 Most UK motor pricing teams have used Emblem for a decade or more. The GUI is familiar, the factor table view is sensible, and everyone in the team knows how to navigate it. If you are thinking about moving to Python, you are probably not doing it because Emblem is bad. You are doing it because Python opens up things Emblem cannot do: CatBoost and XGBoost, conformal prediction intervals, causal inference, proper temporal cross-validation, and a model development process that lives in version control.

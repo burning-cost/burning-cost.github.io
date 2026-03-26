@@ -6,7 +6,6 @@ featured: true
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "Fairlearn is excellent for classification fairness. It was not built for insurance pricing, the Equality Act 2010, or the FCA's specific concern: proxy discrimination in a multiplicative rating model. Here is what the difference means in practice."
-canonical_url: "/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/"
 tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
 ---
 

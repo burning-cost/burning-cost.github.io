@@ -5,7 +5,6 @@ date: 2026-03-19
 author: Burning Cost
 categories: [causal-inference, libraries, comparisons, pricing]
 description: "EconML is the standard Python library for causal ML. It was not built for insurance pricing, Poisson/Gamma exposure models, or the dual-selection bias problems specific to renewal portfolios. Here is what the difference means when you actually try to estimate a causal price effect."
-canonical_url: "/2026/03/19/econml-vs-insurance-causal-inference-pricing/"
 tags: [EconML, insurance-causal, DML, double-machine-learning, causal-forests, CATE, price-elasticity, Poisson, exposure, renewal, causal-inference, python, uk-insurance]
 ---
 

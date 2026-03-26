@@ -5,7 +5,6 @@ date: 2026-03-19
 author: Burning Cost
 categories: [pricing, actuarial, libraries]
 description: "Single-quantile conformal methods apply one interval width across all forecast horizons. At 12 months ahead the interval is too narrow;"
-canonical_url: "/2026/03/19/your-claims-forecast-uses-the-same-interval-width-for-all-twelve-months/"
 tags: [conformal-prediction, time-series, mscp, enbpi, conformal-pid, multi-step, fan-chart, negbinom, exchangeability, insurance-conformal-ts, claims-monitoring, python]
 ---
 
