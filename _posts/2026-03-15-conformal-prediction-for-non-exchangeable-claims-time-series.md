@@ -11,7 +11,7 @@ Standard conformal prediction gives a finite-sample coverage guarantee. The smal
 
 When exchangeability fails, the coverage guarantee fails with it. The intervals you compute in January using a calibration set from January through December will systematically miss in February and March - precisely the direction the trend was running. Standard split conformal does not warn you. It just quietly undercovers.
 
-[`insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts) implements methods designed for the temporal case. The two we use most often are ACI (Adaptive Conformal Inference, Gibbs and Candès NeurIPS 2021) and SPCI (Sequential Predictive Conformal Inference, Xu et al. ICML 2023). Both produce sequential prediction intervals that adapt as new observations arrive. Neither requires the calibration data to be exchangeable with the test period. Both come with diagnostics for checking whether coverage is actually being maintained.
+[`insurance-conformal-ts`](/insurance-conformal/) implements methods designed for the temporal case. The two we use most often are ACI (Adaptive Conformal Inference, Gibbs and Candès NeurIPS 2021) and SPCI (Sequential Predictive Conformal Inference, Xu et al. ICML 2023). Both produce sequential prediction intervals that adapt as new observations arrive. Neither requires the calibration data to be exchangeable with the test period. Both come with diagnostics for checking whether coverage is actually being maintained.
 
 ```bash
 uv add insurance-conformal-ts

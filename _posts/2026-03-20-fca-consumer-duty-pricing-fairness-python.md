@@ -230,7 +230,7 @@ The honest framing for a pricing committee paper: "Our proxy discrimination audi
 
 ---
 
-`insurance-fairness` v0.6.0 is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Python 3.10+. The full API - including `MulticalibrationAudit`, `DoubleFairnessAudit` for Consumer Duty Outcome 4, and `PrivatizedFairnessAudit` for books where you lack protected attribute data - is in the README.
+[`insurance-fairness`](/insurance-fairness/) v0.6.0 is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Python 3.10+. The full API - including `MulticalibrationAudit`, `DoubleFairnessAudit` for Consumer Duty Outcome 4, and `PrivatizedFairnessAudit` for books where you lack protected attribute data - is in the README.
 
 ---
 

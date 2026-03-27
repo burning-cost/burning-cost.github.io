@@ -14,7 +14,7 @@ The pricing committee has seen this presentation before. The GBM outperforms the
 
 The standard response to this dynamic is: build an EBM, or use a GAM, or extract SHAP relativities from the GBM. Each of these is a reasonable answer to a slightly different version of the problem. The difficulty is knowing which version of the problem you are actually solving.
 
-[`insurance-gam`](https://github.com/burning-cost/insurance-gam) now contains three distinct interpretable model families, unified under one install. Each solves the GLM-vs-GBM trade-off differently. Choosing between them is a decision that should happen before you start fitting, not after.
+[`insurance-gam`](/insurance-gam/) now contains three distinct interpretable model families, unified under one install. Each solves the GLM-vs-GBM trade-off differently. Choosing between them is a decision that should happen before you start fitting, not after.
 
 ```bash
 uv add insurance-gam

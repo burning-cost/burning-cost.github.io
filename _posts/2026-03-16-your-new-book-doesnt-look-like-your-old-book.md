@@ -204,7 +204,7 @@ The point is not that the model becomes unusable at 0.30. The point is that by 0
 
 ---
 
-`insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, NumPy 1.24+.
+[`insurance-covariate-shift`](/insurance-monitoring/) is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, NumPy 1.24+.
 
 **Related posts:**
 - [Your Model Was Trained on Last Year's Book](/2026/03/15/covariate-shift-detection-book-mix-changes/) - detection, ESS ratio, conformal intervals under shift, and FCA filings

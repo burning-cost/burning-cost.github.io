@@ -12,7 +12,7 @@ When you produce a 12-month forward view of claims — for a pricing committee, 
 
 Standard single-step conformal methods — ACI included — do not produce a fan chart. They produce a single interval at each step, sized to the current `alpha_t` and the current empirical quantile of the score distribution. When you use that same mechanism across multiple steps ahead, the interval width is approximately constant: the uncertainty at h=12 is treated the same as uncertainty at h=1. This is wrong. Near horizons are more constrained; far horizons are more uncertain. A flat interval width either overcovers at h=1 (unnecessarily wide) or undercovers at h=12 (the far months, where you most need a valid bound, are the ones where it fails).
 
-[`insurance-conformal-ts`](https://github.com/burning-cost/insurance-conformal-ts) has three methods that handle this properly: MSCP for multi-step fan charts, EnbPI when you have a good base forecaster and can afford an ensemble, and ConformalPID when theoretical regret bounds matter. They also have NegBin Pearson scoring, which matters whenever your claims count data is overdispersed — which, on most UK lines other than large-fleet commercial, it is.
+[`insurance-conformal-ts`](/insurance-conformal/) has three methods that handle this properly: MSCP for multi-step fan charts, EnbPI when you have a good base forecaster and can afford an ensemble, and ConformalPID when theoretical regret bounds matter. They also have NegBin Pearson scoring, which matters whenever your claims count data is overdispersed — which, on most UK lines other than large-fleet commercial, it is.
 
 ---
 

@@ -11,7 +11,7 @@ Ask a pricing actuary how they grouped vehicle age into bands and the honest ans
 
 The problem is specific to GLMs. A GBM will find its own grouping structure during training - the tree splits define the bands. A GAM will fit a smooth curve and let you read off where the function changes meaningfully. A GLM does neither. It requires you to specify the grouping up front, before fitting, and then fits parameters for the groups you gave it. The quality of the model depends on the quality of your prior decisions about where to draw lines. Most teams draw those lines with a combination of actuarial intuition, volume checks, and whatever the previous actuary did.
 
-[`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools) puts a statistical method where the guesswork currently lives. Three tools in one package: R2VF factor-level clustering for ordinal factors, neural network embeddings for high-cardinality categoricals, and SKATER spatial clustering for postcode territory grouping. All of them target the same gap: between "raw GLM with too many parameters" and "black box you can't put in Radar."
+[`insurance-glm-tools`](/insurance-gam/) puts a statistical method where the guesswork currently lives. Three tools in one package: R2VF factor-level clustering for ordinal factors, neural network embeddings for high-cardinality categoricals, and SKATER spatial clustering for postcode territory grouping. All of them target the same gap: between "raw GLM with too many parameters" and "black box you can't put in Radar."
 
 ```bash
 uv add insurance-glm-tools

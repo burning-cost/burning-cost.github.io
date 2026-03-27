@@ -77,7 +77,7 @@ For a pricing GLM with a log-link Poisson frequency component and a Gamma severi
 
 ---
 
-## What insurance-fairness does instead
+## What [`insurance-fairness`](/insurance-fairness/) does instead
 
 The `insurance-fairness` library approaches the problem differently because it is solving a different problem: not "are outcomes equal across groups?" but "do your model inputs act as proxies for characteristics you are not permitted to use?"
 

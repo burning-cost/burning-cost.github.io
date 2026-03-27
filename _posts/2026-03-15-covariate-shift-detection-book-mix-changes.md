@@ -191,7 +191,7 @@ The point is not that you abandon the model. The point is that you know, months 
 
 ---
 
-`insurance-covariate-shift` is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, and NumPy 1.24+.
+[`insurance-covariate-shift`](/insurance-monitoring/) is open source under Apache 2.0 at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). Requires Python 3.10+, CatBoost 1.2+, and NumPy 1.24+.
 
 - [Your Year-End Large Loss Loading Is a Finger in the Air](/2026/03/14/year-end-large-loss-loading/) - per-segment TVaR loadings via quantile regression, for when the mix shift affects the tail as well as the mean
 - [Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) - building a defensible sign-off process and what the PRA's SS1/23 actually requires

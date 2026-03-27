@@ -174,7 +174,7 @@ That is a better answer than "we used 7%, consistent with last year."
 
 ---
 
-`insurance-quantile` is open source under MIT at [github.com/burning-cost/insurance-quantile](https://github.com/burning-cost/insurance-quantile). Requires Python 3.10+, CatBoost 1.2+, and Polars 1.0+.
+[`insurance-quantile`](/insurance-distributional/) is open source under MIT at [github.com/burning-cost/insurance-quantile](https://github.com/burning-cost/insurance-quantile). Requires Python 3.10+, CatBoost 1.2+, and Polars 1.0+.
 
 - [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) - building a defensible sign-off process alongside the technical output
 - [Double GLM for Insurance: Every Risk Gets Its Own Dispersion](/2026/03/11/insurance-dispersion/) - why the Tweedie variance function matters and when to use a Gamma or inverse Gaussian instead

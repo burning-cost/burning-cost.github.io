@@ -59,4 +59,4 @@ For the implementation - how to build the adjacency, run the Moran's I pre-test,
 - [BYM2 Spatial Smoothing for Territory Ratemaking](/2026/02/23/spatial-territory-ratemaking-with-bym2/) - the ICAR prior, rho, and why it scales to 9,000 postcode sectors
 - [Getting Spatial Territory Factors Into Production](/2026/03/09/spatial-territory-ratemaking-bym2/) - the full Stage 1 → Stage 2 pipeline with Polars, adjacency caching, and rating engine export
 
-Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial).
+Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning-cost/insurance-spatial). For smoothing territory factors with [Whittaker-Henderson](/insurance-whittaker/), see the smoothing library.

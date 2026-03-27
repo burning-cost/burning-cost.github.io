@@ -16,7 +16,7 @@ This is a genuine problem. It does not make the Consumer Duty obligation go away
 
 There are two practical approaches. The first, which `FairnessAudit` already supports, uses proxy variables: ONS Census 2021 LSOA-level ethnicity estimates, for instance, can be joined to postcode data to produce an approximate ethnicity attribution. This is an estimate rather than an observation, and it inherits all the limitations of area-level attribution for individuals. But it is better than nothing, and it is the approach most firms are currently taking where they address the problem at all.
 
-The second approach, added in `insurance-fairness` v0.3.8, is more principled. `PrivatizedFairnessAudit` implements the MPTP-LDP protocol from Zhang, Liu and Shi (2025). The idea is to collect a small opt-in sample of noisy protected attributes via randomised response, then correct for the noise mathematically to recover population-level disparity estimates. The privacy guarantee is cryptographic rather than policy-based, which matters both for GDPR purposes and for the credibility of the audit evidence.
+The second approach, added in [`insurance-fairness`](/insurance-fairness/) v0.3.8, is more principled. `PrivatizedFairnessAudit` implements the MPTP-LDP protocol from Zhang, Liu and Shi (2025). The idea is to collect a small opt-in sample of noisy protected attributes via randomised response, then correct for the noise mathematically to recover population-level disparity estimates. The privacy guarantee is cryptographic rather than policy-based, which matters both for GDPR purposes and for the credibility of the audit evidence.
 
 ---
 

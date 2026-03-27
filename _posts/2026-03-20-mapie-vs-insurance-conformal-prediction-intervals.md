@@ -12,7 +12,7 @@ If you search "conformal prediction Python", MAPIE is the first result. It deser
 
 For insurance pricing models it breaks in ways that are not immediately obvious.
 
-This post explains specifically what goes wrong, shows the code comparison, and describes what [insurance-conformal](https://github.com/burning-cost/insurance-conformal) does differently. If you are not working on insurance pricing, stop here and use MAPIE.
+This post explains specifically what goes wrong, shows the code comparison, and describes what [insurance-conformal](/insurance-conformal/) does differently. If you are not working on insurance pricing, stop here and use MAPIE.
 
 ---
 

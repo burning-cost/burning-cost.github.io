@@ -80,7 +80,7 @@ DoWhy has no exposure parameter. Its estimation methods — including the DML ba
 2. The cross-fitting procedure in the DML backend does not automatically preserve the exposure offset
 3. Getting this wrong produces estimates that are confounded by exposure variation, silently
 
-`insurance-causal` handles it in one argument:
+[`insurance-causal`](/insurance-causal/) handles it in one argument:
 
 ```python
 from insurance_causal import CausalPricingModel

@@ -147,7 +147,7 @@ For independent validators reviewing an internal model, the vine summary is a di
 
 ---
 
-`insurance-synthetic` is open source under MIT at [github.com/burning-cost/insurance-synthetic](https://github.com/burning-cost/insurance-synthetic). Requires Python 3.10+. Install with `uv add insurance-synthetic`. The vine family audit is in `InsuranceSynthesizer.summary()`.
+[`insurance-synthetic`](/insurance-distributional/) is open source under MIT at [github.com/burning-cost/insurance-synthetic](https://github.com/burning-cost/insurance-synthetic). Requires Python 3.10+. Install with `uv add insurance-synthetic`. The vine family audit is in `InsuranceSynthesizer.summary()`.
 
 ---
 

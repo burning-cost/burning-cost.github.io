@@ -12,7 +12,7 @@ There is a flaw in how most UK actuaries fit severity models to claims data, and
 
 Claims are not observed ground-up. They are settled at whatever the policy pays, which is `min(ground-up loss, policy limit)`. If your policy limit is £500k and the ground-up loss was £1.8m, you see £500k. You do not see £1.8m. You do not even know it was £1.8m. For standard GPD fitting, which assumes you are observing the tail directly, every one of those £500k observations is a lie - and it is a lie that points in one direction. Downward. You are systematically underestimating how heavy the tail is.
 
-`insurance-severity` v0.2.0 adds three classes that deal with this properly.
+[`insurance-severity`](/insurance-distributional/) v0.2.0 adds three classes that deal with this properly.
 
 ```bash
 uv add insurance-severity

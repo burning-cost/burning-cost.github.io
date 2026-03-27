@@ -84,7 +84,7 @@ drifted = {
 print(f"Drifted factors: {list(drifted.keys())}")
 ```
 
-[github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)
+[insurance-monitoring](/insurance-monitoring/)
 
 ---
 
@@ -107,7 +107,7 @@ audit = FairnessAudit(
 audit.run().save_report("fairness_audit_2026Q1.md")
 ```
 
-[github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness)
+[insurance-fairness](/insurance-fairness/)
 
 ---
 

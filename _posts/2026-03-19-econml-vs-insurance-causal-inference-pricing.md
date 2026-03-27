@@ -66,7 +66,7 @@ EconML does not have an exposure parameter. Its outcome model defaults to square
 
 None of this is documented for insurance use cases. It is solvable, but it is a significant amount of non-trivial work - and it is the kind of work that pricing actuaries should not have to do from scratch.
 
-`insurance-causal` handles it directly:
+[`insurance-causal`](/insurance-causal/) handles it directly:
 
 ```python
 from insurance_causal import CausalPricingModel

@@ -232,7 +232,7 @@ The smoothed trajectory shows the step-change at period 4 clearly. A flat-weight
 
 ---
 
-`insurance-credibility` is open source under MIT at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility). Requires Python 3.10+. Install with `uv add insurance-credibility`.
+[`insurance-credibility`](/insurance-credibility/) is open source under MIT at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility). Requires Python 3.10+. Install with `uv add insurance-credibility`.
 
 ---
 

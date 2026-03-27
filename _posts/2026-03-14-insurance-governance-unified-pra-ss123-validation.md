@@ -18,7 +18,7 @@ The problem is that they are not actually separate. The validation report produc
 
 In practice that meant: two installs, two pinned versions, and a non-trivial chance that the `run_id` schema the validation package was writing had drifted from the schema the MRM package was reading. That is a correctness risk in the governance layer, which is precisely the thing we built these tools to make reliable.
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is the merge. One install, one import path, zero coupling to manage yourself.
+[`insurance-governance`](/insurance-governance/) is the merge. One install, one import path, zero coupling to manage yourself.
 
 ```bash
 uv add insurance-governance
@@ -201,7 +201,7 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 ---
 
-`insurance-governance` is MIT-licensed at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance) and on [PyPI](https://pypi.org/project/insurance-governance/). Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
+[`insurance-governance`](/insurance-governance/) is MIT-licensed on GitHub and PyPI. Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
 
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the inventory

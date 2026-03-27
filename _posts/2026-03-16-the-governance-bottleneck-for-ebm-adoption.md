@@ -193,7 +193,7 @@ The model is not just sitting in a notebook because the committee is unreasonabl
 
 ---
 
-`insurance-gam` is open source under MIT at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). Requires Python 3.10+; the `[ebm]` extra requires interpretML 0.6+.
+[`insurance-gam`](/insurance-gam/) is open source under MIT at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). Requires Python 3.10+; the `[ebm]` extra requires interpretML 0.6+.
 
 **Related posts:**
 - [Your Model Is Either Interpretable or Accurate. insurance-gam Refuses That Trade-Off.](/2026/03/14/insurance-gam-interpretable-nonlinearity/) - the three-way EBM/ANAM/PIN decision framework

@@ -47,7 +47,7 @@ More importantly: even if Alibi Detect's KS tests are statistically preferable, 
 
 A fleet policy covering 80 vehicles that ran for 12 months contributes one row to KS's test. A 30-day moped policy also contributes one row. They are not equivalent observations. The fleet policy represents roughly 80 car-years of claims exposure; the moped represents 0.08 car-years. Treating them identically means your drift detector has its signal contaminated by short-duration policies that barely had time to generate claims.
 
-`insurance-monitoring` implements exposure-weighted PSI and CSI directly:
+[`insurance-monitoring`](/insurance-monitoring/) implements exposure-weighted PSI and CSI directly:
 
 ```python
 from insurance_monitoring.drift import psi
