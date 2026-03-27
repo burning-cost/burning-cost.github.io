@@ -103,4 +103,4 @@ The practical combination we would recommend: multicalibration audit to find whe
 **See also:**
 - Lindholm, M., Richman, R., Tsanakas, A. and Wüthrich, M.V. (2022). Discrimination-Free Insurance Pricing. ASTIN Bulletin 52(1), 55–89.
 - Denuit, M., Michaelides, M. and Trufin, J. (2026). Balance and Fairness through Multicalibration in Nonlife Insurance Pricing. [arXiv:2603.16317](https://arxiv.org/abs/2603.16317).
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — `DiscriminationInsensitiveReweighter`, `LindholmCorrector`, `WassersteinCorrector`, `MulticalibrationMonitor`.
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — `DiscriminationInsensitiveReweighter`, `LindholmCorrector`, `WassersteinCorrector`, `MulticalibrationAudit`.
