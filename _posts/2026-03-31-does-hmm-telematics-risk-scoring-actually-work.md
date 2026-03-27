@@ -27,7 +27,7 @@ State classification accuracy: on the 3-state DGP with 30 trips per driver, HMM 
 
 ## The numbers
 
-200 simulated drivers, 30 trips each, 70/30 train/test split by driver. Poisson GLM throughout.
+200 simulated drivers, 30 trips each, 70/30 train/test split by driver. Poisson GLM throughout. (The 5,000-driver validation referenced in the intro and verdict uses a separate, larger run — see the README benchmarks.)
 
 | Metric | Raw trip averages | HMM state fractions |
 |---|---|---|
@@ -41,7 +41,7 @@ The headline Gini improvement of 5-10pp on the larger 5,000-driver validation is
 
 The A/E calibration numbers are similar between methods. The HMM advantage is in discrimination — rank-ordering drivers by risk — not in overall calibration, which is a GLM property both approaches share equally.
 
-At the larger scale (5,000 drivers, 30 trips), the README validation puts the Gini improvement at 3-8pp. The benchmark README headline of 15-25% relative improvement in Gini is consistent with this: a raw averages Gini of 0.14 improving to 0.18 is a 28% relative improvement, but the absolute gap is 4pp.
+At the larger scale (5,000 drivers, 30 trips), the README validation puts the Gini improvement at 3-8pp. A raw averages Gini of 0.14 improving to 0.18 is a 29% relative improvement — the absolute gap of 3-8pp is the more stable measure across seeds.
 
 ---
 

@@ -61,7 +61,8 @@ def modwt_max_coeff(accel: np.ndarray, wavelet: str = "db2", levels: int = 6) ->
     Returns per-second max absolute wavelet coefficient across all levels.
 
     accel : 1D float array, per-second acceleration in m/s²
-    wavelet : 'db2' is Daubechies D4 in pywt convention
+    wavelet : 'db2' is Daubechies D4 (4-tap) in pywt convention.
+              WARNING: pywt 'db4' is an 8-tap filter, NOT D4. Use 'db2' for the paper's D4.
     levels : decomposition depth J=6 recommended
     """
     # swt requires length to be divisible by 2^levels
@@ -240,7 +241,7 @@ The HMM is still useful when you only have trip-aggregate data (many UK black bo
 
 ## The FCA Consumer Duty angle
 
-UK pricing teams face an increasing burden under FCA Consumer Duty (PS22/9) and the legacy of the GIPP pricing reforms: demographic proxies — even indirect ones — are under scrutiny. Postcode remains legal for motor; gender, age, and related correlates are tightly regulated; anything that functions as a proxy for protected characteristics needs an explicit actuarial justification.
+UK pricing teams face an increasing burden under FCA Consumer Duty (PS22/9) and the legacy of the GIPP pricing reforms: demographic proxies — even indirect ones — are under scrutiny. Postcode remains legal for motor; gender is banned as a direct rating factor (since the 2012 ECJ ruling); age-related correlates face scrutiny under proxy discrimination rules; anything that functions as a proxy for protected characteristics needs an explicit actuarial justification.
 
 The Lee-Badescu-Lin framework is purely behavioural. The risk index is derived from the acceleration time series on each trip, anchored to the portfolio distribution of acceleration events, and updated only from the driver's own trip history. No demographics enter the model at any stage. The prior _Gamma(α_{0m}, β_{0m})_ is estimated from portfolio-level tail rates — it reflects the distribution of driving behaviour, not of driver characteristics.
 

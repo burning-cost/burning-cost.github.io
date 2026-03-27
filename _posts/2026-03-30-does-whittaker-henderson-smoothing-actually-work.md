@@ -124,7 +124,7 @@ result.lambda_     # what REML selected (e.g. 55539)
 result.edf         # effective degrees of freedom (e.g. 7.7)
 
 # Polars output for downstream pipeline
-df = result.to_polars()  # columns: x, y, weight, fitted, ci_lower, ci_upper
+df = result.to_polars()  # columns: x, y, weight, fitted, std_fitted, ci_lower, ci_upper
 ```
 
 For claim counts directly (preferred over pre-dividing by exposure in thin bands):
