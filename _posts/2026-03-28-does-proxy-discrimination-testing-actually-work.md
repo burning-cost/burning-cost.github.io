@@ -37,7 +37,7 @@ The Spearman check detects nothing, across all 50 seeds, at any reasonable thres
 
 This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-monotone categorical-to-continuous relationships.
 
-The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number survives scrutiny under Equality Act Section 19 and is the kind of finding a regulator can act on.
+The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number provides quantitative evidence relevant to a Section 19 assessment — establishing the substantial disadvantage element — and is the kind of finding a regulator can act on.
 
 ---
 
@@ -66,6 +66,11 @@ audit = FairnessAudit(
 
 report = audit.run()
 report.summary()
+# Per-characteristic demographic parity, calibration disparity, proxy flags
+
+# Per-factor proxy scores (list of ProxyScore objects, sorted by R²):
+for s in report.results["diversity_score"].proxy_detection.scores:
+    print(f"{s.factor}: proxy_r2={s.proxy_r2:.2f}, mi={s.mutual_information:.2f}, flag={s.rag}")
 # postcode_area: proxy_r2=0.62, mi=0.41, flag=RED
 # vehicle_group: proxy_r2=0.08, mi=0.06, flag=GREEN
 
@@ -80,15 +85,15 @@ The `to_markdown()` output includes explicit regulatory cross-references to PRIN
 
 One finding from the benchmark is less obvious but more important. Minimising premium disparity (action fairness) does not minimise loss ratio disparity (outcome fairness). On a 20,000-policy TPLI portfolio, the policy with the most equal premiums produced the most unequal loss ratios.
 
-This is the compliance gap FCA TR24/2 (August 2024) described. Firms were auditing at the point of quoting — checking whether premiums are equal across groups — and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
+This is the compliance gap FCA TR24/2 (September 2024) described. Firms were auditing at the point of quoting — checking whether premiums are equal across groups — and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
 
-The `DoubleFairnessAudit` class in the library computes the Pareto front across action fairness, outcome fairness, and revenue. A pricing committee can see every operating point along the trade-off, with quantified evidence of the choice being made. A firm that can only show a single demographic parity ratio cannot demonstrate the same level of considered decision-making to the FCA.
+The `DoubleFairnessAudit` class in the library computes the Pareto front across action fairness and outcome fairness. A pricing committee can see every operating point along the trade-off, with quantified evidence of the choice being made. A firm that can only show a single demographic parity ratio cannot demonstrate the same level of considered decision-making to the FCA.
 
 ---
 
 ## The FCA context
 
-TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". As of early 2026, FCA Consumer Duty investigations are open across the sector; some directly involve insurers on fair value grounds. This is live enforcement risk, not theoretical.
+TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". As of mid-2024, six Consumer Duty investigations were open, at least two involving insurers on fair value grounds. This is live enforcement risk, not theoretical.
 
 Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor — and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
 

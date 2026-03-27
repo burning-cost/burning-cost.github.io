@@ -70,7 +70,7 @@ The benchmark recovers structural parameters as follows against the known true v
 - a_hat = 0.00212 (true 0.00500) - VHM underestimated by 57.6%
 - K_hat = 8.36 (true K = 4.0) - K over-estimated by a factor of 2.1
 
-The K over-estimation is the result you need to understand. K = v/a, and a_hat is computed via a method-of-moments between-group variance estimator. With only 30 groups across 5 years, this estimator is noisy - it needs 100+ groups over 7+ years to converge reliably. The over-estimated K means the model shrinks more aggressively than theory would recommend: schemes get pulled harder towards the portfolio mean than the true K=4.0 would dictate.
+The K over-estimation is the result you need to understand. K = v/a, and a_hat is computed via a method-of-moments between-group variance estimator. With only 30 groups across 5 years, this estimator is noisy - it needs 100+ groups over several years to converge reliably (the exact number of periods depends on the true K and exposure distribution). The over-estimated K means the model shrinks more aggressively than theory would recommend: schemes get pulled harder towards the portfolio mean than the true K=4.0 would dictate.
 
 The effect is conservative rather than catastrophic. Despite using K_hat=8.36 when the true K is 4.0, B-S still beats raw experience on thin and medium tiers. The Z-values it produces are internally consistent - z_i = w_i / (w_i + K_hat) to four decimal places. The model is self-consistent, it is just more cautious than the oracle would be.
 

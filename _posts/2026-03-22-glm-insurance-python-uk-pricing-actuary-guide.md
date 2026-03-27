@@ -362,7 +362,7 @@ result = detect_proxies(
 print(result.summary())
 ```
 
-We covered this in detail in [How to Detect Proxy Discrimination in a UK Motor Insurance GLM](https://burning-cost.github.io/2026/03/22/how-to-detect-proxy-discrimination-uk-insurance-glm/).
+We covered this in detail in [How to Detect Proxy Discrimination in a UK Motor Insurance GLM](https://burning-cost.github.io/2026/03/22/fca-proxy-discrimination-python-testing-guide/).
 
 ---
 

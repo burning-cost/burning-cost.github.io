@@ -96,7 +96,7 @@ frontier = EfficientFrontier(
     n_points=20,
 )
 frontier_result = frontier.run()
-frontier_df = frontier_result.pareto_data()
+frontier_df = frontier_result.data
 ```
 
 The shadow price table is the output to put in front of a commercial director. It shows the marginal profit cost of tightening the loss ratio target by one percentage point, at every point on the frontier. When the shadow price on the LR constraint jumps from 0.15 to 0.72 between two adjacent LR targets, you are approaching the knee of the frontier — the point at which further tightening accelerates the volume cost sharply. This is a quantified, defensible position that no spreadsheet scenario analysis can produce.
@@ -108,6 +108,8 @@ The shadow price table is the output to put in front of a commercial director. I
 It consumes model outputs; it does not fit the models. Your technical premiums and price elasticity estimates need to come from a GLM, GBM, or DML estimation step. The optimiser is an offline rate strategy tool — not a real-time quote engine. For individual-level pricing at point of quote, Radar Live and Earnix serve that function.
 
 The library also does not validate that your elasticity estimates are correct. The ENBP constraint is enforced per-policy using the `enbp` array you supply, and the solver produces a JSON audit trail per run for FCA scrutiny. But if the elasticity inputs are systematically biased, the optimiser will faithfully find the optimal solution to the wrong problem.
+
+One practical note: for firms implementing ENBP-constrained optimisation for the first time on a legacy book, reconstructing per-policy ENBP from policies priced under previous systems is typically a 2-3 month data engineering exercise before the optimiser can run. The library assumes ENBP is a clean input array — it does not help you build it.
 
 ---
 

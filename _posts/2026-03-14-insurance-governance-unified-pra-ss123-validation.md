@@ -59,7 +59,7 @@ The MRM tooling is covered in depth at [Model Risk Governance for UK Insurers: B
 | Renewal cohort A/E by tenure band | FCA TR24/2 |
 | Sub-segment calibration by categorical features | Consumer Duty |
 | Data quality (missingness, outliers, cardinality) | SS1/23 Principle 3 |
-| Monitoring plan completeness | SS1/23 Principle 5 |
+| [Monitoring plan completeness](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) | SS1/23 Principle 5 |
 
 The overall RAG status (Green/Amber/Red) is computed from the worst-severity failure. A Hosmer-Lemeshow rejection moves the report to Amber. A renewal cohort A/E outside [0.85, 1.15] for the 5+ year tenure band moves it to Red. These thresholds are not configurable by default, because configurable thresholds mean every team sets different thresholds, and you end up with a Gini that means different things in different reports.
 
@@ -119,7 +119,7 @@ tier = scorer.score(
 
 `ModelInventory` persists the model register to a JSON file. That file should be version-controlled alongside your code. It stores model metadata, tier assignments, validation run history (linked by `run_id`), review dates, and sign-off status. The `due_for_review()` method is worth running daily from CI: a Tier 1 model approaching its annual review deadline with status `live` (not `validated`) is a governance breach before it becomes a regulatory problem.
 
-`GovernanceReport` produces the executive committee pack - not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
+`GovernanceReport` produces the executive committee pack — not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration — the same metrics [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) tracks in production), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
 
 ---
 
@@ -193,7 +193,7 @@ The bottleneck in any validation workflow is the model fitting that produces `y_
 
 ## Our view on the regulatory timeline
 
-PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window - 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed.
+PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed. The Consumer Duty fair value obligations are a parallel strand: teams with a [Consumer Duty-aligned fairness audit](/2026/03/20/fairness-auditing-without-sensitive-attributes/) need somewhere to record what was tested and who signed it off — that is the MRM inventory.
 
 The firms that will handle the PRA extension without a scramble are the ones who can already answer these questions with a query: which models are in production at what tier, when was each last validated, who approved the findings, and what is the machine-readable link between the governance record and the statistical evidence?
 
@@ -201,7 +201,7 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 ---
 
-`insurance-governance` is MIT-licensed at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
+`insurance-governance` is MIT-licensed at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance) and on [PyPI](https://pypi.org/project/insurance-governance/). Python 3.10+. Dependencies: polars, pydantic, jinja2, scikit-learn, numpy, scipy.
 
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the inventory

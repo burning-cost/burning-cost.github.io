@@ -1,0 +1,40 @@
+name: Daily rebuild
+
+# Triggers a GitHub Pages rebuild at 06:00 UTC every day so that
+# scheduled posts (future: false in _config.yml) are published on
+# their date without requiring a manual push.
+#
+# GitHub Pages is configured to deploy from the `master` branch.
+# This workflow checks out master, bumps .last-rebuild, and pushes
+# back to master — which is enough to trigger the Pages build.
+
+on:
+  schedule:
+    # 06:00 UTC daily
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump rebuild timestamp
+        run: |
+          date -u '+%Y-%m-%d %H:%M UTC' > .last-rebuild
+          git add .last-rebuild
+          git diff --cached --quiet || git commit -m "chore: daily rebuild $(date -u '+%Y-%m-%d')"
+
+      - name: Push
+        run: git push origin master

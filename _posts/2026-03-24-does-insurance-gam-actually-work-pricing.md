@@ -198,11 +198,14 @@ The deviance headline will disappoint anyone expecting a GBM-like jump. That is 
 
 The exposure handling caveat on deviance is real and should be treated seriously. The Gini does not have this problem. Run both metrics, run the calibration table, and treat the Gini as your headline.
 
-We think `InsuranceEBM` should replace the GLM for any team that has features with known or suspected non-linear structure — U-shaped age effects, convex NCD curves, threshold effects by vehicle type — and is currently approximating those with polynomial terms. The shape functions are the model, not derived from it. That is an operationally meaningful difference when a rate change goes to actuarial sign-off.
+We think `InsuranceEBM` should replace the GLM for any team that has features with known or suspected non-linear structure — U-shaped age effects, convex NCD curves, threshold effects by vehicle type — and is currently approximating those with polynomial terms. The shape functions are the model, not derived from it. That is an operationally meaningful difference when a rate change goes to actuarial sign-off — and those shape functions slot directly into the [insurance-governance validation report](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) as primary documentation under SS1/23 Principle 4.
 
-ANAM is the right choice when you need a combined frequency-severity Tweedie model with provably monotone constraints. PIN is the right choice when the interaction surface itself needs to be auditable. All three are in the same install.
+ANAM is the right choice when you need a combined frequency-severity Tweedie model with provably monotone constraints. Once any of these models is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s Gini drift test will tell you when the shape functions are going stale and a refit is warranted. PIN is the right choice when the interaction surface itself needs to be auditable. All three are in the same install.
 
-The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in `benchmarks/run_benchmark_databricks.py`, runnable on Databricks serverless Free Edition in under three minutes.
+The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in , runnable on Databricks serverless Free Edition in under three minutes.
 
-- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — the full library post covering all three architectures, the decision framework, and the regulatory argument for interpretable models
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to register a GAM model with shape function documentation in the MRM inventory
+---
+
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — which of the three models to use and when: Tweedie loss, architectural monotonicity, and exact Shapley values compared
+- [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — monitoring the GAM in production: Gini drift z-test, Murphy decomposition, and when to refit
+- [Whittaker-Henderson Smoothing for Insurance Pricing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) — complementary tool for the step before GAM fitting: graduating the raw relativities that feed the initial factor structure
