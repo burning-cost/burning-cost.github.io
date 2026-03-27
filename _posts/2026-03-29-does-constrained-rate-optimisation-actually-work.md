@@ -109,6 +109,8 @@ It consumes model outputs; it does not fit the models. Your technical premiums a
 
 The library also does not validate that your elasticity estimates are correct. The ENBP constraint is enforced per-policy using the `enbp` array you supply, and the solver produces a JSON audit trail per run for FCA scrutiny. But if the elasticity inputs are systematically biased, the optimiser will faithfully find the optimal solution to the wrong problem.
 
+One practical note: for firms implementing ENBP-constrained optimisation for the first time on a legacy book, reconstructing per-policy ENBP from policies priced under previous systems is typically a 2-3 month data engineering exercise before the optimiser can run. The library assumes ENBP is a clean input array — it does not help you build it.
+
 ---
 
 ## Verdict
