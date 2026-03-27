@@ -18,7 +18,7 @@ The reason this persists is not laziness. It is the absence of a worked example 
 
 What we are going to build: a scheduled Databricks Job that reads claims and exposure data from Delta tables in Unity Catalog, trains separate Poisson and Gamma CatBoost models, validates them using [`insurance-cv`](https://github.com/burning-cost/insurance-cv) temporal splits, extracts SHAP relativities with [`shap-relativities`](https://github.com/burning-cost/shap-relativities), and registers validation results via [`insurance-governance`](/insurance-governance/), benchmarks them against a GLM, and writes a Radar-format CSV to a versioned Delta table. The job runs on the 15th of every month. Nothing requires a human to press a button.
 
-This is not a rehash of our [SHAP validation notebook](https://github.com/burning-cost/databricks-shap-notebook). That notebook validates the extraction method against a known data-generating process on synthetic data. This is the thing you would actually build at a carrier.
+This is not a rehash of our [SHAP relativities validation work](https://github.com/burning-cost/shap-relativities). That notebook validates the extraction method against a known data-generating process on synthetic data. This is the thing you would actually build at a carrier.
 
 ---
 

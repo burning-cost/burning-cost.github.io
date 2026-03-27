@@ -324,9 +324,9 @@ print(f"Model tier: {tier.tier} (score: {tier.score}/100)")
 
 ---
 
-### insurance-calibration - balance property
+### insurance-monitoring - calibration testing
 
-A well-specified pricing model should satisfy the balance property: the sum of predicted premiums should equal the sum of actual losses in aggregate, and within every rating factor band. Failures of calibration within bands reveal systematic mispricing by segment that aggregate metrics hide. `insurance-calibration` runs the full suite of calibration tests - actual-to-expected by factor, Hosmer-Lemeshow bins, calibration curves - and flags the bands where your model is consistently above or below one.
+A well-specified pricing model should satisfy the balance property: the sum of predicted premiums should equal the sum of actual losses in aggregate, and within every rating factor band. Failures of calibration within bands reveal systematic mispricing by segment that aggregate metrics hide. Calibration testing is part of `insurance-monitoring`, which runs the full suite of calibration tests — actual-to-expected by factor, Hosmer-Lemeshow bins, calibration curves — and flags the bands where your model is consistently above or below one.
 
 ```python
 from insurance_monitoring import CalibrationReport, check_balance, check_auto_calibration, murphy_decomposition
@@ -345,7 +345,7 @@ report = CalibrationReport(
 print(report.verdict())
 ```
 
-[github.com/burning-cost/insurance-calibration](https://github.com/burning-cost/insurance-calibration)
+[github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring)
 
 ---
 

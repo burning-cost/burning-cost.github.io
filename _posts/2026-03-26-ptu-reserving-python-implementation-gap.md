@@ -206,7 +206,7 @@ The practical limitation is data availability. Claims incurred requires that you
 
 The paper was submitted on 12 March 2026 — two weeks old at time of writing. Richman and Wüthrich ship R code because R is the language of choice in continental European actuarial practice and the code is demonstrably short. The companion paper (arXiv:2602.15385, February 2026) also used R.
 
-The [`chainladder-python`](https://github.com/casact/chainladder-python) library handles aggregate triangle methods and has no individual claims module. The [`insurance-reserving-neural`](https://github.com/burning-cost/insurance-reserving-neural) library covers neural individual reserving from the Avanzi et al. architecture, which is a different approach entirely — transaction-level simulation rather than one-shot projection.
+The [`chainladder-python`](https://github.com/casact/chainladder-python) library handles aggregate triangle methods and has no individual claims module. The `insurance-reserving-neural` library covers neural individual reserving from the Avanzi et al. architecture, which is a different approach entirely — transaction-level simulation rather than one-shot projection.
 
 The PtU individual regression method is unambiguously simpler than Avanzi et al., and the R implementation is around 30 lines. The Python port adds cohort validation, configurable feature sets, and bootstrap uncertainty — call it 600 lines — but the core algorithm is not complex. The main reason nobody has done it yet is that the paper is two weeks old.
 
