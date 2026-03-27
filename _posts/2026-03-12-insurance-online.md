@@ -3,7 +3,7 @@ layout: post
 title: "Bandit Algorithms for GIPP-Compliant Price Experimentation"
 date: 2026-03-12
 categories: [libraries, pricing, experimentation]
-tags: [bandit, Thompson-Sampling, UCB1, LinUCB, GIPP, PS21-11, ICOBS, ENBP, FCA, Consumer-Duty, insurance-online, python, direct-channel, motor, home]
+tags: [bandit, Thompson-Sampling, UCB1, GIPP, PS21-5, ICOBS, ENBP, FCA, Consumer-Duty, insurance-online, python, direct-channel, motor, home]
 description: "Bandit algorithms for FCA GIPP-compliant price experimentation in UK general insurance. ENBP constraints and compliance reporting built in - insurance-online."
 ---
 
@@ -42,7 +42,7 @@ Multi-armed bandits solve all three. They adapt allocation toward better-perform
 
 ## The regulatory question
 
-The FCA's GIPP rules (PS21/11, January 2022) created a legitimate concern here. The headline rule - ICOBS 6B.2.51R - says that renewal prices must not exceed the Equivalent New Business Price (ENBP). The mechanism by which a pricing team might use an adaptive allocation algorithm to route customers to higher prices is precisely the kind of thing GIPP was designed to prevent.
+The FCA's GIPP rules (PS21/5, January 2022) created a legitimate concern here. The headline rule - ICOBS 6B.2.51R - says that renewal prices must not exceed the Equivalent New Business Price (ENBP). (Note: the substantive GIPP pricing rules are set out in ICOBS 6B.3; ICOBS 6B.2 contains the general framework provisions.) The mechanism by which a pricing team might use an adaptive allocation algorithm to route customers to higher prices is precisely the kind of thing GIPP was designed to prevent.
 
 So is loading optimisation via bandit algorithms "dynamic pricing"? We think the answer is clearly no, and the FCA's own GIPP Q&A provides the grounding. Q1.12 and Q1.13 of the GIPP Q&A explicitly permit different margins for different new business cohorts. Testing which loading maximises new business conversion - or new business loss ratio - is margin optimisation on new business. It is not renewal repricing. There is no renewal customer in the experiment.
 
@@ -100,13 +100,11 @@ The HTML report is deliberately conservative in styling. It will print cleanly a
 
 Three policies cover the practical range of needs.
 
-**Thompson Sampling** is our recommendation for most experiments. It uses conjugate priors: Beta-Bernoulli for conversion rate, Gamma-Poisson for claim frequency. At each selection, it samples from each arm's current posterior distribution and picks the arm with the highest sampled value. Arms with wide posteriors (few observations) get explored; arms with narrow posteriors that are clearly worse get de-prioritised. It is Bayesian in the right sense: uncertainty drives exploration, and exploration reduces as evidence accumulates.
+**Thompson Sampling** is our recommendation for most experiments. It uses conjugate priors: Beta-Bernoulli for conversion rewards. At each selection, it samples from each arm's current posterior distribution and picks the arm with the highest sampled value. Arms with wide posteriors (few observations) get explored; arms with narrow posteriors that are clearly worse get de-prioritised. It is Bayesian in the right sense: uncertainty drives exploration, and exploration reduces as evidence accumulates. The current implementation supports Beta-Bernoulli (conversion) rewards only; frequency-based reward models are planned for a future release.
 
 The Beta-Bernoulli update is the simplest. A bind is `alpha += 1`; a no-bind is `beta += 1`. After 200 quotes on an arm that's been converting at 15%, the posterior is approximately Beta(31, 171). Sampling from that distribution rarely produces values above 0.2, so the algorithm won't waste quotes on arms that have clearly lost.
 
-The Gamma-Poisson model is for frequency experiments. You're not trying to maximise conversion. You're trying to identify the loading band that attracts the best-risk business. After observing `n` claims over `e` policy years on an arm, the posterior rate becomes Gamma(alpha_0 + n, beta_0 + e). For frequency, Thompson Sampling picks the arm with the *minimum* sampled rate - the arm that looks like it attracts lower-frequency risk.
-
-**UCB1** (Auer, Cesa-Bianchi & Fischer 2002) is the deterministic alternative. It scores each arm as `mu_hat(a) + alpha * sqrt(2 * ln(t) / n(a))` - empirical mean plus an exploration bonus that shrinks as the arm accumulates observations. It is easier to explain to a compliance team because it is deterministic: given the same data, it always makes the same selection. The default `alpha=1.0` is the theoretically motivated choice.
+**UCB1** (Auer, Cesa-Bianchi & Fischer 2002) is the deterministic alternative. It scores each arm as `mu_hat(a) + c * sqrt(2 * ln(t) / n(a))` — empirical mean plus an exploration bonus that shrinks as the arm accumulates observations. It is easier to explain to a compliance team because it is deterministic: given the same data, it always makes the same selection. The default `exploration_coef=2.0` is the standard UCB1 coefficient.
 
 **Epsilon-greedy** exists as a sanity-check baseline. Before committing to Thompson or UCB, run epsilon-greedy for a few weeks to verify that your reward signal is sensible. If epsilon-greedy cannot identify a best arm after 500 observations, the reward definition needs revisiting. Not the algorithm.
 
@@ -140,7 +138,7 @@ The first is loading band optimisation on an established product. You have a pri
 
 The second is new product launch. You have no historical data on what loading the market will accept. Rather than setting a fixed launch loading based on market positioning instinct, you can run a bandit experiment from day one. The algorithm will explore initially and converge as data accumulates.
 
-The third is segment-level loading optimisation using `LinUCBPolicy`. If you believe the optimal loading varies by segment - vehicle group, NCD band, area - the contextual bandit takes a feature vector at selection time and learns a separate linear reward model per arm. This is the right tool for "our loading should be +5% in rural postcodes and -2% in urban postcodes". The contextual policy is more data-hungry than the non-contextual one - you need enough volume per segment to learn the linear weights - but for a product with meaningful volume segmentation it outperforms a single-loading experiment.
+The third is segment-level loading investigation. Run separate experiments on distinct segments — vehicle group, NCD band, area — and compare the converged loading per segment. This is sufficient for most segment-specific loading questions. A contextual bandit that conditions arm selection on policyholder covariates — which would allow per-risk loading optimisation in a single experiment — is planned for v2. No contextual bandit class (including LinUCBPolicy) exists in the current release.
 
 ---
 
