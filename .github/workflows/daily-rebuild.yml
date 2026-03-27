@@ -5,8 +5,8 @@ name: Daily rebuild
 # their date without requiring a manual push.
 #
 # GitHub Pages is configured to deploy from the `master` branch.
-# This workflow checks out master, bumps .last-rebuild, and pushes
-# back to master — which is enough to trigger the Pages build.
+# This workflow checks out master, merges main into it (so any work
+# pushed to main is deployed), bumps .last-rebuild, and pushes.
 #
 # After rebuilding, we ping Google to notify it of the updated sitemap.
 
@@ -25,12 +25,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: master
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge main into master
+        run: |
+          git fetch origin main
+          git merge origin/main --no-edit || echo "Nothing to merge or merge failed"
 
       - name: Bump rebuild timestamp
         run: |
