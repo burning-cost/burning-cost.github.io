@@ -49,7 +49,7 @@ This is not a marginal improvement on a GLM. It is a fundamentally different mod
 
 **Poisson** - for claim frequency. Most pricing actuaries use standard Poisson GLMs already; the GAMLSS version adds dispersion modelling, which is useful when frequency variance is materially higher than the Poisson assumption (overdispersion).
 
-**NegativeBinomial** - for overdispersed count data. The NegativeBinomial is a Poisson-Gamma mixture; GAMLSS allows both the mean and the overdispersion parameter to vary by covariate.
+**NBI** - for overdispersed count data. The NBI (Negative Binomial type I) is a Poisson-Gamma mixture; GAMLSS allows both the mean and the overdispersion parameter to vary by covariate.
 
 **Zero-Inflated Poisson (ZIP)** - for frequency data with excess zeros. The zero-inflation probability `nu` is modelled separately from the Poisson rate `mu`. This matters in lines with many no-claim policyholders where the excess zeros are structurally distinct from the Poisson zeros.
 
@@ -105,11 +105,11 @@ variances = model.predict_variance(X_holdout)
 
 # Full distribution object per observation
 dist = model.predict_distribution(X_holdout)
-p95  = dist.ppf(0.95)   # 95th percentile per policy
-crps = dist.crps(y_holdout)
+p95  = [d.ppf(0.95) for d in dist]   # 95th percentile per policy
+crps = model.score(X_holdout, y_holdout, metric='crps')
 ```
 
-The `predict_distribution` method returns a scipy-compatible distribution object vectorised over the batch. CDF, quantile, log-probability, and CRPS are all available. For a Gamma family, this is a `scipy.stats.gamma` object parameterised by the policy-specific mu and sigma. For ZIP, it is a custom mixture object.
+The `predict_distribution` method returns a Python list of scipy frozen distribution objects, one per observation. For a Gamma family, each element is a `scipy.stats.gamma` frozen object parameterised by that policy's mu and sigma. Use a list comprehension to extract quantiles: `[d.ppf(0.95) for d in dists]`. For a CRPS score across the holdout, use `model.score(X_holdout, y_holdout, metric='crps')`.
 
 ---
 

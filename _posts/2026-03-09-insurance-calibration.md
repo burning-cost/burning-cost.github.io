@@ -239,7 +239,7 @@ The standard alternative is a residual plot: actual versus predicted, often in d
 
 The Hosmer-Lemeshow test (already in `insurance-governance`) catches auto-calibration failures but without the MCB decomposition. It tells you the model is miscalibrated. It does not tell you whether the fix is a scalar correction or a model refit.
 
-The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), published October 2024. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
+The Murphy decomposition is the piece that was missing from Python tooling for insurance. The academic framework has existed since Brier score decompositions were formalised; its application to the insurance Poisson-deviance setting is from Brauer et al. (arXiv:2510.04556, 2025), published October 2025. The library implements it precisely: UNC, DSC, MCB, GMCB, LMCB, with the GMCB/LMCB split via isotonic recalibration on the balance-corrected predictions.
 
 ---
 

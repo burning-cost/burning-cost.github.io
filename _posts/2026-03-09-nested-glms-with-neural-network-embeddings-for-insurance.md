@@ -55,7 +55,7 @@ sudo apt-get install gdal-bin libgdal-dev
 uv add "insurance-glm-tools[spatial]"
 ```
 
-On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[geo]` works fine.
+On macOS with Homebrew: `brew install gdal` first. If you only want the embedding and GLM phases without the spatial clustering, the base install without `[spatial]` works fine.
 
 The PyTorch dependency is real. `insurance-nested-glm` pulls in PyTorch for the embedding training. Expect 2GB or so of disk, depending on your platform. For CPU-only use:
 
@@ -100,7 +100,7 @@ Every phase is accessible on the fitted result:
 
 ```python
 # Phase 1: base GLM
-print(pipeline.base_glm_.model_.summary())
+print(pipeline.base_glm_.summary())
 
 # Phase 2: embeddings — dict of col -> DataFrame with category + embedding coords
 embedding_frames = pipeline.embedding_trainer_.get_embedding_frame()
@@ -120,8 +120,8 @@ relativities = pipeline.relativities()
 
 ```python
 rels = result.relativities()
-print(rels[rels.factor == "territory_id"].head())
-#   factor    level  coefficient  relativity  std_error
+print(rels[rels.term == "territory_id"].head())
+#   term      level  coefficient  relativity  std_error
 #   territory_id  T01     0.183       1.201      0.031
 #   territory_id  T02     0.094       1.099      0.028
 #   territory_id  T03    -0.212       0.809      0.034
@@ -137,7 +137,7 @@ The Phase 2 embedding is where the statistical novelty sits. It is worth underst
 The `EmbeddingTrainer` takes the Phase 1 GLM predictions as an offset and trains a neural network where the only learned parameters are the embedding vectors for the high-cardinality categoricals. The network architecture is intentionally minimal: an embedding lookup, a log-sum aggregation of the active embedding vectors, added to the log of the GLM offset. The loss is Poisson deviance.
 
 ```python
-from insurance_glm_tools import EmbeddingTrainer
+from insurance_glm_tools.nested import EmbeddingTrainer
 
 trainer = EmbeddingTrainer(
     cat_cols=["vehicle_make", "postcode_sector"],
@@ -190,7 +190,7 @@ This is NP-hard in general. SKATER uses a heuristic that is fast in practice but
 The `TerritoryClusterer` adds credibility filtering on top of SKATER: after clustering, any territory with less than `min_exposure` earned exposure is merged into its spatially adjacent neighbour with the most similar embedding centroid.
 
 ```python
-from insurance_glm_tools import TerritoryClusterer
+from insurance_glm_tools.nested import TerritoryClusterer
 
 clusterer = TerritoryClusterer(
     n_clusters=40,
@@ -233,7 +233,7 @@ Three honest ones.
 
 **PyTorch install size.** Adding PyTorch to a pricing environment adds roughly 2GB. If you are running in a constrained environment or a large team where environment reproducibility matters, be deliberate about this. The embedding training could in principle be implemented with lighter-weight autograd machinery, but we use PyTorch because it is what the Wang et al. methodology assumes and what practitioners are most likely to already have.
 
-**GDAL friction for the geo dependencies.** geopandas and spopt are not always straightforward to install, particularly on Windows. If you are only using the embedding layer and handing off to an existing territory model, the base install without `[geo]` avoids this entirely.
+**GDAL friction for the geo dependencies.** geopandas and spopt are not always straightforward to install, particularly on Windows. If you are only using the embedding layer and handing off to an existing territory model, the base install without `[spatial]` avoids this entirely.
 
 ---
 

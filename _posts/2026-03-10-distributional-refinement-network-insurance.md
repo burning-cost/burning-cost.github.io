@@ -221,7 +221,7 @@ The two approaches are complementary. We use the GLM as baseline for DRN on line
 
 DRN introduces neural network parameters on top of a well-understood GLM baseline. There are three things to watch.
 
-First, overfitting in the upper bins. With few extreme observations, the neural network can overfit bin probabilities in the tail. The KL regularisation term in the loss (`drn_regularisation`) penalises large departures from the baseline; increase `lambda_kl` if you see validation CRPS diverging from training CRPS.
+First, overfitting in the upper bins. With few extreme observations, the neural network can overfit bin probabilities in the tail. The KL regularisation term in the loss (`drn_regularisation`) penalises large departures from the baseline; increase `kl_alpha` if you see validation CRPS diverging from training CRPS.
 
 Second, the baseline is frozen. The GLM is not updated during DRN training. If the GLM mean prediction is wrong for a particular segment, DRN cannot correct the mean - it can only adjust the shape. Run `diag.quantile_calibration` and verify that DRN's 50th percentile tracks the GLM mean before trusting the tail.
 
