@@ -68,7 +68,7 @@ The theoretical work — proving existence and uniqueness of KL barycentres for 
 
 ## How it compares to existing approaches
 
-**Lindholm-Richman causal decomposition.** The dominant actuarial approach (Lindholm, Richman, Tsanakas, Wüthrich, ASTIN Bulletin 52(1), 2022). Decomposes the price into direct and indirect effects of the protected attribute, then removes the direct effect by marginalising over the protected characteristic's distribution conditional on legitimate factors. Our [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) library implements this as `LindholmCorrector`. The hard part is specifying the causal graph — which paths through the model are legitimate.
+**Lindholm-Richman causal decomposition.** The dominant actuarial approach (Lindholm, Richman, Tsanakas, Wüthrich, ASTIN Bulletin 52(1), 2022). Decomposes the price into direct and indirect effects of the protected attribute, then removes the direct effect by marginalising over the protected characteristic's distribution conditional on legitimate factors. Our [`insurance-fairness`](/insurance-fairness/) library implements this as `LindholmCorrector`. The hard part is specifying the causal graph — which paths through the model are legitimate.
 
 Miao-Pesenti sidesteps the causal graph entirely. It does not ask which variables mediate the discrimination; it asks what is the nearest distribution under which the premium is insensitive to D. Cleaner problem statement, harder to compute.
 

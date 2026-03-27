@@ -22,7 +22,7 @@ Exposure structure mirrors reality: thin at the extremes (30 policy years per ba
 Three approaches compared against the true curve:
 - Raw observed rates: no smoothing, the noisy experience directly
 - Weighted 5-point moving average: the standard manual approach
-- Whittaker-Henderson order-2 with REML lambda selection: [`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker)
+- Whittaker-Henderson order-2 with REML lambda selection: [`insurance-whittaker`](/insurance-whittaker/)
 
 The full benchmark code is at `benchmarks/benchmark.py` in the repo. Seed 42.
 

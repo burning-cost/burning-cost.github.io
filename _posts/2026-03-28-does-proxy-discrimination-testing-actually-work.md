@@ -17,7 +17,7 @@ That is a harder question, and the standard approach to answering it is not adeq
 
 The conventional proxy check is a Spearman rank correlation between each rating factor and the protected characteristic. Set a threshold — typically |r| > 0.25 — and flag anything above it. It is fast, it produces a number, and it fits in a single column of a compliance spreadsheet.
 
-We benchmarked this against [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) across 50 random seeds on 20,000 synthetic UK motor policies with a known postcode-ethnicity proxy relationship — the structure replicating the Citizens Advice (2022) finding that postcode loading drives a roughly £280/year ethnicity penalty in UK motor.
+We benchmarked this against [`insurance-fairness`](/insurance-fairness/) across 50 random seeds on 20,000 synthetic UK motor policies with a known postcode-ethnicity proxy relationship — the structure replicating the Citizens Advice (2022) finding that postcode loading drives a roughly £280/year ethnicity penalty in UK motor.
 
 ---
 

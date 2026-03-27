@@ -9,7 +9,7 @@ description: "The standard UK motor pricing formula multiplies E[N] by E[S] and 
 
 The honest answer is: yes, when the dependence is real and the data volume supports estimation. The IFM estimator recovers planted omega within 10% on 15,000 policies with correctly specified marginals, reduces portfolio-level bias from ~8% to ~2%, and applies a 10-15% upward correction to the highest-risk decile that the independence model ignores entirely.
 
-We benchmarked [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) against the standard independent two-part model on a synthetic UK motor book with known data-generating parameters. The numbers below are from `benchmarks/benchmark_insurance_frequency_severity.py` — a pure Sarmanov DGP where the planted omega equals the population parameter the IFM estimator targets directly.
+We benchmarked [`insurance-frequency-severity`](/insurance-frequency-severity/) against the standard independent two-part model on a synthetic UK motor book with known data-generating parameters. The numbers below are from `benchmarks/benchmark_insurance_frequency_severity.py` — a pure Sarmanov DGP where the planted omega equals the population parameter the IFM estimator targets directly.
 
 ---
 

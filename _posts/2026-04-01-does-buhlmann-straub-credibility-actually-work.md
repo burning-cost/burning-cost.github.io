@@ -9,7 +9,7 @@ description: "We benchmarked Bühlmann-Straub credibility against raw experience
 
 Yes, with one condition: you have to give up on recovering the true structural parameters from a small panel, and accept what the method actually delivers rather than what the textbook promises.
 
-We ran the benchmark on [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) against a synthetic 30-scheme UK motor fleet book with known ground truth. The results are what you would expect from first principles, which is the best endorsement a classical technique can get.
+We ran the benchmark on [`insurance-credibility`](/insurance-credibility/) against a synthetic 30-scheme UK motor fleet book with known ground truth. The results are what you would expect from first principles, which is the best endorsement a classical technique can get.
 
 ---
 

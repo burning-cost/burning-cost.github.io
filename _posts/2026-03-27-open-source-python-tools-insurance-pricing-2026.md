@@ -119,7 +119,7 @@ We built these because the gap above is real. UK GI pricing teams using Python a
 
 We should be honest upfront: these are relatively new libraries (most published 2025–2026), the download numbers are modest (roughly 250–1,050 installs/month per package as of March 2026, and the distribution is suspiciously uniform — likely mirror traffic alongside real users), and some are more mature than others. Where there are known limitations, we say so.
 
-### [insurance-fairness](https://github.com/burning-cost/insurance-fairness) — proxy discrimination auditing
+### [`insurance-fairness`](/insurance-fairness/) — proxy discrimination auditing
 
 The problem: postcode is a legitimate risk variable, but it correlates with ethnicity. FCA Consumer Duty and EP25/2 require you to demonstrate it is not operating as a proxy. Spearman correlation misses non-linear categorical relationships entirely.
 

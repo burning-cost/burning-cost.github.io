@@ -9,7 +9,7 @@ description: "We ran insurance-fairness against ausprivauto0405 — a real Austr
 
 Most fairness audit walkthroughs use toy data. An artificial dataset where gender neatly predicts claims, so the audit catches the problem, everyone looks clever, and you learn nothing about what happens on a real book.
 
-We ran `insurance-fairness` against a real published dataset — 67,856 Australian private motor insurance policies with an explicit Gender field — to see what these tools actually find when you throw messy real data at them. The results were instructive, and not in the way you might expect.
+We ran [`insurance-fairness`](/insurance-fairness/) against a real published dataset — 67,856 Australian private motor insurance policies with an explicit Gender field — to see what these tools actually find when you throw messy real data at them. The results were instructive, and not in the way you might expect.
 
 **A note before we start:** ausprivauto0405 is Australian motor data from 2004-05, sourced from the CASdatasets R package (Dutang & Charpentier, 2024). We used it because it has a real Gender variable and real claim outcomes — not because it tells us anything about the UK market. Everything here is methodology validation. Do not treat any numbers in this post as benchmarks for Equality Act 2010 compliance or FCA Consumer Duty reporting.
 

@@ -9,7 +9,7 @@ description: "We fitted a Poisson GLM on the first third of freMTPL2 (677k Frenc
 
 The monitoring problem in insurance pricing is not detecting drift. Any actuary with a spreadsheet and quarterly data can eyeball an A/E ratio. The problem is detecting drift *systematically*, across multiple dimensions, with appropriate statistical thresholds, before the model has been 7% cheap for eighteen months and someone asks why you did not notice sooner.
 
-We benchmarked `insurance-monitoring` against freMTPL2 — 677,991 French motor third-party liability policies from OpenML (dataset ID 41214) — to see what a structured monitoring workflow looks like at real portfolio scale.
+We benchmarked [`insurance-monitoring`](/insurance-monitoring/) against freMTPL2 — 677,991 French motor third-party liability policies from OpenML (dataset ID 41214) — to see what a structured monitoring workflow looks like at real portfolio scale.
 
 ---
 

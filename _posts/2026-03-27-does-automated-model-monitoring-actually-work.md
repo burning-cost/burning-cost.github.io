@@ -21,7 +21,7 @@ We set up a 50,000-policy reference period and a 15,000-policy monitoring period
 2. **Calibration drift** — new vehicles (age < 3) have claims inflated 25%
 3. **Discrimination decay** — 30% of monitoring-period predictions randomised
 
-Then we ran both a manual aggregate A/E check and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring)'s `MonitoringReport`.
+Then we ran both a manual aggregate A/E check and [`insurance-monitoring`](/insurance-monitoring/)'s `MonitoringReport`.
 
 ---
 

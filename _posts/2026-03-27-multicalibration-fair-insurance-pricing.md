@@ -56,7 +56,7 @@ z = min(n_observations / credibility_threshold, 1.0)
 
 Small cells get a correction blended towards zero. Large cells get the full A/E adjustment. This prevents overfitting when a cell has, say, 45 policies - the AE ratio at that sample size is too noisy to act on confidently.
 
-Our [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) library already has this implemented as `MulticalibrationAudit`. Here is what the audit workflow looks like:
+Our [`insurance-fairness`](/insurance-fairness/) library already has this implemented as `MulticalibrationAudit`. Here is what the audit workflow looks like:
 
 ```python
 from insurance_fairness.multicalibration import MulticalibrationAudit

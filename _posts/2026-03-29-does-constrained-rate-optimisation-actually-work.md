@@ -9,7 +9,7 @@ description: "We benchmarked constrained portfolio optimisation against a unifor
 
 The standard UK motor renewal process applies a flat multiplier to all policies in a segment, adjusts for the loss ratio, and iterates in a spreadsheet until the numbers look acceptable. This is suboptimal by construction.
 
-The question is how suboptimal, and whether the improvement from a constrained portfolio optimiser is large enough to justify the complexity. We ran [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) against a uniform +7% rate change on a 2,000-policy synthetic book to find out.
+The question is how suboptimal, and whether the improvement from a constrained portfolio optimiser is large enough to justify the complexity. We ran [`insurance-optimise`](/insurance-optimise/) against a uniform +7% rate change on a 2,000-policy synthetic book to find out.
 
 ---
 

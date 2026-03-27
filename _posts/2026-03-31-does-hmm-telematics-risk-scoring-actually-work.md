@@ -9,7 +9,7 @@ description: "HMM-derived driving state features improve Gini by 5–10 percenta
 
 Yes — but it depends entirely on whether your book has regime-structured driving behaviour. On a DGP with three latent driving states (cautious, normal, aggressive), HMM state features beat raw trip averages by 5–10 Gini points. On a portfolio where driving style is genuinely continuous, you will see closer to 3pp. The technique is real; the lift is conditional.
 
-We ran [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) against a synthetic fleet of 5,000 UK motor drivers, 30 trips each, with a known data-generating process: three hidden driving regimes with Ornstein-Uhlenbeck speed processes and claim probabilities of 4%/yr (cautious), 10%/yr (normal), and 28%/yr (aggressive). Both approaches were fed into the same Poisson frequency GLM. The only thing that differed was whether the input features were raw trip averages or HMM-derived state fractions.
+We ran [`insurance-telematics`](/insurance-telematics/) against a synthetic fleet of 5,000 UK motor drivers, 30 trips each, with a known data-generating process: three hidden driving regimes with Ornstein-Uhlenbeck speed processes and claim probabilities of 4%/yr (cautious), 10%/yr (normal), and 28%/yr (aggressive). Both approaches were fed into the same Poisson frequency GLM. The only thing that differed was whether the input features were raw trip averages or HMM-derived state fractions.
 
 ---
 
