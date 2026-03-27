@@ -46,7 +46,7 @@ MCB = GMCB + LMCB
 - **GMCB** (global MCB): the portion of miscalibration fixed by multiplying all predictions by a single constant - i.e., the portion attributable to a wrong intercept. This is the cheap fix.
 - **LMCB** (local MCB): the portion not fixable by any global scale adjustment. This requires a model refit.
 
-The decision rule: if GMCB >> LMCB, recalibrate. If LMCB >= GMCB, refit.
+The decision rule: if GMCB >= LMCB, recalibrate. If LMCB > GMCB, refit.
 
 ---
 
@@ -128,7 +128,9 @@ result = gini_drift_test(
     current_actual=act_cur, current_predicted=pred_cur,
 )
 print(f"Gini: {gini_ref:.3f} → {gini_cur:.3f}")
-print(f"z = {result['z_statistic']:.2f}, p = {result['p_value']:.3f}")
+print(f"z = {result.z_statistic:.2f}, p = {result.p_value:.3f}")
+# result is a GiniDriftResult dataclass; attribute access is the intended API.
+# Dict-style access (result["z_statistic"]) works for backward compatibility only.
 # Gini: 0.421 → 0.363
 # z = -2.71, p = 0.007
 ```
@@ -172,7 +174,7 @@ print(df)
 # murphy_miscalibration    0.000307 --
 # murphy_gmcb              0.000089 --
 # murphy_lmcb              0.000218 --
-# recommendation           REFIT    red
+# recommendation           REFIT    REFIT
 ```
 
 The decision tree implementation: if the Gini p-value is below 0.10, that triggers REFIT regardless of MCB. If Gini is stable but LMCB >= GMCB, that also triggers REFIT. If Gini is stable and GMCB >> LMCB, RECALIBRATE. If nothing is significantly off, MONITOR_CLOSELY or NO_ACTION depending on A/E.
@@ -195,7 +197,7 @@ When the Murphy distribution is set, this is the logic that runs. Without it, th
 
 ## The governance case
 
-PRA SS1/23 (effective May 2024) requires model validators to document the basis for decisions about model updates. The Murphy decomposition provides exactly the right level of evidence: a quantitative split between GMCB and LMCB with a documented decision rule.
+PRA SS1/23 (effective May 2024) requires model validators to document the basis for decisions about model updates. SS1/23 is formally a banking standard; many Solvency II insurers have adopted its principles for model governance. The Murphy decomposition provides exactly the right level of evidence: a quantitative split between GMCB and LMCB with a documented decision rule.
 
 A model risk note that reads "A/E of 1.07 observed, Murphy GMCB of 0.000341 versus LMCB of 0.000019, GMCB/MCB ratio = 0.95, recalibration applied per monitoring framework" is a substantively different document from "A/E of 1.07 observed, intercept adjusted to restore balance." The first can be audited against the framework. The second requires a validator to take the pricing team's word for it.
 

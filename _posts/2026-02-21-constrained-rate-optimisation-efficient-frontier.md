@@ -99,23 +99,30 @@ frontier = EfficientFrontier(
     n_points=20,
 )
 frontier_result = frontier.run()
+# frontier_result.data has columns: epsilon, converged, profit, gwp, loss_ratio, retention
 print(frontier_result.data)
-# Shadow prices per point are on each OptimisationResult:
+
+# Shadow prices per point are on each OptimisationResult.
+# Build a custom summary table by iterating the points:
+rows = []
 for pt in frontier_result.points:
     if pt.result.converged:
         lr_shadow = pt.result.shadow_prices.get("lr_max", 0.0)
         vol_shadow = pt.result.shadow_prices.get("retention_min", 0.0)
+        rows.append((pt.epsilon, lr_shadow, vol_shadow))
         print(f"lr_target={pt.epsilon:.2f}  shadow_lr={lr_shadow:.2f}  shadow_vol={vol_shadow:.2f}")
 ```
 
+The table below is built from the loop above - iterating `frontier_result.points` and extracting shadow prices from each `OptimisationResult`. It is not the output of `frontier_result.data` (which contains `epsilon`, `converged`, `profit`, `gwp`, `loss_ratio`, `retention`).
+
 ```
- lr_target  expected_lr  expected_volume  shadow_lr  shadow_volume
-      0.78        0.777            0.973       0.02           0.00
-      0.76        0.758            0.971       0.04           0.00
-      0.74        0.739            0.968       0.08           0.00
-      0.72        0.720            0.963       0.15           0.00
-      0.70        0.700            0.954       0.31           0.01
-      0.68        0.680            0.937       0.72           0.08
+ lr_target  shadow_lr  shadow_vol
+      0.78       0.02        0.00
+      0.76       0.04        0.00
+      0.74       0.08        0.00
+      0.72       0.15        0.00
+      0.70       0.31        0.01
+      0.68       0.72        0.08
 ```
 
 At a 72% LR target, the shadow price is 0.15 - modest. At 70%, it has doubled to 0.31. At 68%, it has jumped to 0.72. The knee is between 70% and 68%. The pricing team can show this table to a commercial director and say: "We can push to 70%, but below that the volume cost per LR point gained accelerates sharply." That is a quantified, defensible position. It is not available from a scenario in Excel.

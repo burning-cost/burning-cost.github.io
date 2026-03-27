@@ -221,11 +221,11 @@ Bühlmann-Straub Credibility Model
 
   Interpretation: a group needs exposure = k to achieve Z = 0.50
 
-group  exposure  observed_mean      Z  credibility_premium  complement
-  R01    14,821         0.0621  0.447               0.0693      0.0785
-  R02    72,340         0.0934  0.797               0.0904      0.0785
-  R03     5,102         0.0441  0.217               0.0647      0.0785
-  R04    31,918         0.1143  0.634               0.1017      0.0785
+group  Exposure  Obs. Mean      Z  Cred. Premium  Complement
+  R01    14,821     0.0621  0.447         0.0693      0.0785
+  R02    72,340     0.0934  0.797         0.0904      0.0785
+  R03     5,102     0.0441  0.217         0.0647      0.0785
+  R04    31,918     0.1143  0.634         0.1017      0.0785
   ...
 ```
 

@@ -90,13 +90,13 @@ from bayesian_pricing import HierarchicalFrequency, BayesianRelativities
 from bayesian_pricing.frequency import SamplerConfig
 
 # One row per rating cell - aggregate your policy data first
-# bayesian_pricing expects pandas at the model boundary; convert from Polars
+# bayesian_pricing accepts both Polars and pandas DataFrames
 df = pl.DataFrame({
     "veh_group": ["Supermini", "Supermini", "Sports", "Sports", "Saloon"],
     "age_band":  ["17-21", "31-40", "17-21", "31-40", "31-40"],
     "claims":    [8, 120, 3, 45, 200],
     "exposure":  [60.0, 900.0, 25.0, 350.0, 2000.0],
-}).to_pandas()
+})
 
 model = HierarchicalFrequency(
     group_cols=["veh_group", "age_band"],
@@ -119,13 +119,13 @@ During model development, use `method="pathfinder"` instead of NUTS. Pathfinder 
 
 ---
 
-## The output that matters: credibility factors
+## The output that matters: posterior shrinkage
 
-The `predict()` method returns a DataFrame with the posterior mean claim rate per segment, a credible interval, and a credibility factor:
+The `predict()` method returns a DataFrame with the posterior mean claim rate per segment, a credible interval, and a `posterior_shrinkage_ratio`:
 
 ```python
 preds = model.predict()
-#   veh_group  age_band     mean     p5      p50     p95   credibility_factor
+#   veh_group  age_band     mean     p5      p50     p95   posterior_shrinkage_ratio
 #   Supermini  17-21      0.1234   0.0812  0.1201  0.1731          0.38
 #   Supermini  31-40      0.1341   0.1198  0.1338  0.1490          0.94
 #   Sports     17-21      0.1891   0.1102  0.1845  0.2881          0.21
@@ -133,9 +133,9 @@ preds = model.predict()
 #   Saloon     31-40      0.0978   0.0912  0.0976  0.1045          0.97
 ```
 
-The credibility factor is the Bayesian equivalent of `Z_i` in Bühlmann-Straub. A value of 0.21 for Sports/17-21 means that cell has only 25 policy-years of experience - the posterior is 79% portfolio mean, 21% own data. The wide credible interval (0.11 to 0.29) reflects exactly how uncertain we are.
+The `posterior_shrinkage_ratio` measures how far the posterior mean sits between the portfolio mean (0) and the raw observed rate (1). It is closely analogous to `Z_i` in Bühlmann-Straub but computed post-hoc from the posterior rather than analytically. A value of 0.21 for Sports/17-21 means the posterior mean is 21% of the way from the portfolio mean to the segment's raw observed rate - the model trusts the portfolio far more than the thin segment's own data. The wide credible interval (0.11 to 0.29) reflects exactly how uncertain we are.
 
-Compare Supermini/31-40 with 900 policy-years: credibility factor 0.94. The posterior is almost entirely data-driven. The credible interval (0.120 to 0.149) is tight.
+Compare Supermini/31-40 with 900 policy-years: shrinkage ratio 0.94. The posterior is almost entirely data-driven. The credible interval (0.120 to 0.149) is tight.
 
 This is partial pooling doing its job. The thin cell is not overfitting to 3 claims. The dense cell is not being dragged away from its own experience.
 
@@ -150,11 +150,13 @@ rel = BayesianRelativities(model, hdi_prob=0.9)
 
 veh_table = rel.relativities(factor="veh_group")
 print(veh_table.table)
-#   level      relativity  lower_90pct  upper_90pct  credibility_factor  interval_width
-#   Sports          1.524        1.234        1.891           0.71               0.657
-#   Saloon          1.000        0.921        1.082           0.94               0.161
-#   Supermini       0.819        0.764        0.881           0.89               0.117
+#   level      relativity  lower_90pct  upper_90pct  uncertainty_reduction  interval_width
+#   Sports          1.524        1.234        1.891                   0.71           0.657
+#   Saloon          1.000        0.921        1.082                   0.94           0.161
+#   Supermini       0.819        0.764        0.881                   0.89           0.117
 ```
+
+The `uncertainty_reduction` column measures how much the posterior has reduced uncertainty relative to the prior: values near 1.0 mean the data has largely resolved the estimate (dense segment); values near 0.0 mean the posterior is still close to the prior (thin, heavily pooled segment). It is not the same as the Bühlmann-Straub `Z` factor but serves the same interpretive purpose.
 
 The 90% credible interval for Sports - 1.23 to 1.89 - is wide because vehicle group alone is not the whole story. The interaction with driver age band matters. `bayesian-pricing` can model this explicitly:
 
@@ -175,15 +177,15 @@ This is fundamentally different from a GBM split. The GBM either makes the split
 ## Identifying thin segments for underwriter review
 
 ```python
-# Segments where credibility_factor < 0.3 need flagging
+# Segments where uncertainty_reduction < 0.3 need flagging
 thin = rel.thin_segments(credibility_threshold=0.3)
-#   factor       level             credibility_factor  relativity
-#   age_band     17-21                       0.21        1.84
+#   factor       level             uncertainty_reduction  relativity
+#   age_band     17-21                              0.21        1.84
 ```
 
-A credibility factor below 0.3 means less than 30% of the estimate comes from the segment's own experience. These segments should not drive large rate changes without actuarial sign-off. The wide credible interval is the quantitative evidence for that caution: the 17-21 age band might really be 1.84× the base, or it might be 1.10×, or 2.60×. The data do not yet tell us which.
+An `uncertainty_reduction` below 0.3 means the posterior is still dominated by the prior - the segment's own data has moved the estimate very little from the portfolio mean. These segments should not drive large rate changes without actuarial sign-off. The wide credible interval is the quantitative evidence for that caution: the 17-21 age band might really be 1.84× the base, or it might be 1.10×, or 2.60×. The data do not yet tell us which.
 
-This output is the regulatory case for the approach under FCA Consumer Duty. If a pricing model is making significant rate changes to thin segments based on noisy data, that is a fair value risk. The credibility factor flags exactly where that risk sits.
+This output is the regulatory case for the approach under FCA Consumer Duty. If a pricing model is making significant rate changes to thin segments based on noisy data, that is a fair value risk. The thin-segment flag identifies exactly where that risk sits.
 
 ---
 

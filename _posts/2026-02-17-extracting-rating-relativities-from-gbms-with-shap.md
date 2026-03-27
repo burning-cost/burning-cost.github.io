@@ -49,6 +49,8 @@ SE = shap_std / sqrt(n_obs)
 CI = exp(mean_shap ± z * SE - base_shap)
 ```
 
+The formula above is a simplification: the library implements the full delta-method propagation, which accounts for uncertainty in both the base level's mean SHAP and the level's own mean SHAP. The simplified one-term version shown here gives slightly overconfident intervals for levels close to the base. Use the library output for any numbers that go in front of a pricing committee.
+
 These are data uncertainty intervals - they quantify how precisely we've estimated each level's mean SHAP contribution given the portfolio. They do not capture model uncertainty from the GBM fitting process itself. That distinction matters, and we come back to it in the limitations section.
 
 ---
@@ -108,15 +110,15 @@ rels = sr.extract_relativities(
 
 `rels` is a DataFrame with one row per (feature, level) combination:
 
-| feature | level | relativity | lower_ci | upper_ci | n_obs | exposure_weight |
-|---------|-------|-----------|----------|----------|-------|-----------------|
-| area | A | 1.000 | 1.000 | 1.000 | 12847 | 10203.4 |
-| area | B | 1.183 | 1.141 | 1.227 | 9832 | 7891.2 |
-| area | C | 0.921 | 0.889 | 0.954 | 8104 | 6512.7 |
-| area | D | 1.347 | 1.298 | 1.399 | 6219 | 4978.1 |
-| ncd_years | 0 | 1.000 | 1.000 | 1.000 | 8741 | 6982.3 |
-| ncd_years | 1 | 0.887 | 0.856 | 0.920 | 7923 | 6341.1 |
-| ... | ... | ... | ... | ... | ... | ... |
+| feature | level | relativity | lower_ci | upper_ci | mean_shap | shap_std | n_obs | exposure_weight |
+|---------|-------|-----------|----------|----------|-----------|----------|-------|-----------------|
+| area | A | 1.000 | 1.000 | 1.000 | -0.183 | 0.041 | 12847 | 10203.4 |
+| area | B | 1.183 | 1.141 | 1.227 | -0.015 | 0.038 | 9832 | 7891.2 |
+| area | C | 0.921 | 0.889 | 0.954 | -0.265 | 0.044 | 8104 | 6512.7 |
+| area | D | 1.347 | 1.298 | 1.399 | 0.117 | 0.040 | 6219 | 4978.1 |
+| ncd_years | 0 | 1.000 | 1.000 | 1.000 | -0.221 | 0.051 | 8741 | 6982.3 |
+| ncd_years | 1 | 0.887 | 0.856 | 0.920 | -0.343 | 0.048 | 7923 | 6341.1 |
+| ... | ... | ... | ... | ... | ... | ... | ... | ... |
 
 For the validation test we ran on synthetic data where we knew the true DGP parameters, extracted relativities matched the true multiplicative parameters to within 2-3% across all area and NCD levels after 50,000 training policies. That's within the confidence intervals, which is exactly what we'd want to see.
 
