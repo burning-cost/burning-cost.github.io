@@ -78,7 +78,7 @@ The direction of the bias depends on the sign of the U → P and U → Y correla
 
 The fix is to find variation in price that is uncorrelated with U. The most credible instrument available to UK insurers is **commercial loading variation across quarterly rate reviews**. When the pricing team applies a 5% loading increase in Q3 2024, every customer who quoted in that window got a higher price than an observationally identical customer who quoted in Q2. The loading is applied uniformly across segments; individual risk profiles did not change. This within-segment price variation is orthogonal to U, and it shifts P — the definition of a valid instrument.
 
-This requires storing technical premium at quote time, not just the final commercial price. Most insurers do not do this routinely. If you do not have it, you need to reconstruct it from rate tables, which is painful but usually possible.
+This requires storing technical premium at quote time, not just the final commercial price. Most insurers do not do this routinely. If you do not have it, you need to reconstruct it from rate tables, which is painful but usually possible. UK teams logging only the final commercial price — which is the majority, in our experience — will need to address this data prerequisite before an IV approach is usable; a migration to quote-time technical premium logging is a data engineering project, not a modelling one.
 
 ---
 
@@ -127,7 +127,7 @@ We think the practical consequence for UK insurers is that naive demand models s
 
 ## The regulatory angle is real
 
-FCA Evaluation Paper 25/2 (July 2025) flagged explicitly that elasticity-based pricing requires controls to prevent charging less price-sensitive customers higher prices, including as a proxy for protected characteristics. The paper noted that 1 in 4 motor consumers switched insurer in 2024, up from 1 in 5 in 2023, and that the PCW channel now accounts for 66% of motor new business (up from 60% pre-GIPP remedies).
+FCA Evaluation Paper 25/2 (July 2025) flagged explicitly that elasticity-based pricing requires controls to prevent charging less price-sensitive customers higher prices, including as a proxy for protected characteristics. Separately, LexisNexis Risk Solutions reported that 1 in 4 motor consumers switched insurer in 2024, up from 1 in 5 in 2023. EP25/2 itself found that the PCW channel accounts for 66% of motor policies sold (up from 60% pre-GIPP remedies).
 
 The regulator is looking at how elasticity estimates are constructed and what they correlate with. A biased demand model that produces segment-level CATE estimates correlated with demographic proxies (NCD band, area code, vehicle group are all proxy-correlated with age and income) creates regulatory exposure that the team probably does not realise exists. You cannot audit a demand model for proxy discrimination if you do not first know whether the elasticity estimates are correct.
 

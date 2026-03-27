@@ -112,6 +112,8 @@ The Gini drift z-test requires a bootstrap step (200 replicates by default) for 
 
 The Murphy decomposition (REFIT vs RECALIBRATE) uses the Wüthrich-Ziegel (SAJ 2024) framework and requires Poisson or Tweedie outcomes. For binary outcomes (renewal/lapse), use the Gini drift z-test as the discrimination check and segment A/E for calibration.
 
+PSI RED flags on demographic or geographic features require human triage before acting: a RED flag on driver age distribution can indicate model drift, but it can equally reflect a genuine book composition change — seasonal new business patterns, a new broker panel, or a marketing campaign skewing younger. The library surfaces the flag; the team must assess whether the shift is a data problem or a business reality before triggering a refit.
+
 ---
 
 ## Verdict

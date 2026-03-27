@@ -35,7 +35,7 @@ We benchmarked this against [`insurance-fairness`](/insurance-fairness/) across 
 
 The Spearman check detects nothing, across all 50 seeds, at any reasonable threshold. The library detects the proxy with a mean R² of 0.62 in every single run.
 
-This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-monotone categorical-to-continuous relationships.
+This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-linear categorical-to-continuous relationships where rank correlation is near zero despite strong predictive power.
 
 The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number provides quantitative evidence relevant to a Section 19 assessment — establishing the substantial disadvantage element — and is the kind of finding a regulator can act on.
 
@@ -115,6 +115,8 @@ Use proxy discrimination testing if:
 - You are going to commission the work anyway as part of a Fair Value Assessment — you might as well do it properly once rather than producing a number that will not survive scrutiny
 
 The Spearman correlation check at |r| > 0.25 is not adequate for demonstrating absence of proxy discrimination. A CatBoost proxy R² of 0.10 or above on any rating factor warrants investigation. At 0.62, you have a documented problem and a £/policy number that quantifies it.
+
+When a RED proxy flag fires, there are three responses available: remove the factor from the rating structure; retain it and mount an actuarial justification under the Section 19(2)(d) defence (the factor reflects genuine risk differentiation and the means used are appropriate and reasonably necessary); or seek external legal advice if the exposure is material and the actuarial justification is contested. None of these decisions is quick, which is why the documentation needs to be in place before a regulatory enquiry, not after.
 
 ```bash
 uv add insurance-fairness

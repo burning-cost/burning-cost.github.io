@@ -207,7 +207,7 @@ Being honest about gaps matters more than overstating coverage.
 
 **The core pricing workflow in a single package.** `insurancerating` in R provides GLM fitting, A/E diagnostics, factor tables, and relativities as an integrated workflow. No Python equivalent exists. The Burning Cost stack provides specialist tools around the edges of this workflow, not the workflow itself. Assembling a complete Python pricing workflow still requires significant glue code.
 
-**Rating engine integration.** Radar and Emblem cannot be automated from Python in any open-source way. Radar's Python integration (September 2024) lets you call Python models at runtime, but the gap between a fitted model and a populated rating engine is still largely manual. There is no open-source rating engine for Python that replicates what Radar and Emblem do for production pricing.
+**Rating engine integration.** Radar and Emblem cannot be automated from Python in any open-source way. Radar's Python integration (in 2024) lets you call Python models at runtime, but the gap between a fitted model and a populated rating engine is still largely manual. There is no open-source rating engine for Python that replicates what Radar and Emblem do for production pricing.
 
 **PCW simulation.** Price comparison website dynamics — competitor price distributions, rank-response curves, conversion by position — are a core part of UK personal lines strategy. There is no open-source Python tool for this. Teams build bespoke models internally, and the input data (competitor quotes) requires commercial aggregator access that open-source tooling cannot abstract away.
 
