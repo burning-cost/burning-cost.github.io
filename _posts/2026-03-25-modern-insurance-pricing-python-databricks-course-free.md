@@ -17,7 +17,7 @@ The course was previously sold as a paid product. We have removed the paywall. E
 
 The standard data science curriculum does not prepare you for insurance pricing. Kaggle tutorials do not cover exposure offsets. Coursera MLOps content does not cover FCA Consumer Duty constraints. The textbooks cover GLM theory but not how to get a Tweedie GLM with temporal cross-validation past a model governance committee in 2026.
 
-There is a specific gap between "knows Python" and "can run a pricing function in Python" - and that gap costs pricing teams months of painful, trial-and-error self-education. We wanted to close it properly, not with a YouTube playlist.
+There is a specific gap between "knows Python" and "can run a pricing function in Python" — if you want an overview of the full stack before diving into modules, [the Python insurance pricing stack](/2026/03/14/the-python-insurance-pricing-stack/) maps out how the pieces fit together - and that gap costs pricing teams months of painful, trial-and-error self-education. We wanted to close it properly, not with a YouTube playlist.
 
 The course is deliberately ground-zero. You need working Python. You do not need prior insurance experience. By the end you will have run a complete end-to-end pipeline: raw tabular data to filed rates, with MLflow tracking, fairness audit, and a governance sign-off trail.
 

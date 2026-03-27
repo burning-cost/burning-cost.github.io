@@ -8,7 +8,7 @@ description: "Honest benchmark: does fitting a surrogate GLM on CatBoost pseudo-
 published: true
 ---
 
-Every pricing actuary working with GBMs eventually hits the same wall. The CatBoost model outperforms the GLM. It handles the non-linear age curve, picks up the London-vehicle-value interaction, and produces better holdout Gini. But the rating system needs factor tables, and Radar does not have a "load a trained gradient boosted tree" button. So the GBM sits in a notebook being admired while the GLM goes into production.
+Every pricing actuary working with GBMs eventually hits the same wall. The CatBoost model outperforms the GLM. It handles the non-linear age curve, picks up the London-vehicle-value interaction, and produces better holdout Gini. (For a worked benchmark of exactly this comparison, see [GLM vs GBM on freMTPL2](/2026/03/22/catboost-insurance-pricing-frequency-severity-fremtpl2/).) But the rating system needs factor tables, and Radar does not have a "load a trained gradient boosted tree" button. So the GBM sits in a notebook being admired while the GLM goes into production.
 
 The standard response to this is GBM-to-GLM distillation: fit a GLM not on the raw claims, but on the GBM's predictions. The GBM has already smoothed the claim noise; the GLM learns from that smoothed signal. The result is a set of factor tables that should, in principle, carry more of the GBM's discriminatory power than a GLM trained directly on the data.
 
@@ -157,7 +157,7 @@ What distillation does is close the gap between GBM performance and what your GL
 
 We think this is the right workflow for any team whose CatBoost model is materially outperforming their current GLM and who cannot afford to rebuild the rating system to accept tree-based models natively. Use the surrogate as the starting point, inspect the factor tables against your underwriting knowledge, add any strong interactions you know about from the GBM's SHAP values, then load the CSVs into Emblem.
 
-Use the shap-relativities library if your goal is interpretability rather than rating engine compatibility - SHAP relativities are faster to compute and give you a cleaner view of each factor's marginal contribution. Use insurance-distill when the output needs to be a CSV that Radar will accept.
+Use the [shap-relativities](/2026/03/14/the-python-insurance-pricing-stack/) library if your goal is interpretability rather than rating engine compatibility - SHAP relativities are faster to compute and give you a cleaner view of each factor's marginal contribution. Use insurance-distill when the output needs to be a CSV that Radar will accept.
 
 The benchmark script is at `benchmarks/benchmark.py` and is designed to be rerun on your own data. The synthetic DGP is representative but it is not your book. Run it with your features, your cardinalities, and your frequency before you commit to the approach.
 

@@ -173,7 +173,7 @@ The practical implication for UK motor: if you are a mid-tier carrier training a
 
 ## What the fairness library gives you
 
-The [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) library's `PrivatizedFairnessAudit` module handles a related but distinct problem: pricing when the protected attribute (gender, age) has been privatised via local differential privacy before the data was shared. The MPTP-LDP protocol from Zhang, Liu & Shi (2025) applies.
+The [`insurance-fairness`](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) library's `PrivatizedFairnessAudit` module handles a related but distinct problem: pricing when the protected attribute (gender, age) has been privatised via local differential privacy before the data was shared. The MPTP-LDP protocol from Zhang, Liu & Shi (2025) applies.
 
 The practical scenario: a carrier that has collected gender data under the pre-2012 framework must now train gender-neutral models but cannot simply drop gender — it needs to use a noise-corrected reweighting to ensure its models are discrimination-free without having access to clean sensitive attribute labels.
 

@@ -73,7 +73,7 @@ The Consumer Duty to non-UK consumers question gets a consultation in H1 2026 (i
 
 Three concrete actions follow from this document.
 
-**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes — not just whether the technical model is accurate. `insurance-monitoring` gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control — you do not need to pre-specify monitoring intervals.
+**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes — not just whether the technical model is accurate. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control — you do not need to pre-specify monitoring intervals.
 
 ```python
 from insurance_monitoring import MonitoringReport, PITMonitor

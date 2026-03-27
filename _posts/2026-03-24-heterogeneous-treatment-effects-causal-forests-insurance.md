@@ -7,7 +7,7 @@ tags: [causal-inference, causal-forest, heterogeneous-treatment-effects, hte, dm
 description: "Using causal forests and GATES/CLAN/RATE inference to find which customers respond most to a price or discount change — not just the average effect."
 ---
 
-Double/debiased machine learning gives you a clean average treatment effect (ATE): the mean semi-elasticity of renewal probability with respect to a 10% price increase is −0.18, say. That is a useful number. But it is also the wrong number for most of the decisions you actually make.
+[Double/debiased machine learning](/2026/03/15/causal-price-elasticity-tutorial/) gives you a clean average treatment effect (ATE): the mean semi-elasticity of renewal probability with respect to a 10% price increase is −0.18, say. That is a useful number. But it is also the wrong number for most of the decisions you actually make.
 
 When you decide whether to offer a telematics discount, you are not offering it to the portfolio average. You are offering it to specific customers, each of whom has their own elasticity. The 22-year-old in inner-city Manchester on a PCW may respond three times more strongly to a £50 discount than the 55-year-old direct renewer in Surrey. Treating them identically — either by offering the same discount or by using the same retention assumption in a pricing optimisation — is a pricing error. The question is whether you can measure the difference.
 

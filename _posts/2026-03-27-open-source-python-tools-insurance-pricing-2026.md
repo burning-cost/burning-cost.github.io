@@ -105,7 +105,7 @@ It covers reinsurance and aggregate risk, not primary GI pricing frequency/sever
 
 The closest thing in any open-source language to a proper GI pricing workflow library. [insurancerating](https://github.com/MHaringa/insurancerating) handles GLM fitting, A/E ratio visualisation, factor tables, premium relativities — the core pricing workflow — in R. It has 50+ GitHub stars and active maintenance.
 
-No Python equivalent exists. This is the gap the Burning Cost stack partially addresses, though we are building upward from specialist tools rather than providing the full workflow in a single package.
+No Python equivalent exists. This is the gap the Burning Cost stack partially addresses, though we are building upward from specialist tools rather than providing the full workflow in a single package. For a guided tour of how the pieces fit together end-to-end, see [the Python insurance pricing stack](/2026/03/14/the-python-insurance-pricing-stack/).
 
 ### actuarial-science notebooks and tutorials
 

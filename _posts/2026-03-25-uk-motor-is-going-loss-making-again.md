@@ -93,7 +93,7 @@ print(report.recommendation)
 print(report.to_dict())
 ```
 
-The output distinguishes between calibration failure (A/E outside thresholds) and discrimination failure (Gini drift), which matters for deciding whether the response is a scalar adjustment or a model refit.
+The output distinguishes between calibration failure (A/E outside thresholds) and discrimination failure (Gini drift), which matters for deciding whether the response is a scalar adjustment or a model refit. For a deep dive on why this distinction is critical and how the library detects each failure mode, see [insurance model monitoring beyond generic drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
 
 ---
 

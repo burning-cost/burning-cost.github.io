@@ -131,7 +131,7 @@ The `superimposed_inflation()` method strips out the ONS motor repair index (ser
 
 ### Step 3: Smooth the development factors
 
-The development factors from a BI triangle are noisy at long tails — credibility thins out in the 36–72 month development range. `insurance-whittaker` smooths these without imposing a parametric form.
+The development factors from a BI triangle are noisy at long tails — credibility thins out in the 36–72 month development range. `insurance-whittaker` smooths these without imposing a parametric form — for the full methodology behind Whittaker-Henderson smoothing and why it outperforms standard GLM smoothing for development factors, see [your rating table smoothing is wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/).
 
 ```python
 import numpy as np

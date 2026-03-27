@@ -43,7 +43,7 @@ A third contribution — LP+DML — combines DML residualisation with Jordà Loc
 
 ## What this means for `insurance-causal`
 
-Our [`insurance-causal`](https://github.com/burning-cost/insurance-causal) library uses `KFold(shuffle=True)` inside `cross_fit_nuisance()` — the standard random fold scheme. For `PremiumElasticity` on a cross-sectional renewal book where policies are independent observations, this is fine. Policies renewed in January 2023 do not cause policies renewed in March 2023.
+Our [insurance-causal](/2026/03/15/causal-price-elasticity-tutorial/) library uses `KFold(shuffle=True)` inside `cross_fit_nuisance()` — the standard random fold scheme. For `PremiumElasticity` on a cross-sectional renewal book where policies are independent observations, this is fine. Policies renewed in January 2023 do not cause policies renewed in March 2023.
 
 But the `rate_change` module works with temporal aggregates: quarterly loss ratios, quarterly retention rates, time-indexed outcomes. When you want to residualise a temporal confound from a rate change trajectory using DML, you need temporal cross-fitting.
 

@@ -99,7 +99,7 @@ The applicable rules are: FCA Consumer Duty (fair value requires defensible prem
 
 FCA DP18/1 (2018) raised proxy discrimination concerns for postcode-based pricing. It has not been updated for satellite imagery. Research at City, St George's University (2023) found that standard UK motor pricing produces systematically higher premiums for some minority ethnic groups via postcode proxies — imagery would compound this, not neutralise it.
 
-Any imagery-derived pricing feature needs disparate impact testing before deployment. This is not optional governance. It is the minimum required to satisfy the Equality Act and Consumer Duty simultaneously. We cover the governance framework in detail in the third post.
+Any imagery-derived pricing feature needs disparate impact testing before deployment. This is not optional governance. For the testing framework, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/) which covers exactly this use case for continuous features. It is the minimum required to satisfy the Equality Act and Consumer Duty simultaneously. We cover the governance framework in detail in the third post.
 
 ---
 

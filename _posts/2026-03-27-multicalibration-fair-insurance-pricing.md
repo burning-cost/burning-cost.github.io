@@ -39,7 +39,7 @@ If young female drivers are in the £400-£500 premium band, the average claim a
 
 The key insight from Denuit et al. is that this is not a fairness test imported from machine learning. It is autocalibration, the same concept pricing teams already rely on, applied with additional conditioning. A model that fails multicalibration has a pricing problem that would be considered a defect regardless of protected characteristics. The fact that the defect falls along protected-characteristic lines makes it discriminatory as well, but the actuarial objection is independent of that.
 
-This matters for how you present findings internally. "Our model is miscalibrated for this group" lands differently from "our model may indirectly discriminate against this group." Both statements may be true simultaneously. The first one commands attention from pricing committees.
+This matters for how you present findings internally. "Our model is miscalibrated for this group" lands differently from "our model may indirectly discriminate against this group." For the full proxy discrimination testing framework that feeds into this analysis, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/). Both statements may be true simultaneously. The first one commands attention from pricing committees.
 
 ---
 

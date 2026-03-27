@@ -83,7 +83,7 @@ The practical steps are:
 
 The second error type - loss without trigger - is the regulatory concern under FCA ICOBS 6A fair value obligations. If a product triggers on 60% of large loss events and fails to trigger on 40%, that 40% needs to be reflected in the premium as a known shortfall in value, not hidden in basis risk uncertainty.
 
-Quantifying that uncertainty around the copula fit is where [insurance-conformal](https://burning-cost.github.io/insurance-conformal) becomes useful. Once you have simulated payout error distributions, you can construct prediction intervals that carry a coverage guarantee regardless of the copula family:
+Quantifying that uncertainty around the copula fit is where [insurance-conformal](https://burning-cost.github.io/insurance-conformal) becomes useful. For the theoretical basis of coverage guarantees in non-standard settings, see [conformal prediction for non-exchangeable claims time series](/2026/03/15/conformal-prediction-for-non-exchangeable-claims-time-series/). Once you have simulated payout error distributions, you can construct prediction intervals that carry a coverage guarantee regardless of the copula family:
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor

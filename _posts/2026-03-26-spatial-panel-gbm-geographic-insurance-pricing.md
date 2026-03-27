@@ -23,7 +23,7 @@ The three problems are distinct but tend to arrive together.
 
 **Panel structure.** If you pool five years of data at postcode sector level, the same area appears five times. That is not five independent observations; it is one area with five years of correlated experience. Treating it as five rows in a GLM understates the within-area persistence and overstates your effective sample size.
 
-The standard UK approaches are: postcode-level GLM with area as a fixed effect (simple, ignores spatial correlation and panel structure), spatial CAR/BYM2 priors in a Bayesian GLM (handles autocorrelation well, difficult to extend to GBM, slow at scale), or Blier-Wong geographic embeddings (handles zero-exposure areas, requires embedding infrastructure). Each solves one or two of the three problems.
+The standard UK approaches are: postcode-level GLM with area as a fixed effect (simple, ignores spatial correlation and panel structure), spatial CAR/BYM2 priors in a Bayesian GLM (handles autocorrelation well, difficult to extend to GBM, slow at scale), or Blier-Wong geographic embeddings (handles zero-exposure areas, requires embedding infrastructure) — for a deep-dive on why standard postcode factor methods understate spatial uncertainty, see [your territory model ignores spatial autocorrelation](/2026/03/15/your-territory-model-ignores-spatial-autocorrelation/). Each solves one or two of the three problems.
 
 ---
 
