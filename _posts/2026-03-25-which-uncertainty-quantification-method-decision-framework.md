@@ -64,7 +64,7 @@ The answer to this determines the entire downstream choice more than any other f
 
 ---
 
-## Recommendation A: Conformal prediction — [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal)
+## Recommendation A: Conformal prediction — [`insurance-conformal`](/insurance-conformal/)
 
 **When to use it.** Your model is a fitted GBM (CatBoost, LightGBM) or GLM, you need a prediction interval with a statistical coverage guarantee, and you do not want to make parametric assumptions about the error distribution. This is the right tool for Solvency II per-risk upper bounds, for pricing intervals that need to survive a PRA review, and for any situation where "I calibrated this on 5,000 policies so the interval is actually 91.3% rather than exactly 90%" is an acceptable answer. The finite-sample guarantee — P(y ∈ [lower, upper]) ≥ 1 − alpha — is distribution-free and holds for any calibration set size above around 200 observations.
 
@@ -101,7 +101,7 @@ One honest caveat: conformal prediction gives you *marginal* coverage, not *cond
 
 ---
 
-## Recommendation B: Distributional GBM — [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional)
+## Recommendation B: Distributional GBM — [`insurance-distributional`](/insurance-distributional/)
 
 **When to use it.** You need the *full conditional distribution* of losses, not just an interval. The motivating cases: pricing an excess-of-loss layer (you need E[max(Y − d, 0) ∧ l | x] computed from the conditional distribution, not from a point prediction), IFRS 17 risk adjustment (you need CoV per risk to calculate the risk adjustment at policy level), or capital modelling where a scalar phi assumption has been challenged. Also use this when you have evidence of heteroscedastic dispersion — risks with the same expected loss but materially different volatility — which is the norm in UK motor rather than the exception.
 

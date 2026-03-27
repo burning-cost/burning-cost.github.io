@@ -19,7 +19,7 @@ The naive approach to parametric trigger calibration fits a historical return-pe
 
 River gauge records are censored in two directions. Gauges have operational limits above which they record out-of-range. Historic records before gauge installation are recovered from flood marks or documentary evidence with substantial uncertainty. The EA's national flood risk assessment (NFRA2) includes gauge records back to the 1800s at some sites, but the quality of the pre-1960 data ranges from excellent to barely useful. Standard GPD fitted on the post-1990 record will have a different shape parameter than the true century-scale tail, and the error propagates directly into the trigger level.
 
-The EVT correction is the same correction that applies to large-loss severity modelling with policy limits. Use [TruncatedGPD from insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) with the operational gauge limit as the upper truncation point for each observation:
+The EVT correction is the same correction that applies to large-loss severity modelling with policy limits. Use [TruncatedGPD from insurance-severity](/insurance-distributional/) with the operational gauge limit as the upper truncation point for each observation:
 
 ```python
 from insurance_severity import TruncatedGPD

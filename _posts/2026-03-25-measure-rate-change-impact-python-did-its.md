@@ -9,7 +9,7 @@ description: "A hands-on tutorial for the RateChangeEvaluator in insurance-causa
 
 [Previously we argued](/2026/03/13/your-rate-change-didnt-prove-anything/) that before/after loss ratio comparisons are not evidence that a rate change worked. This post is the follow-up: here is the code that produces actual evidence.
 
-`insurance-causal` v0.6.0 ships a `rate_change` sub-package built around a single entry point, `RateChangeEvaluator`. It handles the two situations a pricing team actually faces:
+[`insurance-causal`](/insurance-causal/) v0.6.0 ships a `rate_change` sub-package built around a single entry point, `RateChangeEvaluator`. It handles the two situations a pricing team actually faces:
 
 - **DiD** (Difference-in-Differences): you changed rates on some segments and left others alone. You have a control group.
 - **ITS** (Interrupted Time Series): you changed rates across the entire book. No control group exists.

@@ -89,7 +89,7 @@ The practical workflow for a UK team would look like this:
 
 **Step 5: Extract MAP estimates and uncertainty.** The ABC posterior gives you a distribution over (λ, μ) — not point estimates. Report the MAP for your base rates and use the posterior spread to quantify parameter uncertainty for your reserve basis. This is directly usable in a Solvency II internal model context where parameter risk loading is required.
 
-**Step 6: Feed into Bühlmann-Straub.** Take the MAP estimates and their credibility intervals as your prior (μ, v, a) in `BuhlmannStraub` from `insurance-credibility`. Set k conservatively based on the posterior variance — a wide ABC posterior means your prior is uncertain, which should translate into a larger k (more exposure needed before your own data dominates).
+**Step 6: Feed into Bühlmann-Straub.** Take the MAP estimates and their credibility intervals as your prior (μ, v, a) in `BuhlmannStraub` from [`insurance-credibility`](/insurance-credibility/). Set k conservatively based on the posterior variance — a wide ABC posterior means your prior is uncertain, which should translate into a larger k (more exposure needed before your own data dominates).
 
 ---
 

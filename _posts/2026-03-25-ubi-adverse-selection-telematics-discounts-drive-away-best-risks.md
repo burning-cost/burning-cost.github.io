@@ -51,7 +51,7 @@ Quantifying this shift is non-trivial. Traditional PSI monitoring on your rating
 
 We will use three tools from the library suite:
 
-- [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) for HMM-based driver risk scoring
+- [`insurance-telematics`](/insurance-telematics/) for HMM-based driver risk scoring
 - [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) for modelling the pricing pressure from UBI discounts on portfolio composition
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) for tracking the non-telematics book deterioration
 

@@ -89,7 +89,7 @@ None of these are gaps in the authors' intent — they chose public benchmark da
 
 ## Where `insurance-distributional` fits
 
-Our [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) library is CatBoost-based distributional regression with the distributions and diagnostics that insurance actuaries actually need.
+Our [`insurance-distributional`](/insurance-distributional/) library is CatBoost-based distributional regression with the distributions and diagnostics that insurance actuaries actually need.
 
 ```bash
 uv add insurance-distributional

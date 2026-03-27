@@ -51,7 +51,7 @@ That said, the conditions under which TabPFN claims to outperform traditional me
 
 The specific use cases we think are worth piloting:
 
-**Telematics new-joiner pricing.** The telematics credibility problem is that new drivers arrive with zero or few trips. Our [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) library uses Bühlmann-Straub credibility weighting for this — solid, but it is shrinkage toward the mean. TabPFN v2 could instead condition on the trips you do have alongside demographic features and predict a richer risk score, even with 10–20 trips. The dataset per cohort is probably under 10K. It is a candidate.
+**Telematics new-joiner pricing.** The telematics credibility problem is that new drivers arrive with zero or few trips. Our [`insurance-telematics`](/insurance-telematics/) library uses Bühlmann-Straub credibility weighting for this — solid, but it is shrinkage toward the mean. TabPFN v2 could instead condition on the trips you do have alongside demographic features and predict a richer risk score, even with 10–20 trips. The dataset per cohort is probably under 10K. It is a candidate.
 
 **Small-book severity modelling.** When [`insurance-severity`](https://github.com/burning-cost/insurance-severity) fits a spliced severity distribution on a new product with 600 non-zero claims, the parameter uncertainty is substantial. TabPFN's posterior predictive output is a proper predictive distribution, not a point estimate, which means you can extract confidence intervals on the severity estimate rather than relying on bootstrap resampling of thin data.
 

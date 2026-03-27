@@ -123,7 +123,7 @@ Do not trust an overseas proxy uncritically. Use it to set the order of magnitud
 
 If you have a related book with enough data — same company, different geography, or a different but adjacent product — you can borrow its GLM coefficient structure rather than starting from scratch. This is especially useful when you have a few hundred policies on the new product and need to decide which rating factors to load on and with what shape.
 
-The `GLMTransfer` class in `insurance-thin-data` implements the Tian and Feng (JASA 2023) two-step algorithm. Step one: pool source and target data together and fit an L1-penalised GLM. Step two: estimate the shift between source and target on the target data only, with a second L1 penalty that zeroes out coefficients that do not need correcting. The result is a model whose structure is inherited from the source but whose level is corrected for the target.
+The `GLMTransfer` class in [`insurance-thin-data`](/insurance-credibility/) implements the Tian and Feng (JASA 2023) two-step algorithm. Step one: pool source and target data together and fit an L1-penalised GLM. Step two: estimate the shift between source and target on the target data only, with a second L1 penalty that zeroes out coefficients that do not need correcting. The result is a model whose structure is inherited from the source but whose level is corrected for the target.
 
 ```python
 import numpy as np

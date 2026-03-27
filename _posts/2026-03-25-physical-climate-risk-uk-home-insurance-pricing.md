@@ -63,7 +63,7 @@ First, the trend is not constant. Historical trend smoothing approaches that fit
 
 Second, the uncertainty in the trend is substantial and should propagate into the rates. A point estimate of flood frequency trend that ignores estimation uncertainty will systematically underprice in the tail.
 
-[`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker) handles both of these. The Whittaker-Henderson smoother is the right tool here: it fits a penalised curve to claims frequency over calendar time, selects the smoothing parameter automatically via REML, and returns posterior credible intervals that reflect how uncertain the trend is given the data you have.
+[`insurance-whittaker`](/insurance-whittaker/) handles both of these. The Whittaker-Henderson smoother is the right tool here: it fits a penalised curve to claims frequency over calendar time, selects the smoothing parameter automatically via REML, and returns posterior credible intervals that reflect how uncertain the trend is given the data you have.
 
 ### Fitting a flood frequency trend
 

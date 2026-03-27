@@ -13,7 +13,7 @@ The ENBP cap, bolted on as a post-hoc check, does not redistribute the margin th
 
 This post shows the complete workflow: causal CATE estimation, customer segmentation by price sensitivity, constrained optimisation with ENBP enforcement, fairness checks, and a governance sign-off pack.
 
-Four libraries: [`insurance-causal`](https://github.com/burning-cost/insurance-causal), [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise), [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), [`insurance-governance`](https://github.com/burning-cost/insurance-governance).
+Four libraries: [`insurance-causal`](/insurance-causal/), [`insurance-optimise`](/insurance-optimise/), [`insurance-fairness`](/insurance-fairness/), [`insurance-governance`](/insurance-governance/).
 
 ```bash
 pip install insurance-causal insurance-optimise insurance-fairness insurance-governance

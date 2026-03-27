@@ -64,7 +64,7 @@ A segment with high insurance premium and low credit risk generates a large comm
 
 ## Applying `insurance-fairness`
 
-The `calibration_by_group` function in [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) is designed for exactly this kind of segment-level outcome audit. The standard use case is checking whether an insurance pricing model is equally well-calibrated across protected-characteristic groups. The premium finance APR audit is the same calculation, applied to a different outcome.
+The `calibration_by_group` function in [`insurance-fairness`](/insurance-fairness/) is designed for exactly this kind of segment-level outcome audit. The standard use case is checking whether an insurance pricing model is equally well-calibrated across protected-characteristic groups. The premium finance APR audit is the same calculation, applied to a different outcome.
 
 ```python
 import polars as pl

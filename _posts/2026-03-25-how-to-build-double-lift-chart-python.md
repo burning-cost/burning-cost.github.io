@@ -226,7 +226,7 @@ The right panel is a quality check. Each decile should contain roughly 10% of ea
 
 ---
 
-## The `insurance-distill` version
+## The [`insurance-distill`](/insurance-distill/) version
 
 If your challenger is a GLM distilled from a GBM — a pseudo-model produced by fitting a GLM on GBM predictions and then applying it to production data — the `insurance-distill` library has `double_lift_chart()` built in.
 

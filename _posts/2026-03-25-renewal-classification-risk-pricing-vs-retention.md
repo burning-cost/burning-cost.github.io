@@ -211,7 +211,7 @@ The second most common failure is using an observational logistic regression as 
 
 The third failure is implementing the ENBP constraint as a post-hoc clip rather than as a bound in the optimisation. This matters because the shadow price of the ENBP constraint — the marginal value of relaxing it by £1 — tells you how much you are giving up due to the regulatory constraint versus due to the retention constraint. Knowing which constraint is binding is commercially important and is straightforward to extract from the `OptimisationResult` audit trail.
 
-The libraries referenced in this post — [`insurance-survival`](https://github.com/burning-cost/insurance-survival), [`insurance-causal`](https://github.com/burning-cost/insurance-causal), [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — are pip-installable and designed to be used together. The workflow is not trivial, but neither is the problem it solves.
+The libraries referenced in this post — [`insurance-survival`](/insurance-monitoring/), [`insurance-causal`](/insurance-causal/), [`insurance-optimise`](/insurance-optimise/) — are pip-installable and designed to be used together. The workflow is not trivial, but neither is the problem it solves.
 
 ```bash
 uv add insurance-survival insurance-causal insurance-optimise

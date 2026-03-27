@@ -58,7 +58,7 @@ print(f"A/E: {ratio:.3f}  95% CI: [{lower:.3f}, {upper:.3f}]")
 
 An A/E above 1.0 is not automatically a crisis — reserve margins and development assumptions explain much of it. But an A/E that has moved from 0.98 to 1.06 over three accident quarters without a corresponding change in development assumptions is a signal worth investigating.
 
-**PSI on repair cost distributions.** If your pricing model uses vehicle group as a proxy for repair cost, monitor PSI on vehicle group and age distributions monthly. The mix shift towards newer vehicles with higher ADAS content will elevate your repair cost without changing the rating factor, because the rating factor is calibrated to historical costs for that group. The exposure-weighted PSI from `insurance-monitoring` is the right tool here — unweighted PSI treats a 0.1 car-year policy identically to a 1.0 car-year policy:
+**PSI on repair cost distributions.** If your pricing model uses vehicle group as a proxy for repair cost, monitor PSI on vehicle group and age distributions monthly. The mix shift towards newer vehicles with higher ADAS content will elevate your repair cost without changing the rating factor, because the rating factor is calibrated to historical costs for that group. The exposure-weighted PSI from [`insurance-monitoring`](/insurance-monitoring/) is the right tool here — unweighted PSI treats a 0.1 car-year policy identically to a 1.0 car-year policy:
 
 ```python
 from insurance_monitoring import psi

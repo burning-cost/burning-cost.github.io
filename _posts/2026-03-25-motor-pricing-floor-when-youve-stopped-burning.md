@@ -13,7 +13,7 @@ That ambiguity is the real problem. The combined ratio has been improving for si
 
 This post is about the leading indicators that tell you the floor is near or already reached: the mix shifts in new business, the early signs in reserve development, the segment-level A/E patterns that arrive before the aggregate does. And then the practical question of when the data actually says stop cutting — using the mSPRT sequential test to detect when rate reductions have ceased improving loss ratios.
 
-All code uses real APIs from [insurance-monitoring](https://burning-cost.github.io/insurance-monitoring) and [insurance-optimise](https://burning-cost.github.io/insurance-optimise). Nothing is invented.
+All code uses real APIs from [insurance-monitoring](/insurance-monitoring/) and [insurance-optimise](/insurance-optimise/). Nothing is invented.
 
 ---
 

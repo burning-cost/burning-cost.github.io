@@ -11,7 +11,7 @@ Every UK pricing team has lived through this meeting. The models team presents: 
 
 This is a genuine gap. The Gini coefficient is the dominant discrimination metric in UK non-life pricing — it measures how well the model ranks risks — but it is dimensionless. A 5-percentage-point Gini improvement on a £300M motor book could be worth £1M in reduced adverse selection. It could also be worth £15M. Without a framework for the conversion, you are guessing, and investments in model improvement are evaluated on intuition rather than expected return.
 
-A paper published in December 2025 (Hedges, arXiv:2512.03242) provides the conversion. It derives a closed-form relationship between model prediction accuracy and expected loss ratio — a quantity that is immediately meaningful to a CFO. This post works through the framework, explains where the assumptions bite, and shows how to use `insurance-monitoring`'s Gini APIs to compute the inputs you need.
+A paper published in December 2025 (Hedges, arXiv:2512.03242) provides the conversion. It derives a closed-form relationship between model prediction accuracy and expected loss ratio — a quantity that is immediately meaningful to a CFO. This post works through the framework, explains where the assumptions bite, and shows how to use [`insurance-monitoring`](/insurance-monitoring/)'s Gini APIs to compute the inputs you need.
 
 ---
 

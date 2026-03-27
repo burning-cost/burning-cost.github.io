@@ -53,7 +53,7 @@ We assign illustrative probabilities of 45%, 25%, 30% respectively. Your team's 
 
 For each scenario, we need a severity distribution over the BI claims that will actually emerge — not the settled portfolio average, but the per-claim distribution that drives the reserve.
 
-`insurance-severity` gives us three tools here. For the body of the distribution (attritional BI below £5,000) we use a lognormal body. For the tail — the claims above £5,000 that sit outside the tariff regardless of reform scenario — we use a GPD tail. The spliced model handles the structural break at the tariff threshold.
+[`insurance-severity`](/insurance-distributional/) gives us three tools here. For the body of the distribution (attritional BI below £5,000) we use a lognormal body. For the tail — the claims above £5,000 that sit outside the tariff regardless of reform scenario — we use a GPD tail. The spliced model handles the structural break at the tariff threshold.
 
 ```python
 from insurance_severity import LognormalBurrComposite

@@ -89,7 +89,7 @@ The paper does not claim the neural network beats chain ladder. It claims the in
 
 ## Where insurance-severity fits in
 
-The connection is indirect but genuine. [`insurance-severity`](https://github.com/burning-cost/insurance-severity) models the cross-sectional distribution of claim costs — what a claim of a given type is likely to cost at ultimate. The Richman-Wüthrich model is a development model — given a claim partway through its development, what will it cost at ultimate.
+The connection is indirect but genuine. [`insurance-severity`](/insurance-distributional/) models the cross-sectional distribution of claim costs — what a claim of a given type is likely to cost at ultimate. The Richman-Wüthrich model is a development model — given a claim partway through its development, what will it cost at ultimate.
 
 These are complementary, not competing. A reserving workflow that uses individual PtU factors for development pattern and a severity distribution model for the initial incurred estimate at FNOL is combining both. The DRN component of `insurance-severity` is particularly relevant here: it refines a GLM baseline distribution into a full predictive distribution, and you can use it to put uncertainty bounds on the per-claim ultimate estimate rather than just a point prediction.
 

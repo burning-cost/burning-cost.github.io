@@ -121,7 +121,7 @@ For portfolios where you are using a [CANN](/2026/03/25/cann-combined-actuarial-
 
 ## Related work and libraries
 
-The Tab-TRM paper cites the Credibility Transformer and builds on the same French MTPL benchmark. If you want to experiment with transformer-family architectures for insurance, [`insurance-credibility-transformer`](https://github.com/burning-cost/insurance-credibility-transformer) is the easiest entry point — it ships a full PyTorch implementation with 85 tests and a clean API, and the architecture (attention weight = credibility weight) is better established in the UK actuarial community.
+The Tab-TRM paper cites the Credibility Transformer and builds on the same French MTPL benchmark. If you want to experiment with transformer-family architectures for insurance, [`insurance-credibility-transformer`](/insurance-credibility/) is the easiest entry point — it ships a full PyTorch implementation with 85 tests and a clean API, and the architecture (attention weight = credibility weight) is better established in the UK actuarial community.
 
 For interpretable alternatives that produce factor tables, [`insurance-gam`](https://github.com/burning-cost/insurance-gam) covers EBM, ANAM, and PIN under one install. The ANAM architecture (Actuarial Neural Additive Model) is closest to Tab-TRM in spirit — both are neural architectures built for insurance tabular data — but ANAM is interpretable-by-construction where Tab-TRM trades that property for better predictive performance.
 

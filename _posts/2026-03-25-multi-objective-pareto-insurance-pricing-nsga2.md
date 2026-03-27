@@ -11,7 +11,7 @@ Most fairness work in insurance pricing proceeds one objective at a time. You tr
 
 Bellamy et al. (2025, arXiv:2512.24747) propose something structurally different: treat accuracy, group fairness, and counterfactual fairness as simultaneous objectives, find every non-dominated combination, and present the resulting Pareto front to pricing governance. The team then picks a point on that front explicitly, with documented weights. That is a decision regulators can evaluate. "We chose a Gini of 0.38 rather than 0.41 because we weighted group fairness at 0.35 in our TOPSIS ranking" is auditable in a way that "we applied a fairness penalty" is not.
 
-This post shows how to run that workflow in practice using [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) (which wraps NSGA-II via pymoo) and [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) (for portfolio-level pricing with the TOPSIS-selected solution). The worked example uses a synthetic UK motor portfolio styled on FReMTPL2.
+This post shows how to run that workflow in practice using [`insurance-fairness`](/insurance-fairness/) (which wraps NSGA-II via pymoo) and [`insurance-optimise`](/insurance-optimise/) (for portfolio-level pricing with the TOPSIS-selected solution). The worked example uses a synthetic UK motor portfolio styled on FReMTPL2.
 
 ---
 
