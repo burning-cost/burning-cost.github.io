@@ -93,7 +93,7 @@ Wasserstein distance is the best statistic for communication: it tells an underw
 
 Aggregate A/E monitoring is now standard practice on most UK pricing teams. What is not standard is Gini drift monitoring - and this is the gap that matters most.
 
-A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale. The model predicts the right mean by coincidence - cheap and expensive errors cancel - but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
+A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale — [Whittaker-Henderson smoothing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) of the affected rating tables is often the right first step before a full refit. The model predicts the right mean by coincidence — cheap and expensive errors cancel — but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
 
 `insurance-monitoring` implements the Gini drift z-test from [arXiv 2510.04556](https://arxiv.org/abs/2510.04556), which establishes the asymptotic normality of the sample Gini and derives a proper bootstrap variance estimator. This is not a heuristic threshold; it is a proper hypothesis test.
 
@@ -173,7 +173,7 @@ Segment-level A/E is the tool that reveals the 15%/−15% cancellation pattern. 
 
 The hardest decision in model monitoring is not "is the model drifting?" It is "what do we do about it?"
 
-Recalibration - applying a scalar multiplier across all predictions - takes hours. Refitting - rebuilding the model on recent data - takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time.
+Recalibration — applying a scalar multiplier across all predictions — takes hours. Refitting — rebuilding the model on recent data — takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time. When a refit is warranted, it is also the right moment to ask whether the new model should be an [interpretable GAM rather than a plain GLM](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — the shape functions make future monitoring conversations substantially easier.
 
 The Murphy decomposition (Lindholm & Wüthrich, SAJ 2025) resolves this. It decomposes forecast error into:
 
@@ -334,7 +334,7 @@ The `to_polars()` report is the model risk artefact. It records which metrics we
 
 ---
 
-`insurance-monitoring` is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). Polars-native throughout; no scikit-learn dependency. Python 3.10+.
+`insurance-monitoring` is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) and on [PyPI](https://pypi.org/project/insurance-monitoring/). Polars-native throughout; no scikit-learn dependency. Python 3.10+.
 
 ---
 

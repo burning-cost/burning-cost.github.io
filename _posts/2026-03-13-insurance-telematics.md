@@ -97,7 +97,7 @@ rel_table = calibrator.relativity_table()
 # Returns DataFrame: bin_lower, bin_upper, relativity, credibility_weight
 ```
 
-The credibility weights use Buhlmann-Straub credibility by default, so thin bins at the extremes of the distribution are blended toward the portfolio mean rather than taken at face value.
+The credibility weights use [Buhlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) by default, so thin bins at the extremes of the distribution are blended toward the portfolio mean rather than taken at face value.
 
 ---
 
@@ -113,7 +113,7 @@ If you do not have road type data, the library flags the urban mileage fraction 
 
 ## UK market context
 
-The UK has roughly 1.3 million telematics policies - the largest market in Europe alongside Italy. Adoption is concentrated in under-30s (Admiral Curve, By Miles, Marmalade, Hastings Direct's YouDrive). The FCA's pressure on age and postcode as rating factors has renewed interest in telematics as a non-discriminatory alternative: rather than pricing a 19-year-old solely on their age, a telematics score provides behavioural evidence that partially decouples rate from demographic proxy.
+The UK has roughly 1.3 million telematics policies — the largest market in Europe alongside Italy. Adoption is concentrated in under-30s (Admiral Curve, By Miles, Marmalade, Hastings Direct's YouDrive). The FCA's pressure on age and postcode as rating factors has renewed interest in telematics as a non-discriminatory alternative: rather than pricing a 19-year-old solely on their age, a telematics score provides behavioural evidence that partially decouples rate from demographic proxy — though you should verify the telematics score itself does not proxy for protected characteristics using [insurance-fairness](/2026/03/20/fairness-auditing-without-sensitive-attributes/).
 
 That regulatory trajectory is the main reason to build this capability now, even if your book does not currently write UBI policies. The tools for ingesting and scoring telematics data are infrastructure, not a one-off project.
 
@@ -127,7 +127,7 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 
 ---
 
-**[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** - 84 tests, MIT-licensed, PyPI.
+**[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** — 84 tests, MIT-licensed. [PyPI](https://pypi.org/project/insurance-telematics/).
 
 ---
 

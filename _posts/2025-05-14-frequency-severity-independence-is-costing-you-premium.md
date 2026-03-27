@@ -245,13 +245,13 @@ Third, check that the correction factor distribution is sensible. Values outside
 
 Copula modelling for frequency-severity dependence has been in the actuarial literature since Garrido, Genest, and Schulz (2016). The reason most UK pricing teams have not adopted it is not scepticism about the theory. It is that the implementation path through standard statistical software was painful: getting a discrete-continuous Sarmanov distribution fitted with IFM estimation into a production pricing pipeline required bespoke code that most actuarial teams do not have bandwidth to write.
 
-`insurance-frequency-severity` makes this a two-line addition to your existing GLM pipeline. The correction is analytic, so runtime scoring is unaffected. The output is an interpretable omega parameter that you can defend in a committee paper. The test suite gives you the diagnostic to confirm whether the correction is warranted on your data before you commit to it.
+`insurance-frequency-severity` makes this a two-line addition to your existing GLM pipeline. The correction is analytic, so runtime scoring is unaffected. The output is an interpretable omega parameter that you can defend in a committee paper and record in the [model inventory under insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). The test suite gives you the diagnostic to confirm whether the correction is warranted on your data before you commit to it.
 
-On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium correction concentrated in the high-frequency tail is real money. It is also a systematic bias rather than noise, which means it will show up in your A/E ratios if you look for it.
+On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium correction concentrated in the high-frequency tail is real money. Track whether the correction is holding post-deployment with [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s segment-level A/E — if the high-frequency decile starts showing A/E above 1.10 again, omega has drifted and needs reestimating. It is also a systematic bias rather than noise, which means it will show up in your A/E ratios if you look for it.
 
 ---
 
-`insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity). Install with `pip install insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
+`insurance-frequency-severity` is open source under MIT at [github.com/burning-cost/insurance-frequency-severity](https://github.com/burning-cost/insurance-frequency-severity) and on [PyPI](https://pypi.org/project/insurance-frequency-severity/). Install with `uv add insurance-frequency-severity`. Requires Python 3.10+, statsmodels, NumPy, and SciPy.
 
 - [Frequency-Severity Dependence in UK Motor: A Shared-Trunk Neural Architecture](/2026/03/13/insurance-dependent-fs/) -- the neural two-part model for teams with larger datasets and more complex dependence structures
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) -- when you want the full predictive distribution, not just the corrected mean

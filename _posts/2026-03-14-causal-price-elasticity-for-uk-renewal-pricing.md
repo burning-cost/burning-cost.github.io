@@ -6,7 +6,7 @@ categories: [libraries, pricing, causal-inference]
 tags: [elasticity, causal-forest, DML, double-machine-learning, FCA, PS21-5, ENBP, renewal, CausalForestDML, insurance-elasticity, python, motor, econml, catboost]
 description: "CausalForestDML separates causal price effect from risk-lapse correlation in UK motor renewal. insurance-elasticity - per-customer CATE and ENBP optimiser."
 ---
-> **Update (March 2026):** `insurance-elasticity` has been merged into [`insurance-causal`](https://github.com/burning-cost/insurance-causal). Install `insurance-causal` and use `insurance_causal.elasticity` for the same functionality.
+> **Update (March 2026):** `insurance-elasticity` has been merged into [`insurance-causal`](https://github.com/burning-cost/insurance-causal) ([PyPI](https://pypi.org/project/insurance-causal/)). Install `insurance-causal` and use `insurance_causal.elasticity` for the same functionality.
 
 > **Update (March 2026):** `insurance-demand` has been merged into [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise). Install `insurance-optimise` and use `insurance_optimise.demand` for the same functionality.
 
@@ -152,11 +152,14 @@ audit = opt.enbp_audit(priced_df)
 print(f"Breaches: {(audit['compliant'] == False).sum()} / {len(audit)}")
 ```
 
-The optimiser maximises expected profit subject to three hard constraints per policy: offer price ≤ ENBP (FCA PS21/5), offer price ≥ floor loading × technical premium (no subsidy), and the renewal probability response implied by the fitted CATE. The `enbp_audit()` method returns a per-row compliance flag for reporting to the compliance function. That flag is what you attach to a regulatory query.
+The optimiser maximises expected profit subject to three hard constraints per policy: offer price ≤ ENBP (FCA PS21/5), offer price ≥ floor loading × technical premium (no subsidy), and the renewal probability response implied by the fitted CATE. The `enbp_audit()` method returns a per-row compliance flag for reporting to the compliance function. That flag is what you attach to a regulatory query — and the [insurance-governance model inventory](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) is the right place to record which version of the elasticity model produced the compliance evidence.
 
 ---
 
 ## Portfolio demand curve
+
+Once the elasticity model is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) lets you track whether the estimated renewal response is holding — the mSPRT sequential test handles exactly the monthly-checking problem that renewal champion/challenger experiments create.
+
 
 The demand curve shows the trade-off between renewal rate and expected profit across a range of uniform price changes. It is the first thing a pricing committee asks for when evaluating an elasticity model:
 

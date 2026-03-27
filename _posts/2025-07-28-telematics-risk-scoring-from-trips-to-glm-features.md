@@ -124,7 +124,7 @@ driver_risk = aggregate_to_driver(features, credibility_threshold=30)
 # via Bühlmann-Straub weights: z = n / (n + 30)
 ```
 
-The `credibility_threshold` of 30 means a driver with 10 trips gets weight 10/40 = 0.25 - their score is 75% portfolio mean, 25% their own observed behaviour. A driver with 60 trips gets weight 60/90 = 0.67. This is not exotic - it is Bühlmann-Straub credibility applied to the telematics domain as described by Gao, Wang and Wüthrich (2021). The composite risk score is a diagnostic summary; use the individual features as GLM covariates.
+The `credibility_threshold` of 30 means a driver with 10 trips gets weight 10/40 = 0.25 - their score is 75% portfolio mean, 25% their own observed behaviour. A driver with 60 trips gets weight 60/90 = 0.67. This is not exotic - it is [Bühlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) applied to the telematics domain as described by Gao, Wang and Wüthrich (2021). The composite risk score is a diagnostic summary; use the individual features as GLM covariates.
 
 ---
 
@@ -192,7 +192,7 @@ On the synthetic fleet in the library benchmarks, HMM state features give a cons
 
 The honest caveat: the synthetic DGP is deliberately state-structured, which is the best case for an HMM. On a real portfolio where driving behaviour is genuinely continuous rather than regime-based, the gain may be smaller. And a 5pp Gini gain on frequency does not necessarily translate linearly into premium adequacy improvement - it depends on your current rating structure, how much of the frequency risk is already captured by traditional factors, and what correlation exists between driving behaviour and vehicle type (which is already rated).
 
-We think the right use of this library is not as a silver bullet for frequency modelling but as the piece of infrastructure that lets you run that empirical test on your own data, with your own trips, with a transparent and auditable methodology. The vendor score gives you a number. This gives you a pipeline.
+We think the right use of this library is not as a silver bullet for frequency modelling but as the piece of infrastructure that lets you run that empirical test on your own data, with your own trips, with a transparent and auditable methodology. Once you have a telematics model in production, register it in [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — telematics models sit at Tier 2 or Tier 3 under most MRM frameworks because of the data source dependency. The vendor score gives you a number. This gives you a pipeline.
 
 ---
 
