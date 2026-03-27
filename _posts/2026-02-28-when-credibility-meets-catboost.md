@@ -27,7 +27,7 @@ From these, Bühlmann's k = v/a gives you the noise-to-signal ratio. The credibi
 
 The practical output is a credibility premium for each group: a weighted blend of that group's own loss rate and the portfolio mean, where the blend weight is derived entirely from the data.
 
-Our [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) library implements this as `BuhlmannStraub`, fitting structural parameters non-parametrically from a panel of (group, period) observations:
+Our [`insurance-credibility`](/insurance-credibility/) library implements this as `BuhlmannStraub`, fitting structural parameters non-parametrically from a panel of (group, period) observations:
 
 ```python
 import polars as pl
@@ -95,7 +95,7 @@ The resulting relativities are what go into Radar. The CatBoost model is the sou
 
 The right architecture for most UK motor scheme and MGA portfolios is neither pure credibility nor pure GBM. It is sequential: fit CatBoost on individual risk factors to learn the base rate structure, then apply REML-estimated random effects to capture group-level departures from that structure.
 
-Our [`insurance-multilevel`](https://github.com/burning-cost/insurance-multilevel) library implements this as `MultilevelPricingModel`:
+Our [`insurance-multilevel`](/insurance-credibility/) library implements this as `MultilevelPricingModel`:
 
 **Stage 1**: CatBoost is fitted on all features *excluding* group columns. The group exclusion is deliberate and critical. If `broker_id` is included in Stage 1, the GBM partially absorbs the group signal. Stage 2 then sees only the residual, underestimates the between-group variance tau2, and applies insufficient shrinkage. Excluding group columns from Stage 1 preserves identifiability.
 

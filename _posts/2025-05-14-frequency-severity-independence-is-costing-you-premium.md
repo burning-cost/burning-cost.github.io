@@ -17,7 +17,7 @@ Vernic, Bolancé, and Alemany (2022) quantified this on a Spanish auto book at E
 
 The independence model overstates the pure premium for high-frequency policyholders. It understates it for low-frequency policyholders. The mismatch is systematic, not random noise.
 
-[`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) gives you a practical way to measure and correct this.
+[`insurance-frequency-severity`](/insurance-frequency-severity/) gives you a practical way to measure and correct this.
 
 ```bash
 pip install insurance-frequency-severity

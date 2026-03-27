@@ -11,7 +11,7 @@ Your renewal pricing model has a price elasticity coefficient. Your team uses it
 
 Not wrong as in: someone made an arithmetic error. Wrong as in: the quantity it estimates is not the quantity you need for sound pricing decisions. It measures the association between price change and lapse, and it embeds a confound that naive regression cannot remove. In observational insurance data, this confound can materially overstate true price sensitivity. A renewal optimiser built on an overstated elasticity gives back margin to customers who would have renewed anyway.
 
-We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to fix this. This post explains the problem in detail and shows how the library addresses it.
+We built [`insurance-optimise`](/insurance-optimise/) to fix this. For causal inference on general treatment effects in insurance (not just elasticity), see [`insurance-causal`](/insurance-causal/). This post explains the problem in detail and shows how the library addresses it.
 
 ---
 

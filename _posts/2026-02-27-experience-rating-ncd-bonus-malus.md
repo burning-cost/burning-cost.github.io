@@ -12,7 +12,7 @@ UK motor insurers all have NCD systems. Almost none of them has a clean implemen
 
 This matters more than it sounds. The spreadsheet contains the ABI scale in a tab someone built in 2017. You cannot call it from your pricing pipeline. You cannot ask it "at what claim amount should a customer at 65% NCD absorb the loss rather than claim?" with any precision, because the answer depends on that customer's actual premium, the exact transition rules, and how many years of NCD cost you're projecting - and the spreadsheet doesn't connect those things. Someone in pricing does the arithmetic by hand and gives a rule of thumb. The rule of thumb is wrong for a meaningful fraction of the portfolio.
 
-We built [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) to replace the spreadsheet. This post works through the NCD system as a Markov chain and then gets to the non-obvious result buried in the claiming threshold analysis.
+We built [`insurance-credibility`](/insurance-credibility/) to replace the spreadsheet. This post works through the NCD system as a Markov chain and then gets to the non-obvious result buried in the claiming threshold analysis.
 
 ---
 

@@ -15,7 +15,7 @@ Take two motor risks both priced at £350 pure premium. Risk A is a 45-year-old 
 
 That distinction matters in at least four places: safety loading, underwriter referrals, IFRS 17 risk adjustment, and capital allocation under Solvency II. In all of these, it is the variance (specifically the coefficient of variation per risk) that should be driving the decision. You are currently using a constant, or a blunt segmented estimate, because no tool in your standard stack produces CoV per risk.
 
-We built [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) to fix that. It is the 20th library in the Burning Cost suite, and the first open-source implementation of the approach from the ASTIN 2024 Best Paper (So & Valdez, *Applied Soft Computing*, doi:10.1016/j.asoc.2025.113226; arXiv 2406.16206).
+We built [`insurance-distributional`](/insurance-distributional/) to fix that. It is the 20th library in the Burning Cost suite, and the first open-source implementation of the approach from the ASTIN 2024 Best Paper (So & Valdez, *Applied Soft Computing*, doi:10.1016/j.asoc.2025.113226; arXiv 2406.16206).
 
 ---
 

@@ -7,7 +7,7 @@ tags: [gamlss, distributional-glm, diagnostics, worm-plot, quantile-residuals, v
 description: "Three diagnostics prove a GAMLSS sigma submodel is real: quantile residuals, worm plots, split-sample calibration. From insurance-distributional-glm."
 ---
 
-Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book - and it is - you should model it, not absorb it into a single global dispersion parameter.
+Fifteen months ago we introduced [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) as the Python GAMLSS implementation that insurance pricing teams had been missing. The pitch was straightforward: if you believe claim severity variance is heterogeneous across your book - and it is - you should model it, not absorb it into a single global dispersion parameter. The [insurance-distributional](/insurance-distributional/) library provides the GBM-based approach to the same problem.
 
 Since then, the question we keep getting asked is not "how do I fit this?" The question is: "how do I know it's working?"
 

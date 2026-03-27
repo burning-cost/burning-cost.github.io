@@ -19,7 +19,7 @@ The answer is the ICC - the Intraclass Correlation Coefficient - and using it pr
 
 ## The problem with indiscriminate group effects
 
-The intuition behind random effects is appealing: any time you have a categorical feature with many levels and uneven group sizes, credibility-weighted BLUPs beat dummies. So why not apply it everywhere?
+The intuition behind random effects is appealing: any time you have a categorical feature with many levels and uneven group sizes, credibility-weighted BLUPs beat dummies. So why not apply it everywhere? The [insurance-credibility](/insurance-credibility/) library implements the full multilevel pipeline including ICC diagnostics.
 
 Two reasons. First, if the between-group variance τ² is genuinely small relative to within-group noise σ², the REML estimator will correctly push all the BLUPs toward zero. Every group gets a multiplier close to 1.0. The random effects stage has added computation and governance complexity for essentially nothing. You cannot tell this without looking at the variance components.
 

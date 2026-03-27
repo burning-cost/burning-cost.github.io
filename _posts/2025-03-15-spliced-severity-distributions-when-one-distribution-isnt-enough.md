@@ -9,7 +9,7 @@ description: "A practitioner tutorial on fitting spliced composite severity dist
 
 Every pricing actuary has stared at a severity histogram for a UK motor bodily injury book and felt uneasy fitting a single distribution to it. There is a cluster of attritional claims -- bruising, whiplash, minor soft-tissue injuries -- concentrated below £10,000, and then a long, flat tail extending to six-figure numbers for serious injury claims that bear almost no actuarial resemblance to the attritional body. A lognormal fitted to the whole thing will sit too high in the middle and too low at both ends. A gamma will be even worse at the tail.
 
-Fitting a single parametric distribution to this is not a modelling decision -- it is a modelling failure that we have normalised because better tooling was awkward. The `insurance-severity` library makes the better approach straightforward.
+Fitting a single parametric distribution to this is not a modelling decision -- it is a modelling failure that we have normalised because better tooling was awkward. The `insurance-severity` library makes the better approach straightforward. For the complementary problem of modelling the full predictive distribution rather than just fitting the tail, see [insurance-distributional](/insurance-distributional/).
 
 ```bash
 uv add insurance-severity

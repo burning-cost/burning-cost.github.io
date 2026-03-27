@@ -15,7 +15,7 @@ This manual reconciliation process produces rates that are approximately right a
 
 The interaction is direct: raising a segment's rate reduces demand, which changes the portfolio GWP, which changes the loss ratio calculation, which may tighten the ENBP constraint for some policies, which changes how much room you have to take rate elsewhere. The only way to find the profit-maximising rate change set - subject to all constraints simultaneously - is to solve it as a constrained optimisation problem.
 
-That is what [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) does.
+That is what [`insurance-optimise`](/insurance-optimise/) does.
 
 ---
 

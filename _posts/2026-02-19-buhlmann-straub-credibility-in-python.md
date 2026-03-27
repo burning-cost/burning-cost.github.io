@@ -112,7 +112,7 @@ P_i  =  Z_i · X̄_i  +  (1 − Z_i) · μ̂
 
 ## Python implementation
 
-The `insurance-credibility` package implements Bühlmann-Straub with the non-parametric estimators above:
+The [`insurance-credibility`](/insurance-credibility/) package implements Bühlmann-Straub with the non-parametric estimators above:
 
 ```bash
 uv add insurance-credibility

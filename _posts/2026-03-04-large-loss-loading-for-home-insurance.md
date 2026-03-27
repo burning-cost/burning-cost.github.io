@@ -13,7 +13,7 @@ Then you have a bad year. The large claims -- the escape of water that sat undet
 
 Your burning cost model treated them identically because Tweedie has a single shape parameter, fitted globally. It cannot represent that high-sum-insured properties with complex construction genuinely have different tail behaviour, not just different expected costs.
 
-This post shows how to build a per-risk large loss loading that corrects for this using `insurance-quantile`. The approach: fit a Tweedie GBM for expected cost, fit a CatBoost quantile model for the conditional severity distribution, and take the difference at TVaR level. The loading goes in the premium as an explicit line item, not buried in a "loading for uncertainty" factor that nobody can justify.
+This post shows how to build a per-risk large loss loading that corrects for this using [`insurance-quantile`](/insurance-distributional/). For a complementary approach that models the full predictive distribution rather than a specific quantile, see [insurance-distributional](/insurance-distributional/). The approach: fit a Tweedie GBM for expected cost, fit a CatBoost quantile model for the conditional severity distribution, and take the difference at TVaR level. The loading goes in the premium as an explicit line item, not buried in a "loading for uncertainty" factor that nobody can justify.
 
 ```bash
 uv add insurance-quantile

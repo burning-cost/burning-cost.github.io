@@ -9,7 +9,7 @@ description: "How to convert raw telematics trip data into GLM-ready features fo
 
 Most pricing teams sit in one of two camps on telematics. Either they buy a pre-scored variable from a box provider - a single "telematics score" that appears in the rating engine as a black-box input - or they do not use telematics at all because getting the data into a usable form is too painful. Neither is satisfying. In the first case you cannot audit the score, cannot explain it to underwriters, and cannot update it without going back to the supplier. In the second, you are leaving real risk information on the table.
 
-The gap is tooling. Processing raw 1Hz GPS/accelerometer data into actuarially useful features is not conceptually hard, but the plumbing - GPS jump removal, kinematics derivation, state classification, driver-level aggregation with credibility weighting - is enough friction that most teams give up and reach for the vendor API. [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) removes that friction.
+The gap is tooling. Processing raw 1Hz GPS/accelerometer data into actuarially useful features is not conceptually hard, but the plumbing - GPS jump removal, kinematics derivation, state classification, driver-level aggregation with credibility weighting - is enough friction that most teams give up and reach for the vendor API. [`insurance-telematics`](/insurance-telematics/) removes that friction.
 
 ```bash
 pip install insurance-telematics
@@ -196,7 +196,7 @@ We think the right use of this library is not as a silver bullet for frequency m
 
 ---
 
-`insurance-telematics` is open source under MIT at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics). Requires Python 3.10+, Polars, hmmlearn, and SciPy.
+[`insurance-telematics`](/insurance-telematics/) is open source under MIT at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics). Requires Python 3.10+, Polars, hmmlearn, and SciPy.
 
 - [When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/) - credibility and borrowing strength for new or small books of business
 - [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) - once the telematics model is built, running the SS1/23 validation suite

@@ -11,7 +11,7 @@ description: "Where double machine learning beats naive regression for insurance
 
 We have written before about [why double machine learning works conceptually](/2026/03/01/your-demand-model-is-confounded/) -- the Neyman orthogonality argument, the confounding bias report, the bad controls problem. This post is not that. It is about the parts nobody writes up: how double machine learning for insurance pricing actually performs against naive alternatives on real-structured data, where it breaks down, and what the failure looks like before it is too late to notice.
 
-All benchmarks below are on synthetic motor data generated with `insurance-synthetic`, calibrated to UK personal lines structure: nonlinear age curve, correlated postcode and vehicle group effects, and treatment (price change) that is 70-80% determined by the observed risk factors. That last property -- high treatment predictability -- is exactly what makes motor renewal data hard for DML and soft for naive methods.
+All benchmarks below are on synthetic motor data generated with `insurance-synthetic`, calibrated to UK personal lines structure. The DML implementation throughout is from [`insurance-causal`](/insurance-causal/): nonlinear age curve, correlated postcode and vehicle group effects, and treatment (price change) that is 70-80% determined by the observed risk factors. That last property -- high treatment predictability -- is exactly what makes motor renewal data hard for DML and soft for naive methods.
 
 ---
 

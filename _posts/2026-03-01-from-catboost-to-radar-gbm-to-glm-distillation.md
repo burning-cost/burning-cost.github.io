@@ -17,7 +17,7 @@ The standard workarounds are unpleasant. You can attempt to manually read the GB
 
 WTW's answer is Layered GBM in Radar: a patent-pending two-layer structure where one GBM captures main effects and a second captures interactions. It produces interpretable outputs, but it is a proprietary Radar format, not a standard multiplicative factor table. It also requires you to rebuild your model inside Radar.
 
-We think there is a better approach. Last month we published `insurance-distill`, an open-source Python library that distils any scikit-learn-compatible GBM into multiplicative GLM factor tables that a rating engine can consume. This post explains how it works and how to use it.
+We think there is a better approach. Last month we published [`insurance-distill`](/insurance-distill/), an open-source Python library that distils any scikit-learn-compatible GBM into multiplicative GLM factor tables that a rating engine can consume. This post explains how it works and how to use it.
 
 ## The idea: fit a GLM on GBM predictions
 

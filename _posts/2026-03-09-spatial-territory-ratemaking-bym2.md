@@ -11,7 +11,7 @@ We [wrote previously]({{ site.baseurl }}{% post_url 2026-02-23-spatial-territory
 
 The practical problem: a CatBoost frequency model running on a motor book. It handles vehicle group, NCD, driver age, annual mileage. Territory is in there as a hashed high-cardinality categorical. The GBM learns something from it, but what? There is no extractable territory factor table. The peer reviewer wants one. The FCA's Consumer Duty review is asking how geographic factors are derived. We need an answer.
 
-`insurance-spatial` is the piece of Python that sits between a base model and a rating engine. This post walks through the full pipeline.
+`insurance-spatial` is the piece of Python that sits between a base model and a rating engine. This post walks through the full pipeline. For age-curve and NCD smoothing using the same mathematical framework, see [insurance-whittaker](/insurance-whittaker/).
 
 ---
 

@@ -21,7 +21,7 @@ Three situations force this conversation.
 
 **Radar and Emblem.** Rating engines consume multiplicative factor tables. Even if your insurer has enabled Python scoring at runtime inside Radar (a feature added in September 2024), that gives you a black-box callable, not the auditable factor table that the pricing committee reviews and signs off. The factor table is the governance artefact, not the prediction function.
 
-**Regulatory transparency.** PRA SS1/23 requires that material models can be explained to senior management. "CatBoost predicts 24% higher frequency for this segment" is not an explanation. "The area relativity is 1.31, compared to 1.18 in the GLM; the difference is driven by vehicle group interactions the GLM cannot capture" is one. The factor table is what makes that conversation possible.
+**Regulatory transparency.** PRA SS1/23 requires that material models can be explained to senior management. The [insurance-governance](/insurance-governance/) library automates the SS1/23 validation suite and can ingest the factor tables extracted here. "CatBoost predicts 24% higher frequency for this segment" is not an explanation. "The area relativity is 1.31, compared to 1.18 in the GLM; the difference is driven by vehicle group interactions the GLM cannot capture" is one. The factor table is what makes that conversation possible.
 
 **Actuary communication.** Pricing actuaries think in relativities. NCD=0 is 1.82 times NCD=5. A driver aged 19 is 2.3 times base. These are the numbers that get challenged, refined, signed off, and remembered between rate reviews. If you cannot produce them from your GBM, the GBM will not replace the GLM in practice, regardless of the Gini gap.
 

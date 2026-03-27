@@ -17,7 +17,7 @@ The Excel scenario is a single point. The team has picked one combination of fac
 
 The shadow prices on constraints are never known either. How much volume would you lose if you tightened the LR target by one percentage point? Which constraint is actually binding? What is the regulatory cost of FCA PS21/11 ENBP compliance, in dislocation terms? These are answerable questions. Nobody is answering them.
 
-We built [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) to answer them formally.
+We built [`insurance-optimise`](/insurance-optimise/) to answer them formally.
 
 ---
 
@@ -214,7 +214,7 @@ uv add insurance-optimise
 uv add "insurance-optimise[stochastic]"
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-optimise). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
+[`insurance-optimise`](/insurance-optimise/) is on [GitHub](https://github.com/burning-cost/insurance-optimise). The priority backlog includes a competitive equilibrium module (Lerner index pricing as baseline), Bayesian demand model integration to propagate posterior uncertainty over price elasticity through the optimiser, and a Consumer Duty fair value checker.
 
 The `portfolio_summary()` method is the first thing to run before any solve - it gives you baseline metrics at current prices so you can see what the optimiser is starting from.
 

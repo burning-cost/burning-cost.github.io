@@ -11,7 +11,7 @@ If you have tried to use SDV or CTGAN to generate synthetic insurance data, you 
 
 This is not a bug in SDV. It is a genuine limitation: generic synthetic data tools don't have a concept of exposure. They have columns. Insurance pricing data has actuarial structure.
 
-We built [`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic) to close that gap.
+We built [`insurance-synthetic`](https://github.com/burning-cost/insurance-synthetic) to close that gap. The synthetic data it generates is designed to work directly with the other Burning Cost libraries like [insurance-distributional](/insurance-distributional/) and [insurance-monitoring](/insurance-monitoring/) for end-to-end model development without real data.
 
 ---
 

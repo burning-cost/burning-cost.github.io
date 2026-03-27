@@ -43,7 +43,7 @@ The fundamental insight is that neither extreme is right. Treating each cell ind
 
 Partial pooling is the middle ground. Each segment's expected loss rate is drawn from a shared population distribution. The population distribution is estimated from all the segments simultaneously. Thin segments, whose own data is noisy, get pulled toward the population mean. Dense segments, whose data is reliable, trust their own experience. The degree of pulling - the credibility factor - is not hand-set. It is the Bayesian posterior: the optimal blend given the ratio of within-segment sampling noise to between-segment signal variance.
 
-Actuaries have been doing a one-dimensional version of this for decades. The Bühlmann-Straub credibility premium is:
+Actuaries have been doing a one-dimensional version of this for decades. The [Bühlmann-Straub credibility](/insurance-credibility/) premium is:
 
 ```
 P_i = Z_i × x̄_i + (1 - Z_i) × μ

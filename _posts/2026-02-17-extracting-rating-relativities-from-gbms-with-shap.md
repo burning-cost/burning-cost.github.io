@@ -10,7 +10,7 @@ description: "How to extract SHAP relativities from insurance GBMs. Multiplicati
 
 Many UK pricing teams find themselves in some version of the same situation: a GBM sitting on a server somewhere outperforming the production GLM, but nobody can get the relativities out of it. The regulator wants a factor table. Radar needs an import file — and [converting your GBM predictions into one](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/) requires more than a partial dependence plot. The head of pricing wants to challenge the model in terms they recognise.
 
-So the GBM sits in a notebook. The GLM goes to production. And the team loses the lift.
+So the GBM sits in a notebook. The GLM goes to production. And the team loses the lift. For teams that want to take the full GBM-to-GLM distillation approach rather than extracting relativities as a post-hoc step, see [insurance-distill](/insurance-distill/).
 
 We built `shap-relativities` to close that gap. It extracts SHAP relativities from insurance GBMs — multiplicative rating factors in the same `exp(beta)` format as a GLM, with confidence intervals, exposure weighting, and a validation check that the numbers actually reconstruct the model's predictions.
 

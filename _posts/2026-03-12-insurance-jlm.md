@@ -125,6 +125,7 @@ from insurance_jlm import jlm_from_telematics
 model = jlm_from_telematics(
     telematics_df=monthly_scores,   # policy_id, month, score
     claims_df=claims,               # policy_id, claim_month, claimed
+    claim_indicator_col='claimed',  # default is 'had_claim'
     surv_covariates=['age_band', 'vehicle_class', 'ncb_years'],
 )
 

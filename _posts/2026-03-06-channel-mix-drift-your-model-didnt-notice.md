@@ -13,7 +13,7 @@ The model doesn't know. It scores every incoming risk the way it always has, aga
 
 We have seen a motor portfolio where a new PCW partnership skewed the channel significantly younger, lower NCD, and urban. The model trained on the existing direct-channel book - where the median driver age was 47 - started overpredicting frequency for the under-30 cohort by around 8%. Not because the underlying risk relationship changed. Because the model had seen very few young, low-NCD, urban drivers and was extrapolating into sparse feature space.
 
-This post is about detecting that shift before it shows up in loss ratios, and correcting predictions using only the covariate information you already have.
+This post is about detecting that shift before it shows up in loss ratios, and correcting predictions using only the covariate information you already have. For the monitoring cadence that catches this quarterly, see [insurance-monitoring](/insurance-monitoring/).
 
 ---
 

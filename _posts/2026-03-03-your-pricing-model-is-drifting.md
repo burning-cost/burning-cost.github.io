@@ -48,7 +48,7 @@ The reason this taxonomy matters operationally: recalibration takes an afternoon
 
 Compute PSI on the model score distribution. Then compute CSI - the same PSI formula applied feature by feature. This gives you a signal per rating factor for whether that feature's distribution has shifted.
 
-The critical modification for insurance: weight by exposure, not policy count. A portfolio where young drivers account for 15% of policies but 30% of earned exposure needs the young driver bin's contribution to PSI weighted by their exposure share, not their headcount. Standard PSI from credit scoring does not do this. Our `insurance-monitoring` library computes exposure-weighted PSI and CSI throughout.
+The critical modification for insurance: weight by exposure, not policy count. A portfolio where young drivers account for 15% of policies but 30% of earned exposure needs the young driver bin's contribution to PSI weighted by their exposure share, not their headcount. Standard PSI from credit scoring does not do this. Our [`insurance-monitoring`](/insurance-monitoring/) library computes exposure-weighted PSI and CSI throughout.
 
 ```python
 from insurance_monitoring.drift import psi, csi
@@ -238,7 +238,7 @@ The annual full model validation should include: backtesting the model on out-of
 
 ## The library
 
-[`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) implements the three-layer framework described above:
+[`insurance-monitoring`](/insurance-monitoring/) implements the three-layer framework described above:
 
 - Exposure-weighted PSI and CSI, with per-feature traffic-light output
 - Segmented A/E ratios with optional IBNR adjustment via development factor tables

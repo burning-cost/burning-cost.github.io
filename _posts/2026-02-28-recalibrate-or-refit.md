@@ -52,6 +52,8 @@ The decision rule: if GMCB >> LMCB, recalibrate. If LMCB >= GMCB, refit.
 
 ## Running it in practice
 
+The [`insurance-monitoring`](/insurance-monitoring/) library implements the full Murphy decomposition and Gini drift test.
+
 ```bash
 uv add insurance-monitoring
 ```

@@ -97,7 +97,7 @@ For exceedance probability - useful for binder underwriting and risk screening:
 
 ```python
 # P(claim > £1m | risk profile)
-exceed_prob = model.predict_exceedance_prob(X_test, y_large=1_000_000)
+exceed_prob = model.predict_exceedance_prob(X_test, threshold=1_000_000)
 ```
 
 ---

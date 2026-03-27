@@ -11,7 +11,7 @@ Most UK pricing teams treat model validation as a documentation exercise. Run th
 
 *(Scope note: SS1/23 currently applies to banks and PRA-regulated deposit-takers. Extension to insurers is expected 2026–2027. If you are an insurer, treat this as preparation — the framework and the tooling are the same either way.)*
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, [calibration slope](/2026/03/09/insurance-calibration/), and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
+[`insurance-governance`](/insurance-governance/) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, [calibration slope](/2026/03/09/insurance-calibration/), and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
 
 ```bash
 pip install insurance-governance
@@ -247,7 +247,7 @@ The practical workflow: run `ModelValidationReport` as part of your model releas
 
 ---
 
-`insurance-governance` is open source under MIT at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Requires Python 3.10+, NumPy, SciPy, and Polars.
+[`insurance-governance`](/insurance-governance/) is open source under MIT at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Requires Python 3.10+, NumPy, SciPy, and Polars.
 
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) - monitoring model performance and detecting when a refit is overdue
 - [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) - between-refit trend tracking with a principled statistical foundation

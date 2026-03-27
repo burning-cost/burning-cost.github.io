@@ -9,7 +9,7 @@ description: "Handle 800+ vehicle makes and 9,000+ postcode sectors in a multipl
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). Install with `pip install insurance-glm-tools` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
+**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). For interpretable nonlinear models beyond standard GLMs, see [insurance-gam](/insurance-gam/). Install with `pip install insurance-glm-tools` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
 </div>
 
 

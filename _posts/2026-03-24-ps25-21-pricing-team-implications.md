@@ -89,6 +89,10 @@ card = MRMModelCard(
 )
 
 # Register with review date driven by risk tier, not calendar
+# PS25/21 harm-proportionate cadence: we use shorter cycles than the library defaults
+# (library defaults: Tier 1 = 12 months, Tier 2 = 18 months, Tier 3 = 24 months).
+# For newly re-classified products post-PS25/21 we tighten by ~50% to build
+# an initial evidence base before relaxing to standard cadence.
 review_months = {1: 6, 2: 12, 3: 18}  # Tier 1 = highest risk, shortest cycle
 import datetime
 next_review = datetime.date.today() + datetime.timedelta(days=30 * review_months[tier.tier])

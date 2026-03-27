@@ -14,7 +14,7 @@ Many interactions in a UK personal lines GLM are chosen by intuition or heuristi
 
 There are 66 pairs for a 12-factor model. For a 20-factor model there are 190. Testing each one properly - fitting the GLM, computing the likelihood-ratio statistic, checking a 2D A/E plot, deciding whether the parameter count is worth the deviance gain - takes the better part of a day per pair if you do it carefully. You will not test all of them. You will miss interactions that are in the data.
 
-`insurance-interactions` automates the search.
+`insurance-interactions` automates the search. If you want interactions baked directly into an interpretable model rather than retrofitted into a GLM, [insurance-gam](/insurance-gam/) fits shape-constrained GAMs with explicit interaction terms.
 
 ---
 
