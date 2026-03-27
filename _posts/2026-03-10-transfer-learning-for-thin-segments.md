@@ -8,7 +8,7 @@ description: "GLMTransfer borrows statistical strength from a related source boo
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-transfer` has been consolidated into [`insurance-thin-data`](https://pypi.org/project/insurance-thin-data/). Install with `pip install insurance-thin-data` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-thin-data)
+**Package update:** `insurance-transfer` has been consolidated into [`insurance-thin-data`](https://pypi.org/project/insurance-thin-data/). For credibility-based thin-segment blending, see [insurance-credibility](/insurance-credibility/). Install with `pip install insurance-thin-data` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-thin-data)
 </div>
 
 

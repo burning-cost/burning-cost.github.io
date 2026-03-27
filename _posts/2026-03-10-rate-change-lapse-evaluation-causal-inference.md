@@ -14,7 +14,7 @@ The honest answer, if you have only done a before/after comparison, is that you 
 
 This matters for two reasons. First, Consumer Duty: FCA TR24/2 (August 2024) specifically called out insurers who could not demonstrate causal attribution between pricing interventions and customer outcomes. Lapse spikes following rate changes are exactly the kind of outcome the FCA expects you to be able to explain. Second, the business decision: if young driver lapses were going to spike anyway — market repricing, competitor behaviour, end-of-aggregate-scheme — applying a remedial rate cut to stop the bleed is the wrong response.
 
-This post walks through how to answer the question properly, using [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy). The scenario is synthetic but the structure mirrors situations we have seen on UK motor books.
+This post walks through how to answer the question properly, using [`insurance-causal-policy`](/insurance-causal/). The scenario is synthetic but the structure mirrors situations we have seen on UK motor books.
 
 ---
 

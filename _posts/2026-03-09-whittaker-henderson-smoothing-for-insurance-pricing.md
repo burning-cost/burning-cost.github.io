@@ -22,7 +22,7 @@ The first term penalises deviation from the data; the second penalises roughness
 
 The problem in practice has not been the mathematics. It has been the tooling. R has `MortalitySmooth` and the `WH` package. Python has had nothing purpose-built for insurance rating tables. Actuaries doing this in Python have either ported their R code, written the Whittaker system from scratch (it is three lines of linear algebra, but then you need lambda selection, confidence intervals, and 2D extensions), or simply not done it formally.
 
-[`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker) is our 38th open-source library. Three modules, 73 tests passing, v0.1.0. It covers the 1D case (age curves, NCD scales, vehicle group relativities), the 2D case (driver age by vehicle age rating surfaces), and a Poisson variant for count data directly.
+[`insurance-whittaker`](/insurance-whittaker/) is our 38th open-source library. Three modules, 73 tests passing, v0.1.0. It covers the 1D case (age curves, NCD scales, vehicle group relativities), the 2D case (driver age by vehicle age rating surfaces), and a Poisson variant for count data directly.
 
 ```bash
 uv add insurance-whittaker

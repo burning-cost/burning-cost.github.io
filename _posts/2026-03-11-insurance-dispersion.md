@@ -11,7 +11,7 @@ R actuaries have had access to the `dglm` package since Smyth and Dunn wrote it 
 
 Python has had nothing equivalent. statsmodels issue #7639, opened in 2020, asks for Double GLM support. No PR has been merged. Five years later, the issue is still open.
 
-[`insurance-dispersion`](https://github.com/burning-cost/insurance-dispersion) fills that gap. It is a Python implementation of the Double GLM (DGLM): joint modelling of mean AND dispersion, where every observation gets its own dispersion parameter phi_i rather than one scalar phi estimated for the entire portfolio. Six distribution families, REML correction, overdispersion likelihood ratio test, mean and dispersion factor tables. Pure NumPy/SciPy and formulaic - no ML dependencies. 1,651 lines, 79 tests, v0.1.0.
+[`insurance-dispersion`](/insurance-distributional/) fills that gap. For the GBM-based approach to heterogeneous dispersion, see [insurance-distributional](/insurance-distributional/). It is a Python implementation of the Double GLM (DGLM): joint modelling of mean AND dispersion, where every observation gets its own dispersion parameter phi_i rather than one scalar phi estimated for the entire portfolio. Six distribution families, REML correction, overdispersion likelihood ratio test, mean and dispersion factor tables. Pure NumPy/SciPy and formulaic - no ML dependencies. 1,651 lines, 79 tests, v0.1.0.
 
 ```bash
 uv add insurance-dispersion

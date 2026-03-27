@@ -9,7 +9,7 @@ description: "Transfer learning for thin-segment UK insurance pricing: Tian-Feng
 
 Every pricing actuary has faced this problem. A segment exists - young drivers, exotic pets, a brand-new telematics portfolio - where the exposure is thin enough that fitting a standalone model produces something embarrassing. The confidence intervals are wide, the parameters are unstable, and you are essentially guessing. The standard response is to credibility-blend with the main book, which works up to a point, but credibility weighting is a blunt instrument when what you actually need is a model that borrows structure, not just a scalar adjustment.
 
-Transfer learning is the more principled answer. [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) implements three approaches drawn from the academic literature, wrapped in a consistent API.
+Transfer learning is the more principled answer. [`insurance-thin-data`](/insurance-credibility/) implements three approaches drawn from the academic literature, wrapped in a consistent API.
 
 ```bash
 uv add insurance-thin-data

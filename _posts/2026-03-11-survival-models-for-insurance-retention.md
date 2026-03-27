@@ -17,7 +17,7 @@ There is a second problem specific to insurance that clinical survival software 
 
 Both problems now have regulatory weight. Consumer Duty (PS22/9, effective July 2023) requires insurers to demonstrate fair value across the customer lifecycle, not just at point of sale. The FCA's September 2024 Good and Poor Practice guidance makes explicit that firms are expected to use data analytics to understand how long customers benefit from coverage. A single-year renewal probability is not that analysis.
 
-We built [`insurance-survival`](https://github.com/burning-cost/insurance-survival) to handle both problems properly.
+We built [`insurance-survival`](/insurance-monitoring/) to handle both problems properly. For the monitoring framework that tracks whether lapse rates are shifting post-model-deployment, see [insurance-monitoring](/insurance-monitoring/).
 
 ---
 

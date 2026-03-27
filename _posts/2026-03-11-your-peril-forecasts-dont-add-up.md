@@ -13,7 +13,7 @@ The adjustment is manual. It overrides one set of forecasts to satisfy the other
 
 There is.
 
-[`insurance-reconcile`](https://github.com/burning-cost/insurance-reconcile) implements MinTrace reconciliation (Wickramasuriya, Athanasopoulos, Hyndman & Rajaratnam, 2019, JASA 114(508)) for insurance pricing hierarchies, with the insurance-specific extensions that make it work correctly on loss costs, earned premium weights, and frequency×severity decompositions.
+[`insurance-reconcile`](/insurance-monitoring/) implements MinTrace reconciliation (Wickramasuriya, Athanasopoulos, Hyndman & Rajaratnam, 2019, JASA 114(508)) for insurance pricing hierarchies, with the insurance-specific extensions that make it work correctly on loss costs, earned premium weights, and frequency×severity decompositions.
 
 ```bash
 uv add insurance-reconcile

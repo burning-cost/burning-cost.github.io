@@ -8,7 +8,7 @@ description: "Mixture cure models for UK motor: separates non-claimers from susc
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). For causal retention analysis, see [insurance-causal](/insurance-causal/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
 </div>
 
 
@@ -16,7 +16,7 @@ A UK motor book typically has an observed claims frequency of around 8% per year
 
 The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival — the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.
 
-[`insurance-cure`](https://github.com/burning-cost/insurance-survival) fills that gap.
+[`insurance-cure`](/insurance-monitoring/) fills that gap. For the full monitoring framework that catches structural shifts in your claims frequency, see [insurance-monitoring](/insurance-monitoring/).
 
 ```bash
 pip install insurance-survival
