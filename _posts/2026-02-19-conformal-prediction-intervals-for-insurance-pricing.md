@@ -244,11 +244,12 @@ It is also not a replacement for model calibration. A model that is systematical
 uv add insurance-conformal
 ```
 
-Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-conformal). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
+Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-conformal) and available on [PyPI](https://pypi.org/project/insurance-conformal/). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
 
-The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate.
+The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate. Once deployed, recalibrate on the same quarterly cadence you validate the point forecast — [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) will alert you to feature distribution shifts that may have invalidated the calibration set.
 
-- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - the complement to conformal intervals: conformal tells you about uncertainty, calibration tells you whether the point predictions are at the right level
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the complement to conformal intervals: conformal tells you about uncertainty, calibration tells you whether the point predictions are at the right level
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the coverage-by-decile table from this library is a structured evidence artefact for SS1/23 Principle 4 documentation
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
 - [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
