@@ -973,7 +973,7 @@ description: "10 flagship Python libraries for UK personal lines insurance prici
     <div class="section-label">Structured learning</div>
     <h2>Insurance Pricing in Python &mdash; 12-module training course</h2>
     <p>A guided path through the full pricing workflow &mdash; GLMs to GAMs, causal inference, fairness auditing, and conformal prediction &mdash; in 12 hands-on modules with real pricing notebooks. Free and open source on GitHub.</p>
-    <a href="https://burning-cost.github.io/course" class="btn btn-primary">View the Course &rarr;</a>
+    <a href="/course/" class="btn btn-primary">View the Course &rarr;</a>
   </div>
 </section>
 
@@ -1003,6 +1003,24 @@ description: "10 flagship Python libraries for UK personal lines insurance prici
 
     <div class="post-more">
       <a href="/blog/" class="btn btn-outline-light">All articles &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- Recent articles list: plain crawlable links so Googlebot can discover the full archive -->
+<section class="recent-articles" style="background:#f7f8fc;padding:2.5rem 1.5rem;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#5a6278;margin-bottom:1.25rem;">Recent articles</div>
+    <ul style="list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0.5rem 2rem;">
+      {% for post in site.posts limit:30 %}
+      <li style="font-size:0.875rem;padding:0.35rem 0;border-bottom:1px solid #e4e7ef;">
+        <a href="{{ post.url | relative_url }}" style="color:#1a1d2e;text-decoration:none;" onmouseover="this.style.color='#4f7ef8'" onmouseout="this.style.color='#1a1d2e'">{{ post.title }}</a>
+        <span style="font-size:0.7rem;color:#8b92a8;margin-left:0.5rem;">{{ post.date | date: "%d %b %Y" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div style="margin-top:1.25rem;">
+      <a href="/blog/" style="font-size:0.875rem;color:#4f7ef8;">View all {{ site.posts | size }} articles &rarr;</a>
     </div>
   </div>
 </section>

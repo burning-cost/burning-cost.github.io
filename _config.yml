@@ -37,10 +37,7 @@ plugins:
   - jekyll-sitemap
 
 feed:
-  posts_limit: 20
-  tags:
-    only:
-      - python
+  posts_limit: 50
 
 show_excerpts: true
 
