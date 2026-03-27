@@ -42,7 +42,7 @@ If you fit a single Gamma on pooled EV claims, the model has to find a single di
 
 ## The model architecture that works
 
-The fix is a two-component structure. This is not unusual — hurdle models for frequency-severity are standard — but the specific decomposition for EV severity requires thinking carefully about what drives the branch point.
+The fix is a two-component structure. This is not unusual — hurdle models for [frequency-severity](/insurance-frequency-severity/) are standard — but the specific decomposition for EV severity requires thinking carefully about what drives the branch point.
 
 **Step 1: Separate battery-involving claims.** The cleanest flag is whether the battery or high-voltage system was assessed during the claim. If your claims system captures repair type, this flag is feasible to extract. If not, use the total loss flag as a proxy — it is imperfect (some battery claims are repairable) but good enough to start. Claims-handler notes are another source; keyword extraction on 'battery', 'HV', 'high voltage', 'write-off' gives a reasonable binary label.
 
@@ -54,7 +54,7 @@ The fix is a two-component structure. This is not unusual — hurdle models for 
 
 P(battery involvement) is itself a function of: vehicle age (as a SoH proxy), impact geometry where available from FNOL, and speed band if telematics data is present. These are richer signals than you will currently have for most EV policies, but the structure is right and you can improve the inputs over time.
 
-**Step 4: Credibility-weight the EV parameters.** A mid-size UK insurer with 2% EV exposure has roughly 5,000 BEV policy years and 200-400 BEV claims. That is not enough to estimate EV-specific GLM parameters reliably in isolation. Use Bühlmann-Straub credibility with ICE parameters as the prior — at 200 claims, Z will be in the range 0.3-0.5, meaning substantial shrinkage toward the ICE prior is appropriate. The Thatcham VRR Damageability and Repairability scores provide structured external priors for severity by vehicle model: use them. They are built on 1,300 data points from 25,000 vehicle derivatives.
+**Step 4: Credibility-weight the EV parameters.** A mid-size UK insurer with 2% EV exposure has roughly 5,000 BEV policy years and 200-400 BEV claims. That is not enough to estimate EV-specific GLM parameters reliably in isolation. Use [Bühlmann-Straub credibility](/insurance-credibility/) with ICE parameters as the prior — at 200 claims, Z will be in the range 0.3-0.5, meaning substantial shrinkage toward the ICE prior is appropriate. The Thatcham VRR Damageability and Repairability scores provide structured external priors for severity by vehicle model: use them. They are built on 1,300 data points from 25,000 vehicle derivatives.
 
 The data gap is real and we should say so plainly. UK insurer EV claims data is thin, development is limited (median BEV age is 1-2 years), and the fleet composition is shifting — 82% of new BEV registrations are company-owned, which suppresses private-use frequency figures. Any parameter estimates should carry wide uncertainty intervals, and the credibility weighting is doing real work here rather than being a formality.
 

@@ -19,7 +19,7 @@ The three problems are distinct but tend to arrive together.
 
 **Spatial autocorrelation.** Claims in adjacent postcodes are not independent. Flood risk, crime rates, subsidence geology, and commuting patterns all have geographic clustering. If you fit a GLM with postcode as a factor, the residuals will be spatially correlated — the model is not capturing the true structure, and standard errors are optimistic. Area factors estimated this way undersmooth in low-exposure areas and oversmooth globally.
 
-**Thin areas.** A UK home insurer might have 1,200 postcode sectors in the rating territory. Many rural ones will have fewer than 50 claims over a five-year period. Maximum likelihood on 50 claims gives you area factors with confidence intervals wide enough to be almost meaningless. The credibility-weighted answer — shrink toward the regional mean — is defensible but ad hoc. You are choosing the shrinkage parameter by feel rather than by estimating it from the data.
+**Thin areas.** A UK home insurer might have 1,200 postcode sectors in the rating territory. Many rural ones will have fewer than 50 claims over a five-year period. Maximum likelihood on 50 claims gives you area factors with confidence intervals wide enough to be almost meaningless. The [credibility-weighted](/insurance-credibility/) answer — shrink toward the regional mean — is defensible but ad hoc. You are choosing the shrinkage parameter by feel rather than by estimating it from the data.
 
 **Panel structure.** If you pool five years of data at postcode sector level, the same area appears five times. That is not five independent observations; it is one area with five years of correlated experience. Treating it as five rows in a GLM understates the within-area persistence and overstates your effective sample size.
 
@@ -153,7 +153,7 @@ print(f"Validation RMSE: {model.best_score['valid_0']['l2']**0.5:.4f}")
 
 This is not a faithful implementation of the Balzer-Benlahlou algorithm — the paper's random effects version uses a full Mahalanobis-norm objective that standard GBMs do not expose. But it captures the key ideas: pre-transform the panel data to absorb the spatial structure, use shallow base-learners with a small step size, and use spatially-blocked cross-validation to choose the stopping point.
 
-The R `mboost` package is the right tool if you want the full algorithm. The paper's supplementary material provides the full estimation code.
+The R `mboost` package is the right tool if you want the full algorithm. For Python-native additive model implementations, see [`insurance-gam`](/insurance-gam/). The paper's supplementary material provides the full estimation code.
 
 ---
 

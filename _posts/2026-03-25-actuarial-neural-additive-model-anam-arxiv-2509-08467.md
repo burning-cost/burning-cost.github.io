@@ -111,7 +111,7 @@ The paper includes two extensions that are directly relevant for actuarial prici
 
 ## What insurance-gam adds
 
-The paper provides the theoretical framework and the beMTPL97 benchmarks. Our [`insurance-gam`](https://github.com/burning-cost/insurance-gam) implementation (available at `uv add insurance-gam`) adds:
+The paper provides the theoretical framework and the beMTPL97 benchmarks. Our [`insurance-gam`](/insurance-gam/) implementation (available at `uv add insurance-gam`) adds:
 
 - **Sklearn-compatible API.** `ANAM.fit(X, y, sample_weight=exposure)`, `ANAM.predict(X, exposure=exposure)`. Works in the same pipeline as `PoissonRegressor`.
 - **Polars output for shape functions.** `model.shape_functions()` returns a dict of Polars DataFrames, one per feature. Each DataFrame has columns `x`, `f_x`, `f_x_lower`, `f_x_upper` — directly exportable to JSON for regulatory documentation.
