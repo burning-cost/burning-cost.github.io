@@ -41,11 +41,11 @@ Every module uses real APIs from our open-source libraries. Nothing is invented 
 
 4. **Gradient boosting with CatBoost** - Frequency/severity GBMs on freMTPL2, temporal walk-forward cross-validation, and hyperparameter search. Covers the validation approach that actually matters for pricing: out-of-time, not out-of-fold.
 
-5. **Model monitoring** - PSI-based covariate drift detection, segment-level A/E monitoring, Gini stability over time, and mSPRT sequential testing for detecting when a rate change has had its full effect. Uses `insurance-monitoring`.
+5. **Model monitoring** - PSI-based covariate drift detection, segment-level A/E monitoring, Gini stability over time, and mSPRT sequential testing for detecting when a rate change has had its full effect. Uses [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
 
-6. **Fairness auditing** - Proxy discrimination detection, demographic parity and equalised odds analysis under FCA Consumer Duty, and the difference between protected characteristics and actuarially justified risk factors. Uses `insurance-fairness`.
+6. **Fairness auditing** - Proxy discrimination detection, demographic parity and equalised odds analysis under FCA Consumer Duty, and the difference between protected characteristics and actuarially justified risk factors. Uses [insurance-fairness](/2026/03/03/your-pricing-model-might-be-discriminating/).
 
-7. **Causal inference for pricing** - Double ML causal estimation of own-price elasticity for renewal pricing. Why naive retention models give biased elasticity estimates and how to fix it. Uses `insurance-causal`.
+7. **Causal inference for pricing** - Double ML causal estimation of own-price elasticity for renewal pricing. Why naive retention models give biased elasticity estimates and how to fix it. Uses [insurance-causal](/2026/03/12/insurance-autodml/).
 
 8. **End-to-end pipeline** - Raw tabular data to filed rates in a single Databricks workflow: feature engineering, GLM, GBM, blending, MLflow tracking, model registry, and a signed-off audit trail.
 

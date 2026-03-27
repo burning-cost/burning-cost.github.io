@@ -67,7 +67,7 @@ Bichler et al. identify several observable signatures of algorithmic collusion. 
 
 **Convergent pricing across segments.** If your quoted prices are tracking competitor prices closely across risk segments — not just at the market average, but within individual cells — that is a signal worth investigating. Genuine cost-based pricing should produce segment-level divergence because cost structures differ. Convergence suggests the algorithm is responding to market price signals rather than pure cost.
 
-You can detect this with [insurance-monitoring](https://burning-cost.github.io/insurance-monitoring). The `MonitoringReport` class computes per-feature distribution shifts using PSI. If you also pass competitor price relativities as a feature, sustained convergence will show as low PSI between own and market rates — which is the opposite of the drift signal you normally look for. We would add a bespoke correlation monitor: track the rolling correlation between own rate changes and observed market rate changes at segment level. If that correlation is consistently above 0.8 and you cannot attribute it to shared cost drivers, you have a question to answer.
+You can detect this with [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/). The `MonitoringReport` class computes per-feature distribution shifts using PSI. If you also pass competitor price relativities as a feature, sustained convergence will show as low PSI between own and market rates — which is the opposite of the drift signal you normally look for. We would add a bespoke correlation monitor: track the rolling correlation between own rate changes and observed market rate changes at segment level. If that correlation is consistently above 0.8 and you cannot attribute it to shared cost drivers, you have a question to answer.
 
 **Price stickiness at round numbers or common thresholds.** Algorithms that have learned soft coordination often converge to salient focal points — round premium levels, common rate multiples. These are not programmed; they emerge from the learning process. Review your quote distribution for unusual clustering at round figures.
 
@@ -75,7 +75,7 @@ You can detect this with [insurance-monitoring](https://burning-cost.github.io/i
 
 **Exploration rates declining over time.** Check what your algorithm's effective exploration rate is now versus twelve months ago. If epsilon has been tuned down through standard optimisation cycles and you have never explicitly considered the collusion risk of low exploration, review it now.
 
-On the constraint side: [insurance-optimise](https://burning-cost.github.io/insurance-optimise) enforces technical floor constraints (`ConstraintConfig(technical_floor=True)`) that prevent pricing below cost. But a technical floor does not protect against supra-competitive pricing — the concern here is that prices are too high relative to competition, not too low. The relevant constraint is to ensure your optimiser's objective function is genuinely cost-anchored and that competitor price terms enter only as soft constraints, not as the primary signal.
+On the constraint side: [insurance-optimise](/2026/03/07/insurance-optimise/) enforces technical floor constraints (`ConstraintConfig(technical_floor=True)`) that prevent pricing below cost. But a technical floor does not protect against supra-competitive pricing — the concern here is that prices are too high relative to competition, not too low. The relevant constraint is to ensure your optimiser's objective function is genuinely cost-anchored and that competitor price terms enter only as soft constraints, not as the primary signal.
 
 ---
 
@@ -93,4 +93,4 @@ The practical action is not algorithmic redesign. It is monitoring and documenta
 
 **Paper:** Bichler, Durmann, Oberlechner — "Algorithmic Pricing and Algorithmic Collusion", arXiv:2504.16592, accepted *Business & Information Systems Engineering* (2025).
 
-**Related tools:** [insurance-monitoring](https://burning-cost.github.io/insurance-monitoring) — portfolio and model monitoring including PSI, A/E, Gini drift. [insurance-optimise](https://burning-cost.github.io/insurance-optimise) — constrained pricing optimisation with FCA audit trail.
+**Related tools:** [insurance-monitoring](https://burning-cost.github.io/insurance-monitoring) — portfolio and model monitoring including PSI, A/E, Gini drift. [insurance-optimise](https://burning-cost.github.io/insurance-optimise) — constrained pricing optimisation with FCA audit trail. See also: [UK Motor Is Going Loss-Making Again](/2026/03/25/uk-motor-is-going-loss-making-again/) — the market context that makes algorithmic pricing discipline urgent.

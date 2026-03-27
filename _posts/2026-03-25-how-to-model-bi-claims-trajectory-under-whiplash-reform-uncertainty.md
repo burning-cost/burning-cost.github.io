@@ -53,7 +53,7 @@ We assign illustrative probabilities of 45%, 25%, 30% respectively. Your team's 
 
 For each scenario, we need a severity distribution over the BI claims that will actually emerge — not the settled portfolio average, but the per-claim distribution that drives the reserve.
 
-`insurance-severity` gives us three tools here. For the body of the distribution (attritional BI below £5,000) we use a lognormal body. For the tail — the claims above £5,000 that sit outside the tariff regardless of reform scenario — we use a GPD tail. The spliced model handles the structural break at the tariff threshold.
+[insurance-severity](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) gives us three tools here. For the body of the distribution (attritional BI below £5,000) we use a lognormal body. For the tail — the claims above £5,000 that sit outside the tariff regardless of reform scenario — we use a GPD tail. The spliced model handles the structural break at the tariff threshold.
 
 ```python
 from insurance_severity import LognormalBurrComposite
@@ -131,7 +131,7 @@ The `superimposed_inflation()` method strips out the ONS motor repair index (ser
 
 ### Step 3: Smooth the development factors
 
-The development factors from a BI triangle are noisy at long tails — credibility thins out in the 36–72 month development range. `insurance-whittaker` smooths these without imposing a parametric form.
+The development factors from a BI triangle are noisy at long tails — credibility thins out in the 36–72 month development range. [insurance-whittaker](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) smooths these without imposing a parametric form.
 
 ```python
 import numpy as np
@@ -160,7 +160,7 @@ The `order=2` penalty smoothes second differences — equivalent to fitting a lo
 
 The smoothed development factors from Whittaker-Henderson carry Bayesian credible intervals — but those intervals assume Gaussian errors and the correctness of the smoothing model. Under reform scenario uncertainty, neither assumption is comfortable.
 
-`insurance-conformal` gives us a distribution-free alternative. We treat the development factor as a prediction target, the calibration set is our historical factor observations by development age, and the conformal interval carries a finite-sample coverage guarantee without any distributional assumption.
+[insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) gives us a distribution-free alternative. We treat the development factor as a prediction target, the calibration set is our historical factor observations by development age, and the conformal interval carries a finite-sample coverage guarantee without any distributional assumption.
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor

@@ -43,7 +43,7 @@ Bodily injury tells a more nuanced story. WTW's Tim Rourke noted in January 2026
 
 Before you can respond to a deteriorating market, you need to know your book is deteriorating — ideally before the quarterly management accounts tell you. Three metrics matter most.
 
-**A/E ratio by accident quarter.** The actual-to-expected ratio on paid claims, tracked by accident quarter with a development lag correction, is the earliest reliable signal. A/E ratios drifting above 1.05 on recent accident quarters, before claims reach their expected development point, suggest your model's expected cost is understated. `insurance-monitoring` has this built in:
+**A/E ratio by accident quarter.** The actual-to-expected ratio on paid claims, tracked by accident quarter with a development lag correction, is the earliest reliable signal. A/E ratios drifting above 1.05 on recent accident quarters, before claims reach their expected development point, suggest your model's expected cost is understated. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) has this built in:
 
 ```python
 from insurance_monitoring import ae_ratio, ae_ratio_ci, MonitoringReport
@@ -101,7 +101,7 @@ The output distinguishes between calibration failure (A/E outside thresholds) an
 
 Monitoring tells you the book is burning. It does not tell you what to do about it. The response has three components.
 
-**Separate market effect from portfolio effect.** Before you can set rates, you need to know how much of the A/E deterioration is the market (everyone's repair costs are up) versus your portfolio (your mix has shifted towards higher-risk segments). These look the same in aggregate A/E but require completely different responses. `insurance-causal`'s `RateChangeEvaluator` uses a difference-in-differences framework to isolate the portfolio-specific effect:
+**Separate market effect from portfolio effect.** Before you can set rates, you need to know how much of the A/E deterioration is the market (everyone's repair costs are up) versus your portfolio (your mix has shifted towards higher-risk segments). These look the same in aggregate A/E but require completely different responses. [insurance-causal](/2026/03/10/rate-change-lapse-evaluation-causal-inference/)'s `RateChangeEvaluator` uses a difference-in-differences framework to isolate the portfolio-specific effect:
 
 ```python
 from insurance_causal.rate_change import RateChangeEvaluator, make_rate_change_data
@@ -120,7 +120,7 @@ If your deterioration tracks the market (EY's 111% NCR trajectory), you have a p
 
 **Rate adequacy by segment.** A portfolio-level rate increase decision made without segment-level profitability analysis will produce an uneven outcome: adequately priced segments will be pushed past competitive rates and lose volume, while underpriced segments get inadequate correction. The standard approach is to compute technical loss ratios at segment level — by vehicle group, age band, and channel — then apply rate change factors calibrated to the technical premium gap.
 
-**Constrained rate optimisation.** The FCA's Consumer Duty framework (PS22/9) constrains how you can move rates, particularly on renewal books where existing customers may face significant increases. `insurance-optimise` handles this directly — you specify loss ratio targets, maximum rate change limits per policy, volume retention floors, and the ENBP constraint from PS21/5, and it solves for the profit-maximising premium set within those constraints:
+**Constrained rate optimisation.** The FCA's Consumer Duty framework (PS22/9) constrains how you can move rates, particularly on renewal books where existing customers may face significant increases. [insurance-optimise](/2026/03/07/insurance-optimise/) handles this directly — you specify loss ratio targets, maximum rate change limits per policy, volume retention floors, and the ENBP constraint from PS21/5, and it solves for the profit-maximising premium set within those constraints:
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig

@@ -73,7 +73,7 @@ The Consumer Duty to non-UK consumers question gets a consultation in H1 2026 (i
 
 Three concrete actions follow from this document.
 
-**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes — not just whether the technical model is accurate. `insurance-monitoring` gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control — you do not need to pre-specify monitoring intervals.
+**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes — not just whether the technical model is accurate. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control — you do not need to pre-specify monitoring intervals.
 
 ```python
 from insurance_monitoring import MonitoringReport, PITMonitor
@@ -109,7 +109,7 @@ for claim_i, lambda_hat_i, exposure_i in zip(new_claims, new_predictions, new_ex
         break
 ```
 
-**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. `insurance-fairness` v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
+**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [insurance-fairness](/2026/03/03/your-pricing-model-might-be-discriminating/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
 
 ```python
 from insurance_fairness import DoubleFairnessAudit
@@ -139,7 +139,7 @@ print(result.summary())
 print(double_audit.report())    # FCA evidence pack section, ready to attach
 ```
 
-**Third: governance documentation for AI models.** The FCA's AI review starts Q1 2026. "Firms should consider testing ideas in our AI Lab" is not enforceable, but "they must monitor outcomes for consumers closely" is Consumer Duty. For any ML pricing model, an `MRMModelCard` from `insurance-governance` creates the governance artefact the FCA will want to see: risk tier, assumptions, limitations, validation status, and owner.
+**Third: governance documentation for AI models.** The FCA's AI review starts Q1 2026. "Firms should consider testing ideas in our AI Lab" is not enforceable, but "they must monitor outcomes for consumers closely" is Consumer Duty. For any ML pricing model, an `MRMModelCard` from [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) creates the governance artefact the FCA will want to see: risk tier, assumptions, limitations, validation status, and owner.
 
 ```python
 from insurance_governance import MRMModelCard, RiskTierScorer, ModelInventory

@@ -71,9 +71,9 @@ That said, three practical implications stand out.
 
 ## Connection to our insurance-severity library
 
-Our [insurance-severity](https://github.com/burning-cost/insurance-severity) package already implements several of the techniques discussed in these papers. The `TruncatedGPD` class fits a GPD with a truncated maximum likelihood correction — directly addressing the truncation bias that Albrecher and Beirlant document. The `CensoredHillEstimator` applies the censoring correction from the same paper (their reference is cited in the module docstring). The `WeibullTemperedPareto` implements the tempered Pareto survival function $S(x) = x^{-\alpha} e^{-\lambda x^\tau}$ for property lines where pure Pareto tails are implausible.
+Our [insurance-severity package](https://github.com/burning-cost/insurance-severity) already implements several of the techniques discussed in these papers. The `TruncatedGPD` class fits a GPD with a truncated maximum likelihood correction — directly addressing the truncation bias that Albrecher and Beirlant document. The `CensoredHillEstimator` applies the censoring correction from the same paper (their reference is cited in the module docstring). The `WeibullTemperedPareto` implements the tempered Pareto survival function $S(x) = x^{-\alpha} e^{-\lambda x^\tau}$ for property lines where pure Pareto tails are implausible.
 
-On the composite modelling side, `LognormalBurrComposite` and `CompositeSeverityRegressor` handle the body-tail split with automatic threshold selection via profile likelihood — closer in spirit to the Nieto-Barajas approach than to standard POT.
+On the composite modelling side, `LognormalBurrComposite` and `CompositeSeverityRegressor` handle the body-tail split with automatic threshold selection via profile likelihood (see [Spliced Severity Distributions](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) for a full worked example) — closer in spirit to the Nieto-Barajas approach than to standard POT.
 
 What the library does not yet have is a conditional EVT regressor that properly accounts for the sample-size constraints that Clémençon and Sabourin identify. That is work in progress. For now, the honest recommendation is: use composite regression for conditional severity modelling (it is more stable with typical UK book sizes), and reserve conditional GPD fitting for cases where you have enough tail data by segment to trust the estimates.
 
@@ -82,6 +82,10 @@ What the library does not yet have is a conditional EVT regressor that properly 
 There is a tendency in the literature — and in some conference presentations — to treat "we used a neural network to estimate the tail index" as an inherently superior approach to "we ran a regression on the log of excess losses." Whether it is superior depends almost entirely on the data volume available in the tail. For a large personal lines book (500,000+ policies, multiple years), conditional neural tail models may well outperform fixed-$\xi$ approaches. For most commercial lines portfolios, or for any book where you are trying to be precise about segment-level ILFs, the theoretical bounds from Clémençon and Sabourin suggest you should be cautious about how much conditioning you attempt.
 
 The Albrecher-Beirlant paper implicitly makes the same point: the regime where fancy ML methods add the most value is also the regime where the data is richest. In the tails of insurance loss distributions, richness is precisely what you do not have.
+
+---
+
+For practitioners working through these methods: [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) covers the quantile regression approach to the same tail estimation problem. [How to Model BI Claims Trajectory Under Whiplash Reform Uncertainty](/2026/03/25/how-to-model-bi-claims-trajectory-under-whiplash-reform-uncertainty/) applies composite severity models to motor BI under reform uncertainty.
 
 ---
 

@@ -19,7 +19,7 @@ The naive approach to parametric trigger calibration fits a historical return-pe
 
 River gauge records are censored in two directions. Gauges have operational limits above which they record out-of-range. Historic records before gauge installation are recovered from flood marks or documentary evidence with substantial uncertainty. The EA's national flood risk assessment (NFRA2) includes gauge records back to the 1800s at some sites, but the quality of the pre-1960 data ranges from excellent to barely useful. Standard GPD fitted on the post-1990 record will have a different shape parameter than the true century-scale tail, and the error propagates directly into the trigger level.
 
-The EVT correction is the same correction that applies to large-loss severity modelling with policy limits. Use [TruncatedGPD from insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) with the operational gauge limit as the upper truncation point for each observation:
+The EVT correction is the same correction that applies to large-loss severity modelling with policy limits. Use [TruncatedGPD from insurance-severity](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) with the operational gauge limit as the upper truncation point for each observation:
 
 ```python
 from insurance_severity import TruncatedGPD
@@ -83,7 +83,7 @@ The practical steps are:
 
 The second error type - loss without trigger - is the regulatory concern under FCA ICOBS 6A fair value obligations. If a product triggers on 60% of large loss events and fails to trigger on 40%, that 40% needs to be reflected in the premium as a known shortfall in value, not hidden in basis risk uncertainty.
 
-Quantifying that uncertainty around the copula fit is where [insurance-conformal](https://burning-cost.github.io/insurance-conformal) becomes useful. Once you have simulated payout error distributions, you can construct prediction intervals that carry a coverage guarantee regardless of the copula family:
+Quantifying that uncertainty around the copula fit is where [insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) becomes useful. Once you have simulated payout error distributions, you can construct prediction intervals that carry a coverage guarantee regardless of the copula family:
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
@@ -158,6 +158,6 @@ The protocol sounds involved but it is considerably less involved than the claim
 
 ---
 
-**Related tools:** [insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) - EVT tail modelling including TruncatedGPD, CensoredHillEstimator, TailVariableImportance. [insurance-conformal](https://burning-cost.github.io/insurance-conformal) - distribution-free prediction intervals for uncertainty quantification.
+**Related tools:** [insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) - EVT tail modelling including TruncatedGPD, CensoredHillEstimator, TailVariableImportance. [insurance-conformal](https://burning-cost.github.io/insurance-conformal) - distribution-free prediction intervals for uncertainty quantification. See also: [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — empirical benchmark of conformal methods on real insurance data.
 
 **References:** SOA January 2026 Parametric Insurance Monograph; Boucher & Côté, CAS Proceedings vol. 112 (2025); Albrecher, Beirlant & Teugels (arXiv:2511.22272); arXiv:2504.06984 (tail variable importance).

@@ -95,7 +95,7 @@ cfg = DetectorConfig(
 detector = InteractionDetector(family="poisson", config=cfg)
 detector.fit(
     X=X_train,
-    y=pl.Series(train_df['y'].values),
+    y=train_df['y'].values,
     glm_predictions=mu_glm,
     exposure=exposure,
 )
@@ -233,7 +233,7 @@ approved_pairs = [("age_band", "vehicle_group"), ("ncd_band", "area")]
 
 final_model, comparison = build_glm_with_interactions(
     X=X_train,
-    y=pl.Series(train_df['y'].values),
+    y=train_df['y'].values,
     exposure=exposure,
     interaction_pairs=approved_pairs,
     family="poisson",

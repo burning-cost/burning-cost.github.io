@@ -49,7 +49,7 @@ None of this is new in principle. What changes is the evidentiary standard. The 
 
 The protection gap focus on pre-existing medical conditions, combined with the general premium dispersion concern, creates a straightforward inference: the FCA will want to understand whether pricing models for term, CI and IP products are using proxies for protected characteristics. Postcode is the obvious one — it correlates with income, ethnicity, and disability prevalence. Occupation codes are another.
 
-The `insurance-fairness` library has the tooling for this. The `IndirectDiscriminationAudit` is the right entry point — it computes the five benchmark premiums from Côté, Côté & Charpentier (2025) and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
+The [insurance-fairness library](/2026/03/03/your-pricing-model-might-be-discriminating/) has the tooling for this. The `IndirectDiscriminationAudit` is the right entry point — it computes the five benchmark premiums from Côté, Côté & Charpentier (2025) and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
 
 ```python
 from insurance_fairness import IndirectDiscriminationAudit
@@ -106,7 +106,7 @@ print(audit.report())   # formatted for an FCA evidence pack
 
 The income protection claims ratio concern is specific, but the general principle — that the FCA expects firms to track fair value outcomes not just at portfolio level but by segment — applies to all pure protection product lines.
 
-`insurance-monitoring` has calibration and discrimination tooling that covers this. The A/E ratio by segment is the starting point:
+[insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) has calibration and discrimination tooling that covers this. The A/E ratio by segment is the starting point:
 
 ```python
 from insurance_monitoring.calibration import ae_ratio, CalibrationChecker
@@ -146,7 +146,7 @@ The point is to build a documented trail that shows segment-level claims ratios 
 
 ## Step 3: Model documentation at the level the FCA will expect
 
-The governance library makes it straightforward to produce MRC-ready model cards that capture the assumptions, limitations, and risk tier classification in a structured format. For pure protection pricing models, the regulatory scrutiny angle requires adding explicit entries for fair value assumptions and the conditions under which the model should be reviewed:
+The [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) makes it straightforward to produce MRC-ready model cards that capture the assumptions, limitations, and risk tier classification in a structured format. For pure protection pricing models, the regulatory scrutiny angle requires adding explicit entries for fair value assumptions and the conditions under which the model should be reviewed:
 
 ```python
 from insurance_governance import MRMModelCard, Assumption, Limitation, RiskTierScorer, GovernanceReport

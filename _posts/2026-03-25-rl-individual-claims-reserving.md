@@ -51,7 +51,7 @@ Three additional components in the paper are worth noting:
 
 ## How this fits the neural reserving trend
 
-A companion paper from Richman and Wüthrich — [arXiv:2603.11660](https://arxiv.org/abs/2603.11660), "One-Shot Individual Claims Reserving" — takes a different approach: feedforward networks and LSTMs that predict ultimate cost from claim transaction histories in a single step. That work finds that handler reserve (incurred) substantially outperforms cumulative paid as a primary feature on liability lines, and that one-shot projection-to-ultimate factors at claim level cut Mack chain-ladder RMSEP by around 40% on accident data.
+A companion paper from Richman and Wüthrich ([arXiv:2603.11660](https://arxiv.org/abs/2603.11660)), covered in [One-Shot Individual Claims Reserving: Neural Networks vs Chain Ladder](/2026/03/25/one-shot-individual-claims-reserving-neural-networks-vs-chain-ladder/), takes a different approach: feedforward networks and LSTMs that predict ultimate cost from claim transaction histories in a single step. That work finds that handler reserve (incurred) substantially outperforms cumulative paid as a primary feature on liability lines, and that one-shot projection-to-ultimate factors at claim level cut Mack chain-ladder RMSEP by around 40% on accident data.
 
 The RL paper is doing something categorically different. It is not predicting ultimate cost from claim features. It is training an agent to produce estimates that are accurate **and stable over time** — an objective that one-shot prediction cannot express. A single-period neural network makes one prediction per claim. The SAC agent makes a prediction at every development period and is trained jointly on accuracy across all of them.
 
@@ -63,7 +63,7 @@ The broader pattern we are tracking is that micro-level models are now genuinely
 
 ## The severity library connection
 
-Both the selection bias problem and the importance weighting solution connect to the severity modelling work we maintain in `insurance-severity`. The distributional refinement network (DRN) in that library produces full predictive distributions rather than point predictions — which matters when you are evaluating OCL estimates against eventual settlement.
+Both the selection bias problem and the importance weighting solution connect to the [severity modelling work](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) in `insurance-severity`. The distributional refinement network (DRN) in that library produces full predictive distributions rather than point predictions — which matters when you are evaluating OCL estimates against eventual settlement.
 
 The importance weighting mechanism in the RL paper is essentially a tail-weighted loss. Our EVT module in `insurance-severity` addresses the same problem from a different angle: fitting a generalised Pareto distribution to exceedances above a threshold so that the tail is modelled separately rather than distorted by the body of the distribution. If you are building an individual claims reserving pipeline and large claims are a material concern — which they will be on EL and motor BI — EVT-based initialisation for high-severity FNOL claims combined with the RL agent's sequential updating is a sensible architecture worth exploring.
 
@@ -79,7 +79,7 @@ The use case is narrow but real. The approach is relevant when:
 
 3. **Reserve stability is a genuine objective.** If your board, regulator, or investors are sensitive to period-on-period reserve movements, an objective function that explicitly penalises instability is better aligned with real constraints than one that minimises RMSEP alone. Solvency II SCR calculations are affected by reserve volatility; reducing it directly is not just aesthetically satisfying.
 
-4. **You have actuarial resource to implement and validate it.** This is not a drop-in replacement for a reserving triangle. You need to validate the MDP state specification, tune the reward function, and back-test the rolling-settlement scheme. PRA SS1/23 validation requirements apply. The interpretability challenge is significant — explaining to a reserving committee why the agent revised OCL from £85k to £92k requires more than pointing at a triangle.
+4. **You have actuarial resource to implement and validate it.** This is not a drop-in replacement for a reserving triangle. You need to validate the MDP state specification, tune the reward function, and back-test the rolling-settlement scheme. [PRA SS1/23 validation requirements](/2025/07/13/model-validation-pra-ss123/) apply. The interpretability challenge is significant — explaining to a reserving committee why the agent revised OCL from £85k to £92k requires more than pointing at a triangle.
 
 The last point is the honest constraint. For most UK non-life teams, the practical path is to use this as a benchmark or sensitivity check alongside chain ladder and Bornhuetter-Ferguson, not as the primary reserve estimate until there is more regulatory familiarity with RL-derived reserves.
 

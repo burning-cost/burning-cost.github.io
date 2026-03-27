@@ -156,7 +156,7 @@ The `risk="HIGH"` on the fair value assumption is deliberate. It is not a high-p
 
 ## The regulatory tier question
 
-An embedded pricing model in production has high materiality (GWP impact), customer-facing regulatory exposure, and typically a non-trivial complexity score. Running `RiskTierScorer` on a realistic profile will return Tier 1 almost every time:
+An embedded pricing model in production has high materiality (GWP impact), customer-facing regulatory exposure, and typically a non-trivial complexity score. Running `RiskTierScorer` on a realistic profile will return Tier 1 almost every time (see [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) for the full tier framework):
 
 ```python
 from insurance_governance import RiskTierScorer
@@ -200,6 +200,6 @@ This is not a novel architecture. It is the standard multiplicative rating engin
 
 ---
 
-**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) - GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) - model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty.
+**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) - GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) - model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty. See also: [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) — the SS1/23 validation suite that embedded models must pass. [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/) — the full distillation workflow end to end.
 
 **References:** BCG Embedded Finance Report 2025; FCA Consumer Duty Guidance FG22/5 (July 2022); FCA Model Risk Management Discussion Paper MS23/1; PRA Supervisory Statement SS1/23; Lindholm & Palmquist (2024) SSRN 4691626.
