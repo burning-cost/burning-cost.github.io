@@ -13,7 +13,7 @@ The "source" column says something like "actuarial judgment" or "five-year linea
 
 Trend is the largest unexamined number in the rate. It gets less scrutiny than the development tail, despite being more consequential for future-year pricing. This is partly because the tooling is poor: actuaries do trend in Excel, or in R scripts that nobody else can run, or in proprietary systems that produce a number but not reproducible code.
 
-[`insurance-trend`](https://github.com/burning-cost/insurance-trend) is our 30th open-source library. Nine modules, 2,273 lines, 154 tests, v0.1.0. It brings frequency trend, severity trend, and combined loss cost trend into Python with composable fitters, ONS API integration, automatic structural break detection via ruptures, and 1,000-replicate bootstrap confidence intervals.
+[`insurance-trend`](/insurance-monitoring/) is our 30th open-source library. For the monitoring framework that signals when trend has shifted post-deployment, see [insurance-monitoring](/insurance-monitoring/). Nine modules, 2,273 lines, 154 tests, v0.1.0. It brings frequency trend, severity trend, and combined loss cost trend into Python with composable fitters, ONS API integration, automatic structural break detection via ruptures, and 1,000-replicate bootstrap confidence intervals.
 
 ```bash
 uv add insurance-trend

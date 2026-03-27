@@ -17,7 +17,7 @@ But here is the thing you may not have noticed: your "interpretable model" proba
 
 If your interpretable model is an Explainable Boosting Machine, its shape functions are exact, genuinely intrinsic to the architecture, but they can be jagged in ways that produce artificial pricing discontinuities, it has no native Tweedie or Gamma loss for severity modelling, and its monotonicity constraints are post-hoc edits that break the model's internal consistency the moment you apply them. If your interpretable model is a GAM fitted inside a commercial pricing tool, the interpretability is real but the fitting is proprietary and the model building block is locked to the vendor's platform.
 
-The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025), resolves all three problems. We have built [`insurance-gam`](https://github.com/burning-cost/insurance-gam), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
+The Actuarial Neural Additive Model (ANAM), introduced by Laub, Pho and Wong (UNSW, arXiv:2509.08467, September 2025), resolves all three problems. We have built [`insurance-gam`](/insurance-gam/), the first pip-installable implementation, with sklearn-compatible API, Poisson/Tweedie/Gamma losses, smoothness regularisation, and monotonicity constraints that are mathematically guaranteed, not applied after the fact.
 
 ---
 

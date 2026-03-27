@@ -13,7 +13,7 @@ What you probably do not have: a record of which model priced which renewal quot
 
 That is not a champion/challenger test. It is a comparison exercise. They are not the same thing.
 
-[`insurance-deploy`](https://github.com/burning-cost/insurance-deploy) is our 25th open-source library. It provides the infrastructure that a genuine champion/challenger framework requires: deterministic routing, append-only audit logging, ENBP compliance tracking, insurance-specific KPI computation, bootstrap statistical tests, and an ICOBS 6B.2.51R report. It is on PyPI at v0.1.1, 146 tests passing.
+[`insurance-deploy`](/insurance-governance/) is our 25th open-source library. It provides the infrastructure that a genuine champion/challenger framework requires: deterministic routing, append-only audit logging, ENBP compliance tracking, insurance-specific KPI computation, bootstrap statistical tests, and an ICOBS 6B.2.51R report. It is on PyPI at v0.1.1, 146 tests passing.
 
 ```bash
 uv add insurance-deploy

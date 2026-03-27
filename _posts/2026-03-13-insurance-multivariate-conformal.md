@@ -13,7 +13,7 @@ You might also have prediction intervals. If you use `insurance-conformal`, you 
 
 Their conjunction is not guaranteed. If frequency and severity each have 5% miscoverage probability, the probability that at least one of them fails could be as high as 10%. It depends on the dependence structure between the two errors - and you have no control over it.
 
-This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements joint coverage control for multi-output insurance models.
+This matters when the question is not "what is the frequency interval?" but "what is the joint technical price interval?" or "what do I need to hold as capital to cover joint adverse outcomes at 99.5%?" For those questions, marginal coverage is the wrong thing to control. [`insurance-conformal`](/insurance-conformal/) implements joint coverage control for multi-output insurance models.
 
 ```bash
 uv add insurance-conformal

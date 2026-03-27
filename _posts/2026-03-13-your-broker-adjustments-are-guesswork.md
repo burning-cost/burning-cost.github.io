@@ -17,7 +17,7 @@ It has not been solved. It has been named.
 
 ## What the spreadsheet does not know
 
-The manual loading is not wrong in direction. Broker A's business genuinely runs hot. But it is wrong in magnitude, and it is wrong in the way that matters most: it does not know how much to trust its own estimate.
+The manual loading is not wrong in direction. The [insurance-credibility](/insurance-credibility/) library implements credibility-weighted broker and scheme effects with proper REML estimation. Broker A's business genuinely runs hot. But it is wrong in magnitude, and it is wrong in the way that matters most: it does not know how much to trust its own estimate.
 
 Broker A wrote 23 policies last year. Its +18% average log residual is based on 23 data points. How much of that +18% is genuine Broker A effect (their risk appetite, their underwriting judgment, the class of business they bring) and how much is random noise on a thin sample? The spreadsheet cannot tell you. The manual loading implicitly assumes it is all signal. It is not.
 

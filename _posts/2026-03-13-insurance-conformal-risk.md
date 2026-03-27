@@ -8,7 +8,7 @@ description: "Conformal risk control for UK insurance: coverage calibrated to fi
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-conformal-risk` has been consolidated into [`insurance-conformal`](https://pypi.org/project/insurance-conformal/). Install with `pip install insurance-conformal` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-conformal)
+**Package update:** `insurance-conformal-risk` has been consolidated into [`insurance-conformal`](/insurance-conformal/). Install with `pip install insurance-conformal` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-conformal)
 </div>
 
 

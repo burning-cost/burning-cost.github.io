@@ -11,7 +11,7 @@ When your home insurance team prices thatched properties, new-build flats in a s
 
 The question worth asking in 2026 is whether there is something better.
 
-[`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) is our answer. It wraps TabPFN v2 and TabICLv2 in an insurance actuarial workflow: sklearn-compatible fit/predict, GLM benchmark with proper actuarial metrics, PDP-based relativities extraction, split conformal prediction intervals, and a committee-ready report with mandatory disclosure of limitations.
+[`insurance-thin-data`](/insurance-credibility/) is our answer. For Bayesian approaches to the same thin-data problem, see [insurance-credibility](/insurance-credibility/). It wraps TabPFN v2 and TabICLv2 in an insurance actuarial workflow: sklearn-compatible fit/predict, GLM benchmark with proper actuarial metrics, PDP-based relativities extraction, split conformal prediction intervals, and a committee-ready report with mandatory disclosure of limitations.
 
 ```bash
 uv add insurance-thin-data

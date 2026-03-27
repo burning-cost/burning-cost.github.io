@@ -127,7 +127,7 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 
 ---
 
-**[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** — 84 tests, MIT-licensed. [PyPI](https://pypi.org/project/insurance-telematics/).
+**[insurance-telematics](/insurance-telematics/)** — 84 tests, MIT-licensed. [PyPI](https://pypi.org/project/insurance-telematics/).
 
 ---
 

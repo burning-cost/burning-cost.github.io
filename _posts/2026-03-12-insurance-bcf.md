@@ -8,7 +8,7 @@ description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insu
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-bcf` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — Bayesian Causal Forests are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-bcf` has been consolidated into [`insurance-causal`](/insurance-causal/). Install with `pip install insurance-causal` — Bayesian Causal Forests are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 

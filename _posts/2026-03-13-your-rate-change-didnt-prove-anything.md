@@ -13,7 +13,7 @@ None of this is evidence that the rate change caused the improvement.
 
 This is not a pedantic distinction. FCA TR24/2 (August 2024) reviewed how UK insurers evaluate the outcomes of their pricing interventions and found that a material number of firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's language was explicit: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. They compared outcomes between treated and comparison groups in their own EP25/2 evaluation specifically because they knew the before/after approach cannot isolate the treatment effect from market-wide trends.
 
-We built [`insurance-causal-policy`](https://github.com/burning-cost/insurance-causal-policy) to close this gap. It is on PyPI at v0.1.4, 170 tests passing, and it produces the kind of structured causal evidence that TR24/2 was looking for.
+We built [`insurance-causal-policy`](/insurance-causal/) to close this gap. It is on PyPI at v0.1.4, 170 tests passing, and it produces the kind of structured causal evidence that TR24/2 was looking for.
 
 ---
 

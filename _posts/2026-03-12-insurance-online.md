@@ -8,7 +8,7 @@ description: "Bandit algorithms for FCA GIPP-compliant price experimentation in 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-online` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise` — bandit pricing algorithms are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
+**Package update:** `insurance-online` has been consolidated into [`insurance-optimise`](/insurance-optimise/). Install with `pip install insurance-optimise` — bandit pricing algorithms are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
 </div>
 
 

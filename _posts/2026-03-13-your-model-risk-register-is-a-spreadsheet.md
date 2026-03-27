@@ -17,7 +17,7 @@ That is not a model risk register. It is a list.
 
 The distinction matters because the PRA's 2026 supervision priorities letter (issued in January 2026) specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests - it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
+[`insurance-governance`](/insurance-governance/) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests - it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
 ```bash
 uv add insurance-governance

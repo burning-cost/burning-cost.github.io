@@ -212,7 +212,7 @@ Without exposure weighting, small schemes with volatile loss ratios dominate spl
 
 ## CFFE versus SDID: when to use which
 
-Our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library implements Synthetic DiD (SDID) for aggregate causal evaluation of rate changes. CFFE and SDID are solving different problems and are better used together than as alternatives.
+Our [insurance-causal-policy](/insurance-causal/) library implements Synthetic DiD (SDID) for aggregate causal evaluation of rate changes. CFFE and SDID are solving different problems and are better used together than as alternatives.
 
 SDID answers: what was the causal effect of the rate change on the treated segment as a whole? It works at the segment or product level, requires no individual-level panel, and is robust to pre-treatment trend differences because it reweights both units and time periods to construct the best synthetic control. Use SDID when you want a single, well-identified aggregate effect with a clean regulatory narrative - "our North West motor rate increase reduced the loss ratio by 2.8 points (95% CI: 1.1 to 4.5)."
 

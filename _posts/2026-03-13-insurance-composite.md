@@ -11,7 +11,7 @@ Every UK motor BI pricing model has the same structural problem. The Gamma GLM f
 
 This is how large loss misallocation compounds. The young driver is underpriced at high limits. The fleet account is overpriced. The aggregate is approximately right, but the cross-subsidy is not visible until you lose the fleet account to a competitor who priced it better.
 
-[`insurance-severity`](https://github.com/burning-cost/insurance-severity) takes a different approach: fit a composite (spliced) severity model that treats the body and tail as genuinely different distributions, connected at a threshold. The body is lognormal or gamma. The tail is GPD or Burr XII. The threshold can vary by policyholder. 2,818 lines of source, 106 tests passing. MIT-licensed, on PyPI.
+[`insurance-severity`](/insurance-distributional/) takes a different approach: fit a composite (spliced) severity model that treats the body and tail as genuinely different distributions, connected at a threshold. The body is lognormal or gamma. The tail is GPD or Burr XII. The threshold can vary by policyholder. 2,818 lines of source, 106 tests passing. MIT-licensed, on PyPI.
 
 ```bash
 uv add insurance-severity

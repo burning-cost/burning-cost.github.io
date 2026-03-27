@@ -11,7 +11,7 @@ Every renewal pricing team has a lapse model. Most of them are logistic regressi
 
 Here is the problem. The model's "not lapsed" population contains two genuinely different groups. The first group lapsed eventually, just not last year. The second group will never lapse regardless of what you charge them - direct debit, maximum NCD, insured since 1999, no price sensitivity at any realistic premium. When you train a logistic regression on one year of data, these two groups look identical. The model cannot tell them apart because, in any given observation window, both are censored.
 
-Mixture cure models exist precisely to separate them.
+Mixture cure models exist precisely to separate them. The [insurance-causal](/insurance-causal/) library complements this by providing causal evaluation of whether your pricing interventions actually caused the lapse patterns you observe.
 
 ---
 
