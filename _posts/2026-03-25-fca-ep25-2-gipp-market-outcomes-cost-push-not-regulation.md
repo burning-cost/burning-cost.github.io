@@ -115,7 +115,7 @@ The ongoing monitoring question is different. The FCA is now watching for:
 3. **Compulsory excess creep** — not formally prohibited, but the FCA noted it. It is on their radar.
 4. **Claims ratio trends** — the FCA cited a fall from 64% to 56% in motor claims cost as a proportion of premium (2022 to 2023). A continued decline would attract attention under Consumer Duty fair value obligations.
 
-All four of these are measurable with [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring). The calibration module gives you A/E ratio tracking; the drift attribution module (TRIPODD) tells you which rating factors are driving margin movements; the discrimination module gives you the Gini drift test if your ranking is shifting.
+All four of these are measurable with [`insurance-monitoring`](/insurance-monitoring/). The calibration module gives you A/E ratio tracking; the drift attribution module (TRIPODD) tells you which rating factors are driving margin movements; the discrimination module gives you the Gini drift test if your ranking is shifting.
 
 For tenure-based monitoring specifically, the relevant check is whether expected margin as a function of tenure is flat:
 

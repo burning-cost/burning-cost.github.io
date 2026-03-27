@@ -9,7 +9,7 @@ description: "We ran Double Machine Learning against a naive GLM on a 50,000-pol
 
 The honest answer is: yes, but only if your current approach is a GLM coefficient, and only in the scenarios where confounding is structural rather than incidental.
 
-We spent time running benchmarks on [`insurance-causal`](https://github.com/burning-cost/insurance-causal) against a synthetic 50,000-policy UK motor book with a known data-generating process. The numbers are uncomfortable for anyone who has ever calibrated a telematics discount from a GLM coefficient.
+We spent time running benchmarks on [`insurance-causal`](/insurance-causal/) against a synthetic 50,000-policy UK motor book with a known data-generating process. The numbers are uncomfortable for anyone who has ever calibrated a telematics discount from a GLM coefficient.
 
 ---
 

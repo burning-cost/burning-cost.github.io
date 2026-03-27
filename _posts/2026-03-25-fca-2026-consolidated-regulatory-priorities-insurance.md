@@ -109,7 +109,7 @@ for claim_i, lambda_hat_i, exposure_i in zip(new_claims, new_predictions, new_ex
         break
 ```
 
-**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. `insurance-fairness` v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
+**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [`insurance-fairness`](/insurance-fairness/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
 
 ```python
 from insurance_fairness import DoubleFairnessAudit

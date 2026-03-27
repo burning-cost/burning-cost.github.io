@@ -49,7 +49,7 @@ None of this is new in principle. What changes is the evidentiary standard. The 
 
 The protection gap focus on pre-existing medical conditions, combined with the general premium dispersion concern, creates a straightforward inference: the FCA will want to understand whether pricing models for term, CI and IP products are using proxies for protected characteristics. Postcode is the obvious one — it correlates with income, ethnicity, and disability prevalence. Occupation codes are another.
 
-The `insurance-fairness` library has the tooling for this — for a worked example of how to detect and document proxy discrimination under Consumer Duty, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/). The `IndirectDiscriminationAudit` is the right entry point — it computes the five benchmark premiums from Côté, Côté & Charpentier (2025) and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
+The [`insurance-fairness`](/insurance-fairness/) library has the tooling for this — for a worked example of how to detect and document proxy discrimination under Consumer Duty, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/). The `IndirectDiscriminationAudit` is the right entry point — it computes the five benchmark premiums from Côté, Côté & Charpentier (2025) and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
 
 ```python
 from insurance_fairness import IndirectDiscriminationAudit

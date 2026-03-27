@@ -537,8 +537,8 @@ uv add insurance-monitoring insurance-fairness insurance-conformal
 All three libraries require Python 3.10+ and have no heavy dependencies beyond numpy, scipy, polars, and pandas. CatBoost and LightGBM are optional backends — the fairness and conformal libraries fall back to sklearn's GradientBoostingRegressor if neither is installed.
 
 The libraries are at:
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, CSI, A/E, GiniDrift, PITMonitor, TRIPODD
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — ProxyDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
+- [`insurance-monitoring`](/insurance-monitoring/) — PSI, CSI, A/E, GiniDrift, PITMonitor, TRIPODD
+- [`insurance-fairness`](/insurance-fairness/) — ProxyDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — prediction intervals, PremiumSufficiencyController
 
 ---

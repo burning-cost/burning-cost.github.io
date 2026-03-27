@@ -37,7 +37,7 @@ For UK motor BI, typical tail indices xi run between 0.2 and 0.5, depending on b
 
 The threshold u is chosen by the mean excess plot: plot the sample mean of (X - u) against u. Under GPD, this should be approximately linear above the correct threshold. In practice for motor BI, thresholds of £50k to £100k are common for splitting attritional from large loss.
 
-The `TruncatedGPD` class in `insurance-severity` handles the most common complication in UK insurance data: per-policy limits create upper truncation in the claim distribution. Standard GPD MLE ignores this and underestimates xi. When you have heterogeneous limits — common in commercial lines and in any EL/PL book — you should be using the truncation-corrected estimator:
+The `TruncatedGPD` class in [`insurance-severity`](/insurance-distributional/) handles the most common complication in UK insurance data: per-policy limits create upper truncation in the claim distribution. Standard GPD MLE ignores this and underestimates xi. When you have heterogeneous limits — common in commercial lines and in any EL/PL book — you should be using the truncation-corrected estimator:
 
 ```python
 from insurance_severity import TruncatedGPD

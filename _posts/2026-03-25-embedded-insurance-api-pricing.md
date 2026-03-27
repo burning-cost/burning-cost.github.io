@@ -53,7 +53,7 @@ Three places.
 
 The right architecture for most embedded insurance pricing models is a GBM fitted on all available data, then distilled into a multiplicative GLM that runs in the API. The GBM provides predictive power. The GLM provides speed, interpretability, and governance tractability. The question is how much predictive performance you lose in the distillation, and whether that loss exceeds the commercial benefit of embedding.
 
-[insurance-distill](https://burning-cost.github.io/insurance-distill) implements two distillation approaches. `SurrogateGLM` fits a GLM on GBM pseudo-predictions with optimal binning. `LassoGuidedGLM` uses the GBM's partial dependence curves to place bin boundaries, then uses lasso to select which bins are large enough to matter. Both produce multiplicative factor tables that load directly into a rating engine.
+[insurance-distill](/insurance-distill/) implements two distillation approaches. `SurrogateGLM` fits a GLM on GBM pseudo-predictions with optimal binning. `LassoGuidedGLM` uses the GBM's partial dependence curves to place bin boundaries, then uses lasso to select which bins are large enough to matter. Both produce multiplicative factor tables that load directly into a rating engine.
 
 For embedded insurance specifically, `LassoGuidedGLM` is usually the better choice because the feature space is typically thin - embedded products have limited data collection at checkout - and the lasso selection prevents overfitting to the available features:
 

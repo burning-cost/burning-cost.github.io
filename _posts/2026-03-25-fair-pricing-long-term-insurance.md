@@ -80,7 +80,7 @@ For PMI pricing, the state machine is simpler (Active, Claiming, Lapsed) but the
 
 ## Where existing tools connect
 
-Our [insurance-fairness](https://github.com/burningcost/insurance-fairness) library already implements the discrimination-free pricing approach for single-period GLMs — specifically the Lindholm marginalisation method. The `DiscriminationFreeRates` class computes marginalised premiums by integrating over a reference distribution of protected characteristics.
+Our [`insurance-fairness`](/insurance-fairness/) library already implements the discrimination-free pricing approach for single-period GLMs — specifically the Lindholm marginalisation method. The `DiscriminationFreeRates` class computes marginalised premiums by integrating over a reference distribution of protected characteristics.
 
 The Lim et al. paper establishes that the same mathematical operation applies at the transition rate level in a multi-state model. The Poisson reformulation means you can use `DiscriminationFreeRates` on each transition model independently, then feed the adjusted rates into a standard actuarial Kolmogorov solver to recover the fair long-term premium. This is not a stretch of the existing functionality — it is the existing functionality applied at the right level of abstraction.
 

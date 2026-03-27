@@ -12,7 +12,7 @@ Every pricing team we speak to has done the same thing. They train a model, some
 
 It isn't done. It hasn't even started.
 
-This post covers why dropping the column fails, what propensity-based reweighting does instead, and how to use `DiscriminationInsensitiveReweighter` in [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) v0.6.3 — which implements the approach from Miao & Pesenti (2026, arXiv:2603.16720).
+This post covers why dropping the column fails, what propensity-based reweighting does instead, and how to use `DiscriminationInsensitiveReweighter` in [`insurance-fairness`](/insurance-fairness/) v0.6.3 — which implements the approach from Miao & Pesenti (2026, arXiv:2603.16720).
 
 ```bash
 uv add insurance-fairness

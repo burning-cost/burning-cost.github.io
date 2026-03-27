@@ -275,7 +275,7 @@ A/E green. Gini drift test red. This is the scenario that matters — and it is 
 
 ---
 
-`insurance-monitoring` is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). Polars-native throughout. Python 3.10+.
+[`insurance-monitoring`](/insurance-monitoring/) is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). Polars-native throughout. Python 3.10+.
 
 ---
 

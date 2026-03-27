@@ -250,7 +250,7 @@ The key point about extrapolation is important here. When you apply your model t
 
 ## How BLL relates to insurance-conformal
 
-[`insurance-conformal`](https://burning-cost.github.io/insurance-conformal) gives you distribution-free prediction intervals with finite-sample coverage guarantees. BLL gives you a Bayesian posterior. These are complementary, not competing.
+[`insurance-conformal`](/insurance-conformal/) gives you distribution-free prediction intervals with finite-sample coverage guarantees. BLL gives you a Bayesian posterior. These are complementary, not competing.
 
 The conformal guarantee is: `P(y ∈ [lower, upper]) >= 1 - α` for any exchangeable test point, regardless of whether your model is correctly specified. It makes no parametric assumptions. `InsuranceConformalPredictor` from insurance-conformal achieves this with a split conformal calibration:
 

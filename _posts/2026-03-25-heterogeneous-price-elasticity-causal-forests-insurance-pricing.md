@@ -11,7 +11,7 @@ Your DML model says the average semi-elasticity of renewal is −0.19 per unit l
 
 The problem is not that the number is wrong. It is that the mean of a wide distribution answers a different question from the one that actually matters for pricing. If the most price-sensitive 20% of your book has an elasticity of −0.30 and the least sensitive 20% is at −0.10, applying a uniform renewal discount based on the average effect will be wasteful on one group and insufficient on the other. In a UK motor portfolio with 200,000 renewals per year, the gap between pricing to the average and pricing to the distribution is a material amount of margin.
 
-Conditional average treatment effects (CATEs) and their formal inference machinery — GATES, CLAN, RATE — address this directly. The `causal_forest` module in [`insurance-causal`](https://github.com/burning-cost/insurance-causal) implements the full pipeline.
+Conditional average treatment effects (CATEs) and their formal inference machinery — GATES, CLAN, RATE — address this directly. The `causal_forest` module in [`insurance-causal`](/insurance-causal/) implements the full pipeline.
 
 ---
 

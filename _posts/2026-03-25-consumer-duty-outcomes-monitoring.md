@@ -11,7 +11,7 @@ The FCA published its findings from a multi-firm review of insurance outcomes mo
 
 This is the first full outcomes monitoring year — the rules for open products came into force 31 July 2023, for closed books 31 July 2024, and 2025/26 is the first cycle where the FCA is examining monitoring frameworks with real teeth. If your programme looks like a repurposed TCF dashboard, it needs rebuilding.
 
-This post covers what data to collect, how to structure the MI, and where [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) fit into the plumbing.
+This post covers what data to collect, how to structure the MI, and where [`insurance-governance`](/insurance-governance/) and [`insurance-fairness`](/insurance-fairness/) fit into the plumbing.
 
 ---
 

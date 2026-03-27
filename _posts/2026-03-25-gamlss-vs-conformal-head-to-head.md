@@ -9,7 +9,7 @@ description: "Two approaches to prediction intervals for insurance severity: dis
 
 Two approaches to prediction intervals have matured enough to compare properly. Distributional GAMLSS — which models the full conditional distribution by letting every parameter vary with covariates — and conformal prediction, which wraps any fitted model and guarantees finite-sample coverage without distributional assumptions. Both are implemented in our Python stack. They are not competitors in a simple sense. But they are solving similar problems with fundamentally different philosophies, and the trade-offs are real and worth understanding.
 
-This post runs both methods on the same synthetic UK motor severity dataset, using the real APIs from [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) and [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal). We will show where each approach wins, where it fails, and when to use which.
+This post runs both methods on the same synthetic UK motor severity dataset, using the real APIs from [`insurance-distributional-glm`](/insurance-distributional/) and [`insurance-conformal`](/insurance-conformal/). We will show where each approach wins, where it fails, and when to use which.
 
 ---
 

@@ -243,7 +243,7 @@ One limitation to flag: the MBBEFD family assumes the shape of the severity dist
 
 Commercial lines loss development is choppier than personal lines. Lower volumes, large individual losses, and heterogeneous exposure mixes mean that raw development factors from a triangle can be unreliable. Smoothing the tail factors is standard practice; doing it with a principled statistical method is less common.
 
-`insurance-whittaker` provides the Whittaker-Henderson smoother, which minimises a penalised least-squares criterion and selects the smoothing parameter automatically via REML. The natural use case is smoothing age-to-age factors or tail factors across development periods.
+[`insurance-whittaker`](/insurance-whittaker/) provides the Whittaker-Henderson smoother, which minimises a penalised least-squares criterion and selects the smoothing parameter automatically via REML. The natural use case is smoothing age-to-age factors or tail factors across development periods.
 
 ```python
 import numpy as np

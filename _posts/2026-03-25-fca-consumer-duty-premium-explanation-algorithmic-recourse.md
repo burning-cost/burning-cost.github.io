@@ -23,7 +23,7 @@ The key word is "actionable." It is not enough to tell a customer that younger d
 
 This creates a specific technical requirement. Your counterfactual search needs to respect mutability constraints — age cannot be changed; mileage can only decrease; a black-box telematics device takes seven days to fit. It needs to model causal propagation — a change in garaging status changes crime exposure, flood exposure, and the territory rating factor simultaneously. And the output needs to be in a format that goes into the audit file the FCA can request.
 
-[`insurance-recourse`](https://github.com/burning-cost/insurance-recourse) is built around exactly those constraints.
+[`insurance-recourse`](/insurance-governance/) is built around exactly those constraints.
 
 ```bash
 pip install insurance-recourse

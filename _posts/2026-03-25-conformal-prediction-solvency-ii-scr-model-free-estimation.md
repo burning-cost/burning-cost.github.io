@@ -13,7 +13,7 @@ What this process does not tell you is how sensitive the SCR is to the distribut
 
 Liang Hong's 2025 paper (arXiv:2503.03659) makes a precise version of this argument: parametric capital models achieve coverage asymptotically, in the limit as sample size grows. Conformal prediction achieves coverage at the actual sample size you have. For a regulatory requirement that applies today, on a finite book of business, the distinction is not academic.
 
-The `solvency_capital_range()` function in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this as a lightweight functional interface. This post explains what it does, when to reach for it instead of `SCRReport`, and — more importantly — what the `interval_width` field is telling you that your parametric model cannot.
+The `solvency_capital_range()` function in [`insurance-conformal`](/insurance-conformal/) implements this as a lightweight functional interface. This post explains what it does, when to reach for it instead of `SCRReport`, and — more importantly — what the `interval_width` field is telling you that your parametric model cannot.
 
 ---
 

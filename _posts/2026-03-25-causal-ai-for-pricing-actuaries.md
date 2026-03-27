@@ -33,7 +33,7 @@ The solution is **Double Machine Learning (DML)**, introduced by Chernozhukov, C
 
 ## DML in practice: `CausalPricingModel`
 
-The `insurance-causal` library wraps DoubleML's `DoubleMLPLR` (partially linear regression) with CatBoost nuisance models and an interface designed for pricing actuaries.
+[`insurance-causal`](/insurance-causal/) wraps DoubleML's `DoubleMLPLR` (partially linear regression) with CatBoost nuisance models and an interface designed for pricing actuaries.
 
 ```python
 from insurance_causal import CausalPricingModel

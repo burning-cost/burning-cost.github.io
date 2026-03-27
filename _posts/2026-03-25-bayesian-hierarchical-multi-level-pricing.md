@@ -43,7 +43,7 @@ For pure Bayesian inference — where you want proper posterior uncertainty on a
 
 ## When to use the hierarchical model
 
-The decision rule is concrete. Use B-S (via `BuhlmannStraub` from [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)) when:
+The decision rule is concrete. Use B-S (via `BuhlmannStraub` from [`insurance-credibility`](/insurance-credibility/)) when:
 
 - Two-level structure only
 - Variance components are stable and you expect they will remain so

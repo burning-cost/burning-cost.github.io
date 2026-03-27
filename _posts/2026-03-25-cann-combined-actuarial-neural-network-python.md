@@ -264,7 +264,7 @@ The CANN is one option in a space of interpretable-neural approaches. The right 
 
 - **[insurance-gam EBM](https://github.com/burning-cost/insurance-gam)** — if you want interpretability as per-feature shape functions without any GLM component. EBM produces relativities tables directly. The better choice when your GLM is underspecified and you want to discover nonlinearities rather than fit residuals on a known GLM structure.
 
-- **[insurance-distill](https://github.com/burning-cost/insurance-distill)** — if you want to start from a GBM and recover GLM factor tables. The inverse of CANN: distil complexity down into an interpretable surrogate, rather than building up from a GLM. Use this when the GBM is already your best model and you need to deploy it in Emblem or Radar.
+- **[insurance-distill](/insurance-distill/)** — if you want to start from a GBM and recover GLM factor tables. The inverse of CANN: distil complexity down into an interpretable surrogate, rather than building up from a GLM. Use this when the GBM is already your best model and you need to deploy it in Emblem or Radar.
 
 - **Pure FFNN** — faster to implement, occasionally outperforms CANN when the base GLM is weak. But on any book where actuaries have put real effort into the GLM, CANN is the better starting point. The initialisation guarantee is worth the extra architecture complexity.
 

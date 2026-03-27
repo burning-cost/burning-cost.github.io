@@ -61,7 +61,7 @@ The FCA evaluation is not going to ask for code. It will ask for evidence — do
 
 Here is the minimum set:
 
-**A model inventory.** Every production pricing model, with its scope, GWP impact, customer-facing status, and current sign-off state. The `MRMModelCard` in `insurance-governance` structures this:
+**A model inventory.** Every production pricing model, with its scope, GWP impact, customer-facing status, and current sign-off state. The `MRMModelCard` in [`insurance-governance`](/insurance-governance/) structures this:
 
 ```python
 from insurance_governance import MRMModelCard, Assumption, RiskTierScorer, ModelInventory
