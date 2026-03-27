@@ -230,7 +230,7 @@ GBM transfer via source-as-offset explicitly models the residual. Where the segm
 ---
 
 **Code:**
-- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) — `uv add insurance-credibility`
+- [`insurance-credibility`](/insurance-credibility/) — `uv add insurance-credibility`
 - [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) — `uv add insurance-thin-data`
 
 **Related:**

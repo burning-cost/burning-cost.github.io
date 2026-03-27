@@ -9,7 +9,7 @@ description: "Richman-Wüthrich's one-shot PtU reserving paper (arXiv:2603.11660
 
 Yesterday we covered [what the Richman-Wüthrich PtU paper empirically shows](/2026/03/25/one-shot-individual-claims-reserving-neural-networks-vs-chain-ladder/) — linear regression beating neural networks on small datasets, claims incurred outperforming cumulative paid as a predictor, and a 44% reduction in RMSEP versus Mack chain-ladder on accident insurance. The response from readers was largely: "The method looks useful. The code is R. Can we have Python?"
 
-No Python implementation of arXiv:2603.11660 exists yet. Not on PyPI, not on GitHub, not anywhere. The paper shipped with 30 lines of base R. We are building the Python port into [`insurance-severity`](https://github.com/burning-cost/insurance-severity). This post covers the part that is easy to misread in the paper — the censored-claims exposure mechanism and the backward recursion — and gives the Python implementation sketch.
+No Python implementation of arXiv:2603.11660 exists yet. Not on PyPI, not on GitHub, not anywhere. The paper shipped with 30 lines of base R. We are building the Python port into [`insurance-severity`](/insurance-distributional/). This post covers the part that is easy to misread in the paper — the censored-claims exposure mechanism and the backward recursion — and gives the Python implementation sketch.
 
 ---
 

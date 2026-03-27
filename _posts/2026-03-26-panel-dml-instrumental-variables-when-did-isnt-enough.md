@@ -101,7 +101,7 @@ The IV extension, `xtivdml`, is on GitHub only, with one commit, no CRAN release
 
 In Python, DoubleML has added panel support (`DoubleMLPLPR` for partially linear panel regression, added 2025) and panel DiD (`DoubleMLDIDMulti`, Callaway-Sant'Anna style). Panel IV DML is not implemented in any Python package as of March 2026. Building it from scratch would require the block-k-fold cross-fitting, the Neyman-orthogonal score matrix algebra, and the Anderson-Rubin test — approximately 800–1,200 lines of validated econometric code, and that is before the instrument problem is solved.
 
-We will not be adding this to `insurance-causal` now. We will reassess when `xtivdml` stabilises on CRAN, probably in late 2026.
+We will not be adding this to [`insurance-causal`](/insurance-causal/) now. We will reassess when `xtivdml` stabilises on CRAN, probably in late 2026.
 
 ---
 

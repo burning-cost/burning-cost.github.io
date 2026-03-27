@@ -9,7 +9,7 @@ description: "How to estimate a causally identified price elasticity from PCW qu
 
 [Post 1 of this series]({% post_url 2026-03-26-the-pcw-endogeneity-problem-why-your-conversion-model-is-biased %}) established that the logistic regression your pricing team calls a demand model is biased in three distinct ways: price endogeneity from unobserved risk, the rank mediation trap, and competitor price simultaneity. This post implements the fix.
 
-We will walk through the full estimation pipeline: data structure, instrument construction, the DML estimation itself, segment-level heterogeneous effects, and what the numbers mean for your pricing optimiser. Code examples use [`insurance-causal`](https://github.com/pricing-frontier/insurance-causal) and `doubleml`.
+We will walk through the full estimation pipeline: data structure, instrument construction, the DML estimation itself, segment-level heterogeneous effects, and what the numbers mean for your pricing optimiser. Code examples use [`insurance-causal`](/insurance-causal/) and `doubleml`.
 
 ---
 

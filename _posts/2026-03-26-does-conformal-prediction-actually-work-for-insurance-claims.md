@@ -9,7 +9,7 @@ description: "Parametric Tweedie intervals undercover high-risk policies by 10�
 
 The short answer is yes — but with one important condition: you have to use the right non-conformity score. Use the default absolute residual and you will reproduce exactly the coverage failure you were trying to fix, just for different deciles.
 
-We ran [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) against a CatBoost Tweedie(p=1.5) model on 50,000 synthetic UK motor policies with a heteroskedastic Gamma DGP. The DGP introduces more variance in the high-mean tail than the Tweedie variance function predicts — which is what real motor books look like when large losses are not fully captured by the rating factors.
+We ran [`insurance-conformal`](/insurance-conformal/) against a CatBoost Tweedie(p=1.5) model on 50,000 synthetic UK motor policies with a heteroskedastic Gamma DGP. The DGP introduces more variance in the high-mean tail than the Tweedie variance function predicts — which is what real motor books look like when large losses are not fully captured by the rating factors.
 
 ---
 

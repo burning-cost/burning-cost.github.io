@@ -101,7 +101,7 @@ The FCA has form on enforcement where firms were aware of a regulatory obligatio
 
 PS26/2 is available at [fca.org.uk/publication/policy/ps26-2.pdf](https://www.fca.org.uk/publication/policy/ps26-2.pdf). The accompanying guidance is FG26/3 (incident reporting) and FG26/4 (material third parties), published the same day.
 
-The insurance-monitoring library for model drift and calibration monitoring is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring).
+The [`insurance-monitoring`](/insurance-monitoring/) library for model drift and calibration monitoring is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring).
 
 ---
 

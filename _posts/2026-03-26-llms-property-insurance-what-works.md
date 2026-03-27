@@ -65,7 +65,7 @@ The specific failure mode in property claims: a loss adjuster report might conta
 
 Our position: LLMs should not be used for coverage decisions without human review of the underlying source documents. Full extraction and summarisation assistance — yes. Autonomous coverage determination — no. This is not a conservative position driven by general AI caution; it follows from the specific failure characteristics of these models on ambiguous text.
 
-**The governance parallel**: our [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) and [insurance-governance](https://github.com/burning-cost/insurance-governance) libraries both handle model monitoring and output logging. Any LLM deployed in a claims workflow needs the same monitoring infrastructure as a pricing model: output logging, anomaly detection, regular review of samples, and a documented escalation path when the LLM flags uncertainty. LLM uncertainty is not always explicit — a hallucinated output typically does not come with a low-confidence flag — which makes sampling-based human review more important, not less.
+**The governance parallel**: our [insurance-monitoring](/insurance-monitoring/) and [insurance-governance](/insurance-governance/) libraries both handle model monitoring and output logging. Any LLM deployed in a claims workflow needs the same monitoring infrastructure as a pricing model: output logging, anomaly detection, regular review of samples, and a documented escalation path when the LLM flags uncertainty. LLM uncertainty is not always explicit — a hallucinated output typically does not come with a low-confidence flag — which makes sampling-based human review more important, not less.
 
 ---
 

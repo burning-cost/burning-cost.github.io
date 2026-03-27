@@ -113,7 +113,7 @@ The Hooker group (Giles Hooker, Cornell, currently the main theoretical force be
 
 ## Where this sits for insurance-gam
 
-[insurance-gam](/2026/03/14/insurance-gam-interpretable-nonlinearity/) wraps InterpretML's `ExplainableBoostingRegressor` directly. Boulevard would require a different training loop — the moving-average update is not a post-processing step on a standard trained EBM, it is a different boosting algorithm. You cannot implement Boulevard CIs as a wrapper. You would need to rewrite the boosting engine.
+[insurance-gam](/insurance-gam/) wraps InterpretML's `ExplainableBoostingRegressor` directly. Boulevard would require a different training loop — the moving-average update is not a post-processing step on a standard trained EBM, it is a different boosting algorithm. You cannot implement Boulevard CIs as a wrapper. You would need to rewrite the boosting engine.
 
 As of March 2026, there is no public implementation of Boulevard EBMs from the authors. No GitHub repo, no PyPI package. The paper's algorithm descriptions are clear enough to implement from scratch — the bin-space factorisation is the key piece — but that is a non-trivial build, and it would produce Gaussian-only CIs that are not directly applicable to our models.
 

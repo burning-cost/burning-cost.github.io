@@ -153,7 +153,7 @@ If your pricing optimiser uses price elasticities from a logistic regression wit
 
 The fix requires instrumental variables — and the instruments exist. Commercial loading variation across rate reviews is the most accessible. Competitor regional variation is harder to implement but adds substantial identification power.
 
-Post 2 shows the implementation using `doubleml` and our `insurance-causal` library.
+Post 2 shows the implementation using `doubleml` and our [`insurance-causal`](/insurance-causal/) library.
 
 ---
 

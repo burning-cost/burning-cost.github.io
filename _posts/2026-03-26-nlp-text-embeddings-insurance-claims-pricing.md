@@ -139,7 +139,7 @@ Under FCA Consumer Duty, firms must consider whether their pricing models produc
 
 If your embedding features are predictive because they capture injury severity — that is legitimate. If they are predictive partly because adjuster language differs systematically for certain claimant types — that is not, and it may not even show up in a standard lift chart.
 
-The [insurance-fairness](/2026/03/22/fca-proxy-discrimination-python-testing-guide/) library provides the tooling for this analysis. Run it on your text features before you run it on production data. The documentation has an example for continuous features that applies directly to PCA-reduced embeddings.
+The [`insurance-fairness`](/insurance-fairness/) library provides the tooling for this analysis. Run it on your text features before you run it on production data. The documentation has an example for continuous features that applies directly to PCA-reduced embeddings.
 
 ---
 

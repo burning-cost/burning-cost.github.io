@@ -54,7 +54,7 @@ You can model individual firm risk as carefully as you like — sector, revenue,
 
 This has three implications:
 
-**Accumulation monitoring over independent pricing.** A cyber book needs the same aggregate exposure management that catastrophe-exposed property lines get. The monitoring infrastructure needed to track these aggregate signals — A/E drift, distribution shift, anomaly detection — is exactly what [insurance model monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) provides. Sub-limits, PML monitoring by attack vector, and explicit aggregate stop-loss structures should be on the table. Underwriters who think of cyber as a series of individual firm decisions are missing the portfolio dimension.
+**Accumulation monitoring over independent pricing.** A cyber book needs the same aggregate exposure management that catastrophe-exposed property lines get. The monitoring infrastructure needed to track these aggregate signals — A/E drift, distribution shift, anomaly detection — is exactly what [`insurance-monitoring`](/insurance-monitoring/) provides. Sub-limits, PML monitoring by attack vector, and explicit aggregate stop-loss structures should be on the table. Underwriters who think of cyber as a series of individual firm decisions are missing the portfolio dimension.
 
 **The basic reproduction number R matters.** The paper derives a time-varying R_max — the equivalent of the epidemic reproduction number — as a stability threshold. When R_max drops below 1, the epidemic decays. For pricing, this suggests that the market-level intensity of a given ransomware campaign is a systematic risk driver that pricing models should track, not absorb into an undifferentiated frequency load.
 

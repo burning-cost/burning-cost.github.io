@@ -113,7 +113,7 @@ The algorithm enumerates over at most nm candidate θ values, solving a separabl
 
 ## What this means for `insurance-optimise`
 
-The [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) library solves the continuous version: policy-level SLSQP with analytical Jacobians, FCA ENBP enforcement, loss ratio and retention constraints. Its limitation is the continuous price space assumption.
+The [`insurance-optimise`](/insurance-optimise/) library solves the continuous version: policy-level SLSQP with analytical Jacobians, FCA ENBP enforcement, loss ratio and retention constraints. Its limitation is the continuous price space assumption.
 
 UK pricing teams do not output continuous prices. They output rated premiums from rating engines with banded factors. The commercial adjustment that `insurance-optimise` optimises is typically applied at segment level, where the segment premium is already a discrete choice from a finite band.
 

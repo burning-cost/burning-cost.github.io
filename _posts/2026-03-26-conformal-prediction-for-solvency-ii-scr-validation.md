@@ -169,7 +169,7 @@ The `scr.py` module docstring notes this explicitly. We have not softened the la
 | Cat risk SCR | None | Needs 200+ observations at 99.5th percentile. Cat models are the right tool. |
 | Reserve risk SCR | Open | Individual claim development conformal possible in principle; not published in a Solvency II context. |
 
-The library is at [GitHub](https://github.com/burning-cost/insurance-conformal). The SCR-specific code lives in `scr.py` and `_solvency.py`; the validation workflow in `diagnostics.py` and `diagnostics_ext.py`.
+The library is at [`insurance-conformal`](/insurance-conformal/) on GitHub. The SCR-specific code lives in `scr.py` and `_solvency.py`; the validation workflow in `diagnostics.py` and `diagnostics_ext.py`.
 
 ```bash
 uv add insurance-conformal

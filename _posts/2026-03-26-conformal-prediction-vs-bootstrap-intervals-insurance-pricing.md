@@ -9,7 +9,7 @@ description: "Conformal prediction and the parametric bootstrap both produce pre
 
 Two methods dominate when pricing actuaries need uncertainty intervals around a model's output: the parametric bootstrap and conformal prediction. Both produce bounds. Both can be presented to a regulator. The resemblance ends there.
 
-This post explains what each method actually computes, where each breaks down, and the practical decision criteria for choosing between them. We will use [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) for the conformal side and standard statsmodels for the bootstrap, with actual code throughout.
+This post explains what each method actually computes, where each breaks down, and the practical decision criteria for choosing between them. We will use [`insurance-conformal`](/insurance-conformal/) for the conformal side and standard statsmodels for the bootstrap, with actual code throughout.
 
 ---
 

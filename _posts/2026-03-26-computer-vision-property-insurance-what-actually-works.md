@@ -9,7 +9,7 @@ description: "Cape Analytics has 700k+ claim validations and a 400% loss ratio d
 
 Aerial imagery vendors make a straightforward claim: a satellite or plane flies over your house, computer vision scores the roof, and the insurer prices more accurately. In the US this is real and deployed. In the UK it is mostly not yet operational — and the distinction matters if you are deciding where to allocate pricing resource in 2026.
 
-This is the first of three posts on computer vision and LLMs for property risk. This one covers the vendor landscape, what imagery genuinely can and cannot tell you, the UK data infrastructure problem, and the regulatory position. The second post will work through the academic evidence in detail. The third covers proxy discrimination governance.
+This is the first of three posts on computer vision and LLMs for property risk. This one covers the vendor landscape, what imagery genuinely can and cannot tell you, the UK data infrastructure problem, and the regulatory position. The second post will work through the academic evidence in detail. The third covers proxy discrimination governance ([`insurance-governance`](/insurance-governance/) handles the model card documentation).
 
 ---
 

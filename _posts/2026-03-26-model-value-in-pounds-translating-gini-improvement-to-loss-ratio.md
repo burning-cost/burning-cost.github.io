@@ -11,7 +11,7 @@ Every pricing review ends the same way. The actuaries present a lift chart, a Gi
 
 The problem is not that the actuaries do not know. It is that the standard validation metrics — Gini coefficient, double-lift chart ratio, normalised Gini index — are dimensionless. They rank model quality but do not translate to pounds. You need an additional step: a relationship between model discrimination and expected portfolio loss ratio.
 
-Evans Hedges (2025), arXiv:2512.03242, provides one. It is the first published closed-form formula connecting a model validation metric to expected loss ratio. We implemented it in [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) v0.9.1 as the `business_value` module.
+Evans Hedges (2025), arXiv:2512.03242, provides one. It is the first published closed-form formula connecting a model validation metric to expected loss ratio. We implemented it in [`insurance-monitoring`](/insurance-monitoring/) v0.9.1 as the `business_value` module.
 
 This post explains the formula, shows the calibrate-then-forecast workflow in code, and is honest about where the assumptions break down — particularly under PS21/5.
 

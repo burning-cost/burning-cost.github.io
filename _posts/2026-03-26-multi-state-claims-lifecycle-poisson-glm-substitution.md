@@ -70,7 +70,7 @@ No Python package does this. The candidates are:
 - **hmmlearn**, **pomegranate**: discrete-time hidden Markov. No CTMC.
 - **transitionMatrix** (PyPI): matrix manipulation only, no fitting from data.
 
-The gap is specific: no Python package implements maximum likelihood estimation of Q from panel data (periodic state observations where transition times are unknown). This is not a trivial gap to fill — the matrix exponential appears inside the likelihood, which means numerical optimisation over a constrained matrix — but it is a solvable one. Our [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) library already uses `scipy.linalg.expm` inside a continuous-time HMM (for hidden driving states), which demonstrates the Python machinery is available. The panel-data MLE variant is structurally different — states are observed, no E-step needed — but the core computation is the same.
+The gap is specific: no Python package implements maximum likelihood estimation of Q from panel data (periodic state observations where transition times are unknown). This is not a trivial gap to fill — the matrix exponential appears inside the likelihood, which means numerical optimisation over a constrained matrix — but it is a solvable one. Our [`insurance-telematics`](/insurance-telematics/) library already uses `scipy.linalg.expm` inside a continuous-time HMM (for hidden driving states), which demonstrates the Python machinery is available. The panel-data MLE variant is structurally different — states are observed, no E-step needed — but the core computation is the same.
 
 ---
 

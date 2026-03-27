@@ -127,7 +127,7 @@ The most defensible near-term applications, ranked by feasibility:
 
 The mistake we see teams making is starting with the interesting problem — automated roof condition scoring — before establishing the data infrastructure. The right order is: get imagery under licence and understand its quality and refresh cycle; match to UPRN; establish a validation dataset with claims; then train a model. Skipping ahead to model training on publicly-available US data and hoping it transfers to UK conditions is how you spend six months and produce a model that cannot be deployed.
 
-The open-source stack — SAM2, YOLOv8, Rasterio, AutoDistill — is good. It removes the computer vision barriers that would have made this project infeasible five years ago. The remaining barriers are data (UK ground truth), infrastructure (imagery refresh at useful cadence), and governance (proxy discrimination characterisation before deployment, covered in the [first post](/2026/03/26/computer-vision-property-insurance-what-actually-works/)). Those are not problems that better open-source tooling will solve.
+The open-source stack — SAM2, YOLOv8, Rasterio, AutoDistill — is good. It removes the computer vision barriers that would have made this project infeasible five years ago. The remaining barriers are data (UK ground truth), infrastructure (imagery refresh at useful cadence), and governance (proxy discrimination characterisation before deployment, covered in the [first post](/2026/03/26/computer-vision-property-insurance-what-actually-works/)). Those are not problems that better open-source tooling will solve. For proxy discrimination governance of any imagery-derived feature, [`insurance-fairness`](/insurance-fairness/) is the right tool before production deployment.
 
 ---
 

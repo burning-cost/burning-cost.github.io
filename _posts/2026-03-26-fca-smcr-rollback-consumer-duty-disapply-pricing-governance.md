@@ -56,7 +56,7 @@ Phase 1 changes one thing here: if your Head of Validation leaves and a replacem
 
 We have read the law firm summaries. None of them mention SS1/23. We think that is the right conclusion from Phase 1: nothing to mention.
 
-If you are considering pre-emptive redesign of your accountability maps in anticipation of Phase 2, stop. Phase 2 requires primary legislation. As of March 2026, no draft legislation has been published. The plausible horizon is 2027 at earliest — and whether Phase 2 includes a reduction in named SMF roles remains speculative. The [`insurance-governance`](https://github.com/burning-cost/insurance-governance) MRM inventory currently maps to SMF4 as the default MRM accountable role. We will update the library when there is a substantive change to document.
+If you are considering pre-emptive redesign of your accountability maps in anticipation of Phase 2, stop. Phase 2 requires primary legislation. As of March 2026, no draft legislation has been published. The plausible horizon is 2027 at earliest — and whether Phase 2 includes a reduction in named SMF roles remains speculative. The [`insurance-governance`](/insurance-governance/) MRM inventory currently maps to SMF4 as the default MRM accountable role. We will update the library when there is a substantive change to document.
 
 ---
 

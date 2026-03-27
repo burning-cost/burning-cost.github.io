@@ -220,7 +220,7 @@ The driver-level update is nine floating-point additions and one dot product. Re
 
 ## Honest comparison with the HMM approach
 
-We covered hidden Markov model telematics scoring in [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) — the `DrivingStateHMM` uses trip-aggregate features (harsh braking rate, mean speed, night fraction) to infer a latent regime sequence and expresses driver risk as state-fraction covariates in a Poisson GLM. On a three-state DGP it beats raw averages by 5–10 Gini points.
+We covered hidden Markov model telematics scoring in [`insurance-telematics`](/insurance-telematics/) — the `DrivingStateHMM` uses trip-aggregate features (harsh braking rate, mean speed, night fraction) to infer a latent regime sequence and expresses driver risk as state-fraction covariates in a Poisson GLM. On a three-state DGP it beats raw averages by 5–10 Gini points.
 
 The wavelet approach and the HMM approach operate at different levels of the data hierarchy. This is the clearest way to compare them:
 

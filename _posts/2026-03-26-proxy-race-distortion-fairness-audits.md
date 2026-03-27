@@ -89,7 +89,7 @@ This is not a reason to abandon proxy audits. It is a reason to understand what 
 
 Xin, Hooker, and Huang (arXiv:2603.17106) is available at [arxiv.org/abs/2603.17106](https://arxiv.org/abs/2603.17106). The De-Biasing the Bias sensitivity framework is at [arxiv.org/abs/2402.13391](https://arxiv.org/abs/2402.13391).
 
-The `insurance-fairness` library is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).
+The [`insurance-fairness`](/insurance-fairness/) library is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).
 
 ---
 

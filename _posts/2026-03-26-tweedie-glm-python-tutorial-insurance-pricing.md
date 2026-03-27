@@ -413,7 +413,7 @@ For production factor tables with proper reference level handling and exposure-w
 
 **Separate frequency and severity diagnostics.** The Tweedie model gives you a single set of coefficients for pure premium. You cannot separately check whether NCD is driving frequency, severity, or both — which you can with a split model. For most UK regulatory purposes and Consumer Duty fair value assessments, the split is preferable precisely because it is more auditable.
 
-**The correct model for books with very different severity by claim type.** If your portfolio has a mix of attritional OD claims (£500-3,000) and occasional BI claims (£10,000-200,000), a single Tweedie p may not fit both tails well. The [insurance-distributional](https://github.com/burning-cost/insurance-distributional) library implements distributional regression where p itself is covariate-dependent.
+**The correct model for books with very different severity by claim type.** If your portfolio has a mix of attritional OD claims (£500-3,000) and occasional BI claims (£10,000-200,000), a single Tweedie p may not fit both tails well. The [`insurance-distributional`](/insurance-distributional/) library implements distributional regression where p itself is covariate-dependent.
 
 **Exposure-free predictions for sklearn users.** If you are comparing results to `sklearn.linear_model.TweedieRegressor`, note that sklearn's implementation has no offset parameter. You cannot correctly reproduce these predictions with sklearn on data with exposure variation. We explained this in [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure](/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/).
 
