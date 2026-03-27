@@ -35,7 +35,7 @@ We benchmarked this against [`insurance-fairness`](https://github.com/burning-co
 
 The Spearman check detects nothing, across all 50 seeds, at any reasonable threshold. The library detects the proxy with a mean R² of 0.62 in every single run.
 
-This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-monotone categorical-to-continuous relationships.
+This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-linear categorical-to-continuous relationships where rank correlation is near zero despite strong predictive power.
 
 The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number provides quantitative evidence relevant to a Section 19 assessment — establishing the substantial disadvantage element — and is the kind of finding a regulator can act on.
 
@@ -115,6 +115,8 @@ Use proxy discrimination testing if:
 - You are going to commission the work anyway as part of a Fair Value Assessment — you might as well do it properly once rather than producing a number that will not survive scrutiny
 
 The Spearman correlation check at |r| > 0.25 is not adequate for demonstrating absence of proxy discrimination. A CatBoost proxy R² of 0.10 or above on any rating factor warrants investigation. At 0.62, you have a documented problem and a £/policy number that quantifies it.
+
+When a RED proxy flag fires, you have four options: (1) remove the factor from the rating model; (2) replace it with a less discriminatory substitute that retains predictive power — for example, substituting a broad postcode area loading with a claims-incidence-based territorial score that is derived from actual loss experience rather than geographic boundaries; (3) retain it and demonstrate actuarial justification under the Section 19(2)(b) proportionality defence — that the factor predicts genuine risk differences that outweigh the discriminatory impact; or (4) if the proportionality case is uncertain, seek external legal advice before the next rate review. Doing nothing is not an option if the flag is in the governance record.
 
 ```bash
 uv add insurance-fairness

@@ -108,6 +108,8 @@ The `recommendation` is deliberately opinionated: REFIT means ranking has degrad
 
 The benchmark uses synthetic data with planted failures. In practice, covariate shifts are gradual and overlapping rather than step functions. PSI will still detect them earlier than aggregate A/E, but the timing advantage will vary with the severity of the shift.
 
+A related triage challenge: when PSI flags RED on a feature like driver age, the monitoring analyst needs to distinguish between "the model is wrong for this segment" (which requires action) and "our portfolio composition changed legitimately" — new business season, broker mix shift, an aggregator campaign that over-recruited young drivers in a single month. Before assuming book mix shift, check data quality first: late-reported policies, system migration artefacts, and feed timing differences have all been mistaken for genuine population drift. The library flags the shift; the analyst must determine whether the underlying risk model is still appropriate for the new mix, or whether a recalibration is warranted.
+
 The Gini drift z-test requires a bootstrap step (200 replicates by default) for statistical inference. At 50k reference / 15k monitoring policies this takes 3–5 minutes. For weekly monitoring on large books run this on Databricks; local runs are comfortable at 10k/4k.
 
 The Murphy decomposition (REFIT vs RECALIBRATE) uses the Wüthrich-Ziegel (SAJ 2024) framework and requires Poisson or Tweedie outcomes. For binary outcomes (renewal/lapse), use the Gini drift z-test as the discrimination check and segment A/E for calibration.
@@ -119,7 +121,7 @@ The Murphy decomposition (REFIT vs RECALIBRATE) uses the Wüthrich-Ziegel (SAJ 2
 Use automated monitoring if:
 - You are running monthly or quarterly model health checks and currently relying on aggregate A/E as the primary signal — you need at minimum PSI per rating factor and a Gini drift test alongside the A/E
 - You run champion/challenger experiments with interim looks — mSPRT is essential; fixed-horizon tests with monthly reviews are running at five times the stated false positive rate
-- You need PRA SS3/17 model risk audit trail documentation
+- You need PRA SS1/23 model risk audit trail documentation
 
 Do not expect it to:
 - Replace the judgement call about whether an observed shift is worth acting on — that requires understanding the book and the claims environment

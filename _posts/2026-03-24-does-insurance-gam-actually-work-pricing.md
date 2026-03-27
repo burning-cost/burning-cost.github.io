@@ -202,7 +202,13 @@ We think `InsuranceEBM` should replace the GLM for any team that has features wi
 
 ANAM is the right choice when you need a combined frequency-severity Tweedie model with provably monotone constraints. Once any of these models is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s Gini drift test will tell you when the shape functions are going stale and a refit is warranted. PIN is the right choice when the interaction surface itself needs to be auditable. All three are in the same install.
 
-The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in , runnable on Databricks serverless Free Edition in under three minutes.
+The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in [`benchmarks/benchmark_ebm.py`](https://github.com/burning-cost/insurance-gam/tree/main/benchmarks/benchmark_ebm.py), runnable on Databricks serverless Free Edition in under three minutes.
+
+```bash
+uv add "insurance-gam[ebm]"
+```
+
+For ANAM and PIN (neural models): `uv add "insurance-gam[neural]"`
 
 ---
 

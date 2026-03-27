@@ -57,9 +57,10 @@ On renewal pricing, the same benchmark finds a GLM price-sensitivity estimate of
 
 ```python
 from insurance_causal import CausalPricingModel
+from insurance_causal.treatments import ContinuousTreatment
 
 model = CausalPricingModel(
-    treatment="telematics_score",
+    treatment=ContinuousTreatment(column="telematics_score", standardise=True),
     outcome="renewal",
     confounders=["driver_age", "ncb_years", "region", "vehicle_group"],
     outcome_type="binary",
@@ -69,7 +70,7 @@ model.fit(df)
 ate = model.average_treatment_effect()
 print(ate)
 # AverageTreatmentEffect(estimate=-0.023, std_error=0.004, ci_lower=-0.031, ci_upper=-0.015, p_value=0.0001)
-bias_report = model.confounding_bias_report()
+bias_report = model.confounding_bias_report(naive_coefficient=0.045)
 print(bias_report[["naive_estimate", "causal_estimate", "bias_pct"]])
 # naive_estimate: 0.045, causal_estimate: -0.023, bias_pct: 0.49
 ```

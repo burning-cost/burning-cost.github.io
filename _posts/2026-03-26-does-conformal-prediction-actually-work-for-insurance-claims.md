@@ -121,7 +121,7 @@ Do not bother if:
 - Your calibration set is more than 18 months old relative to the test period without a re-calibration step
 
 ```bash
-uv add insurance-conformal
+uv add "insurance-conformal[catboost]"
 ```
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-conformal). The CatBoost benchmark (`benchmarks/benchmark_gbm.py`) is the one that produces the interesting result; `benchmarks/benchmark.py` shows the well-matched baseline where parametric intervals do fine.

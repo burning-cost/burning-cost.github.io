@@ -377,7 +377,13 @@ A GLM coefficient is not a factor table entry until you exponentiate it and set 
 
 ```python
 def extract_factor_table(result, X_columns: list) -> pd.DataFrame:
-    """Build a clean factor table from a fitted statsmodels GLM."""
+    """Build a clean factor table from a fitted statsmodels GLM.
+    
+    Note: in production, extend this to add reference level rows explicitly
+    (relativity = 1.0, log_coef = 0.0, std_err = NaN) for the base level of
+    each categorical factor — the level dropped by pd.get_dummies. Rating
+    engines and pricing committees expect a complete table including the base.
+    """
     rows = []
     for col in X_columns:
         if col == "const":
