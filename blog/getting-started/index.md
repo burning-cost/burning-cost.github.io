@@ -13,12 +13,10 @@ match_categories:
 match_slugs:
   - getting-started-three-libraries-one-workflow
   - the-python-insurance-pricing-stack
-  - complete-python-insurance-pricing-toolkit-2026
-  - building-an-insurance-pricing-pipeline-in-python
   - modern-pricing-pipeline
   - python-vs-r-actuarial-pricing
   - migrating-from-emblem-to-python
   - your-gbm-and-glm-are-not-competitors
   - from-gbm-to-radar-databricks-workflow
-  - from-catboost-to-radar-databricks-workflow
+  - from-catboost-to-radar-gbm-to-glm-distillation
 ---

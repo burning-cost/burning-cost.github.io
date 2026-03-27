@@ -11,7 +11,7 @@ The standard UK motor pricing model multiplies two things together: the Poisson 
 
 The assumption underneath that multiplication is that N and S are independent given your rating factors. They are not. NCD structure systematically suppresses borderline claims — policyholders who have already claimed once in the year do not report small incidents near the claim threshold, so high-frequency policies tend to have lower average severity per claim. The independence assumption overstates the risk for your multi-claim segment and understates it for the single-claim segment. Vernic, Bolancé, and Alemany (2022) quantified this mismeasurement at €5–55 per policyholder on a Spanish auto book. The directional effect in UK motor is identical.
 
-[`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) claims to fix this with a Sarmanov copula, IFM estimation that plugs into your existing GLMs, and analytical (closed-form) correction factors at scoring time. The [full library walkthrough](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) covers the complete API; here we focus on what the code actually does under the hood and whether the benchmark supports the claims.
+[`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) claims to fix this with a Sarmanov copula, IFM estimation that plugs into your existing GLMs, and analytical (closed-form) correction factors at scoring time. The [full library walkthrough](/2025/05/14/frequency-severity-independence-is-costing-you-premium/) covers the complete API; here we focus on what the code actually does under the hood and whether the benchmark supports the claims.
 
 ---
 
@@ -106,6 +106,6 @@ The library is at [github.com/burning-cost/insurance-frequency-severity](https:/
 
 ---
 
-- [Sarmanov Copula for Frequency-Severity Dependence](/2026/03/08/frequency-severity-independence-is-costing-you-premium/) — the full library introduction and worked example on UK motor data
+- [Sarmanov Copula for Frequency-Severity Dependence](/2025/05/14/frequency-severity-independence-is-costing-you-premium/) — the full library introduction and worked example on UK motor data
 - [Insurance Model Monitoring Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — once the correction is in production, segment-level A/E monitoring will detect if omega has drifted and the correction needs reestimating
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — record the omega estimate, DependenceTest result, and AIC comparison as model documentation in the inventory

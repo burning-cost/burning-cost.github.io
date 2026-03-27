@@ -166,4 +166,4 @@ TelematicsScoringPipeline(
 ## Related blog posts
 
 - [HMM-Based Telematics Risk Scoring: From Trips to GLM Features](https://burning-cost.github.io/2026/03/13/insurance-telematics/)
-- [Telematics Risk Scoring: From Raw Trips to GLM Features](https://burning-cost.github.io/2026/03/12/telematics-risk-scoring-from-trips-to-glm-features/)
+- [Telematics Risk Scoring: From Raw Trips to GLM Features](https://burning-cost.github.io/2025/07/28/telematics-risk-scoring-from-trips-to-glm-features/)

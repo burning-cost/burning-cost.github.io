@@ -141,7 +141,7 @@ Tested on synthetic insurance data with nonlinear confounding (n=50,000 policies
 ## Related blog posts
 
 - [Causal Price Elasticity for UK Renewal Pricing](https://burning-cost.github.io/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/)
-- [insurance-causal vs EconML](https://burning-cost.github.io/2026/03/22/econml-vs-insurance-causal-inference-pricing/)
-- [insurance-causal vs DoWhy](https://burning-cost.github.io/2026/03/22/dowhy-vs-insurance-causal-inference-insurance-pricing/)
-- [Rate Change Lapse Evaluation via Causal Inference](https://burning-cost.github.io/2029/01/15/rate-change-lapse-evaluation-causal-inference/)
+- [insurance-causal vs EconML](https://burning-cost.github.io/2026/03/19/econml-vs-insurance-causal-inference-pricing/)
+- [insurance-causal vs DoWhy](https://burning-cost.github.io/2026/03/18/dowhy-vs-insurance-causal-inference-insurance-pricing/)
+- [Rate Change Lapse Evaluation via Causal Inference](https://burning-cost.github.io/2026/03/10/rate-change-lapse-evaluation-causal-inference/)
 - [Causal Price Elasticity Tutorial](https://burning-cost.github.io/2026/03/15/causal-price-elasticity-tutorial/)

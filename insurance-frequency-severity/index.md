@@ -186,4 +186,4 @@ model.predict_premium(X_new)
 ## Related blog posts
 
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium](https://burning-cost.github.io/2025/05/14/frequency-severity-independence-is-costing-you-premium/)
-- [CatBoost Frequency-Severity on freMTPL2](https://burning-cost.github.io/2026/03/22/catboost-frequency-severity-fremtpl2-insurance-pricing/)
+- [CatBoost Frequency-Severity on freMTPL2](https://burning-cost.github.io/2026/03/22/catboost-insurance-pricing-frequency-severity-fremtpl2/)

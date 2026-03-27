@@ -43,7 +43,6 @@ match_slugs:
   - insurance-model-monitoring-gini-ae-double-lift
   - insurance-model-monitoring-gini-ae-double-lift-python
   - motor-model-mispricing-caught-by-monitoring
-  - your-model-drift-alert-is-too-late
   - champion-model-unchallenged
   - your-champion-challenger-test-has-no-audit-trail
   - sequential-ab-testing-insurance-champion-challenger
@@ -52,5 +51,4 @@ match_slugs:
   - your-pricing-model-is-drifting
   - your-book-has-shifted-and-your-model-doesnt-know
   - your-new-book-doesnt-look-like-your-old-book
-  - when-did-your-loss-ratio-actually-change
 ---
