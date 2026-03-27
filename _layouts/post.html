@@ -15,37 +15,6 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"></noscript>
   {% feed_meta %}
   {% include structured-data.html %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": {{ page.title | jsonify }},
-    "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
-    "datePublished": "{{ page.date | date_to_xmlschema }}",
-    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
-    "image": "{{ site.url }}/assets/og-image.png",
-    "author": {
-      "@type": "Organization",
-      "name": "Burning Cost",
-      "url": "{{ site.url }}"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Burning Cost",
-      "url": "{{ site.url }}",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "{{ site.url }}/assets/og-image.png"
-      }
-    },
-    "url": {{ page.url | absolute_url | jsonify }},
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": {{ page.url | absolute_url | jsonify }}
-    }{% if page.tags and page.tags.size > 0 %},
-    "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
-  }
-  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

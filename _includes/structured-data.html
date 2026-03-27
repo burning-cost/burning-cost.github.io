@@ -1,19 +1,25 @@
 {% comment %}
   structured-data.html
   --------------------
-  Emits schema.org JSON-LD for every page on the site.
+  Single source of truth for all schema.org JSON-LD on the site.
 
-  Organization:        rendered on every page — tells Google who runs this site.
-  WebSite:             rendered on the homepage (landing layout) only — enables
-                       SearchAction sitelinks and anchors the site entity.
-  SoftwareApplication: rendered on individual library pages that set
-                       `schema: SoftwareApplication` in their front matter.
+  Site-level entities (every page):
+    Organization — tells Google who runs this site.
 
-  BlogPosting schema lives in _layouts/post.html <head> (where it can access
-  page.date, page.tags, etc. directly). WebPage schema lives in page.html.
-  This include handles the site-level entities and opt-in page types.
+  Conditional entities by layout / front-matter:
+    WebSite          — landing layout only (enables SearchAction sitelinks).
+    SoftwareApplication — pages with `schema: SoftwareApplication` in front matter.
+    BlogPosting      — post layout.
+    WebPage          — page layout.
+    CollectionPage   — tags and blog-archive layouts.
+
+  All page-specific JSON-LD was previously inlined directly in each layout file,
+  which caused duplication when those files also called this include. This include
+  is now the only place structured data is emitted. The layouts no longer contain
+  any <script type="application/ld+json"> blocks.
 {% endcomment %}
 
+{%- comment -%}Organization — present on every page{%- endcomment -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -26,7 +32,8 @@
     "url": "{{ site.url }}/assets/og-image.png"
   },
   "sameAs": [
-    "https://github.com/burning-cost"
+    "https://github.com/burning-cost",
+    "https://pypi.org/user/burning-cost/"
   ]
 }
 </script>
@@ -79,6 +86,74 @@
   }{% if page.github_repo %},
   "codeRepository": {{ page.github_repo | jsonify }}{% endif %}{% if page.pypi_package %},
   "downloadUrl": {{ page.pypi_package | prepend: "https://pypi.org/project/" | append: "/" | jsonify }}{% endif %}
+}
+</script>
+{% endif %}
+
+{% if page.layout == "post" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "image": "{{ site.url }}/assets/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.url }}/assets/og-image.png"
+    }
+  },
+  "url": {{ page.url | absolute_url | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ page.url | absolute_url | jsonify }}
+  }{% if page.tags and page.tags.size > 0 %},
+  "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
+}
+</script>
+{% endif %}
+
+{% if page.layout == "page" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | default: site.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  }
+}
+</script>
+{% endif %}
+
+{% if page.layout == "tags" or page.layout == "blog-archive" or page.layout == "category-index" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ page.title | jsonify }},
+  "description": {{ page.description | default: site.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  }
 }
 </script>
 {% endif %}

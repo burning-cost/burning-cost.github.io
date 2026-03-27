@@ -552,23 +552,9 @@
       text-decoration: none;
     }
 
-  </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": {{ page.title | jsonify }},
-    "description": {{ page.description | default: site.description | jsonify }},
-    "url": {{ page.url | absolute_url | jsonify }},
-    "publisher": {
-      "@type": "Organization",
-      "name": "Burning Cost",
-      "url": "{{ site.url }}"
-    }
-  }
-  </script>
 </head>
 <body>
+  </style>
 
   <!-- Navigation -->
   <nav class="nav">

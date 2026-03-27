@@ -426,20 +426,6 @@
       .page-body { padding: 2rem 1.25rem 3rem; }
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": {{ page.title | jsonify }},
-    "description": {{ page.description | default: site.description | jsonify }},
-    "url": {{ page.url | absolute_url | jsonify }},
-    "publisher": {
-      "@type": "Organization",
-      "name": "Burning Cost",
-      "url": "{{ site.url }}"
-    }
-  }
-  </script>
 </head>
 <body>
 
