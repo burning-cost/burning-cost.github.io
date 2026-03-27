@@ -104,7 +104,7 @@ What it costs you is predictive power. Nonlinear age effects, interactions betwe
 
 The common solution is to put more structure in the bands: narrow driver age bands where the effect is steep (17–20, 21–24, 25–29), wider bands where it flattens out. This is actuarial craft. The statistical complement is to test for residual nonlinearity using GAMs, then decide whether the nonlinearity is real enough to warrant a more complex factor structure.
 
-`insurance-gam` fits a Poisson or Gamma GAM with spline terms for continuous rating factors, using a smoothing penalty that prevents overfitting thin data. The output is a smooth fitted curve that you can compare against your banded GLM factors to see where the bands are doing violence to the underlying signal:
+[`insurance-gam`](/insurance-gam/) fits a Poisson or Gamma GAM with spline terms for continuous rating factors, using a smoothing penalty that prevents overfitting thin data. The output is a smooth fitted curve that you can compare against your banded GLM factors to see where the bands are doing violence to the underlying signal:
 
 ```python
 from insurance_gam import InsuranceGAM

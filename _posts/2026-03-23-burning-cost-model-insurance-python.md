@@ -244,4 +244,4 @@ The minimal burning cost pipeline looks like this:
 
 What is not on this list: any step labelled "open the claims spreadsheet and argue about whether to include the 2019 flood year." The decisions above - capping threshold, development factors, which accident years to include - should be documented and version-controlled alongside the model code. If your burning cost review process involves these decisions being relitigated at each cycle, that is a governance problem, not a data problem.
 
-Our [`insurance-governance`](https://github.com/burning-cost/insurance-governance) library includes templates for logging these decisions as part of a reproducible pricing cycle.
+Our [`insurance-governance`](/insurance-governance/) library includes templates for logging these decisions as part of a reproducible pricing cycle.

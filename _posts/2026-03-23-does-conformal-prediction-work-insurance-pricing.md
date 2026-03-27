@@ -23,7 +23,7 @@ We used a temporal 60/20/20 split: 30,000 policies for training, 10,000 for cali
 
 The parametric baseline uses the standard approach: fit CatBoost, estimate a single global dispersion sigma from Pearson residuals on the calibration set, construct intervals as `ŷ ± z × σ × ŷ^(p/2)`. This is the textbook method and what most teams have in production.
 
-For conformal, we wrapped the same CatBoost model in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) using the `pearson_weighted` non-conformity score and calibrated on the same held-out set. We also ran locally-weighted conformal (LW conformal), which fits a secondary spread model to learn which features predict large residuals.
+For conformal, we wrapped the same CatBoost model in [`insurance-conformal`](/insurance-conformal/) using the `pearson_weighted` non-conformity score and calibrated on the same held-out set. We also ran locally-weighted conformal (LW conformal), which fits a secondary spread model to learn which features predict large residuals.
 
 ---
 

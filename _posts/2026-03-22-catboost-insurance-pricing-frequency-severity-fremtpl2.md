@@ -9,7 +9,7 @@ description: "Build a CatBoost frequency-severity pricing model on freMTPL2 usin
 
 Most actuarial pricing projects spend months on something that should take a week: getting a working frequency-severity model off the ground. The delay is usually not the modelling itself. It is the argument about which loss function to use, whether categorical variables need encoding, how to handle the exposure offset, and whether the combined burning cost "makes sense." These are legitimate questions, but they have answers, and the answers are not complicated.
 
-This post works through the full pipeline on [freMTPL2](https://www.openml.org/d/41214) -- the French motor third-party liability dataset used in the sklearn documentation and in Noll, Salzmann and Wüthrich (2020). We use CatBoost for both models and Polars for data handling. By the end you have a combined frequency-severity prediction (burning cost) ready for factor extraction via our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library and distillation into Radar/Emblem factor tables via [`insurance-distill`](https://github.com/burning-cost/insurance-distill).
+This post works through the full pipeline on [freMTPL2](https://www.openml.org/d/41214) -- the French motor third-party liability dataset used in the sklearn documentation and in Noll, Salzmann and Wüthrich (2020). We use CatBoost for both models and Polars for data handling. By the end you have a combined frequency-severity prediction (burning cost) ready for factor extraction via our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library and distillation into Radar/Emblem factor tables via [`insurance-distill`](/insurance-distill/).
 
 ---
 

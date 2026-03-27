@@ -12,7 +12,7 @@ Every insurance pricing model we have ever seen was evaluated using k-fold cross
 
 This is not bad luck. It is a structural property of k-fold on temporally ordered data, and it is worse for insurance than for almost any other supervised learning application because insurance data has three distinct time axes - inception date, accident date, valuation date - each of which creates a different leakage mechanism.
 
-This post is the complete guide: what exactly goes wrong with k-fold on insurance data, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](https://github.com/burning-cost/insurance-cv).
+This post is the complete guide: what exactly goes wrong with k-fold on insurance data, why the resulting bias is large enough to matter for model selection, and how to replace k-fold with insurance walk-forward cross-validation using [`insurance-cv`](/insurance-governance/).
 
 ---
 

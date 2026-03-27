@@ -20,7 +20,7 @@ The problem is not that tools like Evidently or NannyML are badly engineered. Th
 
 4. **The sequential testing problem.** When you run champion/challenger experiments on renewal cohorts and check results monthly, a standard significance test inflates false positives to roughly five times the nominal rate. The typical UK motor renewal cycle forces exactly this kind of repeated peeking.
 
-`insurance-monitoring` is built around these four problems. This post works through them concretely.
+[`insurance-monitoring`](/insurance-monitoring/) is built around these four problems. This post works through them concretely.
 
 ```bash
 uv add insurance-monitoring

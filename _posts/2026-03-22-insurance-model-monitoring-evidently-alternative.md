@@ -36,7 +36,7 @@ Standard PSI treats every row equally. For an insurance portfolio, rows are poli
 
 The problem is acute when young drivers are overrepresented in your short-period business (comparison sites, monthly-pay schemes) and underrepresented in your annual renewals. Unweighted PSI will underestimate the distributional shift in driver age, because the short-period young-driver policies each count once despite contributing 0.25 car-years of exposure.
 
-Evidently does not expose an exposure weight parameter on its PSI implementation. The `insurance-monitoring` library does:
+Evidently does not expose an exposure weight parameter on its PSI implementation. The [`insurance-monitoring`](/insurance-monitoring/) library does:
 
 ```python
 from insurance_monitoring.drift import psi

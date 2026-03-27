@@ -119,7 +119,7 @@ Install:
 uv add insurance-credibility
 ```
 
-The library is at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility).
+The library is at [`insurance-credibility`](/insurance-credibility/).
 
 ---
 

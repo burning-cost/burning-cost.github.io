@@ -118,7 +118,7 @@ Postcode sector (first 4-5 characters of UK postcode: `SW1A 1`, `M1 1`) has ~9,0
 
 The standard UK actuarial treatment is to fit a separate spatial smoothing model on postcode (Whittaker smoother, kriging, or a hierarchical GLM with postcode within postcode district) and use the smoothed postcode relativity as an offset in the main GLM. This separates the signal from the sparse postcode cell problem.
 
-In Python, a Whittaker smoother over postcode sector-level A/E ratios is the closest equivalent to what Emblem's geographic smoothing does. Our [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) library implements this directly for postcode-level rating factor derivation.
+In Python, a Whittaker smoother over postcode sector-level A/E ratios is the closest equivalent to what Emblem's geographic smoothing does. Our [insurance-whittaker](/insurance-whittaker/) library implements this directly for postcode-level rating factor derivation.
 
 ### Voluntary excess
 
@@ -342,7 +342,7 @@ The FCA's General Insurance Pricing Practices (GIPP) rules (effective 1 January 
 
 **Proxy discrimination (Consumer Duty, also FCA DP21/1).** A factor that is uncorrelated with risk but correlated with a protected characteristic - via a proxy route - is discriminatory under Equality Act and Consumer Duty. Postcode, in particular, is under scrutiny: inner-city postcodes correlate with ethnicity. A UK GLM that includes dense urban postcodes as a straight rating factor needs a proxy discrimination test alongside the standard actuarial tests.
 
-The [insurance-fairness](https://github.com/burning-cost/insurance-fairness) library implements the Bayes Business School optimal transport method for proxy discrimination testing in Python. For a GLM rate review, running this before sign-off is now a reasonable standard of care.
+The [insurance-fairness](/insurance-fairness/) library implements the Bayes Business School optimal transport method for proxy discrimination testing in Python. For a GLM rate review, running this before sign-off is now a reasonable standard of care.
 
 ```bash
 # install insurance-fairness

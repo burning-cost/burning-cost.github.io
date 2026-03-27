@@ -136,7 +136,7 @@ The reconstruction check verifies that `exp(shap_values.sum(axis=1) + expected_v
 
 ### Recipe 5: How do I distil a CatBoost model into a Radar-ready factor table?
 
-`insurance-distill` fits a surrogate GLM on GBM pseudo-predictions and exports one CSV per feature - ready to load into Radar or any multiplicative rating engine.
+[`insurance-distill`](/insurance-distill/) fits a surrogate GLM on GBM pseudo-predictions and exports one CSV per feature - ready to load into Radar or any multiplicative rating engine.
 
 ```python
 from insurance_distill import SurrogateGLM
@@ -219,7 +219,7 @@ print(ev[:3])
 
 ### Recipe 8: How do I check my pricing model for proxy discrimination?
 
-`insurance-fairness` provides FCA Consumer Duty-aligned bias metrics. Start with `detect_proxies` to find which rating factors are correlated with protected characteristics, then run calibration-by-group to check whether any group is systematically over- or under-priced.
+[`insurance-fairness`](/insurance-fairness/) provides FCA Consumer Duty-aligned bias metrics. Start with `detect_proxies` to find which rating factors are correlated with protected characteristics, then run calibration-by-group to check whether any group is systematically over- or under-priced.
 
 ```python
 from insurance_fairness import detect_proxies, calibration_by_group

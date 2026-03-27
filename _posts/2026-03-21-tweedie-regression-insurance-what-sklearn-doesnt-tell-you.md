@@ -239,7 +239,7 @@ The critical point: passing `log(exposure)` as a free feature in any boosting mo
 
 ## insurance-distributional's TweedieGBM
 
-`TweedieGBM` from `insurance-distributional` handles exposure correctly, fits both the mean and the dispersion (using the Smyth-Jorgensen double GLM approach), and gives you per-risk CoV on top.
+[`TweedieGBM`](/insurance-distributional/) from `insurance-distributional` handles exposure correctly, fits both the mean and the dispersion (using the Smyth-Jorgensen double GLM approach), and gives you per-risk CoV on top.
 
 ```python
 from insurance_distributional import TweedieGBM

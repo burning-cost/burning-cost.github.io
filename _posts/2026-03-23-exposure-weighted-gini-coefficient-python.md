@@ -191,7 +191,7 @@ If the 25th percentile of exposure is below 0.7 and the correlation exceeds 0.1 
 
 ## Using insurance-monitoring
 
-The implementation above is correct. For production use, [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) provides the same function with additional features: a proper two-sample Gini drift z-test, bootstrap confidence intervals, and a one-sample monitoring test for deployed models (you have a stored training Gini and want to test whether the current period shows statistically significant drift).
+The implementation above is correct. For production use, [insurance-monitoring](/insurance-monitoring/) provides the same function with additional features: a proper two-sample Gini drift z-test, bootstrap confidence intervals, and a one-sample monitoring test for deployed models (you have a stored training Gini and want to test whether the current period shows statistically significant drift).
 
 ```bash
 uv add insurance-monitoring

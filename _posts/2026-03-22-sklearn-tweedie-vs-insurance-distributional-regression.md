@@ -78,7 +78,7 @@ This is not a bug. It is exactly what a GLM was designed to return. The question
 
 ---
 
-## What insurance-distributional does instead
+## What [`insurance-distributional`](/insurance-distributional/) does instead
 
 [insurance-distributional](https://github.com/burning-cost/insurance-distributional) implements distributional gradient boosting for insurance: you get both `mu_i` and `phi_i` per policy, making variance a function of covariates rather than a portfolio constant.
 

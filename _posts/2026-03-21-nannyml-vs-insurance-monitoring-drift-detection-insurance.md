@@ -71,7 +71,7 @@ For insurance, rows in a monitoring dataset are policies, and policies vary enor
 
 The problem is not academic. UK comparison site business is disproportionately short-duration - monthly pay, annual intent, frequent lapse. Annual renewals are a different population. If young drivers are entering via monthly-pay comparison site policies while your reference data is annual renewals, unweighted PSI underestimates the driver age shift because the young-driver policies each count once despite contributing 0.25 car-years.
 
-`insurance-monitoring` exposes an `exposure_weights` parameter directly on the PSI and CSI functions:
+[`insurance-monitoring`](/insurance-monitoring/) exposes an `exposure_weights` parameter directly on the PSI and CSI functions:
 
 ```python
 from insurance_monitoring.drift import psi, csi

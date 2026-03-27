@@ -9,7 +9,7 @@ description: "We ran the benchmarks. On a synthetic UK motor book with nonlinear
 
 The claim for Double Machine Learning is that it can recover causal treatment effects from observational insurance data — no randomised trial required. You throw in your rating factors as confounders, nominate the treatment (telematics score, price change, channel flag), and get a causal estimate with a valid confidence interval. Strong claim. The kind that makes a pricing actuary ask: "Compared to what, exactly?"
 
-So we ran the benchmark. Known data-generating process, synthetic UK motor book, multiplicative nonlinear confounding. We compared a naive logistic GLM — the standard approach — against DML via [`insurance-causal`](https://github.com/burning-cost/insurance-causal), and measured bias against the known ground truth. Here is what we found.
+So we ran the benchmark. Known data-generating process, synthetic UK motor book, multiplicative nonlinear confounding. We compared a naive logistic GLM — the standard approach — against DML via [`insurance-causal`](/insurance-causal/), and measured bias against the known ground truth. Here is what we found.
 
 ---
 

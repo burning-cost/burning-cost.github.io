@@ -15,9 +15,9 @@ These are separate questions, but they come in sequence for every pricing team. 
 
 The libraries:
 
-- [`insurance-causal`](https://github.com/burning-cost/insurance-causal) - Double Machine Learning for causal effect estimation
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) - distribution-free prediction intervals
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) - PSI, A/E, Gini drift detection
+- [`insurance-causal`](/insurance-causal/) - Double Machine Learning for causal effect estimation
+- [`insurance-conformal`](/insurance-conformal/) - distribution-free prediction intervals
+- [`insurance-monitoring`](/insurance-monitoring/) - PSI, A/E, Gini drift detection
 
 ---
 

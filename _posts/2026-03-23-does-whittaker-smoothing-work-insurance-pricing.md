@@ -47,7 +47,7 @@ Total exposure: approximately 90,000 policy years across 64 age bands.
 2. Whittaker-Henderson, GCV lambda selection.
 3. Whittaker-Henderson, REML lambda selection (the recommended method).
 
-All three are compared against the known true curve. Benchmark run 23 March 2026, seed=42, using [`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker).
+All three are compared against the known true curve. Benchmark run 23 March 2026, seed=42, using [`insurance-whittaker`](/insurance-whittaker/).
 
 ---
 
