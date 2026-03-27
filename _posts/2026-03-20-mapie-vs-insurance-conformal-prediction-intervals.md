@@ -149,11 +149,11 @@ The coverage guarantee holds because calibration scores use `mu_hat(x)`, not obs
 
 ## Benchmark: what the score choice costs
 
+_Note: these benchmarks compare insurance-conformal's scoring modes against a parametric Tweedie baseline, not a direct MAPIE head-to-head. The structural argument for why MAPIE's absolute-residual approach produces wider intervals is discussed below._
+
 The numbers below are from the insurance-conformal GBM benchmark: 50,000 synthetic UK motor policies, CatBoost Tweedie(p=1.5) as the point forecast, heteroskedastic Gamma DGP where high-mean risks are genuinely more dispersed than Tweedie(1.5) predicts. Temporal 60/20/20 split (30k train, 10k calibration, 10k test). 90% target coverage. Databricks serverless, seed=42.
 
 We have not benchmarked MAPIE directly on this dataset - the comparison to MAPIE is structural (absolute vs Pearson-weighted score), not a head-to-head run. The headline finding is what the correct score choice achieves compared to the parametric baseline:
-
-_Note: these benchmarks compare insurance-conformal's scoring modes against a parametric Tweedie baseline, not a direct MAPIE head-to-head. The structural argument for why MAPIE's absolute-residual approach produces wider intervals is discussed below._
 
 | Method | Aggregate coverage | Worst-decile coverage | Mean interval width (£) |
 |--------|-------------------|----------------------|------------------------|

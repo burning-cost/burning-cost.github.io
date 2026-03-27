@@ -4,8 +4,8 @@ title: "Alibi Detect vs insurance-monitoring: Drift Detection for Insurance Pric
 date: 2026-03-18
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, comparisons]
-description: "Alibi Detect is a solid general-purpose drift detection library. It doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS3/17 regulatory framing. For insurance pricing teams, those omissions are the whole problem."
-tags: [alibi-detect-insurance, model-drift-insurance-pricing, alibi-detect-vs, insurance-model-monitoring-python, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, insurance-monitoring, model-risk, PRA-SS3-17, python, uk-insurance, polars]
+description: "Alibi Detect is a solid general-purpose drift detection library. It doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS3/18 regulatory framing. For insurance pricing teams, those omissions are the whole problem."
+tags: [alibi-detect-insurance, model-drift-insurance-pricing, alibi-detect-vs, insurance-model-monitoring-python, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, insurance-monitoring, model-risk, PRA-SS3-18, python, uk-insurance, polars]
 ---
 
 If you search "model drift detection Python", Alibi Detect appears near the top. It deserves to. SeldonIO have built a serious library: Kolmogorov-Smirnov, Maximum Mean Discrepancy, Chi-squared, Least-Squares Density Difference - the standard statistical tests, cleanly implemented, with good documentation and around 2,200 GitHub stars at time of writing. For a general ML pipeline monitoring tabular models, text, or images, Alibi Detect is a reasonable default.
@@ -125,7 +125,7 @@ result = gini_drift_test(
 # GiniDriftResult(z_statistic=-1.93, p_value=0.054, gini_change=-0.03, significant=False)
 ```
 
-The default alpha is 0.32 - the one-sigma rule. The rationale, from arXiv 2510.04556, is that the cost of missing a Gini decline is measurable in loss ratio; the cost of a false positive investigation is two actuarial days. We agree with this. The governance output is a `GiniDriftBootstrapTest` with a `.plot()` method that produces a standard IFoA/PRA model validation deliverable - bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation.
+The default alpha is 0.32 - the one-sigma rule. The rationale, from arXiv 2510.04556, is that the cost of missing a Gini decline is measurable in loss ratio; the cost of a false positive investigation is two actuarial days. We agree with this. The `gini_drift_test()` function returns a `GiniDriftResult` with the z-statistic, p-value, and significance flag. For governance documentation, `GiniDriftBootstrapTest` is the class to use: it runs a full bootstrap procedure and has a `.plot()` method that produces a standard IFoA/PRA model validation deliverable - bootstrap histogram, CI shading, training Gini line, monitor Gini line, z and p annotation.
 
 ---
 
@@ -135,7 +135,7 @@ Alibi Detect has no statistical framework for champion/challenger experiments. M
 
 UK motor teams typically check champion/challenger results monthly. Under a standard two-sample test at p < 0.05, checking monthly for 12 months inflates the actual false positive rate to roughly 25%. In 10,000 Monte Carlo simulations under the null (no real effect), a monthly-peeking t-test produces spurious "significant" results one in four times. Teams that know this discount their own results. Teams that don't know this make bad deployment decisions.
 
-`insurance-monitoring`'s `sequential` module implements the mixture Sequential Probability Ratio Test (mSPRT) from Johari et al. (Operations Research, 2022). The evidence statistic is an e-process with a hard guarantee: P(ever exceeds 1/alpha) ≤ alpha at all stopping times, regardless of how often you look:
+`insurance-monitoring`'s `sequential` module implements the mixture Sequential Probability Ratio Test (mSPRT) from Johari et al. (Management Science, 2022). The evidence statistic is an e-process with a hard guarantee: P(ever exceeds 1/alpha) ≤ alpha at all stopping times, regardless of how often you look:
 
 ```python
 import datetime
@@ -197,9 +197,9 @@ In the benchmark (500 calibrated observations, then 500 with 15% rate inflation)
 
 ## Problem 6: no regulatory framing
 
-Alibi Detect is a data science library. It produces drift statistics. It has no concept of PRA SS3/17, Consumer Duty, model risk management, or governance artefacts.
+Alibi Detect is a data science library. It produces drift statistics. It has no concept of PRA SS3/18, Consumer Duty, model risk management, or governance artefacts.
 
-PRA SS3/17 - the supervisory statement on model risk management - requires UK insurers to demonstrate ongoing model monitoring with documented, structured evidence. "The KS test p-value for driver age was 0.03" is not that evidence. "A/E ratio 1.08 [1.031, 1.137], amber threshold exceeded, recommendation: recalibrate" is.
+PRA SS3/18 - the supervisory statement on model risk management - requires UK insurers to demonstrate ongoing model monitoring with documented, structured evidence. "The KS test p-value for driver age was 0.03" is not that evidence. "A/E ratio 1.08 [1.031, 1.137], amber threshold exceeded, recommendation: recalibrate" is.
 
 `insurance-monitoring`'s `MonitoringReport` produces a structured Polars DataFrame designed to be written to a database and cited in governance documentation:
 
@@ -269,7 +269,7 @@ Alibi Detect's drift detection treats a £50,000 commercial vehicle policy the s
 - You need Gini drift testing to detect ranking degradation before adverse selection bites
 - You need anytime-valid sequential testing for champion/challenger experiments that you check monthly
 - You need PITMonitor for calibration monitoring that does not false-alarm under repeated testing
-- You need `MonitoringReport` producing PRA SS3/17-ready governance documentation
+- You need `MonitoringReport` producing PRA SS3/18-ready governance documentation
 
 The tools are not alternatives for the same problem. Alibi Detect solves generic ML drift detection well. `insurance-monitoring` solves insurance pricing model monitoring specifically. A team with both gets Alibi Detect for engineering-facing infrastructure and `insurance-monitoring` for the actuarial outputs that feed governance documentation.
 

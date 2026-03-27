@@ -141,7 +141,7 @@ The demographic parity ratio is computed in log-space because insurance pricing 
 
 ### The double fairness problem Fairlearn cannot see
 
-A subtler issue, documented in FCA TR24/2 (August 2024): action fairness (premium parity) and outcome fairness (loss ratio parity) can conflict, and firms that audit only at the point of quoting miss the Consumer Duty Outcome 4 obligation.
+A subtler issue, documented in the FCA thematic review of insurance pricing fairness (2024): action fairness (premium parity) and outcome fairness (loss ratio parity) can conflict, and firms that audit only at the point of quoting miss the Consumer Duty Outcome 4 obligation.
 
 On a synthetic UK motor TPLI portfolio of 20,000 policies, minimising premium disparity (Delta_1) worsens loss ratio disparity (Delta_2) substantially. The two cannot both be zeroed without abandoning risk differentiation. The FCA does not require you to achieve both simultaneously - but it does expect you to have considered the trade-off and documented it.
 
@@ -162,7 +162,7 @@ double_audit = DoubleFairnessAudit(n_alphas=20)
 double_audit.fit(X, y_primary, y_fairness, S, exposure=exposure)
 result = double_audit.audit()   # returns DoubleFairnessResult with full Pareto front
 print(result.summary())         # plain-text Pareto front table
-print(double_audit.report())    # FCA-ready report mapping to PRIN 2A Outcome 4 and TR24/2
+print(double_audit.report())    # FCA-ready report mapping to PRIN 2A Outcome 4 and the FCA thematic review
 ```
 
 Fairlearn's mitigation tools optimise for a single fairness criterion at a time. They will not show you the trade-off surface, and they cannot tell you the revenue cost of each operating point. For a UK insurer documenting their Consumer Duty assessment, the Pareto front is the auditable evidence.
@@ -252,7 +252,7 @@ Use Fairlearn when you are doing classification and want to enforce demographic 
 
 **Related posts:**
 - [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) - the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data in full, and what a defensible audit trail looks like
-- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) - what TR24/2 actually requires vs what most insurers are doing
+- [FCA Consumer Duty Fair Value Assessments: What Good Looks Like](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) - what the FCA thematic review of insurance pricing fairness actually requires vs what most insurers are doing
 
 ---
 

@@ -134,10 +134,9 @@ treatment_col
 price_change_pct          -0.423        -0.681       -0.258
 95% CI (causal)                         [-0.712, -0.650]
 Bias as % of naive                       61.0%
-Sensitivity bound (Gamma=1.5)            [-0.830, -0.532]
 ```
 
-The sensitivity bound implements Rosenbaum-style sensitivity analysis: how strong would an unobserved confounder need to be - in terms of association with both treatment and outcome - to overturn the conclusion? A pricing team presenting to a reserving committee or model risk function needs this number. EconML does not compute it.
+A pricing team presenting to a reserving committee or model risk function will ask how sensitive this conclusion is to unobserved confounders. EconML does not compute this. Rosenbaum-style sensitivity analysis is available in `insurance-causal` via `SelectionCorrectedElasticity.sensitivity_bounds()` if needed.
 
 ### Problem 4: dual selection bias
 
