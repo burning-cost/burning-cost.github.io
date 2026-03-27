@@ -265,10 +265,10 @@ These areas do have R implementations - `grf` (causal forests by Athey et al.) i
 
 Our [Burning Cost](https://github.com/burning-cost) libraries are a concrete example of what the Python ecosystem enables:
 
-- [insurance-causal](https://github.com/burning-cost/insurance-causal): causal forest estimation of rating factor effects, controlling for selection bias in pricing data. Useful for estimating the true effect of adding or removing a rating factor, not just the correlated signal.
-- [insurance-conformal](https://github.com/burning-cost/insurance-conformal): conformal prediction intervals for GBM models, giving statistically valid uncertainty bounds on individual policy quotes. This is the foundation for Consumer Duty compliant pricing uncertainty reporting.
-- [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring): sequential testing for distributional shift in production model outputs - Gini decay, average error drift, double-lift degradation - with correct multiple testing control.
-- [insurance-fairness](https://github.com/burning-cost/insurance-fairness): proxy discrimination testing using optimal transport, as required for FCA compliance on postcode and other potentially sensitive rating factors.
+- [insurance-causal](/2026/03/12/insurance-autodml/): causal forest estimation of rating factor effects, controlling for selection bias in pricing data. Useful for estimating the true effect of adding or removing a rating factor, not just the correlated signal.
+- [insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/): conformal prediction intervals for GBM models, giving statistically valid uncertainty bounds on individual policy quotes. This is the foundation for Consumer Duty compliant pricing uncertainty reporting.
+- [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/): sequential testing for distributional shift in production model outputs - Gini decay, average error drift, double-lift degradation - with correct multiple testing control.
+- [insurance-fairness](/2026/03/20/fca-consumer-duty-pricing-fairness-python/): proxy discrimination testing using optimal transport, as required for FCA compliance on postcode and other potentially sensitive rating factors.
 
 None of these exist as mature, production-ready R packages. The research base is often in R (the causal forests paper uses R; most conformal prediction papers have R code), but the production implementation tooling is Python.
 

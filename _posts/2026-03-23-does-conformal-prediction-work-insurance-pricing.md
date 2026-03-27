@@ -23,7 +23,7 @@ We used a temporal 60/20/20 split: 30,000 policies for training, 10,000 for cali
 
 The parametric baseline uses the standard approach: fit CatBoost, estimate a single global dispersion sigma from Pearson residuals on the calibration set, construct intervals as `ŷ ± z × σ × ŷ^(p/2)`. This is the textbook method and what most teams have in production.
 
-For conformal, we wrapped the same CatBoost model in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) using the `pearson_weighted` non-conformity score and calibrated on the same held-out set. We also ran locally-weighted conformal (LW conformal), which fits a secondary spread model to learn which features predict large residuals.
+For conformal, we wrapped the same CatBoost model in [`insurance-conformal`](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) using the `pearson_weighted` non-conformity score and calibrated on the same held-out set. We also ran locally-weighted conformal (LW conformal), which fits a secondary spread model to learn which features predict large residuals.
 
 ---
 
@@ -178,7 +178,7 @@ This is the main limitation. Split conformal guarantees `P(y in interval) >= 1 -
 
 ### Exchangeability requires temporal discipline
 
-The validity guarantee relies on calibration and test data being exchangeable. Calibrating on 2022 data and deploying in 2026 breaks this: claims inflation, Ogden rate changes, and portfolio evolution all create distributional shift. The rule is: calibrate on the accident year immediately preceding your test period. Use `temporal_split()` for this. Even with a correct temporal split, check coverage drift monthly using [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) — its exposure-weighted PSI will alert you to feature distribution shifts before they contaminate calibration set validity.
+The validity guarantee relies on calibration and test data being exchangeable. Calibrating on 2022 data and deploying in 2026 breaks this: claims inflation, Ogden rate changes, and portfolio evolution all create distributional shift. The rule is: calibrate on the accident year immediately preceding your test period. Use `temporal_split()` for this. Even with a correct temporal split, check coverage drift monthly using [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — its exposure-weighted PSI will alert you to feature distribution shifts before they contaminate calibration set validity.
 
 ### IBNR contaminates the calibration set
 

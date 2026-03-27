@@ -52,7 +52,7 @@ Install with uv:
 uv add insurance-optimise
 ```
 
-The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-causal`](https://github.com/burning-cost/insurance-causal) feeds directly in.
+The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-causal`](https://github.com/burning-cost/insurance-causal) feeds directly in — for the DML methodology behind those elasticity estimates, see the [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) post.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig

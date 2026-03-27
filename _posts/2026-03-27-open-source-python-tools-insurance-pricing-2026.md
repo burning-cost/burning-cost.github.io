@@ -119,7 +119,7 @@ We built these because the gap above is real. UK GI pricing teams using Python a
 
 We should be honest upfront: these are relatively new libraries (most published 2025–2026), the download numbers are modest (roughly 250–1,050 installs/month per package as of March 2026, and the distribution is suspiciously uniform — likely mirror traffic alongside real users), and some are more mature than others. Where there are known limitations, we say so.
 
-### [insurance-fairness](https://github.com/burning-cost/insurance-fairness) — proxy discrimination auditing
+### [insurance-fairness](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — proxy discrimination auditing
 
 The problem: postcode is a legitimate risk variable, but it correlates with ethnicity. FCA Consumer Duty and EP25/2 require you to demonstrate it is not operating as a proxy. Spearman correlation misses non-linear categorical relationships entirely.
 
@@ -127,7 +127,7 @@ The library runs CatBoost proxy R² and mutual information scoring per protected
 
 `pip install insurance-fairness`
 
-### [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) — model drift detection
+### [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — model drift detection
 
 The problem: aggregate A/E ratios look stable, but drift is concentrated in young drivers and cancels at portfolio level. By the time the aggregate deteriorates, you are already mispriced.
 
@@ -135,7 +135,7 @@ The library computes exposure-weighted PSI/CSI per segment, segmented A/E with I
 
 `pip install insurance-monitoring`
 
-### [insurance-conformal](https://github.com/burning-cost/insurance-conformal) — prediction intervals
+### [insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — prediction intervals
 
 The problem: standard conformal prediction achieves aggregate coverage but systematically undercovers the highest-risk decile — the segment that matters most for SCR and reinsurance cost.
 
@@ -143,7 +143,7 @@ Locally-weighted non-conformity scores adapt interval width to local variance. D
 
 `pip install insurance-conformal`
 
-### [shap-relativities](https://github.com/burning-cost/shap-relativities) — GBM-to-factor-table extraction
+### [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — GBM-to-factor-table extraction
 
 The problem: your CatBoost model beats the production GLM by 3 Gini points. The rating engine needs multiplicative factor tables. There is no `exp(β)` in CatBoost.
 
@@ -151,7 +151,7 @@ The library extracts TreeSHAP values, exposure-weights them per rating band, and
 
 `pip install shap-relativities`
 
-### [insurance-causal](https://github.com/burning-cost/insurance-causal) — deconfounding and price elasticity
+### [insurance-causal](/2026/03/12/insurance-autodml/) — deconfounding and price elasticity
 
 The problem: vehicle value looks significant in the GLM, but it correlates with distribution channel. You cannot tell whether it is risk signal or channel confounding, and ordinary regression cannot separate the two.
 
@@ -159,7 +159,7 @@ Double machine learning residualises both outcome and treatment on confounders u
 
 `pip install insurance-causal`
 
-### [insurance-optimise](https://github.com/burning-cost/insurance-optimise) — constrained rate optimisation
+### [insurance-optimise](/2026/03/07/insurance-optimise/) — constrained rate optimisation
 
 The problem: rate change recommendations are done in spreadsheets where constraints interact and the solution is not optimal. You have a technical price, a loss ratio target, movement caps, and FCA ENBP constraints. A spreadsheet solver cannot handle all of these simultaneously with any guarantee of optimality.
 
@@ -167,7 +167,7 @@ SLSQP with analytical Jacobians finds the optimal rate changes across these cons
 
 `pip install insurance-optimise`
 
-### [insurance-governance](https://github.com/burning-cost/insurance-governance) — PRA SS1/23 validation reports
+### [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — PRA SS1/23 validation reports
 
 The problem: model validation reports are produced manually in PowerPoint.
 
@@ -245,11 +245,11 @@ If you are setting up a Python pricing workflow from nothing:
 
 2. **GBM layer:** CatBoost for most pricing tasks (categorical handling, Tweedie objective, native SHAP). XGBoost or LightGBM as alternatives.
 
-3. **Interpretation:** [shap-relativities](https://github.com/burning-cost/shap-relativities) to extract factor tables from GBMs. The SHAP library directly for feature attribution.
+3. **Interpretation:** [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) to extract factor tables from GBMs. The SHAP library directly for feature attribution.
 
-4. **Validation:** [insurance-governance](https://github.com/burning-cost/insurance-governance) for structured validation reports. [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) for ongoing drift detection.
+4. **Validation:** [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) for structured validation reports. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) for ongoing drift detection.
 
-5. **Regulatory:** [insurance-fairness](https://github.com/burning-cost/insurance-fairness) if you are in UK personal lines and need Consumer Duty proxy evidence.
+5. **Regulatory:** [insurance-fairness](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) if you are in UK personal lines and need Consumer Duty proxy evidence.
 
 6. **Specialist needs:** [insurance-causal](https://github.com/burning-cost/insurance-causal) for deconfounding, [insurance-severity](https://github.com/burning-cost/insurance-severity) for tail modelling, [insurance-optimise](https://github.com/burning-cost/insurance-optimise) for constrained rate changes, [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) for rate change evaluation.
 

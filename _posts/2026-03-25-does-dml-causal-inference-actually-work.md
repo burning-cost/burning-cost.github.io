@@ -49,7 +49,7 @@ The DML estimate converges to the true value. The GLM does not, at any sample si
 
 A telematics discount calibrated to the GLM coefficient (0.12) rather than the causal coefficient (0.08) is set roughly 50% too aggressively. If you give a 5% discount to 40% of a 10,000-policy book expecting 8% retention uplift per unit telematics score, but the true causal uplift is only ~5% per unit, you are paying for retention that would have happened without the discount.
 
-On renewal pricing, the same benchmark finds a GLM price-sensitivity estimate of −0.045 against a causal estimate of −0.023 — the GLM number is wrong by roughly 96%. A rate-change optimisation built on that elasticity will systematically undercharge price-inelastic customers and overprice elastic ones.
+On renewal pricing, the same benchmark finds a GLM price-sensitivity estimate of −0.045 against a causal estimate of −0.023 — the GLM number is wrong by roughly 96%. A rate-change optimisation built on that elasticity will systematically undercharge price-inelastic customers and overprice elastic ones. The [insurance-optimise library](/2026/03/07/insurance-optimise/) takes the causal elasticity estimate as a direct input and enforces FCA ENBP constraints simultaneously — the two tools are designed to work in sequence.
 
 ---
 

@@ -10,7 +10,7 @@ tags: [insurance-monitoring, PSI, ae-ratio, gini-drift, vehicle-group, motor-pri
 
 This is a walkthrough of a scenario we have seen in some form on more than one UK motor book: a frequency model is deployed, monitored quarterly, and twelve months later the monitoring catches a real problem before the loss ratio does. The problem traces back to an upstream data change — a vehicle group reclassification — that the model was never retrained for.
 
-The tools are from [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The workflow has four steps: PSI flags the distribution shift, A/E ratios confirm the pricing error by segment, a Gini drift z-test confirms the ranking has degraded, and the Murphy decomposition tells you whether to recalibrate or refit.
+The tools are from [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/). The workflow has four steps: PSI flags the distribution shift, A/E ratios confirm the pricing error by segment, a Gini drift z-test confirms the ranking has degraded, and the Murphy decomposition tells you whether to recalibrate or refit.
 
 ```bash
 uv add insurance-monitoring

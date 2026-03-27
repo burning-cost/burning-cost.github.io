@@ -114,7 +114,7 @@ ncd_encoder = OneHotEncoder(
 
 ### Postcode sector
 
-Postcode sector (first 4-5 characters of UK postcode: `SW1A 1`, `M1 1`) has ~9,000 levels. At that cardinality, one-hot encoding is impractical and standard L2 regularisation is not granular enough - you need a hierarchical or credibility-weighted approach.
+Postcode sector (first 4-5 characters of UK postcode: `SW1A 1`, `M1 1`) has ~9,000 levels. At that cardinality, one-hot encoding is impractical and standard L2 regularisation is not granular enough - you need a hierarchical or [credibility-weighted approach](/2026/02/19/buhlmann-straub-credibility-in-python/).
 
 The standard UK actuarial treatment is to fit a separate spatial smoothing model on postcode (Whittaker smoother, kriging, or a hierarchical GLM with postcode within postcode district) and use the smoothed postcode relativity as an offset in the main GLM. This separates the signal from the sparse postcode cell problem.
 

@@ -10,7 +10,7 @@ tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, m
 
 The most common question we hear after teams run their first `FairnessAudit` is not "how do I fix this" but "these three methods disagree - which one should I believe?"
 
-`insurance-fairness` flags proxy discrimination using three methods simultaneously: mutual information, proxy R-squared (via CatBoost), and SHAP proxy scores. When all three are red, you have a problem. When only one is, the diagnosis is subtler - and getting it wrong in either direction costs you. A false negative leaves you exposed to an FCA file review. A false positive triggers expensive factor restructuring on a model that was fine.
+[`insurance-fairness`](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) flags proxy discrimination using three methods simultaneously: mutual information, proxy R-squared (via CatBoost), and SHAP proxy scores. When all three are red, you have a problem. When only one is, the diagnosis is subtler - and getting it wrong in either direction costs you. A false negative leaves you exposed to an FCA file review. A false positive triggers expensive factor restructuring on a model that was fine.
 
 This post explains what each method is measuring, when they diverge, and how to weigh conflicting signals. We use the library's `detect_proxies()` function throughout so you can reproduce the analysis on your own book.
 

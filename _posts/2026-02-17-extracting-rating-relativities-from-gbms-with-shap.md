@@ -173,7 +173,7 @@ Three things to be honest about when presenting SHAP relativities to regulators 
 
 **Interaction effects.** TreeSHAP allocates interaction effects back to individual features by default. If area and vehicle age have an interaction in the model, some of that interaction gets attributed to area and some to vehicle age, but not in a way that cleanly separates main effects from interactions. `shap_interaction_values()` gives pure main effects, but it's O(n × p²) and quickly becomes infeasible on large portfolios.
 
-**Model uncertainty.** The CLT intervals capture data uncertainty - how well we've estimated each level's mean SHAP contribution. They say nothing about whether the GBM itself is well-specified, whether it would give different relativities on a different data split, or whether the feature contributions are stable across refits. For a full uncertainty picture you'd need to bootstrap across model refits. We haven't implemented that yet; it's on the roadmap.
+**Model uncertainty.** The CLT intervals capture data uncertainty - how well we've estimated each level's mean SHAP contribution. They say nothing about whether the GBM itself is well-specified, whether it would give different relativities on a different data split, or whether the feature contributions are stable across refits. For a full uncertainty picture you'd need to bootstrap across model refits. We haven't implemented that yet; it's on the roadmap. For per-risk uncertainty bounds that are distribution-free, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) wrap the model output directly and provide finite-sample coverage guarantees that the SHAP attribution layer cannot.
 
 ---
 

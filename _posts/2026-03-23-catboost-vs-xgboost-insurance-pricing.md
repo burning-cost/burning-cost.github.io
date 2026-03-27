@@ -218,7 +218,7 @@ CatBoost does not yet support this path. For pipelines that are otherwise end-to
 
 Use CatBoost. The native categorical handling alone justifies it for UK personal lines pricing, where high-cardinality vehicle and occupation codes are unavoidable. The ordered boosting regularisation is a meaningful free lunch on the kinds of thin-tailed data distributions insurance generates. The symmetric trees give you faster inference in production. The dict-based monotonic constraint syntax is more maintainable.
 
-All Burning Cost libraries — from [insurance-severity](https://github.com/Burning-Cost/insurance-severity) to [insurance-fairness](https://github.com/Burning-Cost/insurance-fairness) — default to CatBoost for GBM fits. We made this decision after benchmarking both frameworks on public motor and home datasets, and it has held up across 18 months of library development.
+All Burning Cost libraries — from [insurance-severity](https://github.com/Burning-Cost/insurance-severity) to [insurance-fairness](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — default to CatBoost for GBM fits. We made this decision after benchmarking both frameworks on public motor and home datasets, and it has held up across 18 months of library development.
 
 Use XGBoost when:
 - Your team has existing SHAP pipelines built on TreeExplainer and you cannot absorb the migration cost

@@ -97,7 +97,7 @@ rel_table = calibrator.relativity_table()
 # Returns DataFrame: bin_lower, bin_upper, relativity, credibility_weight
 ```
 
-The credibility weights use [Buhlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) by default, so thin bins at the extremes of the distribution are blended toward the portfolio mean rather than taken at face value.
+The credibility weights use [Bühlmann-Straub credibility](/2026/02/19/buhlmann-straub-credibility-in-python/) by default, so thin bins at the extremes of the distribution are blended toward the portfolio mean rather than taken at face value.
 
 ---
 

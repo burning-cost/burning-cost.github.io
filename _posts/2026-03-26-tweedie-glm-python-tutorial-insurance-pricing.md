@@ -423,7 +423,7 @@ For production factor tables with proper reference level handling and exposure-w
 
 **Exposure-free predictions for sklearn users.** If you are comparing results to `sklearn.linear_model.TweedieRegressor`, note that sklearn's implementation has no offset parameter. You cannot correctly reproduce these predictions with sklearn on data with exposure variation. We explained this in [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure](/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/).
 
-**Postcode and other high-cardinality factors.** We kept the example to four rating factors for clarity. A production UK motor GLM has postcode sector (~9,000 levels), NCD, ABI vehicle group, driver age, vehicle age, voluntary excess, and usually several more. High-cardinality factors need credibility-weighted or hierarchical treatment — a plain one-hot encoding at postcode level is not practical. The [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker) library handles postcode smoothing.
+**Postcode and other high-cardinality factors.** We kept the example to four rating factors for clarity. A production UK motor GLM has postcode sector (~9,000 levels), NCD, ABI vehicle group, driver age, vehicle age, voluntary excess, and usually several more. High-cardinality factors need credibility-weighted or hierarchical treatment — a plain one-hot encoding at postcode level is not practical. The [insurance-whittaker](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) library handles postcode smoothing via Whittaker-Henderson graduation applied across postcode hierarchies.
 
 ---
 

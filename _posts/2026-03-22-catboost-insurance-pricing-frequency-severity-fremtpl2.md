@@ -313,11 +313,11 @@ freMTPL2 is a clean dataset and the models above will fit without drama. On a re
 
 **Exposure period inconsistency.** freMTPL2 exposures are already in policy-years. UK data often requires constructing exposure from inception and expiry dates, accounting for mid-term adjustments, and sometimes for earned vs written premium distinctions that affect the appropriate weight.
 
-**Vehicle group instability.** ABI vehicle groups have 50-level codes that change between versions, and thin groups (custom vehicles, classic cars) can produce unstable relativities even with ordered boosting. The confidence intervals from shap-relativities flag this directly: any level with a 95% CI spanning more than 20% relative to the point estimate warrants scrutiny.
+**Vehicle group instability.** ABI vehicle groups have 50-level codes that change between versions, and thin groups (custom vehicles, classic cars) can produce unstable relativities even with ordered boosting. The confidence intervals from shap-relativities flag this directly: any level with a 95% CI spanning more than 20% relative to the point estimate warrants scrutiny. For thin vehicle groups with fewer than 50 observations, [Bühlmann-Straub credibility](/2026/02/19/buhlmann-straub-credibility-in-python/) is the right tool for blending the group estimate toward the book average rather than relying on the GBM's implicit regularisation.
 
 **Claims development.** freMTPL2 is a fully-developed snapshot. UK MTPL data is typically coded with open claims, and the claim amounts you model include IBNR. Mixing developed and undeveloped claims in the severity training set will bias the severity factors. You need a development-adjusted severity target or a modelling period where claims are sufficiently mature.
 
-The frequency-severity pipeline above is the foundation. The complications above are where pricing actuarial judgement does its work -- and they are separable from the modelling decisions, which is the point of getting the base pipeline right first.
+The frequency-severity pipeline above is the foundation. The complications above are where pricing actuarial judgement does its work -- and they are separable from the modelling decisions, which is the point of getting the base pipeline right first. Once the model is in production, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) provide distribution-free per-risk uncertainty bounds that the point prediction alone cannot supply — useful for capacity management decisions and SCR components.
 
 ---
 

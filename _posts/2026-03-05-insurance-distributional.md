@@ -152,7 +152,7 @@ Five things you can do with it that you cannot currently do with a standard pric
 
 **Underwriter referral rules.** Flag risks where CoV exceeds a threshold. No commercial pricing tool outputs CoV per risk: not Emblem, not Radar, not Guidewire. The rule "refer any risk with CoV > 0.8" is currently unimplementable in standard pricing workflows.
 
-**Reinsurance attachment optimisation.** XL attachment decisions depend on the distribution of outcomes, not just the mean. High-phi segments drive tail exposure disproportionately. Identifying them lets you price the protection rationally rather than loading proportionally to mean.
+**Reinsurance attachment optimisation.** XL attachment decisions depend on the distribution of outcomes, not just the mean. High-phi segments drive tail exposure disproportionately. Identifying them lets you price the protection rationally rather than loading proportionally to mean. [Quantile GBMs](/2026/03/07/insurance-quantile/) complement this by providing covariate-specific TVaR estimates at the percentiles reinsurance treaties reference.
 
 **IFRS 17 risk adjustment.** IFRS 17 requires a risk adjustment for non-financial risk: the compensation required for bearing uncertainty. Standard approaches use quantile/VaR loadings applied to aggregate reserves. Per-risk CoV provides a more granular input, particularly for portfolios with heterogeneous variance profiles.
 

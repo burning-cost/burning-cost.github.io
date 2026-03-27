@@ -330,7 +330,7 @@ report = MonitoringReport(..., thresholds=custom)
 
 A large motor book running monthly monitoring warrants tighter thresholds than the FICO defaults, which were designed for annual credit model reviews. The library does not enforce a single standard; it enforces that you make the threshold decision explicitly and that the choice is recorded in the output.
 
-The `to_polars()` report is the model risk artefact. It records which metrics were checked, what thresholds were applied, what values were observed, and what action was recommended. For PRA internal model documentation or FCA Consumer Duty model governance evidence, this is the structured audit trail you want.
+The `to_polars()` report is the model risk artefact. It records which metrics were checked, what thresholds were applied, what values were observed, and what action was recommended. For PRA internal model documentation or FCA Consumer Duty model governance evidence, this is the structured audit trail you want. It feeds directly into the [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) model inventory via `run_id`, linking the monitoring evidence to the formal validation record without manual transcription.
 
 ---
 

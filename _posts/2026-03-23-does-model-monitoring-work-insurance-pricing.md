@@ -9,7 +9,7 @@ description: "Aggregate A/E at 0.94 looks fine. The model has been mispricing un
 
 The claim for automated model monitoring is straightforward: deployed pricing models go stale, aggregate A/E monitoring misses most of it, and feature-level drift statistics catch the problems earlier. That is the kind of claim a pricing actuary can test. Three failure modes, one synthetic book, run the numbers.
 
-So we ran the benchmark. Known data-generating process, 50,000-policy UK motor reference portfolio, three deliberately induced failure modes planted in 15,000 monitoring-period policies. We compared what a manual aggregate A/E check finds against what [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring)'s full monitoring stack finds. Here is what the numbers show.
+So we ran the benchmark. Known data-generating process, 50,000-policy UK motor reference portfolio, three deliberately induced failure modes planted in 15,000 monitoring-period policies. We compared what a manual aggregate A/E check finds against what [`insurance-monitoring`](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s full monitoring stack finds. Here is what the numbers show.
 
 ---
 

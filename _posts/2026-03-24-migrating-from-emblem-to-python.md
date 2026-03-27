@@ -115,7 +115,7 @@ NCD is absent from severity for the same reason it would be in Emblem: NCD is a 
 
 In Emblem, the factor table appears automatically after fitting. In Python, you build it. This is one of the genuine friction points in migration.
 
-The manual version is a loop over `freq_model.params` and `freq_model.conf_int()`, extracting the parameter names that match your factor prefix and exponentiating. We built [`shap-relativities`](https://github.com/burning-cost/shap-relativities) partly to solve the GBM case, but its `factor_table()` method works for any model whose outputs are already on the log scale.
+The manual version is a loop over `freq_model.params` and `freq_model.conf_int()`, extracting the parameter names that match your factor prefix and exponentiating. We built [`shap-relativities`](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) partly to solve the GBM case, but its `factor_table()` method works for any model whose outputs are already on the log scale.
 
 For GLMs specifically, the extraction is:
 

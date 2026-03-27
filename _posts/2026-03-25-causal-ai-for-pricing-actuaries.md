@@ -274,7 +274,7 @@ The `insurance-fairness` library's `FairnessAuditor` works naturally with CATE o
 
 ## Monitoring the causal estimates over time
 
-Causal estimates are not static. If the book mix shifts substantially -- a new aggregator distribution, a change in the customer base that finds you -- the population-level ATE will change even if the underlying structural relationship between price and conversion does not. The `insurance-monitoring` library's drift detection framework can be applied to the DML treatment residual distribution: if `E[D|X]` has changed, the nuisance model is out of date and the causal estimate will be biased.
+Causal estimates are not static. If the book mix shifts substantially -- a new aggregator distribution, a change in the customer base that finds you -- the population-level ATE will change even if the underlying structural relationship between price and conversion does not. The [`insurance-monitoring`](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) library's drift detection framework can be applied to the DML treatment residual distribution: if `E[D|X]` has changed, the nuisance model is out of date and the causal estimate will be biased.
 
 Track the treatment nuisance R² from `diagnostics.nuisance_model_summary()` as a monthly KPI. A sudden increase in treatment R² means pricing is becoming more deterministic -- the tariff is increasingly determining who gets what rate without residual variation, and the causal estimate will have larger standard errors. A sudden decrease means there is new unexplained variation in the treatment, which could indicate data quality issues or an unmodelled pricing source.
 

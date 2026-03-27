@@ -41,7 +41,7 @@ The two most widely used Python fairness libraries are Fairlearn (Microsoft) and
 
 **They do not produce insurance-specific audit outputs.** A Fairlearn `MetricFrame` is not an FCA evidence document. It does not contain a regulatory mapping, a RAG status, or the factor-level proxy scores that a pricing committee sign-off requires. The output format matters: if you want to put something in a model risk register or send it to a Consumer Duty owner, you need a structured document, not a Python object.
 
-The right tool is one built for the specific regulatory question: do your non-protected rating factors proxy for protected characteristics? That is what `insurance-fairness` is for.
+The right tool is one built for the specific regulatory question: do your non-protected rating factors proxy for protected characteristics? That is what [`insurance-fairness`](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) is for.
 
 ---
 

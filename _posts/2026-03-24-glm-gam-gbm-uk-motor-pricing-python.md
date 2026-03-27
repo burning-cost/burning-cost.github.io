@@ -261,7 +261,7 @@ Two hyperparameter choices matter most for insurance:
 
 **Shallow depth.** Trees of depth 5-6 are interpretable enough for SHAP analysis and regularised enough to generalise. Depth 8+ tends to overfit on the kind of thin segments (rare vehicle brands, low-density regions) that appear in every insurance portfolio.
 
-**SHAP relativities.** The GBM predicts well but does not produce factor tables. The [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library bridges this gap by computing SHAP values in log space and aggregating them by factor level to produce multiplicative relativities.
+**SHAP relativities.** The GBM predicts well but does not produce factor tables. The [`shap-relativities`](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) library bridges this gap by computing SHAP values in log space and aggregating them by factor level to produce multiplicative relativities.
 
 ```bash
 uv add "shap-relativities[all]"
@@ -303,7 +303,7 @@ The `validate()` step is not optional. If the reconstruction check fails, the SH
 
 **Gini comparison.** CatBoost with native categoricals and early stopping typically lands 3-8 Gini points above the GLM on freMTPL2, and somewhat higher above a naively specified GLM. The shap-relativities benchmarks (measured on Databricks, 2026-03-21, 25,000 synthetic policies) show CatBoost Gini of approximately 0.411 versus 0.393 for a linear GLM. The magnitude depends on how well the GLM was specified.
 
-**The governance question.** A 5-point Gini improvement is worth roughly 5% improvement in risk discrimination. For a book writing £200m GWP, that is a meaningful number. The additional governance burden is real: sign-off from a pricing committee, explanation to the FCA, documentation under PRA SS1/23. Whether that burden is worth carrying depends on the book and the team. Our view is that the GBM should be in the arsenal but should go to production via the distillation path described in the next section, not as a raw model in a rating engine.
+**The governance question.** A 5-point Gini improvement is worth roughly 5% improvement in risk discrimination. For a book writing £200m GWP, that is a meaningful number. The additional governance burden is real: sign-off from a pricing committee, explanation to the FCA, documentation under PRA SS1/23. Whether that burden is worth carrying depends on the book and the team. Our view is that the GBM should be in the arsenal but should go to production via the distillation path described in the next section, not as a raw model in a rating engine. Once deployed, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) wrap the model output to provide per-risk coverage guarantees without parametric distribution assumptions.
 
 ---
 
@@ -381,7 +381,7 @@ See [Walk-Forward Cross-Validation for Insurance GLMs in Python](/2026/03/24/wal
 
 **Production monitoring.** A model fitted in March 2026 is not the right model for October 2027. The portfolio ages, claims inflation shifts the severity distribution, new vehicle types enter the book. [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) tracks three failure modes separately: covariate shift (PSI per feature), calibration drift (A/E ratios with Poisson confidence intervals), and discrimination decay (Gini drift z-test from arXiv:2510.04556). The Gini drift test is the important one: it tells you whether to run a cheap recalibration or a full refit. An aggregate A/E dashboard cannot answer that question. See [Motor Model Mispricing Caught by Monitoring](/2026/03/23/motor-model-mispricing-caught-by-monitoring/) for a walkthrough.
 
-**Proxy discrimination check.** Before finalising any factor table, run [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness). The FCA's Consumer Duty (PS22/9) requires firms to demonstrate fair value, and the FCA's TR24/2 thematic review (August 2024) found most insurers' Fair Value Assessments were insufficiently substantiated. Postcode is the factor most likely to be a proxy: Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance driven by postcode rating. `insurance-fairness` computes proxy R-squared, mutual information scores, and SHAP-linked price impact, and generates a Markdown audit report mapped to PRIN 2A and the Equality Act s.19.
+**Proxy discrimination check.** Before finalising any factor table, run [`insurance-fairness`](/2026/03/20/fca-consumer-duty-pricing-fairness-python/). The FCA's Consumer Duty (PS22/9) requires firms to demonstrate fair value, and the FCA's TR24/2 thematic review (August 2024) found most insurers' Fair Value Assessments were insufficiently substantiated. Postcode is the factor most likely to be a proxy: Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance driven by postcode rating. `insurance-fairness` computes proxy R-squared, mutual information scores, and SHAP-linked price impact, and generates a Markdown audit report mapped to PRIN 2A and the Equality Act s.19.
 
 ---
 
@@ -391,7 +391,7 @@ These are not competing models. They are stages of a pipeline, and each stage ha
 
 **Building the models**
 - [GLMs for UK Insurance Pricing in Python](/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/): exposure as offset, NCD as factor, MTA handling, glum vs statsmodels
-- [insurance-gam documentation](https://github.com/burning-cost/insurance-gam): EBM, ANAM, and PIN; when to use each
+- [insurance-gam: EBM, ANAM, and PIN](/2026/03/14/insurance-gam-interpretable-nonlinearity/): when to use each interpretable architecture
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/): the maths, the validation, the limitations for presenting to regulators
 
 **From model to production**
@@ -401,7 +401,7 @@ These are not competing models. They are stages of a pipeline, and each stage ha
 
 **Governance**
 - [insurance-fairness](https://github.com/burning-cost/insurance-fairness): FCA Consumer Duty compliance, proxy discrimination audit
-- [insurance-governance](https://github.com/burning-cost/insurance-governance): PRA SS1/23 model validation reports
+- [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/): PRA SS1/23 model validation reports
 
 The IFoA tutorial established the framework in R. This post gives you the same framework in Python, with the libraries UK pricing teams are actually adopting. The pipeline runs from `fetch_openml` to Radar-compatible factor tables in well under 200 lines of code. The governance libraries add the audit trail that regulators require. None of this requires bespoke infrastructure: all libraries install via `uv add`, run on a laptop for development, and scale to Databricks for production.
 

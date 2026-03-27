@@ -14,7 +14,7 @@ Most teams do it with a 5-point weighted moving average. Some use a polynomial f
 
 Whittaker-Henderson smoothing has been the actuarial standard in continental Europe for decades. It is a penalised least-squares method with a principled way to select the smoothing parameter. It handles thin cells correctly, produces credible intervals, extends naturally to two dimensions, and has a Poisson variant that operates on count data directly rather than derived rates. There has not been a good Python implementation. Until now.
 
-`insurance-whittaker` is BSD-3, requires Python 3.10+, and installs with:
+[`insurance-whittaker`](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) is BSD-3, requires Python 3.10+, and installs with:
 
 ```bash
 uv add insurance-whittaker
