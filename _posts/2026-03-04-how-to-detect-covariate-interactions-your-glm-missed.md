@@ -153,34 +153,51 @@ NID measures interaction strength in the CANN weight matrices. SHAP interaction 
 
 ```python
 # Requires the [shap] extra: uv add "insurance-interactions[shap]"
-# The detector runs SHAP validation automatically when CatBoost is available
+# SHAP validation requires a separately fitted CatBoost model passed to fit().
+# The library provides fit_catboost() as a convenience helper.
+from insurance_interactions.shap_interactions import fit_catboost
+
+cb_model = fit_catboost(
+    X=X_train,
+    y=train_df['y'].values,
+    exposure=exposure,
+    family="poisson",
+)
+
+detector.fit(
+    X=X_train,
+    y=train_df['y'].values,
+    glm_predictions=mu_glm,
+    exposure=exposure,
+    shap_model=cb_model,
+)
 
 shap_table = detector.interaction_table()
-# Additional columns: shap_score_normalised, consensus_rank
+# Additional columns when shap_model was supplied: shap_score_normalised, consensus_score
 print(shap_table.select([
     "feature_1", "feature_2",
-    "nid_score_normalised", "shap_score_normalised", "consensus_rank"
-]).sort("consensus_rank").head(5))
+    "nid_score_normalised", "shap_score_normalised", "consensus_score"
+]).sort("consensus_score").head(5))
 ```
 
 ```
-feature_1     feature_2     nid_score_norm  shap_score_norm  consensus_rank
-age_band      vehicle_group 0.923           0.891            1
-ncd_band      area          0.847           0.774            2
-age_band      ncd_band      0.412           0.198            7
-vehicle_group area          0.381           0.221            6
+feature_1     feature_2     nid_score_norm  shap_score_norm  consensus_score
+age_band      vehicle_group 0.923           0.891            0.962
+ncd_band      area          0.847           0.774            0.881
+age_band      ncd_band      0.412           0.198            0.305
+vehicle_group area          0.381           0.221            0.301
 ```
 
-Both planted interactions rank first and second by consensus. The `age_band × ncd_band` pair, which has a high NID score but non-significant LR test, drops to consensus rank 7 when the SHAP signal is weak -- correctly identifying it as a false candidate.
+Both planted interactions rank first and second by consensus score. The `age_band × ncd_band` pair, which has a high NID score but non-significant LR test, drops to a low consensus score when the SHAP signal is weak -- correctly identifying it as a false candidate.
 
 The SHAP interaction value for a pair (i, j) averaged across the portfolio is:
 
 ```python
-# Manual SHAP inspection for the top pair
+# Manual SHAP inspection using the user-supplied CatBoost model
 import shapiq
 
 explainer = shapiq.TreeExplainer(
-    model=detector._catboost_model,
+    model=cb_model,
     max_order=2,
     index="STII",   # Shapley-Taylor interaction index
 )
@@ -263,7 +280,7 @@ PRA SS1/23 (effective May 2024) requires that model changes be documented, justi
 - **Documentation of rationale**: why was this interaction added? What evidence supported it?
 - **Testing of significance**: was the improvement statistically validated, or asserted on theoretical grounds alone?
 
-The `interaction_table()` output is designed to answer both. For each approved interaction, the model documentation can cite: NID score (0.923 for age × vehicle group), LR chi-square statistic (p < 0.0001 after Bonferroni correction), parameter cost (171 cells), and deviance improvement (2.31% of base). The SHAP consensus rank (1st of 20 tested pairs) provides corroboration from a second, independent method.
+The `interaction_table()` output is designed to answer both. For each approved interaction, the model documentation can cite: NID score (0.923 for age × vehicle group), LR chi-square statistic (p < 0.0001 after Bonferroni correction), parameter cost (171 cells), and deviance improvement (2.31% of base). The SHAP consensus score (highest of 20 tested pairs) provides corroboration from a second, independent method.
 
 What the library cannot do is justify why the interaction exists. That is the actuary's job. "Young drivers in high-performance vehicles have materially worse claim frequency than the product of their individual relativities would predict" is a plausible actuarial explanation. That judgment -- and the decision to carry the 171-parameter cost -- belongs to the pricing team, not the algorithm.
 

@@ -314,8 +314,8 @@ from insurance_quantile import ilf
 X_std = X_val.filter(pl.col("construction") == 1.0)
 X_lst = X_val.filter(pl.col("construction") == 3.0)
 
-ilf_std = ilf(qmodel, X_std, basic_limit=100_000, higher_limit=500_000)
-ilf_lst = ilf(qmodel, X_lst, basic_limit=100_000, higher_limit=500_000)
+ilf_std = ilf(qmodel, X_std, basic_limit=100_000, higher_limit=500_000).mean()
+ilf_lst = ilf(qmodel, X_lst, basic_limit=100_000, higher_limit=500_000).mean()
 
 print(f"ILF(100k, 500k) -- standard construction:  {ilf_std:.4f}")
 print(f"ILF(100k, 500k) -- listed construction:    {ilf_lst:.4f}")
