@@ -182,7 +182,7 @@ for p_try in p_grid:
     result_tmp = sm.GLM(
         claims_cost,
         X,
-        family=Tweedie(var_power=p_try, link_power=0),  # link_power=0 → log link
+        family=Tweedie(var_power=p_try),  # default log link
         offset=np.log(exposure),
     ).fit(disp=False)
     deviances.append(result_tmp.deviance)
@@ -203,7 +203,7 @@ p_fit = float(p_estimated)  # or fix at 1.5 if you have prior knowledge
 model = sm.GLM(
     claims_cost,
     X,
-    family=Tweedie(var_power=p_fit, link_power=0),  # log link
+    family=Tweedie(var_power=p_fit),  # default log link
     offset=np.log(exposure),   # <-- critical: log(exposure) as offset
 )
 

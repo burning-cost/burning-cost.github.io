@@ -19,7 +19,7 @@ The Ogden discount rate is used by UK courts when awarding lump sum damages for 
 
 The logic is: a claimant receiving £X today can invest it and earn returns over the period, so the lump sum should be discounted by the assumed net rate of return. At a positive rate, the lump sum is less than the undiscounted sum of future losses. At -0.25%, the lump sum is slightly more.
 
-The rate was set at 2.5% from 2001 to 2017. It then dropped to -0.75% in March 2017 — a shock to the industry that added billions to outstanding large BI reserves overnight. The Civil Liability Act 2018 changed the methodology: the rate is now set by reference to a diversified portfolio including equities (not purely index-linked gilts as previously), which produced the current -0.25% in August 2019. The next review was due in 2024; as of early 2027, no revision has been announced, though the Lord Chancellor retains the power to revise it.
+The rate was set at 2.5% from 2001 to 2017. It then dropped to -0.75% in March 2017 — a shock to the industry that added billions to outstanding large BI reserves overnight. The Civil Liability Act 2018 changed the methodology: the rate is now set by reference to a diversified portfolio including equities (not purely index-linked gilts as previously), which produced the current -0.25% in August 2019. The next review was due in 2024; as of early 2026, no revision has been announced, though the Lord Chancellor retains the power to revise it.
 
 The negative rate reflects the view that claimants investing a lump sum will achieve returns slightly below inflation — a cautious but not absurd assumption for a claimant who cannot bear investment risk. For insurers, it means every pound of future annual loss becomes slightly more than a pound of reserve.
 
@@ -212,14 +212,15 @@ The large BI severity distribution is genuinely fat-tailed and highly uncertain.
 
 [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) produces distribution-free prediction intervals around severity estimates. For large BI, the relevant output is the upper bound of the interval: what is the plausible range of the claim, not just the point estimate? Applied to a large BI portfolio, the conformal interval width by claim severity decile gives you a direct view of where the model's tail uncertainty is largest.
 
-The non-conformity score for severity models in this range is the log-residual: `|log(y) − log(ŷ)|`. Pearson-weighted scoring (the default for Tweedie models) is less appropriate when the tail is genuinely Pareto-like rather than variance-scaled. The `nonconformity="log_residual"` option is the right choice for large BI severity.
+The non-conformity score for severity models in this range matters. Pearson-weighted scoring (the default for Tweedie models) is less appropriate when the tail is genuinely Pareto-like rather than variance-scaled. The `nonconformity="deviance"` option with `distribution='gamma'` uses Gamma deviance residuals, which are variance-stabilising without inflating the non-conformity score proportionally with claim size.
 
 ```python
+import polars as pl
 from insurance_conformal import InsuranceConformalPredictor
 
 cp = InsuranceConformalPredictor(
     model=severity_model,
-    nonconformity="log_residual",  # appropriate for heavy-tailed severity
+    nonconformity="deviance",  # Gamma deviance residual — variance-stabilising for heavy tails
 )
 cp.calibrate(X_cal, y_cal)
 
@@ -227,7 +228,9 @@ intervals = cp.predict_interval(X_large_bi, alpha=0.10)  # 90% intervals
 # DataFrame columns: lower, point, upper
 
 # Flag claims where the upper bound is above the PPO threshold
-intervals["ppo_flag"] = intervals["upper"] > 500_000
+intervals = intervals.with_columns(
+    (pl.col("upper") > 500_000).alias("ppo_flag")
+)
 ```
 
 The `ppo_flag` column identifies claims where, conditional on the model's point estimate and the calibrated uncertainty, a PPO outcome is plausible. These claims deserve different reserving treatment: not a single lump sum reserve, but a scenario reserve that spans both the lump sum and the adverse PPO wage inflation case.
@@ -289,7 +292,7 @@ Both limitations belong in the governance documentation. Uncertainty is not a pr
 
 The Ogden rate at -0.25% produces lump sum awards that are roughly double those calculated at the pre-2017 rate of 2.5%, for a young serious injury claimant with substantial ongoing care needs. PPOs remove the Ogden calculation entirely and replace it with a duration and wage inflation problem that is harder to hedge and harder to reserve for.
 
-The Python code above gets you to a defensible lump sum reserve and a PPO sensitivity table. Use `insurance-conformal` to put uncertainty bounds on individual claim severity estimates — the `log_residual` non-conformity score is appropriate for this distribution. Use `insurance-governance` to document the Ogden rate assumption, the PPO propensity assumption, and their sensitivities in the model validation report where they belong.
+The Python code above gets you to a defensible lump sum reserve and a PPO sensitivity table. Use `insurance-conformal` to put uncertainty bounds on individual claim severity estimates — the `deviance` non-conformity score with `distribution='gamma'` is appropriate for this distribution. Use `insurance-governance` to document the Ogden rate assumption, the PPO propensity assumption, and their sensitivities in the model validation report where they belong.
 
 What you cannot do is predict when the rate will change or how many open claims will convert to PPOs. Document that honestly.
 
