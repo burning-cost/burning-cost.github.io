@@ -28,13 +28,8 @@ minima:
   skin: classic
 
 header_pages:
-  - course.md
   - tools.md
-  - topics.md
   - blog.md
-  - consulting.md
-  - resources.md
-  - about.md
 
 plugins:
   - jekyll-feed
