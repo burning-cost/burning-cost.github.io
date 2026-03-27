@@ -301,6 +301,68 @@
 
     .page-content tr:last-child td { border-bottom: none; }
 
+    /* ── Related posts (library pages) ──────────────────────────── */
+
+    .lib-posts {
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .lib-posts-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      margin-bottom: 1rem;
+    }
+
+    .lib-posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      list-style: none;
+    }
+
+    .lib-posts-item {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .lib-posts-item:hover {
+      border-color: rgba(79,126,248,0.35);
+      background: rgba(79,126,248,0.04);
+    }
+
+    .lib-posts-item a {
+      text-decoration: none;
+      display: block;
+    }
+
+    .lib-posts-item a:hover { text-decoration: none; }
+
+    .lib-posts-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1a1d2e;
+      line-height: 1.4;
+      margin-bottom: 0.2rem;
+    }
+
+    .lib-posts-item:hover .lib-posts-title { color: var(--accent); }
+
+    .lib-posts-date {
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      color: var(--text-muted);
+    }
+
+
     /* ── Footer ──────────────────────────────────────────────────── */
 
     .footer {
@@ -421,6 +483,37 @@
   <div class="page-body">
     <div class="page-content">
       {{ content }}
+
+      {% comment %}
+        Related posts for library pages.
+        Library page titles match the tag names used in posts (e.g. "insurance-fairness").
+        We find all posts tagged with the library name and list up to 6 of the most recent.
+        This creates crawlable cross-links from library docs to editorial content.
+      {% endcomment %}
+      {% if page.schema == "SoftwareApplication" %}
+        {% assign lib_posts = "" | split: "" %}
+        {% for post in site.posts %}
+          {% if post.tags contains page.title %}
+            {% assign lib_posts = lib_posts | push: post %}
+          {% endif %}
+        {% endfor %}
+        {% if lib_posts.size > 0 %}
+        <div class="lib-posts">
+          <p class="lib-posts-heading">Articles using this library</p>
+          <ul class="lib-posts-list">
+            {% for lpost in lib_posts limit: 6 %}
+            <li class="lib-posts-item">
+              <a href="{{ lpost.url | relative_url }}">
+                <div class="lib-posts-title">{{ lpost.title | escape }}</div>
+                <div class="lib-posts-date">{{ lpost.date | date: "%d %B %Y" }}</div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      {% endif %}
+
     </div>
   </div>
 

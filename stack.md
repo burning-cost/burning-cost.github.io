@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Stack"
+description: "The Python and infrastructure stack behind UK insurance pricing teams that use open-source tools. Libraries, frameworks, and deployment patterns for production pricing models."
 permalink: /stack/
 ---
 

@@ -15,6 +15,37 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"></noscript>
   {% feed_meta %}
   {% include structured-data.html %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ page.title | jsonify }},
+    "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+    "image": "{{ site.url }}/assets/og-image.png",
+    "author": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ site.url }}/assets/og-image.png"
+      }
+    },
+    "url": {{ page.url | absolute_url | jsonify }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ page.url | absolute_url | jsonify }}
+    }{% if page.tags and page.tags.size > 0 %},
+    "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -349,6 +380,55 @@
       letter-spacing: 0.02em;
     }
 
+    /* ── Related libraries ───────────────────────────────────────── */
+
+    .related-libs {
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .related-libs-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      margin-bottom: 1rem;
+    }
+
+    .related-libs-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      list-style: none;
+    }
+
+    .related-lib-item a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: var(--mono);
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,126,248,0.25);
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .related-lib-item a:hover {
+      background: rgba(79,126,248,0.2);
+      border-color: rgba(79,126,248,0.5);
+      text-decoration: none;
+    }
+
+    .related-lib-item a::before { content: '→'; font-size: 0.75rem; }
+
     /* ── Related articles ────────────────────────────────────────── */
 
     .related-section {
@@ -541,43 +621,43 @@
   <div class="article-body">
     <div class="article-content">
 
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": {{ page.title | jsonify }},
-        "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
-        "datePublished": "{{ page.date | date_to_xmlschema }}",
-        "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
-        "image": "{{ site.url }}/assets/og-image.png",
-        "author": {
-          "@type": "Organization",
-          "name": "Burning Cost",
-          "url": "{{ site.url }}"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Burning Cost",
-          "url": "{{ site.url }}",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "{{ site.url }}/assets/og-image.png"
-          }
-        },
-        "url": {{ page.url | absolute_url | jsonify }},
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": {{ page.url | absolute_url | jsonify }}
-        }{% if page.tags and page.tags.size > 0 %},
-        "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
-      }
-      </script>
-
       {{ content }}
 
       {% if page.tags and page.tags.size > 0 %}
       <div class="post-tags">
         {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% comment %}
+        Related Libraries block.
+        Maps known tag names to library page URLs. If a post's tags contain any
+        of these library identifiers, we surface a direct link to the library
+        documentation page. This creates crawlable links from every relevant
+        post to the corresponding library page, helping Google understand the
+        relationship between editorial content and the software it covers.
+      {% endcomment %}
+      {% assign lib_map = "insurance-fairness:/insurance-fairness/|insurance-governance:/insurance-governance/|insurance-causal:/insurance-causal/|insurance-conformal:/insurance-conformal/|insurance-monitoring:/insurance-monitoring/|insurance-whittaker:/insurance-whittaker/|insurance-telematics:/insurance-telematics/|insurance-credibility:/insurance-credibility/|insurance-frequency-severity:/insurance-frequency-severity/|insurance-gam:/insurance-gam/|insurance-optimise:/insurance-optimise/|insurance-distributional:/insurance-distributional/|insurance-distill:/insurance-distill/|shap-relativities:/shap-relativities/" | split: "|" %}
+      {% assign matched_libs = "" | split: "" %}
+      {% for entry in lib_map %}
+        {% assign parts = entry | split: ":" %}
+        {% assign lib_tag = parts[0] %}
+        {% assign lib_url = parts[1] %}
+        {% if page.tags contains lib_tag %}
+          {% assign matched_libs = matched_libs | push: entry %}
+        {% endif %}
+      {% endfor %}
+      {% if matched_libs.size > 0 %}
+      <div class="related-libs">
+        <p class="related-libs-heading">Library documentation</p>
+        <ul class="related-libs-list">
+          {% for entry in matched_libs %}
+            {% assign parts = entry | split: ":" %}
+            {% assign lib_tag = parts[0] %}
+            {% assign lib_url = parts[1] %}
+          <li class="related-lib-item"><a href="{{ lib_url }}">{{ lib_tag }}</a></li>
+          {% endfor %}
+        </ul>
       </div>
       {% endif %}
 

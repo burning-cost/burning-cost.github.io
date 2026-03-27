@@ -3,6 +3,9 @@ layout: page
 title: "shap-relativities"
 description: "Convert GBM SHAP values into GLM-style multiplicative factor tables. Monotonicity constraints, credibility-weighted smoothing, RADAR-compatible output. The missing link between gradient boosting and insurance pricing sign-off."
 permalink: /shap-relativities/
+schema: SoftwareApplication
+github_repo: "https://github.com/burning-cost/shap-relativities"
+pypi_package: "shap-relativities"
 ---
 
 Convert gradient boosting SHAP values into GLM-style multiplicative relativity tables. The standard workflow for UK motor pricing teams migrating from GLMs to GBMs: fit CatBoost or XGBoost, extract SHAP, then produce the factor table format your pricing sign-off process expects.
