@@ -131,14 +131,14 @@ For profit-maximising price per risk:
 ```python
 opt = OptimalPrice(
     demand_curve=curve,
-    technical_premium=650.0,
-    cost_per_policy=45.0,
-    enbp_ceiling=None,  # new business: no constraint
+    expected_loss=650.0,
+    fixed_expense=45.0,
+    enbp=None,  # new business: no constraint
 )
 
-result = opt.solve()
+result = opt.optimise()
 print(f"Optimal price: £{result.optimal_price:.0f}")
-print(f"Expected conversion: {result.expected_conversion:.1%}")
+print(f"Expected conversion: {result.conversion_prob:.1%}")
 ```
 
 For renewal pricing, the ENBP ceiling is hard. The `OptimalPrice` solver will never return a price above it:
@@ -146,9 +146,9 @@ For renewal pricing, the ENBP ceiling is hard. The `OptimalPrice` solver will ne
 ```python
 opt = OptimalPrice(
     demand_curve=renewal_curve,
-    technical_premium=650.0,
-    cost_per_policy=30.0,
-    enbp_ceiling=710.0,  # new business price via same channel
+    expected_loss=650.0,
+    fixed_expense=30.0,
+    enbp=710.0,  # new business price via same channel
 )
 ```
 

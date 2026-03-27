@@ -224,7 +224,7 @@ A first run through the distillation workflow should validate the main-effects G
 
 **Interaction terms.** If max segment deviation is below 10% without them, leave them out. Add `interaction_pairs=[("driver_age", "area")]` only if the double-lift chart shows slope — a systematic pattern where the GLM and GBM disagree on risk ordering.
 
-**Temporal validation.** `surrogate.report()` validates on training data. For a production rating engine, pass a held-out accident year to `surrogate.report(X_val=..., y_val=..., exposure_val=...)` and confirm factor tables generalise out-of-time before loading into Radar.
+**Temporal validation.** `surrogate.report()` validates on training data. For a production rating engine, validate on a held-out accident year by constructing a second `SurrogateGLM` instance with the validation data, fitting it to the same GBM pseudo-predictions on that period, and comparing the resulting factor tables before loading into Radar.
 
 **High-cardinality features.** A binary flag for `has_convictions` works when exposure in the 3+ point bands is thin. If your book has meaningful exposure at 3+ points, pass `conviction_points` directly and let the distillation step find the cut-points automatically.
 
