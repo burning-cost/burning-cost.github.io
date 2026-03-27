@@ -317,8 +317,9 @@ X_lst = X_val.filter(pl.col("construction") == 3.0)
 ilf_std = ilf(qmodel, X_std, basic_limit=100_000, higher_limit=500_000)
 ilf_lst = ilf(qmodel, X_lst, basic_limit=100_000, higher_limit=500_000)
 
-print(f"ILF(100k, 500k) -- standard construction:  {ilf_std:.4f}")
-print(f"ILF(100k, 500k) -- listed construction:    {ilf_lst:.4f}")
+# ilf() returns a per-risk Series; take the portfolio mean for a single summary figure
+print(f"ILF(100k, 500k) -- standard construction:  {ilf_std.mean():.4f}")
+print(f"ILF(100k, 500k) -- listed construction:    {ilf_lst.mean():.4f}")
 ```
 
 ```
@@ -342,15 +343,15 @@ print(calib)
 ```
 
 ```
-quantile  target_coverage  actual_coverage  gap
-q_0.50           0.500            0.508    +0.8%
-q_0.75           0.250            0.241    -0.9%
-q_0.90           0.100            0.098    -0.2%
-q_0.95           0.050            0.051    +0.1%
-q_0.99           0.010            0.011    +0.1%
+quantile  expected_coverage  observed_coverage  coverage_error
+q_0.50            0.500              0.508           +0.8%
+q_0.75            0.250              0.241           -0.9%
+q_0.90            0.100              0.098           -0.2%
+q_0.95            0.050              0.051           +0.1%
+q_0.99            0.010              0.011           +0.1%
 ```
 
-Calibration within 1 percentage point at every level: the TVaR estimates are reliable. If the q_0.99 row showed actual_coverage of 7% against a target of 1%, the TVaR computation would be materially wrong -- the model would be understating the tail by a factor of roughly 7.
+Calibration within 1 percentage point at every level: the TVaR estimates are reliable. If the q_0.99 row showed observed_coverage of 7% against an expected_coverage of 1%, the TVaR computation would be materially wrong -- the model would be understating the tail by a factor of roughly 7.
 
 If calibration is poor on the holdout, the first fix is more data. The 8,000-claim dataset here is at the lower end of what quantile regression needs for reliable 99th-percentile estimates. On a real UK home book with five years of claims history and claim volumes above 5,000 non-zero severity records, you would typically have enough to calibrate to the 99th level -- but verify it, do not assume.
 

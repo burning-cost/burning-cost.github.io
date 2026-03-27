@@ -193,8 +193,8 @@ print(lift)
 
 ```
 {
-  'rmse_stage1':       0.4231,
-  'rmse_final':        0.3894,
+  'stage1_rmse':       0.4231,
+  'final_rmse':        0.3894,
   'rmse_improvement_pct':  7.97,
   'malr_stage1':       0.4118,
   'malr_final':        0.3801,

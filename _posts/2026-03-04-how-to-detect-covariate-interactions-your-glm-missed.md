@@ -95,7 +95,7 @@ cfg = DetectorConfig(
 detector = InteractionDetector(family="poisson", config=cfg)
 detector.fit(
     X=X_train,
-    y=pl.Series(train_df['y'].values),
+    y=train_df['y'].values,
     glm_predictions=mu_glm,
     exposure=exposure,
 )
@@ -156,35 +156,44 @@ NID measures interaction strength in the CANN weight matrices. SHAP interaction 
 # The detector runs SHAP validation automatically when CatBoost is available
 
 shap_table = detector.interaction_table()
-# Additional columns: shap_score_normalised, consensus_rank
+# Additional columns: shap_score_normalised, consensus_score
 print(shap_table.select([
     "feature_1", "feature_2",
-    "nid_score_normalised", "shap_score_normalised", "consensus_rank"
-]).sort("consensus_rank").head(5))
+    "nid_score_normalised", "shap_score_normalised", "consensus_score"
+]).sort("consensus_score").head(5))
 ```
 
 ```
-feature_1     feature_2     nid_score_norm  shap_score_norm  consensus_rank
-age_band      vehicle_group 0.923           0.891            1
-ncd_band      area          0.847           0.774            2
-age_band      ncd_band      0.412           0.198            7
-vehicle_group area          0.381           0.221            6
+feature_1     feature_2     nid_score_norm  shap_score_norm  consensus_score
+age_band      vehicle_group 0.923           0.891            0.050
+ncd_band      area          0.847           0.774            0.100
+age_band      ncd_band      0.412           0.198            0.350
+vehicle_group area          0.381           0.221            0.300
 ```
 
-Both planted interactions rank first and second by consensus. The `age_band × ncd_band` pair, which has a high NID score but non-significant LR test, drops to consensus rank 7 when the SHAP signal is weak -- correctly identifying it as a false candidate.
+Both planted interactions rank first and second by consensus. The `age_band × ncd_band` pair, which has a high NID score but non-significant LR test, drops to a high consensus score when the SHAP signal is weak -- correctly identifying it as a false candidate.
 
 The SHAP interaction value for a pair (i, j) averaged across the portfolio is:
 
 ```python
 # Manual SHAP inspection for the top pair
+# Fit CatBoost separately and pass it to the explainer
+from catboost import CatBoostRegressor
 import shapiq
 
+cb_model = CatBoostRegressor(
+    loss_function="Poisson", iterations=500,
+    learning_rate=0.05, depth=6, verbose=0,
+)
+cb_model.fit(X_train.to_pandas(), train_df["y"].values,
+             sample_weight=exposure)
+
 explainer = shapiq.TreeExplainer(
-    model=detector._catboost_model,
+    model=cb_model,
     max_order=2,
     index="STII",   # Shapley-Taylor interaction index
 )
-interactions = explainer.explain_all(X_train.to_pandas(), order=2)
+interactions = explainer.explain_all(X_train.to_pandas())
 phi_matrix = interactions.get_n_order_values(2)
 # phi_matrix[i,j] = mean absolute STII for factor pair (i,j) across portfolio
 ```
@@ -233,7 +242,7 @@ approved_pairs = [("age_band", "vehicle_group"), ("ncd_band", "area")]
 
 final_model, comparison = build_glm_with_interactions(
     X=X_train,
-    y=pl.Series(train_df['y'].values),
+    y=train_df['y'].values,
     exposure=exposure,
     interaction_pairs=approved_pairs,
     family="poisson",

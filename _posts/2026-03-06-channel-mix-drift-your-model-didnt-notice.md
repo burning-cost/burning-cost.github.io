@@ -151,11 +151,11 @@ Primary shift drivers: driver_age (0.41), ncd_band (0.28), area_code (0.19)
 RECOMMENDATION: Importance weighting correction is appropriate. Consider
 flagging to model risk for review at next validation cycle. Under FCA Consumer
 Duty (PS22/9), verify that pricing outcomes remain fair across affected
-segments. A SEVERE verdict would require material change notification under
-FCA SUP 15.3.
+segments. A SEVERE verdict would require model risk review under
+FCA PS21/5 and FG22/5 (Consumer Duty).
 ```
 
-A MODERATE verdict does not by itself trigger SUP 15.3 notification, but it should appear in the model risk log and the next annual model validation. A SEVERE verdict (ESS ≤ 0.30 or KL ≥ 0.50) is a different matter: that is the level of shift where a model trained on the original distribution is materially misspecified for the current book, and FCA Principle 11 (relations with regulators) comes into play alongside Consumer Duty.
+A MODERATE verdict does not by itself trigger escalation, but it should appear in the model risk log and the next annual model validation. A SEVERE verdict (ESS ≤ 0.30 or KL ≥ 0.50) is a different matter: that is the level of shift where a model trained on the original distribution is materially misspecified for the current book. Under FCA PS21/5 and FG22/5 (Consumer Duty), a firm that knowingly continues pricing from a materially stale model has a question to answer; FCA Principle 11 (relations with regulators) also comes into play.
 
 ---
 
@@ -165,7 +165,7 @@ Importance weighting corrects for covariate shift: the case where the feature di
 
 The diagnostic helps here too. If you have even a few months of target labels - claims from the new channel - you can test the covariate shift assumption directly: fit the model using source labels and importance weights, compare to a model fitted on target labels, and check whether the weighted source model's predictions track the target model's in the segments where you have target data. If they diverge systematically, concept drift is the more likely culprit.
 
-That is the point where you need labelled target data and a transfer learning approach rather than pure importance weighting. We cover that in [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data) and [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data).
+That is the point where you need labelled target data and a transfer learning approach rather than pure importance weighting. We cover that in [insurance-thin-data](https://github.com/burning-cost/insurance-thin-data).
 
 ---
 
