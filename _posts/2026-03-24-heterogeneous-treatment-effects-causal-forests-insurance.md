@@ -11,7 +11,7 @@ description: "Using causal forests and GATES/CLAN/RATE inference to find which c
 
 When you decide whether to offer a telematics discount, you are not offering it to the portfolio average. You are offering it to specific customers, each of whom has their own elasticity. The 22-year-old in inner-city Manchester on a PCW may respond three times more strongly to a £50 discount than the 55-year-old direct renewer in Surrey. Treating them identically — either by offering the same discount or by using the same retention assumption in a pricing optimisation — is a pricing error. The question is whether you can measure the difference.
 
-Conditional average treatment effects (CATEs) are the answer. The new `causal_forest` module in [`insurance-causal`](https://github.com/burning-cost/insurance-causal) provides a full pipeline: estimate per-risk CATEs with a causal forest, then run the formal Chernozhukov et al. (2020/2025) inference suite — BLP, GATES, CLAN — plus the Yadlowsky et al. (2025 JASA) RATE test for targeting validity.
+Conditional average treatment effects (CATEs) are the answer. The new `causal_forest` module in [`insurance-causal`](/insurance-causal/) provides a full pipeline: estimate per-risk CATEs with a causal forest, then run the formal Chernozhukov et al. (2020/2025) inference suite — BLP, GATES, CLAN — plus the Yadlowsky et al. (2025 JASA) RATE test for targeting validity.
 
 ```bash
 uv add insurance-causal

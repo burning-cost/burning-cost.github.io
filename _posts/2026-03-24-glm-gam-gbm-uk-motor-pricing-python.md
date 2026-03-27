@@ -153,7 +153,7 @@ The main limitation of the GLM is that it requires you to specify nonlinear stru
 
 GAMs model the relationship between each feature and the target as a smooth function, estimated from the data. The output remains additive: the log-predicted frequency is a sum of per-feature shape functions, which makes it directly interpretable by a pricing actuary. There is no black box. The GAM's shape function for driver age is the U-shaped curve you would have needed to specify manually in the GLM.
 
-For production pricing use, we prefer EBM (Explainable Boosting Machine) via [`insurance-gam`](https://github.com/burning-cost/insurance-gam). EBM builds the shape functions through boosting rather than spline regression, which makes it robust to the scale of features and gives it better performance than classical P-splines on large datasets.
+For production pricing use, we prefer EBM (Explainable Boosting Machine) via [`insurance-gam`](/insurance-gam/). EBM builds the shape functions through boosting rather than spline regression, which makes it robust to the scale of features and gives it better performance than classical P-splines on large datasets.
 
 ```bash
 uv add "insurance-gam[ebm]"

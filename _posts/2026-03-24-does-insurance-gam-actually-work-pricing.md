@@ -26,7 +26,7 @@ The results are not what the headline says. The EBM's deviance number is worse t
 
 The GLM baseline uses sklearn's `PoissonRegressor` with linear driver age, quadratic driver age / 1000, linear NCD years, linear vehicle age, log(annual miles), and area dummies. This is a competent, fairly specified model — the sort a pricing team would have in production after a proper factor selection exercise. It is not a strawman.
 
-The EBM uses `InsuranceEBM(loss='poisson', interactions='3x')` from `insurance-gam v0.1.6`. Three pairwise interaction terms, fitted by cyclic gradient boosting. No manual feature engineering.
+The EBM uses `InsuranceEBM(loss='poisson', interactions='3x')` from [`insurance-gam`](/insurance-gam/) v0.1.6. Three pairwise interaction terms, fitted by cyclic gradient boosting. No manual feature engineering.
 
 Oracle performance — the deviance achievable using the true log-rate from the DGP — is the ceiling. Any model within noise of the oracle has learned the structure.
 

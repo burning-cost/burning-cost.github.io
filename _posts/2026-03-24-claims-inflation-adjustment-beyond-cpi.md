@@ -46,7 +46,7 @@ For UK home, the relevant ONS series is D7DO (CPI 04.3.2, Services for maintenan
 
 Even a sector-specific index will not capture everything. The residual after deflating by an appropriate index is called superimposed inflation: the cost growth that the index does not measure. ADAS recalibration costs are largely superimposed inflation on HPTH, because they represent new cost types not previously in the repair price basket.
 
-The [`insurance-trend`](https://github.com/burning-cost/insurance-trend) library handles this decomposition. You provide your historical claims series and the external index, and it fits a severity trend on the deflated series, reporting the index-measured component and the residual superimposed component separately.
+The [`insurance-trend`](/insurance-monitoring/) library handles this decomposition. You provide your historical claims series and the external index, and it fits a severity trend on the deflated series, reporting the index-measured component and the residual superimposed component separately.
 
 ```bash
 uv add insurance-trend

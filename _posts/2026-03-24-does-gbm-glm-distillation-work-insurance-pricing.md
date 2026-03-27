@@ -12,7 +12,7 @@ Every pricing actuary working with GBMs eventually hits the same wall. The CatBo
 
 The standard response to this is GBM-to-GLM distillation: fit a GLM not on the raw claims, but on the GBM's predictions. The GBM has already smoothed the claim noise; the GLM learns from that smoothed signal. The result is a set of factor tables that should, in principle, carry more of the GBM's discriminatory power than a GLM trained directly on the data.
 
-`insurance-distill` automates this pipeline. The question we are actually answering here is whether it works well enough to change how you build motor pricing models in practice.
+[`insurance-distill`](/insurance-distill/) automates this pipeline. The question we are actually answering here is whether it works well enough to change how you build motor pricing models in practice.
 
 ---
 

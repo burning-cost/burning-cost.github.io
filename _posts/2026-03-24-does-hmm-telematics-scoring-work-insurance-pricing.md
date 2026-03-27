@@ -32,7 +32,7 @@ The comparison is between two Poisson GLM specifications fed to the same model s
 
 Both use the same 70/30 driver-level train/test split, seed 42. The HMM is fitted on the training set and applied to the test set — no leakage.
 
-Benchmark run on [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) using `TripSimulator`, `DrivingStateHMM`, and `aggregate_to_driver`. Academic basis: Jiang & Shi (2024, NAAJ 28(4), pp.822–839).
+Benchmark run on [`insurance-telematics`](/insurance-telematics/) using `TripSimulator`, `DrivingStateHMM`, and `aggregate_to_driver`. Academic basis: Jiang & Shi (2024, NAAJ 28(4), pp.822–839).
 
 ---
 

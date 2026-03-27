@@ -10,7 +10,7 @@ author: Burning Cost
 
 Standard conformal prediction gives you a coverage guarantee. It does not give you intervals that are useful at the policy level. A 19-year-old in London gets the same ±£X as a 45-year-old in rural Norfolk because the conformal correction is a single scalar applied uniformly to the whole book. The intervals are valid in aggregate. For any individual risk they are uninformative.
 
-Conformalised Quantile Regression fixes this. `ConformalisedQuantileRegression` in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) v0.6.2 produces heteroscedastic intervals — wider where the data is genuinely more variable, narrower where it is stable — while retaining the marginal coverage guarantee.
+Conformalised Quantile Regression fixes this. `ConformalisedQuantileRegression` in [`insurance-conformal`](/insurance-conformal/) v0.6.2 produces heteroscedastic intervals — wider where the data is genuinely more variable, narrower where it is stable — while retaining the marginal coverage guarantee.
 
 ```bash
 uv add "insurance-conformal>=0.6.2"

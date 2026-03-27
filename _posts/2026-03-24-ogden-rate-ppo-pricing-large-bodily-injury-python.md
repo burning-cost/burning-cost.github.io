@@ -210,7 +210,7 @@ None of this is cleanly modellable from policy data. It is a judgment call, and 
 
 The large BI severity distribution is genuinely fat-tailed and highly uncertain. The 95th-percentile severity on a commercial motor or employers' liability claim is not well-estimated from a point prediction alone, and the distributional assumptions (Pareto shape, Burr parameters) are fitted on thin data by definition — serious injury claims above £500k are rare.
 
-[`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) produces distribution-free prediction intervals around severity estimates. For large BI, the relevant output is the upper bound of the interval: what is the plausible range of the claim, not just the point estimate? Applied to a large BI portfolio, the conformal interval width by claim severity decile gives you a direct view of where the model's tail uncertainty is largest.
+[`insurance-conformal`](/insurance-conformal/) produces distribution-free prediction intervals around severity estimates. For large BI, the relevant output is the upper bound of the interval: what is the plausible range of the claim, not just the point estimate? Applied to a large BI portfolio, the conformal interval width by claim severity decile gives you a direct view of where the model's tail uncertainty is largest.
 
 The non-conformity score for severity models in this range matters. Pearson-weighted scoring (the default for Tweedie models) is less appropriate when the tail is genuinely Pareto-like rather than variance-scaled. The `nonconformity="deviance"` option with `distribution='gamma'` uses Gamma deviance residuals, which are variance-stabilising without inflating the non-conformity score proportionally with claim size.
 
@@ -239,7 +239,7 @@ The `ppo_flag` column identifies claims where, conditional on the model's point 
 
 ## Where insurance-governance fits in
 
-Large BI models are high-stakes: a systematic error in the Ogden rate assumption or the PPO propensity estimate will affect reserves, capital, and reinsurance pricing. [`insurance-governance`](https://github.com/burning-cost/insurance-governance) generates validation reports that surface sensitivity tests as explicit, auditable outputs.
+Large BI models are high-stakes: a systematic error in the Ogden rate assumption or the PPO propensity estimate will affect reserves, capital, and reinsurance pricing. [`insurance-governance`](/insurance-governance/) generates validation reports that surface sensitivity tests as explicit, auditable outputs.
 
 The Ogden rate sensitivity — the difference in reserves between the current rate, the pre-2017 rate, and stress scenarios — should appear in every large BI model's validation report. Without it, the model risk committee has no basis for assessing whether the model is adequately reserved against a rate change.
 

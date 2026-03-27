@@ -196,7 +196,7 @@ No point pretending otherwise. Here is the genuine list:
 
 ## Deployment to Radar via insurance-distill
 
-Once you have a fitted GBM you want to get into Radar, [`insurance-distill`](https://github.com/burning-cost/insurance-distill) handles the GLM distillation step: it fits a surrogate Poisson or Gamma GLM on the GBM's predictions, bins continuous variables at the GBM's natural split points, and produces multiplicative factor tables in a format compatible with Radar's CSV import template.
+Once you have a fitted GBM you want to get into Radar, [`insurance-distill`](/insurance-distill/) handles the GLM distillation step: it fits a surrogate Poisson or Gamma GLM on the GBM's predictions, bins continuous variables at the GBM's natural split points, and produces multiplicative factor tables in a format compatible with Radar's CSV import template.
 
 ```bash
 uv add insurance-distill

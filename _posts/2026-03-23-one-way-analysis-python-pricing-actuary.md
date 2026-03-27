@@ -10,7 +10,7 @@ tags: [one-way-analysis, factor-tables, pandas, python, uk-insurance, motor-pric
 
 Before any model is fitted, before any interaction is explored, there is one-way analysis. Sort by a rating factor, bin it if it is continuous, compute observed frequency versus expected frequency by level, weight by exposure, look at the chart, repeat for every factor. It is the first thing a pricing actuary does on a new dataset and the most common diagnostic they return to throughout the modelling cycle.
 
-Python tutorials for insurance pricing skip it almost entirely. This post fills that gap: we build a correct one-way from scratch in pandas, add proper confidence intervals, then show how to get factor tables from a fitted GBM model using [shap-relativities](https://github.com/burning-cost/shap-relativities) — which is what production work actually looks like.
+Python tutorials for insurance pricing skip it almost entirely. This post fills that gap: we build a correct one-way from scratch in pandas, add proper confidence intervals, then show how to get factor tables from a fitted GBM model using [shap-relativities](/insurance-distill/) — which is what production work actually looks like.
 
 ---
 
@@ -275,7 +275,7 @@ This is the "production way" because it handles interactions correctly. The SHAP
 
 ## GAM-based factor tables with insurance-gam
 
-If you are using a GAM rather than a GBM — for example, an EBM (Explainable Boosting Machine) from [insurance-gam](https://github.com/burning-cost/insurance-gam) — the factor tables are native to the model architecture. An EBM is additive by construction; its shape functions are the factor tables.
+If you are using a GAM rather than a GBM — for example, an EBM (Explainable Boosting Machine) from [insurance-gam](/insurance-gam/) — the factor tables are native to the model architecture. An EBM is additive by construction; its shape functions are the factor tables.
 
 ```bash
 uv add 'insurance-gam[ebm]'

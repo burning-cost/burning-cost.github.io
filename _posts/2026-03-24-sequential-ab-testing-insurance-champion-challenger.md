@@ -13,7 +13,7 @@ The problem: if you check monthly for nine months using a standard two-sample t-
 
 The fix exists. It is called the mixture Sequential Probability Ratio Test (mSPRT), developed by Johari, Pekelis, and Walsh (Operations Research, 2022). It produces an e-process: a test statistic with a provable guarantee that P(ever exceeds 1/alpha) <= alpha at all stopping times, regardless of how often you look. You can check weekly, monthly, whenever - type I error control is exact.
 
-This post covers how the test works, how to calibrate it for insurance data (exposure-weighted, Poisson frequency, log-normal severity, compound loss ratio), the practical constraints that matter (IBNR, GIPP/ENBP, tau calibration, randomisation unit), and a worked simulation using the `SequentialTest` class from `insurance-monitoring`.
+This post covers how the test works, how to calibrate it for insurance data (exposure-weighted, Poisson frequency, log-normal severity, compound loss ratio), the practical constraints that matter (IBNR, GIPP/ENBP, tau calibration, randomisation unit), and a worked simulation using the `SequentialTest` class from [`insurance-monitoring`](/insurance-monitoring/).
 
 ---
 

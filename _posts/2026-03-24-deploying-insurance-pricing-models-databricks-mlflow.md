@@ -12,7 +12,7 @@ The model handoff from pricing actuary to production is one of the most error-pr
 
 There is no version control on which model is currently in production. There is no record of who approved the transition. If a regulator asks "which model was pricing renewals in Q3 2025?", the answer is probably a dig through email chains or a Confluence page that was last updated eighteen months ago. And there is certainly no automated check that the new model is not breaching ICOBS 6B.2.51R on renewal quotes.
 
-This is the problem `insurance-deploy` solves. It is not a cloud deployment platform. It does not push containers to Kubernetes or manage APIs. It is the infrastructure layer between "model fits well in validation" and "model is in production with a defensible paper trail" - the part that almost every pricing team either skips or builds badly.
+This is the problem [`insurance-deploy`](/insurance-governance/) solves. It is not a cloud deployment platform. It does not push containers to Kubernetes or manage APIs. It is the infrastructure layer between "model fits well in validation" and "model is in production with a defensible paper trail" - the part that almost every pricing team either skips or builds badly.
 
 ## What MLflow gives you and what it does not
 

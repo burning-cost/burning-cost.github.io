@@ -253,7 +253,7 @@ print(sev_table.filter(pl.col("factor").str.starts_with("vehicle")).sort("factor
 
 The Gamma GLM estimates a single dispersion parameter phi = 1/alpha (where alpha is the Gamma shape), assuming the same relative volatility across all risk levels. For attritional UK motor claims, this is approximately correct. Where it breaks down: books mixing BI-heavy and OD-only claims where severity volatility differs systematically by claim type, or books with unmodelled large-loss contamination.
 
-If your severity residuals show systematic patterns in |residual| against vehicle group or claim type, the fix is a Double GLM where phi is itself modelled as a function of covariates. `insurance-dispersion` implements this:
+If your severity residuals show systematic patterns in |residual| against vehicle group or claim type, the fix is a Double GLM where phi is itself modelled as a function of covariates. [`insurance-dispersion`](/insurance-distributional/) implements this:
 
 ```python
 from insurance_dispersion import DoubleGLM

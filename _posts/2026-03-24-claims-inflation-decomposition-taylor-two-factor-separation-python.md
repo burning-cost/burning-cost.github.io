@@ -285,7 +285,7 @@ This is the series that should feed your severity trend selection. Not the raw y
 
 The raw series is noisy — each diagonal in the observed triangle may be based on only two or three data points at the extremes. The 10.4% inflation in 2021-22 is real, but you would not want to project it forward as a trend. What you want is a smoothed version that captures the structural level shift while not over-fitting the year-to-year noise.
 
-This is exactly the [`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker) use case.
+This is exactly the [`insurance-whittaker`](/insurance-whittaker/) use case.
 
 ```python
 from insurance_whittaker import WhittakerHenderson1D

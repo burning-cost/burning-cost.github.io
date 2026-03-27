@@ -265,7 +265,7 @@ These areas do have R implementations - `grf` (causal forests by Athey et al.) i
 
 Our [Burning Cost](https://github.com/burning-cost) libraries are a concrete example of what the Python ecosystem enables:
 
-- [insurance-causal](https://github.com/burning-cost/insurance-causal): causal forest estimation of rating factor effects, controlling for selection bias in pricing data. Useful for estimating the true effect of adding or removing a rating factor, not just the correlated signal.
+- [insurance-causal](/insurance-causal/): causal forest estimation of rating factor effects, controlling for selection bias in pricing data. Useful for estimating the true effect of adding or removing a rating factor, not just the correlated signal.
 - [insurance-conformal](https://github.com/burning-cost/insurance-conformal): conformal prediction intervals for GBM models, giving statistically valid uncertainty bounds on individual policy quotes. This is the foundation for Consumer Duty compliant pricing uncertainty reporting.
 - [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring): sequential testing for distributional shift in production model outputs - Gini decay, average error drift, double-lift degradation - with correct multiple testing control.
 - [insurance-fairness](https://github.com/burning-cost/insurance-fairness): proxy discrimination testing using optimal transport, as required for FCA compliance on postcode and other potentially sensitive rating factors.

@@ -64,7 +64,7 @@ When someone asks you to use 12 months of IBNR buffer for motor BI and you reply
 
 ## The insurance-cv API
 
-[`insurance-cv`](https://github.com/burning-cost/insurance-cv) provides `walk_forward_split()`, which generates a list of `TemporalSplit` objects directly from your DataFrame. It accepts either Polars or Pandas frames.
+[`insurance-cv`](/insurance-governance/) provides `walk_forward_split()`, which generates a list of `TemporalSplit` objects directly from your DataFrame. It accepts either Polars or Pandas frames.
 
 ```python
 from insurance_cv import walk_forward_split, split_summary, temporal_leakage_check, InsuranceCV

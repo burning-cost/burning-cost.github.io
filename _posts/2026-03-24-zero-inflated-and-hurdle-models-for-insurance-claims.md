@@ -77,7 +77,7 @@ Neither approach is universally better. We use ZIP for frequency models where we
 
 ## Zero-inflated Poisson in practice with `insurance-distributional`
 
-The [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional) library implements `ZIPGBM`: a gradient-boosted ZIP that jointly estimates lambda(x) and pi(x) using coordinate descent, following the So & Valdez (2024, arXiv 2406.16206) ASTIN Best Paper approach.
+The [`insurance-distributional`](/insurance-distributional/) library implements `ZIPGBM`: a gradient-boosted ZIP that jointly estimates lambda(x) and pi(x) using coordinate descent, following the So & Valdez (2024, arXiv 2406.16206) ASTIN Best Paper approach.
 
 ```bash
 uv add insurance-distributional
