@@ -140,9 +140,9 @@ For teams that want narrower intervals on low-risk profiles and wider on high-ri
 
 ---
 
-## FCA SUP 15.3: what to put in the governance note
+## FCA PRIN 2A.4 and the model change policy: what to put in the governance note
 
-Under FCA PRIN 2A.4, insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. Applying a model trained on a materially different book distribution without adjustment could constitute such a change.
+Under FCA PRIN 2A.4 (Consumer Duty), insurers must ensure models used in pricing are fit for purpose for the population being scored. Where a model is applied to a materially different book distribution without adjustment, a firm's own model change policy will typically require review and sign-off — the trigger is the firm's materiality threshold, not a single regulatory rule. The shift diagnostic provides the quantitative basis for that assessment.
 
 The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note - not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
 
@@ -151,24 +151,37 @@ print(report.fca_sup153_summary())
 ```
 
 ```
-COVARIATE SHIFT DIAGNOSTIC REPORT
-Source: Direct 2026 (n=45,231)
-Target: Direct + Aggregator 2027 (n=61,840)
-Generated: 2026-03-15
+Distribution Shift Assessment
+==============================
+Date: 2026-03-15
+Source: Direct 2026
+Target: Direct + Aggregator 2027
 
-VERDICT: MODERATE
-ESS ratio: 0.54 (threshold: 0.30 SEVERE, 0.60 NEGLIGIBLE)
-KL divergence: 0.31 nats (threshold: 0.50 SEVERE, 0.10 NEGLIGIBLE)
+Verdict: MODERATE
 
-Principal shift drivers:
-  driver_age         38% of total shift
-  postcode_district  29%
-  vehicle_age        19%
-  ncb                14%
+Metrics
+-------
+Effective Sample Size ratio : 0.540
+  (1.0 = no shift, 0.0 = complete overlap failure)
+KL divergence (target || source) : 0.31 nats (approximate)
 
-Recommended action: Apply importance weighting to evaluation metrics.
-Retrain within 6 months or when ESS ratio falls below 0.35.
-Monitor driver_age and postcode_district distribution monthly.
+Main drivers of shift
+---------------------
+driver_age (38.0%), postcode_district (29.0%), vehicle_age (19.0%), ncb (14.0%)
+
+Recommended action
+------------------
+Importance weighting is recommended before deploying the source
+model on the target book. Monitor weighted loss metrics after
+deployment for at least three months.
+
+Methodology
+-----------
+Density ratio estimated using insurance-covariate-shift v0.1.0.
+ESS ratio = (sum w)^2 / (n * sum w^2). KL estimated via
+E_source[w * log w] with normalised weights. Thresholds: SEVERE
+if ESS < 0.30 or KL > 0.50 nats; MODERATE if ESS < 0.60 or
+KL > 0.10 nats.
 ```
 
 The numbers are the numbers. What you add in the governance note is the actuarial judgement: what caused the shift (aggregator partnership starting Q3 2027), what the commercial implications are (younger, more urban risks are systematically underrepresented in the model's training data), and what the retraining timeline is. The library gives you the quantitative basis; you provide the context.

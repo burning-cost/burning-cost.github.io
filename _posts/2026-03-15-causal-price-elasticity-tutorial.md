@@ -120,7 +120,7 @@ Group average treatment effects (GATEs) are where it gets useful. The library's 
 gate_ncd = est.gate(df, by="ncd_years")
 print(gate_ncd)
 # ┌───────────┬───────────┬───────────┬───────────┬───────┐
-# │ ncd_years │ gate      │ gate_lb   │ gate_ub   │ n     │
+# │ ncd_years │ elasticity│ ci_lower  │ ci_upper  │ n     │
 # ╞═══════════╪═══════════╪═══════════╪═══════════╪═══════╡
 # │ 0         │ -1.41     │ -1.68     │ -1.14     │ 4821  │
 # │ 1         │ -1.83     │ -2.05     │ -1.61     │ 6203  │
@@ -158,7 +158,7 @@ The CATE distribution matters for the optimiser in step 5. If the distribution i
 
 CausalForestDML is our primary estimator. It is not infallible: it requires the overlap assumption (discussed in step 6), it uses a specific forest structure, and the honest estimation approach has finite-sample properties that depend on tree depth. Before trusting the GATEs, run the DR-Learner as an independent check.
 
-The DR-Learner (Kennedy 2023, Annals of Statistics 51(2): 958-981) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified - not both. The `insurance_causal.elasticity` module wraps it with the same interface:
+The DR-Learner (Kennedy 2023, Electronic Journal of Statistics 17(2)) constructs pseudo-outcomes via double-robustness and then regresses them on covariates. It is consistent if either the outcome model or the treatment model is correctly specified - not both. The `insurance_causal.elasticity` module wraps it with the same interface:
 
 ```python
 est_dr = RenewalElasticityEstimator(
@@ -246,59 +246,42 @@ A practical note on the kink. When ENBP is binding for a large fraction of the b
 
 ---
 
-## Step 6: Diagnostics - overlap, balance, variation_fraction
+## Step 6: Diagnostics - treatment variation
 
-Three diagnostics before you trust any of the above.
-
-**Treatment variation.** DML identification requires variation in `D_tilde = price_change - E[price_change | X]`. In a formula-rated book, the price change is often nearly deterministic: the R² of a good risk model on price change can be 0.85 or higher, leaving very little residual variation to identify the causal effect. The `variation_fraction` is `Var(D_tilde) / Var(D)`.
+The key diagnostic before trusting the DML estimates is treatment variation. DML identification requires variation in `D_tilde = price_change - E[price_change | X]`. In a formula-rated book, the price change is often nearly deterministic: the R² of a good risk model on price change can be 0.85 or higher, leaving very little residual variation to identify the causal effect. The `variation_fraction` is `Var(D_tilde) / Var(D)`.
 
 ```python
-diag = est.diagnostics()
+from insurance_causal.elasticity.diagnostics import ElasticityDiagnostics
 
-print(f"Treatment variation fraction: {diag.variation_fraction:.3f}")
-# Treatment variation fraction: 0.18
+diag = ElasticityDiagnostics()
+report = diag.treatment_variation_report(df, treatment='log_price_change', confounders=confounders)
+print(f"Variation fraction: {report.variation_fraction:.3f}")
+# Variation fraction: 0.180
 # 18% of price variation is unexplained by risk factors — adequate but not generous
 
-if diag.variation_fraction < 0.10:
-    print("WARNING: weak treatment — DML estimates will be noisy")
-    print("Consider restricting to periods with exogenous rate movements")
+print(report.summary())
+# Treatment Variation Diagnostic
+# ========================================
+# N observations:          50,000
+# Var(D):                  0.007921
+# Var(D̃):                 0.001426
+# Var(D̃)/Var(D):          0.1800  (OK)
+# Treatment nuisance R²:   0.8200  (OK)
+#
+# Treatment variation is sufficient for DML identification.
 ```
 
 The 10% threshold is not a formal test statistic - it is a rule of thumb. Below 10%, the standard errors on ATE will be large and GATEs will be unreliable. The correct response is to find more exogenous variation, not to proceed regardless.
 
-**Overlap.** Every risk profile in the data must have had some realistic chance of receiving a range of different prices (the positivity assumption). CausalForest's `min_samples_leaf` implicitly handles some of this, but you should check directly:
-
 ```python
-print(diag.overlap_summary())
-# Propensity score summary for treatment overlap:
-#   10th pct: 0.23 (OK)
-#   90th pct: 0.81 (OK)
-#   Fraction with propensity < 0.05: 0.031
-#   Fraction with propensity > 0.95: 0.018
-#
-# VERDICT: Adequate overlap. 4.9% of policies are near-deterministic treatment
-#          assignments. CATEs for these policies should be interpreted cautiously.
+if report.variation_fraction < 0.10:
+    print("WARNING: weak treatment — DML estimates will be noisy")
+    print("Consider restricting to periods with exogenous rate movements")
+    for suggestion in report.suggestions:
+        print(f"  - {suggestion}")
 ```
 
-Policies with near-deterministic price assignments are typically those subject to underwriting rules - high-risk postcodes, young drivers in high-group vehicles where pricing discretion is limited. The CATEs for these policies are unreliable. Flag them; do not use them as input to the optimiser.
-
-**Balance.** After cross-fitting, the correlation between the residualised treatment `D_tilde` and the confounders should be near zero. If it is not, either the treatment model is misspecified or CatBoost is not capturing the true treatment assignment mechanism.
-
-```python
-balance = diag.balance_table()
-print(balance.filter(pl.col("abs_correlation") > 0.05))
-# If this returns rows, investigate those confounders
-```
-
-The full diagnostic plot:
-
-```python
-diag.plot(
-    save_path="./elasticity_diagnostics.png",
-    include=["treatment_histogram", "overlap", "balance", "cate_distribution"],
-)
-```
-
+`ElasticityDiagnostics` is designed to run before fitting the estimator. It uses a lighter nuisance model (GBM with 100 iterations) to give a fast read on whether DML identification is viable. Policies in underwriting-constrained segments - high-risk postcodes, young drivers in high-group vehicles where pricing discretion is limited - are the usual source of near-deterministic treatment. If the `variation_fraction` is below 0.10, the calibration summary from `diag.calibration_summary(df)` helps identify which segments are most constrained.
 ---
 
 ## Step 7: ICOBS 6B.2 evidence trail for renewal pricing
@@ -309,26 +292,21 @@ The library generates a compliance-facing summary. This is a factual record, not
 
 ```python
 audit = optimiser.enbp_audit(result)
-print(audit.summary())
+# Returns a DataFrame with columns:
+# policy_id, offered_price, enbp, compliant, margin_to_enbp, pct_above_enbp
+
+n_compliant = audit["compliant"].sum()
+n_total = len(audit)
+n_binding = (audit["margin_to_enbp"] == 0).sum()
+print(f"Compliant: {n_compliant}/{n_total} ({100*n_compliant/n_total:.1f}%)")
+print(f"ENBP ceiling binding: {n_binding} ({100*n_binding/n_total:.1f}%)")
+print(f"Average margin to ENBP: £{audit['margin_to_enbp'].mean():.2f}")
 ```
 
 ```
-ENBP COMPLIANCE AUDIT
-Run date: 2026-03-15
-Policies processed: 50,000
-
-Policies where optimal_price > enbp: 0 (0.0%) — COMPLIANT
-Policies where optimal_price = enbp (ceiling binding): 12,847 (25.7%)
-Policies where optimal_price < enbp (discount applied): 37,153 (74.3%)
-
-Average discount from ENBP: 4.1%
-Average discount from last_year_price: 2.8%
-
-Elasticity model: RenewalElasticityEstimator(cate_model=causal_forest,
-                  n_folds=5, catboost_iterations=800, binary_outcome=True)
-ATE: -2.14 (95% CI: -2.31, -1.97)
-Treatment variation fraction: 0.18
-Overlap verdict: ADEQUATE (4.9% near-deterministic)
+Compliant: 50000/50000 (100.0%)
+ENBP ceiling binding: 12847 (25.7%)
+Average margin to ENBP: £4.12
 ```
 
 What to add in the governance narrative - the text the audit report does not write for you:

@@ -128,10 +128,8 @@ Two reversals in the 9-12 year range, maximum magnitude 0.031 in log space. This
 Capture the scores before enforcing (for the governance pack chart), then apply isotonic regression:
 
 ```python
-# Capture before-scores for the documentation chart
-scores_before = editor.get_scores("vehicle_age")
-
 # Enforce: applies isotonic regression to the stored term scores in-place
+# (scores_before was already captured above for the documentation chart)
 editor.enforce("vehicle_age", direction="increase")
 
 # Verify

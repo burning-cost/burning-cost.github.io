@@ -239,8 +239,9 @@ ccc = ClaimsCountConformal(exposure=exposure)
 # Fit on training data
 ccc.fit(y_train, n_train=60)
 
-# Warm up on cal period
-ccc.predict_interval(y_cal, alpha=0.10, exposure=exp_cal)
+# Warm up on cal period — save the intervals rather than discarding them
+# (predict_interval is stateful: it updates alpha_t and the calibration window)
+lower_ccc_cal, upper_ccc_cal = ccc.predict_interval(y_cal, alpha=0.10, exposure=exp_cal)
 
 # Produce monitored intervals for year 7
 lower_ccc, upper_ccc = ccc.predict_interval(y_test, alpha=0.10, exposure=exp_test)
@@ -289,14 +290,8 @@ from insurance_conformal_ts import SequentialCoverageReport, IntervalWidthReport
 
 # Combine cal + test for a longer diagnostic window
 y_monitor   = np.concatenate([y_cal, y_test])
-lower_mon   = np.concatenate([
-    ccc.predict_interval(y_cal, alpha=0.10, exposure=exp_cal)[0],
-    lower_ccc,
-])
-upper_mon   = np.concatenate([
-    ccc.predict_interval(y_cal, alpha=0.10, exposure=exp_cal)[1],
-    upper_ccc,
-])
+lower_mon   = np.concatenate([lower_ccc_cal, lower_ccc])
+upper_mon   = np.concatenate([upper_ccc_cal, upper_ccc])
 lower_mon   = np.maximum(lower_mon, 0)
 
 cov_report = SequentialCoverageReport(window=6).compute(

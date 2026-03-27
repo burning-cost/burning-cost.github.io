@@ -27,7 +27,7 @@ This holds for any distribution satisfying exchangeability - the condition that 
 
 The key word is "finite-sample." Bootstrap reserve intervals give you an asymptotically valid range as the triangle gets large. Conformal prediction gives you a valid range now, with however much data you have, without requiring the distribution to be known or stationary.
 
-This is the distinction that matters for Solvency II capital. An internal model that uses bootstrap reserve ranges is making distributional assumptions that the PRA's SS1/23 expects to be validated. A conformal interval that provably covers at 90% - verifiable by running the Kupiec test on out-of-sample predictions - requires fewer assumptions to defend.
+This is the distinction that matters for Solvency II capital. An internal model that uses bootstrap reserve ranges is making distributional assumptions that the PRA's PS31/18 (Solvency II: changes to internal models) expects to be validated. A conformal interval that provably covers at 90% - verifiable by running the Kupiec test on out-of-sample predictions - requires fewer assumptions to defend.
 
 ---
 
@@ -94,7 +94,7 @@ fan = mscp.predict_fan(alpha=0.10)
 print("Horizon  Lower   Upper   Width")
 for h in [1, 3, 6, 12]:
     lo, hi = fan[h]
-    print(f"  h={h:2d}    {lo[0]:.0f}     {hi[0]:.0f}     {hi[0]-lo[0]:.0f}")
+    print(f"  h={h:2d}    {lo:.0f}     {hi:.0f}     {hi-lo:.0f}")
 ```
 
 ```
