@@ -306,7 +306,7 @@ GAS filters are observation-driven trend models. They replace the ad-hoc index m
 
 They do not replace a full GLM or GBM refit. The GAS model tracks a time-varying intercept - effectively a level shift applied to the model's baseline. It cannot detect that the age-frequency relationship has changed, or that a new vehicle type is performing differently than predicted. For those questions, you need the full refit cycle.
 
-The practical workflow: fit the GAS filter monthly on each key metric (frequency, severity by peril, loss ratio). Use the current-period trend index as a loading in the pricing model output. When the trend index is moving faster than expected - alpha is large, phi is high, and the forecast interval is wide - that is the signal to bring forward the full refit.
+The practical workflow: fit the GAS filter monthly on each key metric (frequency, severity by peril, loss ratio). Use the current-period trend index as a loading in the pricing model output. When the trend index is moving faster than expected - alpha is large, phi is high, and the forecast interval is wide - that is the signal to bring forward the full refit. The question of whether an elevated trend index warrants a recalibration or a full structural refit is addressed in [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/)
 
 ---
 

@@ -23,7 +23,7 @@ We built [`insurance-distributional`](https://github.com/burning-cost/insurance-
 
 The gap is not theoretical. Everyone in actuarial pricing knows that Var[Y|x] matters. The gap is in available tooling.
 
-The obvious starting point is GAMLSS (Generalized Additive Models for Location, Scale and Shape, introduced by Rigby and Stasinopoulos in *JRSS Series C* (2005)). GAMLSS models all parameters of the conditional distribution (mean, dispersion, shape) as smooth functions of covariates. It works. It is also GAM-based, which means splines, R only, slow on large datasets, and unable to handle high-cardinality categoricals natively. It is the statistical ancestor of distributional GBM, not the tool you want on a UK personal lines book.
+The obvious starting point is GAMLSS (Generalized Additive Models for Location, Scale and Shape, introduced by Rigby and Stasinopoulos in *JRSS Series C* (2005)). GAMLSS models all parameters of the conditional distribution (mean, dispersion, shape) as smooth functions of covariates. It works. It is also GAM-based, which means splines, R only, slow on large datasets, and unable to handle high-cardinality categoricals natively. It is the statistical ancestor of distributional GBM, not the tool you want on a UK personal lines book. If you need GAMLSS specifically — its RS algorithm, its seven distribution families, its interpretable dispersion submodel — [insurance-distributional-glm](/2026/03/10/insurance-distributional-glm/) is a Python implementation built for insurance.
 
 The natural extension is distributional gradient boosting. Three implementations exist, each with a blocking problem for insurance.
 

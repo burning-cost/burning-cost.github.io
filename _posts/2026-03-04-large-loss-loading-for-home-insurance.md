@@ -33,7 +33,7 @@ For UK home insurance, this is wrong in a specific and measurable way. Large sum
 2. **Remediation complexity.** Listed buildings and high-specification finishes have higher marginal remediation cost. Replacing handmade cornicing is not the same as repainting a smooth plasterboard ceiling.
 3. **Sequelae.** Subsidence risk in large older properties means water ingress events more often trigger a secondary claim within three years.
 
-None of these mechanisms changes the expected frequency materially. They all increase the variance and the tail weight of the severity distribution. Tweedie cannot represent this. Quantile regression can.
+None of these mechanisms changes the expected frequency materially. They all increase the variance and the tail weight of the severity distribution. Tweedie cannot represent this. Quantile regression can. For motor bodily injury severity, the same problem motivates [spliced composite distributions](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) that model the attritional body and large-loss tail separately.
 
 ---
 

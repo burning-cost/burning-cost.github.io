@@ -21,7 +21,7 @@ uv add insurance-severity
 
 Before the code: three places where a misspecified severity distribution costs money.
 
-**Large loss loadings.** A ground-up pricing model for motor bodily injury that uses a single gamma for severity will systematically understate the probability of claims above, say, £50,000. You can observe this directly: run the gamma's predicted survival function against your actual claim experience above that threshold and watch the A/E ratio climb as you move up the size-of-loss curve. The large loss loading you apply to correct for this is calibrated to a distribution that already understates the problem.
+**Large loss loadings.** A ground-up pricing model for motor bodily injury that uses a single gamma for severity will systematically understate the probability of claims above, say, £50,000. You can observe this directly: run the gamma's predicted survival function against your actual claim experience above that threshold and watch the A/E ratio climb as you move up the size-of-loss curve. The [large loss loading](/2026/03/04/large-loss-loading-for-home-insurance/) you apply to correct for this is calibrated to a distribution that already understates the problem.
 
 **Reinsurance attachment pricing.** The expected loss in an XL layer depends almost entirely on the tail of the severity distribution above the attachment point. A gamma or lognormal with exponentially decaying tails will price that layer materially cheap versus a distribution that captures the true Pareto-like behaviour above, say, £100,000. If you are pricing the retention and the reinsurer is pricing the excess using extreme value theory, you have a problem at renewal.
 

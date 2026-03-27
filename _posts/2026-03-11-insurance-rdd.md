@@ -185,7 +185,7 @@ print(mc_result.cutoff_effects_df)
 # NCD 4→5:  rate ratio 0.93, p=0.14 [density failure — manipulation expected]
 ```
 
-Our prior is that NCD level has weak causal effects on subsequent claims frequency, once you compare policies right at each step boundary. NCD captures selection rather than a moral hazard effect of the discount itself. If the pooled effect comes back at 0.94 and not significant, your NCD pricing factor is valid from an adverse selection standpoint (lower NCD genuinely predicts higher risk), but the mechanism is not causal in the way a naive reading of the relativity implies. That distinction matters when you are explaining the factor under Consumer Duty: you are pricing observable risk correlation, not a causal intervention.
+Our prior is that NCD level has weak causal effects on subsequent claims frequency, once you compare policies right at each step boundary. NCD captures selection rather than a moral hazard effect of the discount itself. If the pooled effect comes back at 0.94 and not significant, your NCD pricing factor is valid from an adverse selection standpoint (lower NCD genuinely predicts higher risk), but the mechanism is not causal in the way a naive reading of the relativity implies. That distinction matters when you are explaining the factor under Consumer Duty: you are pricing observable risk correlation, not a causal intervention. For evaluating whether a rate change caused a lapse spike — rather than whether a threshold causes a risk change — the right tool is [synthetic difference-in-differences](/2026/03/10/rate-change-lapse-evaluation-causal-inference/).
 
 ---
 

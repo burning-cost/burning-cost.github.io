@@ -215,7 +215,7 @@ print(ncd_comparison)
 #     5         0.549     0.521     0.578    0.551
 ```
 
-On this synthetic data - where the DGP is genuinely log-linear and there are no interactions - the two models agree closely. On a real motor book the NCD and area relativities are also often similar between GLM and GBM, because these variables have strong main effects that the GLM captures adequately. The divergence shows up in vehicle group, in interactions between young drivers and high-performance vehicles, and in geographic effects that interact with claims frequency in ways a single-factor table cannot express.
+On this synthetic data - where the DGP is genuinely log-linear and there are no interactions - the two models agree closely. On a real motor book the NCD and area relativities are also often similar between GLM and GBM, because these variables have strong main effects that the GLM captures adequately. The divergence shows up in vehicle group, in interactions between young drivers and high-performance vehicles, and in geographic effects that interact with claims frequency in ways a single-factor table cannot express. [Automated interaction detection](/2026/02/27/finding-the-interactions-your-glm-missed/) can help identify which pairs to examine before you start comparing the tables manually.
 
 When the GBM relativity for a segment is more than 10-15% away from the GLM, that is worth investigating before deciding which to trust. Sometimes the GBM has picked up a genuine pattern. Sometimes it is overfitting to a sparse cell. The confidence interval tells you about the former; the sparse levels check tells you about the latter.
 

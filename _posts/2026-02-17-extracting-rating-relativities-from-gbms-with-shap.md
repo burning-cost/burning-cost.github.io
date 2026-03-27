@@ -8,7 +8,7 @@ tags: [shap, gbm, catboost, relativities, pricing, python]
 description: "How to extract SHAP relativities from insurance GBMs. Multiplicative factor tables in GLM exp(beta) format, with confidence intervals and exposure weighting. Python, CatBoost, UK personal lines."
 ---
 
-Many UK pricing teams find themselves in some version of the same situation: a GBM sitting on a server somewhere outperforming the production GLM, but nobody can get the relativities out of it. The regulator wants a factor table. Radar needs an import file. The head of pricing wants to challenge the model in terms they recognise.
+Many UK pricing teams find themselves in some version of the same situation: a GBM sitting on a server somewhere outperforming the production GLM, but nobody can get the relativities out of it. The regulator wants a factor table. Radar needs an import file — and [converting your GBM predictions into one](/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/) requires more than a partial dependence plot. The head of pricing wants to challenge the model in terms they recognise.
 
 So the GBM sits in a notebook. The GLM goes to production. And the team loses the lift.
 

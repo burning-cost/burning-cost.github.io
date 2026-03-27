@@ -253,7 +253,7 @@ The 12% rate increase on young drivers in Q3 2025 caused approximately 6.3 perce
 
 The rate change was the primary cause of the lapses. It was not the sole cause.
 
-That distinction matters for the remedial decision. If the full 8pp spike was attributable to the rate change, pricing team credibility depends on either justifying the increase or partially reversing it. If 1.7pp was going to happen anyway, a partial reversal to bring the increment-attributable lapse rate back to an acceptable level requires a smaller rate correction than the naive view implies. The causal estimate gives you the number to plug into the demand model.
+That distinction matters for the remedial decision. If the full 8pp spike was attributable to the rate change, pricing team credibility depends on either justifying the increase or partially reversing it. If 1.7pp was going to happen anyway, a partial reversal to bring the increment-attributable lapse rate back to an acceptable level requires a smaller rate correction than the naive view implies. The causal estimate gives you the number to plug into the demand model. For the complementary question — whether your rate changes ever proved anything in the first place — see [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/).
 
 It also matters for the FCA narrative. "Our rate increase caused some additional lapses and we have quantified the effect and it is within our Consumer Duty acceptable outcome range" is a defensible regulatory position. "Our loss ratios justified the increase, the lapses happened, we are not sure why" is not.
 

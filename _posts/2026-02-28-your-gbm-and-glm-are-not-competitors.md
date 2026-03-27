@@ -123,7 +123,7 @@ Note that we blend in log space, not prediction space. Both the GLM and CatBoost
 
 Here is the part the PRA cares about.
 
-A pure GBM prediction cannot be decomposed into a factor table. A blended prediction that is 35% GLM and 65% GBM can. The GLM component is fully decomposed by construction. The GBM component can be decomposed via SHAP, using `shap-relativities`:
+A pure GBM prediction cannot be decomposed into a factor table. A blended prediction that is 35% GLM and 65% GBM can. The GLM component is fully decomposed by construction. The GBM component can be decomposed via SHAP, using [`shap-relativities`](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/):
 
 ```python
 from shap_relativities import SHAPRelativities

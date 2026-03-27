@@ -24,7 +24,7 @@ Consider a standard UK motor GLM with age band, vehicle group, NCD, area, and an
 
 Here is the concrete failure mode. Suppose the young-driver relativity is 2.3× and the high-performance vehicle group relativity is 1.8×. A multiplicative GLM prices the intersection at 2.3 × 1.8 = 4.14×. The observed frequency at that intersection might be 5.2× the base. You are underpricing by 25%.
 
-The interaction exists in the data. The GBM you ran last year found it - your CatBoost model has a leaf somewhere in its tree structure that captures exactly this. The GLM did not find it because nobody thought to test it systematically, or they tested it and the LR test came back marginal, or the parameter count (10 age bands × 20 vehicle groups = 171 new parameters) looked too expensive without knowing how much deviance it would actually save.
+The interaction exists in the data. The GBM you ran last year found it - your CatBoost model has a leaf somewhere in its tree structure that captures exactly this. [Explainable Boosting Machines](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/) can also surface these interactions directly in an interpretable format, without requiring a post-hoc search. The GLM did not find it because nobody thought to test it systematically, or they tested it and the LR test came back marginal, or the parameter count (10 age bands × 20 vehicle groups = 171 new parameters) looked too expensive without knowing how much deviance it would actually save.
 
 Automated interaction detection solves this problem by giving you a ranked shortlist - the pairs most likely to improve your GLM, ordered by statistical evidence, before you have tested any of them.
 

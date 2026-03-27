@@ -61,7 +61,7 @@ mu_hat = Z * Y_bar_individual + (1-Z) * mu_prior
 
 where Z is the credibility weight, Y_bar_individual is the individual mean, and mu_prior is the portfolio prior.
 
-P and Z play the identical role. The CLS self-attention weight is the credibility weight, learned end-to-end from data. It is not fixed - it varies by risk, by exposure, by the covariate configuration of each observation. Bühlmann-Straub gives you a single Z per group derived from the between/within variance ratio. The CT gives you a P per policy, learned from the attention mechanism, that encodes a richer version of the same idea.
+P and Z play the identical role. The CLS self-attention weight is the credibility weight, learned end-to-end from data. It is not fixed - it varies by risk, by exposure, by the covariate configuration of each observation. [Bühlmann-Straub](/2026/02/19/buhlmann-straub-credibility-in-python/) gives you a single Z per group derived from the between/within variance ratio. The CT gives you a P per policy, learned from the attention mechanism, that encodes a richer version of the same idea.
 
 The decoder is a two-layer FNN with exponential activation:
 

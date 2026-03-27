@@ -258,7 +258,7 @@ This is the right combination for any application where the coverage guarantee m
 
 **Motor bodily injury.** Expectile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99]. Use ILF curves for excess layer pricing. TVaR at alpha=0.99. BI claims have IBNR tails that extend years, so ensure your severity data is sufficiently developed before fitting.
 
-**Home/property.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99, 0.995]. Use exceedance curves for cat accumulation monitoring. Include perils separately if you have enough volume per peril.
+**Home/property.** Quantile mode, alpha=[0.5, 0.75, 0.9, 0.95, 0.99, 0.995]. Use exceedance curves for cat accumulation monitoring. Include perils separately if you have enough volume per peril. For a worked end-to-end example on UK home data, see [How to Build a Large Loss Loading Model for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/).
 
 **Employer's liability / public liability.** Expectile mode. These lines are heavy-tailed enough that quantile TVaR understates the tail. The expectile's coherence matters for capital allocation.
 

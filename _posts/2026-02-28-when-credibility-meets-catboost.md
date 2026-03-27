@@ -155,7 +155,7 @@ This is the notation that mirrors Bühlmann-Straub deliberately. The tau2/sigma2
 - You want the base rate and the group adjustment to be modelled and governable separately
 - The group adjustment needs to be explainable in credibility terms: "Scheme X has 76% credibility and is running 8% adverse relative to its expected risk mix"
 
-The diagnostic you want from insurance-multilevel is the ICC -- the intraclass correlation coefficient -- which tells you what fraction of total premium variance sits between groups rather than within them. If ICC is below 2%, the group structure is probably not worth the additional complexity. If it is above 10%, treating groups as random effects will materially improve both accuracy and stability.
+The diagnostic you want from insurance-multilevel is the ICC -- the intraclass correlation coefficient -- which tells you what fraction of total premium variance sits between groups rather than within them. [ICC diagnostics for multiple group factors](/2026/03/06/multilevel-group-factors/) — covering broker, scheme, fleet, and postcode simultaneously — are discussed in detail in a companion post. If ICC is below 2%, the group structure is probably not worth the additional complexity. If it is above 10%, treating groups as random effects will materially improve both accuracy and stability.
 
 ```python
 from insurance_multilevel import icc

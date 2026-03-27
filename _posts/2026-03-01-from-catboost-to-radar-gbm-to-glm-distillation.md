@@ -56,7 +56,7 @@ surrogate.fit(
 
 That is it for fitting. `X_train` is a Polars DataFrame with your rating variables. `exposure_arr` is a numpy array of earned car-years. The `family="poisson"` argument tells the GLM which distribution to use; for a severity model you would pass `family="gamma"`.
 
-The `interaction_pairs` argument handles two-way interactions. Where you know from domain knowledge (or from your GBM's SHAP interaction values) that two variables interact materially, pass the pair and the library will include a cross-classified interaction term in the GLM. You can include as many pairs as you want; include too many and the deviance ratio will not improve much, which is a useful diagnostic signal.
+The `interaction_pairs` argument handles two-way interactions. Where you know from domain knowledge (or from your GBM's [SHAP interaction values](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)) that two variables interact materially, pass the pair and the library will include a cross-classified interaction term in the GLM. You can include as many pairs as you want; include too many and the deviance ratio will not improve much, which is a useful diagnostic signal.
 
 For variables where you want per-variable binning method control:
 

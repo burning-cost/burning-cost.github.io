@@ -267,7 +267,7 @@ The Tian-Feng estimator handles the case where the source and target share the s
 
 ## Why not just use credibility blending instead
 
-Bühlmann-Straub credibility is the standard actuarial answer to thin data. It shrinks cell-level estimates toward the grand mean with weights determined by exposure and within-cell variance. It works well when you have many thin cells and you are estimating a scalar mean per cell. It does not handle the full coefficient vector of a multi-factor GLM.
+[Bühlmann-Straub credibility](/2026/02/19/buhlmann-straub-credibility-in-python/) is the standard actuarial answer to thin data. It shrinks cell-level estimates toward the grand mean with weights determined by exposure and within-cell variance. It works well when you have many thin cells and you are estimating a scalar mean per cell. It does not handle the full coefficient vector of a multi-factor GLM.
 
 The specific failure mode: credibility blending a scalar frequency per risk cell does not tell you whether the age-frequency relationship is different in the EV segment. It blends the level, not the shape. If EV policyholders are systematically younger and the age effect is steeper for EVs, credibility blending will underprice young EV drivers even after the level correction.
 

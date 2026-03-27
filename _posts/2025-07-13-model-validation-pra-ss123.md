@@ -9,7 +9,9 @@ description: "PRA SS1/23 requires quantitative pass/fail tests, not narrative. i
 
 Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on. The PRA disagrees with this approach. SS1/23, the Supervisory Statement on model risk management in force since May 2023, requires that validation tests have defined quantitative thresholds with documented pass/fail outcomes, and that those outcomes are reproducible and auditable. A narrative saying "discrimination is adequate" does not satisfy Principle 3. A `TestResult(passed=True, metric_value=0.412, details="Gini 0.412, bootstrap 95% CI [0.389, 0.435], threshold 0.30. PASS")` does.
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, calibration slope, and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
+*(Scope note: SS1/23 currently applies to banks and PRA-regulated deposit-takers. Extension to insurers is expected 2026–2027. If you are an insurer, treat this as preparation — the framework and the tooling are the same either way.)*
+
+[`insurance-governance`](https://github.com/burning-cost/insurance-governance) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, [calibration slope](/2026/03/09/insurance-calibration/), and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
 
 ```bash
 pip install insurance-governance
@@ -210,10 +212,10 @@ tier = scorer.score(
     customer_facing=True,
 )
 
-print(f"Tier: {tier.tier}  ({tier.label})")
+print(f"Tier: {tier.tier}  ({tier.tier_label})")
 print(f"Score: {tier.score}/100")
 print(f"Review frequency: {tier.review_frequency}")
-print(f"Sign-off: {tier.sign_off_authority}")
+print(f"Sign-off: {tier.sign_off_requirement}")
 ```
 
 ```

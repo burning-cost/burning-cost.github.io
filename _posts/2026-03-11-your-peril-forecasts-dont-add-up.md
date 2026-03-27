@@ -329,7 +329,7 @@ The hierarchy spec (`S_df` construction) requires deep familiarity with the `agg
 
 ## The standard it replaces
 
-The standard is a spreadsheet. On one tab: the portfolio GLM trend. On another: the peril-level models. In a third: a cell that reads `=E12*0.6+C4*0.4` where the 60/40 blend was decided in a meeting three quarters ago and no one has documented the rationale.
+The standard is a spreadsheet. On one tab: the portfolio GLM trend. On another: the peril-level models. In a third: a cell that reads `=E12*0.6+C4*0.4` where the 60/40 blend was decided in a meeting three quarters ago and no one has documented the rationale. [GAS filters](/2026/03/08/gas-models-for-between-update-trend/) are a principled alternative to that trend tab: they track the time-varying level of each peril with a proper statistical filter rather than a manually adjusted scalar.
 
 The spreadsheet has produced the same answer for every pricing team that has ever done this. The teams know it is not quite right. It fails every audit because the methodology is not written down. And it discards genuine statistical information — both the portfolio model and the peril models contain signal, and blending them in fixed proportions is not the optimal way to use either.
 

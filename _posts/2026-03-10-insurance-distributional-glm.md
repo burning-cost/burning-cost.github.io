@@ -7,7 +7,7 @@ tags: [gamlss, glm, distributional, gamma, lognormal, tweedie, zip, negative-bin
 description: "GAMLSS in Python: seven families, RS algorithm, variance as function of covariates. insurance-distributional-glm - the actuarial implementation Python lacked."
 ---
 
-R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work - both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are distributional GBMs, quantile regression libraries, and various partial implementations. None of them are GAMLSS.
+R has had the `gamlss` package since 2005. It is well-documented, reasonably performant, and routinely used in serious distributional modelling work - both in academia and by actuaries who know that severity distributions are heteroscedastic and want to do something about it. In twenty years, Python has produced nothing equivalent. There are [distributional GBMs](/2026/03/05/insurance-distributional/), quantile regression libraries, and various partial implementations. None of them are GAMLSS.
 
 [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) is GAMLSS in Python. Seven distribution families, the RS (Rigby-Stasinopoulos) fitting algorithm with backtracking, sklearn-compatible API, and the same `fit`/`predict` interface pricing teams already know. Pure NumPy/SciPy - no R dependency, no PyTorch, no optional extras. 2,847 lines, 114 tests, v0.1.0.
 

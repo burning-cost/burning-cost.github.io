@@ -234,7 +234,7 @@ The test suite has 62 tests passing across scale construction, transition matrix
 
 ## What comes next
 
-v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's Credibility Transformer (arXiv:2409.16653, 2024) embeds Bühlmann-Straub credibility inside a Transformer attention mechanism. The CLS token attention weight plays the role of the credibility factor Z; the architecture learns the optimal blend between individual risk history and portfolio prior from data. The mathematics is well-established; the Python implementation does not yet exist in an accessible form. We will build it as an optional extension in v0.2, keeping the base library free of heavy ML dependencies.
+v0.2 will add neural credibility: Richman, Scognamiglio and Wuthrich's [Credibility Transformer](/2026/03/11/credibility-transformer/) (arXiv:2409.16653, 2024) embeds Bühlmann-Straub credibility inside a Transformer attention mechanism. The CLS token attention weight plays the role of the credibility factor Z; the architecture learns the optimal blend between individual risk history and portfolio prior from data. The mathematics is well-established; the Python implementation does not yet exist in an accessible form. We will build it as an optional extension in v0.2, keeping the base library free of heavy ML dependencies.
 
 The other gap is calibration tooling: given three years of policyholder claims data, what transition rules best fit your observed NCD distribution? The Markov chain approach above takes a scale you specify; fitting one from data requires a GLM pipeline and iterative estimation of transition probabilities.
 

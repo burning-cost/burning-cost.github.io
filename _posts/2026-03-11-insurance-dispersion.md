@@ -273,7 +273,7 @@ The £274 per-policy difference in loading comes entirely from the dispersion mo
 
 ## Relationship to GAMLSS
 
-Our [`insurance-distributional-glm`](https://github.com/burning-cost/insurance-distributional-glm) library implements GAMLSS: a broader framework where every distributional parameter - mean, dispersion, shape, zero-inflation probability - can be modelled as a function of covariates. GAMLSS includes DGLM as a special case.
+Our [`insurance-distributional-glm`](/2026/03/10/insurance-distributional-glm/) library implements GAMLSS: a broader framework where every distributional parameter - mean, dispersion, shape, zero-inflation probability - can be modelled as a function of covariates. GAMLSS includes DGLM as a special case.
 
 So why would you use the DGLM when GAMLSS exists?
 

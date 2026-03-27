@@ -15,7 +15,7 @@ description: "Discrimination-free UK insurance pricing via Wasserstein barycente
 
 Detecting proxy discrimination in your pricing model is the first problem. Fixing it is harder.
 
-Our earlier library, [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), handles the audit side: given a trained model, it tells you whether postcode is proxying for ethnicity, how much of the motor premium disparity between high- and low-BME postcodes is attributable to each rating factor, and what the Equality Act exposure looks like. That is useful. But the output of an audit is a finding, not a price. The question after the audit is: what do we charge instead?
+Our earlier library, [`insurance-fairness`](/2026/03/03/your-pricing-model-might-be-discriminating/), handles the audit side: given a trained model, it tells you whether postcode is proxying for ethnicity, how much of the motor premium disparity between high- and low-BME postcodes is attributable to each rating factor, and what the Equality Act exposure looks like. That is useful. But the output of an audit is a finding, not a price. The question after the audit is: what do we charge instead?
 
 That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness) answers. It computes discrimination-free premiums by (a) decomposing the effect of a protected attribute on the price into causal paths, (b) removing only the paths that constitute discrimination, and (c) handling the multi-attribute case -- where you are adjusting for gender and disability status simultaneously -- via Wasserstein barycenter correction. The result is a corrected premium that can go straight into a GLM tariff table as a set of multiplicative relativities.
 
