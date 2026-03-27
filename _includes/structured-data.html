@@ -9,7 +9,7 @@
   SoftwareApplication: rendered on individual library pages that set
                        `schema: SoftwareApplication` in their front matter.
 
-  BlogPosting schema lives inline in _layouts/post.html (where it can access
+  BlogPosting schema lives in _layouts/post.html <head> (where it can access
   page.date, page.tags, etc. directly). WebPage schema lives in page.html.
   This include handles the site-level entities and opt-in page types.
 {% endcomment %}
@@ -43,6 +43,14 @@
     "@type": "Organization",
     "name": "Burning Cost",
     "url": "{{ site.url }}"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ site.url }}/blog/?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
   }
 }
 </script>

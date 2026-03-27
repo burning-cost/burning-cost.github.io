@@ -49,7 +49,7 @@ match_slugs:
   - your-factor-banding-is-made-up
   - your-rating-table-smoothing-is-wrong
   - tweedie-regression-insurance-what-sklearn-doesnt-tell-you
-  - catboost-frequency-severity-fremtpl2-insurance-pricing
+  - catboost-insurance-pricing-frequency-severity-fremtpl2
   - insurance-distributional
   - how-to-detect-covariate-interactions-your-glm-missed
   - finding-the-interactions-your-glm-missed

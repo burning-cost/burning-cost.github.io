@@ -213,7 +213,7 @@ result.summary()  # governance paragraph
 ## Related blog posts
 
 - [Insurance Model Monitoring Beyond Generic Drift](https://burning-cost.github.io/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)
-- [Gini, A/E, and Double-Lift: The Three Tests Every Monitoring Dashboard Needs](https://burning-cost.github.io/2026/03/22/insurance-model-monitoring-gini-ae-double-lift/)
+- [Gini, A/E, and Double-Lift: The Three Tests Every Monitoring Dashboard Needs](https://burning-cost.github.io/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/)
 - [insurance-monitoring vs Evidently](https://burning-cost.github.io/2026/03/22/insurance-model-monitoring-evidently-alternative/)
-- [insurance-monitoring vs NannyML](https://burning-cost.github.io/2026/03/22/nannyml-vs-insurance-monitoring-drift-detection-insurance/)
-- [insurance-monitoring vs alibi-detect](https://burning-cost.github.io/2026/03/22/alibi-detect-vs-insurance-monitoring-drift-detection/)
+- [insurance-monitoring vs NannyML](https://burning-cost.github.io/2026/03/21/nannyml-vs-insurance-monitoring-drift-detection-insurance/)
+- [insurance-monitoring vs alibi-detect](https://burning-cost.github.io/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/)

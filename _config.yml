@@ -28,13 +28,8 @@ minima:
   skin: classic
 
 header_pages:
-  - course.md
   - tools.md
-  - topics.md
   - blog.md
-  - consulting.md
-  - resources.md
-  - about.md
 
 plugins:
   - jekyll-feed
@@ -42,10 +37,7 @@ plugins:
   - jekyll-sitemap
 
 feed:
-  posts_limit: 20
-  tags:
-    only:
-      - python
+  posts_limit: 50
 
 show_excerpts: true
 

@@ -19,10 +19,10 @@ match_slugs:
   - does-conformal-prediction-work-insurance-pricing
   - does-dml-causal-inference-work-insurance-pricing
   - does-model-monitoring-work-insurance-pricing
-  - does-proxy-discrimination-testing-work-insurance
+  - does-proxy-discrimination-testing-actually-work
   - does-sarmanov-copula-frequency-severity-work-insurance
   - does-whittaker-smoothing-work-insurance-pricing
-  - does-constrained-rate-optimisation-work-insurance-pricing
+  - does-constrained-rate-optimisation-actually-work
   - does-gbm-glm-distillation-work-insurance-pricing
   - does-hmm-telematics-scoring-work-insurance-pricing
   - does-insurance-gam-actually-work-pricing
