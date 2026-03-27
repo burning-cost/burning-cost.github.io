@@ -119,7 +119,7 @@ The Murphy decomposition (REFIT vs RECALIBRATE) uses the Wüthrich-Ziegel (SAJ 2
 Use automated monitoring if:
 - You are running monthly or quarterly model health checks and currently relying on aggregate A/E as the primary signal — you need at minimum PSI per rating factor and a Gini drift test alongside the A/E
 - You run champion/challenger experiments with interim looks — mSPRT is essential; fixed-horizon tests with monthly reviews are running at five times the stated false positive rate
-- You need PRA SS3/17 model risk audit trail documentation
+- You need PRA SS1/23 model risk audit trail documentation
 
 Do not expect it to:
 - Replace the judgement call about whether an observed shift is worth acting on — that requires understanding the book and the claims environment
