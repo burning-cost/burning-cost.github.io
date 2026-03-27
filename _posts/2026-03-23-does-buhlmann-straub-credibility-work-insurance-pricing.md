@@ -7,7 +7,7 @@ tags: [credibility, buhlmann-straub, experience-rating, pricing, validation, sch
 description: "Benchmark results on 100 synthetic schemes with known true loss rates. Credibility blending reduces MSE by 25–35% vs the best naive alternative. Numbers, not theory."
 ---
 
-The claim for Bühlmann-Straub credibility is tidy: blend the scheme's own loss experience with the portfolio mean, weighted optimally. For large schemes with abundant data, trust the scheme. For small schemes where you are mostly pricing noise, trust the portfolio. Simple formula, actuarial standard since 1970.
+The claim for [Bühlmann-Straub credibility](/2026/02/19/buhlmann-straub-credibility-in-python/) is tidy: blend the scheme's own loss experience with the portfolio mean, weighted optimally. For large schemes with abundant data, trust the scheme. For small schemes where you are mostly pricing noise, trust the portfolio. Simple formula, actuarial standard since 1970.
 
 Simple claims are often the easiest to test badly. The usual demonstration picks a data set, shows that credibility beats naive experience rating, and calls it done. We did something harder: we set the known true loss rate for every scheme before running the model, then measured how close each method's premium gets to the truth. Here is what we found.
 

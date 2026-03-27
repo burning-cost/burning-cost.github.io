@@ -451,7 +451,7 @@ On this synthetic dataset CatBoost will outperform the GLM by a few Gini points 
 
 ## Extracting GBM factor tables with shap-relativities
 
-When the GBM wins on Gini, the natural question is whether its factor structure agrees with the GLM or whether there are effects the GLM factor banding is missing. We built [shap-relativities](https://github.com/burning-cost/shap-relativities) for this comparison:
+When the GBM wins on Gini, the natural question is whether its factor structure agrees with the GLM or whether there are effects the GLM factor banding is missing. We built [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) for this comparison:
 
 ```bash
 uv add shap-relativities

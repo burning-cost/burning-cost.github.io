@@ -123,7 +123,7 @@ These are the published benchmark results from the `insurance-synthetic` README,
 
 The Solvency II standard formula is notoriously insensitive to the internal correlation structure of a portfolio - it uses fixed correlation matrices between lines of business, not between individual risk factors. If you are running an internal model, though, the 99.5th percentile VaR is highly sensitive to joint tail behaviour. A capital model that treats risk factors as independent will overestimate diversification credit and understate required capital.
 
-The practical workflow for internal model peer review:
+The practical workflow for internal model peer review (and note that [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) provide distribution-free bounds for the claims forecasts that feed the same capital model):
 
 1. Fit `InsuranceSynthesizer` on your real portfolio. Audit the vine structure with `summary()` - confirm that Clayton or Gumbel families are selected at the high-dependence edges.
 

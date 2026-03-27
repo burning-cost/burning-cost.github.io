@@ -195,7 +195,7 @@ A +31.3 log-likelihood improvement over standard Pareto on the same data, penali
 **Use `TruncatedGPD` when:**
 - Your claims data comes from a policy with a per-risk limit
 - Any material fraction (say, above 3%) of large claims are at the policy limit
-- You are pricing reinsurance layers, setting large loss loadings, or estimating tail index for capital purposes
+- You are pricing reinsurance layers, setting large loss loadings, or estimating tail index for capital purposes (for per-policy [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) on severity, see insurance-conformal)
 - You are fitting above a threshold where policy limits are binding
 
 **Use `CensoredHillEstimator` when:**

@@ -228,7 +228,7 @@ Run a challenger. Log it properly. Know when you have enough data to decide. Tha
 
 ---
 
-`insurance-deploy` is open source under MIT at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). Requires Python 3.10+. Install with `uv add insurance-deploy`.
+`insurance-deploy` is open source under MIT at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). For the monitoring side — detecting when your deployed model has drifted — see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/). Requires Python 3.10+. Install with `uv add insurance-deploy`.
 
 ---
 

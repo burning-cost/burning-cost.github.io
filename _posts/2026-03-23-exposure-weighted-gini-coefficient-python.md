@@ -24,7 +24,7 @@ The Gini is twice the area between the CAP curve and the diagonal. Values for UK
 
 The critical word in the above description is *total*. When computing cumulative exposure, you need to weight each policy by its earned car-years, not count it as one unit. The same applies to cumulative claims — a policy with half a year of exposure contributes proportionally less to the claims total than a full-year policy with the same frequency.
 
-The unweighted version implicitly assumes all policies have unit exposure. For a book where exposure is roughly uniform — most annual policies, few MTAs, full year of data — the error is small. For a book with material short-term policies (telematics trials, temporary cover, seasonal vehicles), the error can be 0.05–0.10 Gini points. That is the difference between "model is performing acceptably" and "model requires governance review" in most UK pricing teams' monitoring frameworks.
+The unweighted version implicitly assumes all policies have unit exposure. For a book where exposure is roughly uniform — most annual policies, few MTAs, full year of data — the error is small. For a book with material short-term policies (telematics trials, temporary cover, seasonal vehicles), the error can be 0.05–0.10 Gini points. That is the difference between "model is performing acceptably" and "model requires governance review" in most UK pricing teams' monitoring frameworks. The [insurance-monitoring library](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) implements the exposure-weighted Gini, the Gini drift z-test, and the full monitoring workflow including A/E ratios and Murphy decomposition.
 
 ---
 

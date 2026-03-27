@@ -80,7 +80,7 @@ This is not a bug. It is exactly what a GLM was designed to return. The question
 
 ## What insurance-distributional does instead
 
-[insurance-distributional](https://github.com/burning-cost/insurance-distributional) implements distributional gradient boosting for insurance: you get both `mu_i` and `phi_i` per policy, making variance a function of covariates rather than a portfolio constant.
+[insurance-distributional](/2026/03/05/insurance-distributional/) implements distributional gradient boosting for insurance: you get both `mu_i` and `phi_i` per policy, making variance a function of covariates rather than a portfolio constant.
 
 The approach follows So & Valdez (ASTIN Best Paper 2024, arXiv:2406.16206), implemented with CatBoost as the boosting engine. The dispersion model uses the Smyth-Jørgensen double GLM approach: after fitting the mean model, squared Pearson residuals `d_i = (y_i - mu_hat_i)^2 / V(mu_hat_i)` are used as the target for a second GBM. From v0.1.3 this uses K=3 cross-fitting to prevent the phi model from training on in-sample residuals - a fix that brought empirical coverage at the 80% level from 42% to 80.4% on the benchmark dataset.
 

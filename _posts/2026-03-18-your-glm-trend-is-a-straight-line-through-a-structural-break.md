@@ -177,7 +177,7 @@ The practical workflow:
 
 5. For the rate indication, carry forward the current regime level, not the average across regimes.
 
-The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. Run this monthly. It is not a replacement for the analytical step above - you still need to interpret what the break means - but it ensures you are not missing a new regime shift between annual pricing reviews.
+The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. If your concern is model drift rather than regime shift, the complementary tool is [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — which tracks whether your model's calibration and discrimination have changed relative to the training period. Run this monthly. It is not a replacement for the analytical step above - you still need to interpret what the break means - but it ensures you are not missing a new regime shift between annual pricing reviews.
 
 ---
 

@@ -328,6 +328,8 @@ print(json.dumps(card.to_dict(), indent=2, default=str)[:300])
 
 ### Recipe 11: How do I run an A/E ratio check with Poisson confidence intervals?
 
+For the full monitoring workflow — including Gini drift testing, segmented A/E, Murphy decomposition, and sequential champion/challenger tests — see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
+
 ```python
 from insurance_monitoring import ae_ratio
 import numpy as np
@@ -420,7 +422,7 @@ The `lambda_value >= threshold` (i.e., `>= 1/alpha`) is the stopping criterion. 
 
 ### Recipe 14: How do I estimate the causal price elasticity for renewal pricing?
 
-`RenewalElasticityEstimator` uses Double Machine Learning (Chernozhukov et al. 2018) to remove confounding from observed renewal data. Naive logistic regression on price gives biased estimates because the assignment of price changes was not random.
+`RenewalElasticityEstimator` uses Double Machine Learning (Chernozhukov et al. 2018) to remove confounding from observed renewal data. Naive logistic regression on price gives biased estimates because the assignment of price changes was not random. For the full DML methodology and sample-size guidance, see [insurance-causal](/2026/03/12/insurance-autodml/).
 
 ```python
 from insurance_causal.elasticity import RenewalElasticityEstimator

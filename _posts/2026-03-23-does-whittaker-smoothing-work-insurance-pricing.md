@@ -7,7 +7,7 @@ tags: [whittaker, smoothing, REML, pricing, validation, age-curve, frequency, cr
 description: "Benchmark results on a known-DGP synthetic UK motor age curve. REML recovers the true frequency well in the data-rich middle. The tails are a different story. Numbers, not claims."
 ---
 
-The claim for Whittaker-Henderson smoothing is that REML lambda selection finds the right amount of smoothness automatically — no manual tuning — and that the Bayesian credible intervals tell you honestly where the curve is reliable and where it is not. We wrote the library and made the claim. Here we test it properly.
+The claim for [Whittaker-Henderson smoothing](/2026/03/09/whittaker-henderson-smoothing-insurance/) is that REML lambda selection finds the right amount of smoothness automatically — no manual tuning — and that the Bayesian credible intervals tell you honestly where the curve is reliable and where it is not. We wrote the library and made the claim. Here we test it properly.
 
 Known data-generating process. Synthetic UK motor claim frequency curve by driver age. Compare the smoother's output against the truth it cannot see. Report what happens in the middle, at the tails, and where the method breaks down.
 

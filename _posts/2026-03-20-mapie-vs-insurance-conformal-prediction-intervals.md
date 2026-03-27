@@ -57,7 +57,7 @@ y_pred, y_pi = mapie.predict(X_test, alpha=0.10)
 
 This works. The coverage guarantee holds. But the calibration quantile is derived from absolute residuals on insurance data where claims range from £0 to £50,000. On a heteroskedastic book, the calibration quantile will be inflated by large residuals from high-risk policies - which means intervals are unnecessarily wide for low-risk policies and structured uniformly when they should be narrower for low-risk and proportionally wider for high-risk.
 
-**insurance-conformal with pearson_weighted score:**
+**[insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) with pearson_weighted score:**
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor

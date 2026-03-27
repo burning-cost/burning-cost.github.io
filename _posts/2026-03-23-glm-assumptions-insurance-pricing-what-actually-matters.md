@@ -102,7 +102,7 @@ This is a modelling assumption, not a physical law. Driver age effects on freque
 
 What it costs you is predictive power. Nonlinear age effects, interactions between age and vehicle type, geographies that do not respond linearly to the factors you have included - these are all left in the residuals.
 
-The common solution is to put more structure in the bands: narrow driver age bands where the effect is steep (17–20, 21–24, 25–29), wider bands where it flattens out. This is actuarial craft. The statistical complement is to test for residual nonlinearity using GAMs, then decide whether the nonlinearity is real enough to warrant a more complex factor structure.
+The common solution is to put more structure in the bands: narrow driver age bands where the effect is steep (17–20, 21–24, 25–29), wider bands where it flattens out. This is actuarial craft. The statistical complement is to test for residual nonlinearity using GAMs — [insurance-gam](/2026/03/14/insurance-gam-interpretable-nonlinearity/) provides Poisson and Gamma GAMs with REML smoothing — then decide whether the nonlinearity is real enough to warrant a more complex factor structure.
 
 `insurance-gam` fits a Poisson or Gamma GAM with spline terms for continuous rating factors, using a smoothing penalty that prevents overfitting thin data. The output is a smooth fitted curve that you can compare against your banded GLM factors to see where the bands are doing violence to the underlying signal:
 
@@ -284,7 +284,7 @@ p_value = f_dist.sf(f_stat, dfn=(model_extend.df_resid - model_base.df_resid), d
 print(f"F-statistic: {f_stat:.3f}, p-value: {p_value:.4f}")
 ```
 
-Proper MLE (not quasi-likelihood) remains appropriate for: cross-validation comparisons on the same dataset (deviance or log-score), Bayesian credibility extensions, and any context where the full probabilistic model is used downstream - for instance, if you are constructing prediction intervals from the parametric Tweedie distribution.
+Proper MLE (not quasi-likelihood) remains appropriate for: cross-validation comparisons on the same dataset (deviance or log-score), Bayesian credibility extensions, and any context where the full probabilistic model is used downstream - for instance, if you are constructing prediction intervals from the parametric Tweedie distribution. For distribution-free alternatives, [conformal prediction for insurance](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) provides valid coverage without any distributional assumption.
 
 Speaking of prediction intervals: if your GLM assumptions are materially violated, parametric intervals derived from the fitted distribution will be unreliable. The coverage will be wrong. For intervals that hold without distributional assumptions, `insurance-conformal` constructs finite-sample valid prediction intervals using conformal prediction. These are tighter than parametric Tweedie intervals on heteroskedastic books and have guaranteed coverage regardless of whether the distribution family was correctly specified. See [Conformal Prediction Intervals for Insurance Pricing Models]({{ site.baseurl }}{% post_url 2026-02-19-conformal-prediction-intervals-for-insurance-pricing %}) for the full setup.
 

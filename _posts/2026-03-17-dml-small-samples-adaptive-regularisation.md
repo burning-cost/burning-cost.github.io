@@ -222,7 +222,7 @@ The conclusion holds to gamma=1.5. At gamma=2.0 the upper confidence bound just 
 
 ---
 
-Source at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal). The full benchmarking script is at `notebooks/benchmark.py`, Section 12 - run it on your own cluster to verify the capacity schedule works on your data-generating process before relying on the point estimates.
+Source at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal). For the full library overview including the renewal elasticity estimator and heterogeneous effects, see the [insurance-causal flagship post](/2026/03/12/insurance-autodml/). The full benchmarking script is at `notebooks/benchmark.py`, Section 12 - run it on your own cluster to verify the capacity schedule works on your data-generating process before relying on the point estimates.
 
 ---
 

@@ -12,7 +12,7 @@ Your deployed pricing model has a problem, and you probably do not know about it
 
 It is not the kind of problem that Evidently or NannyML will catch. Those tools are good at what they do: detecting statistical drift in input feature distributions. They will correctly tell you that the distribution of driver ages in your portfolio has shifted, or that a new vehicle group has appeared in production data that was not in the training set. What they cannot tell you is whether your model's rank ordering - its fundamental purpose as a pricing tool - has degraded. That requires actuarial KPIs.
 
-The three metrics that matter for an insurance pricing model are: the Gini coefficient (is the model still rank-ordering risks correctly?), the A/E ratio by segment (is the model still calibrated for the segments that matter?), and the double-lift curve (when comparing a new model to the old one, which deciles does it improve on?). None of these are available in Evidently, NannyML, or any generic model monitoring library as of March 2026. They are available in `insurance-monitoring`.
+The three metrics that matter for an insurance pricing model are: the Gini coefficient (is the model still rank-ordering risks correctly?), the A/E ratio by segment (is the model still calibrated for the segments that matter?), and the double-lift curve (when comparing a new model to the old one, which deciles does it improve on?). None of these are available in Evidently, NannyML, or any generic model monitoring library as of March 2026. They are available in [`insurance-monitoring`](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
 
 This post covers each metric in turn, shows the code, and explains what the output means operationally.
 

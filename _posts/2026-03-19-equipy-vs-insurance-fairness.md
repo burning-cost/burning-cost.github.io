@@ -52,7 +52,7 @@ It is model-agnostic. You pass in predictions as a numpy array or Series. It doe
 
 ## What insurance-fairness does
 
-`insurance-fairness` is a pre-deployment audit tool. It does not modify model predictions. It asks whether a model discriminates, how that discrimination operates, and what evidence you can present to a pricing committee and the FCA.
+`[insurance-fairness](/2026/03/03/your-pricing-model-might-be-discriminating/)` is a pre-deployment audit tool. It does not modify model predictions. It asks whether a model discriminates, how that discrimination operates, and what evidence you can present to a pricing committee and the FCA.
 
 The central output is a proxy vulnerability assessment: which of your rating factors are statistically correlated with protected characteristics, and how much of that correlation transmits into pricing variation?
 

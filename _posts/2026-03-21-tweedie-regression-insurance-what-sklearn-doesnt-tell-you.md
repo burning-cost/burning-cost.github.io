@@ -318,7 +318,7 @@ On a heteroskedastic book, conformal intervals are typically 10–15% narrower t
 
 `sklearn.TweedieRegressor` is fine for datasets where exposure is uniform across observations. Insurance pricing data is never uniform on exposure. The absence of an offset parameter is not a quirk - it is a structural limitation that makes the model wrong for the task.
 
-The correct GLM implementation is statsmodels with `offset=np.log(exposure)`. For gradient boosting, `insurance-distributional`'s `TweedieGBM` handles exposure internally and adds per-risk dispersion estimation on top.
+The correct GLM implementation is statsmodels with `offset=np.log(exposure)`. For a full GLM modelling guide covering factor structure, relativities, and UK actuarial conventions, see the [Python GLM guide for insurance pricing](/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/). For gradient boosting, `insurance-distributional`'s `TweedieGBM` handles exposure internally and adds per-risk dispersion estimation on top.
 
 If you are building or inheriting a pricing model and the word "offset" does not appear anywhere in the codebase, that is the first thing to fix.
 

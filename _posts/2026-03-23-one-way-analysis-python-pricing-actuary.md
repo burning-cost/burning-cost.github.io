@@ -219,7 +219,7 @@ grp = grp.sort_values("exposure", ascending=False)
 
 ---
 
-## The production shortcut: shap-relativities
+## The production shortcut: [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 
 From-scratch one-way analysis works well for GLMs. For a fitted GBM — CatBoost, LightGBM — the marginal O/E chart is harder to interpret because the model includes interaction effects that the one-way ignores. A vehicle group effect in the GBM is not a pure main effect; it includes partial interaction terms with driver age, NCD, and region.
 
@@ -312,5 +312,5 @@ Before presenting a one-way analysis to a pricing meeting:
 One-way analysis is the starting point, not the conclusion. It tells you where to look. The model, the SHAP decomposition, and the confidence intervals tell you what is actually there.
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the credibility weighting used in the thin-cell handling here, explained in full
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — segmented A/E ratios post-deployment: the same one-way analysis run on a monitoring period rather than a training set
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — segmented A/E ratios post-deployment: the same one-way analysis run on a monitoring period rather than a training set (for full monitoring including Gini drift and A/E ratios, see [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/))
 - [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — interpretable models that produce exact factor tables rather than SHAP approximations
