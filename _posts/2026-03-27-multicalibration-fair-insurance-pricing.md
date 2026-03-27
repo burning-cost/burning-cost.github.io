@@ -116,7 +116,7 @@ Miao and Pesenti's simultaneous preprint "Discrimination-Insensitive Pricing" ([
 
 This is intellectually clean and the uniqueness result is useful, but the operational path is less clear. The KL-divergence barycenter framing requires a probability measure over claims, which in practice means fitting a full distributional model rather than just a point predictor. The Denuit et al. approach requires only a prediction and an observed outcome - which is what every pricing team already has.
 
-We will cover the Miao-Pesenti framework in more detail when we look at extending the [`insurance-fairness-ot`](https://github.com/burning-cost/insurance-fairness-ot) library, where the optimal transport machinery is already in place.
+We will cover the Miao-Pesenti framework in more detail when we look at extending the optimal transport module in [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), where the transport correction machinery is already in place.
 
 ---
 
