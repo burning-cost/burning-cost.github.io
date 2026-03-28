@@ -1,75 +1,97 @@
 ---
 layout: post
 title: "Your Elasticity Model Has a 3x Bias"
-description: "Most UK motor insurers think they know their price elasticity. They are probably wrong by a factor of 3–5, and in the direction that makes their pricing strategy too aggressive. Here is why, and what to do about it."
+description: "Most UK motor insurers think they know their price elasticity. They are probably wrong by a factor of 3–5, in the direction that makes them systematically mispricing. The evidence, the mechanism, and what actually fixes it."
 date: 2026-03-28
 categories: [pricing, causal-inference]
-tags: [price-elasticity, endogeneity, DML, GIPP, PS21-5, insurance-causal, Woodard-Yi, double-machine-learning, UK-motor, renewal-pricing]
+tags: [price-elasticity, endogeneity, DML, GIPP, PS21-5, insurance-causal, Woodard-Yi, double-machine-learning, UK-motor, PCW, Bayesian, Kumar, EP25-2]
 ---
 
-Most UK motor pricing teams have a price elasticity estimate. It sits in a spreadsheet or a pricing model somewhere, probably derived from a GLM on renewal data, and it is probably wrong by a factor of three to five. The direction of the error makes your pricing strategy too aggressive: you are underestimating how sensitive customers are to price, so you are charging more than you should and losing more customers than you expect.
+Most UK motor pricing teams have a price elasticity estimate. It lives in a spreadsheet, or embedded in a logistic regression somewhere, and it is almost certainly wrong by a factor of three to five. The direction of the error is the uncomfortable part: you are underestimating how price-sensitive your customers actually are. Your model tells you a 5% rate increase costs you 7–8 points of retention. The true cost may be 20–25 points.
 
-This is not a marginal miscalibration. A true elasticity of −4 versus an estimated elasticity of −1.5 is a different pricing strategy entirely.
+This is not a marginal miscalibration you can paper over with a sensitivity test. A true elasticity of −4 versus an assumed elasticity of −1.5 implies a completely different pricing strategy.
 
 ---
 
-## The endogeneity problem
+## What elasticity means here
 
-Price is not randomly assigned. Premium rates are actuarially determined by risk profile, and that creates an endogeneity problem that biases any naive estimate of price sensitivity.
+Price semi-elasticity, as used in personal lines renewal modelling, is the percentage change in conversion (or retention) for a 1% change in price. An elasticity of −2 means a 1% price increase reduces retention by 2 percentage points. The number that goes into an optimisation model drives every downstream decision: the profit-maximising renewal price, the new business loading, the PCW competitiveness target.
 
-The specific mechanism: actuarially-priced premiums mean that high-risk customers face higher premiums. High-risk customers also tend to buy with higher voluntary excess levels — not because of any optimising response to price, but because they are more willing to self-insure small losses, or because of correlated selection effects. Their higher excess reduces the effective premium they see, creating a negative correlation between unobserved customer characteristics (propensity to buy at high excess) and the observed premium level. The result is that price variation in your data is systematically correlated with unobserved demand characteristics, which contaminates the OLS coefficient.
+Pricing actuaries in UK motor are familiar with this. The conventional practitioner range for PCW renewal semi-elasticity sits at roughly −1.5 to −3.0. Some teams estimate it more tightly. The number comes from some variant of a logistic regression fit on renewal offer and decision data.
 
-In a lapse model of the form
+We think that range is wrong. Not wrong in the normal sense of imprecise — wrong because the estimation method has a systematic bias that makes customers look less price-sensitive than they are. The true range, after correcting for that bias, is plausibly −3.0 to −6.0 or beyond.
+
+---
+
+## The endogeneity problem: how OLS deceives you
+
+Price in insurance is not randomly assigned. Premiums are actuarially determined by risk profile: a high-risk customer gets a higher premium because that is what their risk profile warrants. That pricing process creates an endogeneity problem that biases any naive estimate of price sensitivity — and the bias always runs in the same direction: toward zero.
+
+Here is the specific mechanism in a UK motor renewal context.
+
+Your lapse model is approximately:
 
 ```
-lapse_i = α + β · price_i + γ · X_i + ε_i
+lapse_i = α + β · log(price_i) + γ · X_i + ε_i
 ```
 
-this correlation between price and the error term attenuates the estimated β toward zero — making customers appear *less* price-sensitive than they actually are. You observe: high-price customers and low-price customers both have moderate lapse rates (the high-price customers are also higher-excess customers, absorbing some of the price effect). You conclude: price does not move lapse much. You are wrong.
+The problem is that `price_i` is correlated with `ε_i`, the unobserved drivers of lapse propensity. Two channels create this correlation:
 
-There is a second attenuation mechanism specific to renewal books. Low-risk, loyal customers tend to have both lower premiums and lower lapse propensity. This creates a positive correlation between unobserved loyalty and low price. OLS sees this and partially cancels the price signal: the loyal-and-cheap customers are hard to distinguish from the price-insensitive-and-cheap customers. The elasticity estimate gets pulled toward zero.
+**Channel 1: loyal low-risk customers.** Low-risk customers receive lower premiums (actuarially correct). Low-risk customers also tend to be older, more stable, longer-tenured — and genuinely less price-sensitive, for reasons unrelated to price level. They renew not because the price is low but because they do not shop around. OLS sees low price and low lapse propensity together and attributes it partly to the price. The price coefficient gets pulled toward zero.
 
-Both mechanisms work in the same direction: OLS underestimates the absolute magnitude of price sensitivity. Customers are more elastic than your model thinks.
+**Channel 2: voluntary excess selection.** High-risk customers are offered higher premiums. Some of them self-select into higher voluntary excess to reduce the quoted premium. Their higher excess means the effective premium they perceive is lower than the actuarial premium would suggest. This creates a negative correlation between unobserved risk appetite (propensity to take high excess) and the observed premium. OLS confounds this with price sensitivity.
 
-We have written separately about the causal DAG underlying PCW quote data: [The PCW Endogeneity Problem](/2026/03/26/the-pcw-endogeneity-problem-why-your-conversion-model-is-biased/). This post focuses on the magnitude of the bias and what to do about it.
+Both channels attenuate the estimated β toward zero. Customers appear less elastic than they are.
 
 ---
 
 ## Woodard & Yi (2020): the empirical magnitude
 
-The clearest empirical evidence for the scale of this bias comes from Woodard & Yi (2020), who studied price elasticity estimation in US crop insurance. The US federal crop insurance programme involves actuarially-determined premiums with a government subsidy structure that creates correlated price variation across crops, farms, and years — a setting structurally similar to the endogeneity problem in personal lines. They estimated price sensitivity using both naive OLS and an instrumental variables approach, and found that OLS underestimates price sensitivity by a factor of 3–5. The naive estimates suggested moderate elasticity; the IV estimates revealed farmers were far more responsive to price.
+The clearest empirical evidence for the scale of this bias comes from Woodard & Yi (2020), 'Estimation of Insurance Deductible Demand Under Endogenous Premium Rates', *Journal of Risk & Insurance* 87(2):477–500.
 
-We should be honest about the extrapolation: US crop insurance is not UK motor. The products are different, the markets are different, the selection mechanisms are different. We are not claiming Woodard & Yi proves UK motor elasticity is biased by exactly 3–5x. We are claiming it provides credible empirical evidence that the endogeneity bias can be large — much larger than most practitioners assume — and that there is no structural reason UK motor should be immune to the same mechanism.
+Their setting: US Federal Crop Insurance programme, where premium rates are set actuarially by government agencies and the price variation is driven by observable risk factors — structurally identical to the endogeneity mechanism in personal lines. They estimated demand elasticity using both naive OLS and a properly specified instrumental variables estimator. The finding: **OLS underestimates price sensitivity by a factor of 3–5**. The IV estimates revealed that farmers were far more responsive to deductible pricing than the naive regression suggested.
 
-The structural conditions for the bias are present in UK motor: actuarially-priced premiums, risk-correlated voluntary excess choices, loyal low-risk customers creating attenuation in the renewal dataset, and no randomised pricing experiment to identify the true causal effect. If anything, the UK PCW market — where roughly three-quarters of new business is transacted via price comparison — creates stronger selection effects than the managed distribution channels that dominate in the US.
+We should be explicit about the extrapolation here. US crop insurance is not UK motor. The products differ, the markets differ, and the UK PCW channel has no direct US analogue. We are not claiming the 3–5x figure is portable without adjustment. We are claiming it provides credible empirical evidence — in a setting with the same structural endogeneity mechanism — that this bias can be very large. There is no structural reason UK motor is immune to the same confounding.
 
----
-
-## What the practitioner estimate actually tells you
-
-If you have estimated elasticity from your own renewal book, the number is not useless. It tells you the average association between price change and lapse in your historical data, conditional on your rating factors. That is genuinely informative for short-term forecasting in a stable environment. But it is not a causal estimate. It answers "what happened to lapse when price went up?" not "what would happen to lapse if we raised price?".
-
-The distinction matters when you use the elasticity for optimisation. A price optimisation routine that maximises expected profit subject to a lapse model is implicitly treating the elasticity estimate as causal. If the causal elasticity is −4 and you are using −1.5, you will set prices too high, your retention will be worse than the model predicted, and when you re-estimate the elasticity from the resulting data, you will get an even more confused answer because the new data reflects your optimisation decisions.
-
-This is a feedback loop that makes the bias self-perpetuating.
+If anything, the PCW market amplifies the problem. Around 66% of UK motor new business now transacts through comparison websites (FCA EP25/2, July 2025). PCW-acquired customers are self-selected price shoppers. Their observed price-conversion relationships are dominated by selection effects that standard regression cannot disentangle.
 
 ---
 
 ## The post-GIPP structural break
 
-Even setting aside endogeneity, any elasticity estimate derived from pre-2022 data is invalid for post-2022 optimisation. The FCA's General Insurance Pricing Practices rules (PS21/5, effective January 2022 — colloquially "GIPP") fundamentally changed the data-generating process.
+Even setting the endogeneity problem aside entirely, any elasticity estimate from pre-2022 renewal data is invalid for post-2022 optimisation. This is a separate issue that compounds the bias problem.
 
-Before GIPP, loyal customers were systematically overcharged at renewal relative to equivalent new business customers. The overcharge compounded over multiple renewal cycles, sometimes reaching 20–30%. These customers continued to renew anyway, because the friction of switching was high and many did not know they were being overcharged. Their revealed elasticity was artificially low — not because they were genuinely insensitive to price, but because the loyalty penalty happened gradually and they lacked an obvious comparison point.
+The FCA's General Insurance Pricing Practices rules (PS21/5, effective 1 January 2022 — GIPP) prohibited renewal prices exceeding the Equivalent New Business Price. Before GIPP, loyal customers were routinely overcharged at renewal, sometimes by 20–30% relative to the equivalent new business rate. Those customers renewed anyway — not because they were genuinely insensitive to price, but because the overcharge accumulated gradually and switching friction was high. Their revealed elasticity was artificially suppressed by inertia, not genuine preference.
 
-After GIPP, renewal prices must converge toward equivalent new business prices. The loyalty penalty mechanism is removed. Customers who were previously sticky because they were not actively comparing now face prices closer to market rates. The effective price sensitivity of the retained book has increased, because the segment held by inertia rather than genuine price preference has been exposed to market pricing.
+Post-GIPP, the loyalty penalty mechanism is removed. Prices have converged. The FCA's three-year evaluation (EP25/2, July 2025) confirmed this: motor insurance premiums fell 5.9% in Q1 2022, with an estimated £1.6bn saving over 10 years. Price walking was largely eliminated across the 13 motor and 16 home insurers studied.
 
-If your elasticity model was estimated on 2018–2021 data, it was estimated in a market where a significant share of the customer base was being retained by the absence of information rather than genuine willingness to pay. That model is structurally wrong for the post-2022 market, independently of the endogeneity problem.
+The structural change matters for demand modelling. Customers who previously stayed through inertia now face genuine market pricing. The retention book's effective price sensitivity has increased, because the segment held by the absence of information rather than genuine willingness to pay has been exposed to market rates for the first time.
+
+A model trained on 2018–2021 data was calibrated in a market where a significant share of the retention book was price-insensitive for reasons that no longer exist. That model needs replacing — not recalibrating, replacing — on post-2022 data.
+
+EP25/2 documented a further concern: of the 66 firms reviewed, 28 could not demonstrate ENBP compliance with sufficient granularity, and 27 had inadequate documentary evidence that their controls were working. The report explicitly flagged elasticity-based pricing models as a compliance risk: firms must have controls to prevent less price-sensitive customers being charged more for non-cost reasons. That requires understanding which customers are actually less price-sensitive — which requires a causally identified demand model, not a biased OLS estimate.
 
 ---
 
-## DML as a partial solution
+## The PCW rank problem
 
-Double Machine Learning (Chernozhukov et al. 2018) handles the observed confounding problem. The idea is to partial out the effect of observable risk factors from both the price variable and the outcome, then estimate the price coefficient from the residuals. Because the nuisance models are fit on a separate fold, the procedure avoids the regularisation bias that plagues naive high-dimensional regression.
+There is a third source of bias specific to the PCW channel, distinct from the standard endogeneity problem.
+
+On a price comparison website, conversion is not a smooth function of absolute price. It is primarily driven by rank position: rank 1 on a PCW converts at around 20% in UK motor; rank 2 converts substantially less. The rank position is determined by your price relative to competitors — and competitor prices are unobserved.
+
+Standard conversion models handle this by including rank as a control variable. This is wrong for two reasons.
+
+First, rank is a *mediator*, not a confounder. Rank is caused by your price (and by competitor prices). If you control for rank in the regression, you are estimating the effect of price holding rank fixed — which is not the effect of a pricing decision. A pricing decision changes both your price and, through that, your rank. The direct effect of price (conditional on rank) is less than the total effect of price (through all channels including rank). Models that control for rank systematically underestimate the pricing team's actual leverage.
+
+Second, rank itself is endogenous to unobserved factors. Competitor prices respond to market-wide claims cost trends that also affect your pricing. If claims inflation rises, all insurers reprice upward, your rank position is preserved, but the absolute price effect on conversion is confounded by market-wide demand shifts. Rank is not a clean control for competitor effects.
+
+The correct treatment of rank is either as the running variable in a regression discontinuity design — exploiting the near-discontinuity in conversion at the rank 1/rank 2 boundary — or excluded from the primary price regression and handled through a structural model of the conversion-rank relationship. What it should not be is a standard covariate in a logistic regression. Most conversion models do exactly the wrong thing.
+
+---
+
+## What DML actually corrects — and what it does not
+
+Double Machine Learning (Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey, & Robins, 2018, *Econometrics Journal* 21(1):C1–C68) addresses the observed confounding problem. The procedure partials out the effect of observable risk factors from both the price variable and the outcome before estimating the price coefficient. Because the nuisance models are fit on separate folds, the approach avoids the regularisation bias that plagues naive high-dimensional regression.
 
 Our [insurance-causal](https://github.com/burning-cost/insurance-causal) library implements this:
 
@@ -79,65 +101,82 @@ from insurance_causal.treatments import PriceChangeTreatment
 
 model = CausalPricingModel(treatment=PriceChangeTreatment())
 model.fit(df, outcome="lapsed", treatment="price_change", features=rating_factors)
-print(model.ate_)  # average treatment effect with confidence interval
+print(model.ate_)  # average treatment effect, with confidence interval
 ```
 
-The DML estimate corrects for confounding by observable rating factors. On synthetic data with known ground truth, it produces less biased estimates than a naive GLM when the confounding is strong. We have been honest in our benchmarks: when treatment variation is largely explained by observed factors and the nuisance models over-partial, DML can be imprecise. It is not a magic fix.
+DML handles confounders you can measure and include. On synthetic data with known ground truth, it produces substantially less biased estimates than naive GLM when observable confounding is strong. This is not trivial — correcting for observed confounders through proper double-residualisation is a genuine improvement over fitting a logistic regression with risk factors as covariates.
 
-The more important limitation is conceptual: DML handles observed confounders. The endogeneity that Woodard & Yi identified — the correlation between price and unobserved demand characteristics — requires an instrument. If you cannot find a valid instrument (a variable that affects price but is independent of unobserved demand shocks), DML will reduce but not eliminate the bias.
+What DML does not handle: the correlation between price and *unobserved* demand drivers. If there are customer characteristics that predict both price (through the actuarial model) and demand (through propensity to shop) that are not captured in your rating factors, those become part of the residuals and the DML estimate inherits the bias. This is the gap that instrumental variables fills.
 
-Finding a valid instrument in insurance is hard. Reinsurance cost shocks that affected pricing guidelines but were independent of individual risk quality, regulatory changes that shifted market prices across the board, or exogenous changes in reinsurer appetite are candidates — but each requires careful argumentation for validity, and any instrument must pre-date the post-GIPP structural break to avoid confounding that with the treatment effect.
-
----
-
-## The two-stage Bayesian approach
-
-A more complete solution, proposed in arXiv:2205.01875, uses a two-stage Bayesian framework. Stage 1 fits ML models to estimate both purchase probability and price from customer features, then extracts residuals — the unexplained variation in price and purchase behaviour after conditioning on observables. Stage 2 fits a Bayesian dynamic GLM on those residuals to estimate the price-sensitivity parameter β.
-
-The paper reports a reduction in estimation error from 25% to 4%. We have not independently replicated this on UK insurance data; the figure comes from the paper's simulation study, and simulation studies are optimistic. But the direction is right: the combination of ML residualisation and Bayesian uncertainty propagation gives you a properly calibrated posterior over β, rather than a point estimate with a confidence interval that assumes away all the specification uncertainty.
-
-This is not currently implemented in insurance-causal. It is on the roadmap.
+Finding a valid instrument in insurance is hard. Useful candidates: broad commercial loading changes applied at quarterly rate reviews (variation in the commercial margin applied uniformly across segments); reinsurance cost events that shifted the technical price across whole portfolios without changing individual risk profiles; regulatory capital events. Each candidate requires careful argument for validity. None are as clean as the Woodard & Yi instruments in crop insurance.
 
 ---
 
-## What commercial platforms do not do
+## The Bayesian two-stage approach
 
-Akur8 and Earnix are the dominant commercial platforms for UK personal lines price optimisation. Both use elasticity inputs derived from conversion and lapse models, and both allow pricing actuaries to adjust the elasticity assumptions. Neither, as far as we can determine from their public documentation, applies endogeneity correction or provides Bayesian uncertainty over the elasticity parameter.
+The most complete solution proposed in the literature for this class of problem is a two-stage Bayesian framework from Kumar, Boluki, Isler, Rauch, and Walczak (arXiv:2205.01875, 2022), applied to airline pricing.
 
-This means the output of the optimisation is conditional on a point estimate that may be 3–5x wrong. The platform will find the optimal price given the assumed elasticity; it will not tell you how sensitive the optimal price is to the elasticity assumption, or flag that the estimate is likely biased.
+Stage one: fit ML models (including deep networks) to predict both purchase probability and price from observable customer features. Extract the residuals — the variation in price and conversion behaviour unexplained by observables. These residuals are the signal for stage two.
 
-You can address this manually: run the optimisation at multiple elasticity values (say, −1.5, −3.0, and −5.0 for PCW motor renewal) and compare the resulting strategies. If the optimal price changes materially across the range, you have a decision that is highly sensitive to an uncertain input. That uncertainty should inform how aggressively you implement the model output.
+Stage two: fit a Bayesian Dynamic GLM on those residuals to estimate the price-sensitivity parameter β as a full posterior distribution, not a point estimate.
+
+The paper reports estimation error reduced from 25% to 4% relative to direct regression on simulation data. The simulation context is important — these numbers were generated under controlled conditions, and real data will underperform that benchmark. But the direction is right. The two-stage structure exploits the fact that the residuals from well-specified ML models carry less of the observable confounding signal than raw prices and conversion rates do.
+
+More importantly, the Bayesian output is what pricing optimisation actually needs. A point estimate of elasticity — "the semi-elasticity for 30–35 year-olds on PCW is −3.2" — is false precision. The optimiser that takes that number produces a confidence in the recommended price that is not warranted. A full posterior distribution over β enables Thompson sampling: at each pricing decision, draw a parameter realisation from the posterior and set the expected-value-maximising price. This naturally incorporates uncertainty into the pricing strategy, produces exploratory price variation that tightens the posterior over time, and is theoretically proven to achieve near-optimal cumulative performance.
+
+No open-source insurance implementation of the Kumar et al. two-stage approach exists. The insurance-causal library has DML, but not a Bayesian posterior over the demand parameter. This is a documented gap.
 
 ---
 
-## Practical implications
+## What the commercial platforms do not tell you
 
-If true elasticity for UK motor PCW renewal is closer to −4 than −1.5, several things follow:
+Akur8 and Earnix are the dominant commercial platforms for UK personal lines price optimisation. Akur8's demand module claims separate static (conversion propensity) and dynamic (price sensitivity) models, with a proprietary "Derivative Lasso" algorithm. Earnix's Price-It platform includes a conversion model connected to the rate optimisation engine.
 
-**Rate changes have larger retention effects than expected.** A 5% rate increase that your model says costs you 7.5 percentage points of retention might actually cost 20 percentage points. The profit-maximising price is lower than your model thinks.
+Neither platform, as far as we can establish from public documentation, applies endogeneity correction to the elasticity estimates. The "Derivative Lasso" algorithm is not publicly described — we cannot rule out that it incorporates IV or DML-style debiasing, but there is no evidence that it does. Both platforms allow pricing actuaries to adjust elasticity assumptions by segment, which is a workaround rather than a solution: if the model is biased, a discretionary adjustment made without knowledge of the bias direction and magnitude is not a correction.
 
-**Segment-level elasticity matters more than average elasticity.** High-elasticity segments (young drivers, annual switchers, PCW-acquired customers) may be deeply unprofitable to retain at anything above cost-plus pricing. A model that uses average elasticity will systematically over-retain these customers at a loss.
+The audit consequence is also unresolved. Consumer Duty, FCA AI principles, and the emerging PRA supervisory expectations for AI in insurance all point toward firms being able to explain and justify their pricing decisions. A black-box elasticity estimate from a commercial platform, derived from an unspecified method on historical data of uncertain quality, does not meet that standard. If the FCA or PRA asks "how was price sensitivity estimated and what is the uncertainty on that estimate?", the answer needs to be technically defensible. "The platform calculated it" is not an answer.
 
-**The value of causal identification is high.** If you could get a 3–5x more accurate elasticity estimate, the return on that investment through better pricing decisions would be substantial. Building a proper instrumental variables or two-stage Bayesian pipeline is not an academic exercise; it is a pricing accuracy problem.
+A practical exercise that costs nothing: run your current optimisation at three elasticity values — say, −1.5, −3.0, and −5.0 for PCW motor renewal. If the profit-maximising price shifts materially across that range, you have a decision that is highly sensitive to an uncertain input. That uncertainty should be visible in the pricing decision, not hidden inside the platform output.
 
-**Pre-2022 models need replacing.** Not adjusting — replacing. The structural break from GIPP is large enough that recalibration is not sufficient. You need to re-estimate from post-2022 data, with a method that accounts for endogeneity.
+---
+
+## Why this makes pre-GIPP models doubly wrong
+
+The two problems compound. Pre-2022 renewal data was generated in a market where the loyalty penalty mechanism artificially suppressed revealed price sensitivity. Models trained on that data have a structural break problem. And those same models used OLS or logistic regression on the available data, embedding the endogeneity bias on top of the structural misspecification.
+
+A team that trained their elasticity model in 2020 and has not rebuilt it on post-2022 data has an estimate with two layers of error stacked in the same direction: the pre-GIPP inertia effect and the OLS attenuation. The combined effect could easily push the true elasticity to three or four times the estimated value.
+
+The practical consequence: if you believe elasticity is −1.5 and set renewal prices accordingly, you are charging more than the profit-maximising price in segments where true elasticity is −4 or beyond. You retain fewer customers than you expected, write business at lower volumes than planned, and when you re-estimate from the resulting data you inherit a biased sample — because the data now reflects both your incorrect pricing decisions and the customers who were lost. The bias is self-reinforcing.
+
+---
+
+## What to do about it
+
+**Step one: estimate whether your current model is plausibly biased.** Run a DML estimation from insurance-causal on a year of post-2022 renewal data. Compare the DML estimate to your existing GLM elasticity. If the DML estimate is materially more negative, you have at least the observed-confounding component of the bias. If DML and GLM agree closely, either your existing model handles observable confounding well (unlikely if it is a simple logistic regression) or the DML is also biased in the same direction (possible if the observable confounders do not explain much of the price variation).
+
+**Step two: find an instrument.** Look at rate review periods where the commercial loading changed uniformly across segments. These create price variation that is mechanically related to the loading decision, not to individual risk quality. Even imperfect instruments — ones that explain only some of the price variation — improve on pure observational estimation. The first-stage F-statistic tells you whether the instrument has enough relevance to be useful.
+
+**Step three: rebuild on post-2022 data.** This is not optional. The pre-GIPP data is structurally invalid. Three years of post-January-2022 renewal observations are now available. Use them.
+
+**Step four: quantify the uncertainty.** Whether through the Kumar et al. two-stage Bayesian structure or a simpler bootstrap of the DML estimates, you need a distribution over the elasticity parameter, not just a point estimate. Pricing decisions made without uncertainty quantification are falsely precise. The Bayesian posterior is the right goal; honest bootstrapped intervals are a reasonable starting point.
 
 ---
 
 ## What we do not know
 
-We are extrapolating Woodard & Yi to a different market, a different product, and a different regulatory environment. The 3–5x bias figure is an empirical finding from US crop insurance; it is not a proven fact about UK motor. It is informed speculation backed by a theoretical mechanism that applies to UK motor — but the size of the bias here could be larger or smaller.
+The 3–5x bias estimate from Woodard & Yi is not a UK motor fact. It is an empirical finding from a different insurance product in a different country under a different regulatory regime, applied as a structural argument to UK motor. The size of the bias here could be larger or smaller. We do not have access to a large UK motor dataset with a valid instrument and will not pretend to have done that calculation.
 
-We do not have access to a large UK motor dataset with a valid instrument. We cannot independently estimate the true causal elasticity and compare it to the naive OLS estimate. If you work at a UK insurer and have done this, we would like to know what you found.
+The post-GIPP structural break is directionally certain — the mechanism is unambiguous — but the magnitude is empirical. How much of pre-GIPP retention stickiness was genuine price insensitivity versus inertia is not established from public data.
 
-The post-GIPP structural break point is directionally sound — the mechanism is unambiguous — but the magnitude is uncertain. How much of pre-GIPP lapse stickiness was genuine price insensitivity versus inertia is an empirical question we cannot answer from public data.
+If you have estimated the true causal elasticity on UK motor PCW data with a proper instrument and found something substantially different from the naive OLS estimate — in either direction — we would very much like to know what you found.
 
 ---
 
 ## References
 
+- Woodard, J.D. & Yi, F. (2020). Estimation of Insurance Deductible Demand Under Endogenous Premium Rates. *Journal of Risk & Insurance*, 87(2), 477–500.
 - Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J. (2018). Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal*, 21(1), C1–C68.
-- Woodard, J.D. & Yi, F. (2020). Endogenous price regulation and price elasticity estimation: Evidence from crop insurance markets. *American Journal of Agricultural Economics*, 102(2), 556–578.
-- arXiv:2205.01875 — Two-stage Bayesian dynamic GLM for price sensitivity estimation with ML residualisation.
-- FCA PS21/5 (2021). General Insurance Pricing Practices. Financial Conduct Authority.
+- Kumar, A., Boluki, S., Isler, V., Rauch, C., & Walczak, T. (2022). Machine Learning based Framework for Robust Price-Sensitivity Estimation with Application to Airline Pricing. arXiv:2205.01875.
+- FCA (2021). General Insurance Pricing Practices: final rules. PS21/5. Financial Conduct Authority, January 2021.
+- FCA (2025). Evaluation Paper 25/2: An evaluation of our General Insurance Pricing Practices (GIPP) remedies. Financial Conduct Authority, July 2025.
 - Burning Cost [insurance-causal](https://github.com/burning-cost/insurance-causal): Double Machine Learning for causal price elasticity in insurance.
