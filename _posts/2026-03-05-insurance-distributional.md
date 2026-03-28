@@ -230,7 +230,7 @@ For a well-calibrated distribution, PIT values should be uniform on [0, 1] with 
 
 ## Practical notes for UK personal lines
 
-**CatBoost, not XGBoost.** CatBoost's ordered target statistics for categorical features handle vehicle make/model, occupation code, and postcode area without encoding. The Chevalier & Côté EAJ 2025 comparison confirmed that CatBoost outperforms XGBoost and other GBM frameworks when the dataset has many high-cardinality categoricals, which UK personal lines always does. Pass them directly:
+**CatBoost, not XGBoost.** CatBoost's ordered target statistics for categorical features handle vehicle make/model, occupation code, and postcode area without encoding. Pass them directly:
 
 ```python
 model = TweedieGBM(
@@ -263,9 +263,11 @@ We made three design choices that differ from the existing literature.
 
 ## Research context
 
-The theoretical foundation was established by Smyth and Jørgensen in 2002. The extension to GBMs is So & Valdez (2024), the paper this library implements, which won the ASTIN Best Paper at the IAA Joint Colloquium in Brussels in September 2024. Their paper presents the maths, derives the gradients analytically for zero-inflated Tweedie CatBoost, and reports strong empirical results on telematics data. They did not release code.
+**Smyth and Jørgensen (2002)** established the double GLM framework in their *ASTIN Bulletin* paper (32(1):143-157): fit a mean model, compute squared Pearson residuals, fit a Gamma GLM on those residuals to estimate dispersion as a function of covariates. This library replaces the GLM dispersion model with a GBM, which is the key extension that enables non-linear phi(x) estimation at scale.
 
-The broader distributional GBM literature (Chevalier & Côté EAJ 2025, cyc-GBM, PGBM, NGBoost) is well-developed for Poisson frequency and Gamma severity models. None of it covers Tweedie. The compound Poisson-Gamma is the primary distribution for UK pure premium pricing and has been absent from every probabilistic GBM framework until now.
+**So & Valdez (2024)** is the paper this library implements. Published in *Applied Soft Computing* (doi:10.1016/j.asoc.2025.113226; arXiv 2406.16206), it won the ASTIN Best Paper at the IAA Joint Colloquium in Brussels in September 2024. Their contribution is the extension of the double-model dispersion idea to gradient boosting, plus the derivation of analytic gradients for zero-inflated Tweedie CatBoost, with empirical validation on telematics data. They did not release code.
+
+The broader distributional GBM literature (cyc-GBM, PGBM, NGBoost) is well-developed for Poisson frequency and Gamma severity models. None of it covers Tweedie. The compound Poisson-Gamma is the primary distribution for UK pure premium pricing and has been absent from every probabilistic GBM framework until now.
 
 This library fills that gap. It is not a research prototype. It is production-quality Python with a test suite, type annotations, and an API designed for actuarial pricing workflows.
 

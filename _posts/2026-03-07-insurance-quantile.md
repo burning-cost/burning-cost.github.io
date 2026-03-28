@@ -11,7 +11,7 @@ Your Tweedie GBM gives you an expected loss. That expected loss is one number. I
 
 The expected loss is not the problem; you need it. The problem is using it as your only view of risk. A motor bodily injury risk with an expected cost of £800/year and a risk with the same expected cost but 40% more variance in the tail are not the same risk. Your burning cost model treats them identically. Your tail risk does not.
 
-Quantile regression gives you the full conditional distribution, not just the mean. CatBoost has had MultiQuantile loss since version 1.0. What it has not had is an actuarial output layer: TVaR, large loss loadings, ILF curves, exceedance probabilities, calibration diagnostics. We built [`insurance-quantile`](/insurance-distributional/) to provide those. For the complementary approach of modelling the full distribution including variance parameters, see [insurance-distributional](/insurance-distributional/).
+Quantile regression gives you the full conditional distribution, not just the mean. CatBoost supports MultiQuantile loss. What it has not had is an actuarial output layer: TVaR, large loss loadings, ILF curves, exceedance probabilities, calibration diagnostics. We built [`insurance-quantile`](/insurance-quantile/) to provide those. For the complementary approach of modelling the full distribution including variance parameters, see [insurance-distributional](/insurance-distributional/).
 
 ---
 

@@ -23,7 +23,7 @@ The intuition behind random effects is appealing: any time you have a categorica
 
 Two reasons. First, if the between-group variance τ² is genuinely small relative to within-group noise σ², the REML estimator will correctly push all the BLUPs toward zero. Every group gets a multiplier close to 1.0. The random effects stage has added computation and governance complexity for essentially nothing. You cannot tell this without looking at the variance components.
 
-Second, and less obvious: the REML estimate of τ² depends on how many groups you have and how much data each group carries. Postcode sector in UK motor might give you 9,000 groups with a median of 14 policies each. The REML estimator on such a distribution will struggle. The within-group variance σ² is estimated from thin data per group. The between-group variance τ² is estimated from 9,000 group means of questionable reliability. You can get plausible-looking output that conceals a poorly identified model.
+Second, and less obvious: the REML estimate of τ² depends on how many groups you have and how much data each group carries. Postcode sector in UK motor might give you 11,000 groups with a median of 14 policies each. The REML estimator on such a distribution will struggle. The within-group variance σ² is estimated from thin data per group. The between-group variance τ² is estimated from 11,000 group means of questionable reliability. You can get plausible-looking output that conceals a poorly identified model.
 
 The diagnostic workflow below gives you numbers to make this decision on, rather than intuition.
 
@@ -155,7 +155,7 @@ A broker-scheme cell with 80 policies and a mean residual of +0.22 after account
 
 ## High-cardinality limits: postcode sector at scale
 
-Postcode sector in UK personal lines is the obvious case where the numbers break down. England and Wales have approximately 9,000 postcode sectors (the SW1A part of a postcode). A motor book of 200,000 policies might have a median of 22 policies per sector, with a heavy tail: 50 sectors covering the major conurbations with 500+ policies, and thousands of rural sectors with fewer than five.
+Postcode sector in UK personal lines is the obvious case where the numbers break down. England and Wales have approximately 11,000 postcode sectors (the SW1A part of a postcode; ONS April 2022 gives 11,232 across the UK). A motor book of 200,000 policies might have a median of 22 policies per sector, with a heavy tail: 50 sectors covering the major conurbations with 500+ policies, and thousands of rural sectors with fewer than five.
 
 The REML model with `min_group_size=5` will exclude a large fraction of these sectors from variance estimation. The τ² estimate will be dominated by the well-populated urban sectors. The resulting Bühlmann k will reflect the behaviour of those sectors, which may not be representative of the rural tail.
 

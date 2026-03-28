@@ -84,7 +84,7 @@ This is the result that justifies the methodological overhead. A renewal optimis
 
 ## The nuisance model matters more than the treatment model
 
-The most consistent finding from systematic evaluations of DML implementations (arXiv:2403.14385, 2024) is that performance is more sensitive to the quality of the treatment nuisance model -- E[D|X], the model predicting price change from risk factors -- than to the outcome nuisance model E[Y|X]. The intuition: the residualised treatment D_tilde = D - E_hat[D|X] must be genuinely exogenous for the final OLS step to give an unbiased estimate. Poorly residualised D still contains confounded variation.
+A theoretical result from Chernozhukov et al. (2018) -- the foundational DML paper -- is that estimation is more sensitive to the quality of the treatment nuisance model E[D|X] than to the outcome nuisance model E[Y|X]. Systematic evaluations of DML implementations (arXiv:2403.14385, 2024) are consistent with this: the residualised treatment D_tilde = D - E_hat[D|X] must be genuinely exogenous for the final OLS step to give an unbiased estimate. Poorly residualised D still contains confounded variation.
 
 We tested this by varying the nuisance model class while keeping everything else fixed:
 
@@ -216,7 +216,7 @@ Work through this before running DML on real portfolio data.
 
 **Validity checks**
 
-- Run `confounding_bias_report()` from `insurance_causal.diagnostics` to quantify sensitivity to unobserved confounding. `sensitivity_analysis()` has been removed from the library pending a redesign; use the confounding bias report and manual robustness checks instead.
+- Run `confounding_bias_report()` from `insurance_causal.diagnostics` to quantify sensitivity to unobserved confounding. As of the current version, `sensitivity_analysis()` is being redesigned; use the confounding bias report and manual robustness checks in the interim.
 - Run `confounding_bias_report()` and document the naive vs DML comparison. Agreement within 10% means confounding is not material. Divergence above 30% needs explanation before the DML estimate enters a pricing model.
 - Check for bad controls: does including NCD change the estimate materially? If it does, consider whether NCD is acting as a mediator in this analysis.
 

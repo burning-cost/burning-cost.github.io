@@ -138,7 +138,7 @@ The FCA expects firms to monitor whether pricing models remain appropriate for t
 The `ShiftDiagnosticReport` produces a plain-language governance summary:
 
 ```python
-print(report.fca_sup153_summary())
+print(report.regulatory_summary())
 ```
 
 ```
