@@ -28,7 +28,7 @@ uv add insurance-nowcast
 
 ## The model
 
-The library implements the ML-EM framework from Wilsens, Antonio & Claeskens (KU Leuven), arXiv:2512.07335, December 2024. The authors' R implementation is on GitHub with three commits, no PyPI package, and no documentation beyond the paper itself. There is no existing Python implementation.
+The library implements the ML-EM framework from Wilsens, Antonio & Claeskens (KU Leuven), arXiv:2512.07335, December 2025. The authors' R implementation is on GitHub with three commits, no PyPI package, and no documentation beyond the paper itself. There is no existing Python implementation.
 
 The model treats claim occurrence and reporting delay as a joint Poisson-Multinomial process. Each risk unit with features x generates claims at a rate λ(x) per unit of exposure - the occurrence process. Each claim then takes a random number of periods to be reported, with the delay distribution p(x) depending on those same risk features - the delay process. The key insight is that the delay distribution is covariate-conditioned: different kinds of risks have different reporting speed.
 

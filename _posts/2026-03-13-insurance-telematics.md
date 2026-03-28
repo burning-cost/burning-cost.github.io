@@ -9,7 +9,7 @@ description: "Continuous-time HMM for telematics risk scoring in UK motor pricin
 
 Most telematics scores are event counts. Harsh braking events per kilometre. Hard cornering rate. Night driving percentage. These are cheap to compute, easy to explain, and wrong in a specific way: they treat every kilometre of driving as exchangeable. A harsh braking event on an urban road at 30 km/h is not the same as one at 110 km/h on a motorway. The denominator matters. The driving context matters.
 
-The actuarial literature has known this for a while. Gao, Meng, and Wüthrich (ASTIN Bulletin, 2022) showed that model-based approaches substantially outperform naive event counting for claims frequency prediction. Sun and Shi (North American Actuarial Journal, 2024) demonstrated that a Hidden Markov Model on telematics sequences provides better risk discrimination than standard feature engineering, and crucially, that the latent states have direct actuarial interpretation: a driver who spends 40% of miles in the "aggressive urban" state has a claims frequency roughly double the portfolio average in their data.
+The actuarial literature has known this for a while. Gao, Meng, and Wüthrich (ASTIN Bulletin, 2022) showed that model-based approaches substantially outperform naive event counting for claims frequency prediction. Hidden Markov Models on telematics sequences provide better risk discrimination than standard feature engineering, and crucially, the latent states have direct actuarial interpretation: a driver who spends a large fraction of miles in an "aggressive urban" state tends to have materially higher claims frequency than the portfolio average.
 
 [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) implements this approach for UK pricing teams. Raw trip data in, GLM-ready driver risk features out. 84 tests, 12 modules, MIT-licensed, on PyPI.
 
@@ -70,7 +70,7 @@ The output `X_telematics` is a standard pandas DataFrame with one row per policy
 
 ## What the features mean
 
-The state occupancy fractions are the primary features. `state_2_frac` - the fraction of driving time in the high-intensity state - is typically the strongest predictor. In the Sun & Shi (2024) data, moving from the 10th to 90th percentile of this feature multiplied claims frequency by approximately 2.3x.
+The state occupancy fractions are the primary features. `state_2_frac` - the fraction of driving time in the high-intensity state - is typically the strongest predictor. In practice, moving from the 10th to 90th percentile of this feature typically multiplies claims frequency by a factor of 2–3×, depending on portfolio mix and state definitions.
 
 Two secondary features deserve attention:
 
