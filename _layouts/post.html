@@ -659,37 +659,7 @@
       </div>
       {% endif %}
 
-      {% comment %}Related posts by tag overlap{% endcomment %}
-      {% assign max_related = 3 %}
-      {% assign related_posts = "" | split: "" %}
-      {% for post in site.posts %}
-        {% if post.url != page.url %}
-          {% assign common_tags = 0 %}
-          {% for tag in post.tags %}
-            {% if page.tags contains tag %}
-              {% assign common_tags = common_tags | plus: 1 %}
-            {% endif %}
-          {% endfor %}
-          {% if common_tags > 0 %}
-            {% assign related_posts = related_posts | push: post %}
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if related_posts.size > 0 %}
-      <div class="related-section">
-        <p class="related-heading">Related articles</p>
-        <ul class="related-list">
-          {% for related in related_posts limit: max_related %}
-          <li class="related-item">
-            <a href="{{ related.url | relative_url }}">
-              <div class="related-title">{{ related.title | escape }}</div>
-              <div class="related-date">{{ related.date | date: "%d %B %Y" }}</div>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
+      {% include related-posts.html %}
 
       <div class="article-back">
         <a href="/blog/">Back to all articles</a>

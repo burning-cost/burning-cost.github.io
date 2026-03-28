@@ -1,0 +1,102 @@
+{% comment %}
+  related-posts.html
+  ------------------
+  Finds the 3 posts most closely related to the current page by tag overlap,
+  with category overlap as a tiebreaker. Outputs a styled "Related reading"
+  block that creates crawlable internal links for Googlebot and gives readers
+  a clear next step.
+
+  Algorithm
+  ---------
+  Liquid cannot sort arrays of objects by an arbitrary key, but it can sort
+  arrays of strings lexicographically. We encode each candidate post as a
+  sortable string:
+
+    "<inverse_tag_score><inverse_cat_score>|<url>|<title>|<date>"
+
+  where inverse scores are (9 - actual_count), zero-padded to one digit, so
+  that lexicographic ascending sort puts the highest-overlap posts first.
+  We cap counts at 9 to stay single-digit. After sorting we take the first 3
+  entries and split them back out to render the links.
+
+  Usage
+  -----
+  Drop {% include related-posts.html %} anywhere inside a post layout.
+  The include reads `page.tags` and `page.categories` from the calling page.
+{% endcomment %}
+
+{% assign rp_candidates = "" | split: "" %}
+
+{% for rp_post in site.posts %}
+  {% unless rp_post.url == page.url %}
+
+    {% comment %}Count tag overlap{% endcomment %}
+    {% assign rp_tag_score = 0 %}
+    {% for rp_tag in rp_post.tags %}
+      {% if page.tags contains rp_tag %}
+        {% assign rp_tag_score = rp_tag_score | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+
+    {% if rp_tag_score > 0 %}
+
+      {% comment %}Count category overlap as tiebreaker{% endcomment %}
+      {% assign rp_cat_score = 0 %}
+      {% for rp_cat in rp_post.categories %}
+        {% if page.categories contains rp_cat %}
+          {% assign rp_cat_score = rp_cat_score | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+
+      {% comment %}
+        Cap at 9 so the inverse fits in one digit.
+        Inverse = 9 - score, so that ascending lex sort puts best matches first.
+      {% endcomment %}
+      {% if rp_tag_score > 9 %}{% assign rp_tag_score = 9 %}{% endif %}
+      {% if rp_cat_score > 9 %}{% assign rp_cat_score = 9 %}{% endif %}
+
+      {% assign rp_inv_tag = 9 | minus: rp_tag_score %}
+      {% assign rp_inv_cat = 9 | minus: rp_cat_score %}
+
+      {% assign rp_entry = rp_inv_tag | append: rp_inv_cat | append: "|" | append: rp_post.url | append: "|" | append: rp_post.title | append: "|" | append: rp_post.date %}
+      {% assign rp_candidates = rp_candidates | push: rp_entry %}
+
+    {% endif %}
+  {% endunless %}
+{% endfor %}
+
+{% assign rp_sorted = rp_candidates | sort %}
+
+{% if rp_sorted.size > 0 %}
+<div class="related-section">
+  <p class="related-heading">Related reading</p>
+  <ul class="related-list">
+    {% assign rp_shown = 0 %}
+    {% for rp_entry in rp_sorted %}
+      {% if rp_shown < 3 %}
+        {% assign rp_parts = rp_entry | split: "|" %}
+        {% comment %}
+          parts[0] = score digits (2 chars)
+          parts[1] = url
+          parts[2] = title  (may contain "|" if title has one — unlikely but we
+                             join from index 2 onward to be safe)
+          parts[3] = date
+          We use the last element as date and everything in between as title.
+        {% endcomment %}
+        {% assign rp_url   = rp_parts[1] %}
+        {% assign rp_date  = rp_parts.last %}
+        {% assign rp_title_parts = rp_parts | slice: 2, rp_parts.size %}
+        {% assign rp_title_parts_without_date = rp_title_parts | pop %}
+        {% assign rp_title = rp_title_parts_without_date | join: "|" %}
+        <li class="related-item">
+          <a href="{{ rp_url | relative_url }}">
+            <div class="related-title">{{ rp_title | escape }}</div>
+            <div class="related-date">{{ rp_date | date: "%d %B %Y" }}</div>
+          </a>
+        </li>
+        {% assign rp_shown = rp_shown | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
