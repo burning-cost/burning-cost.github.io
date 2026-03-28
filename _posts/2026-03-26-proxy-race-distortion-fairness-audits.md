@@ -7,6 +7,8 @@ tags: [fairness, proxy-discrimination, BISG, BIFSG, race-proxy, FCA, Consumer-Du
 description: "A new paper (Xin, Hooker, Huang 2026) shows that BIFSG proxy race distorts regression-based fairness audits in two distinct mechanisms  -  and the direction of distortion is group-specific and unpredictable. The common assumption that proxy audits uniformly attenuate disparity is wrong for Black groups."
 ---
 
+> **Looking for the practical how-to?** This post covers the methodological limitations of proxy-imputed race — a critical read before running any audit. For the step-by-step Python implementation of proxy discrimination testing in compliance with FCA EP25/2, see [Proxy Discrimination Testing for Insurance Pricing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/).
+
 A paper from Xin, Hooker, and Huang (arXiv:2603.17106, March 2026) should change how actuarial teams interpret the output of any regression-based fairness audit that uses proxy-imputed race. The finding is not subtle: proxy imputation via BISG or BIFSG introduces systematic distortion into disparity estimates, and the direction of that distortion is group-specific. For some groups it attenuates apparent disparity; for others it amplifies it. You cannot tell which without knowing the structure of the misclassification errors for your specific proxy and your specific book.
 
 This matters for UK pricing teams even though BISG and BIFSG are American constructs. The mechanism that causes the distortion is algebraic, not empirical. It operates on any proxy with less than perfect accuracy. UK firms using Census 2021 LSOA-level ethnicity composition as a continuous proxy, or ONS name-list surname matching, are not immune.

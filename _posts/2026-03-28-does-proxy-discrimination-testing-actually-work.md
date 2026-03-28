@@ -7,6 +7,8 @@ tags: [fairness, proxy-discrimination, fca, consumer-duty, equality-act, pricing
 description: "Manual Spearman correlation missed postcode as an ethnicity proxy in 100% of 50 benchmark runs. CatBoost proxy R-squared caught it in 100% of runs. The difference is the non-linearity of the relationship."
 ---
 
+> **This post benchmarks Spearman correlation vs CatBoost proxy R-squared detection.** For the full step-by-step proxy discrimination testing workflow — EP25/2 requirements, library API, and FCA-ready output — see [Proxy Discrimination Testing for Insurance Pricing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/).
+
 The question pricing teams should be asking is not "does my model use a protected characteristic?"  -  it does not, because that would be illegal. The question is "does my model use factors that are correlated with a protected characteristic in a way that a court would call indirect discrimination under Section 19 of the Equality Act 2010?"
 
 That is a harder question, and the standard approach to answering it is not adequate.

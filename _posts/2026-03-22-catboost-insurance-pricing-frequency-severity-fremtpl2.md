@@ -4,7 +4,8 @@ title: "CatBoost for Insurance Pricing: Frequency-Severity on freMTPL2"
 date: 2026-03-22
 categories: [pricing, techniques, tutorials]
 tags: [catboost, frequency-severity, burning-cost, fremtpl2, poisson, gamma, polars, shap-relativities, insurance-distill, uk-motor, python, open-data]
-description: "Build a CatBoost frequency-severity pricing model on freMTPL2 using Polars. Poisson frequency, Gamma severity, combined burning cost, SHAP factor extraction, and distillation to Radar."
+description: "CatBoost frequency-severity pricing model on freMTPL2 in Python: Poisson frequency with exposure offset, Gamma severity, burning cost, XGBoost and LightGBM comparison on the same dataset, SHAP factor extraction, and Radar distillation."
+seo_title: "CatBoost for Insurance Pricing: Frequency-Severity Tutorial in Python"
 ---
 
 Most actuarial pricing projects spend months on something that should take a week: getting a working frequency-severity model off the ground. The delay is usually not the modelling itself. It is the argument about which loss function to use, whether categorical variables need encoding, how to handle the exposure offset, and whether the combined burning cost "makes sense." These are legitimate questions, but they have answers, and the answers are not complicated.
@@ -304,6 +305,69 @@ The Gini ratio tells you how much of the CatBoost model's discrimination the sur
 Run the same workflow for the severity model with `family="gamma"`. The severity surrogate is usually easier to distil than frequency because severity has fewer non-linear interactions -- `VehPower` and `VehBrand` drive most of the structure.
 
 The CSV output from `export_csv()` gives you one file per rating variable, each with three columns: `level`, `log_coefficient`, `relativity`. These load directly into Radar's factor table editor or Emblem's import path. The base factor file contains the intercept -- the expected burning cost at all-base-level, which anchors the rate level.
+
+---
+
+## CatBoost vs XGBoost vs LightGBM on freMTPL2
+
+The three libraries take different approaches to the same gradient boosting family. On the freMTPL2 frequency task — 678,013 policies, Poisson loss, 80/20 split by IDpol — the practical differences are:
+
+| | CatBoost | XGBoost | LightGBM |
+|---|---|---|---|
+| Categorical handling | Native (ordered target stats) | Requires encoding | Requires encoding |
+| Exposure offset | `baseline=log_exposure` on Pool | `base_margin=log_exposure` on DMatrix | Not native; embed in data |
+| Poisson loss | `loss_function="Poisson"` | `objective="count:poisson"` | `objective="poisson"` |
+| Default performance (Gini) | ~0.308-0.318 | ~0.300-0.310 | ~0.305-0.315 |
+| Ordered boosting (prevents leakage) | Yes (default) | No | No |
+| Training speed on 678k rows | Medium | Fastest | Fast |
+| Memory footprint | Medium | Low | Low |
+
+The Gini ranges above are indicative, not definitive — they depend on hyperparameter tuning depth and feature encoding choices. The more important practical difference is that XGBoost and LightGBM require explicit categorical encoding (OrdinalEncoder or OHE) before training. On a UK motor book with postcode sector at ~9,000 levels, the encoding choice materially affects both training speed and model quality. CatBoost's native handling avoids this step entirely.
+
+XGBoost exposure offset example, for completeness:
+
+```python
+import xgboost as xgb
+import numpy as np
+
+# XGBoost requires pandas/numpy; no native categorical support
+from sklearn.preprocessing import OrdinalEncoder
+
+enc = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
+X_encoded = enc.fit_transform(X_freq.to_pandas())
+
+dtrain = xgb.DMatrix(
+    data=X_encoded[:split],
+    label=y_freq[:split],
+    base_margin=log_exposure[:split],   # exposure offset
+    weight=exposure[:split],
+)
+dtest = xgb.DMatrix(
+    data=X_encoded[split:],
+    label=y_freq[split:],
+    base_margin=log_exposure[split:],
+    weight=exposure[split:],
+)
+
+xgb_params = {
+    "objective": "count:poisson",
+    "max_depth": 6,
+    "learning_rate": 0.05,
+    "n_estimators": 500,
+    "reg_lambda": 3.0,
+    "seed": 42,
+}
+xgb_model = xgb.train(
+    xgb_params,
+    dtrain,
+    num_boost_round=500,
+    evals=[(dtest, "test")],
+    early_stopping_rounds=50,
+    verbose_eval=100,
+)
+```
+
+Our recommendation remains CatBoost for insurance pricing as the default, for three reasons: native categoricals eliminate a brittle preprocessing step, ordered boosting reduces leakage on high-cardinality factors, and symmetric trees make scoring faster — relevant when rating a full pricing universe of several million risk combinations. The [benchmark post](/2026/03/24/python-insurance-pricing-benchmark-glm-xgboost-catboost-lightgbm-fremtpl2/) covers all four models head-to-head with full hyperparameter tuning.
 
 ---
 

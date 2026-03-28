@@ -5,7 +5,8 @@ date: 2026-02-19
 featured: true
 categories: [techniques]
 tags: [conformal-prediction, gbm, catboost, uncertainty, tweedie, pricing, python]
-description: "Distribution-free conformal prediction intervals for insurance GBMs. Per-risk coverage guarantees, not confidence intervals for the mean. Python library."
+description: "Distribution-free conformal prediction intervals for insurance pricing in Python. Why MAPIE's default settings fail on heteroscedastic insurance data, and what to use instead. Per-risk coverage guarantees on Tweedie and Poisson GBMs."
+seo_title: "Conformal Prediction Intervals for Insurance Pricing with MAPIE in Python"
 ---
 
 Your Tweedie GBM gives point estimates. That is a problem.
@@ -217,6 +218,21 @@ cp = InsuranceConformalPredictor(
     tweedie_power=1.8,  # explicit, skips auto-detection
 )
 ```
+
+---
+
+## Why MAPIE's defaults fail on insurance data
+
+[MAPIE](https://mapie.readthedocs.io/) is the most widely used Python conformal prediction library, and it is well-implemented for general regression problems. For insurance data specifically, its defaults produce miscalibrated intervals.
+
+MAPIE's default non-conformity score is the absolute residual: `|y - ŷ|`. As we showed above, this is wrong for heteroscedastic insurance data. It produces intervals that are too wide for standard risks and too narrow for large risks — the exact distribution of errors you cannot afford to get wrong.
+
+MAPIE does expose a `conformity_score` parameter that lets you supply a custom score function. You could, in principle, implement the Pearson-weighted score there. But there are two further problems:
+
+1. **No insurance-specific score functions are provided.** You write the score function yourself, which requires knowing the Tweedie power and implementing the correct inversion from score quantile back to interval bounds.
+2. **No coverage-by-decile diagnostic.** MAPIE's diagnostics test marginal coverage across the full dataset. For insurance, where the portfolio of large risks is the part that matters for reserving and capacity decisions, decile-stratified coverage is the correct diagnostic. MAPIE does not provide it.
+
+If you are already using MAPIE for non-insurance work and want to extend to insurance models, the custom `conformity_score` path is workable. If you are starting from scratch on an insurance problem, `insurance-conformal` handles the heteroscedasticity, the coverage diagnostics, and the CatBoost integration out of the box.
 
 ---
 

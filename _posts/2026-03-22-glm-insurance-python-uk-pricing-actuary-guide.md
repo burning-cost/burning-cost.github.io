@@ -5,7 +5,8 @@ date: 2026-03-22
 author: Burning Cost
 categories: [python, glm, insurance-pricing]
 tags: [glm, python, uk-insurance, glum, polars, catboost, freMTPL2, poisson, gamma, frequency-severity, exposure, NCD, ABI-group, postcode, FCA, Consumer-Duty, Emblem, Radar, IBNR, offsets, insurance-distill, shap-relativities, insurance-cv]
-description: "GLM insurance Python for UK pricing actuaries: exposure handling, Consumer Duty, frequency-severity split, and Emblem/Radar deployment with glum."
+description: "GLM insurance Python for UK pricing actuaries: Poisson frequency with exposure offset, Gamma severity, glum vs statsmodels vs sklearn comparison, frequency-severity split, Consumer Duty compliance, and Emblem/Radar deployment."
+seo_title: "GLM for Insurance Pricing in Python: Poisson, Gamma, and the glum Guide"
 ---
 
 Every GLM insurance Python tutorial does the same thing. Load freMTPL2, fit a Poisson with sklearn, plot a lift curve, call it a day. If you are a UK pricing actuary who has used Emblem or Radar professionally, those tutorials are missing about 80% of what you actually care about.
@@ -31,6 +32,50 @@ uv pip install scikit-learn-intelex  # optional, speeds up preprocessing on x86
 - glum returns coefficient standard errors. sklearn does not. You need these for the LR test when deciding whether to include an interaction
 
 The performance difference matters in practice. A UK personal lines motor book with 500k in-force policies and 5 years of history is a big matrix. glum handles it. sklearn's PoissonRegressor can stall.
+
+---
+
+## glum vs statsmodels vs sklearn for insurance GLMs
+
+All three fit GLMs correctly. The differences that matter for insurance production work:
+
+| Capability | glum | statsmodels | sklearn |
+|---|---|---|---|
+| Poisson, Gamma, Tweedie families | Yes | Yes | Poisson, Gamma, Tweedie (limited) |
+| Coefficient standard errors | Yes | Yes | No |
+| Per-coefficient L1/L2 penalty | Yes | No | Uniform only |
+| Offset term (`log(exposure)`) | Yes (`offset=`) | Yes (`exposure=` or `offset=`) | Via `sample_weight` hack (wrong) |
+| Performance on 500k+ rows | Fast (Cholesky) | Slow (dense IRLS) | Medium |
+| Sparse matrix support | Yes | Partial | Yes |
+| LR test / AIC / BIC | No (manual) | Yes (built-in) | No |
+| sklearn Pipeline compatible | Yes | Partial | Yes |
+
+**Use glum** for production pricing models where speed, per-coefficient regularisation, and sklearn-compatible pipelines matter. The exposure-as-offset behaviour is correct and explicit.
+
+**Use statsmodels** when you need LR tests, AIC/BIC comparisons, or diagnostic tables during exploratory factor analysis. `statsmodels.genmod.GLM` with `family=Poisson()` and `offset=np.log(exposure)` is statistically equivalent to glum; the coefficient output format is more familiar from Emblem's output.
+
+**Do not use sklearn** (`PoissonRegressor`, `GammaRegressor`) as the primary tool for insurance GLMs. The two problems are: (1) no standard errors, so you cannot run credibility tests or decide whether an interaction term is significant; (2) exposure must be passed as `sample_weight`, which is an approximation — it reweights the deviance contributions rather than entering as a true offset, giving subtly wrong coefficient estimates when exposure is correlated with rating factors.
+
+Quick statsmodels example for factor significance testing:
+
+```python
+import statsmodels.api as sm
+
+# statsmodels Poisson GLM with exposure offset
+glm_sm = sm.GLM(
+    endog=y_freq,
+    exog=sm.add_constant(X_enc.toarray()),  # statsmodels prefers dense
+    family=sm.families.Poisson(),
+    offset=np.log(exposure),
+)
+result = glm_sm.fit()
+
+# AIC comparison for model selection
+print(f"AIC (base model): {result.aic:.1f}")
+print(result.summary2())  # coefficient table with p-values, z-stats, CIs
+```
+
+For a full model comparison: fit the candidate models in statsmodels, compare AIC, then refit the chosen structure in glum for production use.
 
 ---
 

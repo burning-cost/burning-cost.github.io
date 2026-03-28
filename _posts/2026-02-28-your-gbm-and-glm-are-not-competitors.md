@@ -5,7 +5,8 @@ date: 2026-02-28
 featured: true
 categories: [pricing, techniques]
 tags: [GLM, GBM, model-blending, stacking, catboost, insurance-cv, shap-relativities, insurance-governance, pra-ss123, python, temporal-cv]
-description: "How to combine GLM and GBM predictions for production pricing: cross-validated blend weights, PRA interpretability, and when blending actually helps."
+description: "When to use gradient boosting vs GLM for insurance pricing: the case for blending, cross-validated weights, PRA interpretability, and the conditions where each approach wins."
+seo_title: "When to Use Gradient Boosting vs GLM for Insurance Pricing"
 ---
 
 Most UK pricing teams frame the GLM-vs-GBM question as a choice: run the GLM because it's defensible, or run the GBM and spend the rest of your life arguing with compliance. We think this is the wrong frame entirely.
@@ -13,6 +14,18 @@ Most UK pricing teams frame the GLM-vs-GBM question as a choice: run the GLM bec
 The GLM and the GBM are measuring different things. The GLM is a constrained, interpretable approximation of your rating structure. The GBM is an unconstrained predictor of claim frequency or severity. Neither is the truth. Both contain signal the other is missing. A blend of the two, done with care, outperforms either on holdout data while keeping enough GLM structure to satisfy a PRA model validation.
 
 This post is about how to do that blend in production, using actual code.
+
+---
+
+## When to use gradient boosting vs GLM: the direct answer
+
+If you are looking for a quick rule:
+
+- **Use a GLM** when your book is under 50,000 policies, you need a factor table for a rating engine (Emblem, Radar), or a regulator/validator will ask you to explain each variable's effect. GLMs are also right when interpretability is the primary constraint and you can accept a Gini 3-5 points below the GBM ceiling.
+- **Use a GBM** (CatBoost, XGBoost) when you have enough data that variance is under control (typically 200k+ policies with adequate claims), you are comfortable with SHAP-based factor extraction for the governance conversation, and you want the full non-linear and interaction signal.
+- **Blend both** — a 30/70 or 40/60 GLM/GBM mix — when you want most of the GBM's lift while retaining a factor table for the pricing committee. This is the dominant pattern at UK tier-1 insurers running production models in 2024-2025.
+
+The rest of this post explains how to execute the blend correctly: honest cross-validation, CV-derived blend weights, SHAP factor extraction, and model governance registration.
 
 ---
 
