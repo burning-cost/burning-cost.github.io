@@ -186,7 +186,7 @@ Run the CovariateShiftTest before any of them. If the MMD statistic is very high
 
 ## A note on the literature
 
-Loke and Bauer (NAAJ, 2025, doi:10.1080/10920277.2024.2365615) survey transfer learning applications in the actuarial domain and provide the theoretical scaffolding for why these methods are appropriate for insurance pricing. The paper is behind a paywall; if you have access via an actuarial institute membership, it is worth reading alongside Tian and Feng.
+Kim and Bauer (NAAJ, 2025, doi:10.1080/10920277.2024.2365615) survey transfer learning applications in the actuarial domain and provide the theoretical scaffolding for why these methods are appropriate for insurance pricing. The paper is behind a paywall; if you have access via an actuarial institute membership, it is worth reading alongside Tian and Feng.
 
 Tian and Feng (JASA, 2023, 118(544), 2684–2697) is the core reference for `GLMTransfer`. The arXiv preprint (arXiv:2105.14328) is publicly available and covers the two-step algorithm in detail, including the convergence properties of the debiasing estimator under high-dimensional conditions.
 

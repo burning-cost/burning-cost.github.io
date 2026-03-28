@@ -13,7 +13,7 @@ The adjustment is manual. It overrides one set of forecasts to satisfy the other
 
 There is.
 
-[`insurance-reconcile`](/insurance-monitoring/) implements MinTrace reconciliation (Wickramasuriya, Athanasopoulos, Hyndman & Rajaratnam, 2019, JASA 114(508)) for insurance pricing hierarchies, with the insurance-specific extensions that make it work correctly on loss costs, earned premium weights, and frequency×severity decompositions.
+[`insurance-reconcile`](/insurance-monitoring/) implements MinTrace reconciliation (Wickramasuriya, Athanasopoulos & Hyndman, 2019, JASA 114(526)) for insurance pricing hierarchies, with the insurance-specific extensions that make it work correctly on loss costs, earned premium weights, and frequency×severity decompositions.
 
 ```bash
 uv add insurance-reconcile
@@ -354,5 +354,5 @@ uv add 'insurance-reconcile[mintrace]'
 
 **References**
 
-- Wickramasuriya, S.L., Athanasopoulos, G., Hyndman, R.J., & Rajaratnam, M. (2019). Optimal Forecast Reconciliation using Unbiasedness, Covariance Information and Minimum Trace. *Journal of the American Statistical Association*, 114(508), 804-819.
+- Wickramasuriya, S.L., Athanasopoulos, G., & Hyndman, R.J. (2019). Optimal Forecast Reconciliation using Unbiasedness, Covariance Information and Minimum Trace. *Journal of the American Statistical Association*, 114(526), 804-819.
 - Hyndman, R.J., Ahmed, R.A., Athanasopoulos, G., & Shang, H.L. (2011). Optimal combination forecasts for hierarchical time series. *Computational Statistics and Data Analysis*, 55(9), 2579-2589.

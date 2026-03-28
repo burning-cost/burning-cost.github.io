@@ -18,7 +18,7 @@ It is also wrong.
 
 The additive model assumes the perils are independent - that flood risk and subsidence risk for the same property are unrelated. This assumption fails systematically in clay-soil postcodes, which cover much of the English Midlands, East Anglia, and parts of South East England. Clay soil shrinks when dry and swells when wet. A prolonged dry summer drives subsidence; the following winter's heavy rain drives surface flooding. The same household faces elevated risk on both perils at the same time, and the joint probability of a flood claim and a subsidence claim in the same policy year is materially higher than the product of the individual probabilities.
 
-If you are using the additive model, you are underpricing that household. Aas et al. (2009) formulated the pair-copula construction (PCC) that allows you to do better. Yang et al. (2024) applied it to UK-style home data and found a 9% revenue lift from using PCC versus the independence assumption. That is not a rounding error.
+If you are using the additive model, you are underpricing that household. Aas et al. (2009) formulated the pair-copula construction (PCC) that allows you to do better. Shi and Zhao (2024) applied it to a US commercial property portfolio and found a 9% revenue lift from using PCC versus the independence assumption. That is not a rounding error.
 
 [`insurance-copula`](https://github.com/burning-cost/insurance-copula) (archived) is a Python library that wraps pyvinecopulib with an insurance-specific workflow: exposure-weighted vine fitting, BIC structure selection, conditional pricing via accept-reject Monte Carlo, and portfolio aggregate PML simulation. It is the piece that was missing between "pyvinecopulib exists" and "we can use vine copulas in our pricing system."
 
@@ -224,7 +224,7 @@ The `trunc_lvl=3` default is deliberate. For six perils, a full vine uses five t
 
 ## Where the 9% comes from
 
-Yang et al. (2024, *Journal of Econometrics*) fitted a six-peril vine to UK residential property claim data and compared total technical premiums under PCC versus independence assumption. The 9% revenue lift is not a modelling artifact - it reflects genuine cross-subsidy that the additive model creates. High flood risk postcodes pay too little because their elevated subsidence risk (due to clay shrinkage) is not charged. Low flood risk, stable-soil postcodes pay too much.
+Shi and Zhao (2024, *Journal of Econometrics*) fitted a vine to a US commercial property portfolio and compared total technical premiums under PCC versus independence assumption. The 9% revenue lift is not a modelling artifact - it reflects genuine cross-subsidy that the additive model creates. High flood risk postcodes pay too little because their elevated subsidence risk (due to clay shrinkage) is not charged. Low flood risk, stable-soil postcodes pay too much.
 
 The ABI data supports this directionally: postcodes with high BGS shrink-swell susceptibility (classification H3/H4) have subsidence claim frequencies 2.8–4.2× the national average, and those same postcodes are disproportionately in flood-prone river corridors. The independence assumption forces you to price these separately when the underlying physics connects them.
 
