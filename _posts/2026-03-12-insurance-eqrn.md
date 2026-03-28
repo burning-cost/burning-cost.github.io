@@ -70,7 +70,7 @@ Observations above their predicted threshold (~15–20% of training data at tau_
 
 The orthogonal reparameterisation is the key numerical trick. Rather than fitting sigma(x) and xi(x) directly, the network fits nu(x) = sigma(x) * (xi(x) + 1) and xi(x). This makes the Fisher information matrix diagonal, which stabilises Adam training substantially. In the (sigma, xi) parameterisation, gradient descent oscillates between the two parameters. In (nu, xi), it does not.
 
-The xi output is constrained to (-0.5, 0.7) via a scaled tanh: `0.6 * tanh(z) + 0.1`. This covers all practical insurance cases - UK motor TPBI typically sits in xi ∈ [0.30, 0.55], property large loss around [0.20, 0.40] - while preventing numerical blowup during early training.
+The xi output is constrained to (-0.5, 0.7) via a scaled tanh: `0.6 * tanh(z) + 0.1`. The specific parameters (0.6 and 0.1) are a Burning Cost library choice, not prescribed by the original Pasche & Engelke (2024) paper — they were chosen to cover all practical insurance cases (UK motor TPBI typically sits in xi ∈ [0.30, 0.55], property large loss around [0.20, 0.40]) while preventing numerical blowup during early training.
 
 ---
 

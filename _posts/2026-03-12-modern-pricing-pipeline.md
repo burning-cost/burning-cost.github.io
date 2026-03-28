@@ -386,7 +386,7 @@ The output should feed a dashboard your pricing manager and actuarial function s
 
 Champion/challenger testing is the standard mechanism for evaluating whether a new model version should replace the production model. The challenger model is routed a fraction of live quotes (typically 5–15%) and its loss ratio is compared to the champion's on matched business.
 
-The FCA's record-keeping requirements under ICOBS 6B.2.51R require that renewal pricing decisions are auditable: you need to be able to demonstrate, for any given renewal quote, which model version produced it, what inputs were used, and what price was offered. Without this, a thematic review is likely to find gaps.
+ICOBS 6B.2.1R (the substantive ENBP rule) requires that renewal pricing decisions are auditable: you need to be able to demonstrate, for any given renewal quote, which model version produced it, what inputs were used, and what price was offered. Without this, a thematic review is likely to find gaps.
 
 A proper implementation requires deterministic routing (the same policy always goes to the same model version, based on a hash of a stable policy identifier), quote logging with enough fidelity to reconstruct the decision, and a formal statistical test comparing outcomes.
 
@@ -406,7 +406,7 @@ experiment = Experiment(
     mode="live",
 )
 
-# Quote logging for ICOBS 6B.2.51R audit trail
+# Quote logging for ICOBS 6B.2.1R audit trail
 logger = QuoteLogger(path="/data/quote_log.db")
 
 # At quote time:
@@ -428,7 +428,7 @@ The bootstrap LR test gives you a power-adjusted comparison: before you run the 
 
 Model risk management for pricing means having a live inventory of all production models, their risk tier (based on materiality and complexity), their last validation date, their outstanding issues, and a clear escalation path when issues are identified.
 
-PRA SS1/23 defines a structured model lifecycle: development, validation, approval, ongoing monitoring, retirement. Each stage has documentation requirements. The documentation needs to be findable, not in someone's personal OneDrive, and version-controlled alongside the model artefacts.
+The bank-focused PRA SS1/23 framework (scoped to banks and building societies) describes a structured model lifecycle: development, validation, approval, ongoing monitoring, retirement. Insurance firms are not directly subject to SS1/23, but its documentation principles — findable, version-controlled, auditable artefacts — represent the correct standard to build toward regardless of regulatory status.
 
 ```python
 from insurance_governance.mrm import ModelInventory, ModelCard, RiskTierScorer
@@ -545,5 +545,5 @@ The tools exist to do all of this properly. The bottleneck is almost never the s
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/): balance test, auto-calibration, and Murphy decomposition for the recalibrate-vs-refit decision
 - [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/): Double Machine Learning for price elasticity estimation
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/): LP formulation for ENBP-compliant rate changes
-- [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/): ICOBS 6B.2.51R requirements and what a proper audit trail looks like
+- [Champion/Challenger Testing with ICOBS 6B.2.1R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/): ICOBS 6B.2.1R requirements and what a proper audit trail looks like
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/): what PRA SS1/23-level validation documentation actually requires

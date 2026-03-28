@@ -17,7 +17,7 @@ There are approximately one million active black box policies in the UK. Every i
 
 This discards trajectory information. Two drivers at a score of 68 — one who has been at 72 for three months and is declining, one who was at 58 three months ago and is improving — present materially different claim risks. The standard GLM cannot tell them apart. It treats both as equivalent risks because it sees only the current value, not the path.
 
-There is a second problem. The observed score is not the true latent risk. It is measured with error: sensor noise, trip sampling variability, boundary effects on the score algorithm. If you put the noisy observed score directly into a Cox model, the association parameter is attenuated — Berkson attenuation bias. You systematically underestimate how strongly the driving trajectory predicts claims.
+There is a second problem. The observed score is not the true latent risk. It is measured with error: sensor noise, trip sampling variability, boundary effects on the score algorithm. If you put the noisy observed score directly into a Cox model, the association parameter is attenuated — classical measurement error (attenuation bias). You systematically underestimate how strongly the driving trajectory predicts claims.
 
 The joint longitudinal-survival model (JLM) solves both problems at once.
 
@@ -42,7 +42,7 @@ where `b_i ~ N(0, D)` is a subject-specific random effect capturing the individu
 h(t | b_i) = h_0(t) exp(γᵀ w_i + α m_i(t))
 ```
 
-`α` is the association parameter: does a higher true driving score predict lower claim hazard? The model estimates this while accounting for the fact that the scores are measured with error. No Berkson attenuation.
+`α` is the association parameter: does a higher true driving score predict lower claim hazard? The model estimates this while accounting for the fact that the scores are measured with error. No attenuation bias from measurement error.
 
 The two submodels are estimated jointly via EM with Gauss-Hermite quadrature for the intractable integral over `b_i`. The result is an estimate of α with correct standard errors.
 

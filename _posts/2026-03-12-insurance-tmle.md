@@ -211,7 +211,7 @@ cvtmle.fit(Y, A, W)
 print(cvtmle.result.summary())
 ```
 
-Levy & van der Laan (2024, arXiv:2409.11265) provide the most recent simulation evidence on CV-TMLE performance. The finite-sample coverage improvements over standard TMLE are largest at n = 500–2,000 and taper off above n = 10,000.
+Smith, Phillips, Maringe & Luque-Fernandez (2024, arXiv:2409.11265) provide the most recent simulation evidence on CV-TMLE performance. The finite-sample coverage improvements over standard TMLE are largest at n = 500–2,000 and taper off above n = 10,000.
 
 ---
 

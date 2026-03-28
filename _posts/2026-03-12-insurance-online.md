@@ -42,7 +42,7 @@ Multi-armed bandits solve all three. They adapt allocation toward better-perform
 
 ## The regulatory question
 
-The FCA's GIPP rules (PS21/5, January 2022) created a legitimate concern here. The headline rule - ICOBS 6B.2.51R - says that renewal prices must not exceed the Equivalent New Business Price (ENBP). (Note: the substantive GIPP pricing rules are set out in ICOBS 6B.3; ICOBS 6B.2 contains the general framework provisions.) The mechanism by which a pricing team might use an adaptive allocation algorithm to route customers to higher prices is precisely the kind of thing GIPP was designed to prevent.
+The FCA's GIPP rules (PS21/5, January 2022) created a legitimate concern here. The headline rule - ICOBS 6B.2.1R - says that renewal prices must not exceed the Equivalent New Business Price (ENBP). The mechanism by which a pricing team might use an adaptive allocation algorithm to route customers to higher prices is precisely the kind of thing GIPP was designed to prevent.
 
 So is loading optimisation via bandit algorithms "dynamic pricing"? We think the answer is clearly no, and the FCA's own GIPP Q&A provides the grounding. Q1.12 and Q1.13 of the GIPP Q&A explicitly permit different margins for different new business cohorts. Testing which loading maximises new business conversion - or new business loss ratio - is margin optimisation on new business. It is not renewal repricing. There is no renewal customer in the experiment.
 
