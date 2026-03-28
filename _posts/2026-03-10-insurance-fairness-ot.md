@@ -22,7 +22,7 @@ That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance
 ```bash
 uv add insurance-fairness
 # or
-uv add insurance-fairness
+pip install insurance-fairness
 ```
 
 ---
@@ -43,7 +43,7 @@ The insurance-fairness library identifies the problem. But knowing that annual m
 
 The naive approach -- drop the offending variable and retrain -- is usually wrong. Annual mileage is a genuine predictor of claim frequency. Young male drivers tend to drive more miles than young female drivers; the mileage effect on claims is real and actuarially defensible. Dropping mileage removes legitimate predictive signal along with the discriminatory proxy effect, which produces a worse model and does not eliminate the discrimination either -- the remaining variables will partially pick it up.
 
-What you want is to preserve the mileage-to-claims signal while removing the gender-to-mileage-to-claims path that operates as indirect discrimination. The Lindholm et al. (2022) framework provides exactly this distinction, and the Côté-Genest-Abdallah (2025) causal graph formalism makes it operationally precise.
+What you want is to preserve the mileage-to-claims signal while removing the gender-to-mileage-to-claims path that operates as indirect discrimination. The Lindholm et al. (2022) framework provides exactly this distinction, and the Côté, Côté, and Charpentier (2025) causal graph formalism makes it operationally precise.
 
 ---
 
@@ -96,13 +96,13 @@ The `log_space=True` flag is important for GLM models. Setting `log_space=True` 
 
 ---
 
-## Causal path decomposition (Côté-Genest-Abdallah, 2025)
+## Causal path decomposition (Côté, Côté, and Charpentier, 2025)
 
-Côté, Genest and Abdallah published "A fair price to pay: Exploiting causal graphs for fairness in insurance" in the Journal of Risk and Insurance 92(1) in 2025 (DOI: 10.1111/jori.12503). This paper is the key upgrade from Lindholm.
+Côté, Côté, and Charpentier published "A fair price to pay: Exploiting causal graphs for fairness in insurance" in the Journal of Risk and Insurance 92(1) in 2025 (DOI: 10.1111/jori.12503). This paper is the key upgrade from Lindholm.
 
 Lindholm's framework gives you a mathematically clean discrimination-free price, but it treats the feature set X as a monolith: any variable in X is treated identically in the marginalisation. In practice, this is wrong. Some variables in X are legitimately caused by the protected attribute and carry genuine actuarial content. Others are correlated with the protected attribute but carry no independent risk signal -- they are proxies. Applying the Lindholm correction without distinguishing these groups will either over-correct (removing justified predictive signal) or under-correct (leaving proxy effects in place), depending on how the variables are specified.
 
-The Côté-Genest-Abdallah DAG formalises this with four node types:
+The Côté-Côté-Charpentier DAG formalises this with four node types:
 
 - **S (protected)**: gender, disability status
 - **R (justified mediator)**: variables caused by S but with genuine independent causal effect on claims -- claims history is an example; male drivers in their 20s accumulate more claims, and those claims predict future frequency regardless of current gender

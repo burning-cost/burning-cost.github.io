@@ -117,7 +117,7 @@ Each test is a standalone class:
 ```python
 from insurance_rdd import DensityTest, CovariateBalance, PlaceboTest
 
-# McCrary density test — does the density of driver ages spike at 300 months?
+# Cattaneo-Jansson-Ma (2018) density test — does the density of driver ages spike at 300 months?
 density = DensityTest(
     running_var='driver_age_months',
     cutoff=300,
