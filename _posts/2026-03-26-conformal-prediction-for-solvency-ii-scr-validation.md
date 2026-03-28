@@ -3,8 +3,8 @@ layout: post
 title: "Conformal Prediction for Solvency II SCR Validation"
 date: 2026-03-26
 categories: [pricing, techniques, research]
-tags: [conformal-prediction, solvency-ii, scr, capital-modelling, model-validation, pra, ss1-24, var-backtesting, insurance-conformal, python, tweedie]
-description: "Conformal prediction gives finite-sample valid 99.5% risk bounds for individual policies — useful for premium risk SCR validation and PRA SS1/24 backtesting, but not a replacement for aggregate capital modelling."
+tags: [conformal-prediction, solvency-ii, scr, capital-modelling, model-validation, pra, ss1-23, var-backtesting, insurance-conformal, python, tweedie]
+description: "Conformal prediction gives finite-sample valid 99.5% risk bounds for individual policies — useful for premium risk SCR validation and PRA SS1/23 backtesting, but not a replacement for aggregate capital modelling."
 ---
 
 The SCR at 99.5% VaR has always had an uncomfortable relationship with the data. You need to estimate the 1-in-200 tail from a history that, for most personal lines books, contains perhaps 5-10 years of decent data. The standard tools — lognormal severity, Pareto tails, bootstrap CIs on GLM parameters — make distributional assumptions that are hard to validate in the tail and essentially impossible to challenge statistically with 200+ observations at the 99.5th percentile.
@@ -72,11 +72,11 @@ The `exposure` parameter handles policies with different term lengths — a 6-mo
 
 ---
 
-## Where it helps: model validation and PRA SS1/24 backtesting
+## Where it helps: model validation and PRA SS1/23 backtesting
 
 This is the application we find most compelling commercially, and it comes from Retzlaff et al. (ICML 2025), which proves formal equivalence between conformal coverage tests and standard VaR backtests — specifically the Kupiec (1995) and Christoffersen (1998) tests that market risk practitioners have used for decades.
 
-PRA SS1/24 requires statistical testing of probability distribution forecasts. The standard Solvency II internal model validation tests include backtesting of the predicted loss distribution, but actuarial practice is inconsistent about which tests to apply and at what significance level. The Kupiec unconditional coverage test — which checks whether the observed exceedance rate matches the target — is equivalent to a conformal coverage test at the same alpha.
+PRA SS1/23 requires statistical testing of probability distribution forecasts. The standard Solvency II internal model validation tests include backtesting of the predicted loss distribution, but actuarial practice is inconsistent about which tests to apply and at what significance level. The Kupiec unconditional coverage test — which checks whether the observed exceedance rate matches the target — is equivalent to a conformal coverage test at the same alpha.
 
 This matters because it provides a bridge to regulatory acceptance. A PRA validation team that understands Kupiec immediately understands what a conformal coverage table is telling them:
 
@@ -103,7 +103,7 @@ coverage_by_vehicle_age = subgroup_coverage(
 )
 ```
 
-Conformal coverage is a marginal guarantee — 99.5% on average across all policies. If your young-driver cohort achieves only 97% empirical coverage, the marginal guarantee is being met but the subgroup guarantee is not. SS1/24 requires testing at appropriate levels of granularity; this is how you do it.
+Conformal coverage is a marginal guarantee — 99.5% on average across all policies. If your young-driver cohort achieves only 97% empirical coverage, the marginal guarantee is being met but the subgroup guarantee is not. SS1/23 requires testing at appropriate levels of granularity; this is how you do it.
 
 ---
 
@@ -163,7 +163,7 @@ The `scr.py` module docstring notes this explicitly. We have not softened the la
 | SCR component | Conformal value | Note |
 |---|---|---|
 | Premium risk — individual bounds | High | Finite-sample valid 99.5% upper bounds per policy. Use `LocallyWeightedConformal` + `SCRReport`. |
-| Model validation / VaR backtesting | High | Formal equivalence to Kupiec/Christoffersen (Retzlaff et al. ICML 2025). Directly relevant to SS1/24. |
+| Model validation / VaR backtesting | High | Formal equivalence to Kupiec/Christoffersen (Retzlaff et al. ICML 2025). Directly relevant to SS1/23. |
 | Premium sufficiency | Moderate | `PremiumSufficiencyController` controls expected loss ratio, not just coverage. |
 | Aggregate portfolio SCR | None | Summing individual bounds ignores diversification. Massively conservative. |
 | Cat risk SCR | None | Needs 200+ observations at 99.5th percentile. Cat models are the right tool. |

@@ -24,7 +24,7 @@ The UK standard motor NCD system is a Markov chain. Ten levels (0% to 65% NCD, p
 import numpy as np
 import polars as pl
 
-# ABI standard NCD scale: 10 levels (0%â65% NCD, premium factors 1.00-0.35)
+# ABI standard NCD scale: 10 levels (0%–65% NCD, premium factors 1.00-0.35)
 # Transition rules: claim-free -> +1 level; 1 claim -> -2 levels (floor 0); 2+ claims -> level 0
 ncd_levels = [0, 10, 20, 30, 40, 45, 50, 55, 60, 65]
 premium_factors = [1.00, 0.90, 0.80, 0.70, 0.60, 0.55, 0.50, 0.45, 0.40, 0.35]
@@ -44,19 +44,19 @@ print(scale)
 ```
 
 ```
-shape: (10, 6)
-┌───────┬──────────┬────────────────┬─────────────┬─────────────────────┬─────────────────┐
-│ index ┆ name     ┆ premium_factor ┆ ncd_percent ┆ claim_free_dest     ┆ one_claim_dest  │
-│ ---   ┆ ---      ┆ ---            ┆ ---         ┆ ---                 ┆ ---             │
-│ i64   ┆ str      ┆ f64            ┆ i64         ┆ i64                 ┆ i64             │
-╞═══════╪══════════╪════════════════╪═════════════╪═════════════════════╪═════════════════╡
-│ 0     ┆ 0% NCD   ┆ 1.0            ┆ 0           ┆ 1                   ┆ 0               │
-│ 1     ┆ 10% NCD  ┆ 0.9            ┆ 10          ┆ 2                   ┆ 0               │
-│ 2     ┆ 20% NCD  ┆ 0.8            ┆ 20          ┆ 3                   ┆ 0               │
-│ 3     ┆ 30% NCD  ┆ 0.7            ┆ 30          ┆ 4                   ┆ 1               │
-│ ...   ┆ ...      ┆ ...            ┆ ...         ┆ ...                 ┆ ...             │
-│ 9     ┆ 65% NCD  ┆ 0.35           ┆ 65          ┆ 9                   ┆ 7               │
-└───────┴──────────┴────────────────┴─────────────┴─────────────────────┴─────────────────┘
+shape: (10, 5)
+┌───────┬─────────────┬────────────────┬─────────────────────┬─────────────────┐
+│ index ┆ ncd_percent ┆ premium_factor ┆ claim_free_dest     ┆ one_claim_dest  │
+│ ---   ┆ ---         ┆ ---            ┆ ---                 ┆ ---             │
+│ i64   ┆ i64         ┆ f64            ┆ i64                 ┆ i64             │
+╞═══════╪═════════════╪════════════════╪═════════════════════╪═════════════════╡
+│ 0     ┆ 0           ┆ 1.0            ┆ 1                   ┆ 0               │
+│ 1     ┆ 10          ┆ 0.9            ┆ 2                   ┆ 0               │
+│ 2     ┆ 20          ┆ 0.8            ┆ 3                   ┆ 0               │
+│ 3     ┆ 30          ┆ 0.7            ┆ 4                   ┆ 1               │
+│ ...   ┆ ...         ┆ ...            ┆ ...                 ┆ ...             │
+│ 9     ┆ 65          ┆ 0.35           ┆ 9                   ┆ 7               │
+└───────┴─────────────┴────────────────┴─────────────────────┴─────────────────┘
 ```
 
 The code above defines the ABI standard scale as a plain Python dictionary. For a non-standard BM system with different transition rules — some affinity schemes use bespoke progressions — modify the `ncd_levels`, `premium_factors`, `claim_free_dest`, and `one_claim_dest` arrays directly. The scale is just data; there is no hidden logic to validate against.
@@ -132,7 +132,6 @@ It is not quite right.
 The `claiming_threshold()` function computes the break-even claim amount using NPV arithmetic: the cost of a claim is the discounted value of the additional premiums you'll pay over the recovery horizon, compared to the claim-free trajectory. No utility theory. Just financial arithmetic that can be explained to a customer.
 
 ```python
-```python
 def claiming_threshold(current_level, annual_premium, years_horizon=3, discount_rate=0.05):
     """NPV break-even claim amount: how large a loss before claiming is rational."""
     def trajectory_premiums(start_level, n_years):
@@ -152,7 +151,7 @@ def claiming_threshold(current_level, annual_premium, years_horizon=3, discount_
     )
     return max(extra_cost, 0.0)
 
-# Thresholds across all levels, base premium Â£1,000, 3-year horizon
+# Thresholds across all levels, base premium £1,000, 3-year horizon
 analysis = pl.DataFrame({
     "level":              list(range(n_levels)),
     "ncd_percent":        ncd_levels,
@@ -163,27 +162,28 @@ analysis = pl.DataFrame({
     ],
 })
 print(analysis)
+```
 
-Here is what the thresholds look like across the UK standard scale, holding the base premium constant at £1,000 (so policyholders at higher NCD levels pay less) over a 3-year horizon at 5% discount:
+The table below is illustrative — values are from a single NPV calculation with base premium £1,000, 3-year horizon, 5% discount rate. Actual thresholds scale with the customer's real premium, so run the calculation per customer rather than using the table directly.
 
-| Level | NCD | Premium paid | Claiming threshold |
-|-------|-----|-------------|-------------------|
-| 0 | 0% | £1,000 | ~£272 |
-| 1 | 10% | £900 | ~£545 |
-| 2 | 20% | £800 | ~£774 (peak) |
-| 3 | 30% | £700 | ~£685 |
-| 4 | 40% | £600 | ~£549 |
-| 5 | 45% | £550 | ~£456 |
-| 6 | 50% | £500 | ~£408 |
-| 7 | 55% | £450 | ~£365 |
-| 8 | 60% | £400 | ~£277 |
-| 9 | 65% | £350 | ~£141 |
+| Level | NCD | Premium paid | Claiming threshold (illustrative) |
+|-------|-----|-------------|----------------------------------|
+| 0 | 0% | £1,000 | £0 (a claim at level 0 keeps you there) |
+| 1 | 10% | £900 | ~£173 |
+| 2 | 20% | £800 | ~£305 |
+| 3 | 30% | £700 | ~£440 (peak) |
+| 4 | 40% | £600 | ~£371 |
+| 5 | 45% | £550 | ~£296 |
+| 6 | 50% | £500 | ~£262 |
+| 7 | 55% | £450 | ~£235 |
+| 8 | 60% | £400 | ~£179 |
+| 9 | 65% | £350 | ~£91 |
 
-The threshold peaks at level 2 (20% NCD) and falls from there. A customer at 65% NCD paying £350 per year has an optimal claiming threshold of around £141. A customer at 20% NCD paying £800 has a threshold of around £774. The 65% NCD customer should claim losses more than five times smaller than the 20% NCD customer would bother claiming.
+The non-monotone pattern — threshold rising through the lower levels, then falling at the top — is the key result. The logic at level 0 is worth stating explicitly: a claim at level 0 does not change your NCD level (you are already at the floor), so there is no premium penalty to weigh against the claim amount. The threshold is £0 — claim everything.
 
-Why? The 65% NCD customer pays £350 now. A one-claim year drops them from level 9 to level 7 (55% NCD) - the ABI rules say one claim steps you back two levels. The recovery path from level 7 back to level 9 takes two claim-free years. But the absolute premium cost of that recovery is calculated against £350 - a small base. The 20% NCD customer pays £800, and a one-claim year drops them from level 2 all the way to level 0 (max(2-2, 0) = 0). Recovery from level 0 back to level 2 takes two claim-free years, but each step covers much more ground in absolute premium terms because the base is £800, not £350. The absolute NCD cost is higher even though the NCD percentage fall looks similar.
+The threshold peaks somewhere in the mid-table rather than at the top. A customer at 65% NCD paying £350 per year faces a relatively low threshold because the absolute premium base is small. The 30% NCD customer paying £700 loses more in absolute premium terms from the same NCD step down, even though their NCD percentage fall looks smaller. The absolute NCD cost is driven by both the percentage drop and the premium base.
 
-At 65% NCD, the benefit of having lots of NCD to "protect" is offset by paying a small absolute premium. The financial maths says: the lower your actual premium, the less you lose in absolute terms when your NCD falls, so the lower your claiming threshold should be.
+Why? The 65% NCD customer pays £350 now. A one-claim year drops them from level 9 to level 7 (55% NCD) - the ABI rules say one claim steps you back two levels. The recovery path from level 7 back to level 9 takes two claim-free years. But the absolute premium cost of that recovery is calculated against £350 - a small base. The mid-table customer pays more in absolute terms, and a claim drops them further in absolute premium space even if the NCD percentage fall looks similar.
 
 The practical implication is that rule-of-thumb NCD protection advice based solely on NCD percentage gives wrong answers for mid-table customers. If you run a portal or broker platform with NCD protection advice, you need the actual numbers per customer, not a general guideline.
 
@@ -192,8 +192,9 @@ This calculation requires only a few lines of Python:
 ```python
 threshold = claiming_threshold(current_level=9, annual_premium=280.0, years_horizon=3)
 claim_is_rational = 450 > threshold
-print(f"Claim only if loss exceeds Â£{threshold:.0f}")
-print(f"Claim Â£450? {'Yes' if claim_is_rational else 'No'}")
+print(f"Claim only if loss exceeds £{threshold:.0f}")
+print(f"Claim £450? {'Yes' if claim_is_rational else 'No'}")
+```
 
 The time horizon assumption matters. A three-year horizon is appropriate for personal lines where customers shop around; a five-year horizon fits fleet customers with long-term relationships. `threshold_curve()` gives you the full sensitivity:
 

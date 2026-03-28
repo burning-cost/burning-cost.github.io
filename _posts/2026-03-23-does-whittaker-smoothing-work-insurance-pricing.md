@@ -167,7 +167,7 @@ Whittaker-Henderson smooths; it does not constrain the shape. If your observed d
 
 ## Our read
 
-On clean Poisson data with a realistic UK motor exposure distribution, REML lambda selection works. It reduces MSE by 80% versus raw rates, it beats GCV, and the credible intervals give you an honest picture of where the curve is well-determined and where it is not.
+On clean Poisson data with a realistic UK motor exposure distribution, REML lambda selection works. It reduces MSE by 80.7% versus raw rates, it beats GCV, and the credible intervals give you an honest picture of where the curve is well-determined and where it is not.
 
 The 92% overall CI coverage versus 95% nominal is acceptable — it is the right direction of failure (the intervals are slightly overconfident, not wildly so) and it is concentrated in exactly the cells where you should already be nervous about thin exposure.
 

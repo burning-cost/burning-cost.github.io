@@ -91,7 +91,7 @@ The benchmark results on the French MTPL dataset (Dutang et al. 2024) are the mo
 
 Tab-TRM is best. The GLM-to-Tab-TRM improvement is approximately 2.1%. On a one-million-policy book, that is material. The comparison matters because this is the right benchmark — Poisson deviance, exposure-adjusted, against real actuarial competitors — not a generic ML suite.
 
-There is a further interpretability point: the internal token dynamics in Tab-TRM are well-approximated by linear maps (R² > 0.8 on hidden-state updates). The model is quasi-linear by construction, which is relevant for UK regulatory sign-off under PRA SS1/24's "generally accepted market practice" standard.
+There is a further interpretability point: the internal token dynamics in Tab-TRM are well-approximated by linear maps (R² > 0.8 on hidden-state updates). The model is quasi-linear by construction, which is relevant for UK regulatory sign-off under PRA SS1/23's "generally accepted market practice" standard.
 
 The limitations are honest ones. Tab-TRM has been validated on one dataset: the French MTPL portfolio. There is no UK validation, no home insurance validation, no commercial lines validation. It is not pip-installable — the GitHub repository ([SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)) contains research code only, with no public model weights. There is no severity (Gamma) model in the published results — frequency only. And the French MTPL benchmark uses random splits, not temporal splits; we do not know how Tab-TRM behaves under TabReD-style evaluation on insurance data.
 

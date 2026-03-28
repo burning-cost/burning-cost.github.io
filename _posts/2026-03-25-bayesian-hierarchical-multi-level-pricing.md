@@ -184,7 +184,7 @@ This is the practical advantage of Bayesian over B-S that matters for MGA and sc
 
 After six months of live data, the posterior naturally blends the prior with the emerging experience. A scheme with 30 claims after six months still has meaningful uncertainty — the posterior HDI will be wide — but the centre of the distribution is already being pulled towards the data. After 18-24 months of full experience, the data dominates and the prior matters only at the hyperprior level (σ_theta).
 
-This is exactly what B-S credibility does, but the Bayesian formulation makes the prior explicit and auditable. Under Solvency II internal model governance and the FCA's SR3/25 model risk framework, explicit parameterised priors are easier to validate than implicit ones embedded in a K ratio that emerges from method-of-moments estimation.
+This is exactly what B-S credibility does, but the Bayesian formulation makes the prior explicit and auditable. Under Solvency II internal model governance, explicit parameterised priors are easier to validate than implicit ones embedded in a K ratio that emerges from method-of-moments estimation. The FCA's Consumer Duty (FG22/5) expectation that firms can demonstrate fair value also favours explicit, auditable prior choices over implicit structural assumptions.
 
 ---
 

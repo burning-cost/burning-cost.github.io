@@ -227,7 +227,7 @@ GAMLSS produces flatter conditional coverage — it is genuinely modelling the v
 
 GAMLSS wins clearly. The fitted sigma coefficients tell you something interpretable: young drivers (age_band=0) have a dispersion that is exp(0.40) ≈ 49% larger than the base. That is a number you can bring to an underwriting conversation. It appears in rating factor tables. The volatility score — `model_gamlss.volatility_score(X_test)` — gives a per-policy coefficient of variation that risk analysts can use directly.
 
-Conformal is a black box around your base model. It tells you where the interval boundaries are; it does not tell you why they are there. For regulatory purposes — PRA SS3/19, Solvency II internal model validation — the ability to explain why interval *width* varies by risk characteristic is valuable.
+Conformal is a black box around your base model. It tells you where the interval boundaries are; it does not tell you why they are there. For regulatory purposes — PRA SS1/23, Solvency II internal model validation — the ability to explain why interval *width* varies by risk characteristic is valuable.
 
 ### 5. Computational cost
 
@@ -239,7 +239,7 @@ For use cases where the base model is already trained and production-deployed, c
 
 ### 6. Regulatory acceptability
 
-This is context-dependent, but our assessment: GAMLSS is more straightforward to validate under PRA SS3/19 model validation requirements. The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
+This is context-dependent, but our assessment: GAMLSS is more straightforward to validate under PRA SS1/23 model validation requirements. The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
 
 Conformal's finite-sample guarantee is mathematically rigorous and does not depend on distributional assumptions, which is arguably a stronger foundation. But it is less familiar to UK model validators in 2026, and the absence of distributional parameters means standard actuarial diagnostics (residual plots, P-P plots, worm plots) do not apply directly.
 

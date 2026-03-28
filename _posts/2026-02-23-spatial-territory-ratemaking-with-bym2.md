@@ -109,7 +109,7 @@ adj = from_geojson(
 
 The `fix_islands=True` argument connects disconnected components (Orkney, Shetland, Isles of Scilly) to their nearest mainland sector by Euclidean centroid distance. The ICAR model requires a connected graph; this is a library-level policy choice and should be documented in your model documentation.
 
-Queen contiguity means two sectors are adjacent if their polygons share any boundary or vertex. For UK postcode sectors this gives roughly 6 neighbours per sector on average, and ~67,000 edges across the full 11,200-sector graph.
+Queen contiguity means two sectors are adjacent if their polygons share any boundary or vertex. For UK postcode sectors this gives roughly 6 neighbours per sector on average, and ~33,600 edges across the full 11,200-sector graph (undirected adjacency: 11,200 × 6 neighbours ÷ 2).
 
 ### Step 2: Test for spatial autocorrelation before fitting
 
@@ -244,7 +244,7 @@ For teams using `bayesian-pricing` for [thin-cell credibility]({{ site.baseurl }
 
 For district-level work (N≈3,000 postcode districts), a full BYM2 run with 4 chains × 1,000 draws takes under 10 minutes with nutpie on modern hardware. This is interactive-session fast - you can iterate on priors and covariate specifications in a working session.
 
-For sector-level work (N=11,200), the scaling factor computation is the first bottleneck. The library uses eigendecomposition of the precision matrix, which is O(N³) and feasible up to N≈3,000. For full UK postcode sectors, compute the scaling factor once and cache it:
+For sector-level work (N=11,200), the scaling factor computation is the first bottleneck. The library uses eigendecomposition of the precision matrix. The ICAR precision matrix is sparse, so sparse Cholesky decomposition is substantially better than dense O(N³) — in practice the scaling factor computation is feasible for N=11,200 but may take several minutes on the first run. For full UK postcode sectors, compute the scaling factor once and cache it:
 
 ```python
 # Run this once per adjacency structure, cache the result
@@ -252,7 +252,7 @@ sf = adj.scaling_factor  # may take several minutes for N=11,200
 # Next time: AdjacencyMatrix(W=W, areas=areas, _scaling_factor=sf)
 ```
 
-The MCMC itself scales linearly with N for the ICAR model - the pairwise difference formulation is O(N·K) where K≈6 mean neighbours, not O(N²). Published benchmarks on comparable models (NYC, N=2,095, 21 minutes on a 2019 dual-core machine) suggest 20-30 minutes on a modern 8-core machine for the full UK sector graph. Territory factors are updated annually in practice; a 30-minute overnight run is not a problem.
+The MCMC itself scales linearly with N for the ICAR model - the pairwise difference formulation is O(N·K) where K≈6 mean neighbours, not O(N²). For a rough order of magnitude, expect 20-30 minutes on a modern 8-core machine with nutpie for the full UK sector graph at N=11,200. Territory factors are updated annually in practice; a 30-minute overnight run is not a problem.
 
 Install nutpie for the fastest sampling:
 
