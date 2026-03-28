@@ -316,7 +316,14 @@ card = ValidationModelCard(
 report = ModelValidationReport(model_card=card, y_val=y_val, y_pred_val=y_pred)
 report.generate("validation_report_2026Q1.html")  # Gini, PSI, lift charts, regulatory refs
 
-tier = RiskTierScorer().score(mrm_card)
+tier = RiskTierScorer().score(
+    gwp_impacted=mrm_card.gwp_impacted,
+    model_complexity=mrm_card.model_complexity,
+    deployment_status=mrm_card.deployment_status,
+    regulatory_use=mrm_card.regulatory_use,
+    external_data=mrm_card.external_data,
+    customer_facing=mrm_card.customer_facing,
+)
 print(f"Model tier: {tier.tier} (score: {tier.score}/100)")
 ```
 
@@ -441,7 +448,7 @@ Getting from a technical price to an implemented rate change.
 
 The standard pricing cycle applies rate changes manually: technical model produces adequate prices, demand model produces elasticity estimates, someone reconciles the two in a spreadsheet while watching the loss ratio. This manual process is not optimising anything. It is approximating a joint optimisation problem with sequential heuristics.
 
-`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/11 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails. Analytical Jacobians make this fast enough for N=10,000 policies in seconds.
+`insurance-optimise` solves it directly: maximise expected profit subject to the FCA PS21/5 ENBP constraint, a loss ratio ceiling, a retention floor, GWP bounds, and individual rate change guardrails. Analytical Jacobians make this fast enough for N=10,000 policies in seconds.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig

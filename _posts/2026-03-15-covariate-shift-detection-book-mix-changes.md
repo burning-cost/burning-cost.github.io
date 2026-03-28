@@ -142,7 +142,7 @@ For teams that want narrower intervals on low-risk profiles and wider on high-ri
 
 ## FCA SUP 15.3: what to put in the governance note
 
-Under FCA PRIN 2A.4, insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. Applying a model trained on a materially different book distribution without adjustment could constitute such a change.
+Under FCA PRIN 2A.3 (the Price and Value outcome), insurers must ensure models used in pricing are fit for purpose for the population being scored. SUP 15.3 requires notification of material changes to pricing methodology. In our reading, applying a model trained on a materially different book distribution without documented adjustment could be considered such a change, though whether a specific shift is material enough to trigger notification requires judgement and the firm’s own legal assessment.
 
 The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note - not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
 

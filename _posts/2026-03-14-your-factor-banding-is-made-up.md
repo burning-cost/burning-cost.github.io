@@ -25,7 +25,7 @@ A Poisson GLM with vehicle age as a raw integer has one parameter per year: 0, 1
 
 The correct approach - which actuaries have known about theoretically for decades and almost never implement - is to estimate the grouping and the relativities simultaneously, using a regularisation penalty that shrinks adjacent level differences toward zero. When two adjacent levels' difference is zero, they should be in the same group.
 
-This is the fused lasso, applied to GLMs. The paper is Ben Dror (2025), arXiv:2503.01521, title "R2VF: Regularized Ratemaking via Variable Fusion." The library implements it.
+This is the fused lasso, applied to GLMs. The paper is Ben Dror (2025), preprint arXiv:2503.01521, title "R2VF: Regularized Ratemaking via Variable Fusion." The library implements it.
 
 ---
 

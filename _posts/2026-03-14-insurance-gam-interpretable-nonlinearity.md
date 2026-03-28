@@ -45,7 +45,7 @@ from insurance_gam.ebm import InsuranceEBM, RelativitiesTable
 
 model = InsuranceEBM(
     loss='poisson',
-    interactions='3x',
+    interactions=5,
     monotone_constraints={'ncd': -1, 'vehicle_age': -1},
 )
 model.fit(X_train, y_train['claim_count'], exposure=y_train['exposure'])
@@ -63,7 +63,7 @@ rt.export_excel('relativities_v3.xlsx')
 
 The `relativity` column is what goes into Radar or Emblem. Not derived from the model. The model.
 
-EBMs train fast - seconds to minutes on a standard UK personal lines book - because the C++ boosting backend has been optimised heavily. On the French CTP dataset (670,000 policies, Poisson frequency), an EBM with `interactions='3x'` reduces deviance by 8-12% relative to a standard GLM with manual interactions, comparable to CatBoost on the same data.
+EBMs train fast - seconds to minutes on a standard UK personal lines book - because the C++ boosting backend has been optimised heavily. On the French CTP dataset (670,000 policies, Poisson frequency), an EBM with `interactions=5` reduces deviance by 8-12% relative to a standard GLM with manual interactions, comparable to CatBoost on the same data.
 
 The two limitations to know before you start: the EBM has no native Tweedie deviance for combined frequency-severity modelling (use `loss='poisson'` for frequency, `loss='gamma'` for severity, and multiply - or use ANAM if you need true Tweedie), and monotonicity constraints are enforceable post-fit via isotonic regression but that is not the same as architectural enforcement.
 
@@ -71,7 +71,7 @@ The two limitations to know before you start: the EBM has no native Tweedie devi
 
 ### ANAM: the smooth-curve model with guaranteed monotonicity
 
-The Actuarial Neural Additive Model (Laub, Pho, Wong - UNSW, arXiv:2509.08467, September 2025) is a neural GAM: each feature gets its own subnetwork, predictions are additive over those subnetworks, and the model is interpretable by construction.
+The Actuarial Neural Additive Model (Laub, Pho, Wong - UNSW, preprint arXiv:2509.08467, September 2025) is a neural GAM: each feature gets its own subnetwork, predictions are additive over those subnetworks, and the model is interpretable by construction.
 
 ```python
 from insurance_gam.anam import ANAM
@@ -112,7 +112,7 @@ The cost: ANAM trains in 5-20 minutes on a laptop rather than EBM's 30-90 second
 
 ### PIN: the interaction surface model
 
-Pairwise Interaction Networks (Richman, Scognamiglio, Wüthrich - arXiv:2508.15678, August 2025) extend the additive structure to exact pairwise interaction surfaces. The prediction is:
+Pairwise Interaction Networks (Richman, Scognamiglio, Wüthrich - preprint arXiv:2508.15678, August 2025) extend the additive structure to exact pairwise interaction surfaces. The prediction is:
 
 ```
 mu_i = exp( b + sum_j f_j(x_j) + sum_{j<k} f_{jk}(x_j, x_k) )

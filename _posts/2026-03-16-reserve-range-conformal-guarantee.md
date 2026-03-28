@@ -27,7 +27,7 @@ This holds for any distribution satisfying exchangeability - the condition that 
 
 The key word is "finite-sample." Bootstrap reserve intervals give you an asymptotically valid range as the triangle gets large. Conformal prediction gives you a valid range now, with however much data you have, without requiring the distribution to be known or stationary.
 
-This is the distinction that matters for Solvency II capital. An internal model that uses bootstrap reserve ranges is making distributional assumptions that the PRA's SS1/23 expects to be validated. A conformal interval that provably covers at 90% - verifiable by running the Kupiec test on out-of-sample predictions - requires fewer assumptions to defend.
+This is the distinction that matters for Solvency II capital. An internal model that uses bootstrap reserve ranges is making distributional assumptions. PRA SS1/23 expects firms to quantify and document reserve uncertainty; conformal intervals provide a route to doing this with fewer distributional assumptions than bootstrap methods require. A conformal interval that provably covers at 90% - verifiable by running the Kupiec test on out-of-sample predictions - requires fewer assumptions to defend.
 
 ---
 
@@ -36,6 +36,8 @@ This is the distinction that matters for Solvency II capital. An internal model 
 The previous post showed the basic ACI and SPCI mechanics. Here we focus on the benchmark results that motivated why static split conformal is insufficient for reserving applications.
 
 We ran the `benchmarks/run_benchmark.py` script in `insurance-conformal-ts` on a synthetic monthly motor claims series with a deliberate structural break at month 61. The setup: 84 months total (60 train, 24 test). The data generating process uses a Poisson count series with a seasonal pattern, mild upward trend, and a +20% step shift at month 61 - simulating market hardening or a large risk event arriving mid-monitoring period. Target coverage was 90%.
+
+ConformalPID is a variant of adaptive conformal inference that updates the coverage threshold using a PID controller on the running coverage error. Unlike standard ACI (which adapts the quantile multiplicatively), ConformalPID corrects both the level and the rate of change of coverage error, converging faster after a structural break.
 
 | Method | Coverage | Interval width | Kupiec p-value |
 |---|---|---|---|
@@ -83,10 +85,10 @@ forecaster.fit(y_train)
 # MSCP calibrates horizon-specific quantiles: h=1 through h=12
 mscp = MSCP(forecaster, H=12, score=AbsoluteResidualScore())
 mscp.fit(y_train)
-mscp.calibrate(y_cal, alpha=0.10)  # target 90% coverage at each horizon
+mscp.calibrate(y_cal, alpha=0.10)  # alpha is the miscoverage rate: alpha=0.10 targets 90% coverage
 
 # Fan chart: dictionary keyed by horizon
-fan = mscp.predict_fan(alpha=0.10)
+fan = mscp.predict_fan(alpha=0.10)  # alpha=0.10: intervals targeting 90% coverage at each horizon
 # fan[1]  = (lower_1step,  upper_1step)  — one month ahead
 # fan[6]  = (lower_6step,  upper_6step)  — six months ahead
 # fan[12] = (lower_12step, upper_12step) — one year ahead

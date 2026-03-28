@@ -3,7 +3,7 @@ layout: post
 title: "Model Risk Governance for UK Insurers: Beyond the Excel Register"
 date: 2026-03-13
 categories: [libraries, regulation]
-tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-governance, insurance-monitoring]
+tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-monitoring]
 description: "PRA SS1/23 model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. insurance-governance - one pip install."
 ---
 
@@ -17,7 +17,7 @@ That is not a model risk register. It is a list.
 
 The distinction matters because the PRA's 2026 supervision priorities letter (issued in January 2026) specifically flagged "gaps between assumed and realised profitability" as an area of supervisory focus. That is the PRA asking whether your pricing models are doing what you said they would do when you approved them. Answering that question requires more than a list. It requires a documented, version-linked, ongoing record of model performance, sign-off, and review status.
 
-[`insurance-governance`](/insurance-governance/) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests - it wraps [`insurance-governance`](https://github.com/burning-cost/insurance-governance) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
+[`insurance-governance`](/insurance-governance/) is our 32nd open-source library. It is the governance layer for your pricing model estate: a persistent model inventory, objective risk tier scoring, and an executive committee report. It does not re-implement any statistical tests - it wraps [`insurance-validation`](https://github.com/burning-cost/insurance-validation) and [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), which already handle those. What it adds is the governance workflow that connects statistical output to institutional accountability.
 
 ```bash
 uv add insurance-governance
@@ -61,7 +61,7 @@ The library has four components: `ModelCard`, `RiskTierScorer`, `ModelInventory`
 
 ### ModelCard: structured model metadata
 
-The `ModelCard` in `insurance-governance` extends the `ModelCard` in `insurance-governance`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and - eventually - regulators.
+The `ModelCard` in `insurance-governance` extends the `ValidationModelCard` in `insurance-validation`. Where the validation card is primarily a metadata header for the technical validation report, the MRM card is designed for distribution to governance committees, model risk functions, and - eventually - regulators.
 
 It adds: model class (`pricing`, `reserving`, `capital`, or `underwriting`), a training data period, champion/challenger status, an assumptions register with per-assumption risk levels, explicit `not_intended_for` declarations, and outstanding issues.
 
@@ -137,7 +137,7 @@ The standard in practice at UK insurers is for a pricing actuary to assign a ris
 
 Score ≥ 60 → Tier 1. Score 30–59 → Tier 2. Score < 30 → Tier 3.
 
-The GWP thresholds are calibrated to UK personal lines scale: the £100m threshold aligns with the PRA's materiality framing for significant insurers; the £25m lower bound roughly mirrors BIBA's mid-tier firm classification. A motor frequency model running on a £125m GWP book, priced using a GBM, deployed as champion, with customer-facing pricing, scores 75 - Tier 1. That is an auditable number with an auditable rationale.
+The GWP thresholds are calibrated to UK personal lines scale: the £100m threshold aligns with the PRA's materiality framing for significant insurers; the £25m lower bound roughly mirrors a calibrated threshold for mid-sized UK personal lines books. A motor frequency model running on a £125m GWP book, priced using a GBM, deployed as champion, with customer-facing pricing, scores 75 - Tier 1. That is an auditable number with an auditable rationale.
 
 ```python
 from insurance_governance.mrm import RiskTierScorer
@@ -194,7 +194,7 @@ models = inventory.list()
 
 The inventory is file-backed JSON. No database, no infrastructure dependencies. It runs in a notebook, a CI pipeline, or a model development environment with no internet access. A mid-tier insurer has maybe 50-100 production models - JSON scales to thousands, which is more than enough.
 
-The `run_id` field is the connection point between governance and statistical evidence. When `insurance-governance` generates a validation report, it produces a JSON sidecar with a UUID. `ModelInventory.update_validation()` takes that UUID and stores it against the model record. You now have a machine-readable link from the governance register to the specific validation run. If the PRA asks what validation evidence supports this model's continued use, you query the inventory, retrieve the `run_id`, and retrieve the JSON that carries the Gini, A/E ratios, RAG status, and all test results.
+The `run_id` field is the connection point between governance and statistical evidence. When `insurance-validation` generates a validation report, it produces a JSON sidecar with a UUID. `ModelInventory.update_validation()` takes that UUID and stores it against the model record. You now have a machine-readable link from the governance register to the specific validation run. If the PRA asks what validation evidence supports this model's continued use, you query the inventory, retrieve the `run_id`, and retrieve the JSON that carries the Gini, A/E ratios, RAG status, and all test results.
 
 The `due_for_review()` method is worth running as a scheduled job, daily, from a CI pipeline, with a Slack notification. A Tier 1 model where `next_review_date` is within 30 days and `status` is `live` (not `validated`) is a governance breach waiting to happen. Surfacing it automatically removes the "we didn't know" defence.
 
@@ -225,7 +225,7 @@ The HTML output covers: model identity and purpose, risk tier with scoring ratio
 
 It is readable in five minutes by someone who has not seen the technical validation report. That is the audience for this document.
 
-The optional `validation_results` and `monitoring_results` parameters accept plain dicts; you do not need `insurance-governance` or `insurance-monitoring` installed. But when you do have them, pass the output of their `to_dict()` methods and the report renders the headline metrics automatically. If the last validation produced an AMBER RAG, triggered by a renewal cohort flag on the 5+ year tenure band, that context appears in the executive pack. The committee is looking at the same evidence, condensed rather than rewritten.
+The optional `validation_results` and `monitoring_results` parameters accept plain dicts; you do not need `insurance-validation` or `insurance-monitoring` installed. But when you do have them, pass the output of their `to_dict()` methods and the report renders the headline metrics automatically. If the last validation produced an AMBER RAG, triggered by a renewal cohort flag on the 5+ year tenure band, that context appears in the executive pack. The committee is looking at the same evidence, condensed rather than rewritten.
 
 ---
 
@@ -244,7 +244,7 @@ tier = RiskTierScorer().score(gwp_impacted=125_000_000, ...)
 inventory = ModelInventory('mrm_registry.json')
 inventory.register(card, tier)
 
-# 3. Record a validation run (insurance-governance provides the metrics)
+# 3. Record a validation run (insurance-validation provides the metrics)
 inventory.update_validation(
     model_id='motor-freq-tppd-v2.1',
     validation_date='2025-03-15',
@@ -263,7 +263,7 @@ GovernanceReport(
 print(inventory.due_for_review(within_days=30))
 ```
 
-The validation statistics are computed once, by `insurance-governance`. The governance record is updated once, by `ModelInventory`. The executive report is generated automatically from both. There is no transcription, no copy-paste from an Excel tracker to a Word template, no risk of the governance record diverging from the statistical evidence.
+The validation statistics are computed once, by `insurance-validation`. The governance record is updated once, by `ModelInventory`. The executive report is generated automatically from both. There is no transcription, no copy-paste from an Excel tracker to a Word template, no risk of the governance record diverging from the statistical evidence.
 
 ---
 
@@ -271,7 +271,7 @@ The validation statistics are computed once, by `insurance-governance`. The gove
 
 It is worth being precise about what `insurance-governance` does and does not do.
 
-It does not compute PSI, Gini, A/E ratios, calibration tests, or any other statistical measure. `insurance-governance` and `insurance-monitoring` do that. Duplicating those tests in this library would create a maintenance burden and a divergence risk: two libraries computing the same statistic with slightly different implementations, producing different numbers depending on which one you run.
+It does not compute PSI, Gini, A/E ratios, calibration tests, or any other statistical measure. `insurance-validation` and `insurance-monitoring` do that. Duplicating those tests in this library would create a maintenance burden and a divergence risk: two libraries computing the same statistic with slightly different implementations, producing different numbers depending on which one you run.
 
 What the library adds is everything that neither validation nor monitoring provides: a persistent model register that does not require a human to remember to update it; an objective tier scoring methodology that produces an auditable rationale rather than a judgment; a governance workflow that tracks sign-off status, review dates, and escalation triggers; and an executive committee report that is distinct from the technical validation report in audience, format, and purpose.
 
@@ -281,7 +281,7 @@ The gap this fills is not statistical. The gap is institutional. The reason most
 
 ## Our view
 
-The PRA SS1/23 extension to insurers will happen. The FCA Consumer Duty documentation obligations are already live. The Mills Review signals tightening accountability for AI models under SM&CR. None of this is speculative.
+The PRA SS1/23 extension to insurers will happen. The FCA Consumer Duty documentation obligations are already live. Emerging regulatory attention to AI accountability under SM&CR signals further tightening. None of this is speculative.
 
 The firms that will handle the regulatory transition smoothly are the ones that can answer the following questions with a query, not a conversation:
 
@@ -292,11 +292,11 @@ The firms that will handle the regulatory transition smoothly are the ones that 
 
 An Excel workbook cannot answer these questions reliably. `insurance-governance` can.
 
-If your team is already using `insurance-governance` and `insurance-monitoring`, the incremental work to adopt `insurance-governance` is low. The integration points are designed to be frictionless, and the run_id linkage between the libraries requires one additional line. If you are starting from scratch, the three libraries together give you a complete, PRA-aligned, auditable pricing governance workflow in Python, under MIT licence, with no infrastructure dependencies.
+If your team is already using `insurance-validation` and `insurance-monitoring`, the incremental work to adopt `insurance-governance` is low. The integration points are designed to be frictionless, and the run_id linkage between the libraries requires one additional line. If you are starting from scratch, the three libraries together give you a complete, PRA-aligned, auditable pricing governance workflow in Python, under MIT licence, with no infrastructure dependencies.
 
 ---
 
-`insurance-governance` is open source under the MIT licence at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-governance` and `insurance-monitoring` are optional - the library works standalone but produces richer reports when they are available.
+`insurance-governance` is open source under the MIT licence at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance). Python 3.10+, zero mandatory dependencies beyond the standard library. `insurance-validation` and `insurance-monitoring` are optional - the library works standalone but produces richer reports when they are available.
 
 ---
 

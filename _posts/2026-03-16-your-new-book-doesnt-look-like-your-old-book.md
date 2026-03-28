@@ -150,7 +150,7 @@ A rough rule: if the shift is in the distribution of existing feature values, re
 
 ## FCA SUP 15.3: what this means for model approval
 
-FCA SUP 15.3 requires notification of material changes to pricing methodology. Using a model trained on a materially different book distribution without adjustment is, in our reading, exactly the kind of change the rule is aimed at. The question is whether the change is material.
+FCA SUP 15.3 requires notification of material changes to pricing methodology. Using a model trained on a materially different book distribution without documented adjustment is, in our reading, the kind of change the rule is aimed at, though whether a specific shift is material enough to trigger notification requires judgement and the firm’s own legal assessment. The question is whether the change is material.
 
 The library's `fca_sup153_summary()` gives you the quantitative basis to answer that question:
 
@@ -162,7 +162,7 @@ print(report.fca_sup153_summary())
 COVARIATE SHIFT DIAGNOSTIC REPORT
 Source: Direct 2025 (n=48,300)
 Target: Mixed Channel 2027 (n=63,100)
-Generated: 2025-09-15
+Generated: 2026-03-16
 
 VERDICT: MODERATE
 ESS ratio: 0.51 (threshold: 0.30 SEVERE, 0.60 NEGLIGIBLE)
@@ -179,7 +179,7 @@ Retrain within 6 months or when ESS ratio falls below 0.35.
 Monitor driver_age and postcode_district distribution monthly.
 ```
 
-FCA PRIN 2A.4 requires that models used in pricing are appropriate for the population being scored. MODERATE verdict means the model is still appropriate but requires documented correction. SEVERE means appropriateness is questionable without retraining.
+FCA PRIN 2A.3 (the Price and Value outcome) requires that models used in pricing are appropriate for the population being scored. MODERATE verdict means the model is still appropriate but requires documented correction. SEVERE means appropriateness is questionable without retraining.
 
 What the report does not write for you is the actuarial judgement: what caused the shift, what the commercial implications are, and what the remediation plan is. The library provides the quantitative basis; your governance note provides the context. That is the right division of labour.
 

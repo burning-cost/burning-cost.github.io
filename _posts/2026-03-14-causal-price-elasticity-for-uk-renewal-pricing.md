@@ -91,7 +91,7 @@ print(f"ATE: {ate:.3f}  95% CI: [{lb:.3f}, {ub:.3f}]")
 
 The ATE is the average semi-elasticity: a 1-unit increase in log price change (approximately a 100% price increase) changes renewal probability by `ATE` percentage points. For the typical 5–20% renewal re-rates in UK personal lines, the practical interpretation is: a 10% price increase changes renewal probability by approximately ATE × log(1.1) ≈ ATE × 0.095.
 
-**Why CatBoost for the nuisance models.** UK insurance data is full of high-cardinality categoricals - region, vehicle group, occupation, payment method. CatBoost handles them natively via ordered target encoding, without the one-hot explosion that penalised regression requires. A 2024 systematic evaluation (arXiv:2403.14385) found gradient boosted trees outperform LASSO in the DML nuisance step when confounding is nonlinear, which it always is with postcode and age-vehicle interactions.
+**Why CatBoost for the nuisance models.** UK insurance data is full of high-cardinality categoricals - region, vehicle group, occupation, payment method. CatBoost handles them natively via ordered target encoding, without the one-hot explosion that penalised regression requires. A 2024 systematic evaluation (preprint, arXiv:2403.14385) found gradient boosted trees outperform LASSO in the DML nuisance step when confounding is nonlinear, which it always is with postcode and age-vehicle interactions.
 
 **LinearDML vs CausalForestDML.** LinearDML assumes constant elasticity (or heterogeneity only through explicitly interacted features). It is 30–60× faster than CausalForestDML and the right choice for quick portfolio-level ATE estimation or benchmarking. CausalForestDML is non-parametric and provides valid pointwise confidence intervals via honest splitting - the right choice when you want the heterogeneous elasticity surface and segment-level GATE estimates.
 
@@ -114,7 +114,7 @@ print(gate)
 #   5+         -1.02  -1.19     -0.85
 ```
 
-The pattern here - elasticity declining in magnitude with NCD - is structurally present in UK motor data. Customers with more years' NCD have more to lose by switching (they would start at zero NCD with a new insurer in most markets) and are correspondingly less price-elastic. A renewal optimiser that uses the pooled ATE is systematically over-discounting the high-NCD segment and under-retaining the low-NCD segment.
+The pattern here - elasticity declining in magnitude with NCD - is structurally present in UK motor data. Customers with more years’ NCD face greater hassle cost when switching: they must obtain an NCD proof letter from their current insurer and present it to the new insurer, with risk of delays in NCD verification that can affect the quoted price. There is also loyalty inertia — customers who have accumulated significant NCD history are often longer-tenured and less habitually price-sensitive. These friction effects mean high-NCD customers are correspondingly less price-elastic, not because NCD is lost on switching (it is not: UK motor insurers accept NCD proof letters), but because the switching process involves more steps. A renewal optimiser that uses the pooled ATE is systematically over-discounting the high-NCD segment and under-retaining the low-NCD segment.
 
 The elasticity surface shows two dimensions simultaneously:
 
