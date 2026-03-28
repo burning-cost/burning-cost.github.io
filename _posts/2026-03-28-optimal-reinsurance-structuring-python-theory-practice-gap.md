@@ -145,7 +145,9 @@ The academic framework plus the European Actuarial Journal 2021 simulation paper
 
 **Step 6: Plot the Pareto frontier.** Solvency ratio (SCR proxy / capital held) on one axis, net combined ratio on the other. Each point is a programme combination. The efficient frontier is the programmes where you cannot improve the solvency ratio without worsening the combined ratio.
 
-**Step 7: Apply the Cai-Tan analytic check.** Compute the theoretical optimal retention from d* = F⁻¹(α / (1 + θ)) where F is the gross aggregate loss distribution and θ is the reinsurer loading. This serves as a sense-check on where the grid search Pareto frontier peaks. If the simulation says the optimal retention is £300k and the analytic formula says £275k, you have confidence. If they diverge by a factor of three, something is wrong in your model.
+**Step 7: Apply the Cai-Tan analytic check.** Compute the theoretical optimal retention from d* = F⁻¹(α / (1 + θ)) where F is the aggregate loss distribution and θ is the reinsurer loading. This serves as a sense-check on where the grid search Pareto frontier peaks. If the simulation says the optimal retention is £300k and the analytic formula says £275k, you have confidence. If they diverge by a factor of three, something is wrong in your model.
+
+> **Methodology note:** The Cai-Tan formula d* = F⁻¹(α/(1+θ)) was derived for stop-loss (aggregate) reinsurance, where F is the aggregate loss CDF. When applied to a per-occurrence XL programme — as in this step — it is a heuristic approximation rather than an exact result. For the analytically correct treatment of per-occurrence XL retention, the formula should use the per-occurrence severity CDF, not the aggregate loss distribution. The approximation is useful as a cross-check on the grid search results, but you should not expect the two to agree precisely: the stop-loss optimal retention and the per-occurrence XL optimal retention solve different optimisation problems. The grid search in Steps 3–6 remains the primary method.
 
 The computation is genuinely affordable. Simulating 100,000 scenarios and applying 200 programme combinations takes a few seconds in numpy. The limiting factor is not computation — it is the willingness to build the pipeline at all.
 
@@ -173,4 +175,4 @@ We are building the Python implementation. When it is ready, we will publish it 
 
 ---
 
-*References: Cai J, Tan KS (2007), ASTIN Bulletin 37(1), 93–112. Chi Y, Tan KS (2011), ASTIN Bulletin. Albrecher H, Beirlant J, Teugels J (2017), Reinsurance: Actuarial and Statistical Aspects, Wiley. European Actuarial Journal 2021, doi:10.1007/s13385-021-00281-2. arXiv:2312.06811 (2023). EIOPA Q&A 2322 on standard formula non-proportional reinsurance adjustment. PRA SoP11/24 (November 2024).*
+*References: Cai J, Tan KS (2007), ASTIN Bulletin 37(1), 93–112. Chi Y, Tan KS (2011), ASTIN Bulletin. Albrecher H, Beirlant J, Teugels J (2017), Reinsurance: Actuarial and Statistical Aspects, Wiley. European Actuarial Journal 2021, doi:10.1007/s13385-021-00281-2. arXiv:2312.06811 (2023). EIOPA Q&A 2322 on standard formula non-proportional reinsurance adjustment. PRA PS15/24 (Solvency UK implementation, November 2024).*

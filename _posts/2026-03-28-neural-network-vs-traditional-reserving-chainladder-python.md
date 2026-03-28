@@ -8,7 +8,7 @@ description: "When does it make sense to reach beyond chain ladder and bootstrap
 seo_title: "Neural Network vs Traditional Reserving in Python: DeepTriangle vs Chain Ladder and Bootstrap ODP"
 ---
 
-[Part 1](/2026/04/13/chain-ladder-python-reserving-tutorial/) of this series covered the chain ladder method in `chainladder`: how to fit development factors, extract IBNR, and read a loss triangle in Python. [Part 2](/2026/04/15/stochastic-reserving-python-bootstrap-odp/) added the stochastic layer — Mack analytical errors and Bootstrap ODP simulation — so you could produce a full IBNR distribution for Solvency II SCR and IFRS 17 risk adjustment.
+[Part 1](/2026/03/28/chain-ladder-python-reserving-tutorial/) of this series covered the chain ladder method in `chainladder`: how to fit development factors, extract IBNR, and read a loss triangle in Python. [Part 2](/2026/03/28/stochastic-reserving-python-bootstrap-odp/) added the stochastic layer — Mack analytical errors and Bootstrap ODP simulation — so you could produce a full IBNR distribution for Solvency II SCR and IFRS 17 risk adjustment.
 
 For the vast majority of reserving exercises, you can stop there. Chain ladder plus Bootstrap ODP is well-understood, fast to run, auditable, and defensible to a regulator. The question this post addresses is narrow but important: **under what circumstances does a neural network approach actually add something?**
 
@@ -214,7 +214,7 @@ If you want to pilot a neural approach alongside your existing triangle work, th
 
 ---
 
-## Conclusion
+## Practical agenda for reserving teams
 
 Chain ladder and Bootstrap ODP remain the right tools for most UK reserving exercises — not because they are old, but because the data requirements of the neural alternatives are genuinely demanding. You need either a large panel of comparable triangles (for DeepTriangle-style approaches) or a large book of individually-tracked claims with rich feature data (for individual claims neural models). Most portfolios do not have either.
 
@@ -226,7 +226,7 @@ The practical agenda for most reserving actuaries is:
 3. Run Bootstrap ODP for the reserve distribution and capital quantities
 4. If you have a large long-tail book, pilot an individual claims model — but treat it as supplementary validation, not a replacement, until you have tested it out-of-sample across at least three held-out accident years
 
-Parts [1](/2026/04/13/chain-ladder-python-reserving-tutorial/) and [2](/2026/04/15/stochastic-reserving-python-bootstrap-odp/) of this series give you the code for steps 1-3. That is where the majority of reserving improvement is available.
+Parts [1](/2026/03/28/chain-ladder-python-reserving-tutorial/) and [2](/2026/03/28/stochastic-reserving-python-bootstrap-odp/) of this series give you the code for steps 1-3. That is where the majority of reserving improvement is available.
 
 ---
 

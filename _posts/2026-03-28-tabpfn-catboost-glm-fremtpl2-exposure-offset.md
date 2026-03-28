@@ -96,7 +96,7 @@ On the 10K subsample comparison (all three models, TabPFN with the log-rate work
 - **CatBoost (10K train):** Poisson deviance 0.318, Gini 0.274
 - **TabPFN (10K train, log-rate workaround):** Poisson deviance 0.398, Gini 0.219
 
-TabPFN's Poisson deviance is 25% worse than the GLM on the same 10K sample. The Gini — which measures ranking quality rather than absolute calibration — drops from 0.261 to 0.219, a 16% relative degradation. The A/E by predicted decile shows systematic over-prediction in the top decile and under-prediction across the middle of the book.
+TabPFN's Poisson deviance is approximately 19% worse than the GLM on the same 10K sample (0.398 vs 0.334). The Gini — which measures ranking quality rather than absolute calibration — drops from 0.261 to 0.219, a 16% relative degradation. The A/E by predicted decile shows systematic over-prediction in the top decile and under-prediction across the middle of the book.
 
 This is not a tuning problem. The log-rate workaround is doing what it does, and what it does is not sufficient for this task.
 
@@ -120,7 +120,7 @@ We want to be precise here, because the [thin-segment case](/2026/03/13/insuranc
 
 CatBoost with `loss_function='Poisson'` and a proper baseline offset is the right model for insurance frequency on a large book. It has been the right model for several years. It handles exposure correctly, scales to millions of rows, and produces SHAP-based relativities that you can feed into a rating engine. The GLM remains the right model where interpretability is paramount and the feature structure is genuinely additive in log-space.
 
-TabPFN is an impressive piece of work. The Nature 637 paper's benchmark across 300+ datasets is serious science, and the in-context learning approach is a genuine contribution to the thin-data problem. But "impressive" and "correct formulation for insurance frequency" are different predicates. On freMTPL2, TabPFN's deviance is 25% worse than a GLM on the same 10K training set. That is not a close result.
+TabPFN is an impressive piece of work. The Nature 637 paper's benchmark across 300+ datasets is serious science, and the in-context learning approach is a genuine contribution to the thin-data problem. But "impressive" and "correct formulation for insurance frequency" are different predicates. On freMTPL2, TabPFN's deviance is approximately 19% worse than a GLM on the same 10K training set (0.398 vs 0.334 Poisson deviance). That is not a close result.
 
 The industry tendency to reach for a new tool and then work around its structural limitations is one we want to resist. The exposure offset is not a detail. It is the mathematical statement that time-at-risk must be accounted for. Any model that cannot represent it natively requires a workaround, and the workaround costs you on every metric that matters.
 
