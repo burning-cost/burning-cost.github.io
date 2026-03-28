@@ -7,8 +7,6 @@ name: Daily rebuild
 # GitHub Pages is configured to deploy from the `master` branch.
 # This workflow checks out master, merges main into it (so any work
 # pushed to main is deployed), bumps .last-rebuild, and pushes.
-#
-# After rebuilding, we ping Google to notify it of the updated sitemap.
 
 on:
   schedule:
@@ -46,11 +44,3 @@ jobs:
 
       - name: Push
         run: git push origin master
-
-      - name: Wait for Pages to build
-        run: sleep 60
-
-      - name: Ping Google sitemap
-        run: |
-          curl -s "https://www.google.com/ping?sitemap=https://burning-cost.github.io/sitemap.xml" || true
-          echo "Sitemap ping sent"
