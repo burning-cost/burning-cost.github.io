@@ -203,7 +203,7 @@ print(f"VHM (â):               {bs.a_hat_:.2e}")
 print(f"K:                     {bs.k_:.1f}")
 ```
 
-In this simulation K comes out around 18. That means a region needs roughly 18,000 earned car years before its own experience carries 50% weight: Z = 18,000 / (18,000 + 18,000) = 0.50. Regions with 3,000-5,000 total exposure are getting Z around 0.14-0.21. They barely move from the portfolio mean. Regions with 80,000 exposure sit at Z ≈ 0.81 - approaching full credibility.
+In this simulation K comes out around 18,400. That means a region needs roughly 18,000 earned car years before its own experience carries 50% weight: Z = 18,000 / (18,000 + 18,000) = 0.50. Regions with 3,000-5,000 total exposure are getting Z around 0.14-0.21. They barely move from the portfolio mean. Regions with 80,000 exposure sit at Z ≈ 0.81 - approaching full credibility.
 
 ```python
 print(bs.summary())
@@ -217,7 +217,7 @@ Bühlmann-Straub Credibility Model
   Collective mean    mu  = 0.07851
   Process variance   v   = 1.42e-05   (EPV, within-group)
   Between-group var  a   = 7.73e-04   (VHM, between-group)
-  Credibility param  k   = 18.4       (v / a)
+  Credibility param  k   = 18,400     (v / a)
 
   Interpretation: a group needs exposure = k to achieve Z = 0.50
 

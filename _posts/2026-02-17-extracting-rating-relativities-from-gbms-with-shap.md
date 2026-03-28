@@ -181,7 +181,7 @@ Three things to be honest about when presenting SHAP relativities to regulators 
 
 Most frequency×severity models can't be analysed with this approach directly. You can extract relativities from the frequency model and the severity model separately, but you can't simply multiply them together and get a valid decomposition of the pure premium. The scales are different, the link functions may differ, and the portfolio averages don't cancel cleanly.
 
-The correct approach is mSHAP (multiplicative SHAP), proposed by Lindstrom et al. (2022), which works for two-part models by combining SHAP values in prediction space rather than log space. We're building this as a second module. For now: extract freq and severity relativities separately, present them side by side, and be explicit that the pure premium relativities require a further combining step.
+The correct approach is mSHAP (multiplicative SHAP), proposed by Matthews and Hartman (2022) (arXiv:2106.08990), which works for two-part models by combining SHAP values in prediction space rather than log space. We're building this as a second module. For now: extract freq and severity relativities separately, present them side by side, and be explicit that the pure premium relativities require a further combining step.
 
 ---
 

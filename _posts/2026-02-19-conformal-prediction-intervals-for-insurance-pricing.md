@@ -171,6 +171,7 @@ For comparison, here is the same data with the `raw` absolute residual score:
    decile  mean_predicted  n_obs  coverage  target_coverage
 0       1          0.0234    400     0.973             0.90
 1       2          0.0512    400     0.961             0.90
+2       3          0.0891    400     0.952             0.90
 3       4          0.1534    400     0.942             0.90
 ...
 7       8          1.4210    400     0.871             0.90

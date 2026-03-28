@@ -7,9 +7,9 @@ tags: [validation, pra-ss123, governance, gini, hosmer-lemeshow, psi, calibratio
 description: "PRA SS1/23 requires quantitative pass/fail tests, not narrative. insurance-governance automates the full validation suite and generates auditable HTML reports."
 ---
 
-Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on. The PRA disagrees with this approach. SS1/23, the Supervisory Statement on model risk management in force since May 2023, requires that validation tests have defined quantitative thresholds with documented pass/fail outcomes, and that those outcomes are reproducible and auditable. A narrative saying "discrimination is adequate" does not satisfy Principle 3. A `TestResult(passed=True, metric_value=0.412, details="Gini 0.412, bootstrap 95% CI [0.389, 0.435], threshold 0.30. PASS")` does.
+Most UK pricing teams treat model validation as a documentation exercise. Run the Gini. If it is above the threshold someone wrote in a PowerPoint three years ago, it passes. Write "model performs well on validation data" in the paper and move on. The PRA disagrees with this approach. SS1/23, the Supervisory Statement on model risk management in force since May 2023, requires that validation tests have defined quantitative thresholds with documented pass/fail outcomes, and that those outcomes are reproducible and auditable. A narrative saying "discrimination is adequate" does not satisfy Principle 4 (Model Validation). A `TestResult(passed=True, metric_value=0.412, details="Gini 0.412, bootstrap 95% CI [0.389, 0.435], threshold 0.30. PASS")` does.
 
-*(Scope note: SS1/23 currently applies to banks and PRA-regulated deposit-takers. Extension to insurers is expected 2026–2027. If you are an insurer, treat this as preparation — the framework and the tooling are the same either way.)*
+*(Scope note: SS1/23 currently applies to banks and PRA-regulated deposit-takers. There is no confirmed timeline for extension to insurers. If you are an insurer, treat this as preparation — the framework and the tooling are the same either way.)*
 
 [`insurance-governance`](/insurance-governance/) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, [calibration slope](/2026/03/09/insurance-calibration/), and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
 
@@ -21,7 +21,7 @@ pip install insurance-governance
 
 ## The problem with checklist validation
 
-SS1/23 has nine validation principles. Principle 3 (performance measurement) and Principle 4 (outcome analysis) are where most teams are most exposed. A typical pricing team's validation process looks like:
+SS1/23 has five principles: Model Identification and Classification, Governance, Model Development, Model Validation, and Model Use. Principle 4 (Model Validation) is where most teams are most exposed. A typical pricing team's validation process looks like:
 
 - Gini: computed, compared against a threshold inherited from a previous model
 - Lift chart: produced, eyeballed, declared "satisfactory"
