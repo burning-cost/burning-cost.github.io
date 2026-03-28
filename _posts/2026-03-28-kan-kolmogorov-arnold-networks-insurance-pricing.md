@@ -1,10 +1,11 @@
 ---
 layout: post
-title: "Beyond Splines: What If Your Neural Network Learned Its Own Link Functions?"
+title: "KAN: What If Your Neural Network Learned Its Own Link Functions?"
 date: 2026-03-28
 categories: [pricing, neural-networks, interpretability]
 tags: [kan, kolmogorov-arnold, neural-network, splines, gam, glm, link-function, monotonicity, symbolic-regression, poisson, insurance-pricing, mortality, python, pykan, monokan, interpretability, governance]
 description: "Kolmogorov-Arnold Networks replace fixed activations with learnable splines on edges, letting the model discover its own functional forms. Here is what that means for insurance pricing, and what it does not mean."
+seo_title: "KAN (Kolmogorov-Arnold Networks) for Insurance Pricing: Architecture, MonoKAN Monotonicity, and Symbolic Regression"
 ---
 
 Every GLM you have ever built contains a human decision that is not in the data: the link function. When you write `family=Poisson(link='log')`, you are asserting that the relationship between your rating factors and expected claim frequency is log-linear. Not log-quadratic. Not something more interesting for young drivers at high vehicle groups. Log-linear, throughout.
