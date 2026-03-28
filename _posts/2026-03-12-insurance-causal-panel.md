@@ -39,7 +39,7 @@ This is DiD generalised to multiple periods. `tau` is identified under parallel 
 
 Standard Causal Forests (EconML's `CausalForestDML`, R's `grf`) extend DiD towards heterogeneous treatment effects, estimating a separate tau for each region of the covariate space. But neither was built for panel data. The fixed effects need to be removed at the tree node level, not globally as a pre-processing step. When you pre-residualise and then fit a causal forest, the composition of units within each leaf has changed relative to the root - the node-level fixed effect structure differs from the global structure - and you get spurious heterogeneity driven by residual fixed effects rather than genuine treatment effect variation.
 
-causalfe (Bonhomme, Cai, and Franke, arXiv:2601.10555, January 2026) fixes this with node-level residualisation. At every candidate split in every tree, it re-estimates and removes unit and time fixed effects within that node. This is computationally expensive but structurally correct. The result is a Causal Forest with Fixed Effects (CFFE) estimator that produces honest, locally-valid confidence intervals for heterogeneous treatment effects on panel data.
+causalfe (Aytug, arXiv:2601.10555, January 2026) fixes this with node-level residualisation. At every candidate split in every tree, it re-estimates and removes unit and time fixed effects within that node. This is computationally expensive but structurally correct. The result is a Causal Forest with Fixed Effects (CFFE) estimator that produces honest, locally-valid confidence intervals for heterogeneous treatment effects on panel data.
 
 ## Installing and preparing panel data
 
@@ -248,7 +248,7 @@ The before-after comparison is not wrong. It is just an answer to the wrong ques
 
 ---
 
-*causalfe is available via `pip install causalfe`. The underlying paper is Bonhomme, Cai, and Franke (2026), arXiv:2601.10555. For aggregate causal rate change evaluation, see our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library (SDID + CS21). Burning Cost has no affiliation with the causalfe authors.*
+*causalfe is available via `pip install causalfe`. The underlying paper is Aytug (2026), arXiv:2601.10555. For aggregate causal rate change evaluation, see our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library (SDID + CS21). Burning Cost has no affiliation with the causalfe authors.*
 
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)

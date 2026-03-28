@@ -288,7 +288,7 @@ pip install "insurance-causal[plots]"
 
 Source and tests: [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal).
 
-The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local Average Treatment Effects in the Frequentist and Bayesian Settings*, *Annals of Statistics*; the ForestRiesz construction and the missing-outcome extension are from arXiv:2601.08643; the dose-response curve implementation follows Colangelo & Lee, *Journal of Business & Economic Statistics* (2025), arXiv:2004.03036.
+The academic groundwork is Hirshberg & Wager (2021), *Augmented Minimax Linear Estimation*, *Annals of Statistics*; the ForestRiesz construction and the missing-outcome extension are from arXiv:2601.08643; the dose-response curve implementation follows Colangelo & Lee, *Journal of Business & Economic Statistics* (2025), arXiv:2004.03036.
 
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring whether the DML elasticity estimate has remained stable as the portfolio shifts
