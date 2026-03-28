@@ -256,7 +256,7 @@ The firms that come out of the final report in a manageable position are the one
 Install the libraries:
 
 ```bash
-pip install insurance-fairness insurance-governance insurance-monitoring
+uv pip install insurance-fairness insurance-governance insurance-monitoring
 ```
 
 The fairness audit, governance documentation, and monitoring framework work together. Run them as a package, document the outputs, and you have the foundation of a Consumer Duty evidence file that covers the specific concerns the FCA has raised in MS24/1.

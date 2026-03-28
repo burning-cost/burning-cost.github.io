@@ -8,7 +8,7 @@ description: "Vine copulas for multi-peril UK home pricing. Flood-subsidence cor
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-copula` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `pip install insurance-frequency-severity`  -  vine copula dependence modelling is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
+**Package update:** `insurance-copula` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `uv pip install insurance-frequency-severity`  -  vine copula dependence modelling is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
 </div>
 
 
@@ -216,7 +216,7 @@ This decomposition makes the dependence loading explicit and separable: you can 
 
 pyvinecopulib 0.7.x wheels are available for x86_64 Linux, macOS, and Windows, but not for ARM64. The library guards this with `HAS_PYVINECOPULIB` and raises a clean `ImportError` with installation instructions if pyvinecopulib is absent. All 96 tests that do not require pyvinecopulib pass on ARM64 (Raspberry Pi); the full 174-test suite passes on x86_64 with pyvinecopulib installed.
 
-On Databricks, install pyvinecopulib with `--only-binary=:all:` after the kernel restart that `%pip install insurance-copula[vine]` triggers. Editable installs from `/tmp` do not survive kernel restarts; install from PyPI.
+On Databricks, install pyvinecopulib with `--only-binary=:all:` after the kernel restart that `%uv pip install insurance-copula[vine]` triggers. Editable installs from `/tmp` do not survive kernel restarts; install from PyPI.
 
 The `trunc_lvl=3` default is deliberate. For six perils, a full vine uses five trees and fifteen pair-copulas. Trees 4 and 5 model conditional dependence given four conditioning variables - on typical insurance datasets of 50,000–500,000 policy-years, those parameters are estimated from a handful of observations each. BIC will often select independence (Gaussian with rho=0) for the higher trees anyway; `trunc_lvl=3` enforces this as a prior.
 

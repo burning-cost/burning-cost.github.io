@@ -8,7 +8,7 @@ description: "Detect threshold gaming in UK insurance using bunching estimators 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-bunching` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring`  -  bunching estimators are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+**Package update:** `insurance-bunching` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `uv pip install insurance-monitoring`  -  bunching estimators are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
 </div>
 
 

@@ -20,7 +20,7 @@ The independence model overstates the pure premium for high-frequency policyhold
 [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity) gives you a practical way to measure and correct this.
 
 ```bash
-pip install insurance-frequency-severity
+uv pip install insurance-frequency-severity
 ```
 
 ---

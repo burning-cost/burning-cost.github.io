@@ -196,13 +196,13 @@ MAPIE's `method="plus"` (jackknife+) is theoretically superior to split conforma
 ## Installation
 
 ```bash
-pip install insurance-conformal
+uv pip install insurance-conformal
 
 # with CatBoost:
-pip install "insurance-conformal[catboost]"
+uv pip install "insurance-conformal[catboost]"
 
 # with everything:
-pip install "insurance-conformal[all]"
+uv pip install "insurance-conformal[all]"
 ```
 
 The library has no MAPIE dependency. The split conformal algorithm is 20 lines of code for the core quantile function plus the score implementations. We chose to own this rather than wrapping MAPIE, because MAPIE does not expose the score functions we need as a stable API.

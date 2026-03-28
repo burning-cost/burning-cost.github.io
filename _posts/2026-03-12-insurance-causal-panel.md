@@ -44,7 +44,7 @@ causalfe (Bonhomme, Cai, and Franke, arXiv:2601.10555, January 2026) fixes this 
 ## Installing and preparing panel data
 
 ```bash
-pip install causalfe polars
+uv pip install causalfe polars
 ```
 
 causalfe works with NumPy arrays. We use polars for data preparation - it handles panel reshaping cleanly and the lazy evaluation is useful when pulling from a warehouse.
@@ -248,7 +248,7 @@ The before-after comparison is not wrong. It is just an answer to the wrong ques
 
 ---
 
-*causalfe is available via `pip install causalfe`. The underlying paper is Bonhomme, Cai, and Franke (2026), arXiv:2601.10555. For aggregate causal rate change evaluation, see our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library (SDID + CS21). Burning Cost has no affiliation with the causalfe authors.*
+*causalfe is available via `uv pip install causalfe`. The underlying paper is Bonhomme, Cai, and Franke (2026), arXiv:2601.10555. For aggregate causal rate change evaluation, see our [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy) library (SDID + CS21). Burning Cost has no affiliation with the causalfe authors.*
 
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)
 - [DML for Insurance: Benchmarks and When It Beats Naive Regression](/2026/03/09/dml-insurance-benchmarks/)

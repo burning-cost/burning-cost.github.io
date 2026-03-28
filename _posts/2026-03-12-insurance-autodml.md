@@ -8,7 +8,7 @@ description: "Automatic Debiased ML via Riesz Representers for continuous price 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-autodml` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-autodml` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `uv pip install insurance-causal`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 
@@ -53,7 +53,7 @@ Any ML model can learn this - it is a regression problem. No density estimation.
 ## Three estimands
 
 ```bash
-pip install insurance-causal
+uv pip install insurance-causal
 ```
 
 The library provides three estimands for continuous treatment pricing questions.
@@ -277,13 +277,13 @@ Under FCA pricing review, insurers need to demonstrate that pricing differential
 `insurance-causal` has 199 tests across all estimators, nuisance backends, and inference modes. Dependencies: numpy, pandas, scikit-learn. Optional: catboost for `nuisance_backend="catboost"`, matplotlib for `drc.plot()`.
 
 ```bash
-pip install insurance-causal
+uv pip install insurance-causal
 
 # With CatBoost nuisance backend:
-pip install "insurance-causal[catboost]"
+uv pip install "insurance-causal[catboost]"
 
 # With plotting:
-pip install "insurance-causal[plots]"
+uv pip install "insurance-causal[plots]"
 ```
 
 Source and tests: [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal).

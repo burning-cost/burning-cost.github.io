@@ -55,12 +55,12 @@ The spatial panel GBM has one material advantage over BYM2: it handles high-dime
 
 ## A Python sketch of the structure
 
-The R `mboost` package implements the Balzer-Benlahlou framework. Python lacks a direct equivalent, but the structure of a spatial panel GBM with area effects can be sketched using `lightgbm` with a manual panel transformation and a spatial regularisation offset:
+The R `mboost` package implements the Balzer-Benlahlou framework. Python lacks a direct equivalent, but the structure of a spatial panel GBM with area effects can be sketched using `catboost` with a manual panel transformation and a spatial regularisation offset:
 
 ```python
 import numpy as np
 import pandas as pd
-import lightgbm as lgb
+import catboost as cb
 
 # Assume: df with columns area_id, year, covariates..., claims, exposure
 # W: sparse adjacency matrix for area_id (n_areas x n_areas)
@@ -121,34 +121,33 @@ df_star = cochrane_orcutt_spatial(df, W, rho=0.4)
 df_star = spatial_cv_split(df_star, W)
 
 val_fold = 0
-train_data = lgb.Dataset(
-    df_star.loc[df_star["fold"] != val_fold, covariates],
-    label=df_star.loc[df_star["fold"] != val_fold, "y_star"],
-)
-val_data = lgb.Dataset(
-    df_star.loc[df_star["fold"] == val_fold, covariates],
-    label=df_star.loc[df_star["fold"] == val_fold, "y_star"],
-    reference=train_data,
-)
+train_mask = df_star["fold"] != val_fold
+val_mask = df_star["fold"] == val_fold
 
-params = {
-    "objective": "regression",
-    "learning_rate": 0.1,   # matches mboost default step size s=0.1
-    "num_leaves": 4,        # shallow trees: each iteration = weak base-learner
-    "min_data_in_leaf": 20,
-    "verbose": -1,
-}
-
-model = lgb.train(
-    params,
-    train_data,
-    num_boost_round=500,
-    valid_sets=[val_data],
-    callbacks=[lgb.early_stopping(20), lgb.log_evaluation(50)],
+train_pool = cb.Pool(
+    df_star.loc[train_mask, covariates],
+    label=df_star.loc[train_mask, "y_star"],
+)
+val_pool = cb.Pool(
+    df_star.loc[val_mask, covariates],
+    label=df_star.loc[val_mask, "y_star"],
 )
 
-print(f"Best iteration: {model.best_iteration}")
-print(f"Validation RMSE: {model.best_score['valid_0']['l2']**0.5:.4f}")
+model = cb.CatBoostRegressor(
+    loss_function="RMSE",
+    learning_rate=0.1,       # matches mboost default step size s=0.1
+    depth=2,                 # shallow trees: each iteration = weak base-learner
+    min_data_in_leaf=20,
+    iterations=500,
+    early_stopping_rounds=20,
+    verbose=50,
+    random_seed=42,
+)
+
+model.fit(train_pool, eval_set=val_pool)
+
+print(f"Best iteration: {model.best_iteration_}")
+print(f"Validation RMSE: {model.best_score_['validation']['RMSE']:.4f}")
 ```
 
 This is not a faithful implementation of the Balzer-Benlahlou algorithm  -  the paper's random effects version uses a full Mahalanobis-norm objective that standard GBMs do not expose. But it captures the key ideas: pre-transform the panel data to absorb the spatial structure, use shallow base-learners with a small step size, and use spatially-blocked cross-validation to choose the stopping point.

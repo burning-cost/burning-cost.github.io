@@ -9,7 +9,7 @@ post_number: 71
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-jlm` has been consolidated into [`insurance-telematics`](https://pypi.org/project/insurance-telematics/). Install with `pip install insurance-telematics`  -  joint longitudinal-survival models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-telematics)
+**Package update:** `insurance-jlm` has been consolidated into [`insurance-telematics`](https://pypi.org/project/insurance-telematics/). Install with `uv pip install insurance-telematics`  -  joint longitudinal-survival models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-telematics)
 </div>
 
 

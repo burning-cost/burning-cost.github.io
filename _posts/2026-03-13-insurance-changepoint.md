@@ -8,7 +8,7 @@ description: "Bayesian Online Changepoint Detection for UK insurance loss ratios
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-changepoint` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+**Package update:** `insurance-changepoint` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `uv pip install insurance-dynamics`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
 </div>
 
 

@@ -9,7 +9,7 @@ post_number: 72
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-nflow` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity`  -  normalizing flow severity models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-nflow` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `uv pip install insurance-severity`  -  normalizing flow severity models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 
@@ -187,7 +187,7 @@ The flow is at the top of that hierarchy in terms of flexibility and at the bott
 ## Installation
 
 ```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
+uv pip install torch --index-url https://download.pytorch.org/whl/cpu
 uv add insurance-nflow
 ```
 

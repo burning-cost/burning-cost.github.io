@@ -199,7 +199,7 @@ We think pricing teams should be running these checks as part of the standard mo
 The library and notebook are at [github.com/pricing-frontier/insurance-fairness](https://github.com/pricing-frontier/insurance-fairness). The benchmark notebook (`notebooks/ausprivauto_fairness_databricks.py`) is Databricks-compatible and downloads the dataset directly from the CASdatasets GitHub repository.
 
 ```
-pip install insurance-fairness rdata requests catboost
+uv pip install insurance-fairness rdata requests catboost
 ```
 
 The `rdata` package handles parsing the `.rda` format that CASdatasets uses. Everything else is standard PyPI.

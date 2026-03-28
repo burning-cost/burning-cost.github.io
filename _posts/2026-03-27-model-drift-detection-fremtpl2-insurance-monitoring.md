@@ -215,7 +215,7 @@ For the full benchmark with segmented A/E and explicit PSI per feature, assemble
 The notebook is at [github.com/pricing-frontier/insurance-monitoring](https://github.com/pricing-frontier/insurance-monitoring) (`notebooks/benchmark_fremtpl2_drift.py`), Databricks-compatible. The dataset downloads automatically from OpenML if the cluster has network access; if not, there is a synthetic fallback that matches the freMTPL2 schema exactly and runs the same code.
 
 ```
-pip install insurance-monitoring scikit-learn
+uv pip install insurance-monitoring scikit-learn
 ```
 
 No further dependencies. The library uses polars, numpy, and scipy internally.

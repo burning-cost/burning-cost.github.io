@@ -8,7 +8,7 @@ description: "Mixture cure models for UK motor: separates non-claimers from susc
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `uv pip install insurance-survival`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
 </div>
 
 
@@ -19,7 +19,7 @@ The biostatistics literature has had a model for this since Boag (1949) applied 
 [`insurance-cure`](https://github.com/burning-cost/insurance-survival) fills that gap.
 
 ```bash
-pip install insurance-survival
+uv pip install insurance-survival
 ```
 
 ---

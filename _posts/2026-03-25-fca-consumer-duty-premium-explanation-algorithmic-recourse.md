@@ -26,7 +26,7 @@ This creates a specific technical requirement. Your counterfactual search needs 
 [`insurance-recourse`](https://github.com/burning-cost/insurance-recourse) is built around exactly those constraints.
 
 ```bash
-pip install insurance-recourse
+uv pip install insurance-recourse
 ```
 
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)  -  the fairness audit step that should precede the recourse generation: if a feature is a proxy, its counterfactual should not suggest customers change their demographics
@@ -199,7 +199,7 @@ Three counterfactual search backends are available. Which one to use depends on 
 
 **`focus`** is the fastest option and requires no extra dependencies. It implements the FOCUS sigmoid approximation from Lucic et al. (AAAI 2022) directly: tree split thresholds are replaced with smooth sigmoid functions, which makes the forest differentiable with respect to inputs, then gradient descent finds the minimum under constraint. It works with any sklearn `GradientBoostingRegressor`, `RandomForestRegressor`, or `DecisionTreeRegressor`. For a single policyholder on a 500-estimator GBM, this runs in under a second.
 
-**`dice`** (default) wraps DiCE's genetic algorithm and works with any sklearn-compatible model, including CatBoost and XGBoost if you expose a sklearn-compatible `predict` method. It is slower than FOCUS but more general. Requires `pip install insurance-recourse[dice]`.
+**`dice`** (default) wraps DiCE's genetic algorithm and works with any sklearn-compatible model, including CatBoost and XGBoost if you expose a sklearn-compatible `predict` method. It is slower than FOCUS but more general. Requires `uv pip install insurance-recourse[dice]`.
 
 **`alibi_cfrl`** uses alibi's Counterfactual RL approach  -  an RL agent is trained to find counterfactuals without needing model differentiability. Useful for production CatBoost models where the sklearn interface is not clean. Requires TensorFlow or PyTorch and takes several minutes for RL training. For most teams, FOCUS or DiCE will be sufficient.
 
@@ -240,7 +240,7 @@ It is also not a mechanism for customers to game your pricing model. The constra
 What it is: a systematic, auditable way to discharge a specific FCA obligation that currently has no good tooling in the Python ecosystem. [`insurance-recourse`](https://github.com/burning-cost/insurance-recourse) is on PyPI. The FCA is watching renewal pricing closely. This seems like a good time to sort this out.
 
 ```bash
-pip install insurance-recourse
+uv pip install insurance-recourse
 ```
 
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)  -  the fairness audit step that should precede the recourse generation: if a feature is a proxy, its counterfactual should not suggest customers change their demographics

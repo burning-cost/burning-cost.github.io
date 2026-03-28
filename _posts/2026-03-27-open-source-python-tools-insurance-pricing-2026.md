@@ -125,7 +125,7 @@ The problem: postcode is a legitimate risk variable, but it correlates with ethn
 
 The library runs CatBoost proxy R² and mutual information scoring per protected characteristic, and produces an evidence pack structured for Consumer Duty sign-off.
 
-`pip install insurance-fairness`
+`uv pip install insurance-fairness`
 
 ### [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)  -  model drift detection
 
@@ -133,7 +133,7 @@ The problem: aggregate A/E ratios look stable, but drift is concentrated in youn
 
 The library computes exposure-weighted PSI/CSI per segment, segmented A/E with IBNR adjustment, Gini z-test, and a formal recalibrate-vs-refit decision rule. The `PITMonitor` (e-process martingale for calibration drift) runs at 3% false positive rate versus 46% for repeated Hosmer-Lemeshow. `InterpretableDriftDetector` uses BH-corrected feature-level attribution to identify which rating factors are driving drift.
 
-`pip install insurance-monitoring`
+`uv pip install insurance-monitoring`
 
 ### [insurance-conformal](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  prediction intervals
 
@@ -141,7 +141,7 @@ The problem: standard conformal prediction achieves aggregate coverage but syste
 
 Locally-weighted non-conformity scores adapt interval width to local variance. Distribution-free, finite-sample coverage. Solvency II SCR bounds included.
 
-`pip install insurance-conformal`
+`uv pip install insurance-conformal`
 
 ### [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)  -  GBM-to-factor-table extraction
 
@@ -149,7 +149,7 @@ The problem: your CatBoost model beats the production GLM by 3 Gini points. The 
 
 The library extracts TreeSHAP values, exposure-weights them per rating band, and produces the factor table format that pricing committees and rating engines expect, with reconstruction R² to validate fidelity.
 
-`pip install shap-relativities`
+`uv pip install shap-relativities`
 
 ### [insurance-causal](/2026/03/12/insurance-autodml/)  -  deconfounding and price elasticity
 
@@ -157,7 +157,7 @@ The problem: vehicle value looks significant in the GLM, but it correlates with 
 
 Double machine learning residualises both outcome and treatment on confounders using CatBoost nuisance models, then estimates the causal effect in the residuals. `causal_forest` extends this to segment-level heterogeneous treatment effects (GATES/CLAN/RATE). Known limitation: over-partialling at n < 50k  -  the nuisance models absorb signal they should not. We document this in the README.
 
-`pip install insurance-causal`
+`uv pip install insurance-causal`
 
 ### [insurance-optimise](/2026/03/07/insurance-optimise/)  -  constrained rate optimisation
 
@@ -165,7 +165,7 @@ The problem: rate change recommendations are done in spreadsheets where constrai
 
 SLSQP with analytical Jacobians finds the optimal rate changes across these constraints. `ParetoFrontier` (v0.4.1) makes the profit/retention/fairness trade-off explicit  -  single-objective optimisation produces a premium disparity ratio of 1.168 in the benchmark; the Pareto surface is the defensible alternative.
 
-`pip install insurance-optimise`
+`uv pip install insurance-optimise`
 
 ### [insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  PRA SS1/23 validation reports
 
@@ -173,7 +173,7 @@ The problem: model validation reports are produced manually in PowerPoint.
 
 The library runs bootstrap Gini CI, Poisson A/E CI, double-lift charts, and a renewal cohort test, structured to what a PRA SS1/23 review expects. HTML and JSON output. The benchmark case demonstrates that manual checklists miss miscalibration concentrated in young drivers (age < 30) that the automated suite catches via Hosmer-Lemeshow (p < 0.0001).
 
-`pip install insurance-governance`
+`uv pip install insurance-governance`
 
 ### [insurance-severity](https://github.com/burning-cost/insurance-severity)  -  spliced distributions and EVT
 
@@ -181,7 +181,7 @@ The problem: a single Gamma GLM fits attritional claims but fails at the tail. L
 
 Spliced body-tail models with covariate-dependent thresholds, composite Lognormal-GPD for heavy tails, Deep Regression Networks for non-parametric severity, EQRN extreme quantile neural networks. ILF tables and TVaR per risk. The EVT module corrects for policy limit truncation, which naïve GPD ignores.
 
-`pip install insurance-severity`
+`uv pip install insurance-severity`
 
 ### [insurance-causal-policy](https://github.com/burning-cost/insurance-causal-policy)  -  causal rate change evaluation
 
@@ -189,7 +189,7 @@ The problem: you put through a rate increase in Q3 and conversion dropped. You c
 
 Synthetic difference-in-differences constructs a synthetic control from unaffected segments to isolate the rate change effect. HonestDiD sensitivity analysis for violations of parallel trends. FCA evidence pack output.
 
-`pip install insurance-causal-policy`
+`uv pip install insurance-causal-policy`
 
 ### [insurance-quantile](https://github.com/burning-cost/insurance-quantile)  -  tail risk quantile regression
 
@@ -197,7 +197,7 @@ The problem: your mean model gives no handle on the upper tail. Large loss loadi
 
 Quantile and expectile GBMs at multiple levels simultaneously, producing per-risk TVaR and ILF tables in actuarial format. Known limitation: lognormal parametric models win at small n  -  the GBM advantage materialises at larger portfolios where the non-linear covariate effects on the tail are estimable.
 
-`pip install insurance-quantile`
+`uv pip install insurance-quantile`
 
 ---
 

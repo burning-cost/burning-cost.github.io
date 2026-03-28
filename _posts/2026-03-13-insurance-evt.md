@@ -8,7 +8,7 @@ description: "EVT for UK motor large loss pricing: censored GPD for open TPBI cl
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-evt` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity`  -  extreme value theory for large loss pricing is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-evt` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `uv pip install insurance-severity`  -  extreme value theory for large loss pricing is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 

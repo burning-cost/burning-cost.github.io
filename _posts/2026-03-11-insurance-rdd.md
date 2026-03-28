@@ -8,7 +8,7 @@ description: "Regression Discontinuity Design tests if UK motor risk drops at ag
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-rdd` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal`  -  regression discontinuity design is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-rdd` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `uv pip install insurance-causal`  -  regression discontinuity design is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 

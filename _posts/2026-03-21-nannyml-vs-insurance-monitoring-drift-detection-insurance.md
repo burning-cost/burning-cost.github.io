@@ -289,7 +289,7 @@ The two tools are not alternatives for the same problem. NannyML is excellent fo
 ## Installation
 
 ```bash
-pip install insurance-monitoring
+uv pip install insurance-monitoring
 # or:
 uv add insurance-monitoring
 ```

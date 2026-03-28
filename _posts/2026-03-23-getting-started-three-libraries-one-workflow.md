@@ -26,7 +26,7 @@ The libraries:
 Install the three libraries. All are on PyPI.
 
 ```bash
-pip install insurance-causal insurance-conformal insurance-monitoring catboost polars
+uv pip install insurance-causal insurance-conformal insurance-monitoring catboost polars
 ```
 
 Or with uv:

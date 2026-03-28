@@ -354,8 +354,8 @@ The ILF range at £500k -- 1.887 to 2.653 -- is the direct input to per-risk rei
 For teams that want to avoid the parametric assumptions entirely, the package includes a Distributional Refinement Network (DRN), based on Avanzi et al. (arXiv:2406.00998, 2024). The DRN starts from a frozen GLM or GBM baseline and refines the full predictive distribution using a neural network that adjusts bin probabilities in a histogram representation. It requires PyTorch:
 
 ```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install insurance-severity[glm]
+uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+uv pip install insurance-severity[glm]
 ```
 
 ```python

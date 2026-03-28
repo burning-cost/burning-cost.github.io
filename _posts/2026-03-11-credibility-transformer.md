@@ -8,7 +8,7 @@ description: "Credibility Transformer attention is mathematically identical to B
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-credibility-transformer` has been consolidated into [`insurance-credibility`](https://pypi.org/project/insurance-credibility/). Install with `pip install insurance-credibility`  -  the Credibility Transformer is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
+**Package update:** `insurance-credibility-transformer` has been consolidated into [`insurance-credibility`](https://pypi.org/project/insurance-credibility/). Install with `uv pip install insurance-credibility`  -  the Credibility Transformer is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
 </div>
 
 

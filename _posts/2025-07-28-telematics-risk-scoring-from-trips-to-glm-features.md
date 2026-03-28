@@ -12,7 +12,7 @@ Most pricing teams sit in one of two camps on telematics. Either they buy a pre-
 The gap is tooling. Processing raw 1Hz GPS/accelerometer data into actuarially useful features is not conceptually hard, but the plumbing - GPS jump removal, kinematics derivation, state classification, driver-level aggregation with credibility weighting - is enough friction that most teams give up and reach for the vendor API. [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) removes that friction.
 
 ```bash
-pip install insurance-telematics
+uv pip install insurance-telematics
 ```
 
 ---

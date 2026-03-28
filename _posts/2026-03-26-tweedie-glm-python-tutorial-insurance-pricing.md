@@ -13,7 +13,7 @@ A Tweedie GLM is the most compact way to model insurance pure premium in Python.
 This tutorial builds a working Tweedie GLM from scratch: we generate synthetic motor data, fit the model in statsmodels, interpret the power parameter and coefficients, check the residuals, and extract factor tables. The code is self-contained  -  you need statsmodels, numpy, scipy, and matplotlib, nothing else.
 
 ```bash
-pip install statsmodels numpy scipy matplotlib
+uv pip install statsmodels numpy scipy matplotlib
 # or with uv:
 uv add statsmodels numpy scipy matplotlib
 ```

@@ -16,7 +16,7 @@ This post shows the complete workflow: causal CATE estimation, customer segmenta
 Four libraries: [`insurance-causal`](https://github.com/burning-cost/insurance-causal), [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise), [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), [`insurance-governance`](https://github.com/burning-cost/insurance-governance).
 
 ```bash
-pip install insurance-causal insurance-optimise insurance-fairness insurance-governance
+uv pip install insurance-causal insurance-optimise insurance-fairness insurance-governance
 ```
 
 ---
@@ -291,4 +291,4 @@ The constraint we are most often asked about is ENBP quality. Quarterly back-tes
 
 ---
 
-*All four libraries used in this post are open source and installable via pip. The PS21/5 / ICOBS 6B.2 rules apply to home and motor renewals in the UK. FCA EP25/2 (2025) estimated that the GIPP remedies saved UK motor consumers approximately £1.6 billion over the first three years of implementation.*
+*All four libraries used in this post are open source and installable via uv pip. The PS21/5 / ICOBS 6B.2 rules apply to home and motor renewals in the UK. FCA EP25/2 (2025) estimated that the GIPP remedies saved UK motor consumers approximately £1.6 billion over the first three years of implementation.*

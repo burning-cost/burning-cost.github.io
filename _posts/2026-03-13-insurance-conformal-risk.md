@@ -8,7 +8,7 @@ description: "Conformal risk control for UK insurance: coverage calibrated to fi
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-conformal-risk` has been consolidated into [`insurance-conformal`](https://pypi.org/project/insurance-conformal/). Install with `pip install insurance-conformal`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-conformal)
+**Package update:** `insurance-conformal-risk` has been consolidated into [`insurance-conformal`](https://pypi.org/project/insurance-conformal/). Install with `uv pip install insurance-conformal`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-conformal)
 </div>
 
 
@@ -29,7 +29,7 @@ where `L` is your loss function and `α` is the risk level. Not the probability 
 [`insurance-conformal-risk`](https://github.com/burning-cost/insurance-conformal-risk) implements this for UK pricing workflows. Three controllers, each targeting a different risk the pricing team cares about.
 
 ```bash
-pip install insurance-conformal-risk
+uv pip install insurance-conformal-risk
 ```
 
 ---
@@ -245,7 +245,7 @@ If calibration fails entirely  -  `RuntimeError: No lambda controls expected ris
 - 121 tests, MIT-licensed, Python 3.10+
 
 ```bash
-pip install insurance-conformal-risk
+uv pip install insurance-conformal-risk
 ```
 
 Source at [github.com/burning-cost/insurance-conformal-risk](https://github.com/burning-cost/insurance-conformal-risk).

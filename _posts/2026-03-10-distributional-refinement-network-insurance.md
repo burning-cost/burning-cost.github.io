@@ -8,7 +8,7 @@ description: "Distributional Refinement Networks wrap any GLM to produce a full 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `uv pip install insurance-severity`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 

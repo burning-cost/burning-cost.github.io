@@ -26,7 +26,7 @@ For the insurance-fairness library, NSGA-II works over an ensemble of pre-traine
 The `insurance-fairness` library uses the `pymoo` package for NSGA-II and requires it as an optional dependency:
 
 ```bash
-pip install "pymoo>=0.6.1"
+uv pip install "pymoo>=0.6.1"
 ```
 
 ---
