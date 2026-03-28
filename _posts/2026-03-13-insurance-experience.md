@@ -68,7 +68,7 @@ The output is a factor table: policy_id, credibility weight Z, prior mean, poste
 
 Static credibility assumes the individual risk level is fixed over time - yesterday's experience is as informative as ten years ago. That is wrong for most insurance lines. Vehicle condition changes, drivers improve or deteriorate, business risk profiles shift. The claim frequency you observed from a policyholder in year 1 should receive less weight than year 4 when estimating year 5.
 
-`DynamicPoissonGammaModel` implements the Ahn/Jeong/Lu/Wüthrich (2023) Poisson-gamma state-space model. The individual risk level follows a latent state process that evolves over time. The model has:
+`DynamicPoissonGammaModel` implements a Poisson-gamma state-space model in the tradition of Ahn, Jeong, Lu and Wüthrich's work on dynamic credibility (the specific 2023 paper attribution is unconfirmed; the architecture follows the state-space credibility literature). The individual risk level follows a latent state process that evolves over time. The model has:
 
 - **Observation model**: observed claims ~ Poisson(λ_t × exposure_t), where λ_t is the latent rate in period t
 - **State model**: λ_t evolves according to a mean-reverting process - high-claim years are partially discounted in favour of the portfolio mean
@@ -153,7 +153,7 @@ The tiers are not competitors - they are appropriate for different situations.
 
 ## The FCA PS21/11 framing
 
-FCA PS21/11 (September 2021) introduced the fair value requirement for general insurance products, including the obligation that pricing reflects the risk of the individual consumer, not just their group membership. NCD discounts were specifically scrutinised in the context of dual pricing remediation - long-standing customers receiving NCD-inflated discounts that exceeded what posterior risk would justify.
+FCA PS21/11 (August 2021) introduced the General Insurance Pricing Practices (GIPP) rules, banning the practice of price-walking where renewing customers were charged more than equivalent new customers. NCD discounts were specifically scrutinised in the context of dual pricing remediation - long-standing customers receiving NCD-inflated discounts that exceeded what posterior risk would justify. The obligation on firms to price for individual consumer risk sits under Consumer Duty (PS22/9), but PS21/11 created the fair value framework that makes pricing transparency and posterior risk grounding a regulatory expectation.
 
 `insurance-experience` produces factors grounded in posterior risk inference, not contractual history. The distinction is auditable: you can show the regulator that a 65% NCD policyholder's factor of 0.78 reflects a posterior frequency estimate based on their actual claims history, not a table lookup from a transition matrix. This does not replace NCD in the contractual sense - you still need to honour NCD discounts. It gives you a posterior risk signal that runs alongside the contractual mechanism and can be used to identify where the two diverge materially.
 

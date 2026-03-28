@@ -233,7 +233,7 @@ All three achieve joint coverage above 95%. LWC gives frequency intervals 13% na
 
 The most direct regulatory application is capital estimation. Solvency II Article 101 requires the SCR to equal the 99.5% Value at Risk of the one-year loss distribution. Standard formula uses prescribed correlation matrices - multivariate normal aggregation that may misestimate joint tail dependence.
 
-Hong (arXiv:2503.03659, March 2025) demonstrated this gap explicitly: on personal injury claims data, a GLM-based internal model achieved only 70.2% empirical coverage at its stated "99.5%" confidence level. The conformal approach achieved 99.6% coverage with no distributional assumption.
+Hong (arXiv:2503.03659, March 2025) demonstrated this gap explicitly: on personal injury claims data, a GLM-based internal model achieved below nominal empirical coverage at its stated "99.5%" confidence level. The conformal approach achieved 99.6% coverage with no distributional assumption.
 
 `SolvencyCapitalEstimator` wraps `JointConformalPredictor` with `alpha=0.005` and `one_sided=True`. The joint prediction set becomes [0, U_freq] × [0, U_sev], and the conservative SCR per policy is U_freq × U_sev:
 
@@ -280,19 +280,6 @@ The FCA's June 2024 multi-firm review of insurance Consumer Duty monitoring foun
 Joint conformal prediction sets are the obvious answer to this: they provide distribution-free, finite-sample valid tolerance regions for multi-dimensional outcome vectors. For a customer segment, predict the joint distribution of (claims acceptance rate, average settlement days, complaint rate). If the observed outcomes for that segment fall outside the 95% joint prediction set, you have a calibrated, auditable statistical signal that something is wrong - not a "we compared to last year" narrative.
 
 This application uses the same `JointConformalPredictor` API with outcome metrics as outputs rather than frequency and severity. The coverage guarantee is identical.
-
----
-
-## BUILD score: 17/20
-
-| Dimension | Score | Rationale |
-|---|---|---|
-| Pricing relevance | 5/5 | Direct F/S joint intervals; Solvency II SCR; Consumer Duty outcome monitoring. Three live UK use cases, all with regulatory hooks. |
-| Python gap | 4/5 | Complete gap confirmed: MAPIE, crepes, nonconformist, puncc, TorchCP - none implement joint multi-output conformal prediction with GLM/GBM base models. Score 4 not 5 because Fan & Sesia's research code exists on GitHub, just unpackaged. |
-| Build feasibility | 4/5 | Algorithm is mathematically explicit (O(d²n log n) LWC). numpy-only. Delivered in 198 tests across 7 modules. |
-| Novelty | 4/5 | Coordinate-wise standardization for F/S scale mismatch, insurance GLM/GBM hooks, Solvency II mode - genuinely new combination. Score 4 not 5 as Fan & Sesia did the core mathematics. |
-
-Three bugs found during build are worth noting: a deviance-as-width units error in early score implementation, zero-claim sigma deflation when the mask was applied before rather than after standardization, and an overclaim in the LWC-vs-Bonferroni efficiency comparison (corrected to 20–35% from an initial 30–40% estimate). These are documented in the library changelog.
 
 ---
 

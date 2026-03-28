@@ -155,7 +155,7 @@ t_i = β_i * h(α, δ)          (threshold, per policyholder)
 μ_i = σ² + log(t_i)          (lognormal mu, per policyholder)
 ```
 
-where h(α, δ) is a shape-parameter-only function. The threshold is proportional to exp(linear predictor). This is the Liu, Li & Shi (Insurance: Mathematics and Economics, 2024) framework implemented in Python.
+where h(α, δ) is a shape-parameter-only function. The threshold is proportional to exp(linear predictor). This is the Li, Wang & Zhao (Insurance: Mathematics and Economics, 2024) framework implemented in Python.
 
 ```python
 import pandas as pd
@@ -328,9 +328,9 @@ A few things worth knowing before deploying this in production.
 
 The composite framework implemented here draws primarily from two papers:
 
-Liu, Li & Shi (Insurance: Mathematics and Economics, 2024) established the varying-threshold GBII composite regression framework. The covariate-dependent threshold via mode-matching, the reparameterisation to handle shape constraints, and the warm-start initialisation strategy from their paper are all present in the library's regression implementation.
+Li, Wang & Zhao (Insurance: Mathematics and Economics, 2024) established the varying-threshold GBII composite regression framework. The covariate-dependent threshold via mode-matching, the reparameterisation to handle shape constraints, and the warm-start initialisation strategy from their paper are all present in the library's regression implementation.
 
-Fung, Li et al. (arXiv:2208.01262, 2022) developed the Lognormal-T composite regression models with varying threshold. The lognormal body with Burr XII tail variant - the most practically useful for actuarial work - is the model in `LognormalBurrComposite`.
+Aradhye, Bhati & Tzougas (arXiv:2208.01262, 2022) developed the Lognormal-T composite regression models with varying threshold. The lognormal body with Burr XII tail variant - the most practically useful for actuarial work - is the model in `LognormalBurrComposite`.
 
 Neither group has published a Python implementation. The R packages (evmix, ReIns, CompLognormal) cover univariate fitting only - no regression, no covariate-dependent threshold. The Python gap is total.
 

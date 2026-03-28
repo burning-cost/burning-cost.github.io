@@ -68,7 +68,7 @@ Wasserstein DRO does not have this problem. The Wasserstein distance measures pe
 
 ## The ENBP constraint
 
-FCA Consumer Duty, and specifically the ENBP requirement, means there is a hard floor on the rates you can offer at renewal. Any rate that would result in a customer paying materially more than they would as a new customer for equivalent cover is prohibited.
+FCA PS21/11, and specifically the ENBP requirement, means there is a hard floor on the rates you can offer at renewal. Any rate that would result in a customer paying materially more than they would as a new customer for equivalent cover is prohibited.
 
 In the DRO formulation, ENBP is a hard constraint on the rate multiplier:
 
