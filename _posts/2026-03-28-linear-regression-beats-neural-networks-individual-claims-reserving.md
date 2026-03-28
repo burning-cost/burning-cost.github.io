@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Linear Regression Beats Neural Networks for Individual Claims Reserving"
-date: 2026-04-26
+date: 2026-03-28
 categories: [research]
 tags: [reserving, IBNR, individual-claims, neural-networks, linear-regression, chain-ladder, python]
 description: "Richman and Wüthrich's March 2026 paper shows linear regression with projection-to-ultimate factors closes 44% of the gap over chain ladder — and neural networks add nothing at typical portfolio sizes. The gain comes from features, not model complexity."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Smooth Noisy Insurance Loss Curves"
-date: 2026-04-08
+date: 2026-03-28
 categories: [tutorials]
 tags: [whittaker-henderson, smoothing, age-curves, ncd, loss-ratios, reml, credible-intervals, insurance-whittaker, poisson, python]
 description: "Raw loss ratios by age band are noisy. A 5-year moving average introduces boundary bias and requires a judgment call you cannot defend in an IFRS 17 review. This tutorial shows the right way to smooth an age curve using Whittaker-Henderson with automatic lambda selection — and why the credible intervals matter."

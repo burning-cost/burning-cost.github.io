@@ -2,7 +2,7 @@
 layout: post
 title: "Capital Modelling Basics in Python: Aggregate Distributions and Monte Carlo SCR"
 description: "Build a working Solvency II SCR estimate from scratch using compound distributions and Monte Carlo simulation. Poisson/NegBin frequency, lognormal severity, 50k simulations, VaR at 99.5%. numpy and scipy only."
-date: 2026-04-18
+date: 2026-03-28
 categories: [capital-modelling, tutorials]
 tags: [SCR, solvency-ii, Monte-Carlo, aggregate-distributions, VaR, lognormal, negative-binomial, scipy, numpy, Python]
 ---

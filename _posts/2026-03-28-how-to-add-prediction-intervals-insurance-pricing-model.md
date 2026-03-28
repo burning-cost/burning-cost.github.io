@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Add Prediction Intervals to an Insurance Pricing Model"
-date: 2026-04-06
+date: 2026-03-28
 categories: [tutorials]
 tags: [conformal-prediction, prediction-intervals, tweedie, insurance-conformal, catboost, uncertainty, python]
 description: "Point estimates from pricing models are incomplete. This tutorial shows how to add distribution-free prediction intervals to a CatBoost Tweedie model using insurance-conformal — with per-decile coverage validation and a note on what 'coverage' actually means for pricing."

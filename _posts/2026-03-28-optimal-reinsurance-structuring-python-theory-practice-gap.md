@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Optimal Reinsurance Structuring: What Theory Delivers and What Pricing Teams Actually Do"
-date: 2026-04-25
+date: 2026-03-28
 categories: [research]
 tags: [reinsurance, XL, optimisation, solvency-ii, SCR, capital-modelling, python]
 description: "Theory proves standard XL layers are optimal under VaR. Yet most pricing teams set retentions by trial and error. We review the academic results, the commercial tools, and the Python gap — then sketch a practical optimisation approach."

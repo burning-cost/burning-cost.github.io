@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?"
-date: 2026-04-05
+date: 2026-03-28
 categories: [techniques, validation]
 tags: [EBM, interpretable-ml, monotonicity, GAM, nam, anam, insurance-gam, poisson, gini, motor, pricing, python]
 description: "On a UK motor DGP with a monotone young-driver requirement, unconstrained EBM violates monotonicity in 31% of runs. Constrained EBM matches GLM monotonicity compliance at 100% while closing 80% of the Gini gap to the unconstrained model."

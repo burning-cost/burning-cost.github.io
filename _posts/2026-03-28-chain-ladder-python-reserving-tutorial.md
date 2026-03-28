@@ -2,7 +2,7 @@
 layout: post
 title: "Chain Ladder Reserving in Python: A Practical Tutorial with chainladder"
 description: "Build loss development triangles, calculate IBNR reserves, and plot development patterns using Python and the chainladder library."
-date: 2026-04-13
+date: 2026-03-28
 categories: [reserving, tutorials]
 tags: [chainladder, IBNR, loss-triangles, reserving, Python]
 ---

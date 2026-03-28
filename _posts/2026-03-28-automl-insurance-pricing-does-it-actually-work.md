@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AutoML for Insurance Pricing — Does It Actually Work?"
-date: 2026-04-21
+date: 2026-03-28
 categories: [tutorials, pricing]
 tags: [automl, h2o, flaml, autogluon, insurance-pricing, poisson, tweedie, exposure, freMTPL2, frequency-modelling, python, tutorial]
 description: "H2O, FLAML, and AutoGluon are genuinely useful tools. None of them handle the log(exposure) offset that makes insurance frequency modelling work. Here is an honest account of where they are, what they can do today, and where not to trust them."

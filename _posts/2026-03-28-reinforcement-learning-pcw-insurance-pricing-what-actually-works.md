@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Reinforcement Learning for PCW Insurance Pricing: What Actually Works"
-date: 2026-04-23
+date: 2026-03-28
 categories: [pricing, research, strategy]
 tags: [reinforcement-learning, contextual-bandit, PCW, margin-optimisation, GIPP, Thompson-Sampling, motor, insurance-optimise]
 description: "A practitioner-oriented deep dive on applying reinforcement learning and contextual bandits to PCW margin optimisation for UK personal lines. Two serious papers exist, six hard problems remain unsolved, and there is no production-ready open-source implementation. Here is the honest state of play."

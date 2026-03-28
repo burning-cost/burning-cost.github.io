@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Whittaker-Henderson Smoothing Actually Work for Insurance Pricing?"
-date: 2026-03-30
+date: 2026-03-28
 categories: [validation]
 tags: [smoothing, whittaker-henderson, experience-rating, rating-tables, age-curves, reml, lambda-selection, bayesian, credible-intervals, python]
 description: "We benchmarked Whittaker-Henderson against raw rates and a 5-point weighted moving average on a synthetic UK motor driver age curve with known truth. W-H reduces MSE by 57.2% vs raw rates and eliminates the boundary bias that makes the moving average underprice young drivers by roughly 2 percentage points."

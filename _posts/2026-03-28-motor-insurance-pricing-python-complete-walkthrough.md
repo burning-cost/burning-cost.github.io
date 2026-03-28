@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Motor Insurance Pricing in Python: A Complete Walkthrough"
-date: 2026-04-12
+date: 2026-03-28
 categories: [tutorials]
 tags: [motor, GLM, frequency-severity, python, pricing, tutorial, FrEMTPL2, poisson, gamma, tweedie]
 description: "End-to-end motor insurance pricing in Python using the French MTPL dataset. Frequency-severity GLMs, exposure offsets, coefficient interpretation, validation, and calibration to gross premium. The complete workflow for pricing actuaries and data scientists."

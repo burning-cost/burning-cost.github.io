@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does HMM Telematics Risk Scoring Actually Work for Insurance Pricing?"
-date: 2026-03-31
+date: 2026-03-28
 categories: [validation]
 tags: [telematics, hmm, hidden-markov-model, glm, poisson, motor, pricing, python]
 description: "HMM-derived driving state features improve Gini by 5–10 percentage points over raw trip averages on a state-structured DGP. The reason is temporal: the HMM knows that aggressive-then-calm and consistently-moderate are different risk profiles. Raw averages do not."

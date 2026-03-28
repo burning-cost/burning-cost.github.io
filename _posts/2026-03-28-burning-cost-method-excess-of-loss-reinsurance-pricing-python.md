@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The Burning Cost Method for Excess of Loss Reinsurance Pricing in Python"
-date: 2026-04-11
+date: 2026-03-28
 categories: [tutorials]
 tags: [reinsurance, burning-cost, excess-of-loss, XL-pricing, python, frequency-severity]
 description: "A practical Python walkthrough of the burning cost method for pricing excess of loss reinsurance treaties — loss trending, development, pure rate calculation, and sensitivity analysis using numpy and pandas."

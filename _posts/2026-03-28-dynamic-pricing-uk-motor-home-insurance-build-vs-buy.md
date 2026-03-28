@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Dynamic Pricing for UK Motor and Home Insurance — Build or Buy?"
-date: 2026-04-22
+date: 2026-03-28
 categories: [pricing, strategy]
 tags: [dynamic-pricing, FCA, GIPP, ENBP, price-elasticity, thompson-sampling, reinforcement-learning, OptiGrad, PCW, Earnix, Akur8, Radar-Live, insurance-elasticity, insurance-optimise, causal-inference, DML, UK-insurance, motor, home]
 description: "A practitioner's guide to dynamic pricing in UK insurance: what GIPP actually permits, why your elasticity model likely has a 3-5x bias, and an honest assessment of whether Earnix, Akur8 or open-source tools can fill the gap."

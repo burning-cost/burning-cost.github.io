@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Constrained Rate Optimisation Actually Work?"
-date: 2026-03-29
+date: 2026-03-28
 categories: [validation]
 tags: [rate-optimisation, pricing, FCA, ENBP, elasticity, efficient-frontier, python]
 description: "We benchmarked constrained portfolio optimisation against a uniform +7% rate change on a 2,000-policy UK motor book. The optimiser achieved the same GWP target with £4,000–8,000 higher expected profit and 2–4pp better retention. Here is when that holds and when it does not."

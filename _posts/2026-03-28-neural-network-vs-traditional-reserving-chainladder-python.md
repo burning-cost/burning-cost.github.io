@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Reserving with chainladder-python Part 3: Neural Networks vs Traditional Methods"
-date: 2026-04-19
+date: 2026-03-28
 categories: [tutorials]
 tags: [reserving, IBNR, chain-ladder, neural-networks, DeepTriangle, Bornhuetter-Ferguson, bootstrap-ODP, chainladder, python, stochastic-reserving, tutorial]
 description: "When does it make sense to reach beyond chain ladder and bootstrap ODP for neural reserving methods? We compare DeepTriangle, individual RNN approaches, and the Richman-Wüthrich one-shot framework against traditional aggregate triangle methods — and give you an honest assessment of where each belongs."

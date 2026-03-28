@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Stochastic Reserving in Python: Mack and Bootstrap ODP with chainladder"
-date: 2026-04-15
+date: 2026-03-28
 categories: [tutorials]
 tags: [reserving, IBNR, stochastic-reserving, bootstrap-ODP, Mack, chainladder, python, Solvency-II, IFRS-17, tutorial]
 description: "How to produce a full IBNR distribution in Python using the Mack method and Bootstrap ODP sampling. Covers analytical standard errors, 5,000-simulation bootstrap, percentile tables for Solvency II SCR and IFRS 17 risk adjustment, and a Mack vs Bootstrap comparison on the RAA dataset."

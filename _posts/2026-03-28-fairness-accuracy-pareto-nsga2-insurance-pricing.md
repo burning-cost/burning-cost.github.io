@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Fairness-Accuracy Tradeoffs in Insurance Pricing — Pareto Frontiers with NSGA-II"
-date: 2026-04-20
+date: 2026-03-28
 categories: [tutorials, fairness]
 tags: [fairness, NSGA-II, pareto, multi-objective-optimisation, insurance-fairness, consumer-duty, FCA, TOPSIS, pymoo, pricing, python, tutorial]
 description: "Single-objective fairness constraints force a binary choice. NSGA-II finds the full tradeoff surface, so governance committees can make an explicit, documented decision about where to operate — not discover the choice post-deployment."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Automatic Lambda Selection for Whittaker-Henderson Actually Work?"
-date: 2026-04-03
+date: 2026-03-28
 categories: [techniques, validation]
 tags: [smoothing, whittaker-henderson, lambda-selection, reml, marginal-likelihood, bayesian, credible-intervals, age-curves, python]
 description: "REML-selected lambda beats manual tuning on a 63-band age curve benchmark: 22% lower MSE on thin tail bands, zero analyst discretion, and principled credible intervals. The honest case for automating what most teams do by eye."

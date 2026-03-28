@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "TabPFN vs CatBoost vs GLM on freMTPL2: The Exposure Offset Problem"
-date: 2026-04-24
+date: 2026-03-28
 categories: [benchmarks, pricing, foundation-models]
 tags: [TabPFN, CatBoost, GLM, Poisson, exposure-offset, freMTPL2, benchmark, frequency-modelling]
 description: "Three-way benchmark on 677K French motor policies. TabPFN cannot handle log-exposure offsets — the structural limitation that makes it unviable for bread-and-butter Poisson frequency modelling."

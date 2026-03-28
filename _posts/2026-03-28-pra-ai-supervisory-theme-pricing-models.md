@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The PRA Just Named AI a Supervisory Theme. What That Means for Your Pricing Models."
-date: 2026-04-10
+date: 2026-03-28
 categories: [regulation, governance, pricing]
 tags: [pra, fca, consumer-duty, model-risk, ai-regulation, eu-ai-act, frc, tas-100, proxy-discrimination, insurance-fairness, insurance-governance, insurance-monitoring, insurance-causal, model-validation]
 description: "In January 2026 the PRA named AI as an insurance supervisory theme for the first time. The FCA published a bias research note in December 2024. The FRC updated TAS 100 to make bias assessment explicit for ML models. And the EU AI Act compliance deadline for high-risk systems is August 2026. For UK pricing teams, the regulatory direction of travel is now clear enough to act on."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does PSI Actually Catch Pricing Model Drift?"
-date: 2026-04-04
+date: 2026-03-28
 categories: [techniques, validation]
 tags: [model-monitoring, drift-detection, PSI, gini, murphy-decomposition, calibration, discrimination, isotonic-regression, pricing, python]
 description: "PSI detects covariate shift but not rank collapse. On a synthetic UK motor book where a new risk factor emerges post-deployment, PSI stays GREEN while Gini drops 8 points. The Brauer-Wüthrich two-step framework catches it in 3,000 policies."

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Bühlmann-Straub Credibility Actually Work?"
-date: 2026-04-01
+date: 2026-03-28
 categories: [techniques, validation]
 tags: [credibility, buhlmann-straub, scheme-pricing, experience-rating, fleet, python]
 description: "We benchmarked Bühlmann-Straub credibility against raw experience and manual Z-factors on a 30-segment synthetic UK motor fleet book with a known DGP. On thin schemes, it reduces MSE by 30-50%. On thick ones, it ties. The honest case for using it anyway."

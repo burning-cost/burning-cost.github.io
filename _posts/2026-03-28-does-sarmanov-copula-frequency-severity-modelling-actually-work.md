@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Does Sarmanov Copula Frequency-Severity Modelling Actually Work?"
-date: 2026-04-02
+date: 2026-03-28
 categories: [techniques, validation]
 tags: [frequency-severity, sarmanov, copula, glm, motor, pricing, python]
 description: "The standard UK motor pricing formula multiplies E[N] by E[S] and assumes independence. On a 15,000-policy benchmark with planted omega=3.5, that assumption understates portfolio premium by 7-9%. The Sarmanov copula cuts this to 1-3%."

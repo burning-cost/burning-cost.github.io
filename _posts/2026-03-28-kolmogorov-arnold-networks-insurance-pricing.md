@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Kolmogorov-Arnold Networks for Insurance Pricing: What Actuaries Should Know"
-date: 2026-04-16
+date: 2026-03-28
 categories: [techniques, research]
 tags: [KAN, neural-networks, interpretability, monotonicity, GLM, pricing, regulatory, splines, symbolic-regression, MonoKAN, KANN, mortality, actuarial]
 description: "A new neural architecture published in ASTIN Bulletin 2026 replaces fixed activation functions with learnable splines on edges. This is not another GBM variant. It has a genuinely different interpretability story, certified monotonicity, and a credible path to regulatory compliance — with honest limitations attached."

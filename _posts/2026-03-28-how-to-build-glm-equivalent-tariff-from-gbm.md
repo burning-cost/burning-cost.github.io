@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Build a GLM-Equivalent Tariff from a GBM"
-date: 2026-04-07
+date: 2026-03-28
 categories: [tutorials]
 tags: [shap-relativities, GBM, GLM, rating-factors, catboost, tariff, interpretability, poisson, python]
 description: "The GBM sits in a notebook outperforming the production GLM. This tutorial shows how to extract multiplicative rating relativities from a CatBoost Poisson model using shap-relativities — including confidence intervals, continuous age curves, and a reconstruction check before you hand the table to a pricing committee."
