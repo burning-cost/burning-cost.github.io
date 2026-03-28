@@ -12,7 +12,7 @@ Q3 2025. Your pricing team applied a 12% technical increase to young driver segm
 
 The honest answer, if you have only done a before/after comparison, is that you do not know. You know that lapses went up after the rate change. You do not know whether the rate change caused them to go up.
 
-This matters for two reasons. First, Consumer Duty: FCA TR24/2 (August 2024) specifically called out insurers who could not demonstrate causal attribution between pricing interventions and customer outcomes. Lapse spikes following rate changes are exactly the kind of outcome the FCA expects you to be able to explain. Second, the business decision: if young driver lapses were going to spike anyway — market repricing, competitor behaviour, end-of-aggregate-scheme — applying a remedial rate cut to stop the bleed is the wrong response.
+This matters for two reasons. First, Consumer Duty: the FCA's multi-firm review of Consumer Duty implementation (2024) identified that firms were unable to demonstrate causal attribution between pricing interventions and customer outcomes. Lapse spikes following rate changes are exactly the kind of outcome the FCA expects you to be able to explain. Second, the business decision: if young driver lapses were going to spike anyway — market repricing, competitor behaviour, end-of-aggregate-scheme — applying a remedial rate cut to stop the bleed is the wrong response.
 
 This post walks through how to answer the question properly, using [`insurance-causal-policy`](/insurance-causal/). The scenario is synthetic but the structure mirrors situations we have seen on UK motor books.
 
@@ -241,7 +241,7 @@ report_json = pack.to_json()
 
 The Markdown report includes: the ATT estimate with CI; the pre-trend test result; the sensitivity breakdown point; a structured caveats section covering IBNR lag (not relevant here since we are using retention, not loss ratio), thin cells, and the parallel trends assumption; and a plain-English conclusion paragraph.
 
-The FCA has not endorsed SDID as a specific evidence standard. What TR24/2 asked for is a credible counterfactual and documented assumptions. This pack provides both.
+The FCA has not endorsed SDID as a specific evidence standard. What the FCA's Consumer Duty outcome monitoring obligation asks for is a credible counterfactual and documented assumptions. This pack provides both.
 
 ---
 

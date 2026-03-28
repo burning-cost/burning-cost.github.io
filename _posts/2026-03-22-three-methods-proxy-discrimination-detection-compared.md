@@ -188,7 +188,7 @@ proxy_detail = report.results["ethnicity_prop"].proxy_detection
 print(proxy_detail.to_polars())
 ```
 
-A low SHAP proxy score on a moderately correlated factor is your actuarial justification evidence. It tells you the factor's pricing contribution is driven by risk variation, not demographic correlation. Document this finding in your Consumer Duty fair value assessment. The FCA's TR24/2 specifically asked for analysis at this level of granularity - not just "we audited it" but "we found X correlation, and here is our evidence that the price contribution is driven by Y."
+A low SHAP proxy score on a moderately correlated factor is your actuarial justification evidence. It tells you the factor's pricing contribution is driven by risk variation, not demographic correlation. Document this finding in your Consumer Duty fair value assessment. The FCA has asked for analysis at this level of granularity - not just "we audited it" but "we found X correlation, and here is our evidence that the price contribution is driven by Y."
 
 ---
 

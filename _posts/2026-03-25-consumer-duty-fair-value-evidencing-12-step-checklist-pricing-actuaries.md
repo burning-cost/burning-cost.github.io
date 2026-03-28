@@ -9,7 +9,7 @@ description: "FCA PS24/1 confirms enhanced Consumer Duty requirements from April
 tags: [FCA, Consumer-Duty, PS24-1, EP25-2, PRIN-2A, fair-value, fairness, monitoring, calibration, proxy-discrimination, insurance-monitoring, insurance-fairness, insurance-conformal, pricing-actuary, compliance, uk-insurance, tutorial]
 ---
 
-The FCA confirmed enhanced Consumer Duty requirements in PS24/1 with April 2026 as the effective date. EP25/2 (the FCA's 2026 Insurance Supervision priorities, published February 2025) explicitly names ongoing fair value supervision across motor and home as a standing priority. TR24/2 in August 2024 described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
+The FCA confirmed enhanced Consumer Duty requirements in PS24/1 with April 2026 as the effective date. EP25/2 (the FCA's 2026 Insurance Supervision priorities, published February 2025) explicitly names ongoing fair value supervision across motor and home as a standing priority. The FCA's 2024 multi-firm review of Consumer Duty implementation described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
 
 That gap between what firms are submitting and what the FCA expects has not closed. What is missing is not intent — it is a concrete technical process that a pricing actuary can execute, document, and defend. This post provides one.
 
@@ -33,7 +33,7 @@ The 12 steps below map to the evidence a supervisor would want to see.
 
 **Requirement:** Identify which models are in scope (frequency, severity, demand, uplift), their production version numbers, training data dates, and the last validation date. The fair value assessment must be tied to the model actually in production, not a hypothetical.
 
-**Why it matters:** TR24/2 found fair value assessments that were disconnected from production models. If a model was updated in November and the fair value assessment used October predictions, the evidence is worthless. Version tracking is the foundation everything else rests on.
+**Why it matters:** The FCA's Consumer Duty supervisory reviews found fair value assessments that were disconnected from production models. If a model was updated in November and the fair value assessment used October predictions, the evidence is worthless. Version tracking is the foundation everything else rests on.
 
 **Code:**
 
@@ -300,7 +300,7 @@ The output tells the evidence pack reader not just that drift exists but which f
 
 ## Step 8: Run proxy discrimination audit — `ProxyDiscriminationAudit`
 
-**Requirement:** Test whether the pricing model indirectly discriminates against customers sharing protected characteristics (age, gender, disability, ethnicity — Equality Act 2010, Section 19). This is not optional under PRIN 2A: the FCA has been explicit since TR24/2 that indirect discrimination through proxies is a live supervisory concern.
+**Requirement:** Test whether the pricing model indirectly discriminates against customers sharing protected characteristics (age, gender, disability, ethnicity — Equality Act 2010, Section 19). This is not optional under PRIN 2A: the FCA has been explicit that indirect discrimination through proxies is a live supervisory concern.
 
 **Why it matters:** A model that does not use gender as a rating factor can still discriminate by gender if vehicle group, occupation, or postcode are correlated with gender. `ProxyDiscriminationAudit` computes D_proxy — a normalised L2-distance from the fitted price to the admissible (discrimination-free) price set (Lindholm, Richman, Tsanakas & Wüthrich, EJOR 2026) — and decomposes it across rating factors via Shapley effects. A D_proxy above 0.05 warrants investigation.
 
@@ -457,7 +457,7 @@ The `lambda_hat_` value is the guaranteed loading factor. Document it as: "The c
 
 **Requirement:** Consolidate all outputs into a versioned, dated evidence pack that names the certifying actuary, the model versions, the monitoring period, and the regulatory mapping. This is the document the FCA would request under s166 or equivalent.
 
-**Why it matters:** TR24/2 found evidence packs that were undated, not reproducible, and contained no regulatory mapping. An evidence pack that does not explicitly state which requirement each section addresses gives a supervisor no path through it. Include explicit mappings to PRIN 2A.4.6, PS24/1, and EP25/2.
+**Why it matters:** The FCA's Consumer Duty supervisory reviews found evidence packs that were undated, not reproducible, and contained no regulatory mapping. An evidence pack that does not explicitly state which requirement each section addresses gives a supervisor no path through it. Include explicit mappings to PRIN 2A.4.6, PS24/1, and EP25/2.
 
 **Code:**
 
@@ -524,7 +524,7 @@ If you cannot run all 12 before the April 2026 deadline, prioritise in this orde
 
 **Highest risk of material finding:** Steps 3 (Murphy decomposition) and 9 (double fairness). These are the tests most likely to reveal that a firm believes it is compliant while actually failing Consumer Duty outcome monitoring.
 
-**Highest regulatory novelty:** Steps 4 (PITMonitor), 6 (GiniDrift), and 11 (conformal risk control). These provide guarantees that standard actuarial monitoring cannot. The FCA's TR24/2 criticism of "high-level summaries" is most effectively countered by methods that come with finite-sample statistical guarantees — not just expert judgement applied to bar charts.
+**Highest regulatory novelty:** Steps 4 (PITMonitor), 6 (GiniDrift), and 11 (conformal risk control). These provide guarantees that standard actuarial monitoring cannot. The FCA's criticism of "high-level summaries" is most effectively countered by methods that come with finite-sample statistical guarantees — not just expert judgement applied to bar charts.
 
 ---
 
@@ -545,6 +545,6 @@ The libraries are at:
 
 **Related posts:**
 - [FCA Consumer Duty Pricing Fairness in Python](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — the proxy discrimination audit in detail: FairnessAudit, detect_proxies, and calibration_by_group
-- [The FCA Is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the TR24/2 findings and what a complete evidence pack looks like
+- [The FCA Is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the FCA's Consumer Duty review findings and what a complete evidence pack looks like
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — using Murphy decomposition to make the right call when A/E is off
 - [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) — TRIPODD drift attribution with insurance-monitoring

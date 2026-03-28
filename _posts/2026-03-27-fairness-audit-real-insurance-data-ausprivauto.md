@@ -180,7 +180,7 @@ print(f"FPR disparity: {eo.fpr_disparity:.4f}")
 
 ## What this means for UK auditing
 
-The regulatory pressure is real. [FCA Consumer Duty](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) (PRIN 2A, live since July 2023) requires firms to monitor for differential outcomes by customer group. FCA TR24/2 (2024) called out pricing practices specifically. The Equality Act 2010 Section 19 creates liability for indirect discrimination where a pricing practice puts a protected group at a particular disadvantage without objective justification.
+The regulatory pressure is real. [FCA Consumer Duty](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) (PRIN 2A, live since July 2023) requires firms to monitor for differential outcomes by customer group. The FCA's 2024 multi-firm review of Consumer Duty implementation called out pricing practices specifically. The Equality Act 2010 Section 19 creates liability for indirect discrimination where a pricing practice puts a protected group at a particular disadvantage without objective justification.
 
 These three tools — `FairnessAudit`, `MulticalibrationAudit`, and `IndirectDiscriminationAudit` — address different layers of that obligation:
 

@@ -17,7 +17,7 @@ Most teams have not built this. The ones who have, have built it in Excel. We ar
 
 ## What the obligation actually requires
 
-The FCA has been less specific about the recourse obligation than it has been about proxy discrimination. FG22/5 and TR24/2 both focus primarily on price fairness and value monitoring. But the supporting principle in PRIN 2A.4 is clear: firms must support customers in making effective decisions, which means giving them actionable information about their options.
+The FCA has been less specific about the recourse obligation than it has been about proxy discrimination. FG22/5 and the FCA's Consumer Duty supervisory work both focus primarily on price fairness and value monitoring. But the supporting principle in PRIN 2A.4 is clear: firms must support customers in making effective decisions, which means giving them actionable information about their options.
 
 The key word is "actionable." It is not enough to tell a customer that younger drivers pay more because they are higher risk. That is correct and useless. The FCA is asking whether you can tell them: add Pass Plus and your premium drops to £1,150. Fit a Thatcham Cat 1 immobiliser and it drops to £960. The savings need to be denominated in pounds, not percentages of a risk loading they cannot interpret.
 

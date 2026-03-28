@@ -13,7 +13,7 @@ But postcode also correlates with ethnicity. In London, in particular, postcode 
 
 This is proxy discrimination. It is the subject of Equality Act 2010 Section 19. And as of July 2023, it is directly in scope of FCA Consumer Duty, specifically PRIN 2A.4, which requires firms to monitor whether their products provide fair value across groups defined by protected characteristics.
 
-The FCA has signalled this is a priority area. In TR24/2 (August 2024), they found that fair value assessments from reviewed firms were too high level and lacked the granularity to adequately evidence good outcomes across customer groups. The next step is enforcement.
+The FCA has signalled this is a priority area. In its 2024 multi-firm review of Consumer Duty implementation, the FCA found that fair value assessments from reviewed firms were too high level and lacked the granularity to adequately evidence good outcomes across customer groups. The next step is enforcement.
 
 We built [`insurance-fairness`](/insurance-fairness/) to give pricing teams an audit-ready answer to this problem. This post explains the regulatory exposure, the technical problem of proxy discrimination in insurance models, and how to use the library to measure and mitigate it.
 
@@ -261,7 +261,7 @@ Our recommended sequence:
 
 **2. Examine the flagged factors.** Anything with proxy R-squared above 0.10 goes into the `report.flagged_factors` list. For each flagged factor, understand the evidence: is the proxy correlation driving genuine risk signal or demographic correlation? The calibration-by-group check is your primary test.
 
-**3. Document everything.** The FCA in TR24/2 was explicit: they want adequate granularity and evidence of good outcomes. "We looked and found it was fine" is not adequate. "We ran these specific tests, found these specific results, and took these specific actions" is. Use `report.to_markdown()` to produce the evidence document.
+**3. Document everything.** The FCA has been explicit: they want adequate granularity and evidence of good outcomes. "We looked and found it was fine" is not adequate. "We ran these specific tests, found these specific results, and took these specific actions" is. Use `report.to_markdown()` to produce the evidence document.
 
 **4. If the proxy component is material, compute discrimination-free prices.** The `insurance-fairness.optimal_transport` subpackage handles this: it takes a CausalGraph specifying which variables are proxies versus justified mediators, and applies the Lindholm marginalisation to produce corrected premiums. See [Discrimination-Free Pricing in Python](/2026/03/10/insurance-fairness-ot/) for that workflow.
 

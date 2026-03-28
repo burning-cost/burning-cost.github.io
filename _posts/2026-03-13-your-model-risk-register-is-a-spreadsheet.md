@@ -35,7 +35,7 @@ SS1/23's five principles are: (1) model identification and risk classification, 
 
 That is a model inventory with structured metadata and an audit trail, not a spreadsheet.
 
-The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." TR24/2 (August 2024) - a thematic review of product governance - found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. TR24/2 is a supervisory review, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
+The FCA layer is already live. PRIN 2A requires firms to "regularly assess, test, understand and evidence the outcomes their customers are receiving." The FCA's 2024 multi-firm review of Consumer Duty implementation found documentation failures as a consistent gap: firms running models with no documented methodology for how performance metrics were chosen, no record of who approved the validation findings, and no trail linking the validation report to the model version that was deployed. That review is a supervisory exercise, not an enforcement action, but the pattern it identified is the same pattern that drives enforcement in other areas of consumer outcomes.
 
 ---
 

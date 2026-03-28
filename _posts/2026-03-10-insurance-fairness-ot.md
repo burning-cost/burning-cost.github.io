@@ -29,11 +29,11 @@ uv add insurance-fairness
 
 ## The regulatory context
 
-The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. TR24/2 (August 2024) found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, is about price-walking - it does not impose the proxy discrimination obligation.
+The FCA's Consumer Duty (PS22/9, effective July 2023) requires firms to demonstrate fair value across groups defined by protected characteristics. The FCA's 2024 multi-firm review of Consumer Duty implementation found that most fair value assessments were too high level to satisfy this -- the FCA's phrasing was that firms "lacked the granularity to adequately evidence good outcomes across customer groups." EP25/2 (July 2025), which evaluated the GIPP pricing remedies, is about price-walking - it does not impose the proxy discrimination obligation.
 
 The Equality Act 2010 Section 19 captures indirect discrimination: a pricing practice that puts customers with a protected characteristic at a particular disadvantage, even where the characteristic is not explicitly used, is unlawful unless the firm can show proportionate justification through legitimate actuarial purpose.
 
-None of this is new. What is new is that the FCA has moved from supervisory letters to enforcement referrals, and that TR24/2 made clear the standard of evidence required. Asserting that your model is actuarially justified is not enough. You need to demonstrate which effects are justified, which are proxy discrimination, and what you have done about the latter.
+None of this is new. What is new is that the FCA has moved from supervisory letters to enforcement referrals, and that the FCA's 2024 Consumer Duty multi-firm review made clear the standard of evidence required. Asserting that your model is actuarially justified is not enough. You need to demonstrate which effects are justified, which are proxy discrimination, and what you have done about the latter.
 
 ---
 

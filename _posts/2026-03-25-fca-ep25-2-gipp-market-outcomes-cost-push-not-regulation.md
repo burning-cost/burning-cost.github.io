@@ -168,7 +168,7 @@ The paper has honest limitations. The CDiD methodology requires stronger functio
 
 The FCA also explicitly flags that it cannot determine distributional effects: which consumers benefited from the loyalty pricing correction, and which lost the benefit of low new-business prices. That question — who gained and who lost from GIPP — is not answered here and requires consumer-level data the FCA does not have.
 
-Finally, EP25/2 does not address proxy discrimination or demographic disparity in pricing. That is covered by Consumer Duty (PRIN 2A) and TR24/2, not this paper. Anyone citing EP25/2 as authority for fair value monitoring across protected characteristics is misattributing the source.
+Finally, EP25/2 does not address proxy discrimination or demographic disparity in pricing. That is covered by Consumer Duty (PRIN 2A) and FCA Consumer Duty supervisory work, not this paper. Anyone citing EP25/2 as authority for fair value monitoring across protected characteristics is misattributing the source.
 
 ---
 

@@ -77,7 +77,7 @@ for s in report.results["diversity_score"].proxy_detection.scores:
 report.to_markdown("fairness_audit.md")  # FCA-ready report with regulatory mapping
 ```
 
-The `to_markdown()` output includes explicit regulatory cross-references to PRIN 2A, TR24/2, and Equality Act Section 19. It is structured for a pricing committee pack — one document that can go to legal, compliance, and the pricing team simultaneously.
+The `to_markdown()` output includes explicit regulatory cross-references to PRIN 2A, Consumer Duty (PS22/9), and Equality Act Section 19. It is structured for a pricing committee pack — one document that can go to legal, compliance, and the pricing team simultaneously.
 
 ---
 
@@ -85,7 +85,7 @@ The `to_markdown()` output includes explicit regulatory cross-references to PRIN
 
 One finding from the benchmark is less obvious but more important. Minimising premium disparity (action fairness) does not minimise loss ratio disparity (outcome fairness). On a 20,000-policy TPLI portfolio, the policy with the most equal premiums produced the most unequal loss ratios.
 
-This is the compliance gap FCA TR24/2 (September 2024) described. Firms were auditing at the point of quoting — checking whether premiums are equal across groups — and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
+This is the compliance gap the FCA has highlighted in its Consumer Duty supervisory work. Firms were auditing at the point of quoting — checking whether premiums are equal across groups — and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
 
 The `DoubleFairnessAudit` class in the library computes the Pareto front across action fairness and outcome fairness. A pricing committee can see every operating point along the trade-off, with quantified evidence of the choice being made. A firm that can only show a single demographic parity ratio cannot demonstrate the same level of considered decision-making to the FCA.
 
@@ -93,7 +93,7 @@ The `DoubleFairnessAudit` class in the library computes the Pareto front across 
 
 ## The FCA context
 
-TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". The FCA has signalled that fair value enforcement is active and ongoing. This is live enforcement risk, not theoretical.
+The FCA's 2024 multi-firm review of Consumer Duty implementation found most insurers' Fair Value Assessments were "high-level summaries with little substance". The FCA has signalled that fair value enforcement is active and ongoing. This is live enforcement risk, not theoretical.
 
 Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor — and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
 
@@ -111,7 +111,7 @@ Computation time for proxy R² is 12–15 seconds per factor on 50,000 policies 
 
 Use proxy discrimination testing if:
 - You use postcode area or any geographic factor in UK motor or home pricing — the Citizens Advice (2022) finding is strong enough that you should assume the proxy exists until you have evidence otherwise
-- You are preparing for an FCA Consumer Duty review or have TR24/2 on your risk register
+- You are preparing for an FCA Consumer Duty review or have Consumer Duty fair value obligations on your risk register
 - You are going to commission the work anyway as part of a Fair Value Assessment — you might as well do it properly once rather than producing a number that will not survive scrutiny
 
 The Spearman correlation check at |r| > 0.25 is not adequate for demonstrating absence of proxy discrimination. A CatBoost proxy R² of 0.10 or above on any rating factor warrants investigation. At 0.62, you have a documented problem and a £/policy number that quantifies it.

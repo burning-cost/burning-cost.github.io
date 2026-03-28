@@ -303,7 +303,7 @@ What the PRA expects, implemented as runnable code.
 
 ### insurance-governance - PRA SS1/23 and model risk management
 
-PRA Supervisory Statement SS1/23 (Model Risk Management Principles) and FCA TR24/2 require documented, independent validation with traceable audit trails. In practice most UK insurers have a collection of ad-hoc scripts, Excel workbooks, and email threads. `insurance-governance` turns that into a structured, reproducible HTML report with a JSON sidecar for model risk system ingestion. It also implements the model risk tiering framework: a 0-100 composite risk score maps each model to Tier 1/2/3, determining what governance is required.
+PRA Supervisory Statement SS1/23 (Model Risk Management Principles) and FCA Consumer Duty require documented, independent validation with traceable audit trails. In practice most UK insurers have a collection of ad-hoc scripts, Excel workbooks, and email threads. `insurance-governance` turns that into a structured, reproducible HTML report with a JSON sidecar for model risk system ingestion. It also implements the model risk tiering framework: a 0-100 composite risk score maps each model to Tier 1/2/3, determining what governance is required.
 
 ```python
 from insurance_governance import ModelValidationReport, RiskTierScorer, ValidationModelCard

@@ -106,7 +106,7 @@ The multicalibration test provides exactly the kind of structured, reproducible 
 
 The test also provides a precise operationalisation of what proxy discrimination means. A model that uses postcode area, which is correlated with ethnicity, fails multicalibration if high-diversity postcodes have a systematically different AE ratio within a premium band than low-diversity postcodes. The discrimination manifests as a calibration failure - which is the form most likely to survive regulatory scrutiny, because it is grounded in actuarial methodology rather than imported fairness metrics.
 
-Note that TR24/2 (August 2024), the FCA's product governance thematic review, also identified inadequate evidence frameworks at many firms. Multicalibration audits address both the attestation gap (GIPP) and the fair value evidence gap (Consumer Duty) with the same methodology.
+The FCA's 2024 multi-firm review of Consumer Duty implementation also identified inadequate evidence frameworks at many firms. Multicalibration audits address both the attestation gap (GIPP) and the fair value evidence gap (Consumer Duty) with the same methodology.
 
 ---
 

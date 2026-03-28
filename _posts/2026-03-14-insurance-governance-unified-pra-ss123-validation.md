@@ -56,7 +56,7 @@ The MRM tooling is covered in depth at [Model Risk Governance for UK Insurers: B
 | Hosmer-Lemeshow calibration test | SS1/23 Principle 4 |
 | Double-lift chart (new vs incumbent) | SS1/23 Principle 4 |
 | PSI on score distribution (train vs validation) | SS1/23 Principle 4 |
-| Renewal cohort A/E by tenure band | FCA TR24/2 |
+| Renewal cohort A/E by tenure band | FCA Consumer Duty |
 | Sub-segment calibration by categorical features | Consumer Duty |
 | Data quality (missingness, outliers, cardinality) | SS1/23 Principle 3 |
 | [Monitoring plan completeness](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) | SS1/23 Principle 5 |
@@ -193,7 +193,7 @@ The bottleneck in any validation workflow is the model fitting that produces `y_
 
 ## Our view on the regulatory timeline
 
-PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed. The Consumer Duty fair value obligations are a parallel strand: teams with a [Consumer Duty-aligned fairness audit](/2026/03/20/fairness-auditing-without-sensitive-attributes/) need somewhere to record what was tested and who signed it off — that is the MRM inventory.
+PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: the FCA's 2024 multi-firm review of Consumer Duty implementation identified documentation failures as the primary gap across the firms it reviewed. The Consumer Duty fair value obligations are a parallel strand: teams with a [Consumer Duty-aligned fairness audit](/2026/03/20/fairness-auditing-without-sensitive-attributes/) need somewhere to record what was tested and who signed it off — that is the MRM inventory.
 
 The firms that will handle the PRA extension without a scramble are the ones who can already answer these questions with a query: which models are in production at what tier, when was each last validated, who approved the findings, and what is the machine-readable link between the governance record and the statistical evidence?
 

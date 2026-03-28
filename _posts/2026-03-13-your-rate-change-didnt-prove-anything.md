@@ -3,17 +3,17 @@ layout: post
 title: "Synthetic Difference-in-Differences for Rate Change Evaluation"
 date: 2026-03-13
 categories: [regulation, libraries, causal-inference]
-tags: [sdid, causal-inference, difference-in-differences, fca-tr242, fca-ep252, rate-change-evaluation, python, insurance-causal-policy]
-description: "DiD and Callaway-Sant'Anna for rate change attribution. insurance-causal-policy quantifies what your rate change actually achieved, TR24/2 compliant."
+tags: [sdid, causal-inference, difference-in-differences, fca-consumer-duty, fca-ep252, rate-change-evaluation, python, insurance-causal-policy]
+description: "DiD and Callaway-Sant'Anna for rate change attribution. insurance-causal-policy quantifies what your rate change actually achieved, with FCA Consumer Duty-aligned evidence output."
 ---
 
 Your loss ratio went down six months after the rate increase. The pricing presentation shows a before/after chart. Management is pleased. The FCA compliance team has filed it as a positive outcome.
 
 None of this is evidence that the rate change caused the improvement.
 
-This is not a pedantic distinction. FCA TR24/2 (August 2024) reviewed how UK insurers evaluate the outcomes of their pricing interventions and found that a material number of firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's language was explicit: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. They compared outcomes between treated and comparison groups in their own EP25/2 evaluation specifically because they knew the before/after approach cannot isolate the treatment effect from market-wide trends.
+This is not a pedantic distinction. The FCA's multi-firm review of Consumer Duty implementation (2024) found that a material number of firms failed to demonstrate causal attribution between rate changes and observed outcomes. The FCA's position is clear: before/after comparisons without counterfactuals do not constitute adequate evidence under Consumer Duty outcome monitoring. The FCA itself compared outcomes between treated and comparison groups in its EP25/2 evaluation specifically because it knew the before/after approach cannot isolate the treatment effect from market-wide trends.
 
-We built [`insurance-causal-policy`](/insurance-causal/) to close this gap. It is on PyPI at v0.1.4, 170 tests passing, and it produces the kind of structured causal evidence that TR24/2 was looking for.
+We built [`insurance-causal-policy`](/insurance-causal/) to close this gap. It is on PyPI at v0.1.4, 170 tests passing, and it produces the kind of structured causal evidence that the FCA's Consumer Duty outcome monitoring obligation requires.
 
 ---
 
@@ -112,7 +112,7 @@ sens = compute_sensitivity(result)
 plot_sensitivity(sens)
 ```
 
-**FCAEvidencePack** generates a structured regulatory document (Markdown, JSON, or PDF) that combines the estimation results, sensitivity analysis, panel quality statistics, and a standard caveats section. The output is designed to address the specific gaps TR24/2 identified: counterfactual construction, parallel trends evidence, and documented limitations.
+**FCAEvidencePack** generates a structured regulatory document (Markdown, JSON, or PDF) that combines the estimation results, sensitivity analysis, panel quality statistics, and a standard caveats section. The output is designed to address the specific gaps the FCA identified in its Consumer Duty outcomes monitoring review: counterfactual construction, parallel trends evidence, and documented limitations.
 
 ```python
 from insurance_causal_policy import FCAEvidencePack
@@ -183,9 +183,9 @@ The full workflow from raw tables to regulatory document takes under 20 lines of
 
 ## The regulatory context
 
-We want to be precise about what TR24/2 actually found, because the finding is specific.
+We want to be precise about what the FCA actually found in its 2024 Consumer Duty multi-firm review, because the finding is specific.
 
-The FCA reviewed outcomes monitoring across general insurance firms in August 2024. It found that firms routinely reported outcome metrics - loss ratios, complaint rates, claims acceptance rates - without demonstrating that their pricing interventions caused the observed changes. The failure was methodological: before/after comparisons without counterfactuals, no parallel trends testing, no sensitivity analysis. This is not the FCA demanding peer-reviewed econometrics. It is the FCA saying that "our loss ratio improved" is not the same as "our rate change worked."
+The FCA reviewed outcomes monitoring across general insurance firms in 2024. It found that firms routinely reported outcome metrics - loss ratios, complaint rates, claims acceptance rates - without demonstrating that their pricing interventions caused the observed changes. The failure was methodological: before/after comparisons without counterfactuals, no parallel trends testing, no sensitivity analysis. This is not the FCA demanding peer-reviewed econometrics. It is the FCA saying that "our loss ratio improved" is not the same as "our rate change worked."
 
 EP25/2 (July 2025) is the FCA's own evaluation of GIPP remedies. It used conditional DiD - the FCA built a control group of comparable firms that did not implement the remedied practices and compared outcomes over the policy year following implementation. The methodology section of EP25/2 explicitly discusses parallel trends testing and counterfactual validity. The FCA is applying a higher standard to its own evaluations than it is seeing from regulated firms.
 

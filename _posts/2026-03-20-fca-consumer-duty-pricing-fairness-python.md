@@ -6,12 +6,12 @@ featured: true
 author: Burning Cost
 categories: [compliance, fairness, libraries, tutorials]
 description: "The FCA expects pricing teams to demonstrate their models don't proxy-discriminate under Consumer Duty. Most teams do this in Excel. Here is how to do it properly in Python, using insurance-fairness."
-tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, FairnessAudit, ProxyDetection, calibration, disparate-impact, Equality-Act, PRIN-2A, TR24-2, python, uk-insurance, tutorial]
+tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, FairnessAudit, ProxyDetection, calibration, disparate-impact, Equality-Act, PRIN-2A, python, uk-insurance, tutorial]
 ---
 
-There is a specific obligation in PRIN 2A.4.6 that most UK pricing teams are not meeting, and the FCA has been explicit about this since TR24/2 in August 2024. The obligation is to monitor whether your pricing model produces systematically different outcomes for customers with different protected characteristics - age, gender, disability, ethnicity - and to produce quantitative evidence of that monitoring on a regular basis.
+There is a specific obligation in PRIN 2A.4.6 that most UK pricing teams are not meeting, and the FCA has been explicit about this in its Consumer Duty guidance and supervisory work. The obligation is to monitor whether your pricing model produces systematically different outcomes for customers with different protected characteristics - age, gender, disability, ethnicity - and to produce quantitative evidence of that monitoring on a regular basis.
 
-Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA looked at what firms were producing and called it "high-level summaries with little substance." That finding from TR24/2 preceded the FCA enforcement actions that followed the Which? super-complaint on home and travel insurance, two of which named insurers specifically on fair value grounds.
+Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA looked at what firms were producing and called it "high-level summaries with little substance." The FCA's multi-firm review of Consumer Duty implementation (2024) found that most firms were producing "high-level summaries with little substance" — a finding that preceded the enforcement actions following the Which? super-complaint on home and travel insurance, two of which named insurers specifically on fair value grounds.
 
 This post shows how to run a proper proxy discrimination audit in Python using `insurance-fairness`. The API is built around the specific evidence the FCA needs, not around generic ML fairness benchmarks.
 
@@ -21,7 +21,7 @@ This post shows how to run a proper proxy discrimination audit in Python using `
 
 Before the code: what does a defensible Consumer Duty fair value assessment need to contain?
 
-The FCA has not issued a prescriptive checklist. What it has said, in FG22/5 and confirmed in TR24/2, is that monitoring must be ongoing, segmented by customer group, and backed by quantitative evidence. The two distinct obligations that are easy to conflate:
+The FCA has not issued a prescriptive checklist. What it has said, in FG22/5 and its subsequent supervisory work, is that monitoring must be ongoing, segmented by customer group, and backed by quantitative evidence. The two distinct obligations that are easy to conflate:
 
 **PRIN 2A.4.6 (fair value monitoring)** requires evidence that pricing outcomes - not just pricing processes - are fair across groups. An A/E ratio of 1.0 for females and 0.95 for males does not mean your model is discriminating. It might mean males are less profitable because of genuine risk differences. But you need to know the number, have a view on whether it is acceptable, and document that view.
 
@@ -218,7 +218,7 @@ The `max_disparity` compares the female and male A/E ratios within each predicte
 
 **Ignoring intersectional groups.** The Equality Act 2010 prohibits discrimination on the basis of individual protected characteristics. PRIN 2A.4.6 requires monitoring of groups. These are not the same thing. A model that is well-calibrated for females overall may be poorly calibrated for young female drivers specifically, and the aggregate A/E check will not surface it. If you have sufficient exposure, run `calibration_by_group` on cross-products of your protected characteristics - not just gender and age separately, but (gender × age band) jointly. The library supports this via the `protected_col` argument accepting a pre-constructed interaction column.
 
-**Treating the audit as a one-time exercise.** TR24/2 found firms producing fair value assessments that were undated, not reproducible, and disconnected from the models actually in production. The output from `FairnessAudit.run()` includes the model name, the run date, the policy count, and version metadata from the data. Run it as part of your quarterly model review cycle. Put the Markdown file in your model documentation repository alongside the model artefacts. The FCA's expectation is ongoing monitoring, not an annual checkbox.
+**Treating the audit as a one-time exercise.** The FCA's Consumer Duty supervisory reviews found firms producing fair value assessments that were undated, not reproducible, and disconnected from the models actually in production. The output from `FairnessAudit.run()` includes the model name, the run date, the policy count, and version metadata from the data. Run it as part of your quarterly model review cycle. Put the Markdown file in your model documentation repository alongside the model artefacts. The FCA's expectation is ongoing monitoring, not an annual checkbox.
 
 ---
 
@@ -235,6 +235,6 @@ The honest framing for a pricing committee paper: "Our proxy discrimination audi
 ---
 
 **Related posts:**
-- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) - the regulatory context, what TR24/2 actually found, and what a complete evidence pack requires
+- [The FCA Is Investigating Home and Travel Insurers: Is Your Pricing Model Defensible?](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) - the regulatory context, what the FCA's Consumer Duty review actually found, and what a complete evidence pack requires
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) - what to do when you cannot observe ethnicity, religion, or disability status directly
 - [Discrimination-Free Pricing in Python: Causal Paths, Optimal Transport, and the FCA](/2026/03/10/insurance-fairness-ot/) - the correction step after detection: WassersteinCorrector and causal path decomposition

@@ -25,7 +25,7 @@ Three things follow from this that shape what a technical audit needs to produce
 
 **Second, conditional independence is the legal standard.** The Lindholm, Richman, Tsanakas and Wüthrich (LRTW) framework, now the academic reference point for FCA enforcement discussions, defines discrimination as: a pricing model that is not conditionally independent of a protected attribute S given the observed rating factors X. In other words, if knowing a customer's protected characteristic tells you something about what the model will charge them - even after you know all their risk factors - the model is discriminating. This is a stricter and more precise test than demographic parity.
 
-**Third, the audit trail is part of the obligation.** EP25/2 specifically criticised the quality of evidence submitted by firms in the preceding thematic review, TR24/2 (August 2024). "Too high level and lacking the granularity to adequately evidence good outcomes" is the FCA's summary of what it received. The audit needs to be reproducible, factor-level, and documented - not a one-line assertion that the model was reviewed.
+**Third, the audit trail is part of the obligation.** The FCA's multi-firm review of Consumer Duty implementation (2024) found that the quality of evidence submitted by firms was "too high level and lacking the granularity to adequately evidence good outcomes." The audit needs to be reproducible, factor-level, and documented - not a one-line assertion that the model was reviewed.
 
 ---
 
@@ -117,7 +117,7 @@ with open("fairness_audit_motor_2026q1.json", "w") as f:
     json.dump(report.to_dict(), f, indent=2)
 ```
 
-The Markdown report maps each finding to the specific FCA regulatory requirement: PRIN 2A.4 (Price and Value Outcome), TR24/2, and Equality Act 2010 Section 19. It contains the factor-level proxy scores, RAG statuses, calibration-by-group results, and the overall audit status. It is structured to go directly into a pricing committee pack or model risk register.
+The Markdown report maps each finding to the specific FCA regulatory requirement: PRIN 2A.4 (Price and Value Outcome), Consumer Duty (PS22/9), and Equality Act 2010 Section 19. It contains the factor-level proxy scores, RAG statuses, calibration-by-group results, and the overall audit status. It is structured to go directly into a pricing committee pack or model risk register.
 
 ---
 
@@ -217,7 +217,7 @@ For disability, the Equality Act 2010 definition covers a broad range of conditi
 
 ---
 
-The regulatory timetable here is not abstract. TR24/2 (August 2024) told the market that the quality of evidence firms were producing was inadequate. EP25/2 (2025) set the analytical standard more precisely. The next intervention from Stratford will be enforcement, not another paper.
+The regulatory timetable here is not abstract. The FCA's 2024 Consumer Duty multi-firm review told the market that the quality of evidence firms were producing was inadequate. EP25/2 (2025) set the analytical standard more precisely. The next intervention from Stratford will be enforcement, not another paper.
 
 A `FairnessAudit` on your current production model takes an afternoon of data engineering and a few minutes of compute. The output is a dated, factor-level, RAG-rated document with regulatory mapping. That is what the FCA is asking for.
 

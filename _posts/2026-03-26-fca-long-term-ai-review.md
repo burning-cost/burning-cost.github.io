@@ -55,7 +55,7 @@ The FCA has been explicit that no AI-specific regulation is coming. This was con
 
 But the Mills Review does sharpen a problem that Consumer Duty already creates for pricing teams: the explainability gap.
 
-PRIN 2A — the Consumer Duty framework in force since July 2023 — requires firms to demonstrate that their products provide fair value and that outcomes are monitored across customer groups. The FCA has assessed this in practice: TR24/2, published August 2024, found that most firms' fair value assessments were too high-level and lacked adequate granularity to evidence good outcomes across protected characteristic groups. That is a finding from 18 months ago. The supervisory follow-up from that report has not concluded.
+PRIN 2A — the Consumer Duty framework in force since July 2023 — requires firms to demonstrate that their products provide fair value and that outcomes are monitored across customer groups. The FCA has assessed this in practice: the FCA's multi-firm review of Consumer Duty implementation (2024) found that most firms' fair value assessments were too high-level and lacked adequate granularity to evidence good outcomes across protected characteristic groups. That is a finding from 18 months ago. The supervisory follow-up from that review has not concluded.
 
 The Mills Review extends the same logic: if an advisory or autonomous AI system produces a consumer outcome that turns out to be poor, who is accountable? What evidence does the firm hold that it understood the system's behaviour before deployment? The existing Consumer Duty framework already requires that evidence. The Review is asking whether the framework is sufficient as systems become more complex, not whether it applies — it already does.
 

@@ -20,7 +20,7 @@ The proxy discrimination obligation comes from two documents:
 - **Consumer Duty (PS22/9, PRIN 2A)** — requires firms to actively monitor whether products provide fair value for different groups of customers, including groups defined by protected characteristics
 - **Equality Act 2010, Section 19** — independently prohibits indirect discrimination: a practice that puts persons sharing a protected characteristic at a particular disadvantage, unless it is a proportionate means of achieving a legitimate aim
 
-TR24/2 (FCA multi-firm review, 2024) found most insurers relied on inadequate manual checks to satisfy these obligations — which is the immediate supervisory pressure.
+The FCA's multi-firm review of Consumer Duty implementation (2024) found most insurers relied on inadequate manual checks to satisfy these obligations — which is the immediate supervisory pressure.
 
 The obligation is not to achieve equal prices across groups. It is to demonstrate that price differences reflect genuine risk differences rather than the rating model acting as a proxy for a characteristic it should not price on.
 
@@ -35,7 +35,7 @@ The obligation is not to achieve equal prices across groups. It is to demonstrat
 - Indirect proxy chains: vehicle group predicts theft; theft patterns correlate with area; area correlates with ethnicity
 - Model amplification: a factor with modest proxy correlation but high SHAP importance contributes more discriminatory variation to the final price than the raw correlation implies
 
-TR24/2 (the FCA's 2024 multi-firm review) found that most insurers were relying on exactly these inadequate manual checks and that this was not sufficient to meet their Consumer Duty and Equality Act obligations.
+The FCA's 2024 Consumer Duty multi-firm review found that most insurers were relying on exactly these inadequate manual checks and that this was not sufficient to meet their Consumer Duty and Equality Act obligations.
 
 ---
 
@@ -315,7 +315,7 @@ These thresholds are ours, not the FCA's. The FCA has not published numerical th
 ## References
 
 - FCA Consumer Duty (PS22/9): Policy Statement and Final Rules (July 2022)
-- FCA Multi-Firm Review TR24/2: Outcomes Monitoring under the Consumer Duty (August 2024)
+- FCA Multi-Firm Review: Consumer Duty Outcomes Monitoring (2024)
 - FCA Evaluation Paper EP25/2: Evaluation of General Insurance Pricing Practices Remedies (22 July 2025) — covers GIPP price-walking remedies, not proxy discrimination
 - PRIN 2A: Consumer Duty — FCA Handbook
 - Equality Act 2010, Section 19: Indirect Discrimination

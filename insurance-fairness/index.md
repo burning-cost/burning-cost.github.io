@@ -16,7 +16,7 @@ Proxy discrimination auditing for UK insurance pricing models. Produces document
 
 ## The problem
 
-The FCA's Consumer Duty (PS22/9) requires firms to demonstrate fair value across customer groups. The thematic review TR24/2 (August 2024) found most Fair Value Assessments were "high-level summaries with little substance." Six Consumer Duty investigations are open; two directly involve insurers.
+The FCA's Consumer Duty (PS22/9) requires firms to demonstrate fair value across customer groups. The FCA's multi-firm review of Consumer Duty implementation (2024) found most Fair Value Assessments were "high-level summaries with little substance." Six Consumer Duty investigations are open; two directly involve insurers.
 
 The mechanism creating fair value failures is proxy discrimination. Your postcode rating factor is probably an ethnicity proxy. Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m per year, driven by postcodes that encode protected-characteristic information without anyone explicitly modelling ethnicity.
 

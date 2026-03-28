@@ -5,7 +5,7 @@ date: 2026-03-19
 author: Burning Cost
 categories: [compliance, pricing, fairness]
 description: "Active Consumer Duty investigations in home and travel insurance. What a defensible pricing model actually requires under PRIN 2A, and what the FCA thematic review said about most firms' current evidence."
-tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, TR24/2, PS22/9, pricing, python, uk-insurance]
+tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, PS22/9, pricing, python, uk-insurance]
 ---
 
 Following the Which? super-complaint on home and travel insurance, the FCA has indicated - according to market commentary and its own published supervisory communications - that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
@@ -28,7 +28,7 @@ The key word is "evidence." The Consumer Duty is not a principles-based obligati
 
 ## What the FCA found when it looked
 
-TR24/2, the FCA's general insurance thematic review published in August 2024, examined how firms were implementing their Consumer Duty monitoring obligations. The finding was direct: most firms were producing "high-level summaries with little substance or relevant information."
+The FCA's multi-firm review of Consumer Duty implementation, conducted in 2024, examined how firms were implementing their Consumer Duty monitoring obligations. The finding was direct: most firms were producing "high-level summaries with little substance or relevant information."
 
 That phrase is doing a lot of work. It means the FCA looked at what firms called fair value assessments and found them to be prose documents without quantitative backing. No statistical tests. No segment-level disparity analysis. No evidence that the pricing team had actually interrogated whether outcomes differed across groups.
 
@@ -90,7 +90,7 @@ report.to_markdown("fair_value_evidence_2026q1.md")
 
 Two things to avoid.
 
-First, do not write a Consumer Duty fair value assessment that is a prose summary of why your pricing is reasonable. The FCA has already said, in TR24/2, that this is not adequate. A document describing your actuarial methodology and asserting it produces fair outcomes is not evidence that it does.
+First, do not write a Consumer Duty fair value assessment that is a prose summary of why your pricing is reasonable. The FCA has already said that this is not adequate. A document describing your actuarial methodology and asserting it produces fair outcomes is not evidence that it does.
 
 Second, do not overclaim the regulatory position on any specific metric or threshold. Consumer Duty is law. The obligation to monitor and evidence fair outcomes is not negotiable. But the FCA has not specified that a particular statistical test or threshold constitutes compliance. What the FCA has said is that it expects quantitative evidence, not high-level summaries, and that it will scrutinise the substance of that evidence. Build the evidence base first; it will survive any reasonable regulatory interpretation.
 
