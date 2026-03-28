@@ -91,7 +91,7 @@ card = ModelCard(
         Assumption(
             description='Region as proxy for road density',
             risk='LOW',
-            mitigation='None — accepted residual limitation',
+            mitigation='None  -  accepted residual limitation',
         ),
     ],
     limitations=['Degrades for vehicles >10 years (thin data)', 'No telematics integration'],

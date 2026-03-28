@@ -243,7 +243,7 @@ uv add insurance-monitoring
 ```python
 from insurance_monitoring import MonitoringReport
 
-# Run on new quarter — MonitoringReport is a dataclass, no .run() call needed
+# Run on new quarter  -  MonitoringReport is a dataclass, no .run() call needed
 report = MonitoringReport(
     reference_actual=reference_claims,
     reference_predicted=surrogate.model.predict(X_train),

@@ -45,7 +45,7 @@ sev_df = pl.from_pandas(raw_sev.frame)
 # Columns: IDpol, ClaimNb, Exposure, Area, VehPower, VehAge,
 #          DrivAge, BonusMalus, VehBrand, VehGas, Density, Region
 
-# Cap exposure at 1 year — some policies have implausible values
+# Cap exposure at 1 year  -  some policies have implausible values
 freq_df = freq_df.with_columns(
     pl.col("Exposure").clip(upper_bound=1.0).alias("Exposure")
 )
@@ -317,7 +317,7 @@ freMTPL2 is a clean dataset and the models above will fit without drama. On a re
 
 **Claims development.** freMTPL2 is a fully-developed snapshot. UK MTPL data is typically coded with open claims, and the claim amounts you model include IBNR. Mixing developed and undeveloped claims in the severity training set will bias the severity factors. You need a development-adjusted severity target or a modelling period where claims are sufficiently mature.
 
-The frequency-severity pipeline above is the foundation. The complications above are where pricing actuarial judgement does its work -- and they are separable from the modelling decisions, which is the point of getting the base pipeline right first. Once the model is in production, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) provide distribution-free per-risk uncertainty bounds that the point prediction alone cannot supply — useful for capacity management decisions and SCR components.
+The frequency-severity pipeline above is the foundation. The complications above are where pricing actuarial judgement does its work -- and they are separable from the modelling decisions, which is the point of getting the base pipeline right first. Once the model is in production, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) provide distribution-free per-risk uncertainty bounds that the point prediction alone cannot supply  -  useful for capacity management decisions and SCR components.
 
 ---
 

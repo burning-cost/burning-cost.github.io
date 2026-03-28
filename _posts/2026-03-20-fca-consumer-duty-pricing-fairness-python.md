@@ -66,7 +66,7 @@ postcode_district = rng.choice(
 )
 exposure = rng.uniform(0.3, 1.0, n)
 
-# Gender (protected characteristic — not in model)
+# Gender (protected characteristic  -  not in model)
 # Drawn with postcode-conditional probability so postcode becomes a genuine proxy.
 # Central London postcodes have higher male concentrations in this synthetic book.
 postcode_male_prob = {
@@ -78,7 +78,7 @@ p_male = np.array([postcode_male_prob[pc] for pc in postcode_district])
 gender = np.where(rng.random(n) < p_male, "M", "F")
 
 # Claim cost: genuine risk differences, plus a gender effect that is now partially
-# recoverable via postcode — the proxy channel
+# recoverable via postcode  -  the proxy channel
 claim_cost = np.exp(
     4.2
     + 0.04 * vehicle_age

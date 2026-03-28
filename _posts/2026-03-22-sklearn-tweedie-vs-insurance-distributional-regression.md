@@ -69,7 +69,7 @@ This matters downstream in three ways that pricing committees should care about:
 ```python
 # What sklearn gives you
 y_pred = model.predict(X_test)
-# shape: (n_test,) — one mean prediction per policy
+# shape: (n_test,)  -  one mean prediction per policy
 # Variance: phi * y_pred^p, where phi is a single fitted scalar
 # No per-risk variance. No CoV per policy.
 ```
@@ -92,10 +92,10 @@ model.fit(X_train, y_train, exposure=exposure_train)
 
 pred = model.predict(X_test, exposure=exposure_test)
 
-pred.mean              # E[Y|X] — pure premium per policy
-pred.variance          # Var[Y|X] — conditional variance per policy
-pred.cov               # CoV = SD/mean — per policy, not per portfolio
-pred.volatility_score()  # same as cov — for safety loading
+pred.mean              # E[Y|X]  -  pure premium per policy
+pred.variance          # Var[Y|X]  -  conditional variance per policy
+pred.cov               # CoV = SD/mean  -  per policy, not per portfolio
+pred.volatility_score()  # same as cov  -  for safety loading
 ```
 
 The `pred` object is what changes the conversation. Every policy in `X_test` gets its own `phi` estimate, its own `variance`, its own `cov`. A young driver on a sports car gets a higher `phi` than a middle-aged driver on a family hatchback, even if their means are similar. The model has actually learned this from the data rather than assuming it away.

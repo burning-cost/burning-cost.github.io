@@ -51,7 +51,7 @@ print(f"Claim frequency: {df['claim_count'].sum() / df['exposure'].sum():.4f} cl
 print(f"Claimants: {(df['claim_count'] > 0).sum()} of {len(df)} ({100*(df['claim_count']>0).mean():.1f}%)")
 ```
 
-You will see roughly 8–9% of policyholders claiming, an average severity around £1,800, and exposure varying between 0.05 and 1.0 (monthly direct debit payers, mid-term cancellations, new business late in the year). The exposure variation is intentional — it is what makes the offset non-trivial.
+You will see roughly 8–9% of policyholders claiming, an average severity around £1,800, and exposure varying between 0.05 and 1.0 (monthly direct debit payers, mid-term cancellations, new business late in the year). The exposure variation is intentional  -  it is what makes the offset non-trivial.
 
 ---
 
@@ -118,7 +118,7 @@ The canonical frequency model is:
 log(E[N_i]) = log(exposure_i) + X_i * beta
 ```
 
-The `log(exposure_i)` term is an *offset* — it enters the linear predictor with a fixed coefficient of exactly 1.0, not estimated. This is what makes the model predict a *rate* (claims per year) rather than an expected count for whatever exposure period happens to be observed on each policy.
+The `log(exposure_i)` term is an *offset*  -  it enters the linear predictor with a fixed coefficient of exactly 1.0, not estimated. This is what makes the model predict a *rate* (claims per year) rather than an expected count for whatever exposure period happens to be observed on each policy.
 
 ```python
 freq_model = sm.GLM(
@@ -168,13 +168,13 @@ print(f"Actual claims in test:      {y_te.sum():.0f}")
 print(f"Aggregate A/E ratio:        {y_te.sum() / pred_count_te.sum():.4f}")
 ```
 
-An A/E ratio near 1.0 confirms aggregate calibration. That is necessary but not sufficient — you also need calibration within each factor band, which we cover below.
+An A/E ratio near 1.0 confirms aggregate calibration. That is necessary but not sufficient  -  you also need calibration within each factor band, which we cover below.
 
 ---
 
 ## Overdispersion test
 
-A Poisson GLM assumes Var(N) = mu. On any real motor book, observed variance exceeds this because of unmodelled risk heterogeneity — drivers within the same NCD band and vehicle group differ in ways the model cannot see. Ignoring overdispersion does not bias the coefficient estimates, but it makes standard errors wrong, so hypothesis tests and confidence intervals are anticonservative.
+A Poisson GLM assumes Var(N) = mu. On any real motor book, observed variance exceeds this because of unmodelled risk heterogeneity  -  drivers within the same NCD band and vehicle group differ in ways the model cannot see. Ignoring overdispersion does not bias the coefficient estimates, but it makes standard errors wrong, so hypothesis tests and confidence intervals are anticonservative.
 
 ```python
 dispersion = freq_result.pearson_chi2 / freq_result.df_resid
@@ -184,7 +184,7 @@ print(f"Estimated dispersion (phi): {dispersion:.3f}")
 # Typical UK motor frequency: phi between 1.1 and 1.5.
 ```
 
-If dispersion exceeds about 1.1, use quasi-Poisson for all inference. The coefficients are identical — only the standard errors change.
+If dispersion exceeds about 1.1, use quasi-Poisson for all inference. The coefficients are identical  -  only the standard errors change.
 
 ```python
 freq_result_quasi = sm.GLM(
@@ -281,9 +281,9 @@ sev_pred_te = np.exp(X_te.dot(sev_result.params))
 # Pure premium = E[N/year] × E[S | claim]
 pure_premium_te = freq_rate_te * sev_pred_te
 
-print(f"Pure premium — mean:   £{pure_premium_te.mean():.2f}")
-print(f"Pure premium — median: £{np.median(pure_premium_te):.2f}")
-print(f"Pure premium — P90:    £{np.percentile(pure_premium_te, 90):.2f}")
+print(f"Pure premium  -  mean:   £{pure_premium_te.mean():.2f}")
+print(f"Pure premium  -  median: £{np.median(pure_premium_te):.2f}")
+print(f"Pure premium  -  P90:    £{np.percentile(pure_premium_te, 90):.2f}")
 ```
 
 ---
@@ -306,7 +306,7 @@ def factor_table_from_glm(result, feature_names: list[str],
         idx = feature_names.index(col)
         tables[col] = pl.DataFrame({
             "factor":     [col],
-            "level":      ["(continuous — per unit)"],
+            "level":      ["(continuous  -  per unit)"],
             "log_coef":   [params[idx]],
             "relativity": [np.exp(params[idx])],
             "std_err":    [bse[idx]],
@@ -433,7 +433,7 @@ for factor, true_val in true_params["freq"].items():
         print(f"{factor:<30} {true_val:>10.4f} {est:>12.4f} {est - true_val:>10.4f}")
 ```
 
-With 50,000 policies and a clean Poisson DGP, the GLM recovers true log-coefficients to within ±0.01–0.02 for well-populated factor levels. Thin levels — rare vehicle groups, low-exposure region bands — will have wider estimation error, which is exactly where the A/E checks above will flag problems.
+With 50,000 policies and a clean Poisson DGP, the GLM recovers true log-coefficients to within ±0.01–0.02 for well-populated factor levels. Thin levels  -  rare vehicle groups, low-exposure region bands  -  will have wider estimation error, which is exactly where the A/E checks above will flag problems.
 
 ---
 
@@ -441,13 +441,13 @@ With 50,000 policies and a clean Poisson DGP, the GLM recovers true log-coeffici
 
 A production UK motor pricing GLM requires more than what we have shown here:
 
-**Factor interactions.** The log-link GLM has implicit multiplicative interactions (young driver penalty × vehicle group relativity). Crossed interactions — where the young-driver penalty is larger for high-performance vehicles — require explicit interaction terms. `insurance-interactions` tests for these systematically using CANN and NID scores, so you are not guessing which interactions matter.
+**Factor interactions.** The log-link GLM has implicit multiplicative interactions (young driver penalty × vehicle group relativity). Crossed interactions  -  where the young-driver penalty is larger for high-performance vehicles  -  require explicit interaction terms. `insurance-interactions` tests for these systematically using CANN and NID scores, so you are not guessing which interactions matter.
 
 **Spatial smoothing for territory factors.** Postcode district factors estimated directly from a GLM are noisy because exposure per district varies enormously. `insurance-spatial` fits a BYM2 hierarchical model that borrows strength from neighbouring districts before banding.
 
-**Credibility blending for thin segments.** New vehicle groups, unusual occupation classes, recently-added area codes — these have insufficient exposure for stable GLM estimates. `insurance-credibility` blends the direct GLM estimate with the portfolio complement using Bühlmann-Straub weights.
+**Credibility blending for thin segments.** New vehicle groups, unusual occupation classes, recently-added area codes  -  these have insufficient exposure for stable GLM estimates. `insurance-credibility` blends the direct GLM estimate with the portfolio complement using Bühlmann-Straub weights.
 
-**Large-loss treatment.** The Gamma severity model is disproportionately influenced by a handful of large claims — BI claims above £50k, major property damage. Cook's distance diagnostics identify which claims are doing this; the decision about whether to cap them or model them separately belongs in the actuarial sign-off.
+**Large-loss treatment.** The Gamma severity model is disproportionately influenced by a handful of large claims  -  BI claims above £50k, major property damage. Cook's distance diagnostics identify which claims are doing this; the decision about whether to cap them or model them separately belongs in the actuarial sign-off.
 
 **Formal validation pack.** Under PRA SS1/23, a motor pricing model requires quantitative pass/fail tests: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, calibration slope. `insurance-governance` automates these and produces an auditable HTML report in under five seconds.
 
@@ -467,16 +467,16 @@ Three things in a statsmodels GLM for motor insurance pricing that are non-negot
 
 **Libraries used in this post:**
 
-- `statsmodels` — GLM with Poisson and Gamma families, exposure offset, quasi-likelihood
-- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets) — synthetic UK motor data with known DGP for ground-truth validation
-- [`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools) — automated factor banding via R2VF fused lasso
-- [`insurance-dispersion`](https://github.com/burning-cost/insurance-dispersion) — Double GLM for covariate-driven dispersion in severity models
-- [`insurance-cv`](https://github.com/burning-cost/insurance-cv) — temporal walk-forward splits for honest prospective evaluation
+- `statsmodels`  -  GLM with Poisson and Gamma families, exposure offset, quasi-likelihood
+- [`insurance-datasets`](https://github.com/burning-cost/insurance-datasets)  -  synthetic UK motor data with known DGP for ground-truth validation
+- [`insurance-glm-tools`](https://github.com/burning-cost/insurance-glm-tools)  -  automated factor banding via R2VF fused lasso
+- [`insurance-dispersion`](https://github.com/burning-cost/insurance-dispersion)  -  Double GLM for covariate-driven dispersion in severity models
+- [`insurance-cv`](https://github.com/burning-cost/insurance-cv)  -  temporal walk-forward splits for honest prospective evaluation
 
 **Related posts:**
 
-- [GLM Assumptions in Insurance Pricing: What Actually Matters]({{ site.baseurl }}{% post_url 2026-03-23-glm-assumptions-insurance-pricing-what-actually-matters %}) — which violations matter, which you can live with, and the diagnostics worth running
-- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure]({{ site.baseurl }}{% post_url 2026-03-21-tweedie-regression-insurance-what-sklearn-doesnt-tell-you %}) — why `TweedieRegressor` fails on books with exposure variation, and the statsmodels alternative
-- [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2025-05-14-frequency-severity-independence-is-costing-you-premium %}) — the NCD-driven correlation between frequency and severity, and how to correct for it analytically
-- [Optimal Binning for GLM Rating Factors: Beyond the Eyeball Test]({{ site.baseurl }}{% post_url 2026-03-14-your-factor-banding-is-made-up %}) — R2VF automated factor clustering for vehicle age, NCD, and geography
-- [Why k-Fold CV Is Wrong for Insurance]({{ site.baseurl }}{% post_url 2026-03-21-why-k-fold-cv-is-wrong-for-insurance %}) — why k-fold is wrong for insurance and how to set up temporal holdouts correctly
+- [GLM Assumptions in Insurance Pricing: What Actually Matters]({{ site.baseurl }}{% post_url 2026-03-23-glm-assumptions-insurance-pricing-what-actually-matters %})  -  which violations matter, which you can live with, and the diagnostics worth running
+- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure]({{ site.baseurl }}{% post_url 2026-03-21-tweedie-regression-insurance-what-sklearn-doesnt-tell-you %})  -  why `TweedieRegressor` fails on books with exposure variation, and the statsmodels alternative
+- [Your Frequency-Severity Independence Assumption Is Costing You Premium]({{ site.baseurl }}{% post_url 2025-05-14-frequency-severity-independence-is-costing-you-premium %})  -  the NCD-driven correlation between frequency and severity, and how to correct for it analytically
+- [Optimal Binning for GLM Rating Factors: Beyond the Eyeball Test]({{ site.baseurl }}{% post_url 2026-03-14-your-factor-banding-is-made-up %})  -  R2VF automated factor clustering for vehicle age, NCD, and geography
+- [Why k-Fold CV Is Wrong for Insurance]({{ site.baseurl }}{% post_url 2026-03-21-why-k-fold-cv-is-wrong-for-insurance %})  -  why k-fold is wrong for insurance and how to set up temporal holdouts correctly

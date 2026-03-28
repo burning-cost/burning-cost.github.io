@@ -7,9 +7,9 @@ tags: [conformal-prediction, gbm, catboost, tweedie, uncertainty, pricing, pytho
 description: "Parametric Tweedie intervals undercover high-risk policies by 10–15 percentage points. We tested conformal prediction on 50,000 UK motor policies to find out whether the fix actually holds in practice."
 ---
 
-The short answer is yes — but with one important condition: you have to use the right non-conformity score. Use the default absolute residual and you will reproduce exactly the coverage failure you were trying to fix, just for different deciles.
+The short answer is yes  -  but with one important condition: you have to use the right non-conformity score. Use the default absolute residual and you will reproduce exactly the coverage failure you were trying to fix, just for different deciles.
 
-We ran [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) against a CatBoost Tweedie(p=1.5) model on 50,000 synthetic UK motor policies with a heteroskedastic Gamma DGP. The DGP introduces more variance in the high-mean tail than the Tweedie variance function predicts — which is what real motor books look like when large losses are not fully captured by the rating factors.
+We ran [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) against a CatBoost Tweedie(p=1.5) model on 50,000 synthetic UK motor policies with a heteroskedastic Gamma DGP. The DGP introduces more variance in the high-mean tail than the Tweedie variance function predicts  -  which is what real motor books look like when large losses are not fully captured by the rating factors.
 
 ---
 
@@ -24,12 +24,12 @@ The benchmark makes this concrete:
 | Metric | Parametric Tweedie | Conformal (pearson\_weighted) | Locally-weighted conformal |
 |---|---|---|---|
 | Aggregate coverage (90% target) | ~88–91% | ≥90% | ≥90% |
-| Coverage — top risk decile | ~75–82% | ~88–92% | ~90–93% |
-| Coverage — bottom risk decile | ~94–96% | ~90–92% | ~90–92% |
+| Coverage  -  top risk decile | ~75–82% | ~88–92% | ~90–93% |
+| Coverage  -  bottom risk decile | ~94–96% | ~90–92% | ~90–92% |
 | Assumes constant dispersion | Yes (fails in tail) | No | No |
 | Valid coverage guarantee | No | Yes | Approximately |
 
-The top decile coverage of 75–82% is the problem. These are the policies that matter most for reserving, treaty pricing, and regulatory capital. A 90% interval that is actually 78% is a systematic understatement of uncertainty for the worst risks. It is not a statistical curiosity — it is a number that could feed into capital model inputs.
+The top decile coverage of 75–82% is the problem. These are the policies that matter most for reserving, treaty pricing, and regulatory capital. A 90% interval that is actually 78% is a systematic understatement of uncertainty for the worst risks. It is not a statistical curiosity  -  it is a number that could feed into capital model inputs.
 
 ---
 
@@ -86,7 +86,7 @@ The `coverage_by_decile()` call is the diagnostic that matters. If the top decil
 
 ## When to use a temporal split
 
-The calibration set must be data the model has never seen, drawn from the same distribution as the test set. A random 20% holdout mixes all accident years, which means calibration and test are simultaneously from all periods. That is not strictly wrong, but it hides temporal trends in model residuals — exactly the trend you care about for an in-production pricing model.
+The calibration set must be data the model has never seen, drawn from the same distribution as the test set. A random 20% holdout mixes all accident years, which means calibration and test are simultaneously from all periods. That is not strictly wrong, but it hides temporal trends in model residuals  -  exactly the trend you care about for an in-production pricing model.
 
 Use a temporal split: calibrate on the most recent year of held-out experience, test on the year after. This correctly propagates any trend in residuals rather than averaging it away.
 
@@ -104,7 +104,7 @@ For reserving applications where the calibration set is 2–3 years old, we woul
 
 ## What it does not replace
 
-Conformal prediction produces prediction intervals for individual risks. It is not a replacement for model calibration — a systematically biased model will produce intervals that are wide enough to achieve marginal coverage but centred on the wrong value. Use the calibration suite in [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) to check the point predictions first, then conformal prediction for the intervals around them.
+Conformal prediction produces prediction intervals for individual risks. It is not a replacement for model calibration  -  a systematically biased model will produce intervals that are wide enough to achieve marginal coverage but centred on the wrong value. Use the calibration suite in [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) to check the point predictions first, then conformal prediction for the intervals around them.
 
 ---
 
@@ -116,8 +116,8 @@ Use conformal prediction if:
 - You need a defensible coverage statement for PRA SS1/23 model validation documentation
 
 Do not bother if:
-- Your DGP is well-matched to Tweedie — parametric intervals work fine, as the simpler benchmark.py scenario demonstrates
-- You only need marginal coverage, not per-decile coverage — the overhead of conformal calibration is not worth it for aggregate-level uncertainty
+- Your DGP is well-matched to Tweedie  -  parametric intervals work fine, as the simpler benchmark.py scenario demonstrates
+- You only need marginal coverage, not per-decile coverage  -  the overhead of conformal calibration is not worth it for aggregate-level uncertainty
 - Your calibration set is more than 18 months old relative to the test period without a re-calibration step
 
 ```bash
@@ -126,6 +126,6 @@ uv add "insurance-conformal[catboost]"
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-conformal). The CatBoost benchmark (`benchmarks/benchmark_gbm.py`) is the one that produces the interesting result; `benchmarks/benchmark.py` shows the well-matched baseline where parametric intervals do fine.
 
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — the full library post covering the pearson_weighted non-conformity score, coverage-by-decile diagnostics, and design choices
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if you need a full conditional distribution rather than a prediction interval, distributional GBMs model per-risk dispersion directly
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  the full library post covering the pearson_weighted non-conformity score, coverage-by-decile diagnostics, and design choices
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)  -  if you need a full conditional distribution rather than a prediction interval, distributional GBMs model per-risk dispersion directly
 - [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/)

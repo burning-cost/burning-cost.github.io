@@ -7,7 +7,7 @@ tags: [fairness, proxy-discrimination, fca, consumer-duty, equality-act, pricing
 description: "Manual Spearman correlation missed postcode as an ethnicity proxy in 100% of 50 benchmark runs. CatBoost proxy R-squared caught it in 100% of runs. The difference is the non-linearity of the relationship."
 ---
 
-The question pricing teams should be asking is not "does my model use a protected characteristic?" — it does not, because that would be illegal. The question is "does my model use factors that are correlated with a protected characteristic in a way that a court would call indirect discrimination under Section 19 of the Equality Act 2010?"
+The question pricing teams should be asking is not "does my model use a protected characteristic?"  -  it does not, because that would be illegal. The question is "does my model use factors that are correlated with a protected characteristic in a way that a court would call indirect discrimination under Section 19 of the Equality Act 2010?"
 
 That is a harder question, and the standard approach to answering it is not adequate.
 
@@ -15,9 +15,9 @@ That is a harder question, and the standard approach to answering it is not adeq
 
 ## What most teams currently do
 
-The conventional proxy check is a Spearman rank correlation between each rating factor and the protected characteristic. Set a threshold — typically |r| > 0.25 — and flag anything above it. It is fast, it produces a number, and it fits in a single column of a compliance spreadsheet.
+The conventional proxy check is a Spearman rank correlation between each rating factor and the protected characteristic. Set a threshold  -  typically |r| > 0.25  -  and flag anything above it. It is fast, it produces a number, and it fits in a single column of a compliance spreadsheet.
 
-We benchmarked this against [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) across 50 random seeds on 20,000 synthetic UK motor policies with a known postcode-ethnicity proxy relationship — the structure replicating the Citizens Advice (2022) finding that postcode loading drives a roughly £280/year ethnicity penalty in UK motor.
+We benchmarked this against [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) across 50 random seeds on 20,000 synthetic UK motor policies with a known postcode-ethnicity proxy relationship  -  the structure replicating the Citizens Advice (2022) finding that postcode loading drives a roughly £280/year ethnicity penalty in UK motor.
 
 ---
 
@@ -35,9 +35,9 @@ We benchmarked this against [`insurance-fairness`](https://github.com/burning-co
 
 The Spearman check detects nothing, across all 50 seeds, at any reasonable threshold. The library detects the proxy with a mean R² of 0.62 in every single run.
 
-This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest — but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-linear categorical-to-continuous relationships where rank correlation is near zero despite strong predictive power.
+This is not a failure of the threshold. The Spearman |r| of 0.10 is genuinely small. The issue is that postcode area encodes ethnicity non-linearly: Inner London postcodes have high ethnic diversity, outer postcodes lower, rural postcodes the lowest  -  but within each postcode area the relationship is not monotone, and the Spearman statistic, which measures rank correlation, cannot detect non-linear categorical-to-continuous relationships where rank correlation is near zero despite strong predictive power.
 
-The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number provides quantitative evidence relevant to a Section 19 assessment — establishing the substantial disadvantage element — and is the kind of finding a regulator can act on.
+The library fits a CatBoost model predicting the protected attribute from each rating factor in isolation. Proxy R² of 0.62 means postcode area explains 62% of variance in the diversity score. That number provides quantitative evidence relevant to a Section 19 assessment  -  establishing the substantial disadvantage element  -  and is the kind of finding a regulator can act on.
 
 ---
 
@@ -77,7 +77,7 @@ for s in report.results["diversity_score"].proxy_detection.scores:
 report.to_markdown("fairness_audit.md")  # FCA-ready report with regulatory mapping
 ```
 
-The `to_markdown()` output includes explicit regulatory cross-references to PRIN 2A, TR24/2, and Equality Act Section 19. It is structured for a pricing committee pack — one document that can go to legal, compliance, and the pricing team simultaneously.
+The `to_markdown()` output includes explicit regulatory cross-references to PRIN 2A, TR24/2, and Equality Act Section 19. It is structured for a pricing committee pack  -  one document that can go to legal, compliance, and the pricing team simultaneously.
 
 ---
 
@@ -85,7 +85,7 @@ The `to_markdown()` output includes explicit regulatory cross-references to PRIN
 
 One finding from the benchmark is less obvious but more important. Minimising premium disparity (action fairness) does not minimise loss ratio disparity (outcome fairness). On a 20,000-policy TPLI portfolio, the policy with the most equal premiums produced the most unequal loss ratios.
 
-This is the compliance gap FCA TR24/2 (September 2024) described. Firms were auditing at the point of quoting — checking whether premiums are equal across groups — and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
+This is the compliance gap FCA TR24/2 (September 2024) described. Firms were auditing at the point of quoting  -  checking whether premiums are equal across groups  -  and missing the Consumer Duty Outcome 4 obligation, which is a post-sale value question. A firm paying claims at the same rate across groups regardless of risk has cross-subsidised protected groups, which looks fair but is not economically sustainable. A firm pricing to true risk produces premium differentials that may look unfair but are the correct actuarial answer.
 
 The `DoubleFairnessAudit` class in the library computes the Pareto front across action fairness and outcome fairness. A pricing committee can see every operating point along the trade-off, with quantified evidence of the choice being made. A firm that can only show a single demographic parity ratio cannot demonstrate the same level of considered decision-making to the FCA.
 
@@ -95,28 +95,28 @@ The `DoubleFairnessAudit` class in the library computes the Pareto front across 
 
 TR24/2 found most insurers' Fair Value Assessments were "high-level summaries with little substance". As of mid-2024, six Consumer Duty investigations were open, at least two involving insurers on fair value grounds. This is live enforcement risk, not theoretical.
 
-Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor — and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
+Citizens Advice (2022) put the ethnicity penalty at £280/year and £213 million per year in aggregate for UK motor  -  and this is driven by postcode factors that every standard motor pricing model uses. The question is whether your book has the same structure. A Spearman check at |r| = 0.10 will not tell you.
 
 ---
 
 ## Limitations
 
-The proxy detection works on the factors in isolation — it tests whether postcode area is a proxy for ethnicity when considered alone. It does not test for indirect proxying through combinations of factors. If vehicle group and payment method are individually clean but jointly correlated with a protected characteristic, the single-factor proxy test misses it. The SHAP proxy score addresses this partially by tracing price impact back through the full model structure.
+The proxy detection works on the factors in isolation  -  it tests whether postcode area is a proxy for ethnicity when considered alone. It does not test for indirect proxying through combinations of factors. If vehicle group and payment method are individually clean but jointly correlated with a protected characteristic, the single-factor proxy test misses it. The SHAP proxy score addresses this partially by tracing price impact back through the full model structure.
 
-Computation time for proxy R² is 12–15 seconds per factor on 50,000 policies (80 CatBoost iterations). For a 20-factor tariff, run on Databricks. The mutual information check is a useful first pass — under 5 seconds for the full factor set — to identify candidates before running CatBoost proxy detection.
+Computation time for proxy R² is 12–15 seconds per factor on 50,000 policies (80 CatBoost iterations). For a 20-factor tariff, run on Databricks. The mutual information check is a useful first pass  -  under 5 seconds for the full factor set  -  to identify candidates before running CatBoost proxy detection.
 
 ---
 
 ## Verdict
 
 Use proxy discrimination testing if:
-- You use postcode area or any geographic factor in UK motor or home pricing — the Citizens Advice (2022) finding is strong enough that you should assume the proxy exists until you have evidence otherwise
+- You use postcode area or any geographic factor in UK motor or home pricing  -  the Citizens Advice (2022) finding is strong enough that you should assume the proxy exists until you have evidence otherwise
 - You are preparing for an FCA Consumer Duty review or have TR24/2 on your risk register
-- You are going to commission the work anyway as part of a Fair Value Assessment — you might as well do it properly once rather than producing a number that will not survive scrutiny
+- You are going to commission the work anyway as part of a Fair Value Assessment  -  you might as well do it properly once rather than producing a number that will not survive scrutiny
 
 The Spearman correlation check at |r| > 0.25 is not adequate for demonstrating absence of proxy discrimination. A CatBoost proxy R² of 0.10 or above on any rating factor warrants investigation. At 0.62, you have a documented problem and a £/policy number that quantifies it.
 
-When a RED proxy flag fires, you have four options: (1) remove the factor from the rating model; (2) replace it with a less discriminatory substitute that retains predictive power — for example, substituting a broad postcode area loading with a claims-incidence-based territorial score that is derived from actual loss experience rather than geographic boundaries; (3) retain it and demonstrate actuarial justification under the Section 19(2)(b) proportionality defence — that the factor predicts genuine risk differences that outweigh the discriminatory impact; or (4) if the proportionality case is uncertain, seek external legal advice before the next rate review. Doing nothing is not an option if the flag is in the governance record.
+When a RED proxy flag fires, you have four options: (1) remove the factor from the rating model; (2) replace it with a less discriminatory substitute that retains predictive power  -  for example, substituting a broad postcode area loading with a claims-incidence-based territorial score that is derived from actual loss experience rather than geographic boundaries; (3) retain it and demonstrate actuarial justification under the Section 19(2)(b) proportionality defence  -  that the factor predicts genuine risk differences that outweigh the discriminatory impact; or (4) if the proportionality case is uncertain, seek external legal advice before the next rate review. Doing nothing is not an option if the flag is in the governance record.
 
 ```bash
 uv add insurance-fairness
@@ -124,6 +124,6 @@ uv add insurance-fairness
 
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-fairness). The Monte Carlo sensitivity benchmark (`benchmarks/benchmark_sensitivity.py`) runs 50 seeds and produces the detection rate table.
 
-- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the full library post covering the LRTW framework, disparate impact measurement, and discrimination-free pricing
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to register a fairness audit result in the MRM inventory and link it to the model record
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/)  -  the full library post covering the LRTW framework, disparate impact measurement, and discrimination-free pricing
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  how to register a fairness audit result in the MRM inventory and link it to the model record
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)

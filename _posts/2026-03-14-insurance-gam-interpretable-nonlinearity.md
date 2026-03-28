@@ -146,7 +146,7 @@ model = PINModel(
 )
 model.fit(X_train, y_train, exposure=exposure_train)
 
-# Exact Shapley values — not an approximation
+# Exact Shapley values  -  not an approximation
 # Cost: 2*(q+1) forward passes per sample per background sample
 shap_values = model.shapley_values(X_test, X_background, n_background=200)
 ```
@@ -214,13 +214,13 @@ The diagnostics work identically whether `preds` came from `InsuranceEBM`, `ANAM
 
 ## The regulatory argument, stated directly
 
-The FCA has not introduced AI-specific pricing rules, relying on Consumer Duty and the existing principle-based framework. The PRA's SS1/23 (effective May 2024) requires model validators to understand decision boundaries and test behaviour at margins — the [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) automates the statistical validation suite that SS1/23 mandates. Neither document mandates a specific architecture.
+The FCA has not introduced AI-specific pricing rules, relying on Consumer Duty and the existing principle-based framework. The PRA's SS1/23 (effective May 2024) requires model validators to understand decision boundaries and test behaviour at margins  -  the [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) automates the statistical validation suite that SS1/23 mandates. Neither document mandates a specific architecture.
 
 What they do create is a practical difference in the quality of evidence you can produce. A SHAP waterfall chart on a GBM answers "which features drove this prediction" approximately. An EBM factor table, an ANAM shape function, or a PIN interaction surface answers the same question exactly - and answers additional questions a SHAP chart cannot, such as "what does the model predict if only this one feature changes, across its full range?"
 
 Under Consumer Duty, if your model produces differential pricing across protected characteristic groups, [demonstrating actuarial justification](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) is easier when the shape function for the driving feature is a readable curve rather than an average marginal SHAP contribution. Under SS1/23, a model with guaranteed monotone constraints passes one specific validation test without needing to run it.
 
-These are genuine advantages. None of them guarantee a fairer or more accurate model. They guarantee a model whose behaviour is intrinsically more auditable — which is a different and narrower claim. When [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) flags Gini drift and triggers a refit, a model with stored shape functions makes the "what changed?" conversation with the pricing committee far more tractable than SHAP plots on a black-box.
+These are genuine advantages. None of them guarantee a fairer or more accurate model. They guarantee a model whose behaviour is intrinsically more auditable  -  which is a different and narrower claim. When [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) flags Gini drift and triggers a refit, a model with stored shape functions makes the "what changed?" conversation with the pricing committee far more tractable than SHAP plots on a black-box.
 
 ---
 
@@ -238,11 +238,11 @@ uv add "insurance-gam[interpret,excel]"
 
 Python 3.10+. EBM requires `interpret >= 0.7.0`. ANAM and PIN require `torch >= 2.0`. All three require `polars >= 0.20`.
 
-The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam) ([PyPI](https://pypi.org/project/insurance-gam/)). The `examples/` directory has three scripts — `ebm_frequency.py`, `anam_pure_premium.py`, and `pin_benchmark.py` — each running on synthetic motor data and producing factor tables, shape function plots, and validation metrics. All three complete in under 30 minutes on a laptop.
+The repository is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam) ([PyPI](https://pypi.org/project/insurance-gam/)). The `examples/` directory has three scripts  -  `ebm_frequency.py`, `anam_pure_premium.py`, and `pin_benchmark.py`  -  each running on synthetic motor data and producing factor tables, shape function plots, and validation metrics. All three complete in under 30 minutes on a laptop.
 
 - [EBMs for Insurance Tariff Construction: Boosting Accuracy with GLM Transparency](/2026/03/09/explainable-boosting-machines-for-insurance-pricing/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
 - [Pairwise Interaction Networks: The Model That Beats GBMs and Prints as a Relativities Table](/2026/03/13/insurance-pin/)
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)
-- [Does insurance-gam Actually Work for Insurance Pricing?](/2026/03/24/does-insurance-gam-actually-work-pricing/) — benchmark results on freMTPL2: EBM versus CatBoost versus GLM across Gini, double-lift, and A/E
+- [Does insurance-gam Actually Work for Insurance Pricing?](/2026/03/24/does-insurance-gam-actually-work-pricing/)  -  benchmark results on freMTPL2: EBM versus CatBoost versus GLM across Gini, double-lift, and A/E

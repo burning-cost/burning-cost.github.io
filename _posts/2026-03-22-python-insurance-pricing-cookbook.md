@@ -53,7 +53,7 @@ splits = walk_forward_split(
     min_train_months=24,   # require at least 2 years of training data
     test_months=6,         # 6-month test windows
     step_months=6,         # non-overlapping test windows
-    ibnr_buffer_months=3,  # 3-month buffer — safe for motor
+    ibnr_buffer_months=3,  # 3-month buffer  -  safe for motor
 )
 
 print(len(splits))        # 2 folds for a 5-year dataset with these settings
@@ -178,9 +178,9 @@ model = TweedieGBM(power=1.5)   # power=1 is Poisson, power=2 is Gamma
 model.fit(X_train, y_train, exposure=exposure_train)
 pred = model.predict(X_test, exposure=exposure_test)
 
-print(pred.mean[:5])         # E[Y|X] — pure premium per risk
+print(pred.mean[:5])         # E[Y|X]  -  pure premium per risk
 # [142.3, 89.1, 312.7, 201.4, 67.8]
-print(pred.variance[:5])     # Var[Y|X] — conditional variance
+print(pred.variance[:5])     # Var[Y|X]  -  conditional variance
 # [2341.2, 1203.5, 8932.1, 4512.3, 891.2]
 
 cov = pred.volatility_score()  # CoV = sqrt(Var) / mean per risk
@@ -208,7 +208,7 @@ fc.fit(X_severity, y_severity)    # y_severity = claim amounts > 0
 # Expected loss in £500k xs £1m layer
 ev = fc.price_layer(X_test, attachment=500_000.0, limit=1_000_000.0)
 print(ev[:3])
-# [2341.2, 891.5, 5102.8]  — expected layer loss per risk
+# [2341.2, 891.5, 5102.8]   -  expected layer loss per risk
 ```
 
 `max_basis=30` is a good starting point for 10,000–100,000 severity observations. Go higher if CRPS on a holdout set is still improving; go lower for thin portfolios.
@@ -225,7 +225,7 @@ print(ev[:3])
 from insurance_fairness import detect_proxies, calibration_by_group
 import polars as pl
 
-# Step 1: proxy detection — which rating factors correlate with gender?
+# Step 1: proxy detection  -  which rating factors correlate with gender?
 result = detect_proxies(
     df=df,
     protected_col="gender",
@@ -237,7 +237,7 @@ result.summary()
 # area_code           0.031      0.029    GREEN
 # vehicle_group       0.018      0.021    GREEN
 
-# Step 2: calibration by group — is the model equally calibrated for each group?
+# Step 2: calibration by group  -  is the model equally calibrated for each group?
 cal = calibration_by_group(
     df=df_with_predictions,
     protected_col="gender",
@@ -328,7 +328,7 @@ print(json.dumps(card.to_dict(), indent=2, default=str)[:300])
 
 ### Recipe 11: How do I run an A/E ratio check with Poisson confidence intervals?
 
-For the full monitoring workflow — including Gini drift testing, segmented A/E, Murphy decomposition, and sequential champion/challenger tests — see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
+For the full monitoring workflow  -  including Gini drift testing, segmented A/E, Murphy decomposition, and sequential champion/challenger tests  -  see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/).
 
 ```python
 from insurance_monitoring import ae_ratio
@@ -372,7 +372,7 @@ attributor.fit_reference(X_train, y_train, exposure_train)
 
 result = attributor.test(X_monitor, y_monitor, exposure_monitor)
 print(result.significant_features)
-# ['driver_age', ('driver_age', 'vehicle_group')]  — these two explain the drift
+# ['driver_age', ('driver_age', 'vehicle_group')]   -  these two explain the drift
 
 print(result.drift_contributions)
 # {'driver_age': 0.034, ('driver_age', 'vehicle_group'): 0.021, ...}
@@ -638,10 +638,10 @@ print(summary)
 # vehicle_group      0.031  0.007   1.032        1.018        1.045  < 0.001
 
 print(f"Frailty theta: {model.result.theta:.3f}")
-# theta=0.31 — moderate frailty; Var[z_i] = 1/theta = 3.2
+# theta=0.31  -  moderate frailty; Var[z_i] = 1/theta = 3.2
 # High theta (> 2) means frailty explains little; low theta means frailty dominates
 
-# Posterior frailty scores — individual risk multipliers
+# Posterior frailty scores  -  individual risk multipliers
 credibility_scores = model.credibility_scores()
 # Values > 1.0 identify policyholders whose actual claim rate exceeds
 # what their observables predict

@@ -66,7 +66,7 @@ from insurance_cv.diagnostics import temporal_leakage_check, split_summary
 from insurance_cv.splits import InsuranceCV
 
 # Synthetic UK motor portfolio: 8,000 policies over 4 years
-# With a mild upward frequency trend — the ingredient that makes
+# With a mild upward frequency trend  -  the ingredient that makes
 # k-fold optimism substantial
 rng = np.random.default_rng(2029)
 n = 8_000
@@ -299,6 +299,6 @@ Run `split_summary` before you tune anything. If `gap_days` contains zeros, you 
 ---
 
 **Related posts:**
-- [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — actuarial KPIs for deployed model monitoring: Gini drift, A/E by segment, sequential testing
+- [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)  -  actuarial KPIs for deployed model monitoring: Gini drift, A/E by segment, sequential testing
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - what happens after deployment when the prospective evaluation was correctly done
 - [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - prediction intervals that use temporal splits (same split logic) to calibrate coverage guarantees

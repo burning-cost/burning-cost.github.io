@@ -11,7 +11,7 @@ tags: [FCA, Consumer-Duty, PS24-1, EP25-2, PRIN-2A, fair-value, fairness, monito
 
 The FCA confirmed enhanced Consumer Duty requirements in PS24/1 with April 2026 as the effective date. EP25/2 (the FCA's 2026 Insurance Supervision priorities, published February 2025) explicitly names ongoing fair value supervision across motor and home as a standing priority. TR24/2 in August 2024 described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
 
-That gap between what firms are submitting and what the FCA expects has not closed. What is missing is not intent — it is a concrete technical process that a pricing actuary can execute, document, and defend. This post provides one.
+That gap between what firms are submitting and what the FCA expects has not closed. What is missing is not intent  -  it is a concrete technical process that a pricing actuary can execute, document, and defend. This post provides one.
 
 The checklist below covers the pricing actuary's portion of the annual fair value assessment. It is not the complete Consumer Duty assessment (that includes distribution chain, board sign-off, product governance, and outcomes monitoring). It is the quantitative modelling and analysis that underpins the sections of the assessment that actuaries own: price adequacy, calibration evidence, discrimination monitoring, and model uncertainty quantification.
 
@@ -41,7 +41,7 @@ The 12 steps below map to the evidence a supervisor would want to see.
 import polars as pl
 from datetime import date
 
-# Document your production model registry — adapt to your versioning system
+# Document your production model registry  -  adapt to your versioning system
 model_registry = pl.DataFrame({
     "model_name": ["Motor Frequency v4.2", "Motor Severity v3.1", "Demand Elasticity v1.4"],
     "model_type": ["frequency", "severity", "demand"],
@@ -60,13 +60,13 @@ The evidence file is your anchor. Every subsequent step should reference the mod
 
 ---
 
-## Step 2: Verify the A/E ratio is within acceptable bounds — overall and segmented
+## Step 2: Verify the A/E ratio is within acceptable bounds  -  overall and segmented
 
-**Requirement:** Compute the Actual/Expected ratio for both frequency and severity models. An aggregate A/E is not sufficient — segment by at least vehicle group, region, and NCD band to identify whether miscalibration is distributed or concentrated.
+**Requirement:** Compute the Actual/Expected ratio for both frequency and severity models. An aggregate A/E is not sufficient  -  segment by at least vehicle group, region, and NCD band to identify whether miscalibration is distributed or concentrated.
 
 **Why it matters:** A portfolio-level A/E of 1.02 with a vehicle-group A/E of 1.35 for one segment means you are systematically underpricing that segment. The aggregate masks it. PRIN 2A.4.6 requires outcome monitoring, and a 35% underpricing is a fair value failure for affected customers.
 
-A/E should use adequately developed claims only — 12-month minimum development lag for motor frequency, longer for severity. Check this explicitly before running the calculation.
+A/E should use adequately developed claims only  -  12-month minimum development lag for motor frequency, longer for severity. Check this explicitly before running the calculation.
 
 **Code:**
 
@@ -74,7 +74,7 @@ A/E should use adequately developed claims only — 12-month minimum development
 import numpy as np
 from insurance_monitoring.calibration import ae_ratio, ae_ratio_ci
 
-# Frequency model — use claims at adequate development only
+# Frequency model  -  use claims at adequate development only
 # actual: observed claim counts; predicted: model frequency rate; exposure: earned car-years
 ae_overall = ae_ratio(actual=claims_count, predicted=freq_predicted, exposure=exposure)
 ae_ci = ae_ratio_ci(actual=claims_count, predicted=freq_predicted,
@@ -82,7 +82,7 @@ ae_ci = ae_ratio_ci(actual=claims_count, predicted=freq_predicted,
 
 print(f"Frequency A/E: {ae_overall:.4f}  95% CI: [{ae_ci['lower']:.4f}, {ae_ci['upper']:.4f}]")
 
-# Segmented A/E by vehicle group — surface concentrated miscalibration
+# Segmented A/E by vehicle group  -  surface concentrated miscalibration
 ae_by_vehicle = ae_ratio(
     actual=claims_count,
     predicted=freq_predicted,
@@ -106,7 +106,7 @@ Thresholds: A/E outside 0.90–1.10 is amber; outside 0.85–1.15 is red and req
 
 **Requirement:** Decompose the proper scoring rule into Calibration, Resolution, and Uncertainty components (Murphy decomposition). This tells you whether poor performance reflects a calibration shift (fixable by recalibration) or a genuine model weakness (requires refit).
 
-**Why it matters:** The FCA expects firms to understand *why* a model is underperforming, not just that it is. A recalibration applied to a model with degraded discrimination (low Resolution) will not restore fair value — it will just shift the intercept on a model that is no longer ranking risks correctly. The Murphy decomposition prevents this misdiagnosis.
+**Why it matters:** The FCA expects firms to understand *why* a model is underperforming, not just that it is. A recalibration applied to a model with degraded discrimination (low Resolution) will not restore fair value  -  it will just shift the intercept on a model that is no longer ranking risks correctly. The Murphy decomposition prevents this misdiagnosis.
 
 **Code:**
 
@@ -139,7 +139,7 @@ If the verdict is `REFIT`, the pricing actuary's evidence pack must include a ti
 
 **Requirement:** Demonstrate that calibration has been stable throughout the monitoring period, not just at the point-in-time assessment date. Use anytime-valid sequential monitoring so that interim checks do not inflate false positive rates.
 
-**Why it matters:** A/E ratios computed at year-end hide in-year deteriorations. If your motor frequency model was well-calibrated in January but drifted materially by September, a December A/E of 1.04 tells you nothing useful. PRIN 2A.4.6 requires ongoing monitoring — that means demonstrated process, not a single annual number.
+**Why it matters:** A/E ratios computed at year-end hide in-year deteriorations. If your motor frequency model was well-calibrated in January but drifted materially by September, a December A/E of 1.04 tells you nothing useful. PRIN 2A.4.6 requires ongoing monitoring  -  that means demonstrated process, not a single annual number.
 
 `PITMonitor` uses probability integral transforms and mixture e-processes (Henzi, Murph & Ziegel, 2025) to provide a guarantee: P(ever alarm | model calibrated) ≤ α, for all time, forever. Standard monthly H-L or A/E checks do not provide this guarantee.
 
@@ -150,7 +150,7 @@ from insurance_monitoring import PITMonitor
 from scipy.stats import poisson as sp_poisson
 
 # PITMonitor takes PIT values (floats in [0,1]) computed from your
-# predictive distribution — not raw actuals and predicted rates.
+# predictive distribution  -  not raw actuals and predicted rates.
 monitor = PITMonitor(alpha=0.05, rng=42)
 
 # Compute Poisson PITs for each policy and feed monthly batches.
@@ -162,7 +162,7 @@ for month_idx, (claims_month, lambda_hat_month, exp_month) in enumerate(monthly_
     ]
     alarm = monitor.update_many(pits)
     if alarm.triggered:
-        print(f"Month {month_idx + 1}: ALARM — calibration shift detected")
+        print(f"Month {month_idx + 1}: ALARM  -  calibration shift detected")
         print(f"  Evidence: {alarm.evidence:.3f}, threshold: {alarm.threshold:.1f}")
         print(f"  Estimated changepoint: step {alarm.changepoint}")
         break
@@ -173,7 +173,7 @@ print(f"Monitoring period: {summary.n_observations} observations, "
       f"alarm triggered: {summary.alarm_triggered}")
 ```
 
-Record the `PITMonitor` summary in the evidence pack as continuous monitoring evidence. If no alarm triggered, that is positive evidence of calibration stability — not just an absence of bad news.
+Record the `PITMonitor` summary in the evidence pack as continuous monitoring evidence. If no alarm triggered, that is positive evidence of calibration stability  -  not just an absence of bad news.
 
 ---
 
@@ -188,7 +188,7 @@ Record the `PITMonitor` summary in the evidence pack as continuous monitoring ev
 ```python
 from insurance_monitoring.drift import psi, csi
 
-# PSI for each rating factor — reference = training window, current = monitoring period
+# PSI for each rating factor  -  reference = training window, current = monitoring period
 rating_factors = ["driver_age", "vehicle_group", "ncd_years", "postcode_district"]
 psi_results = {}
 
@@ -217,7 +217,7 @@ Standard thresholds: PSI < 0.10 (no significant change), 0.10–0.25 (moderate d
 
 ## Step 6: Run GiniDrift test to confirm discrimination power is maintained
 
-**Requirement:** Test whether the model's ranking power (Gini coefficient) has changed between the reference period and the current monitoring period. A model with stable A/E but declining Gini is no longer differentiating risk correctly — it is repricing to a flatter tariff structure.
+**Requirement:** Test whether the model's ranking power (Gini coefficient) has changed between the reference period and the current monitoring period. A model with stable A/E but declining Gini is no longer differentiating risk correctly  -  it is repricing to a flatter tariff structure.
 
 **Why it matters:** Declining discrimination means some risks are being overcharged and others undercharged, even if the aggregate is correct. This is the definition of unfair pricing at the individual level. The Gini drift test (Wüthrich, Merz & Noll 2025, arXiv:2510.04556) provides a statistically grounded test rather than a visual inspection of Lorenz curves.
 
@@ -250,7 +250,7 @@ print(f"Significant:     {result.significant}")
 print("\n" + gini_test.summary())
 ```
 
-A significant result (`result.significant = True`) with negative `delta` means ranking power has declined — this requires documented investigation. A model that is increasingly flat is increasingly unfair to low-risk policyholders who are subsidising high-risk ones.
+A significant result (`result.significant = True`) with negative `delta` means ranking power has declined  -  this requires documented investigation. A model that is increasingly flat is increasingly unfair to low-risk policyholders who are subsidising high-risk ones.
 
 ---
 
@@ -298,11 +298,11 @@ The output tells the evidence pack reader not just that drift exists but which f
 
 ---
 
-## Step 8: Run proxy discrimination audit — `ProxyDiscriminationAudit`
+## Step 8: Run proxy discrimination audit  -  `ProxyDiscriminationAudit`
 
-**Requirement:** Test whether the pricing model indirectly discriminates against customers sharing protected characteristics (age, gender, disability, ethnicity — Equality Act 2010, Section 19). This is not optional under PRIN 2A: the FCA has been explicit since TR24/2 that indirect discrimination through proxies is a live supervisory concern.
+**Requirement:** Test whether the pricing model indirectly discriminates against customers sharing protected characteristics (age, gender, disability, ethnicity  -  Equality Act 2010, Section 19). This is not optional under PRIN 2A: the FCA has been explicit since TR24/2 that indirect discrimination through proxies is a live supervisory concern.
 
-**Why it matters:** A model that does not use gender as a rating factor can still discriminate by gender if vehicle group, occupation, or postcode are correlated with gender. `ProxyDiscriminationAudit` computes D_proxy — a normalised L2-distance from the fitted price to the admissible (discrimination-free) price set (Lindholm, Richman, Tsanakas & Wüthrich, EJOR 2026) — and decomposes it across rating factors via Shapley effects. A D_proxy above 0.05 warrants investigation.
+**Why it matters:** A model that does not use gender as a rating factor can still discriminate by gender if vehicle group, occupation, or postcode are correlated with gender. `ProxyDiscriminationAudit` computes D_proxy  -  a normalised L2-distance from the fitted price to the admissible (discrimination-free) price set (Lindholm, Richman, Tsanakas & Wüthrich, EJOR 2026)  -  and decomposes it across rating factors via Shapley effects. A D_proxy above 0.05 warrants investigation.
 
 **Code:**
 
@@ -329,11 +329,11 @@ for factor, effect in result.shapley_effects.items():
     print(f"  {factor}: phi={effect.phi:.3f} ({effect.rag})")
 ```
 
-A proxy vulnerability above 0.05 (5% mean absolute gap between aware and unaware premiums) should be flagged in the fair value assessment with analysis of which factors are driving it. The `proxy_free` benchmark additionally shows how much of the vulnerability survives even when known proxies are removed — the residual is harder to explain away.
+A proxy vulnerability above 0.05 (5% mean absolute gap between aware and unaware premiums) should be flagged in the fair value assessment with analysis of which factors are driving it. The `proxy_free` benchmark additionally shows how much of the vulnerability survives even when known proxies are removed  -  the residual is harder to explain away.
 
 ---
 
-## Step 9: Run double fairness audit — action fairness vs outcome fairness
+## Step 9: Run double fairness audit  -  action fairness vs outcome fairness
 
 **Requirement:** Distinguish between pricing-time fairness (equal treatment at point of quote) and outcome fairness (equivalent value delivered over the policy lifetime). PRIN 2A Outcome 4 requires the latter. These can diverge significantly.
 
@@ -355,7 +355,7 @@ audit.fit(
 result = audit.audit()
 print(result.summary())
 
-# FCA evidence section — paste directly into the fair value assessment
+# FCA evidence section  -  paste directly into the fair value assessment
 print(audit.report())
 
 # Plot the Pareto front for the board paper appendix
@@ -371,7 +371,7 @@ The `audit.report()` output is formatted to slot into an evidence pack: it state
 
 **Requirement:** Beyond the aggregate proxy vulnerability score from Step 8, identify which individual segments of your book are most exposed to proxy discrimination. This maps to the PRIN 2A requirement to monitor outcomes at the group level.
 
-**Why it matters:** A portfolio-level proxy vulnerability of 0.03 may hide a specific segment — say, females in certain postcodes — with vulnerability of 0.25. Those policyholders are the FCA's primary concern. `ProxyVulnerabilityScore` computes per-observation proxy vulnerability and supports segmentation by any combination of rating factors.
+**Why it matters:** A portfolio-level proxy vulnerability of 0.03 may hide a specific segment  -  say, females in certain postcodes  -  with vulnerability of 0.25. Those policyholders are the FCA's primary concern. `ProxyVulnerabilityScore` computes per-observation proxy vulnerability and supports segmentation by any combination of rating factors.
 
 **Code:**
 
@@ -411,7 +411,7 @@ The output of this step is the policyholder impact analysis that a supervision t
 
 ---
 
-## Step 11: Quantify model uncertainty with conformal prediction intervals — and bound expected shortfall
+## Step 11: Quantify model uncertainty with conformal prediction intervals  -  and bound expected shortfall
 
 **Requirement:** Provide distribution-free uncertainty quantification for predicted premiums. The fair value assessment should state the uncertainty inherent in the pricing, not just point estimates. Use `PremiumSufficiencyController` to bound the expected shortfall from underpriced policies.
 
@@ -434,8 +434,8 @@ cp.calibrate(X_cal, y_cal, exposure=exposure_cal)
 intervals = cp.predict_interval(X_test, alpha=0.10)   # 90% coverage guarantee
 print(f"Empirical coverage: {intervals['coverage']:.3f}")  # should be >= 0.90
 
-# Step B: bound expected shortfall — the risk control guarantee
-# B = maximum possible loss / minimum premium — set this correctly for your book
+# Step B: bound expected shortfall  -  the risk control guarantee
+# B = maximum possible loss / minimum premium  -  set this correctly for your book
 B_max = float(np.max(y_cal / premium_cal))
 psc = PremiumSufficiencyController(alpha=0.05, B=B_max)
 psc.calibrate(y_cal=y_cal, premium_cal=premium_cal)
@@ -499,7 +499,7 @@ evidence_pack = {
                            "shortfall_bound_pct": 5.0},
 
     "regulatory_mapping": {
-        "PRIN_2A_4_6": "Steps 2, 4, 8, 9, 10 — ongoing outcome monitoring",
+        "PRIN_2A_4_6": "Steps 2, 4, 8, 9, 10  -  ongoing outcome monitoring",
         "PS24_1":      "Annual assessment frequency and board reporting (all steps)",
         "EP25_2":      "Motor and home fair value supervision priority (Steps 5, 6, 7)",
     },
@@ -524,7 +524,7 @@ If you cannot run all 12 before the April 2026 deadline, prioritise in this orde
 
 **Highest risk of material finding:** Steps 3 (Murphy decomposition) and 9 (double fairness). These are the tests most likely to reveal that a firm believes it is compliant while actually failing Consumer Duty outcome monitoring.
 
-**Highest regulatory novelty:** Steps 4 (PITMonitor), 6 (GiniDrift), and 11 (conformal risk control). These provide guarantees that standard actuarial monitoring cannot. The FCA's TR24/2 criticism of "high-level summaries" is most effectively countered by methods that come with finite-sample statistical guarantees — not just expert judgement applied to bar charts.
+**Highest regulatory novelty:** Steps 4 (PITMonitor), 6 (GiniDrift), and 11 (conformal risk control). These provide guarantees that standard actuarial monitoring cannot. The FCA's TR24/2 criticism of "high-level summaries" is most effectively countered by methods that come with finite-sample statistical guarantees  -  not just expert judgement applied to bar charts.
 
 ---
 
@@ -534,17 +534,17 @@ If you cannot run all 12 before the April 2026 deadline, prioritise in this orde
 uv add insurance-monitoring insurance-fairness insurance-conformal
 ```
 
-All three libraries require Python 3.10+ and have no heavy dependencies beyond numpy, scipy, polars, and pandas. CatBoost and LightGBM are optional backends — the fairness and conformal libraries fall back to sklearn's GradientBoostingRegressor if neither is installed.
+All three libraries require Python 3.10+ and have no heavy dependencies beyond numpy, scipy, polars, and pandas. CatBoost and LightGBM are optional backends  -  the fairness and conformal libraries fall back to sklearn's GradientBoostingRegressor if neither is installed.
 
 The libraries are at:
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, CSI, A/E, GiniDrift, PITMonitor, TRIPODD
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — ProxyDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — prediction intervals, PremiumSufficiencyController
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring)  -  PSI, CSI, A/E, GiniDrift, PITMonitor, TRIPODD
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness)  -  ProxyDiscriminationAudit, DoubleFairnessAudit, ProxyVulnerabilityScore
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal)  -  prediction intervals, PremiumSufficiencyController
 
 ---
 
 **Related posts:**
-- [FCA Consumer Duty Pricing Fairness in Python](/2026/03/20/fca-consumer-duty-pricing-fairness-python/) — the proxy discrimination audit in detail: FairnessAudit, detect_proxies, and calibration_by_group
-- [The FCA Is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/) — the TR24/2 findings and what a complete evidence pack looks like
-- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — using Murphy decomposition to make the right call when A/E is off
-- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/) — TRIPODD drift attribution with insurance-monitoring
+- [FCA Consumer Duty Pricing Fairness in Python](/2026/03/20/fca-consumer-duty-pricing-fairness-python/)  -  the proxy discrimination audit in detail: FairnessAudit, detect_proxies, and calibration_by_group
+- [The FCA Is Investigating Home and Travel Insurers](/2026/03/19/the-fca-is-investigating-home-and-travel-insurers/)  -  the TR24/2 findings and what a complete evidence pack looks like
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/)  -  using Murphy decomposition to make the right call when A/E is off
+- [Your Pricing Model Is Drifting](/2026/03/03/your-pricing-model-is-drifting/)  -  TRIPODD drift attribution with insurance-monitoring

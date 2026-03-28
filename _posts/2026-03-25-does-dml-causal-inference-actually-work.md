@@ -15,7 +15,7 @@ We spent time running benchmarks on [`insurance-causal`](https://github.com/burn
 
 ## What we actually tested
 
-The setup mirrors a standard UK motor telematics portfolio. Treatment is a continuous normalised telematics score. True causal effect: a one-standard-deviation improvement in score raises log-odds of renewal by 0.08. The confounding is a multiplicative driver-risk term — age × NCB × region interaction — that drives both telematics scores and renewal probabilities through the same underlying risk profile.
+The setup mirrors a standard UK motor telematics portfolio. Treatment is a continuous normalised telematics score. True causal effect: a one-standard-deviation improvement in score raises log-odds of renewal by 0.08. The confounding is a multiplicative driver-risk term  -  age × NCB × region interaction  -  that drives both telematics scores and renewal probabilities through the same underlying risk profile.
 
 A naive logistic GLM with age, NCB, and region dummies as main effects tries to control for this. The problem is functional form: the confounders interact multiplicatively in the true DGP, but the GLM absorbs them additively. CatBoost in the DML nuisance step naturally discovers "young driver, zero NCB, high-risk region" as a leaf. The GLM bias is structural, not a sample size problem. It persists at n = 100,000.
 
@@ -49,7 +49,7 @@ The DML estimate converges to the true value. The GLM does not, at any sample si
 
 A telematics discount calibrated to the GLM coefficient (0.12) rather than the causal coefficient (0.08) is set roughly 50% too aggressively. If you give a 5% discount to 40% of a 10,000-policy book expecting 8% retention uplift per unit telematics score, but the true causal uplift is only ~5% per unit, you are paying for retention that would have happened without the discount.
 
-On renewal pricing, the same benchmark finds a GLM price-sensitivity estimate of −0.045 against a causal estimate of −0.023 — the GLM number is wrong by roughly 96%. A rate-change optimisation built on that elasticity will systematically undercharge price-inelastic customers and overprice elastic ones. The [insurance-optimise library](/2026/03/07/insurance-optimise/) takes the causal elasticity estimate as a direct input and enforces FCA ENBP constraints simultaneously — the two tools are designed to work in sequence.
+On renewal pricing, the same benchmark finds a GLM price-sensitivity estimate of −0.045 against a causal estimate of −0.023  -  the GLM number is wrong by roughly 96%. A rate-change optimisation built on that elasticity will systematically undercharge price-inelastic customers and overprice elastic ones. The [insurance-optimise library](/2026/03/07/insurance-optimise/) takes the causal elasticity estimate as a direct input and enforces FCA ENBP constraints simultaneously  -  the two tools are designed to work in sequence.
 
 ---
 
@@ -81,11 +81,11 @@ The `confounding_bias_report` is the number to put in front of the pricing commi
 
 ## When DML is not the right tool
 
-The GLM bias is a function of how nonlinear the confounding is. If treatment assignment was genuinely randomised — a properly designed A/B test, for example — the GLM is unbiased and DML is unnecessary overhead.
+The GLM bias is a function of how nonlinear the confounding is. If treatment assignment was genuinely randomised  -  a properly designed A/B test, for example  -  the GLM is unbiased and DML is unnecessary overhead.
 
-It also does not help with thin data. The five-fold CatBoost nuisance step needs enough policies in each fold to fit a credible propensity and outcome model. Below roughly 2,000 policies, the nuisance estimates are too noisy to improve on a well-specified GLM. The library uses sample-size-adaptive model capacity to handle this — shrinking to Ridge when n is small — but be cautious with books under 5,000 policies.
+It also does not help with thin data. The five-fold CatBoost nuisance step needs enough policies in each fold to fit a credible propensity and outcome model. Below roughly 2,000 policies, the nuisance estimates are too noisy to improve on a well-specified GLM. The library uses sample-size-adaptive model capacity to handle this  -  shrinking to Ridge when n is small  -  but be cautious with books under 5,000 policies.
 
-For heterogeneous effects — identifying which customer segments are most price-sensitive — the causal forest extension is worth running. On 20,000 policies with six pre-defined elasticity segments, causal forest achieves 100% confidence interval coverage versus 67% for a GLM with full interaction terms. The per-policy CATE from the forest is what allows segment-level targeting: identifying the 20% of customers who would lapse at any price increase from the 20% who will accept significant rate without flinching.
+For heterogeneous effects  -  identifying which customer segments are most price-sensitive  -  the causal forest extension is worth running. On 20,000 policies with six pre-defined elasticity segments, causal forest achieves 100% confidence interval coverage versus 67% for a GLM with full interaction terms. The per-policy CATE from the forest is what allows segment-level targeting: identifying the 20% of customers who would lapse at any price increase from the 20% who will accept significant rate without flinching.
 
 ---
 
@@ -96,9 +96,9 @@ Use DML if:
 - You are calibrating a discount or loading that will be applied commercially and you need the number to be right, not approximately right
 
 Do not use it if:
-- You have a properly randomised A/B test — a well-specified GLM is fine
-- Your book is below ~5,000 policies — the nuisance models will not be credible
-- You want heterogeneous segment effects without per-policy CATEs — a GLM interaction model is faster and close enough
+- You have a properly randomised A/B test  -  a well-specified GLM is fine
+- Your book is below ~5,000 policies  -  the nuisance models will not be credible
+- You want heterogeneous segment effects without per-policy CATEs  -  a GLM interaction model is faster and close enough
 
 The technique is real. The overhead is real too: 60 seconds versus under one second for a GLM. That is a one-time cost per rate review cycle, not a production scoring cost. For calibrating a discount that will apply to tens of thousands of policies, the 60 seconds is not the constraint.
 
@@ -109,5 +109,5 @@ uv add insurance-causal
 Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-causal). Run `benchmarks/run_benchmark.py` (seed=42) for reproducible output.
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)
-- [Causal Price Elasticity for UK Renewal Pricing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — a step-by-step tutorial applying DML to a UK renewal book, with data engineering and validation
+- [Causal Price Elasticity for UK Renewal Pricing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/)  -  a step-by-step tutorial applying DML to a UK renewal book, with data engineering and validation
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)

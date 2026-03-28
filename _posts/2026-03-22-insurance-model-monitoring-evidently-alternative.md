@@ -53,8 +53,8 @@ psi_weighted = psi(
     reference_exposure=earned_exposure_ref,
 )
 
-print(f"Unweighted PSI: {psi_unweighted:.3f}")  # 0.18 — amber
-print(f"Weighted PSI:   {psi_weighted:.3f}")    # 0.27 — red
+print(f"Unweighted PSI: {psi_unweighted:.3f}")  # 0.18  -  amber
+print(f"Weighted PSI:   {psi_weighted:.3f}")    # 0.27  -  red
 ```
 
 In the synthetic UK motor benchmark on 50,000 training policies (2019–2021) monitored against a 2023 cohort with 2x young driver oversampling, unweighted PSI reads amber and weighted PSI reads red. These are different conclusions. The weighted version is correct.
@@ -68,7 +68,7 @@ The aggregate A/E problem is well-known in pricing. A model that is 15% cheap on
 ```python
 from insurance_monitoring.calibration import ae_ratio, ae_ratio_ci
 
-# Aggregate A/E with exact Garwood intervals — not a normal approximation
+# Aggregate A/E with exact Garwood intervals  -  not a normal approximation
 result = ae_ratio_ci(actual, predicted, exposure=exposure)
 print(f"A/E: {result['ae']:.3f}  [{result['lower']:.3f}, {result['upper']:.3f}]")
 # A/E: 1.082  [1.031, 1.137]
@@ -153,7 +153,7 @@ test = SequentialTest(
     min_exposure_per_arm=100.0,  # car-years required before any decision
 )
 
-# Feed monthly increments as they arrive — check as often as you like
+# Feed monthly increments as they arrive  -  check as often as you like
 result = test.update(
     champion_claims=42,   challenger_claims=29,
     champion_exposure=510, challenger_exposure=505,

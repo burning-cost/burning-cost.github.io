@@ -101,7 +101,7 @@ The decomposition this requires is: how much of the severity trend is general ec
 from insurance_trend import SeverityTrendFitter, ExternalIndex
 
 # Fetch ONS HPTH: SPPI G4520, Maintenance & repair of motor vehicles
-# No authentication, no API key — ONS public API
+# No authentication, no API key  -  ONS public API
 motor_repair_index = ExternalIndex.from_ons(
     'HPTH',
     start_date='2019-01-01',
@@ -222,7 +222,7 @@ The combined trend of 4.49% is not the sum of -1.83% and 6.41%; it is the produc
 The trend factor method on the result converts this to a compound multiplier for any projection horizon:
 
 ```python
-# Trend factor from 2023Q4 to 2025Q4 — 8 quarters, 2 years
+# Trend factor from 2023Q4 to 2025Q4  -  8 quarters, 2 years
 factor = result.trend_factor(8)
 print(f"Trend factor (2 years): {factor:.4f}")  # e.g. 1.0917
 ```

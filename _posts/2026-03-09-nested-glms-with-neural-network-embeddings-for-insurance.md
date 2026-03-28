@@ -9,7 +9,7 @@ description: "Handle 800+ vehicle makes and 9,000+ postcode sectors in a multipl
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). Install with `pip install insurance-glm-tools` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
+**Package update:** `insurance-nested-glm` has been consolidated into [`insurance-glm-tools`](https://pypi.org/project/insurance-glm-tools/). Install with `pip install insurance-glm-tools`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-glm-tools)
 </div>
 
 
@@ -88,7 +88,7 @@ pipeline.fit(
 )
 ```
 
-The `geo_gdf` argument is a GeoDataFrame with one row per spatial unit (postcode sector). The library derives the spatial adjacency weights from the geometry directly — no separate GAL file required. If you do not have a GeoDataFrame, the library's `build_adjacency_from_geojson()` helper constructs one from a postcode sector GeoJSON.
+The `geo_gdf` argument is a GeoDataFrame with one row per spatial unit (postcode sector). The library derives the spatial adjacency weights from the geometry directly  -  no separate GAL file required. If you do not have a GeoDataFrame, the library's `build_adjacency_from_geojson()` helper constructs one from a postcode sector GeoJSON.
 
 The `embedding_epochs` and `embedding_lr` parameters control training of the neural embedding layer. Fifty epochs at a learning rate of 0.01 is a reasonable starting point for most motor books; adjust if the loss is still descending at epoch 50.
 
@@ -102,9 +102,9 @@ Every phase is accessible on the fitted result:
 # Phase 1: base GLM
 print(pipeline.base_glm_.model_.summary())
 
-# Phase 2: embeddings — dict of col -> DataFrame with category + embedding coords
+# Phase 2: embeddings  -  dict of col -> DataFrame with category + embedding coords
 embedding_frames = pipeline.embedding_trainer_.get_embedding_frame()
-vehicle_embeddings = embedding_frames["vehicle_make"]   # (847, 8+1) — category + emb_0..emb_7
+vehicle_embeddings = embedding_frames["vehicle_make"]   # (847, 8+1)  -  category + emb_0..emb_7
 print(vehicle_embeddings.shape)   # (847, 9)
 
 # Phase 3: territory assignments

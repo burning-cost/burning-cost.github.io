@@ -89,7 +89,7 @@ audit = FairnessAudit(
     outcome_col="claim_count",
     exposure_col="policy_years",
     factor_cols=["postcode_district", "vehicle_group", "occupation", "ncd_years", "age_band"],
-    model_name="Motor Frequency v4 — Q1 2026",
+    model_name="Motor Frequency v4  -  Q1 2026",
     run_proxy_detection=True,
 )
 

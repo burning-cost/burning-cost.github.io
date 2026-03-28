@@ -9,7 +9,7 @@ description: "Applying CANN + NID to severity (Gamma) GLMs. Why the signal is we
 
 Most UK personal lines teams, if they have tried automated interaction detection at all, have run it on the frequency model. The Poisson GLM. Claim counts, exposure-weighted, everything clean and Gaussian-ish in the residuals. That is the right place to start. Frequency interactions are easier to find, easier to confirm, and easier to defend.
 
-Severity is harder. The Gamma GLM for claim amounts is noisier by construction — a single large loss can shift A/E surfaces for an entire cell — and the interactions that exist are rarer and smaller. When we run the [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) CANN + NID pipeline on a severity model, we do not get the same clean separation between genuine interactions and noise that we get on frequency. The top NID pair has a normalised score of 0.7 instead of 0.92. Two of the top five pairs fail the likelihood-ratio test. The deviance gains are measured in 0.3%, not 2.3%.
+Severity is harder. The Gamma GLM for claim amounts is noisier by construction  -  a single large loss can shift A/E surfaces for an entire cell  -  and the interactions that exist are rarer and smaller. When we run the [`insurance-interactions`](https://github.com/burning-cost/insurance-interactions) CANN + NID pipeline on a severity model, we do not get the same clean separation between genuine interactions and noise that we get on frequency. The top NID pair has a normalised score of 0.7 instead of 0.92. Two of the top five pairs fail the likelihood-ratio test. The deviance gains are measured in 0.3%, not 2.3%.
 
 That does not mean severity interactions are not worth looking for. It means the bar is higher, the configuration needs adjusting, and the process of confirming what the algorithm flags requires more careful actuarial judgement.
 
@@ -19,9 +19,9 @@ This post covers the mechanics of running the detector on a Gamma GLM, the confi
 
 ## Why Gamma residuals are harder to learn from
 
-The CANN works by learning whatever the main-effects GLM cannot express. In a correctly specified model, the CANN learns nothing. In a frequency model with a missing interaction, the CANN sees a systematic pattern in the Poisson residuals — the cells with the interaction are consistently underpredicted by a factor of 1.3 or 1.5, and that pattern is stable across the training data. A [32, 16] MLP trained on 50,000 policies picks it up reliably within a few hundred epochs.
+The CANN works by learning whatever the main-effects GLM cannot express. In a correctly specified model, the CANN learns nothing. In a frequency model with a missing interaction, the CANN sees a systematic pattern in the Poisson residuals  -  the cells with the interaction are consistently underpredicted by a factor of 1.3 or 1.5, and that pattern is stable across the training data. A [32, 16] MLP trained on 50,000 policies picks it up reliably within a few hundred epochs.
 
-Claim amounts are different. The coefficient of variation for an individual severity observation is high — often above 1.5 for UK motor — because a £500 repair and a £15,000 write-off sit in the same cell. The interaction signal, when it exists, is a shift in the conditional mean claim amount for a particular factor combination. That shift is real, but it is buried under the variance of individual observations in a way that frequency interactions are not.
+Claim amounts are different. The coefficient of variation for an individual severity observation is high  -  often above 1.5 for UK motor  -  because a £500 repair and a £15,000 write-off sit in the same cell. The interaction signal, when it exists, is a shift in the conditional mean claim amount for a particular factor combination. That shift is real, but it is buried under the variance of individual observations in a way that frequency interactions are not.
 
 The practical consequence: a severity interaction that produces a 0.4% deviance gain requires the CANN to distinguish a 4-5% shift in conditional mean from an ambient noise level that can easily be 30-40%. On frequency, the equivalent interaction might produce a 15-20% lift in a specific cell, which is clearly visible above noise.
 
@@ -45,7 +45,7 @@ cfg = DetectorConfig(
     cann_n_epochs=400,          # longer training: severity loss surface is flatter
     cann_patience=40,           # more patience: early stopping fires too soon on noisy targets
     cann_hidden_dims=[64, 32],  # wider net: severity has more variance to absorb
-    mlp_m=True,                 # always True for severity — correlation false positives are worse
+    mlp_m=True,                 # always True for severity  -  correlation false positives are worse
     top_k_nid=15,               # test fewer pairs: LR tests are more expensive on severity data
     alpha_bonferroni=0.05,
 )
@@ -61,7 +61,7 @@ The key changes:
 
 **`cann_hidden_dims=[64, 32]`**. The default `[32, 16]` architecture has 512 + 256 = 768 parameters in the hidden layers. On a severity model with high per-observation variance, a wider network has more capacity to separate the interaction signal from noise. Going beyond `[64, 32]` rarely helps and starts producing overfitting artefacts.
 
-**`mlp_m=True`**. For severity, this is even more important than for frequency. If the mean severity has a strong main effect on one factor — vehicle group, for instance, where prestige cars have systematically higher repair costs — NID can misattribute that main-effect variance as an interaction with adjacent factors. MLP-M forces each feature's main effect into its own small network, leaving the interaction MLP clean.
+**`mlp_m=True`**. For severity, this is even more important than for frequency. If the mean severity has a strong main effect on one factor  -  vehicle group, for instance, where prestige cars have systematically higher repair costs  -  NID can misattribute that main-effect variance as an interaction with adjacent factors. MLP-M forces each feature's main effect into its own small network, leaving the interaction MLP clean.
 
 ---
 
@@ -101,7 +101,7 @@ sev_detector.fit(
 )
 ```
 
-If your data is claim-level (one row per claim, not aggregated), set `exposure=None` — the library defaults to all-ones weights, which is correct for claim-level Gamma data.
+If your data is claim-level (one row per claim, not aggregated), set `exposure=None`  -  the library defaults to all-ones weights, which is correct for claim-level Gamma data.
 
 ---
 
@@ -136,7 +136,7 @@ Compare this to the frequency output from the same portfolio:
 - Six of eight pairs fail the LR test. On frequency, the same model had only four of eight fail.
 - Deviance gains are 0.38% and 0.29%, against 2.31% and 1.04% on frequency from the same factors.
 
-The `n_cells` column is now more important than ever. Vehicle group × age band at 171 parameters saving 0.38% of base deviance gives a deviance-per-parameter ratio of 0.38/171 = 0.0022%. Cover type × area at 35 parameters saving 0.29% gives 0.29/35 = 0.0083% — nearly four times more efficient. If thin-cell credibility is a concern, cover type × area is the better addition despite the lower absolute deviance gain.
+The `n_cells` column is now more important than ever. Vehicle group × age band at 171 parameters saving 0.38% of base deviance gives a deviance-per-parameter ratio of 0.38/171 = 0.0022%. Cover type × area at 35 parameters saving 0.29% gives 0.29/35 = 0.0083%  -  nearly four times more efficient. If thin-cell credibility is a concern, cover type × area is the better addition despite the lower absolute deviance gain.
 
 ---
 
@@ -160,7 +160,7 @@ print(f"Cells with < 100 claims: {sparse_cells} of {total_cells}")
 
 If more than 40% of cells have fewer than 100 claims, the interaction is credibility-thin. The statistical test says it is real; the data volume says it will be unstable in deployment. Consider collapsing vehicle groups before adding the interaction.
 
-**Check 2: direction consistency.** Compute the A/E surface for severity, not frequency. Severity A/E should have a coherent directional pattern — a clear region where the combination produces higher average claim amounts than the product of the two main effects would predict. Dispersed A/E deviations without a directional story are usually noise lifted to significance by a large portfolio.
+**Check 2: direction consistency.** Compute the A/E surface for severity, not frequency. Severity A/E should have a coherent directional pattern  -  a clear region where the combination produces higher average claim amounts than the product of the two main effects would predict. Dispersed A/E deviations without a directional story are usually noise lifted to significance by a large portfolio.
 
 ```python
 sev_ae = (
@@ -176,7 +176,7 @@ sev_ae = (
 )
 ```
 
-Plot this as a heatmap. For a genuine severity interaction, you expect a connected region of high A/E — not a random scatter. If vehicle groups 14-20 combined with age bands 17-29 consistently show A/E above 1.25, that is the story. If A/E above 1.25 appears in isolated, non-adjacent cells, it is noise.
+Plot this as a heatmap. For a genuine severity interaction, you expect a connected region of high A/E  -  not a random scatter. If vehicle groups 14-20 combined with age bands 17-29 consistently show A/E above 1.25, that is the story. If A/E above 1.25 appears in isolated, non-adjacent cells, it is noise.
 
 ---
 
@@ -190,7 +190,7 @@ We have added severity interactions to about a dozen UK motor and home models ov
 
 **The useful severity interactions tend to involve cover type.** Comprehensive versus TPO versus TPFT is a stronger moderator of severity than frequency. A no-NCD driver on comprehensive cover in a high vehicle group has higher average claim costs than a multiplicative model would predict because their comprehensive claims include a higher proportion of at-fault-own-vehicle costs. That is a real effect and it is detectable.
 
-**Vehicle age × vehicle group interactions are real but expensive.** A 15-year-old vehicle in a high vehicle group has different severity characteristics than the products of the two main effects would suggest — older prestige cars are repaired at higher hourly rates by independent garages rather than approved repairers. This interaction is real, it shows up consistently in NID, and the parameter cost (vehicle age deciles × vehicle groups = 9 × 19 = 171 cells on a typical banding) is large. We have added it twice; both times it improved holdout Gini by 0.8-1.2 percentage points on severity.
+**Vehicle age × vehicle group interactions are real but expensive.** A 15-year-old vehicle in a high vehicle group has different severity characteristics than the products of the two main effects would suggest  -  older prestige cars are repaired at higher hourly rates by independent garages rather than approved repairers. This interaction is real, it shows up consistently in NID, and the parameter cost (vehicle age deciles × vehicle groups = 9 × 19 = 171 cells on a typical banding) is large. We have added it twice; both times it improved holdout Gini by 0.8-1.2 percentage points on severity.
 
 **NCD × area interactions are frequency effects, not severity.** If this pair surfaces in a severity run, it is usually a false positive. The no-NCD/London cell has elevated claim frequency (young drivers, high-density road usage); severity for those claims is not materially different. NID sometimes picks this up as a severity interaction because the cell has elevated claim counts, which affects the GLM residuals in ways that look like an interaction to the CANN. Always check whether a severity interaction candidate has an obvious frequency explanation before adding it.
 
@@ -261,11 +261,11 @@ It is normal for the lists to overlap partially. If age × vehicle group appears
 
 ## Limitations specific to severity
 
-**Sample size matters more.** The CANN's Gamma deviance loss has a much flatter gradient surface than Poisson on sparse data. Below roughly 15,000 claims, NID rankings become unreliable for severity. The LR tests in `test_interactions()` still work below this — they are standard GLM statistics and do not depend on the CANN — but using the NID ranking to prioritise which pairs to test requires a larger claim base than the frequency equivalent. The workaround: increase `top_k_nid` to 20 and test more pairs with the LR, using the GLM test statistics rather than the NID ranking for prioritisation.
+**Sample size matters more.** The CANN's Gamma deviance loss has a much flatter gradient surface than Poisson on sparse data. Below roughly 15,000 claims, NID rankings become unreliable for severity. The LR tests in `test_interactions()` still work below this  -  they are standard GLM statistics and do not depend on the CANN  -  but using the NID ranking to prioritise which pairs to test requires a larger claim base than the frequency equivalent. The workaround: increase `top_k_nid` to 20 and test more pairs with the LR, using the GLM test statistics rather than the NID ranking for prioritisation.
 
 **Large losses distort the LR test.** A single £500,000 claim in a cell with 200 ordinary claims can shift the cell's deviance by more than the interaction signal you are trying to detect. Before running interaction detection on a severity model, either: winsorise at the 99th percentile (£50,000-80,000 for UK motor); or run a large loss loading analysis separately and remove large losses above a threshold from the severity GLM. Adding the large loss separately as a function of risk factors and putting only attritional claims through the GLM interaction detection is cleaner.
 
-**The CANN trains on per-claim data, not exposure.** For claim-level severity data, there is no meaningful exposure to pass. The `exposure` parameter in `CANN.fit()` defaults to ones when `None`. This is correct: you are modelling claim severity conditional on a claim occurring, and each row represents one claim. Do not pass policy exposure here — it has no meaning in the severity model and will distort the deviance loss weighting.
+**The CANN trains on per-claim data, not exposure.** For claim-level severity data, there is no meaningful exposure to pass. The `exposure` parameter in `CANN.fit()` defaults to ones when `None`. This is correct: you are modelling claim severity conditional on a claim occurring, and each row represents one claim. Do not pass policy exposure here  -  it has no meaning in the severity model and will distort the deviance loss weighting.
 
 ---
 
@@ -273,7 +273,7 @@ It is normal for the lists to overlap partially. If age × vehicle group appears
 
 The two posts on frequency interaction detection ([Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/), [GLM Interaction Detection: A Six-Step Walkthrough](/2026/03/04/how-to-detect-covariate-interactions-your-glm-missed/)) were honest about frequency limitations. Neither said anything about severity because severity is genuinely harder and we had not worked through the configuration differences carefully enough to write about it.
 
-The short version: run it, use more ensemble runs and more epochs, require both NID and LR confirmation, check credibility before deployment, and expect roughly half your runs to produce no severity interaction worth adding. That is not failure — it is the method correctly reporting that the data does not contain the effect you were looking for.
+The short version: run it, use more ensemble runs and more epochs, require both NID and LR confirmation, check credibility before deployment, and expect roughly half your runs to produce no severity interaction worth adding. That is not failure  -  it is the method correctly reporting that the data does not contain the effect you were looking for.
 
 ```bash
 uv add insurance-interactions
@@ -281,6 +281,6 @@ uv add insurance-interactions
 
 Source: [github.com/burning-cost/insurance-interactions](https://github.com/burning-cost/insurance-interactions)
 
-- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/) — frequency interaction detection: theory and three-stage pipeline
-- [GLM Interaction Detection: A Six-Step Walkthrough](/2026/03/04/how-to-detect-covariate-interactions-your-glm-missed/) — the practical frequency walkthrough with planted interactions
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if severity interactions improve your Gamma model, the next step is modelling the dispersion too
+- [Finding the Interactions Your GLM Missed](/2026/02/27/finding-the-interactions-your-glm-missed/)  -  frequency interaction detection: theory and three-stage pipeline
+- [GLM Interaction Detection: A Six-Step Walkthrough](/2026/03/04/how-to-detect-covariate-interactions-your-glm-missed/)  -  the practical frequency walkthrough with planted interactions
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)  -  if severity interactions improve your Gamma model, the next step is modelling the dispersion too

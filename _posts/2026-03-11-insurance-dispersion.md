@@ -166,7 +166,7 @@ In our experience on UK motor severity data: the LRT almost always rejects for m
 The mean relativities and dispersion relativities are both available in the standard actuarial format:
 
 ```python
-# Mean relativities — familiar exp(beta) table
+# Mean relativities  -  familiar exp(beta) table
 mean_table = result.mean_relativities()
 print(mean_table)
 #                    relativity  lower_95  upper_95
@@ -184,7 +184,7 @@ print(mean_table)
 # D                   1.291        1.248     1.335
 # E                   1.487        1.433     1.543
 
-# Dispersion relativities — new
+# Dispersion relativities  -  new
 disp_table = result.dispersion_relativities()
 print(disp_table)
 #                    phi_relativity  lower_95  upper_95
@@ -215,7 +215,7 @@ import pandas as pd
 from insurance_dispersion import DGLM
 import insurance_dispersion.families as fam
 
-# UK motor severity dataset — one row per paid claim
+# UK motor severity dataset  -  one row per paid claim
 np.random.seed(42)
 n = 8000
 
@@ -241,7 +241,7 @@ model = DGLM(
 )
 result = model.fit()
 
-# Overdispersion test first — confirm we need the DGLM
+# Overdispersion test first  -  confirm we need the DGLM
 lrt = result.overdispersion_test()
 print(f"LRT p-value: {lrt['p_value']:.4f}")
 
@@ -263,8 +263,8 @@ technical_premium = mu + k * np.sqrt(var)
 mu0, phi_A, phi_E = 3000.0, 1.0, 1.398
 loading_A = k * np.sqrt(phi_A * mu0**2)  # = 1,500
 loading_E = k * np.sqrt(phi_E * mu0**2)  # = 1,774
-print(f"Margin loading — Group A: £{loading_A:.0f}, Group E: £{loading_E:.0f}")
-# Margin loading — Group A: £1,500, Group E: £1,774
+print(f"Margin loading  -  Group A: £{loading_A:.0f}, Group E: £{loading_E:.0f}")
+# Margin loading  -  Group A: £1,500, Group E: £1,774
 ```
 
 The £274 per-policy difference in loading comes entirely from the dispersion model. The mean model assigns these two risks identical pure premiums. Without the DGLM, you cannot make this distinction at all.

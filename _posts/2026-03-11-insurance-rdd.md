@@ -8,7 +8,7 @@ description: "Regression Discontinuity Design tests if UK motor risk drops at ag
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-rdd` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — regression discontinuity design is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-rdd` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal`  -  regression discontinuity design is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 
@@ -117,7 +117,7 @@ Each test is a standalone class:
 ```python
 from insurance_rdd import DensityTest, CovariateBalance, PlaceboTest
 
-# McCrary density test — does the density of driver ages spike at 300 months?
+# McCrary density test  -  does the density of driver ages spike at 300 months?
 density = DensityTest(
     running_var='driver_age_months',
     cutoff=300,
@@ -125,10 +125,10 @@ density = DensityTest(
 ).fit()
 print(density.summary())
 # Density Test (rddensity / Cattaneo-Jansson-Ma 2018)
-#   p-value: 0.41 — not significant (no manipulation concern)
+#   p-value: 0.41  -  not significant (no manipulation concern)
 # (Expected: DOB is externally verified, cannot be gamed)
 
-# Covariate balance — do vehicle group, region jump at the cutoff?
+# Covariate balance  -  do vehicle group, region jump at the cutoff?
 balance = CovariateBalance(
     covariates=['vehicle_group', 'region'],
     running_var='driver_age_months',
@@ -136,8 +136,8 @@ balance = CovariateBalance(
     data=df,
 ).fit()
 print(balance.summary())
-# vehicle_group:  tau=-0.02, p=0.71 — balanced
-# region:         tau=0.03,  p=0.63 — balanced
+# vehicle_group:  tau=-0.02, p=0.71  -  balanced
+# region:         tau=0.03,  p=0.63  -  balanced
 
 # Placebo tests at false cutoffs (AGE_25 preset supplies these: 264, 282, 318, 336 months)
 placebo = PlaceboTest(
@@ -175,14 +175,14 @@ mc_rd = MultiCutoffRD(
 mc_result = mc_rd.fit()
 
 print(mc_result.pooled_effect())
-# Pooled rate ratio: 0.94 (95% CI: 0.88, 1.01) — not significant at 5%
+# Pooled rate ratio: 0.94 (95% CI: 0.88, 1.01)  -  not significant at 5%
 
 print(mc_result.cutoff_effects_df)
 # NCD 0→1:  rate ratio 0.92, p=0.12
 # NCD 1→2:  rate ratio 0.96, p=0.38
 # NCD 2→3:  rate ratio 0.91, p=0.09
 # NCD 3→4:  rate ratio 0.97, p=0.52
-# NCD 4→5:  rate ratio 0.93, p=0.14 [density failure — manipulation expected]
+# NCD 4→5:  rate ratio 0.93, p=0.14 [density failure  -  manipulation expected]
 ```
 
 Our prior is that NCD level has weak causal effects on subsequent claims frequency, once you compare policies right at each step boundary. NCD captures selection rather than a moral hazard effect of the discount itself. If the pooled effect comes back at 0.94 and not significant, your NCD pricing factor is valid from an adverse selection standpoint (lower NCD genuinely predicts higher risk), but the mechanism is not causal in the way a naive reading of the relativity implies. That distinction matters when you are explaining the factor under Consumer Duty: you are pricing observable risk correlation, not a causal intervention.

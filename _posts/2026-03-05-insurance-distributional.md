@@ -68,10 +68,10 @@ model.fit(X_train, y_train, exposure=exposure_train)
 
 pred = model.predict(X_test, exposure=exposure_test)
 
-pred.mean             # E[Y|X] — pure premium
+pred.mean             # E[Y|X]  -  pure premium
 pred.variance         # Var[Y|X] = phi * mu^p, per risk
 pred.cov              # CoV = SD/mean, per risk
-pred.volatility_score()  # same as cov — for safety loading and referrals
+pred.volatility_score()  # same as cov  -  for safety loading and referrals
 ```
 
 `power=1.5` is standard for UK motor. You fix it at fit time; the library does not estimate it from data, following the So & Valdez approach.
@@ -124,7 +124,7 @@ pred = model.predict(X_test)
 
 pred.mu     # observable mean = (1-pi)*lambda
 pred.pi     # structural zero probability per pet
-pred.variance  # (1-pi)*lambda*(1 + pi*lambda) — ZIP variance formula
+pred.variance  # (1-pi)*lambda*(1 + pi*lambda)  -  ZIP variance formula
 
 # Underlying Poisson rate for the claiming population
 model.predict_lambda(X_test)
@@ -172,7 +172,7 @@ from insurance_distributional import (
     gini_index,
 )
 
-# Standard actuarial metric — same as before, for the mean
+# Standard actuarial metric  -  same as before, for the mean
 tweedie_deviance(y_test, pred.mean, power=1.5)
 
 # Does the predicted 90% interval contain 90% of observations?
@@ -181,7 +181,7 @@ cov = coverage(y_test, pred, levels=(0.80, 0.90, 0.95))
 # due to in-sample mu overfitting) that caused coverage intervals to collapse.
 # v0.1.3 fixes this with K=3 cross-fitting and Gamma deviance loss.
 
-# PIT histogram — should be uniform for a well-calibrated model
+# PIT histogram  -  should be uniform for a well-calibrated model
 pit = pit_values(y_test, pred, n_samples=5000)
 
 # Gini on mean (standard) vs Gini on volatility score (new)
@@ -307,4 +307,4 @@ The expected loss is necessary. It is not sufficient. Two risks at £350 are not
 - [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) - distribution-free prediction intervals that work when the parametric assumptions are uncertain; a complement to the distributional GBM coverage checks
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) - once the distributional model is fitted, the Murphy decomposition and PIT histogram diagnostics tell you whether the dispersion model is adding genuine information or overfitting
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - the governance documentation layer: how to register a distributional pricing model, document the two-stage dispersion estimation, and produce the model risk artefact for sign-off
-- [Zero-Inflated and Hurdle Models for Insurance Claims](/2026/03/24/zero-inflated-and-hurdle-models-for-insurance-claims/) — when excess zeros require a structural model rather than the implicit Tweedie zero probability
+- [Zero-Inflated and Hurdle Models for Insurance Claims](/2026/03/24/zero-inflated-and-hurdle-models-for-insurance-claims/)  -  when excess zeros require a structural model rather than the implicit Tweedie zero probability

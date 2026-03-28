@@ -18,13 +18,13 @@ This post covers the correct formula, a clean from-scratch implementation, and a
 
 ## What the standard Gini is measuring (and why that is wrong for insurance)
 
-The Gini coefficient for insurance pricing derives from the Concentration curve (sometimes called the CAP curve). You sort all policies in ascending order of predicted rate. Then you plot two cumulative quantities against each other: the fraction of total exposure swept up (x-axis) against the fraction of total actual claims swept up (y-axis). A model with no discriminatory power produces a 45-degree line. A perfect model concentrates all claims in the top-risk policies — the curve bows hard toward the top-left.
+The Gini coefficient for insurance pricing derives from the Concentration curve (sometimes called the CAP curve). You sort all policies in ascending order of predicted rate. Then you plot two cumulative quantities against each other: the fraction of total exposure swept up (x-axis) against the fraction of total actual claims swept up (y-axis). A model with no discriminatory power produces a 45-degree line. A perfect model concentrates all claims in the top-risk policies  -  the curve bows hard toward the top-left.
 
 The Gini is twice the area between the CAP curve and the diagonal. Values for UK motor frequency models typically sit between 0.35 and 0.55. Below 0.30 is weak. Above 0.60 is exceptional.
 
-The critical word in the above description is *total*. When computing cumulative exposure, you need to weight each policy by its earned car-years, not count it as one unit. The same applies to cumulative claims — a policy with half a year of exposure contributes proportionally less to the claims total than a full-year policy with the same frequency.
+The critical word in the above description is *total*. When computing cumulative exposure, you need to weight each policy by its earned car-years, not count it as one unit. The same applies to cumulative claims  -  a policy with half a year of exposure contributes proportionally less to the claims total than a full-year policy with the same frequency.
 
-The unweighted version implicitly assumes all policies have unit exposure. For a book where exposure is roughly uniform — most annual policies, few MTAs, full year of data — the error is small. For a book with material short-term policies (telematics trials, temporary cover, seasonal vehicles), the error can be 0.05–0.10 Gini points. That is the difference between "model is performing acceptably" and "model requires governance review" in most UK pricing teams' monitoring frameworks. The [insurance-monitoring library](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) implements the exposure-weighted Gini, the Gini drift z-test, and the full monitoring workflow including A/E ratios and Murphy decomposition.
+The unweighted version implicitly assumes all policies have unit exposure. For a book where exposure is roughly uniform  -  most annual policies, few MTAs, full year of data  -  the error is small. For a book with material short-term policies (telematics trials, temporary cover, seasonal vehicles), the error can be 0.05–0.10 Gini points. That is the difference between "model is performing acceptably" and "model requires governance review" in most UK pricing teams' monitoring frameworks. The [insurance-monitoring library](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) implements the exposure-weighted Gini, the Gini drift z-test, and the full monitoring workflow including A/E ratios and Murphy decomposition.
 
 ---
 
@@ -64,7 +64,7 @@ def gini_coefficient(
 
     Implements the midpoint tie-breaking approach from arXiv 2510.04556.
     When exposure is None, all policies are treated as unit exposure (standard,
-    unweighted Gini — not recommended for insurance).
+    unweighted Gini  -  not recommended for insurance).
 
     Parameters
     ----------
@@ -107,7 +107,7 @@ def gini_coefficient(
     return 0.5 * (_gini_one_ordering(order_best) + _gini_one_ordering(order_worst))
 ```
 
-Thirty-two lines. The key structural choice is `np.lexsort`, which sorts by the last key first. So `np.lexsort((-actual, predicted))` sorts primarily by `predicted` ascending, then secondarily by `-actual` descending — claims-heavy policies first within tied predicted values.
+Thirty-two lines. The key structural choice is `np.lexsort`, which sorts by the last key first. So `np.lexsort((-actual, predicted))` sorts primarily by `predicted` ascending, then secondarily by `-actual` descending  -  claims-heavy policies first within tied predicted values.
 
 ---
 
@@ -242,6 +242,6 @@ auc = _trapz(y, x)
 
 ---
 
-The Gini is the single most important discrimination metric for a deployed pricing model. Getting it wrong by ignoring exposure is not a theoretical concern — it is a systematic bias that goes in a consistent direction (overstatement) and is large enough to affect governance decisions. The implementation above costs nothing to use correctly.
+The Gini is the single most important discrimination metric for a deployed pricing model. Getting it wrong by ignoring exposure is not a theoretical concern  -  it is a systematic bias that goes in a consistent direction (overstatement) and is large enough to affect governance decisions. The implementation above costs nothing to use correctly.
 
 For the drift test on top of the Gini, see [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring).

@@ -10,7 +10,7 @@ description: "A complete Python tutorial for building a Tweedie GLM for insuranc
 
 A Tweedie GLM is the most compact way to model insurance pure premium in Python. One model, one response variable (claims cost per policy), one fit call. If you have used `glm()` in R with `family=tweedie()`, or the `TWEEDIE` distribution in Emblem, this is the same thing with different syntax.
 
-This tutorial builds a working Tweedie GLM from scratch: we generate synthetic motor data, fit the model in statsmodels, interpret the power parameter and coefficients, check the residuals, and extract factor tables. The code is self-contained — you need statsmodels, numpy, scipy, and matplotlib, nothing else.
+This tutorial builds a working Tweedie GLM from scratch: we generate synthetic motor data, fit the model in statsmodels, interpret the power parameter and coefficients, check the residuals, and extract factor tables. The code is self-contained  -  you need statsmodels, numpy, scipy, and matplotlib, nothing else.
 
 ```bash
 pip install statsmodels numpy scipy matplotlib
@@ -28,9 +28,9 @@ A Tweedie distribution with power parameter p between 1 and 2 is equivalent to a
 log(E[pure_premium_i]) = log(exposure_i) + X_i * beta
 ```
 
-The `log(exposure_i)` term is the offset — it enters with a fixed coefficient of 1.0, not estimated. Without it, the model predicts expected claims cost for an arbitrary observation period rather than a rate (cost per policy-year). This is the single most common mistake in Python GLM implementations. We will return to it below.
+The `log(exposure_i)` term is the offset  -  it enters with a fixed coefficient of 1.0, not estimated. Without it, the model predicts expected claims cost for an arbitrary observation period rather than a rate (cost per policy-year). This is the single most common mistake in Python GLM implementations. We will return to it below.
 
-The alternative is two separate models — Poisson for frequency, Gamma for severity — multiplied together. That split gives more flexibility: different factors can drive frequency and severity independently. The Tweedie constraint is that a single linear predictor must explain both. For a homogeneous personal lines book where most factors affect frequency and severity in the same direction, the Tweedie is simpler and often good enough. For a book where NCD strongly suppresses frequency but barely touches severity, the split wins.
+The alternative is two separate models  -  Poisson for frequency, Gamma for severity  -  multiplied together. That split gives more flexibility: different factors can drive frequency and severity independently. The Tweedie constraint is that a single linear predictor must explain both. For a homogeneous personal lines book where most factors affect frequency and severity in the same direction, the Tweedie is simpler and often good enough. For a book where NCD strongly suppresses frequency but barely touches severity, the split wins.
 
 We have covered the choice in detail in [Tweedie vs Frequency-Severity Split: When to Use Which](/2026/03/24/tweedie-vs-frequency-severity-when-to-use-which/). For this tutorial, we fit the Tweedie.
 
@@ -137,11 +137,11 @@ statsmodels takes a numpy matrix or a pandas DataFrame with `formula=`. We use t
 ncd_dummies = pd.get_dummies(ncd, prefix="ncd", drop_first=True).astype(float)
 # ncd_1 through ncd_5; ncd_0 is the reference (base)
 
-veh_cont = veh_group.astype(float)  # treat as continuous — revisit if nonlinearity appears
+veh_cont = veh_group.astype(float)  # treat as continuous  -  revisit if nonlinearity appears
 
 region_dummies = pd.get_dummies(region, prefix="region", drop_first=True).astype(float)
 # region_B, region_C, region_D; region_A is reference (highest risk = base)
-# pd.get_dummies drops first alphabetically, which is "A" — correct here
+# pd.get_dummies drops first alphabetically, which is "A"  -  correct here
 
 age_cont = driver_age.astype(float)
 
@@ -170,7 +170,7 @@ statsmodels' `GLM` with `Tweedie(var_power=p)` fits the model by IRLS. The key q
 
 ### Estimating p
 
-The Tweedie power parameter governs how variance scales with mean: Var(Y) = phi * mu^p. You can estimate p by profile likelihood — fit the model at a grid of p values and find the minimum deviance.
+The Tweedie power parameter governs how variance scales with mean: Var(Y) = phi * mu^p. You can estimate p by profile likelihood  -  fit the model at a grid of p values and find the minimum deviance.
 
 For most UK motor books, p falls between 1.4 and 1.8. Start with p=1.5 and check.
 
@@ -238,13 +238,13 @@ print(factor_table.to_string(index=False, float_format=lambda x: f"{x:.4f}"))
 
 What to look for:
 
-**NCD relativities** should decrease monotonically from ncd_5 to ncd_1. If ncd_2 sits above ncd_3, something is wrong with your encoding or data preparation. Check the exposure volumes for each NCD band — thin cells produce noisy estimates.
+**NCD relativities** should decrease monotonically from ncd_5 to ncd_1. If ncd_2 sits above ncd_3, something is wrong with your encoding or data preparation. Check the exposure volumes for each NCD band  -  thin cells produce noisy estimates.
 
 **Vehicle group** coefficient should be positive (higher group = higher premium). The estimated coefficient should be close to the true 0.07 we used in the DGP. On synthetic data with 30,000 policies, you typically recover it to within ±0.005.
 
 **Region coefficients** are relative to region A (the most expensive). The coefficient on `region_D` should be around -0.28 (the true value is -0.10 - 0.18 = -0.28 in log space, i.e., region D costs approximately exp(-0.28) ≈ 0.76 times region A all else equal).
 
-**Driver age** will show a small positive coefficient because the DGP uses an absolute-deviation function from age 45, but since we encoded it as a continuous linear term, the GLM sees the net upward drift. A linear term for driver age is typically wrong — the relationship is U-shaped. We will catch this in the residual checks below.
+**Driver age** will show a small positive coefficient because the DGP uses an absolute-deviation function from age 45, but since we encoded it as a continuous linear term, the GLM sees the net upward drift. A linear term for driver age is typically wrong  -  the relationship is U-shaped. We will catch this in the residual checks below.
 
 ---
 
@@ -271,7 +271,7 @@ plt.savefig("tweedie_residuals.png", dpi=150)
 plt.close()
 ```
 
-A well-specified Tweedie GLM will show Pearson residuals that are roughly homoskedastic around zero, with no funnel shape and no obvious curvature. The mass of zero-cost policies will sit at large negative Pearson residuals — this is normal for a compound Poisson-Gamma.
+A well-specified Tweedie GLM will show Pearson residuals that are roughly homoskedastic around zero, with no funnel shape and no obvious curvature. The mass of zero-cost policies will sit at large negative Pearson residuals  -  this is normal for a compound Poisson-Gamma.
 
 What to worry about: a systematic curve in the residuals against log(fitted) means the link function is wrong, or the linear predictor is missing a nonlinear term (like the U-shaped driver age).
 
@@ -298,12 +298,12 @@ print("\nA/E by NCD years:")
 print(ae_by_ncd.round(3))
 ```
 
-Expected output: A/E ratios between 0.90 and 1.10 for all NCD bands. If NCD=5 shows A/E of 0.75, the model is overestimating risk for experienced drivers — the relativities are not steep enough. If it shows 1.25, the model is underestimating — either the data has something unusual or the DGP recovery is poor.
+Expected output: A/E ratios between 0.90 and 1.10 for all NCD bands. If NCD=5 shows A/E of 0.75, the model is overestimating risk for experienced drivers  -  the relativities are not steep enough. If it shows 1.25, the model is underestimating  -  either the data has something unusual or the DGP recovery is poor.
 
 Do the same for vehicle group, region, and driver age bands:
 
 ```python
-# Driver age banded — the U-shape should show up here if the linear term is misspecified
+# Driver age banded  -  the U-shape should show up here if the linear term is misspecified
 ae_df["age_band"] = pd.cut(driver_age, bins=[17, 25, 35, 45, 55, 65, 81], right=True)
 
 ae_by_age = (
@@ -317,7 +317,7 @@ print("\nA/E by driver age band:")
 print(ae_by_age.round(3))
 ```
 
-The 18-25 band will show A/E above 1.0 and the 65-81 band will also show A/E above 1.0, because we specified a U-shaped DGP but the linear term cannot capture this. Both bands are relatively thin, so the bias may not be large in aggregate — but it is systematic. The fix is to replace the continuous linear term with age bands or a spline. Not something to ignore in a production model.
+The 18-25 band will show A/E above 1.0 and the 65-81 band will also show A/E above 1.0, because we specified a U-shaped DGP but the linear term cannot capture this. Both bands are relatively thin, so the bias may not be large in aggregate  -  but it is systematic. The fix is to replace the continuous linear term with age bands or a spline. Not something to ignore in a production model.
 
 This is exactly the diagnostic that catches bad factor specifications in Emblem too. The A/E check by driver age band is often how actuaries discover that a linear age term needs to become a grouped factor.
 
@@ -330,7 +330,7 @@ print(f"\nEstimated dispersion (phi): {dispersion_est:.3f}")
 print(f"True dispersion used in DGP: {phi:.1f}")
 ```
 
-With 30,000 observations and a clean DGP, the estimated phi should be close to 5.0. Significant deviation (say, phi > 8 or phi < 3) suggests either the p parameter is wrong or there are unmodelled sources of variance in the data — missing risk factors, or data quality problems.
+With 30,000 observations and a clean DGP, the estimated phi should be close to 5.0. Significant deviation (say, phi > 8 or phi < 3) suggests either the p parameter is wrong or there are unmodelled sources of variance in the data  -  missing risk factors, or data quality problems.
 
 ---
 
@@ -343,9 +343,9 @@ The model predicts `E[claims_cost_i]` for each policy. To get a pure premium rat
 pred_cost    = result.fittedvalues
 pred_pp_rate = pred_cost / exposure   # pure premium per policy-year
 
-print(f"\nPredicted pure premium — mean:   £{pred_pp_rate.mean():.2f}")
-print(f"Predicted pure premium — median: £{np.median(pred_pp_rate):.2f}")
-print(f"Predicted pure premium — P90:    £{np.percentile(pred_pp_rate, 90):.2f}")
+print(f"\nPredicted pure premium  -  mean:   £{pred_pp_rate.mean():.2f}")
+print(f"Predicted pure premium  -  median: £{np.median(pred_pp_rate):.2f}")
+print(f"Predicted pure premium  -  P90:    £{np.percentile(pred_pp_rate, 90):.2f}")
 
 # Prediction for a new policy
 new_policy = pd.DataFrame({
@@ -367,7 +367,7 @@ new_pred = result.predict(new_policy, offset=[np.log(1.0)])
 print(f"\nPredicted annual pure premium for new policy: £{new_pred[0]:.2f}")
 ```
 
-The column names in `new_policy` must match `X` exactly, including the constant column. statsmodels is strict about this. If you use `formula=` syntax instead of the matrix form, prediction is cleaner — but the matrix form is more transparent about what the model is actually doing.
+The column names in `new_policy` must match `X` exactly, including the constant column. statsmodels is strict about this. If you use `formula=` syntax instead of the matrix form, prediction is cleaner  -  but the matrix form is more transparent about what the model is actually doing.
 
 ---
 
@@ -381,7 +381,7 @@ def extract_factor_table(result, X_columns: list) -> pd.DataFrame:
     
     Note: in production, extend this to add reference level rows explicitly
     (relativity = 1.0, log_coef = 0.0, std_err = NaN) for the base level of
-    each categorical factor — the level dropped by pd.get_dummies. Rating
+    each categorical factor  -  the level dropped by pd.get_dummies. Rating
     engines and pricing committees expect a complete table including the base.
     """
     rows = []
@@ -409,7 +409,7 @@ print("\nFactor table:")
 print(ft.to_string(index=False, float_format=lambda x: f"{x:.4f}"))
 ```
 
-For deployment into a rating engine — whether a bespoke Python service, an R Shiny pricing tool, or a system like Emblem or Radar — the factor table is the output. Each categorical level needs its own row, with the reference level explicitly listed at 1.0.
+For deployment into a rating engine  -  whether a bespoke Python service, an R Shiny pricing tool, or a system like Emblem or Radar  -  the factor table is the output. Each categorical level needs its own row, with the reference level explicitly listed at 1.0.
 
 For production factor tables with proper reference level handling and exposure-weighted rebasing, see our post on [exporting factor tables to Excel from a Python GLM](/2026/03/24/how-to-export-factor-table-to-excel-python/).
 
@@ -417,13 +417,13 @@ For production factor tables with proper reference level handling and exposure-w
 
 ## What the Tweedie GLM does not give you
 
-**Separate frequency and severity diagnostics.** The Tweedie model gives you a single set of coefficients for pure premium. You cannot separately check whether NCD is driving frequency, severity, or both — which you can with a split model. For most UK regulatory purposes and Consumer Duty fair value assessments, the split is preferable precisely because it is more auditable.
+**Separate frequency and severity diagnostics.** The Tweedie model gives you a single set of coefficients for pure premium. You cannot separately check whether NCD is driving frequency, severity, or both  -  which you can with a split model. For most UK regulatory purposes and Consumer Duty fair value assessments, the split is preferable precisely because it is more auditable.
 
 **The correct model for books with very different severity by claim type.** If your portfolio has a mix of attritional OD claims (£500-3,000) and occasional BI claims (£10,000-200,000), a single Tweedie p may not fit both tails well. The [insurance-distributional](https://github.com/burning-cost/insurance-distributional) library implements distributional regression where p itself is covariate-dependent.
 
 **Exposure-free predictions for sklearn users.** If you are comparing results to `sklearn.linear_model.TweedieRegressor`, note that sklearn's implementation has no offset parameter. You cannot correctly reproduce these predictions with sklearn on data with exposure variation. We explained this in [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure](/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/).
 
-**Postcode and other high-cardinality factors.** We kept the example to four rating factors for clarity. A production UK motor GLM has postcode sector (~9,000 levels), NCD, ABI vehicle group, driver age, vehicle age, voluntary excess, and usually several more. High-cardinality factors need credibility-weighted or hierarchical treatment — a plain one-hot encoding at postcode level is not practical. The [insurance-whittaker](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) library handles postcode smoothing via Whittaker-Henderson graduation applied across postcode hierarchies.
+**Postcode and other high-cardinality factors.** We kept the example to four rating factors for clarity. A production UK motor GLM has postcode sector (~9,000 levels), NCD, ABI vehicle group, driver age, vehicle age, voluntary excess, and usually several more. High-cardinality factors need credibility-weighted or hierarchical treatment  -  a plain one-hot encoding at postcode level is not practical. The [insurance-whittaker](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) library handles postcode smoothing via Whittaker-Henderson graduation applied across postcode hierarchies.
 
 ---
 
@@ -444,7 +444,7 @@ The code in this post is runnable as-is. For a production UK motor model you wil
 *Libraries referenced: [statsmodels](https://www.statsmodels.org/), [insurance-distributional](https://github.com/burning-cost/insurance-distributional), [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker)*
 
 *Related posts:*
-- [Tweedie vs Frequency-Severity Split: When to Use Which](/2026/03/24/tweedie-vs-frequency-severity-when-to-use-which/) — when the simpler single model is enough and when the split wins
-- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure](/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/) — why sklearn's TweedieRegressor produces wrong results on books with exposure variation
-- [Fitting a Motor Insurance GLM in Python: Poisson Frequency and Gamma Severity](/2026/03/24/fitting-motor-insurance-glm-statsmodels-poisson-gamma/) — the frequency-severity split with statsmodels, overdispersion tests, and factor tables
-- [GLM Assumptions in Insurance Pricing: What Actually Matters](/2026/03/23/glm-assumptions-insurance-pricing-what-actually-matters/) — which violations matter, which you can live with
+- [Tweedie vs Frequency-Severity Split: When to Use Which](/2026/03/24/tweedie-vs-frequency-severity-when-to-use-which/)  -  when the simpler single model is enough and when the split wins
+- [Tweedie Regression for Insurance: What sklearn Doesn't Tell You About Exposure](/2026/03/21/tweedie-regression-insurance-what-sklearn-doesnt-tell-you/)  -  why sklearn's TweedieRegressor produces wrong results on books with exposure variation
+- [Fitting a Motor Insurance GLM in Python: Poisson Frequency and Gamma Severity](/2026/03/24/fitting-motor-insurance-glm-statsmodels-poisson-gamma/)  -  the frequency-severity split with statsmodels, overdispersion tests, and factor tables
+- [GLM Assumptions in Insurance Pricing: What Actually Matters](/2026/03/23/glm-assumptions-insurance-pricing-what-actually-matters/)  -  which violations matter, which you can live with

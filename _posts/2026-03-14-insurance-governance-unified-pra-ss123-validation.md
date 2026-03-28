@@ -119,7 +119,7 @@ tier = scorer.score(
 
 `ModelInventory` persists the model register to a JSON file. That file should be version-controlled alongside your code. It stores model metadata, tier assignments, validation run history (linked by `run_id`), review dates, and sign-off status. The `due_for_review()` method is worth running daily from CI: a Tier 1 model approaching its annual review deadline with status `live` (not `validated`) is a governance breach before it becomes a regulatory problem.
 
-`GovernanceReport` produces the executive committee pack — not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration — the same metrics [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) tracks in production), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
+`GovernanceReport` produces the executive committee pack  -  not the full 40-page technical validation report, but a two-page summary covering model purpose, risk tier with scoring rationale, last validation RAG, key metrics (Gini, A/E, calibration  -  the same metrics [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) tracks in production), assumptions register, sign-off chain, and next review date. The audience for this document is the Chief Actuary and the Model Risk Committee, not the independent validation function.
 
 ---
 
@@ -193,7 +193,7 @@ The bottleneck in any validation workflow is the model fitting that produces `y_
 
 ## Our view on the regulatory timeline
 
-PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window — 4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed. The Consumer Duty fair value obligations are a parallel strand: teams with a [Consumer Duty-aligned fairness audit](/2026/03/20/fairness-auditing-without-sensitive-attributes/) need somewhere to record what was tested and who signed it off — that is the MRM inventory.
+PRA SS1/23 came into force for banks on 17 May 2024. Extension to insurers is widely expected in the 2026-2027 window  -  4most's January 2025 analysis and PRA supervision signals both point in that direction, though no formal notice has been issued. The FCA layer is already live: TR24/2 (August 2024) identified documentation failures as the primary gap across the firms it reviewed. The Consumer Duty fair value obligations are a parallel strand: teams with a [Consumer Duty-aligned fairness audit](/2026/03/20/fairness-auditing-without-sensitive-attributes/) need somewhere to record what was tested and who signed it off  -  that is the MRM inventory.
 
 The firms that will handle the PRA extension without a scramble are the ones who can already answer these questions with a query: which models are in production at what tier, when was each last validated, who approved the findings, and what is the machine-readable link between the governance record and the statistical evidence?
 
@@ -205,5 +205,5 @@ An Excel workbook cannot answer these questions reliably. `insurance-governance`
 
 - [Model Risk Governance for UK Insurers: Beyond the Excel Register](/2026/03/13/your-model-risk-register-is-a-spreadsheet/) - the original MRM library, now `insurance_governance.mrm`
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) - the monitoring layer that feeds post-deployment evidence back into the inventory
-- [EU AI Act August 2026: What Insurance Pricing Teams Need to Do Now](/2026/03/25/eu-ai-act-august-2026-insurance-pricing/) — how the governance artefacts produced by this library satisfy the upcoming EU AI Act transparency requirements
-- [Consumer Duty Outcomes Monitoring: What Data to Collect and What to Report](/2026/03/25/consumer-duty-outcomes-monitoring/) — the Consumer Duty obligations layer built on top of this governance framework
+- [EU AI Act August 2026: What Insurance Pricing Teams Need to Do Now](/2026/03/25/eu-ai-act-august-2026-insurance-pricing/)  -  how the governance artefacts produced by this library satisfy the upcoming EU AI Act transparency requirements
+- [Consumer Duty Outcomes Monitoring: What Data to Collect and What to Report](/2026/03/25/consumer-duty-outcomes-monitoring/)  -  the Consumer Duty obligations layer built on top of this governance framework

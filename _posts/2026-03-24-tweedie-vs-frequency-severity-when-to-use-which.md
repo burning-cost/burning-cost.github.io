@@ -48,7 +48,7 @@ This is fine when:
 
 **The frequency and severity drivers are the same.** If vehicle age, driver age, and postcode affect both frequency and severity in the same direction, a single linear predictor may capture enough. If the drivers are different - which they often are - you are forcing a compromise.
 
-The typical UK personal lines motor Tweedie GLM returns a p estimate around 1.5-1.6. Using the formula p = (alpha+2)/(alpha+1), p=1.5 corresponds to a Gamma shape of 1.0 (the exponential distribution) and p=1.6 corresponds to a shape of 0.67. These are thin-tailed severity distributions. If your expected severity has a shape more like 2-3 — typical of mixed bodily injury and property damage books — the corresponding p would be closer to 1.25-1.33. If your estimated p is outside [1.2, 1.8], question whether the compound Poisson-Gamma assumption is appropriate at all.
+The typical UK personal lines motor Tweedie GLM returns a p estimate around 1.5-1.6. Using the formula p = (alpha+2)/(alpha+1), p=1.5 corresponds to a Gamma shape of 1.0 (the exponential distribution) and p=1.6 corresponds to a shape of 0.67. These are thin-tailed severity distributions. If your expected severity has a shape more like 2-3  -  typical of mixed bodily injury and property damage books  -  the corresponding p would be closer to 1.25-1.33. If your estimated p is outside [1.2, 1.8], question whether the compound Poisson-Gamma assumption is appropriate at all.
 
 ---
 
@@ -179,5 +179,5 @@ Neither model is universally right. The decision rule above will steer you corre
 
 For the dependence testing and Sarmanov correction, see [`insurance-frequency-severity`](https://github.com/burning-cost/insurance-frequency-severity). The `DependenceTest` class should be standard practice before finalising any pure premium modelling approach on a UK motor book.
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — if neither Tweedie nor frequency-severity gives you per-risk conditional variance, distributional GBMs model the dispersion parameter as a function of covariates
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free prediction intervals that work around the parametric assumptions of both modelling approaches
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)  -  if neither Tweedie nor frequency-severity gives you per-risk conditional variance, distributional GBMs model the dispersion parameter as a function of covariates
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  distribution-free prediction intervals that work around the parametric assumptions of both modelling approaches

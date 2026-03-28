@@ -4,14 +4,14 @@ title: "How to Quantify What a Model Improvement Is Worth in Pounds"
 date: 2026-03-25
 categories: [pricing, model-validation, techniques]
 tags: [gini, loss-ratio, model-value, LRE, loss-ratio-error, discrimination, insurance-monitoring, model-validation, business-value, CFO, uk-motor, python, arXiv-2512-03242, hedges-2025]
-description: "A 5pp Gini improvement means nothing to a CFO. The Loss Ratio Error framework from arXiv:2512.03242 converts model correlation into expected loss ratio — and from there into pounds. We work through the maths, correct a common misconception about the input metric, and show a Python example using insurance-monitoring."
+description: "A 5pp Gini improvement means nothing to a CFO. The Loss Ratio Error framework from arXiv:2512.03242 converts model correlation into expected loss ratio  -  and from there into pounds. We work through the maths, correct a common misconception about the input metric, and show a Python example using insurance-monitoring."
 ---
 
 Every UK pricing team has lived through this meeting. The models team presents: "we improved Gini from 42% to 47%." The Head of Pricing nods. The CFO asks: "what does that mean in money?" The models team says something about better risk separation, and the meeting ends without an answer.
 
-This is a genuine gap. The Gini coefficient is the dominant discrimination metric in UK non-life pricing — it measures how well the model ranks risks — but it is dimensionless. A 5-percentage-point Gini improvement on a £300M motor book could be worth £1M in reduced adverse selection. It could also be worth £15M. Without a framework for the conversion, you are guessing, and investments in model improvement are evaluated on intuition rather than expected return.
+This is a genuine gap. The Gini coefficient is the dominant discrimination metric in UK non-life pricing  -  it measures how well the model ranks risks  -  but it is dimensionless. A 5-percentage-point Gini improvement on a £300M motor book could be worth £1M in reduced adverse selection. It could also be worth £15M. Without a framework for the conversion, you are guessing, and investments in model improvement are evaluated on intuition rather than expected return.
 
-A paper published in December 2025 (Hedges, arXiv:2512.03242) provides the conversion. It derives a closed-form relationship between model prediction accuracy and expected loss ratio — a quantity that is immediately meaningful to a CFO. This post works through the framework, explains where the assumptions bite, and shows how to use `insurance-monitoring`'s Gini APIs to compute the inputs you need.
+A paper published in December 2025 (Hedges, arXiv:2512.03242) provides the conversion. It derives a closed-form relationship between model prediction accuracy and expected loss ratio  -  a quantity that is immediately meaningful to a CFO. This post works through the framework, explains where the assumptions bite, and shows how to use `insurance-monitoring`'s Gini APIs to compute the inputs you need.
 
 ---
 
@@ -26,7 +26,7 @@ LR = (1/M) × ((1 + ρ²·CV⁻²) / (ρ²·(1 + CV⁻²)))^((2η−1)/2)
 Where:
 
 - **ρ** is the Pearson correlation between predicted and actual losses on holdout data
-- **CV** is the coefficient of variation of true losses (standard deviation divided by mean — typically 1.5–3.5 for UK motor, higher for property)
+- **CV** is the coefficient of variation of true losses (standard deviation divided by mean  -  typically 1.5–3.5 for UK motor, higher for property)
 - **η** is the price elasticity (absolute value of the demand elasticity; typical range 0.8–2.5 for personal lines)
 - **M** is the target margin multiplier (1 / target_loss_ratio if you price to a fixed margin)
 
@@ -66,8 +66,8 @@ For a well-calibrated UK motor frequency model with Gini 42%, a ρ in the range 
 Suppose we have a UK motor book with £300M in written premium. The current frequency model has ρ = 0.93, and a retrained CatBoost model achieves ρ = 0.95 (corresponding to a Gini improvement of roughly 4–5pp).
 
 Parameters:
-- CV = 2.0 (coefficient of variation of individual losses — realistic for a UK motor frequency model)
-- η = 1.2 (price elasticity — moderate, typical for direct personal motor)
+- CV = 2.0 (coefficient of variation of individual losses  -  realistic for a UK motor frequency model)
+- η = 1.2 (price elasticity  -  moderate, typical for direct personal motor)
 - Target loss ratio = 65%
 
 ```python
@@ -139,9 +139,9 @@ A model improvement that lifts ρ from 0.93 to 0.95 is worth approximately **£5
 
 ## Why the parameters matter enormously
 
-The £5.1M figure is a point estimate within a wide range. The three parameters — CV, η, and the ρ estimate itself — are not constants.
+The £5.1M figure is a point estimate within a wide range. The three parameters  -  CV, η, and the ρ estimate itself  -  are not constants.
 
-**Elasticity (η) is the most sensitive.** The exponent (2η−1)/2 scales the entire calculation. At η = 0.8 (inelastic book — home insurance with limited price comparison), the same ρ improvement is worth £2.1M. At η = 2.0 (highly elastic, PCW-dominated motor), it is worth £11.9M. A 5x range from a single parameter.
+**Elasticity (η) is the most sensitive.** The exponent (2η−1)/2 scales the entire calculation. At η = 0.8 (inelastic book  -  home insurance with limited price comparison), the same ρ improvement is worth £2.1M. At η = 2.0 (highly elastic, PCW-dominated motor), it is worth £11.9M. A 5x range from a single parameter.
 
 ```python
 # Sensitivity to elasticity
@@ -263,7 +263,7 @@ print(f"Gini improvement 95% CI: [{result.ci_change_lower*100:+.1f}pp, {result.c
 print(f"Statistical significance: p={result.p_value:.4f}")
 ```
 
-Report the value estimate alongside the Gini CI. If the CI lower bound corresponds to a marginal improvement, adjust the business case accordingly. For a holdout of 10,000 policies, a 5pp Gini improvement typically has a 95% CI of roughly ±1.5pp — narrow enough to be confident in the direction and approximate magnitude, not narrow enough to treat the central estimate as precise.
+Report the value estimate alongside the Gini CI. If the CI lower bound corresponds to a marginal improvement, adjust the business case accordingly. For a holdout of 10,000 policies, a 5pp Gini improvement typically has a 95% CI of roughly ±1.5pp  -  narrow enough to be confident in the direction and approximate magnitude, not narrow enough to treat the central estimate as precise.
 
 ---
 
@@ -315,9 +315,9 @@ We should be honest about the assumptions. The derivation in arXiv:2512.03242 re
 
 1. **Log-normal multiplicative error structure**: the model error is ε ~ N(0, σ²), and predicted loss = true_loss × e^ε. Reasonable for GLMs with log link; less defensible for threshold-based systems or models with systematic segment bias.
 
-2. **Error independence**: model prediction errors are uncorrelated with true risk level. This is the hardest assumption. Models trained with insufficient data on rare segments (young drivers, exotic vehicles) have correlated errors — systematically wrong in specific parts of the risk space, not randomly wrong everywhere. The LRE formula will understate the cost of that kind of error.
+2. **Error independence**: model prediction errors are uncorrelated with true risk level. This is the hardest assumption. Models trained with insufficient data on rare segments (young drivers, exotic vehicles) have correlated errors  -  systematically wrong in specific parts of the risk space, not randomly wrong everywhere. The LRE formula will understate the cost of that kind of error.
 
-3. **Constant price elasticity**: the power-law demand model c(p) ∝ p^(−η) ignores non-linearity around price thresholds (the PCW comparison effect at ±5% of market rate) and portfolio composition shifts. For heavily PCW-exposed books, estimate η from causal models — see `insurance-causal`'s `PremiumElasticity` for a DML-based approach that avoids the confounding present in naive elasticity estimates.
+3. **Constant price elasticity**: the power-law demand model c(p) ∝ p^(−η) ignores non-linearity around price thresholds (the PCW comparison effect at ±5% of market rate) and portfolio composition shifts. For heavily PCW-exposed books, estimate η from causal models  -  see `insurance-causal`'s `PremiumElasticity` for a DML-based approach that avoids the confounding present in naive elasticity estimates.
 
 4. **ρ estimation**: the formula is sensitive to ρ near 1, so estimation error matters. Compute ρ on a held-out sample of adequate size (10,000+ policies for stable estimates). Cross-validate if the holdout is small.
 
@@ -333,7 +333,7 @@ The framework produces two practically useful outputs:
 
 **For monitoring escalation:** instrument the LRE calculation into your Gini monitoring. When `insurance-monitoring` flags a Gini drift, translate it immediately into an expected annual loss impact. A Gini drop that was previously a yellow-flag technical metric becomes a financial number that the Head of Pricing can act on.
 
-The Gini coefficient is a good model metric. "£5M" is a good CFO metric. The LRE framework — with three parameters you can calibrate from your own portfolio history — gives you both in the same sentence.
+The Gini coefficient is a good model metric. "£5M" is a good CFO metric. The LRE framework  -  with three parameters you can calibrate from your own portfolio history  -  gives you both in the same sentence.
 
 ---
 
@@ -348,6 +348,6 @@ Hedges, C.E. (December 2025). "A Theoretical Framework Bridging Model Validation
 
 ## Related posts
 
-- [Sequential A/B Testing for Insurance Champion/Challenger Experiments](/2026/03/24/sequential-ab-testing-insurance-champion-challenger/) — for verifying that a Gini improvement is statistically real before committing to a model swap
-- [Does GBM-to-GLM Distillation Actually Work?](/2026/03/24/does-gbm-glm-distillation-work-insurance-pricing/) — benchmark results that feed directly into the LRE calculation
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring whether the Gini improvement evidenced at deployment persists in production
+- [Sequential A/B Testing for Insurance Champion/Challenger Experiments](/2026/03/24/sequential-ab-testing-insurance-champion-challenger/)  -  for verifying that a Gini improvement is statistically real before committing to a model swap
+- [Does GBM-to-GLM Distillation Actually Work?](/2026/03/24/does-gbm-glm-distillation-work-insurance-pricing/)  -  benchmark results that feed directly into the LRE calculation
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)  -  monitoring whether the Gini improvement evidenced at deployment persists in production

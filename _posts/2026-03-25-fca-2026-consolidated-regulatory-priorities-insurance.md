@@ -7,7 +7,7 @@ tags: [fca, consumer-duty, fairness, governance, monitoring, ai, pet-insurance, 
 description: "The FCA replaced 40+ portfolio letters with a single annual priorities document on 24 February 2026. Here is what it says, what it means for pricing teams, and which library tools map directly to the four pillars."
 ---
 
-On 24 February 2026 the FCA published its first *Regulatory Priorities: Insurance* report — a 17-page document that replaces more than 40 portfolio letters. Sarah Pritchard (Deputy CEO) and Graeme Reynolds (Interim Director of Insurance) signed the foreword. The stated aim is a "clear, succinct one-stop shop" that "should act as a guide for firms' boards and chief executives."
+On 24 February 2026 the FCA published its first *Regulatory Priorities: Insurance* report  -  a 17-page document that replaces more than 40 portfolio letters. Sarah Pritchard (Deputy CEO) and Graeme Reynolds (Interim Director of Insurance) signed the foreword. The stated aim is a "clear, succinct one-stop shop" that "should act as a guide for firms' boards and chief executives."
 
 We have read the document in full. Below is what it actually says, stripped of the usual regulatory ambiguity, with a direct read-through for pricing teams.
 
@@ -15,7 +15,7 @@ We have read the document in full. Below is what it actually says, stripped of t
 
 ## What changed and why it matters
 
-The old portfolio letter system was fragmented. A Head of Pricing at a composite insurer received letters for general insurance, motor, home, premium finance, and possibly life — each written by different supervisory teams, with inconsistent priorities and overlapping timetables. The new single report covers retail insurers, wholesale insurers, insurance intermediaries, PCWs, life insurers, and funeral plan providers under one cover.
+The old portfolio letter system was fragmented. A Head of Pricing at a composite insurer received letters for general insurance, motor, home, premium finance, and possibly life  -  each written by different supervisory teams, with inconsistent priorities and overlapping timetables. The new single report covers retail insurers, wholesale insurers, insurance intermediaries, PCWs, life insurers, and funeral plan providers under one cover.
 
 The format change is not cosmetic. It signals that the FCA wants firms to read this as a board-level document, not a supervisor's checklist. Reynolds said at the ABI Conference in February 2026: "We want to raise standards and improve access to insurance." The framing is growth-permissive in tone but operationally specific in the timeline.
 
@@ -29,7 +29,7 @@ The report is blunt: "too many people have poor claims experiences." The three f
 
 Two pricing-relevant points sit inside this pillar.
 
-**Sales process analysis.** The FCA will analyse "how different sales processes affect consumer outcomes" with work starting Q1 2026 and findings published later in the year. PCW presentation of comparable information is called out specifically. If your premium reflects the sales channel — and almost every personal lines tariff does — expect scrutiny of whether the channel differential is justifiable under Consumer Duty.
+**Sales process analysis.** The FCA will analyse "how different sales processes affect consumer outcomes" with work starting Q1 2026 and findings published later in the year. PCW presentation of comparable information is called out specifically. If your premium reflects the sales channel  -  and almost every personal lines tariff does  -  expect scrutiny of whether the channel differential is justifiable under Consumer Duty.
 
 **Value measures rules review.** A review of value measures rules starts Q1 2026 and concludes Q4 2026. The FCA will assess "the impact of our rules and how firms have implemented them." The Motor Total Loss work is the reference point: around 270,000 drivers will receive compensation as a direct result. That is what inadequate value measurement looks like in enforcement terms.
 
@@ -49,19 +49,19 @@ This is the pillar that contains the two most watched sub-sectors for 2026.
 
 The AI section is explicit about the tools available. The FCA "encourage[s] firms to experiment with AI and use our sandbox services, and look at our Innovation Pathways." The document names three specific pathways:
 
-- **AI Lab** — for testing AI applications before deployment
-- **FCA Sandbox** — for new product or business model innovations
-- **Supercharged Sandbox** — "specific services open to smaller market participants"
+- **AI Lab**  -  for testing AI applications before deployment
+- **FCA Sandbox**  -  for new product or business model innovations
+- **Supercharged Sandbox**  -  "specific services open to smaller market participants"
 
 An evaluation report from AI Live Testing will be published by end of 2026. The Q1 2026 timeline shows an "Artificial Intelligence review" to "engage industry on the uses, risks and opportunities of AI in insurance and how we can remove barriers to encourage safe use."
 
-This is not a threat — the FCA is asking to be involved, not to block. If your firm is building AI-driven underwriting or pricing models, the Innovation Pathways reduce regulatory risk at the development stage, not just at deployment. We think using the AI Lab is materially better than relying on post-deployment supervision.
+This is not a threat  -  the FCA is asking to be involved, not to block. If your firm is building AI-driven underwriting or pricing models, the Innovation Pathways reduce regulatory risk at the development stage, not just at deployment. We think using the AI Lab is materially better than relying on post-deployment supervision.
 
 The **captive insurance** framework is on the timeline: consultation in Q3 2026, framework introduced 2027 (joint with PRA). **Cyber insurance** gets a dedicated product review concluding later in 2026.
 
 ### 4. Simplifying regulation
 
-The FCA is removing the pricing practices data returns (CP25/35 — three specific returns), rationalising conflicts of interest rules (CP25/36), and removing some product-specific rules (CP25/37). For pricing teams, the deletion of the General Insurance Pricing data returns matters. The FCA is simultaneously consulting on new GAP insurance rules and information disclosure requirements, so the net burden change will depend on the final PS.
+The FCA is removing the pricing practices data returns (CP25/35  -  three specific returns), rationalising conflicts of interest rules (CP25/36), and removing some product-specific rules (CP25/37). For pricing teams, the deletion of the General Insurance Pricing data returns matters. The FCA is simultaneously consulting on new GAP insurance rules and information disclosure requirements, so the net burden change will depend on the final PS.
 
 The SMCR review with Treasury and PRA aims to "halve its regulatory burden." Whether that materialises is a question for H2 2026.
 
@@ -73,7 +73,7 @@ The Consumer Duty to non-UK consumers question gets a consultation in H1 2026 (i
 
 Three concrete actions follow from this document.
 
-**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes — not just whether the technical model is accurate. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control — you do not need to pre-specify monitoring intervals.
+**First: outcome monitoring is not optional.** The FCA uses "test outcomes" as a first-order firm obligation alongside "be clear" and "handle claims fairly." For pricing, this means documented monitoring of whether the price relativities you charge are producing good outcomes  -  not just whether the technical model is accurate. [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) gives you the right tools here: the `MonitoringReport` class runs calibration, discrimination, and PSI checks with traffic-light output. The `PITMonitor` is specifically suited to ongoing consumer outcome monitoring because it gives anytime-valid type I error control  -  you do not need to pre-specify monitoring intervals.
 
 ```python
 from insurance_monitoring import MonitoringReport, PITMonitor
@@ -82,7 +82,7 @@ from insurance_monitoring.calibration import ae_ratio_ci
 # Outcome monitoring: is the model still fair and calibrated
 # across the book, including vulnerable segments?
 # MonitoringReport is a dataclass: pass reference and current period arrays directly.
-# It runs all checks in __post_init__ — no .run() call needed.
+# It runs all checks in __post_init__  -  no .run() call needed.
 report = MonitoringReport(
     reference_actual=reference_claims,
     reference_predicted=reference_predictions,
@@ -94,7 +94,7 @@ report = MonitoringReport(
 print(report.recommendation)   # 'NO_ACTION' | 'RECALIBRATE' | 'REFIT' | 'INVESTIGATE'
 print(report.to_dict())        # full metrics dict with traffic-light bands
 
-# Anytime-valid calibration check — no scheduled review required,
+# Anytime-valid calibration check  -  no scheduled review required,
 # no look-schedule inflation of type I error
 from scipy.stats import poisson as sp_poisson
 
@@ -109,7 +109,7 @@ for claim_i, lambda_hat_i, exposure_i in zip(new_claims, new_predictions, new_ex
         break
 ```
 
-**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [insurance-fairness](/2026/03/03/your-pricing-model-might-be-discriminating/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
+**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [insurance-fairness](/2026/03/03/your-pricing-model-might-be-discriminating/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question  -  it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
 
 ```python
 from insurance_fairness import DoubleFairnessAudit
@@ -126,7 +126,7 @@ proxy_audit = ProxyDiscriminationAudit(
 proxy_result = proxy_audit.fit()
 print(proxy_result.summary())   # D_proxy scalar + Shapley attribution
 
-# Step 2: double fairness — action AND outcome
+# Step 2: double fairness  -  action AND outcome
 double_audit = DoubleFairnessAudit(n_alphas=20)
 double_audit.fit(
     X_train,
@@ -162,7 +162,7 @@ card = MRMModelCard(
     ],
 )
 
-# Score risk tier — higher tiers require more governance
+# Score risk tier  -  higher tiers require more governance
 scorer = RiskTierScorer()
 tier = scorer.score(
     gwp_impacted=15_000_000,
@@ -172,7 +172,7 @@ tier = scorer.score(
     external_data=False,
     customer_facing=True,
 )
-print(f"Risk tier: {tier.tier} — {tier.rationale}")
+print(f"Risk tier: {tier.tier}  -  {tier.rationale}")
 
 # Add to inventory for model risk committee reporting
 inventory = ModelInventory("model_inventory.json")
@@ -204,6 +204,6 @@ The full document is available at [fca.org.uk/publication/regulatory-priorities/
 ---
 
 **Libraries referenced in this post:**
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — outcome monitoring, calibration, Gini drift, PITMonitor
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — proxy discrimination auditing, double fairness, optimal transport correction
-- [`insurance-governance`](https://github.com/burning-cost/insurance-governance) — MRM model cards, risk tier scoring, governance reports
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring)  -  outcome monitoring, calibration, Gini drift, PITMonitor
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness)  -  proxy discrimination auditing, double fairness, optimal transport correction
+- [`insurance-governance`](https://github.com/burning-cost/insurance-governance)  -  MRM model cards, risk tier scoring, governance reports

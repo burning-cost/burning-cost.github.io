@@ -10,7 +10,7 @@ tags: [one-way-analysis, factor-tables, pandas, python, uk-insurance, motor-pric
 
 Before any model is fitted, before any interaction is explored, there is one-way analysis. Sort by a rating factor, bin it if it is continuous, compute observed frequency versus expected frequency by level, weight by exposure, look at the chart, repeat for every factor. It is the first thing a pricing actuary does on a new dataset and the most common diagnostic they return to throughout the modelling cycle.
 
-Python tutorials for insurance pricing skip it almost entirely. This post fills that gap: we build a correct one-way from scratch in pandas, add proper confidence intervals, then show how to get factor tables from a fitted GBM model using [shap-relativities](https://github.com/burning-cost/shap-relativities) — which is what production work actually looks like.
+Python tutorials for insurance pricing skip it almost entirely. This post fills that gap: we build a correct one-way from scratch in pandas, add proper confidence intervals, then show how to get factor tables from a fitted GBM model using [shap-relativities](https://github.com/burning-cost/shap-relativities)  -  which is what production work actually looks like.
 
 ---
 
@@ -18,12 +18,12 @@ Python tutorials for insurance pricing skip it almost entirely. This post fills 
 
 A one-way analysis produces a table and chart for a single rating factor. For each level of that factor (e.g., NCD band 0, 1, 2, 3, 4, 5), it shows:
 
-- **Earned exposure** (car-years) — how much risk volume is in each level
-- **Observed frequency** (claims / exposure) — what actually happened
-- **Expected frequency** (model prediction / exposure) — what the model predicts
-- **Observed-to-Expected ratio** (O/E or A/E) — the calibration signal
+- **Earned exposure** (car-years)  -  how much risk volume is in each level
+- **Observed frequency** (claims / exposure)  -  what actually happened
+- **Expected frequency** (model prediction / exposure)  -  what the model predicts
+- **Observed-to-Expected ratio** (O/E or A/E)  -  the calibration signal
 
-The O/E ratio is the diagnostic. An O/E above 1.0 at a factor level means the model is underpricing that segment. An O/E below 1.0 means overpricing. A systematic pattern across ordered levels — say, O/E climbing with vehicle group — means the model's vehicle group relativity structure is wrong.
+The O/E ratio is the diagnostic. An O/E above 1.0 at a factor level means the model is underpricing that segment. An O/E below 1.0 means overpricing. A systematic pattern across ordered levels  -  say, O/E climbing with vehicle group  -  means the model's vehicle group relativity structure is wrong.
 
 One-way is fast, transparent, and remains useful long after you have fitted a GBM that has buried all the factor effects in hundreds of trees. It is the check you run before trusting the model.
 
@@ -183,7 +183,7 @@ ow_ncd["blended_oe_ratio"] = (
 
 **Option 3: Pool with adjacent levels.** Works well for ordinal factors (vehicle group, driver age) where adjacent levels genuinely share risk characteristics. Implement as a merge pass before the groupby.
 
-The 500 car-year threshold for $k$ is not arbitrary — it corresponds roughly to the exposure at which a 25% effect becomes statistically detectable at the 5% level with Poisson counts. For severity models with high variance, you would use a larger $k$; for binary frequency in large personal lines books, smaller.
+The 500 car-year threshold for $k$ is not arbitrary  -  it corresponds roughly to the exposure at which a 25% effect becomes statistically detectable at the 5% level with Poisson counts. For severity models with high variance, you would use a larger $k$; for binary frequency in large personal lines books, smaller.
 
 ---
 
@@ -221,7 +221,7 @@ grp = grp.sort_values("exposure", ascending=False)
 
 ## The production shortcut: [shap-relativities](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 
-From-scratch one-way analysis works well for GLMs. For a fitted GBM — CatBoost, LightGBM — the marginal O/E chart is harder to interpret because the model includes interaction effects that the one-way ignores. A vehicle group effect in the GBM is not a pure main effect; it includes partial interaction terms with driver age, NCD, and region.
+From-scratch one-way analysis works well for GLMs. For a fitted GBM  -  CatBoost, LightGBM  -  the marginal O/E chart is harder to interpret because the model includes interaction effects that the one-way ignores. A vehicle group effect in the GBM is not a pure main effect; it includes partial interaction terms with driver age, NCD, and region.
 
 The actuarially correct equivalent for GBMs is to extract the SHAP-based factor table. This gives you a one-row-per-level relativity for each feature, normalised to a base level, with confidence intervals. It is directly comparable to GLM exp(beta) relativities and is what [shap-relativities](https://github.com/burning-cost/shap-relativities) produces.
 
@@ -269,13 +269,13 @@ print(ncd_table.select(["level", "relativity", "lower_ci", "upper_ci", "exposure
 
 The `SHAPRelativities` output is a Polars DataFrame with one row per (feature, level), ready for a chart. Each relativity is the multiplicative effect relative to the base level, with CLT-based 95% confidence intervals derived from the SHAP value distribution across policies in that level.
 
-This is the "production way" because it handles interactions correctly. The SHAP allocation decomposes each prediction into per-feature contributions. When you aggregate these over policies in a given NCD band, you get the average contribution of NCD to that band's predictions — the main effect, averaged over the actual distribution of the other correlated features in the data. This is a materially better estimate of the NCD effect than the marginal O/E, which conflates the NCD effect with any correlation between NCD and the other factors.
+This is the "production way" because it handles interactions correctly. The SHAP allocation decomposes each prediction into per-feature contributions. When you aggregate these over policies in a given NCD band, you get the average contribution of NCD to that band's predictions  -  the main effect, averaged over the actual distribution of the other correlated features in the data. This is a materially better estimate of the NCD effect than the marginal O/E, which conflates the NCD effect with any correlation between NCD and the other factors.
 
 ---
 
 ## GAM-based factor tables with insurance-gam
 
-If you are using a GAM rather than a GBM — for example, an EBM (Explainable Boosting Machine) from [insurance-gam](https://github.com/burning-cost/insurance-gam) — the factor tables are native to the model architecture. An EBM is additive by construction; its shape functions are the factor tables.
+If you are using a GAM rather than a GBM  -  for example, an EBM (Explainable Boosting Machine) from [insurance-gam](https://github.com/burning-cost/insurance-gam)  -  the factor tables are native to the model architecture. An EBM is additive by construction; its shape functions are the factor tables.
 
 ```bash
 uv add 'insurance-gam[ebm]'
@@ -311,6 +311,6 @@ Before presenting a one-way analysis to a pricing meeting:
 
 One-way analysis is the starting point, not the conclusion. It tells you where to look. The model, the SHAP decomposition, and the confidence intervals tell you what is actually there.
 
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the credibility weighting used in the thin-cell handling here, explained in full
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — segmented A/E ratios post-deployment: the same one-way analysis run on a monitoring period rather than a training set (for full monitoring including Gini drift and A/E ratios, see [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/))
-- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — interpretable models that produce exact factor tables rather than SHAP approximations
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)  -  the credibility weighting used in the thin-cell handling here, explained in full
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)  -  segmented A/E ratios post-deployment: the same one-way analysis run on a monitoring period rather than a training set (for full monitoring including Gini drift and A/E ratios, see [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/))
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/)  -  interpretable models that produce exact factor tables rather than SHAP approximations

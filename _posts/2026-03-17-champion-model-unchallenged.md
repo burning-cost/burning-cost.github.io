@@ -58,9 +58,9 @@ This is stateless. It requires no database of assignments. Any assignment can be
 Why this matters: ENBP compliance requires you to demonstrate that a specific model version priced a specific renewal at a specific price. If your routing is random at the quote level, you cannot reconstruct the assignment. A deterministic hash is independently verifiable - an auditor can confirm the assignment from the policy ID without trusting your infrastructure.
 
 ```python
-# Same policy, always same arm — regardless of when it's called
+# Same policy, always same arm  -  regardless of when it's called
 arm1 = exp.route("POL-12345")   # "challenger"
-arm2 = exp.route("POL-12345")   # "challenger" — same answer every time
+arm2 = exp.route("POL-12345")   # "challenger"  -  same answer every time
 ```
 
 ---
@@ -228,7 +228,7 @@ Run a challenger. Log it properly. Know when you have enough data to decide. Tha
 
 ---
 
-`insurance-deploy` is open source under MIT at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). For the monitoring side — detecting when your deployed model has drifted — see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/). Requires Python 3.10+. Install with `uv add insurance-deploy`.
+`insurance-deploy` is open source under MIT at [github.com/burning-cost/insurance-deploy](https://github.com/burning-cost/insurance-deploy). For the monitoring side  -  detecting when your deployed model has drifted  -  see [Insurance Model Monitoring Beyond Generic Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/). Requires Python 3.10+. Install with `uv add insurance-deploy`.
 
 ---
 

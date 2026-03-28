@@ -76,7 +76,7 @@ exp = Experiment(
     mode="live",  # raises FCA Consumer Duty warning
 )
 # UserWarning: Live mode routes real quotes to challenger model. This may raise
-# FCA Consumer Duty (PRIN 2A) fair value concerns — two customers of identical
+# FCA Consumer Duty (PRIN 2A) fair value concerns  -  two customers of identical
 # risk profile priced differently simultaneously. Obtain legal sign-off before
 # enabling live mode in production. Shadow mode (default) carries zero regulatory risk.
 ```
@@ -103,7 +103,7 @@ from insurance_deploy import (
     ENBPAuditReport,
 )
 
-# Register model versions — append-only, SHA-256 verified
+# Register model versions  -  append-only, SHA-256 verified
 registry = ModelRegistry("./registry")
 
 mv_champion = registry.register(
@@ -120,7 +120,7 @@ mv_challenger = registry.register(
     metadata={"training_date": "2024-01-01", "features": ["age", "ncd", "vehicle", "telematics_score"]},
 )
 
-# Set up experiment — shadow mode, 10% split
+# Set up experiment  -  shadow mode, 10% split
 exp = Experiment(
     name="v3_vs_v2",
     champion=mv_champion,
@@ -347,7 +347,7 @@ def quote_handler(policy_id: str, risk_features: dict, renewal_flag: bool) -> di
     arm = exp.route(policy_id)
     challenger_price = challenger_model.predict(risk_features)
 
-    # Log both — champion prices the live quote
+    # Log both  -  champion prices the live quote
     logger.log_quote(
         policy_id=policy_id,
         experiment_name=exp.name,

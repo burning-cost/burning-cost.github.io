@@ -170,7 +170,7 @@ print(f"Aggregate A/E: {aggregate['ae']:.3f}  "
       f"95% CI [{aggregate['lower']:.3f}, {aggregate['upper']:.3f}]")
 # Aggregate A/E: 1.032  95% CI [1.018, 1.046]
 
-# Segmented A/E by driver age — the important check
+# Segmented A/E by driver age  -  the important check
 age_bands = pl.Series(np.where(ages_cur < 25, "17-24",
                np.where(ages_cur < 50, "25-49",
                np.where(ages_cur < 70, "50-69", "70+"))))
@@ -213,12 +213,12 @@ The double-lift chart is particularly useful when introducing a new model: it sh
 # Champion: our existing GLM predictions
 pred_champion = pred_cur.copy()
 
-# Challenger: a hypothetical improved model — slightly better discrimination,
+# Challenger: a hypothetical improved model  -  slightly better discrimination,
 # especially for young drivers
 improvement = np.where(ages_cur < 25, 1.12, 1.0)  # challenger identifies young driver risk better
 pred_challenger = pred_cur * improvement * rng.uniform(0.97, 1.03, n_cur)
 
-# Compute the double-lift chart manually — insurance-monitoring does not yet
+# Compute the double-lift chart manually  -  insurance-monitoring does not yet
 # have a dedicated double-lift function; we build it from the primitives
 
 ratio = pred_champion / pred_challenger

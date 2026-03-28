@@ -9,11 +9,11 @@ description: "The LRE metric converts Pearson correlation improvement into expec
 
 Every pricing review ends the same way. The actuaries present a lift chart, a Gini improvement from 0.41 to 0.43, and a log-loss reduction of 3%. The CFO asks: "What is that worth?" The room goes quiet.
 
-The problem is not that the actuaries do not know. It is that the standard validation metrics — Gini coefficient, double-lift chart ratio, normalised Gini index — are dimensionless. They rank model quality but do not translate to pounds. You need an additional step: a relationship between model discrimination and expected portfolio loss ratio.
+The problem is not that the actuaries do not know. It is that the standard validation metrics  -  Gini coefficient, double-lift chart ratio, normalised Gini index  -  are dimensionless. They rank model quality but do not translate to pounds. You need an additional step: a relationship between model discrimination and expected portfolio loss ratio.
 
 Evans Hedges (2025), arXiv:2512.03242, provides one. It is the first published closed-form formula connecting a model validation metric to expected loss ratio. We implemented it in [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) v0.9.1 as the `business_value` module.
 
-This post explains the formula, shows the calibrate-then-forecast workflow in code, and is honest about where the assumptions break down — particularly under PS21/5.
+This post explains the formula, shows the calibrate-then-forecast workflow in code, and is honest about where the assumptions break down  -  particularly under PS21/5.
 
 ---
 
@@ -27,12 +27,12 @@ LR = (1/M) * [(1 + ρ² CV⁻²) / (ρ² (1 + CV⁻²))]^{(2η−1)/2}
 
 Four parameters:
 
-- **ρ** — Pearson correlation between the model's predicted loss cost and the true loss cost. Not Gini. Not normalised Gini. Pearson ρ.
-- **CV** — coefficient of variation of the true loss cost distribution (not of your predictions).
-- **η** — price elasticity of demand. The demand model assumed is c(p) ∝ p^{−η}.
-- **M** — pricing margin factor. For a 74% loss ratio target, M = 1/0.74 ≈ 1.351.
+- **ρ**  -  Pearson correlation between the model's predicted loss cost and the true loss cost. Not Gini. Not normalised Gini. Pearson ρ.
+- **CV**  -  coefficient of variation of the true loss cost distribution (not of your predictions).
+- **η**  -  price elasticity of demand. The demand model assumed is c(p) ∝ p^{−η}.
+- **M**  -  pricing margin factor. For a 74% loss ratio target, M = 1/0.74 ≈ 1.351.
 
-At ρ = 1 (perfect model), the ratio inside the power is exactly 1, so LR = 1/M — your target loss ratio. Any ρ < 1 inflates the LR above that. The excess is the Loss Ratio Error:
+At ρ = 1 (perfect model), the ratio inside the power is exactly 1, so LR = 1/M  -  your target loss ratio. Any ρ < 1 inflates the LR above that. The excess is the Loss Ratio Error:
 
 ```
 E_LR = [(1 + ρ² CV⁻²) / (ρ² (1 + CV⁻²))]^{(2η−1)/2} − 1
@@ -46,8 +46,8 @@ The derivation assumes multiplicative log-normal errors: λ̂ = λ · exp(ε), �
 
 If your validation suite reports Gini and not Pearson ρ, you cannot plug Gini directly into the formula. The two metrics measure related but distinct things:
 
-- **Gini** — area under the Lorenz curve: how well does ordered risk ranking separate profitable from unprofitable business?
-- **Pearson ρ** — linear correlation between predicted and actual loss cost magnitudes.
+- **Gini**  -  area under the Lorenz curve: how well does ordered risk ranking separate profitable from unprofitable business?
+- **Pearson ρ**  -  linear correlation between predicted and actual loss cost magnitudes.
 
 For a well-specified model on well-behaved data they will be close. They diverge in the presence of outliers (Pearson ρ is sensitive to them; Gini is not), non-linearity, or segmentation structure. Evans Hedges (2025) cites Frees (2014) on the connection between Gini and correlation but does not provide a conversion formula. We have not found one in the literature.
 
@@ -57,7 +57,7 @@ The practical implication: run both metrics in your validation suite. If you onl
 
 ## The calibrate workflow
 
-The formula has three parameters you can observe (ρ, CV, M) and one you cannot directly observe (η). The right approach — and the one Evans Hedges recommends — is to reverse-calibrate η from historical data, then use it to forecast the impact of a proposed model change.
+The formula has three parameters you can observe (ρ, CV, M) and one you cannot directly observe (η). The right approach  -  and the one Evans Hedges recommends  -  is to reverse-calibrate η from historical data, then use it to forecast the impact of a proposed model change.
 
 The `calibrate_eta` function inverts Theorem 1 using Brent's method: given an observed (LR, ρ, CV, M) from a previous model generation, find the η that makes the formula consistent with what actually happened.
 
@@ -107,7 +107,7 @@ print(f"Expected annual saving: £{saving:,.0f}")
 
 The `LREResult` dataclass carries `rho_old`, `rho_new`, `cv`, `eta`, `margin`, `lr_old`, `lr_new`, `delta_lr`, `delta_lr_bps`, `e_lr_old`, `e_lr_new`. Multiply `delta_lr` by gross written premium to get the monetary figure.
 
-Note: `lr_old=0.8185` is the formula's prediction for the current model at ρ=0.91. We calibrated η from the older model, not from observed data at ρ=0.91, so 0.8185 is a forward projection. Whether the current book is actually running at 82% depends on factors outside the model — market cycle, large losses, mix shift — that the formula cannot see.
+Note: `lr_old=0.8185` is the formula's prediction for the current model at ρ=0.91. We calibrated η from the older model, not from observed data at ρ=0.91, so 0.8185 is a forward projection. Whether the current book is actually running at 82% depends on factors outside the model  -  market cycle, large losses, mix shift  -  that the formula cannot see.
 
 ---
 
@@ -135,7 +135,7 @@ good to strong             Δρ=+0.03  ΔLR=-282.6 bps
 strong to near-perfect     Δρ=+0.03  ΔLR=-247.7 bps
 ```
 
-The same three-point ρ improvement is worth roughly twice as much when coming from ρ=0.70 as when coming from ρ=0.96. The gradient steepens significantly at low ρ. This is why the first GBM upgrade over a legacy GLM typically has a larger business case than any subsequent incremental improvement — and why the CFO's question "what is the marginal value of the next model refresh?" has a structurally diminishing answer.
+The same three-point ρ improvement is worth roughly twice as much when coming from ρ=0.70 as when coming from ρ=0.96. The gradient steepens significantly at low ρ. This is why the first GBM upgrade over a legacy GLM typically has a larger business case than any subsequent incremental improvement  -  and why the CFO's question "what is the marginal value of the next model refresh?" has a structurally diminishing answer.
 
 ---
 
@@ -167,9 +167,9 @@ For UK home insurance, CV is typically higher (5–15 for property contents vers
 
 ## Where the formula breaks down
 
-**Independence assumption.** The derivation requires ε to be independent of λ — the log-space pricing error must be uncorrelated with the true loss cost. This fails when your model is systematically biased for specific risk segments (heteroskedastic errors in log-space). The paper's own simulation shows MAPE exceeding 75% when independence is violated. If your residual plots show structure against predicted loss cost, the LRE numbers are unreliable.
+**Independence assumption.** The derivation requires ε to be independent of λ  -  the log-space pricing error must be uncorrelated with the true loss cost. This fails when your model is systematically biased for specific risk segments (heteroskedastic errors in log-space). The paper's own simulation shows MAPE exceeding 75% when independence is violated. If your residual plots show structure against predicted loss cost, the LRE numbers are unreliable.
 
-**PS21/5 and non-proportional pricing.** The formula assumes proportional pricing: p = M · λ̂. Under the FCA's pricing practices rules (PS21/5, effective January 2022), insurers cannot freely price renewals on technical cost. Renewal rates are constrained by the equivalent new business rate, which breaks the clean proportional structure. The demand model embedded in the formula — c(p) ∝ p^{−η} with constant η — does not capture the dual pricing regime. For books with significant renewal volume, the independence violation MAPE of >75% is directly relevant.
+**PS21/5 and non-proportional pricing.** The formula assumes proportional pricing: p = M · λ̂. Under the FCA's pricing practices rules (PS21/5, effective January 2022), insurers cannot freely price renewals on technical cost. Renewal rates are constrained by the equivalent new business rate, which breaks the clean proportional structure. The demand model embedded in the formula  -  c(p) ∝ p^{−η} with constant η  -  does not capture the dual pricing regime. For books with significant renewal volume, the independence violation MAPE of >75% is directly relevant.
 
 **Portfolio size and LLN.** The formula relies on the law of large numbers to equate expected loss ratio with the ratio of expectations. For small portfolios or niche segments, sampling variability will dominate the signal.
 
@@ -195,6 +195,6 @@ Source: [github.com/burning-cost/insurance-monitoring](https://github.com/burnin
 
 ---
 
-- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — monitoring for covariate drift, which determines whether your calibrated η is still valid
-- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — the mean model whose ρ you are measuring here
-- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — when model degradation is large enough that a full refit changes the LRE picture materially
+- [Your Book Has Shifted and Your Model Doesn't Know](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/)  -  monitoring for covariate drift, which determines whether your calibrated η is still valid
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)  -  the mean model whose ρ you are measuring here
+- [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/)  -  when model degradation is large enough that a full refit changes the LRE picture materially

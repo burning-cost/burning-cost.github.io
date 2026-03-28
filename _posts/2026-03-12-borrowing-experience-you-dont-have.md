@@ -72,7 +72,7 @@ from insurance_thin_data.transfer import GBMTransfer
 source_catboost = ...  # your pre-trained CatBoost frequency model on main book
 transfer = GBMTransfer(source_model=source_catboost)
 
-# fine-tune on young driver segment — source predictions become log-offset
+# fine-tune on young driver segment  -  source predictions become log-offset
 transfer.fit(X_target, y_target, exposure_target)
 predict = transfer.predict(X_new, exposure_new)
 ```

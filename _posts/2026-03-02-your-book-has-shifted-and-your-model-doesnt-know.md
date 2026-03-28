@@ -29,7 +29,7 @@ The usual responses to a shifted book are wrong in instructive ways.
 
 **PSI monitoring** (population stability index) will tell you that the book has shifted. That is useful but it stops at diagnosis. PSI detects; it does not correct.
 
-**Full retraining** on the target book is the right answer eventually, but it requires target labels — actual claims experience from the acquired portfolio. That takes 12 to 18 months to accumulate. You cannot wait that long. You are pricing renewals at month three.
+**Full retraining** on the target book is the right answer eventually, but it requires target labels  -  actual claims experience from the acquired portfolio. That takes 12 to 18 months to accumulate. You cannot wait that long. You are pricing renewals at month three.
 
 **Transfer learning** (the `insurance-thin-data` library) is a different tool: it adapts model parameters using some labelled target data. Useful when you have six months of experience and want to fine-tune. Not useful when you have zero claims from the acquired book and need to price now.
 
@@ -372,11 +372,11 @@ This goes in the model change log with the date, the metrics, and the action tak
 
 UK motor data breaks kernel-based density ratio methods.
 
-One-hot encoding 2,000 postcode districts creates a 2,000-dimensional binary vector. A Gaussian RBF kernel treats SW1A and SW1B as equally distant from LE1. The Gram matrices become near-singular. Bandwidth cross-validation produces meaningless results. RuLSIF and KLIEP both fail silently — they converge to plausible-looking numbers that are nonetheless wrong.
+One-hot encoding 2,000 postcode districts creates a 2,000-dimensional binary vector. A Gaussian RBF kernel treats SW1A and SW1B as equally distant from LE1. The Gram matrices become near-singular. Bandwidth cross-validation produces meaningless results. RuLSIF and KLIEP both fail silently  -  they converge to plausible-looking numbers that are nonetheless wrong.
 
 CatBoost handles this natively. It processes `postcode_district`, `vehicle_make`, and `occupation_code` directly via ordered target statistics, learning that SW1A and SW1B are similar (both high-density London) and that rural Scottish postcodes cluster together. No encoding required. No geographic data required.
 
-This is not a minor convenience feature. Every existing Python package for density ratio estimation — densratio, ADAPT, SKADA — requires one-hot encoding and therefore cannot handle postcode geography at UK motor scale. They are also largely unmaintained: densratio 0.3.0 last updated October 2022, pykliep last updated 2019. ADAPT requires TensorFlow as a hard dependency (a 1.2 GB install) which is not acceptable for an actuarial library. CatBoost's native categorical handling is the reason this library uses CatBoost rather than a kernel method as its default.
+This is not a minor convenience feature. Every existing Python package for density ratio estimation  -  densratio, ADAPT, SKADA  -  requires one-hot encoding and therefore cannot handle postcode geography at UK motor scale. They are also largely unmaintained: densratio 0.3.0 last updated October 2022, pykliep last updated 2019. ADAPT requires TensorFlow as a hard dependency (a 1.2 GB install) which is not acceptable for an actuarial library. CatBoost's native categorical handling is the reason this library uses CatBoost rather than a kernel method as its default.
 
 
 ## When to use which method
@@ -416,17 +416,17 @@ Importance weighting corrects for distribution shift in the feature space. It do
 ---
 
 
-**Using AUC as a complement to ESS.** The CatBoost classifier's AUC between source and target is a useful secondary diagnostic alongside the ESS ratio. AUC near 0.5 means distributions are similar — importance weighting makes a small difference. AUC near 1.0 means near-complete separation between the books. The FCA governance thresholds for an MGA acquisition context:
+**Using AUC as a complement to ESS.** The CatBoost classifier's AUC between source and target is a useful secondary diagnostic alongside the ESS ratio. AUC near 0.5 means distributions are similar  -  importance weighting makes a small difference. AUC near 1.0 means near-complete separation between the books. The FCA governance thresholds for an MGA acquisition context:
 
 | Verdict | ESS ratio | Classifier AUC | Action |
 |---------|-----------|---------------|--------|
 | MINOR | >= 0.70 | <= 0.80 | Standard monitoring, importance weighting optional |
 | MODERATE | 0.30–0.70 | 0.80–0.95 | Apply importance weighting; revalidate when target labels arrive |
-| SEVERE | < 0.30 | > 0.95 | Notify Chief Actuary; importance weighting insufficient — consider separate model |
+| SEVERE | < 0.30 | > 0.95 | Notify Chief Actuary; importance weighting insufficient  -  consider separate model |
 
-For an MGA acquisition, SEVERE verdict likely requires FCA SUP 15.3 notification: the firm's underwriting risk profile has changed materially and the pricing model's domain of validity has shifted. Consumer Duty (PS22/9) adds a second angle — applying a model trained on direct business to an aggregator or MGA book can produce systematic mispricing that is not intentional but produces discriminatory pricing outcomes. The `ShiftDiagnosticReport` documents that the issue was identified and addressed.
+For an MGA acquisition, SEVERE verdict likely requires FCA SUP 15.3 notification: the firm's underwriting risk profile has changed materially and the pricing model's domain of validity has shifted. Consumer Duty (PS22/9) adds a second angle  -  applying a model trained on direct business to an aggregator or MGA book can produce systematic mispricing that is not intentional but produces discriminatory pricing outcomes. The `ShiftDiagnosticReport` documents that the issue was identified and addressed.
 
-**HIGH_LEAKAGE_RISK flag.** If the shift is concentrated in features that are closely tied to claims handling rather than genuine risk characteristics — for example, settlement speed or reserve release patterns — the covariate shift assumption may not hold. The report flags this as `HIGH_LEAKAGE_RISK`. That requires actuarial judgement, not just reweighting.
+**HIGH_LEAKAGE_RISK flag.** If the shift is concentrated in features that are closely tied to claims handling rather than genuine risk characteristics  -  for example, settlement speed or reserve release patterns  -  the covariate shift assumption may not hold. The report flags this as `HIGH_LEAKAGE_RISK`. That requires actuarial judgement, not just reweighting.
 
 
 ## The library
@@ -446,5 +446,5 @@ Source and notebooks at [github.com/burning-cost/insurance-covariate-shift](http
 
 ## See also
 
-- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/) — the monitoring cadence question: ESS ratio trending over time, verdict thresholds, and the governance triggers for a retraining decision
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the `insurance-monitoring` library that adds segmented A/E and the Gini z-test to the PSI covariate shift detection described here
+- [Monthly Covariate Shift Monitoring: When to Reweight and When to Retrain](/2026/03/15/covariate-shift-detection-book-mix-changes/)  -  the monitoring cadence question: ESS ratio trending over time, verdict thresholds, and the governance triggers for a retraining decision
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)  -  the `insurance-monitoring` library that adds segmented A/E and the Gini z-test to the PSI covariate shift detection described here

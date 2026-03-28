@@ -8,7 +8,7 @@ description: "Detect threshold gaming in UK insurance using bunching estimators 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-bunching` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring` — bunching estimators are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+**Package update:** `insurance-bunching` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring`  -  bunching estimators are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
 </div>
 
 
@@ -160,7 +160,7 @@ from insurance_bunching import BunchingReport
 
 report = BunchingReport(
     results=results.results,          # list of BunchingResult from scanner
-    title='Bunching Analysis — UK Motor 2025 Q4',
+    title='Bunching Analysis  -  UK Motor 2025 Q4',
     product_line='Motor',
     analysis_date='2025-12-31',
     fdr_level=0.05,

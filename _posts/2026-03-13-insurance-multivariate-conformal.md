@@ -107,7 +107,7 @@ from insurance_conformal.multivariate import JointConformalPredictor
 predictor = JointConformalPredictor(
     models={'frequency': freq_glm, 'severity': sev_gbm},
     alpha=0.05,
-    method='lwc',      # Fan & Sesia LWC — tightest valid method
+    method='lwc',      # Fan & Sesia LWC  -  tightest valid method
     score_fn='auto',   # Poisson deviance for frequency, Gamma deviance for severity
 )
 
@@ -243,7 +243,7 @@ from insurance_conformal.multivariate import SolvencyCapitalEstimator, scr_repor
 scr = SolvencyCapitalEstimator(
     models={'frequency': freq_glm, 'severity': sev_gbm},
     alpha=0.005,   # 99.5% coverage
-    method='gwc',  # GWC recommended for regulatory use — more conservative
+    method='gwc',  # GWC recommended for regulatory use  -  more conservative
 )
 scr.calibrate(X_cal, Y_cal, exposure=exposure_cal, zero_claim_mask=zero_mask)
 

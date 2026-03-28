@@ -8,7 +8,7 @@ description: "GARCH for UK insurance claims inflation: time-varying variance in 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-garch` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics` — GARCH volatility modelling for claims inflation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+**Package update:** `insurance-garch` has been consolidated into [`insurance-dynamics`](https://pypi.org/project/insurance-dynamics/). Install with `pip install insurance-dynamics`  -  GARCH volatility modelling for claims inflation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
 </div>
 
 
@@ -50,7 +50,7 @@ result = model.fit()
 # Generate 10,000 bootstrap simulation paths, 8 quarters forward
 scenarios = VolatilityScenarioGenerator(result, horizon=8).generate(n_sims=10_000)
 
-# Base (p50), stressed (p90), shocked (p99) — Bank of England fan chart
+# Base (p50), stressed (p90), shocked (p99)  -  Bank of England fan chart
 scenarios.fan_chart()
 df = scenarios.to_dataframe()  # base / stressed / shocked columns
 

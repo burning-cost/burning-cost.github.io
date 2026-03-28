@@ -4,12 +4,12 @@ title: "Zero-Inflated and Hurdle Models for Insurance Claims"
 date: 2026-03-24
 categories: [pricing, techniques, tutorials]
 tags: [zero-inflation, hurdle-models, tweedie, frequency, poisson, negative-binomial, catboost, insurance-distributional, specialty-lines, pet-insurance, tutorial]
-description: "Standard Tweedie GLMs handle zeros implicitly. When that implicit handling breaks — specialty lines, niche segments, specific peril models — you need ZIP or hurdle models. Here is when, why, and how."
+description: "Standard Tweedie GLMs handle zeros implicitly. When that implicit handling breaks  -  specialty lines, niche segments, specific peril models  -  you need ZIP or hurdle models. Here is when, why, and how."
 ---
 
-The standard workhorse of insurance pricing is the Tweedie GLM. You feed it aggregate claim costs, it handles the zeros automatically, and you move on. For most personal lines motor and home books, this is entirely sensible. Tweedie's compound Poisson-Gamma structure has a probability mass at zero baked in — the zero occurs when the Poisson count is zero, with probability exp(-lambda).
+The standard workhorse of insurance pricing is the Tweedie GLM. You feed it aggregate claim costs, it handles the zeros automatically, and you move on. For most personal lines motor and home books, this is entirely sensible. Tweedie's compound Poisson-Gamma structure has a probability mass at zero baked in  -  the zero occurs when the Poisson count is zero, with probability exp(-lambda).
 
-The problem is that this implicit zero-handling is fixed by the mean. Once you specify E[Y|x], the Tweedie model's zero probability is fully determined. For a Tweedie with power p=1.5 and a mean of £200, the zero probability is a particular number. You have no free parameter to adjust it. If your data have substantially more zeros than this implicit structure predicts, the model is misspecified — and you usually will not know, because aggregate Tweedie deviance is not a sensitive test for excess zeros.
+The problem is that this implicit zero-handling is fixed by the mean. Once you specify E[Y|x], the Tweedie model's zero probability is fully determined. For a Tweedie with power p=1.5 and a mean of £200, the zero probability is a particular number. You have no free parameter to adjust it. If your data have substantially more zeros than this implicit structure predicts, the model is misspecified  -  and you usually will not know, because aggregate Tweedie deviance is not a sensitive test for excess zeros.
 
 In specialty lines, niche segments, and specific peril models, the zero problem is real and the mismatch is large.
 
@@ -17,7 +17,7 @@ In specialty lines, niche segments, and specific peril models, the zero problem 
 
 ## Why zeros matter more than you might think
 
-Consider a marine cargo book where 85% of policies have zero claims in a year. A standard Tweedie fitted to this data will try to accommodate that zero mass through the mean — it will push lambda down. The result is that the non-zero predictions are compressed: the model cannot simultaneously have very low mean and a realistic severity distribution for the claims that do occur.
+Consider a marine cargo book where 85% of policies have zero claims in a year. A standard Tweedie fitted to this data will try to accommodate that zero mass through the mean  -  it will push lambda down. The result is that the non-zero predictions are compressed: the model cannot simultaneously have very low mean and a realistic severity distribution for the claims that do occur.
 
 Or consider a telematics sub-segment: young drivers, urban, night-time driving, sub-50 exposures per cell. Some cells have zero claims not because the underlying risk is low, but because the exposure is thin and claim events are rare. A standard Tweedie will assign a low mean to these cells. When similar risks do claim, the model's severity estimate is off because it was fitted partly on these sparse zero cells.
 
@@ -60,16 +60,16 @@ P(Y = k | x) = (1 - pi(x)) * Poisson(k; lambda(x))    for k > 0
 E[Y | x] = (1 - pi(x)) * lambda(x)
 ```
 
-The pi(x) term is modelled separately — you get a second prediction surface for the structural zero probability. A risk with high pi is fundamentally different from a risk with low pi but low lambda, even if both have the same expected claim count.
+The pi(x) term is modelled separately  -  you get a second prediction surface for the structural zero probability. A risk with high pi is fundamentally different from a risk with low pi but low lambda, even if both have the same expected claim count.
 
-**Hurdle models** say: first determine whether Y is zero. If it is not zero, draw from a truncated positive distribution. There is no mixture of zero sources — a zero is always a zero, and non-zeros come from a single positive-support distribution. A Poisson hurdle looks like:
+**Hurdle models** say: first determine whether Y is zero. If it is not zero, draw from a truncated positive distribution. There is no mixture of zero sources  -  a zero is always a zero, and non-zeros come from a single positive-support distribution. A Poisson hurdle looks like:
 
 ```
 P(Y = 0 | x) = p0(x)                       [logistic model]
 P(Y = k | x) = (1 - p0(x)) * Poisson+(k)   for k > 0, where Poisson+ is zero-truncated
 ```
 
-The practical difference: in a ZIP model, a structural zero unit and a sampling-zero unit share the same positive-outcome process. In a hurdle model, the zero/non-zero split is entirely separate from the count distribution. For insurance frequency modelling, the ZIP is usually more interpretable — the "would claim if anything happened" risk shares a frequency process with the "actually claimed" risks. For severity or aggregate cost, hurdle models are natural: you first decide if there is a claim, then model the cost conditional on there being one.
+The practical difference: in a ZIP model, a structural zero unit and a sampling-zero unit share the same positive-outcome process. In a hurdle model, the zero/non-zero split is entirely separate from the count distribution. For insurance frequency modelling, the ZIP is usually more interpretable  -  the "would claim if anything happened" risk shares a frequency process with the "actually claimed" risks. For severity or aggregate cost, hurdle models are natural: you first decide if there is a claim, then model the cost conditional on there being one.
 
 Neither approach is universally better. We use ZIP for frequency models where we want to model the structural zero probability explicitly. We use hurdle (separate logistic + positive distribution) for pure cost models where the no-claim/claim split has a clear business interpretation.
 
@@ -134,7 +134,7 @@ print(f"Mean pi for dogs: {pred.pi[~cat_mask].mean():.3f}")  # lower
 
 The `pred.pi` array is what you cannot get from a standard Tweedie. It tells you, for each risk, the estimated probability that the zero-claim outcome is structural rather than just lucky. A policy in a segment with pi=0.7 is categorically different from one with pi=0.05, even if their expected claim rates look similar.
 
-For overdispersed frequency data — fleet motor, commercial property with multiple sub-locations — replace `ZIPGBM` with `NegBinomialGBM`:
+For overdispersed frequency data  -  fleet motor, commercial property with multiple sub-locations  -  replace `ZIPGBM` with `NegBinomialGBM`:
 
 ```python
 from insurance_distributional import NegBinomialGBM
@@ -156,7 +156,7 @@ Before you reach for a ZIP model, check whether you actually have a structural z
 
 **1. Rootogram.** Plot the expected frequencies under the fitted model against the observed frequencies for each count value (0, 1, 2, ...). A hanging rootogram (Kleiber & Zeileis 2016) makes zero inflation visually obvious: the fitted Poisson bar will be substantially shorter than the observed bar at zero, and compensatingly longer at one or two.
 
-**2. Vuong test.** Fit both the standard Poisson GLM and the ZIP model. The Vuong test (Vuong 1989) compares the per-observation log-likelihoods of two non-nested models without a common null. A strongly positive test statistic means ZIP fits better than Poisson; strongly negative means the reverse. In our experience, Vuong is most useful for confirming a ZIP diagnosis, not for discovering one — by the time the test is significant, the rootogram already shows it clearly.
+**2. Vuong test.** Fit both the standard Poisson GLM and the ZIP model. The Vuong test (Vuong 1989) compares the per-observation log-likelihoods of two non-nested models without a common null. A strongly positive test statistic means ZIP fits better than Poisson; strongly negative means the reverse. In our experience, Vuong is most useful for confirming a ZIP diagnosis, not for discovering one  -  by the time the test is significant, the rootogram already shows it clearly.
 
 **3. Simple observed vs model-implied zero rate.** Compute `P(Y=0 | mu_hat, phi_hat, p)` from your fitted Tweedie, average across the portfolio, and compare to the observed zero rate. A gap of more than 5 percentage points in a personal lines book is a strong signal. In specialty lines, gaps of 20-30pp are common.
 
@@ -176,7 +176,7 @@ If none of these diagnostics shows a problem, standard Tweedie is fine. We would
 | Sub-50-exposure segments, thin data | Use ZIP but keep the pi model simple (fewer features). Overfitting risk on pi is real. |
 | Fraud indicator modelling | ZIP or zero-inflated Negative Binomial depending on count vs binary target. |
 
-The standard Tweedie is not broken. It is the right tool for most aggregate cost models on large personal lines books, and we use it constantly. The issue is knowing when its implicit zero-handling assumption is violated — and having a tool ready when it is.
+The standard Tweedie is not broken. It is the right tool for most aggregate cost models on large personal lines books, and we use it constantly. The issue is knowing when its implicit zero-handling assumption is violated  -  and having a tool ready when it is.
 
 ---
 
@@ -205,7 +205,7 @@ sev_pred = severity_model.predict(X_test).mean
 pure_premium = p_nonzero * sev_pred
 ```
 
-This is the correct structure for a specialty lines aggregate model where the zero/non-zero decision and the severity amount are driven by genuinely separate processes — a cargo policy either has a loss event or it does not, and the cost of the loss event is largely independent of whether it occurred. This is structurally different from the ZIP assumption, where the non-zero outcomes and the structural zeros come from the same underlying risk population.
+This is the correct structure for a specialty lines aggregate model where the zero/non-zero decision and the severity amount are driven by genuinely separate processes  -  a cargo policy either has a loss event or it does not, and the cost of the loss event is largely independent of whether it occurred. This is structurally different from the ZIP assumption, where the non-zero outcomes and the structural zeros come from the same underlying risk population.
 
 ---
 
@@ -218,5 +218,5 @@ This is the correct structure for a specialty lines aggregate model where the ze
 
 ---
 
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — the `ZIPGBM` and `TweedieGBM` classes implementing the So & Valdez (2024) approach referenced above
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — distribution-free intervals that complement ZIP and hurdle models when parametric coverage assumptions are uncertain
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)  -  the `ZIPGBM` and `TweedieGBM` classes implementing the So & Valdez (2024) approach referenced above
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  distribution-free intervals that complement ZIP and hurdle models when parametric coverage assumptions are uncertain

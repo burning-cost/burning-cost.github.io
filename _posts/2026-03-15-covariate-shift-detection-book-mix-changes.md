@@ -39,11 +39,11 @@ from insurance_covariate_shift import CovariateShiftAdaptor
 
 # Source: the training distribution (your 2026 book)
 # Target: what you are scoring today (your 2027 book)
-# Neither needs claims labels — this is unsupervised
+# Neither needs claims labels  -  this is unsupervised
 adaptor = CovariateShiftAdaptor(
     method="catboost",        # handles postcode district, vehicle code natively
     categorical_cols=[3, 4],  # postcode_district, vehicle_abi_group (column indices)
-    clip_quantile=0.99,       # cap extreme weights — important for stability
+    clip_quantile=0.99,       # cap extreme weights  -  important for stability
 )
 adaptor.fit(X_2026, X_2027)
 
@@ -100,14 +100,14 @@ adaptor.fit(X_train, X_target_current)
 # Get importance weights for each source holdout observation
 weights = adaptor.importance_weights(X_holdout)
 
-# Standard A/E — what your current monitoring shows
+# Standard A/E  -  what your current monitoring shows
 ae_standard = y_holdout.sum() / predicted_holdout.sum()
 
-# Importance-weighted A/E — what the target book looks like
+# Importance-weighted A/E  -  what the target book looks like
 ae_weighted = np.average(y_holdout, weights=weights) / np.average(predicted_holdout, weights=weights)
 
-print(f"Standard A/E:  {ae_standard:.3f}")   # 0.983 — looks fine
-print(f"Weighted A/E:  {ae_weighted:.3f}")   # 1.071 — 7% underpriced on the new mix
+print(f"Standard A/E:  {ae_standard:.3f}")   # 0.983  -  looks fine
+print(f"Weighted A/E:  {ae_weighted:.3f}")   # 1.071  -  7% underpriced on the new mix
 ```
 
 The weighted A/E does not require a single labelled observation from the new book. It reweights the source-book holdout to look like the target distribution. The only inputs to the correction are the feature matrices: what did you train on, what are you scoring now. The claims data is entirely from the source book.
@@ -128,7 +128,7 @@ from insurance_covariate_shift import ShiftRobustConformal
 cp = ShiftRobustConformal(
     model=freq_model,
     adaptor=adaptor,   # pre-fitted CovariateShiftAdaptor
-    method="weighted", # Tibshirani 2019 — recommended default
+    method="weighted", # Tibshirani 2019  -  recommended default
     alpha=0.10,        # target miscoverage: 90% intervals
 )
 cp.calibrate(X_cal_source, y_cal_source)  # source-book holdout
@@ -142,7 +142,7 @@ For teams that want narrower intervals on low-risk profiles and wider on high-ri
 
 ## FCA PRIN 2A.4 and the model change policy: what to put in the governance note
 
-Under FCA PRIN 2A.4 (Consumer Duty), insurers must ensure models used in pricing are fit for purpose for the population being scored. Where a model is applied to a materially different book distribution without adjustment, a firm's own model change policy will typically require review and sign-off — the trigger is the firm's materiality threshold, not a single regulatory rule. The shift diagnostic provides the quantitative basis for that assessment.
+Under FCA PRIN 2A.4 (Consumer Duty), insurers must ensure models used in pricing are fit for purpose for the population being scored. Where a model is applied to a materially different book distribution without adjustment, a firm's own model change policy will typically require review and sign-off  -  the trigger is the firm's materiality threshold, not a single regulatory rule. The shift diagnostic provides the quantitative basis for that assessment.
 
 The library's `fca_sup153_summary()` is designed to give the factual basis for a governance note - not to write the note for you. It outputs the verdict, ESS ratio, KL divergence, feature attribution, and the recommended action.
 
@@ -214,5 +214,5 @@ The point is not that you abandon the model. The point is that you know, months 
 
 ## See also
 
-- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — the foundational post covering detection, correction, the postcode problem, and extending conformal intervals to a shifted book
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/)  -  the foundational post covering detection, correction, the postcode problem, and extending conformal intervals to a shifted book
 - [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) - the full motor pricing case study covering detection, correction, and extending conformal intervals to a shifted book

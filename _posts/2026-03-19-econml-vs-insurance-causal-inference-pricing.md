@@ -222,7 +222,7 @@ est = HeterogeneousElasticityEstimator(n_estimators=200, catboost_iterations=300
 est.fit(df_train, outcome="renewed", treatment="price_change_pct",
         confounders=feature_cols)
 
-# Compute per-row CATE estimates — the proxy for heterogeneity
+# Compute per-row CATE estimates  -  the proxy for heterogeneity
 cates = est.cate(df_train)
 
 # HeterogeneousInference takes hyperparams, not the estimator
@@ -231,13 +231,13 @@ inference = HeterogeneousInference(n_splits=100, k_groups=5)
 # Run BLP, GATES, and CLAN in one call
 result = inference.run(df_train, estimator=est, cate_proxy=cates)
 
-# GATES: group average treatment effects — are segment-level effects real?
+# GATES: group average treatment effects  -  are segment-level effects real?
 print(result.gates.table)
 
 # CLAN: which covariates distinguish high-effect from low-effect customers?
 print(result.clan.table)
 
-# BLP: the formal heterogeneity test — beta_2 > 0 means heterogeneity exists
+# BLP: the formal heterogeneity test  -  beta_2 > 0 means heterogeneity exists
 print(f"BLP beta_2: {result.blp.beta_2:.4f} (p={result.blp.beta_2_pvalue:.4f})")
 print(result.summary())
 ```

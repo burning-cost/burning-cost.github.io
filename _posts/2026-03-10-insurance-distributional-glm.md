@@ -150,10 +150,10 @@ Three diagnostics are worth running after every GAMLSS fit:
 ```python
 from insurance_distributional_glm import quantile_residuals, worm_plot
 
-# Randomised quantile residuals — should look N(0,1)
+# Randomised quantile residuals  -  should look N(0,1)
 rq = quantile_residuals(model, X_holdout, y_holdout)
 
-# Worm plot — deviation from N(0,1) stratified by fitted value
+# Worm plot  -  deviation from N(0,1) stratified by fitted value
 worm_plot(model, X_holdout, y_holdout)
 ```
 
@@ -173,7 +173,7 @@ import pandas as pd
 from insurance_distributional_glm import DistributionalGLM
 from insurance_distributional_glm.families import Gamma
 
-# Claim severity dataset — each row is a paid claim
+# Claim severity dataset  -  each row is a paid claim
 n = 10_000
 X = pd.DataFrame({
     'age_band':       np.random.choice(['17-21', '22-25', '26-35', '36-50', '51+'], n),

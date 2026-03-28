@@ -171,7 +171,7 @@ card = MRMModelCard(
     customer_facing=True,
 )
 
-# Score risk tier — RiskTierScorer takes explicit model attributes, not a card object
+# Score risk tier  -  RiskTierScorer takes explicit model attributes, not a card object
 scorer = RiskTierScorer()
 tier_result = scorer.score(
     gwp_impacted=25_000_000,

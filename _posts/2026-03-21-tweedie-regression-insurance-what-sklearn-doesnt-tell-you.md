@@ -87,7 +87,7 @@ y = np.array([
     for i, c in enumerate(counts)
 ])
 
-# Train/test split — 80/20
+# Train/test split  -  80/20
 n_tr = 8_000
 X_tr,  X_te  = X[:n_tr],        X[n_tr:]
 y_tr,  y_te  = y[:n_tr],        y[n_tr:]
@@ -249,14 +249,14 @@ model_tgbm.fit(X_tr, y_tr, exposure=exp_tr)
 
 pred = model_tgbm.predict(X_te, exposure=exp_te)
 
-# pred.mean is E[Y | X, exposure] — the expected cost for this specific exposure period
+# pred.mean is E[Y | X, exposure]  -  the expected cost for this specific exposure period
 # Divide by exposure to recover annual rate
 pred_tgbm_rate = pred.mean / exp_te
 
 r_tgbm, _ = pearsonr(np.log(pred_tgbm_rate), np.log(mu_rate_te))
 print(f"TweedieGBM (exposure-correct): log-rate correlation {r_tgbm:.4f}")
 
-# Also outputs per-risk uncertainty — not available from GLMs or standard GBMs
+# Also outputs per-risk uncertainty  -  not available from GLMs or standard GBMs
 print(f"Mean CoV across test set: {pred.volatility_score().mean():.3f}")
 ```
 
@@ -293,7 +293,7 @@ cp = InsuranceConformalPredictor(
 cp.calibrate(X_cal, y_cal, exposure=exp_cal)
 
 intervals = cp.predict_interval(X_val, alpha=0.10)
-# intervals[:, 0], intervals[:, 1] — 90% prediction interval per policy
+# intervals[:, 0], intervals[:, 1]  -  90% prediction interval per policy
 ```
 
 On a heteroskedastic book, conformal intervals are typically 10–15% narrower than parametric Tweedie intervals at the same nominal coverage. The empirical coverage in the insurance-conformal benchmark is 0.902 vs 0.931 for parametric, with interval widths £3,806 vs £4,393 (50k synthetic UK motor policies, CatBoost Tweedie(1.5), temporal split). The intervals are wider where risk is genuinely higher, which is what you want when setting reinsurance attachments.

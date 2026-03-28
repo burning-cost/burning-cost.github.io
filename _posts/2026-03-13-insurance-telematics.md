@@ -113,7 +113,7 @@ If you do not have road type data, the library flags the urban mileage fraction 
 
 ## UK market context
 
-The UK has roughly 1.3 million telematics policies — the largest market in Europe alongside Italy. Adoption is concentrated in under-30s (Admiral Curve, By Miles, Marmalade, Hastings Direct's YouDrive). The FCA's pressure on age and postcode as rating factors has renewed interest in telematics as a non-discriminatory alternative: rather than pricing a 19-year-old solely on their age, a telematics score provides behavioural evidence that partially decouples rate from demographic proxy — though you should verify the telematics score itself does not proxy for protected characteristics using [insurance-fairness](/2026/03/20/fairness-auditing-without-sensitive-attributes/).
+The UK has roughly 1.3 million telematics policies  -  the largest market in Europe alongside Italy. Adoption is concentrated in under-30s (Admiral Curve, By Miles, Marmalade, Hastings Direct's YouDrive). The FCA's pressure on age and postcode as rating factors has renewed interest in telematics as a non-discriminatory alternative: rather than pricing a 19-year-old solely on their age, a telematics score provides behavioural evidence that partially decouples rate from demographic proxy  -  though you should verify the telematics score itself does not proxy for protected characteristics using [insurance-fairness](/2026/03/20/fairness-auditing-without-sensitive-attributes/).
 
 That regulatory trajectory is the main reason to build this capability now, even if your book does not currently write UBI policies. The tools for ingesting and scoring telematics data are infrastructure, not a one-off project.
 
@@ -127,7 +127,7 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 
 ---
 
-**[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)** — 84 tests, MIT-licensed. [PyPI](https://pypi.org/project/insurance-telematics/).
+**[insurance-telematics on GitHub](https://github.com/burning-cost/insurance-telematics)**  -  84 tests, MIT-licensed. [PyPI](https://pypi.org/project/insurance-telematics/).
 
 ---
 
@@ -136,5 +136,5 @@ The CTHMM assumes the latent states are stationary across drivers. In practice, 
 - [Survival Models for Insurance Retention](/2026/03/11/survival-models-for-insurance-retention/) - time-to-lapse modelling; pairing retention survival analysis with telematics risk segmentation to identify the customers worth retaining
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) - once the HMM regime scores are available as features, `TweedieGBM` can estimate per-risk CoV that varies by driving style profile, not just by static risk characteristics
 - [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) - telematics pricing models sit at Tier 2 or Tier 3 under most model risk frameworks given their dependence on proprietary data sources; `insurance-governance` automates the validation evidence required for the model register entry
-- [Does HMM Telematics Risk Scoring Actually Work for Insurance Pricing?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/) — benchmark showing 5-10pp Gini improvement from HMM state features versus raw trip averages on a state-structured DGP
-- [Portfolio-Anchored Telematics Risk Scoring with Wavelets](/2026/03/26/wavelet-telematics-risk-index-lee-badescu-lin-2026/) — the Lee, Badescu, and Lin (2026) wavelet-based alternative that replaces event counts with principled Bayesian risk indices
+- [Does HMM Telematics Risk Scoring Actually Work for Insurance Pricing?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/)  -  benchmark showing 5-10pp Gini improvement from HMM state features versus raw trip averages on a state-structured DGP
+- [Portfolio-Anchored Telematics Risk Scoring with Wavelets](/2026/03/26/wavelet-telematics-risk-index-lee-badescu-lin-2026/)  -  the Lee, Badescu, and Lin (2026) wavelet-based alternative that replaces event counts with principled Bayesian risk indices

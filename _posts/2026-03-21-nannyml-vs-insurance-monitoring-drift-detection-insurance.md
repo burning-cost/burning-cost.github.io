@@ -88,7 +88,7 @@ psi_weighted = psi(
     exposure_weights=earned_exposure_cur,
     reference_exposure=earned_exposure_ref,
 )
-# Reads red at 0.27 in the benchmark — a different governance conclusion
+# Reads red at 0.27 in the benchmark  -  a different governance conclusion
 
 # Per-feature CSI heatmap across all rating factors
 feature_ref = pl.DataFrame({
@@ -124,7 +124,7 @@ result = ae_ratio_ci(actual, predicted, exposure=exposure)
 print(f"A/E: {result['ae']:.3f}  [{result['lower']:.3f}, {result['upper']:.3f}]")
 # A/E: 1.082  [1.031, 1.137]
 
-# Segment-level decomposition — where is the model misfiring?
+# Segment-level decomposition  -  where is the model misfiring?
 seg = ae_ratio(actual, predicted, exposure=exposure, segments=age_bands)
 # segment | actual | expected | ae_ratio | n_policies
 # 17-24   |    48  |      31  |    1.55  |       312
@@ -183,7 +183,7 @@ drift = calculator.calculate(analysis_df)
 drift.filter(column_names=["driver_age"]).plot()
 
 # Step 2: estimate whether model performance has degraded
-# (classification models only — CBPE requires confidence scores)
+# (classification models only  -  CBPE requires confidence scores)
 estimator = nml.CBPE(
     problem_type='classification_binary',
     y_pred_proba='risk_score',

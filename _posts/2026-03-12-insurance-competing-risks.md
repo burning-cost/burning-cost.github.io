@@ -8,7 +8,7 @@ description: "Fine-Gray subdistribution hazard for UK insurance competing risks.
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-competing-risks` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+**Package update:** `insurance-competing-risks` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
 </div>
 
 
@@ -109,7 +109,7 @@ Practically: always report predicted CIF values directly, not just SHRs. The `pr
 times_to_evaluate = [3, 6, 9, 12]  # months
 
 cif_preds = fg.predict_cumulative_incidence(df_new, times=times_to_evaluate)
-# Shape: (n_subjects, 4) — lapse probability at 3, 6, 9, 12 months
+# Shape: (n_subjects, 4)  -  lapse probability at 3, 6, 9, 12 months
 ```
 
 For a covariate effect plot - the standard actuarial partial effect chart - use:

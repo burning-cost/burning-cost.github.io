@@ -163,7 +163,7 @@ The tests return `TestResult` objects with `passed`, `metric_value`, `details`, 
 ```python
 for r in results:
     status = "PASS" if r.passed else "FAIL"
-    val    = f"{r.metric_value:.4f}" if r.metric_value is not None else "—"
+    val    = f"{r.metric_value:.4f}" if r.metric_value is not None else " - "
     print(f"{status}  {r.test_name:<40} {val}  {r.details[:60]}")
 ```
 
@@ -174,9 +174,9 @@ PASS  hosmer_lemeshow_test                     0.3218  HL chi2=11.42, df=8, p=0.
 PASS  psi_score                                0.0412  PSI 0.041. Stable (< 0.10). Score distribution
 PASS  actual_vs_expected                       0.9873  A/E 0.987 across 10 deciles. All within Poisso
 PASS  ae_with_poisson_ci                       0.9873  A/E 0.987, exact 95% Poisson CI [0.961, 1.014]
-PASS  lorenz_curve                             —       Lorenz curve computed.
-PASS  calibration_plot_data                    —       Calibration data computed.
-PASS  monitoring_plan                          —       Monitoring plan: Owner = Head of Pricing. Rev
+PASS  lorenz_curve                              -        Lorenz curve computed.
+PASS  calibration_plot_data                     -        Calibration data computed.
+PASS  monitoring_plan                           -        Monitoring plan: Owner = Head of Pricing. Rev
 ```
 
 Every test that can fail has a documented threshold. The Gini threshold is 0.30 - a model that cannot beat random on a motor portfolio needs rebuilding, not validating. The HL p-value threshold is 0.05: a p-value below 0.05 means the calibration by decile is statistically poor. PSI above 0.25 triggers a warning and flags that the score distribution has shifted materially since training. The A/E Poisson CI check flags whether aggregate actual-vs-expected is within the exact confidence interval for the observed claim count.

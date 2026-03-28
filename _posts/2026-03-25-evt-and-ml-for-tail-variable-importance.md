@@ -7,11 +7,11 @@ tags: [evt, extreme-value-theory, gpd, variable-importance, shap, tail-risk, bod
 description: "A covariate that predicts mean severity well may tell you almost nothing about your 99th percentile claims. Here is how to identify which rating factors actually drive large losses."
 ---
 
-Ask a pricing actuary which factors drive motor bodily injury severity and you will get a sensible list: claimant age, legal representation, injury type, vehicle speed. Run your SHAP values on a CatBoost severity model and the same factors come out near the top. That analysis is correct — for the average claim. It may be almost entirely wrong for the claims that actually threaten your solvency.
+Ask a pricing actuary which factors drive motor bodily injury severity and you will get a sensible list: claimant age, legal representation, injury type, vehicle speed. Run your SHAP values on a CatBoost severity model and the same factors come out near the top. That analysis is correct  -  for the average claim. It may be almost entirely wrong for the claims that actually threaten your solvency.
 
-This is the central problem with applying standard variable importance to severity modelling. A CatBoost SHAP value measures the average contribution of a feature across all predictions. A £2,000 soft tissue whiplash claim and a £2,000,000 catastrophic spinal injury claim contribute symmetrically to mean SHAP — but they sit in completely different statistical regimes. The factors that explain why a claim exceeds £500k may be entirely different from the factors that explain why it reaches £8k rather than £5k.
+This is the central problem with applying standard variable importance to severity modelling. A CatBoost SHAP value measures the average contribution of a feature across all predictions. A £2,000 soft tissue whiplash claim and a £2,000,000 catastrophic spinal injury claim contribute symmetrically to mean SHAP  -  but they sit in completely different statistical regimes. The factors that explain why a claim exceeds £500k may be entirely different from the factors that explain why it reaches £8k rather than £5k.
 
-Clémençon and Sabourin (arXiv:2504.06984, revised June 2025) formalise this. They combine multivariate extreme value theory with statistical learning to provide non-asymptotic guarantees for learning from tail observations — concentration inequalities adapted to low-probability regions, high-dimensional lasso for extreme-value contexts, and cross-validation theory for model selection when your "test set" is the top 2% of your loss distribution. The practical takeaway for pricing actuaries is a framework for doing something most teams do not do: computing variable importance separately for the tail.
+Clémençon and Sabourin (arXiv:2504.06984, revised June 2025) formalise this. They combine multivariate extreme value theory with statistical learning to provide non-asymptotic guarantees for learning from tail observations  -  concentration inequalities adapted to low-probability regions, high-dimensional lasso for extreme-value contexts, and cross-validation theory for model selection when your "test set" is the top 2% of your loss distribution. The practical takeaway for pricing actuaries is a framework for doing something most teams do not do: computing variable importance separately for the tail.
 
 ---
 
@@ -27,23 +27,23 @@ The formal expression of this comes from extreme value theory. Under peaks-over-
 
 $$P(X - u > y \mid X > u) = \left(1 + \frac{\xi \cdot y}{\sigma}\right)^{-1/\xi}$$
 
-The shape parameter xi governs how heavy the tail is. The crucial point is that xi can vary by covariate. If xi for neurological claims is 0.4 and xi for fracture claims is 0.1, the neurological tail is much heavier and the covariate becomes more important as you move deeper into the distribution. Standard GLM severity modelling estimates a single conditional mean — it is entirely insensitive to this.
+The shape parameter xi governs how heavy the tail is. The crucial point is that xi can vary by covariate. If xi for neurological claims is 0.4 and xi for fracture claims is 0.1, the neurological tail is much heavier and the covariate becomes more important as you move deeper into the distribution. Standard GLM severity modelling estimates a single conditional mean  -  it is entirely insensitive to this.
 
 ---
 
 ## EVT basics for insurance: what the parameters tell you
 
-For UK motor BI, typical tail indices xi run between 0.2 and 0.5, depending on book composition and how aggressively you have applied outwards limits. For employers' liability and public liability, you may see xi approaching 0.7. Property damage tends to be lower — around 0.1 to 0.2 — reflecting physical limits on maximum claim size.
+For UK motor BI, typical tail indices xi run between 0.2 and 0.5, depending on book composition and how aggressively you have applied outwards limits. For employers' liability and public liability, you may see xi approaching 0.7. Property damage tends to be lower  -  around 0.1 to 0.2  -  reflecting physical limits on maximum claim size.
 
 The threshold u is chosen by the mean excess plot: plot the sample mean of (X - u) against u. Under GPD, this should be approximately linear above the correct threshold. In practice for motor BI, thresholds of £50k to £100k are common for splitting attritional from large loss.
 
-The `TruncatedGPD` class in `insurance-severity` handles the most common complication in UK insurance data: per-policy limits create upper truncation in the claim distribution. Standard GPD MLE ignores this and underestimates xi. When you have heterogeneous limits — common in commercial lines and in any EL/PL book — you should be using the truncation-corrected estimator:
+The `TruncatedGPD` class in `insurance-severity` handles the most common complication in UK insurance data: per-policy limits create upper truncation in the claim distribution. Standard GPD MLE ignores this and underestimates xi. When you have heterogeneous limits  -  common in commercial lines and in any EL/PL book  -  you should be using the truncation-corrected estimator:
 
 ```python
 from insurance_severity import TruncatedGPD
 
 # exceedances: claim amounts above threshold, shape (n,)
-# limits: per-policy limits, shape (n,) — use np.inf for uncapped
+# limits: per-policy limits, shape (n,)  -  use np.inf for uncapped
 gpd = TruncatedGPD(threshold=100_000)
 gpd.fit(exceedances, limits)
 print(gpd.summary())
@@ -69,13 +69,13 @@ print(f"xi = {hill.xi:.3f}, 95% CI = {hill.ci}")
 Clémençon and Sabourin's contribution is to give this intuition rigorous theoretical foundations. The practical algorithm is:
 
 1. Set a tail threshold (GPD u, or simply the 85th or 90th percentile of the loss distribution).
-2. Train your ML model — any flexible model, CatBoost or otherwise — on the full dataset as normal.
+2. Train your ML model  -  any flexible model, CatBoost or otherwise  -  on the full dataset as normal.
 3. Compute SHAP values or permutation importance **restricting to observations above the tail threshold**.
 4. Compare the tail importance ranking to the full-dataset ranking.
 
-The concentration inequalities in the paper show that this restricted importance estimate converges to the true tail importance at a controlled rate, despite the drastically reduced sample size. The key insight is that extreme observations are not a random subsample — they are drawn from the regularly varying part of the distribution, which has structure that the theory exploits. You are not simply discarding 90% of your data and hoping for the best; the EVT framework licenses the inference.
+The concentration inequalities in the paper show that this restricted importance estimate converges to the true tail importance at a controlled rate, despite the drastically reduced sample size. The key insight is that extreme observations are not a random subsample  -  they are drawn from the regularly varying part of the distribution, which has structure that the theory exploits. You are not simply discarding 90% of your data and hoping for the best; the EVT framework licenses the inference.
 
-For insurance practitioners, the practical constraint is that the tail is sparse. If your BI portfolio has 50,000 claims per year and you set the threshold at the 95th percentile, you have 2,500 tail observations. That is enough for permutation importance on ten or fifteen covariates, but not enough for SHAP on a high-dimensional model without regularisation. The paper's high-dimensional lasso extensions address this directly — enforcing sparsity to make selection feasible in the tail.
+For insurance practitioners, the practical constraint is that the tail is sparse. If your BI portfolio has 50,000 claims per year and you set the threshold at the 95th percentile, you have 2,500 tail observations. That is enough for permutation importance on ten or fifteen covariates, but not enough for SHAP on a high-dimensional model without regularisation. The paper's high-dimensional lasso extensions address this directly  -  enforcing sparsity to make selection feasible in the tail.
 
 ---
 
@@ -102,7 +102,7 @@ Region is particularly interesting for pricing. If you have a postcode-level sev
 
 ## Fitting a covariate-dependent GPD tail
 
-The `EQRNModel` in `insurance-quantile` implements exactly this — a neural network that learns covariate-dependent GPD parameters (xi and sigma both varying by covariate profile). This is the direct operationalisation of asking "which covariates matter for the tail":
+The `EQRNModel` in `insurance-quantile` implements exactly this  -  a neural network that learns covariate-dependent GPD parameters (xi and sigma both varying by covariate profile). This is the direct operationalisation of asking "which covariates matter for the tail":
 
 ```python
 from insurance_quantile.eqrn import EQRNModel
@@ -117,7 +117,7 @@ model = EQRNModel(
 )
 model.fit(X_train, y_train, X_val=X_val, y_val=y_val)
 
-# Covariate-dependent 99.5th percentile — what your Solvency II SCR needs
+# Covariate-dependent 99.5th percentile  -  what your Solvency II SCR needs
 var_995 = model.predict_quantile(X_test, q=0.995)
 
 # TVaR for XL reinsurance layer pricing
@@ -127,7 +127,7 @@ tvar_99 = model.predict_tvar(X_test, q=0.99)
 xl_expected = model.predict_xl_layer(X_test, attachment=500_000, limit=1_000_000)
 ```
 
-The `shape_fixed=True` mode is important as a diagnostic first step. If a scalar xi model (standard GPD with covariate-dependent sigma only) fits nearly as well as the full model where xi also varies, your tail shape is relatively homogeneous and the headline rating factors are mainly affecting the GPD scale rather than the heaviness of the tail. That is a different and less severe problem than having covariates that change xi — changing sigma is correctable by a standard severity multiplier, but changing xi means the entire percentile structure shifts.
+The `shape_fixed=True` mode is important as a diagnostic first step. If a scalar xi model (standard GPD with covariate-dependent sigma only) fits nearly as well as the full model where xi also varies, your tail shape is relatively homogeneous and the headline rating factors are mainly affecting the GPD scale rather than the heaviness of the tail. That is a different and less severe problem than having covariates that change xi  -  changing sigma is correctable by a standard severity multiplier, but changing xi means the entire percentile structure shifts.
 
 Once you have a fitted EQRN, you can compute permutation importance restricted to tail predictions:
 
@@ -162,7 +162,7 @@ Run this on the full test set for average importance, then on `X_test_tail` for 
 
 The reserving implication is direct. Your IBNR development factors are typically applied at a relatively coarse level of segmentation: accident year, channel, broad injury class. If you have identified that tail-important variables (injury severity grade, claimant age) drive the largest claims, and those variables are not in your IBNR segmentation, your large loss IBNR is poorly specified.
 
-Consider a simple check: take your open large losses above £100k. Fit a GPD to the exceedances. Now fit separate GPDs by injury severity grade. If the xi values differ materially — say 0.45 for neurological vs 0.15 for fracture — your aggregate IBNR is a mixture of two very different tail behaviours. The mixed-population xi estimate might be 0.25, which underestimates the catastrophic neurological tail and overestimates the fracture tail. That asymmetry is unlikely to cancel in a reserve.
+Consider a simple check: take your open large losses above £100k. Fit a GPD to the exceedances. Now fit separate GPDs by injury severity grade. If the xi values differ materially  -  say 0.45 for neurological vs 0.15 for fracture  -  your aggregate IBNR is a mixture of two very different tail behaviours. The mixed-population xi estimate might be 0.25, which underestimates the catastrophic neurological tail and overestimates the fracture tail. That asymmetry is unlikely to cancel in a reserve.
 
 The `CensoredHillEstimator` is the right tool for this analysis. IBNR claims are right-censored by definition (current development is not final settlement), and the standard Hill estimator is biased in the presence of censoring:
 
@@ -180,7 +180,7 @@ for grade in ["neurological", "fracture", "soft_tissue"]:
     print(f"{grade:15s}  xi={hill.xi:.3f}  CI={hill.ci}  k_opt={hill.k_opt}")
 ```
 
-If neurological xi is materially above fracture xi, that is evidence for separate tail models in your IBNR segmentation, not a blended tail factor. This is not a radical methodological claim — it is the same logic as running separate development triangles by claim type, but applied to the tail index rather than the link ratios.
+If neurological xi is materially above fracture xi, that is evidence for separate tail models in your IBNR segmentation, not a blended tail factor. This is not a radical methodological claim  -  it is the same logic as running separate development triangles by claim type, but applied to the tail index rather than the link ratios.
 
 ---
 
@@ -198,7 +198,7 @@ The practical workflow for a UK pricing or reserving actuary:
 
 5. **Check your IBNR segmentation** against the tail importance ranking. Variables that are important for the tail but absent from your IBNR segmentation are a reserving risk.
 
-The Clémençon-Sabourin framework provides the theoretical backing for why this approach is statistically valid — the concentration inequalities ensure that tail importance estimation on sparse exceedance datasets does not simply amplify noise. But you do not need to read the paper to implement the practice. You need a threshold, a tail importance calculation, and the willingness to act on a ranking that differs from your full-sample SHAP.
+The Clémençon-Sabourin framework provides the theoretical backing for why this approach is statistically valid  -  the concentration inequalities ensure that tail importance estimation on sparse exceedance datasets does not simply amplify noise. But you do not need to read the paper to implement the practice. You need a threshold, a tail importance calculation, and the willingness to act on a ranking that differs from your full-sample SHAP.
 
 Most UK pricing teams have sophisticated mean models and rudimentary tail models. The mean model tells you where the average claim comes from. The tail model tells you what to worry about. They are not the same question.
 
@@ -206,7 +206,7 @@ Most UK pricing teams have sophisticated mean models and rudimentary tail models
 
 Source: Clémençon, S. & Sabourin, A. (2025). "Weak Signals and Heavy Tails." arXiv:2504.06984.
 
-- [insurance-severity](https://github.com/burning-cost/insurance-severity) — `TruncatedGPD`, `CensoredHillEstimator`, `WeibullTemperedPareto`
-- [insurance-quantile](https://github.com/burning-cost/insurance-quantile) — `EQRNModel` for covariate-dependent GPD tails
-- [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — applying these ideas to property
-- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — a complementary approach to variance-aware pricing
+- [insurance-severity](https://github.com/burning-cost/insurance-severity)  -  `TruncatedGPD`, `CensoredHillEstimator`, `WeibullTemperedPareto`
+- [insurance-quantile](https://github.com/burning-cost/insurance-quantile)  -  `EQRNModel` for covariate-dependent GPD tails
+- [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/)  -  applying these ideas to property
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)  -  a complementary approach to variance-aware pricing

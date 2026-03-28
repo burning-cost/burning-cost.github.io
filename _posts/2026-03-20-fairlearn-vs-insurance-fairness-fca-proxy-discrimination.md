@@ -92,7 +92,7 @@ audit = FairnessAudit(
     model=model,
     data=df,
     protected_cols=["gender"],
-    prediction_col="predicted_rate",   # rate, not total — the audit weights by exposure internally
+    prediction_col="predicted_rate",   # rate, not total  -  the audit weights by exposure internally
     outcome_col="claim_amount",
     exposure_col="exposure",
     factor_cols=["postcode_district", "vehicle_age", "ncd_years", "vehicle_group"],
@@ -121,7 +121,7 @@ Insurance portfolios are not rows. A three-month direct debit policy on a city c
 ```python
 from insurance_fairness import calibration_by_group, demographic_parity_ratio
 
-# Calibration by group — the metric most defensible under Equality Act Section 19
+# Calibration by group  -  the metric most defensible under Equality Act Section 19
 cal = calibration_by_group(
     df,
     protected_col="gender",
@@ -132,7 +132,7 @@ cal = calibration_by_group(
 )
 print(f"Max A/E disparity: {cal.max_disparity:.4f} [{cal.rag}]")
 
-# Demographic parity ratio — log-space, because insurance models are multiplicative
+# Demographic parity ratio  -  log-space, because insurance models are multiplicative
 dp = demographic_parity_ratio(df, "gender", "predicted_rate", "exposure")
 print(f"Log-ratio: {dp.log_ratio:+.4f} (ratio: {dp.ratio:.4f})")
 ```

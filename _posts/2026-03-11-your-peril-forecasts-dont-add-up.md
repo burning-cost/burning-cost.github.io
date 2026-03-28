@@ -7,7 +7,7 @@ tags: [reconciliation, MinTrace, hierarchical-forecasting, loss-cost, earned-pre
 description: "MinTrace reconciliation for insurance pricing hierarchies: optimal joint adjustment across peril models and portfolio GLM. Exposure-weighted, Python."
 ---
 
-There is a meeting that happens in virtually every UK pricing team at rate review time. Someone puts up a slide showing the portfolio loss cost trend. It says +8%. Someone else puts up the peril-level models — Fire, Escape of Water, Subsidence, Flood, Storm. Weighted together, they aggregate to +6%. The room looks at both numbers. Nobody is obviously wrong. And then someone makes a spreadsheet adjustment.
+There is a meeting that happens in virtually every UK pricing team at rate review time. Someone puts up a slide showing the portfolio loss cost trend. It says +8%. Someone else puts up the peril-level models  -  Fire, Escape of Water, Subsidence, Flood, Storm. Weighted together, they aggregate to +6%. The room looks at both numbers. Nobody is obviously wrong. And then someone makes a spreadsheet adjustment.
 
 The adjustment is manual. It overrides one set of forecasts to satisfy the other. It does not minimise total forecast error. It does not preserve the statistical properties of either model. It is entirely undocumented as a methodology. And because everyone does it this way, it has never occurred to anyone that there might be a better answer.
 
@@ -39,7 +39,7 @@ Loss costs make this non-trivial. Loss costs are rates, not amounts. The aggrega
 LC_Buildings = (LC_Fire×EP_Fire + LC_EoW×EP_EoW + ... + LC_Storm×EP_Storm) / EP_Buildings
 ```
 
-A naive sum — `LC_Buildings = LC_Fire + LC_EoW + ...` — is wrong. Standard MinTrace assumes additive constraints. Insurance hierarchies do not satisfy them.
+A naive sum  -  `LC_Buildings = LC_Fire + LC_EoW + ...`  -  is wrong. Standard MinTrace assumes additive constraints. Insurance hierarchies do not satisfy them.
 
 You can check the scale of the problem on a real book in about ten lines:
 
@@ -90,7 +90,7 @@ where `ŷ` is the vector of base forecasts at all levels, `S` is the summing mat
 
 The key theorem result: MinTrace is unbiased. If the base forecasts are unbiased, the reconciled forecasts are unbiased. You do not sacrifice calibration to get coherence. The manual spreadsheet adjustment cannot make this claim.
 
-The choice of `W` is the critical insurance-specific decision. Generic implementations use `W = I` (OLS, equal weights) or `W = diag(n_bottom_i)` (WLS by structural count — how many bottom-level series aggregate into each node). Both are wrong for insurance.
+The choice of `W` is the critical insurance-specific decision. Generic implementations use `W = I` (OLS, equal weights) or `W = diag(n_bottom_i)` (WLS by structural count  -  how many bottom-level series aggregate into each node). Both are wrong for insurance.
 
 ---
 
@@ -124,7 +124,7 @@ reconciler = PremiumWeightedMinTrace(earned_premium=ep)
 lc_reconciled = reconciler.reconcile(lc_hat, S, series_names=names)
 ```
 
-The GLS formula `S(S'W⁻¹S)⁻¹S'W⁻¹ŷ` with `W = diag(EP)` is straightforward NumPy. The library does not subclass `hierarchicalforecast` internals — it implements the matrix algebra directly, avoiding the undocumented internal API that breaks across versions.
+The GLS formula `S(S'W⁻¹S)⁻¹S'W⁻¹ŷ` with `W = diag(EP)` is straightforward NumPy. The library does not subclass `hierarchicalforecast` internals  -  it implements the matrix algebra directly, avoiding the undocumented internal API that breaks across versions.
 
 ---
 
@@ -154,7 +154,7 @@ lr_reconciler = LossRatioReconciler(earned_premium=ep)
 lc_reconciled = lr_reconciler.reconcile(lc_hat, S, series_names=names)
 ```
 
-The caller works entirely in loss costs. The claims transform is internal. If you pass loss ratios instead of loss costs, the same API works — the mathematics are identical since `LR = LC / rate`, which is a rescaling that cancels in the transform.
+The caller works entirely in loss costs. The claims transform is internal. If you pass loss ratios instead of loss costs, the same API works  -  the mathematics are identical since `LR = LC / rate`, which is a rescaling that cancels in the transform.
 
 ---
 
@@ -162,7 +162,7 @@ The caller works entirely in loss costs. The claims transform is internal. If yo
 
 Many pricing teams forecast loss costs as the product of frequency and severity: `LC = freq × sev`. The hierarchy imposes constraints on the product, not on the components separately.
 
-The challenge is that `freq × sev` is a multiplicative constraint. Standard MinTrace cannot reconcile `(freq, sev)` pairs directly — it operates on additive systems. The solution is log-space transformation:
+The challenge is that `freq × sev` is a multiplicative constraint. Standard MinTrace cannot reconcile `(freq, sev)` pairs directly  -  it operates on additive systems. The solution is log-space transformation:
 
 ```
 log(LC) = log(freq) + log(sev)
@@ -187,7 +187,7 @@ freq_reconciled, sev_reconciled = fs_reconciler.reconcile(
 )
 ```
 
-The frequency and severity adjustments are handled independently in the log-space transform. In practice, if your severity model is more stable than your frequency model — which is typical for attritional motor BI — you can pass a custom `sev_reconciler` with tighter penalty to limit severity adjustments relative to frequency.
+The frequency and severity adjustments are handled independently in the log-space transform. In practice, if your severity model is more stable than your frequency model  -  which is typical for attritional motor BI  -  you can pass a custom `sev_reconciler` with tighter penalty to limit severity adjustments relative to frequency.
 
 ---
 
@@ -272,7 +272,7 @@ attr.summary()
 # 4  Subsidence                        +0.8                 +1.6
 ```
 
-The attribution report answers the governance question that follows every reconciliation: "We can see the numbers changed. Which models moved the most, and by how much?" That question currently gets answered with "we blended them" — which is not an answer that satisfies a peer reviewer or an FCA audit.
+The attribution report answers the governance question that follows every reconciliation: "We can see the numbers changed. Which models moved the most, and by how much?" That question currently gets answered with "we blended them"  -  which is not an answer that satisfies a peer reviewer or an FCA audit.
 
 ---
 
@@ -307,7 +307,7 @@ print(result.attribution.to_string())
 lc_reconciled = result.reconciled_df
 ```
 
-The reconciled DataFrame is a drop-in replacement for the base forecasts. Every downstream calculation — development factors, trend analysis, rate level indication — receives coherent inputs. The hierarchy constraints are satisfied by construction, not by a spreadsheet cell that someone will forget to update next quarter.
+The reconciled DataFrame is a drop-in replacement for the base forecasts. Every downstream calculation  -  development factors, trend analysis, rate level indication  -  receives coherent inputs. The hierarchy constraints are satisfied by construction, not by a spreadsheet cell that someone will forget to update next quarter.
 
 ---
 
@@ -315,9 +315,9 @@ The reconciled DataFrame is a drop-in replacement for the base forecasts. Every 
 
 Nixtla's `hierarchicalforecast` is a well-maintained library and `insurance-reconcile` uses it as an optional dependency for the MinTrace solver. The gaps are all insurance-specific:
 
-`wls_struct` weights by structural count (number of bottom series per aggregate). That is correct for time series with uniform variance structure. Insurance EP varies by orders of magnitude across perils — Subsidence might have one-tenth the premium of Fire. Structural count weighting treats them identically.
+`wls_struct` weights by structural count (number of bottom series per aggregate). That is correct for time series with uniform variance structure. Insurance EP varies by orders of magnitude across perils  -  Subsidence might have one-tenth the premium of Fire. Structural count weighting treats them identically.
 
-`hierarchicalforecast` reconciles whatever values you pass in. If you pass loss costs, it applies additive constraints to values that do not satisfy additive constraints. The output will appear reconciled — the constraints will appear to hold — but the underlying economics are wrong. You would only discover this if you independently checked the EP-weighted aggregation rule.
+`hierarchicalforecast` reconciles whatever values you pass in. If you pass loss costs, it applies additive constraints to values that do not satisfy additive constraints. The output will appear reconciled  -  the constraints will appear to hold  -  but the underlying economics are wrong. You would only discover this if you independently checked the EP-weighted aggregation rule.
 
 The frequency×severity reconciliation requires working in log-space and back-transforming. `hierarchicalforecast` has no mechanism for this transform.
 
@@ -331,9 +331,9 @@ The hierarchy spec (`S_df` construction) requires deep familiarity with the `agg
 
 The standard is a spreadsheet. On one tab: the portfolio GLM trend. On another: the peril-level models. In a third: a cell that reads `=E12*0.6+C4*0.4` where the 60/40 blend was decided in a meeting three quarters ago and no one has documented the rationale.
 
-The spreadsheet has produced the same answer for every pricing team that has ever done this. The teams know it is not quite right. It fails every audit because the methodology is not written down. And it discards genuine statistical information — both the portfolio model and the peril models contain signal, and blending them in fixed proportions is not the optimal way to use either.
+The spreadsheet has produced the same answer for every pricing team that has ever done this. The teams know it is not quite right. It fails every audit because the methodology is not written down. And it discards genuine statistical information  -  both the portfolio model and the peril models contain signal, and blending them in fixed proportions is not the optimal way to use either.
 
-MinTrace is not a new idea. It has been standard methodology in academic forecasting since Hyndman et al. (2011) and is now over a decade old in the time series literature. The reason insurance teams are not using it is not scepticism — it is that the available implementations do not handle the insurance-specific details correctly.
+MinTrace is not a new idea. It has been standard methodology in academic forecasting since Hyndman et al. (2011) and is now over a decade old in the time series literature. The reason insurance teams are not using it is not scepticism  -  it is that the available implementations do not handle the insurance-specific details correctly.
 
 160 tests, 9 modules, MIT-licensed.
 
@@ -345,10 +345,10 @@ uv add 'insurance-reconcile[mintrace]'
 
 **[insurance-reconcile on GitHub](https://github.com/burning-cost/insurance-reconcile)**
 
-- [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/) — BOCPD for detecting regime shifts in claims experience
-- [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/) — GLM-based trend with structural break detection and ONS index integration
-- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/) — for teams building reconciliation tests on synthetic portfolios: `insurance-synthetic` generates hierarchically consistent data with known perils and exposure structure, so you can verify that your reconciliation pipeline closes correctly before touching real data
-- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/) — once the hierarchy reconciles, GAS filters handle the between-update trend problem: smoothly blending the reconciled forecast with emerging claims experience without waiting for a full refit
+- [When Did Your Loss Ratio Actually Change?](/2026/03/13/insurance-changepoint/)  -  BOCPD for detecting regime shifts in claims experience
+- [Trend selection is not actuarial judgment](/2026/03/13/insurance-trend/)  -  GLM-based trend with structural break detection and ONS index integration
+- [Your Synthetic Data Doesn't Know What Exposure Is](/2026/03/09/insurance-synthetic/)  -  for teams building reconciliation tests on synthetic portfolios: `insurance-synthetic` generates hierarchically consistent data with known perils and exposure structure, so you can verify that your reconciliation pipeline closes correctly before touching real data
+- [Tracking Trend Between Model Updates with GAS Filters](/2026/03/08/gas-models-for-between-update-trend/)  -  once the hierarchy reconciles, GAS filters handle the between-update trend problem: smoothly blending the reconciled forecast with emerging claims experience without waiting for a full refit
 
 ---
 

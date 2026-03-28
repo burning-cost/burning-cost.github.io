@@ -135,7 +135,7 @@ from insurance_severity import CensoredHillEstimator
 
 # Constructor takes no arguments; data goes into fit()
 hill = CensoredHillEstimator()
-hill.fit(observed, truncated)   # fit(claims, censored) — returns self; access results via properties
+hill.fit(observed, truncated)   # fit(claims, censored)  -  returns self; access results via properties
 
 print(f"Censored Hill xi: {hill.xi:.3f} (plateau at k={hill.k_opt})")
 

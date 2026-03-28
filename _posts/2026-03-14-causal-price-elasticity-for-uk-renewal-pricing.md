@@ -152,13 +152,13 @@ audit = opt.enbp_audit(priced_df)
 print(f"Breaches: {(audit['compliant'] == False).sum()} / {len(audit)}")
 ```
 
-The optimiser maximises expected profit subject to three hard constraints per policy: offer price ≤ ENBP (FCA PS21/5), offer price ≥ floor loading × technical premium (no subsidy), and the renewal probability response implied by the fitted CATE. The `enbp_audit()` method returns a per-row compliance flag for reporting to the compliance function. That flag is what you attach to a regulatory query — and the [insurance-governance model inventory](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) is the right place to record which version of the elasticity model produced the compliance evidence.
+The optimiser maximises expected profit subject to three hard constraints per policy: offer price ≤ ENBP (FCA PS21/5), offer price ≥ floor loading × technical premium (no subsidy), and the renewal probability response implied by the fitted CATE. The `enbp_audit()` method returns a per-row compliance flag for reporting to the compliance function. That flag is what you attach to a regulatory query  -  and the [insurance-governance model inventory](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) is the right place to record which version of the elasticity model produced the compliance evidence.
 
 ---
 
 ## Portfolio demand curve
 
-Once the elasticity model is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) lets you track whether the estimated renewal response is holding — the mSPRT sequential test handles exactly the monthly-checking problem that renewal champion/challenger experiments create.
+Once the elasticity model is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) lets you track whether the estimated renewal response is holding  -  the mSPRT sequential test handles exactly the monthly-checking problem that renewal champion/challenger experiments create.
 
 
 The demand curve shows the trade-off between renewal rate and expected profit across a range of uniform price changes. It is the first thing a pricing committee asks for when evaluating an elasticity model:

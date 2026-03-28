@@ -7,21 +7,21 @@ tags: [conformal-prediction, solvency-ii, scr, capital-modelling, insurance-conf
 description: "How solvency_capital_range() produces model-free 99.5% SCR bounds, how SCRReport produces the coverage validation table for regulatory submission, and why interval_width is the number you should be showing your CRO."
 ---
 
-Solvency II Article 101 requires you to hold capital at the 99.5th percentile of the distribution of basic own funds over a one-year period. Every internal model achieves this by choosing a distributional form — lognormal, Pareto, Burr, Gaussian copula — and estimating its parameters from data. The regulator approves the model. The model produces a number. The number is the SCR.
+Solvency II Article 101 requires you to hold capital at the 99.5th percentile of the distribution of basic own funds over a one-year period. Every internal model achieves this by choosing a distributional form  -  lognormal, Pareto, Burr, Gaussian copula  -  and estimating its parameters from data. The regulator approves the model. The model produces a number. The number is the SCR.
 
 What this process does not tell you is how sensitive the SCR is to the distributional choice, or how much of the stated 99.5% coverage is actually delivered on held-out data versus assumed by construction. Those are questions about model risk, and they are not answered by fitting more parameters.
 
 Liang Hong's 2025 paper (arXiv:2503.03659) makes a precise version of this argument: parametric capital models achieve coverage asymptotically, in the limit as sample size grows. Conformal prediction achieves coverage at the actual sample size you have. For a regulatory requirement that applies today, on a finite book of business, the distinction is not academic.
 
-The `solvency_capital_range()` function in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this as a lightweight functional interface. This post explains what it does, when to reach for it instead of `SCRReport`, and — more importantly — what the `interval_width` field is telling you that your parametric model cannot.
+The `solvency_capital_range()` function in [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) implements this as a lightweight functional interface. This post explains what it does, when to reach for it instead of `SCRReport`, and  -  more importantly  -  what the `interval_width` field is telling you that your parametric model cannot.
 
 ---
 
 ## The distributional choice problem
 
-Take a UK commercial property book. You have 800 large loss observations from the past eight years. You fit a lognormal to the severity and read off the 99.5th percentile. You fit a Pareto to the same data and read off the 99.5th percentile again. The two estimates differ by 20–35% on a representative portfolio — not because your data is thin (800 observations is not nothing) but because the lognormal and Pareto tails diverge sharply at 1-in-200 and you have almost no data there to distinguish them.
+Take a UK commercial property book. You have 800 large loss observations from the past eight years. You fit a lognormal to the severity and read off the 99.5th percentile. You fit a Pareto to the same data and read off the 99.5th percentile again. The two estimates differ by 20–35% on a representative portfolio  -  not because your data is thin (800 observations is not nothing) but because the lognormal and Pareto tails diverge sharply at 1-in-200 and you have almost no data there to distinguish them.
 
-The PRA's model validation expectations require you to demonstrate that your internal model's stated coverage is actually achieved on held-out data. For a parametric model, demonstrating this at the 99.5th percentile requires either an enormous hold-out set or a long time series — neither of which most UK commercial lines teams have. The validation is therefore largely qualitative, backed by expert judgement about whether the distributional choice is reasonable.
+The PRA's model validation expectations require you to demonstrate that your internal model's stated coverage is actually achieved on held-out data. For a parametric model, demonstrating this at the 99.5th percentile requires either an enormous hold-out set or a long time series  -  neither of which most UK commercial lines teams have. The validation is therefore largely qualitative, backed by expert judgement about whether the distributional choice is reasonable.
 
 Conformal prediction does not make the tail uncertainty go away. What it does is make the uncertainty explicit and measurable. The prediction interval is wide when the tail is uncertain; it is narrow when the calibration data strongly constrains the 99.5th percentile. The `interval_width` field in `SolvencyCapitalRange` is that uncertainty, in pounds, per risk.
 
@@ -29,7 +29,7 @@ Conformal prediction does not make the tail uncertainty go away. What it does is
 
 ## What `solvency_capital_range()` gives you
 
-Split conformal prediction works as follows. You have a fitted regression model — any model: GLM, GBM, neural network — that produces a point forecast `mu(x)` for each risk. You have a calibration set of risks with observed outcomes, not used for training. You compute a nonconformity score for each calibration observation — for a Tweedie model with power `p`, the Pearson-weighted residual `(y - mu(x)) / mu(x)^(p/2)` is the natural choice. You take the empirical `(1 - alpha)(1 + 1/n)`-quantile of those scores and call it `q_hat`.
+Split conformal prediction works as follows. You have a fitted regression model  -  any model: GLM, GBM, neural network  -  that produces a point forecast `mu(x)` for each risk. You have a calibration set of risks with observed outcomes, not used for training. You compute a nonconformity score for each calibration observation  -  for a Tweedie model with power `p`, the Pearson-weighted residual `(y - mu(x)) / mu(x)^(p/2)` is the natural choice. You take the empirical `(1 - alpha)(1 + 1/n)`-quantile of those scores and call it `q_hat`.
 
 Your 99.5% upper bound for a new risk is `mu(x) + q_hat * mu(x)^(p/2)`.
 
@@ -62,11 +62,11 @@ print(result)
 #                      total_scr=8423.17, mean_interval_width=14.82)
 
 print(result.scr_estimate[:3])    # per-risk SCR component: max(0, upper - E[Y])
-print(result.upper_bound[:3])     # the 99.5% tail bound — your SCR-relevant figure
+print(result.upper_bound[:3])     # the 99.5% tail bound  -  your SCR-relevant figure
 print(result.interval_width[:3])  # tail uncertainty, in loss units, per risk
 ```
 
-The `scr_estimate` field is `max(0, upper_bound - expected_loss)` per risk: the excess of the conformal tail bound over the point forecast, which is the economic definition of required capital for an individual risk. The `total_scr` is the sum across all risks — provided for convenience, but see the limitations section below.
+The `scr_estimate` field is `max(0, upper_bound - expected_loss)` per risk: the excess of the conformal tail bound over the point forecast, which is the economic definition of required capital for an individual risk. The `total_scr` is the sum across all risks  -  provided for convenience, but see the limitations section below.
 
 ---
 
@@ -87,7 +87,7 @@ X = rng.normal(size=(n, 3))
 beta = np.array([0.8, -0.4, 0.2])
 mu_true = np.exp(X @ beta)
 
-# True DGP: heavy-tailed compound — Poisson frequency, lognormal severity
+# True DGP: heavy-tailed compound  -  Poisson frequency, lognormal severity
 # (This is what the parametric model assumes it knows; conformal does not.)
 freq = rng.poisson(0.3, size=n)
 sev = rng.lognormal(mean=np.log(mu_true), sigma=1.2, size=n)
@@ -121,13 +121,13 @@ result = solvency_capital_range(cp, X_test, alpha=0.005)
 print(f"Conformal SCR (per-risk mean): {result.scr_estimate.mean():.2f}")
 print(f"Conformal mean interval width: {result.mean_interval_width:.2f}")
 
-# Empirical coverage check — the number that matters
+# Empirical coverage check  -  the number that matters
 empirical_coverage = np.mean(y_test <= result.upper_bound)
 print(f"Empirical 99.5% coverage: {empirical_coverage:.3f}")
 # Should be >= 0.995 by the conformal guarantee
 ```
 
-The lognormal estimate will achieve 99.5% coverage on average, across many datasets from the same DGP. But on any given dataset, you do not know whether it is achieving the stated coverage or not, and you cannot test it at the 99.5th percentile without a very large hold-out set. The conformal coverage guarantee is right by construction — the empirical coverage check will confirm at least 99.5% coverage on the test set — and `interval_width` tells you how much uncertainty you are carrying in the tail bound itself.
+The lognormal estimate will achieve 99.5% coverage on average, across many datasets from the same DGP. But on any given dataset, you do not know whether it is achieving the stated coverage or not, and you cannot test it at the 99.5th percentile without a very large hold-out set. The conformal coverage guarantee is right by construction  -  the empirical coverage check will confirm at least 99.5% coverage on the test set  -  and `interval_width` tells you how much uncertainty you are carrying in the tail bound itself.
 
 ---
 
@@ -135,7 +135,7 @@ The lognormal estimate will achieve 99.5% coverage on average, across many datas
 
 These are two different tools for different contexts. The distinction matters.
 
-**Use `solvency_capital_range()`** when you need SCR estimates as inputs to a larger pipeline: a reserving system that uses per-risk tail bounds as inputs, a reinsurance optimisation that needs to price excess-of-loss layers from the upper bound distribution, or a stress-testing loop that reruns SCR estimates under distributional shift scenarios. The function returns a dataclass — a simple Python object — that you can pass directly into downstream code.
+**Use `solvency_capital_range()`** when you need SCR estimates as inputs to a larger pipeline: a reserving system that uses per-risk tail bounds as inputs, a reinsurance optimisation that needs to price excess-of-loss layers from the upper bound distribution, or a stress-testing loop that reruns SCR estimates under distributional shift scenarios. The function returns a dataclass  -  a simple Python object  -  that you can pass directly into downstream code.
 
 ```python
 # Embed SCR bounds inside a reinsurance pricing loop
@@ -173,7 +173,7 @@ print(f"Portfolio SCR ratio: {agg['scr_ratio']:.2f}x")
 For regulatory conservatism, add a buffer over the bare Solvency II requirement:
 
 ```python
-# 99.7% bound instead of 99.5% — requires >= 333 calibration observations
+# 99.7% bound instead of 99.5%  -  requires >= 333 calibration observations
 scr_conservative = scr.solvency_capital_requirement(X_test, alpha=0.003)
 ```
 
@@ -206,7 +206,7 @@ Both call the same underlying conformal machinery. The choice is about what you 
 
 ## Exposure weighting
 
-Most capital modelling workflows need to handle policies with different exposures — different policy periods, different vehicle-years, different years of cover. `solvency_capital_range()` handles this via the `exposure` parameter:
+Most capital modelling workflows need to handle policies with different exposures  -  different policy periods, different vehicle-years, different years of cover. `solvency_capital_range()` handles this via the `exposure` parameter:
 
 ```python
 # exposure: array of years on cover, e.g. 0.5 for mid-term policies
@@ -230,7 +230,7 @@ This is the field that most implementations leave out, and it is the one we thin
 
 `interval_width` is `upper_bound - lower_bound` per risk: the width of the conformal prediction interval in loss units. It measures how constrained the 99.5% tail estimate is by the available calibration data. A narrow interval on a large upper bound means the tail is well-determined by the calibration sample. A wide interval means there is genuine uncertainty about where the 99.5th percentile sits for that risk.
 
-A parametric model gives you a single point estimate of the VaR. It does not tell you whether that estimate is tight or uncertain, because the uncertainty depends on how much tail data you have — and tail data is exactly what parametric models abstract away from. Conformal prediction makes the uncertainty explicit.
+A parametric model gives you a single point estimate of the VaR. It does not tell you whether that estimate is tight or uncertain, because the uncertainty depends on how much tail data you have  -  and tail data is exactly what parametric models abstract away from. Conformal prediction makes the uncertainty explicit.
 
 In practice:
 
@@ -242,13 +242,13 @@ print(f"{uncertain_risks.mean():.1%} of risks have wide SCR intervals")
 # and where additional tail data would most improve the capital estimate.
 ```
 
-A risk with `interval_width > 2 * scr_estimate` has more uncertainty in the tail bound than the SCR component itself — the SCR estimate could easily be halved or doubled by the tail uncertainty alone. That is a number a CRO should see before approving a capital submission.
+A risk with `interval_width > 2 * scr_estimate` has more uncertainty in the tail bound than the SCR component itself  -  the SCR estimate could easily be halved or doubled by the tail uncertainty alone. That is a number a CRO should see before approving a capital submission.
 
 ---
 
 ## Using CQR for heteroscedastic portfolios
 
-For portfolios where severity varies substantially across risk types — commercial property with a mix of small and large sum-insured — the standard conformal predictor produces intervals that are too wide for small risks and too narrow for large ones. This is exactly the setting where Conformalized Quantile Regression (CQR) outperforms standard conformal.
+For portfolios where severity varies substantially across risk types  -  commercial property with a mix of small and large sum-insured  -  the standard conformal predictor produces intervals that are too wide for small risks and too narrow for large ones. This is exactly the setting where Conformalized Quantile Regression (CQR) outperforms standard conformal.
 
 `solvency_capital_range()` accepts any predictor implementing `predict_interval(X, alpha)`, including CQR:
 
@@ -256,7 +256,7 @@ For portfolios where severity varies substantially across risk types — commerc
 from insurance_conformal import ConformalisedQuantileRegression, solvency_capital_range
 
 # CQR requires separate quantile models at a lower quantile (e.g. 0.1) and
-# upper quantile (e.g. 0.9) — the conformalization step then corrects to 99.5%
+# upper quantile (e.g. 0.9)  -  the conformalization step then corrects to 99.5%
 cqr = ConformalisedQuantileRegression(
     model_lo=fitted_lo_quantile_model,
     model_hi=fitted_hi_quantile_model,
@@ -279,7 +279,7 @@ Use conformal SCR bounds when:
 
 - You want a robustness check on your internal model that requires no additional distributional assumptions.
 - You are entering a new line of business where you do not yet have sufficient data to justify a parametric tail choice, but you have access to analogous historical data for calibration.
-- Your model governance process requires a quantitative demonstration that coverage claims are borne out on held-out data — the `coverage_validation_table()` output is exactly that.
+- Your model governance process requires a quantitative demonstration that coverage claims are borne out on held-out data  -  the `coverage_validation_table()` output is exactly that.
 - You have a book where the tail behaviour is genuinely uncertain: commercial property with heterogeneous construction types where neither lognormal nor Pareto provides a clean fit to large loss data.
 
 Do not use conformal SCR bounds when:
@@ -293,15 +293,15 @@ The right use is as a distribution-free lower bound on what your capital require
 
 ## Limitations
 
-**Per-risk, not portfolio.** The 99.5% guarantee is per-risk and marginal. When you sum `scr_estimate` across risks to get `total_scr`, you are implicitly assuming perfect correlation — the worst case. For portfolio-level SCR that incorporates diversification, you still need a dependence model. Conformal prediction provides the marginal tail distributions; the aggregation is your problem.
+**Per-risk, not portfolio.** The 99.5% guarantee is per-risk and marginal. When you sum `scr_estimate` across risks to get `total_scr`, you are implicitly assuming perfect correlation  -  the worst case. For portfolio-level SCR that incorporates diversification, you still need a dependence model. Conformal prediction provides the marginal tail distributions; the aggregation is your problem.
 
-**Exchangeability.** The coverage guarantee requires the calibration risks to be exchangeable with the risks you are scoring — drawn from the same distribution. If your calibration set is 2019–2022 and your in-force book reflects 2025 underwriting terms and exposure patterns, the exchangeability assumption is at risk. Check it explicitly: score the calibration set itself and verify that empirical coverage is at least 99.5%.
+**Exchangeability.** The coverage guarantee requires the calibration risks to be exchangeable with the risks you are scoring  -  drawn from the same distribution. If your calibration set is 2019–2022 and your in-force book reflects 2025 underwriting terms and exposure patterns, the exchangeability assumption is at risk. Check it explicitly: score the calibration set itself and verify that empirical coverage is at least 99.5%.
 
 **Calibration set size at the tail.** The 99.5% bound is the `ceil(0.995 * (n_cal + 1))`-th order statistic of the nonconformity scores. With 200 calibration observations, the bound is determined by a single order statistic and will be unreliably wide. With 2,000, it is materially better constrained. For the 99.5% level, we recommend at least 500 calibration observations as a practical floor; 1,000 is more comfortable.
 
 **Marginal, not conditional, coverage.** The guarantee is 99.5% on average across all risks, not 99.5% for every risk subgroup. A predictor that covers 99.8% of small commercial risks and 99.1% of large commercial risks has technically satisfied the marginal guarantee while under-covering the tail where it matters. Use `CoverageDiagnostics.coverage_by_decile()` from the same library to test conditional coverage by expected loss decile.
 
-**Regulatory status.** EIOPA has not issued guidance on conformal methods as of March 2026. Present conformal SCR bounds to your regulator as a model-free validation cross-check, alongside your parametric internal model — not as an alternative to it.
+**Regulatory status.** EIOPA has not issued guidance on conformal methods as of March 2026. Present conformal SCR bounds to your regulator as a model-free validation cross-check, alongside your parametric internal model  -  not as an alternative to it.
 
 ---
 
@@ -345,5 +345,5 @@ uv add insurance-conformal
 Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal)
 
 - Hong (2025), "Conformal prediction of future insurance claims in the regression problem." [arXiv:2503.03659](https://arxiv.org/abs/2503.03659)
-- [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — CQR and heteroscedastic interval construction
-- [Which Uncertainty Quantification Method?](/2026/03/25/which-uncertainty-quantification-method-decision-framework/) — decision flowchart for choosing between conformal, GAMLSS, and distributional GBMs
+- [Conformal Prediction Intervals for Insurance Pricing](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  CQR and heteroscedastic interval construction
+- [Which Uncertainty Quantification Method?](/2026/03/25/which-uncertainty-quantification-method-decision-framework/)  -  decision flowchart for choosing between conformal, GAMLSS, and distributional GBMs

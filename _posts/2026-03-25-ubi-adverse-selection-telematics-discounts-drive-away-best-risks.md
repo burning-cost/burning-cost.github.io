@@ -17,17 +17,17 @@ This is the UBI adverse selection trap, and it is operating in the UK motor mark
 
 ## How opt-in selection works against you
 
-Start with a vanilla motor portfolio. You have a traditional GLM pricing model — call it the technical price. Your book is a mixture: some drivers the model overprices slightly, some it underprices slightly, most it gets approximately right. The cross-subsidies are small and they roughly cancel.
+Start with a vanilla motor portfolio. You have a traditional GLM pricing model  -  call it the technical price. Your book is a mixture: some drivers the model overprices slightly, some it underprices slightly, most it gets approximately right. The cross-subsidies are small and they roughly cancel.
 
 Now launch a UBI opt-in product. Who responds?
 
-Low-mileage drivers. People who already know their driving is safe. Young drivers whose parents told them they are careful. Anyone whose actual risk behaviour is meaningfully better than what the GLM predicts from their observable rating factors — age, NCB, vehicle group, postcode.
+Low-mileage drivers. People who already know their driving is safe. Young drivers whose parents told them they are careful. Anyone whose actual risk behaviour is meaningfully better than what the GLM predicts from their observable rating factors  -  age, NCB, vehicle group, postcode.
 
-These are precisely your most profitable risks: the ones where the traditional price, before any UBI discount, was generating the highest margin. They opt in, they get their discount, and the effective premium they pay drops. The discount is genuine — they really are lower risk — but the profit per policy falls.
+These are precisely your most profitable risks: the ones where the traditional price, before any UBI discount, was generating the highest margin. They opt in, they get their discount, and the effective premium they pay drops. The discount is genuine  -  they really are lower risk  -  but the profit per policy falls.
 
 Meanwhile, the drivers who do not opt in are also self-selecting. The reckless 24-year-old knows, consciously or not, that a black box will not help him. The commuter doing 40,000 miles a year in the outside lane of the M25 knows his score will be poor. The driver with three speeding convictions that have not yet reached his renewal does not opt in. They stay on the traditional book. The GLM prices them; the GLM does not know what a telematics device would reveal.
 
-The result is a portfolio that has split itself along risk lines, with the telematics opt-ins clustered at the good end and the non-participants clustered at the bad end. Your total expected loss has not changed — the same drivers are still insured — but the pricing structure now systematically overcharges the bad risks (who have low demand elasticity, so they stay) and undercharges the good risks (who got a discount they earned).
+The result is a portfolio that has split itself along risk lines, with the telematics opt-ins clustered at the good end and the non-participants clustered at the bad end. Your total expected loss has not changed  -  the same drivers are still insured  -  but the pricing structure now systematically overcharges the bad risks (who have low demand elasticity, so they stay) and undercharges the good risks (who got a discount they earned).
 
 That is not an adverse selection problem in the classical sense of hidden types. It is self-selection on known types: the drivers who can pass a telematics test know they can, and they opt in. The ones who cannot, stay off the scheme.
 
@@ -41,9 +41,9 @@ Suppose your traditional motor book has a loss ratio of 72%. After 18 months of 
 
 But look at the non-telematics book. Its loss ratio has moved from 72% to 76%. The best risks have migrated out, leaving behind a residual pool that is incrementally worse than the overall book was before. The model has not changed. It is still pricing this pool as if it represented the full market distribution it was trained on. It does not know the distribution has shifted.
 
-This is a covariate-like shift but driven by endogenous selection rather than an exogenous change in the insured population. The model's feature distribution has not changed much — the non-opt-ins still look like your historical book in terms of age, NCB, vehicle group. But the conditional distribution of actual driving behaviour, given those traditional features, has worsened. The drivers who remain are systematically worse drivers than the people who share their rating factors in your training data.
+This is a covariate-like shift but driven by endogenous selection rather than an exogenous change in the insured population. The model's feature distribution has not changed much  -  the non-opt-ins still look like your historical book in terms of age, NCB, vehicle group. But the conditional distribution of actual driving behaviour, given those traditional features, has worsened. The drivers who remain are systematically worse drivers than the people who share their rating factors in your training data.
 
-Quantifying this shift is non-trivial. Traditional PSI monitoring on your rating factors will not flag it, because the distribution of observable factors has barely moved. The deterioration is in the unobservable dimension — the one the telematics device was supposed to measure — but you only measure that dimension for the opt-ins. For the non-participants, you are flying blind.
+Quantifying this shift is non-trivial. Traditional PSI monitoring on your rating factors will not flag it, because the distribution of observable factors has barely moved. The deterioration is in the unobservable dimension  -  the one the telematics device was supposed to measure  -  but you only measure that dimension for the opt-ins. For the non-participants, you are flying blind.
 
 ---
 
@@ -61,7 +61,7 @@ uv add insurance-telematics insurance-optimise insurance-monitoring
 
 ### Step 1: Score the opt-in cohort
 
-The first thing to establish is whether your telematics opt-ins are actually better drivers than the traditional model predicted — or whether the discount is simply following the traditional risk signal into a new data format.
+The first thing to establish is whether your telematics opt-ins are actually better drivers than the traditional model predicted  -  or whether the discount is simply following the traditional risk signal into a new data format.
 
 ```python
 from insurance_telematics import TelematicsScoringPipeline, TripSimulator
@@ -82,11 +82,11 @@ print(scored.head())
 # ...
 ```
 
-The pipeline runs GPS cleaning, trip feature extraction, a 3-state Hidden Markov Model (cautious / normal / aggressive), Bühlmann-Straub credibility weighting, and a Poisson GLM, all in a single `fit()` call. The output is predicted annual claim frequency per driver — a number you can directly compare to the GLM prediction from traditional factors.
+The pipeline runs GPS cleaning, trip feature extraction, a 3-state Hidden Markov Model (cautious / normal / aggressive), Bühlmann-Straub credibility weighting, and a Poisson GLM, all in a single `fit()` call. The output is predicted annual claim frequency per driver  -  a number you can directly compare to the GLM prediction from traditional factors.
 
 What you are looking for: if `predicted_claim_frequency` from telematics is systematically lower than the traditional GLM price implied, your opt-ins are selecting on telematics risk, not just on traditional risk. The more negative this gap, the larger the adverse selection premium embedded in your telematics discount.
 
-You want this gap to be zero or small. A large negative gap means the discount is doing real work — good, it is accurate pricing — but it is doing that work by pulling your best traditional-model risks into the telematics book. Your non-telematics book is being drained.
+You want this gap to be zero or small. A large negative gap means the discount is doing real work  -  good, it is accurate pricing  -  but it is doing that work by pulling your best traditional-model risks into the telematics book. Your non-telematics book is being drained.
 
 ### Step 2: Model the pricing pressure
 
@@ -106,7 +106,7 @@ glm_technical_price = rng.uniform(350, 900, n)
 glm_loss_cost = glm_technical_price * rng.uniform(0.55, 0.80, n)
 
 # Telematics score: opt-ins are 15% better on average (adverse selection at work)
-# Non-opt-ins: unknown — assume GLM is correct
+# Non-opt-ins: unknown  -  assume GLM is correct
 tele_uplift = np.where(
     rng.uniform(0, 1, n) < 0.30,   # 30% opt-in rate
     rng.uniform(0.75, 0.92, n),     # opt-ins: true cost 8-25% below GLM
@@ -142,7 +142,7 @@ print(f"Optimised retention:   {result.expected_retention:.3f}")
 print(f"Expected profit:       £{result.expected_profit:,.0f}")
 ```
 
-The constraint `lr_max=0.72` is important here. Without it, the optimiser will price down the telematics opt-ins aggressively to maximise retention — exactly the behaviour that accelerates adverse selection on the non-telematics book. The loss ratio constraint forces a floor on the discount, ensuring the telematics cohort is still generating underwriting profit even after the telematics discount is applied.
+The constraint `lr_max=0.72` is important here. Without it, the optimiser will price down the telematics opt-ins aggressively to maximise retention  -  exactly the behaviour that accelerates adverse selection on the non-telematics book. The loss ratio constraint forces a floor on the discount, ensuring the telematics cohort is still generating underwriting profit even after the telematics discount is applied.
 
 The shadow price on the `lr_max` constraint tells you how much profit you are leaving on the table to maintain that floor. If the shadow price is high, you have a viable business case for a mandatory-telematics product where the constraint is relaxed because non-opt-in adverse selection no longer applies.
 
@@ -179,19 +179,19 @@ print(f"Non-telematics A/E at 12 months: {current_ae:.3f}")
 # Non-telematics A/E at 12 months:  1.089
 
 # PSI on the non-telematics book rating factors
-# This will typically NOT flag the problem — the factor distribution
+# This will typically NOT flag the problem  -  the factor distribution
 # is stable even as the underlying risk worsens
 psi_age = psi(
     reference=reference_claims["driver_age"].to_numpy(),
     current=current_claims["driver_age"].to_numpy(),
     n_bins=10,
 )
-print(f"PSI on driver_age: {psi_age:.4f}")  # Likely < 0.10 — no flag raised
+print(f"PSI on driver_age: {psi_age:.4f}")  # Likely < 0.10  -  no flag raised
 ```
 
 The A/E drift is the signal you are looking for. A non-telematics A/E that rises from 1.00 to 1.09 over 12 months while the telematics A/E holds at 0.85 is not evidence that the telematics programme is working. It is evidence that the programme is redistributing risk within the portfolio, with the non-telematics residual bearing the cost.
 
-Notice that PSI on the traditional rating factors will very likely not flag this. The feature distribution of the non-telematics book is stable — the ages, NCB bands, and vehicle groups of the non-opt-ins look similar to the historical book. The deterioration is in the unobservable behaviour dimension. The only direct signal is the A/E ratio climbing on the non-telematics cohort.
+Notice that PSI on the traditional rating factors will very likely not flag this. The feature distribution of the non-telematics book is stable  -  the ages, NCB bands, and vehicle groups of the non-opt-ins look similar to the historical book. The deterioration is in the unobservable behaviour dimension. The only direct signal is the A/E ratio climbing on the non-telematics cohort.
 
 The full `MonitoringReport` ties these checks together:
 
@@ -203,7 +203,7 @@ report = MonitoringReport(
     current_predicted=current_claims["glm_predicted"].to_numpy(),
     exposure=current_claims["exposure_years"].to_numpy(),
 )
-# Results computed on construction — no run() call needed
+# Results computed on construction  -  no run() call needed
 print(report.results_["ae_ratio"])   # A/E with CI and traffic-light band
 print(report.recommendation)         # PASS / RECALIBRATE / REFIT
 ```
@@ -218,7 +218,7 @@ Run this monthly on the non-telematics cohort and set an A/E alert at 1.05. If y
 
 The cleanest fix is to eliminate opt-in selection by making telematics the default. If everyone is scored, the adverse selection mechanism disappears: the good risks no longer self-select in, because there is no alternative product to self-select away from. You price everyone on their actual behaviour, and the non-telematics residual pool stops growing.
 
-The UK market is moving this way for young driver products, where some insurers (notably those backed by Direct Line Group and Ageas) have made black box telematics mandatory for drivers under 25. The adverse selection argument is one of the cleaner actuarial justifications for mandatory data collection — you are not gathering the data because you want to surveil customers, but because opt-in data collection actively harms the customers who choose not to participate by concentrating risk in their cohort and eventually pushing their prices up.
+The UK market is moving this way for young driver products, where some insurers (notably those backed by Direct Line Group and Ageas) have made black box telematics mandatory for drivers under 25. The adverse selection argument is one of the cleaner actuarial justifications for mandatory data collection  -  you are not gathering the data because you want to surveil customers, but because opt-in data collection actively harms the customers who choose not to participate by concentrating risk in their cohort and eventually pushing their prices up.
 
 ### Option 2: Discount caps and credibility floors
 
@@ -233,18 +233,18 @@ config = ConstraintConfig(
 )
 ```
 
-The 15% ceiling is not a number to pick arbitrarily — it should come from the A/E gap analysis: the maximum discount where the expected A/E on the opt-in cohort plus the implied deterioration on the non-telematics book still leaves the combined book below your loss ratio target.
+The 15% ceiling is not a number to pick arbitrarily  -  it should come from the A/E gap analysis: the maximum discount where the expected A/E on the opt-in cohort plus the implied deterioration on the non-telematics book still leaves the combined book below your loss ratio target.
 
-The credibility floor matters too. `TelematicsScoringPipeline` uses a default of 30 trips for full Bühlmann-Straub credibility. A driver with 5 trips in their first month should not get a full 20% discount — the HMM state probabilities are too noisy to support it. Use the `credibility_threshold` parameter:
+The credibility floor matters too. `TelematicsScoringPipeline` uses a default of 30 trips for full Bühlmann-Straub credibility. A driver with 5 trips in their first month should not get a full 20% discount  -  the HMM state probabilities are too noisy to support it. Use the `credibility_threshold` parameter:
 
 ```python
 pipe = TelematicsScoringPipeline(
     n_hmm_states=3,
-    credibility_threshold=50,   # stricter credibility floor — more trips required
+    credibility_threshold=50,   # stricter credibility floor  -  more trips required
 )
 ```
 
-With `credibility_threshold=50`, a driver with 10 trips gets a Bühlmann weight of 10/60 = 0.17 — their score is shrunk 83% towards the portfolio mean. The discount is minimal until there is genuine driving evidence.
+With `credibility_threshold=50`, a driver with 10 trips gets a Bühlmann weight of 10/60 = 0.17  -  their score is shrunk 83% towards the portfolio mean. The discount is minimal until there is genuine driving evidence.
 
 ### Option 3: Portfolio-split monitoring with A/E alerts
 
@@ -260,18 +260,18 @@ There is one diagnostic that cuts through all the complexity: the A/E ratio on y
 
 If it is flat or declining, your telematics programme is selecting good risks and your traditional pricing is holding. You may have a margin issue on the opt-in cohort, but the book is not degrading.
 
-If it is rising by more than 2-3 percentage points per quarter, the selection effect is materialising. The non-telematics residual is becoming a worse pool faster than the model knows. At that rate, you have roughly 18-24 months before the A/E divergence forces a significant rate correction on the non-telematics cohort — a correction that will itself provoke further adverse selection as better traditional-model risks hunt for telematics alternatives.
+If it is rising by more than 2-3 percentage points per quarter, the selection effect is materialising. The non-telematics residual is becoming a worse pool faster than the model knows. At that rate, you have roughly 18-24 months before the A/E divergence forces a significant rate correction on the non-telematics cohort  -  a correction that will itself provoke further adverse selection as better traditional-model risks hunt for telematics alternatives.
 
-The UK market had this conversation in 2013-2015, when the first generation of young driver black box products launched, and then largely forgot about it when telematics adoption plateaued at under 15% of motor policies. With smartphone-based UBI now at lower friction — no installation required, immediate score feedback, discounts visible in the first month — adoption rates are rising fast. The adverse selection mechanism is the same. The speed of the feedback loop is not.
+The UK market had this conversation in 2013-2015, when the first generation of young driver black box products launched, and then largely forgot about it when telematics adoption plateaued at under 15% of motor policies. With smartphone-based UBI now at lower friction  -  no installation required, immediate score feedback, discounts visible in the first month  -  adoption rates are rising fast. The adverse selection mechanism is the same. The speed of the feedback loop is not.
 
 Run the monitoring. Set the alerts. Do not wait for the loss ratio to tell you what the A/E has been saying for two years.
 
 ---
 
-- [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) — HMM scoring pipeline for driver risk from raw trip data
-- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — constrained portfolio optimisation with FCA PS21/11 compliance
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — A/E monitoring, Gini drift, and calibration checks for production pricing models
-- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/) — the `insurance-telematics` library: CTHMM fitting, state feature extraction, and GLM-ready driver risk features
-- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/) — the benchmark post for the telematics scoring pipeline
-- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/) — the benchmark post for the optimisation library
-- [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — the benchmark post for the monitoring library
+- [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics)  -  HMM scoring pipeline for driver risk from raw trip data
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise)  -  constrained portfolio optimisation with FCA PS21/11 compliance
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring)  -  A/E monitoring, Gini drift, and calibration checks for production pricing models
+- [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/)  -  the `insurance-telematics` library: CTHMM fitting, state feature extraction, and GLM-ready driver risk features
+- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/)  -  the benchmark post for the telematics scoring pipeline
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)  -  the benchmark post for the optimisation library
+- [Does Automated Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/)  -  the benchmark post for the monitoring library

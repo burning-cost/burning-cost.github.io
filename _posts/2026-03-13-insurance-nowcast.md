@@ -8,7 +8,7 @@ description: "Covariate-conditioned IBNR completion by risk segment using ML-EM 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-nowcast` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring` — covariate-conditioned IBNR completion is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+**Package update:** `insurance-nowcast` has been consolidated into [`insurance-monitoring`](https://pypi.org/project/insurance-monitoring/). Install with `pip install insurance-monitoring`  -  covariate-conditioned IBNR completion is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
 </div>
 
 
@@ -75,7 +75,7 @@ If occurrence period i has 10,000 policy-years of exposure and occurrence period
 ```python
 from insurance_nowcast import ReportingDelayModel, NowcastSimulator
 
-# Generate synthetic data — useful for validating your setup
+# Generate synthetic data  -  useful for validating your setup
 sim = NowcastSimulator(
     n_occurrence_periods=24,
     max_delay_periods=12,
@@ -104,7 +104,7 @@ model.fit(
 cf = model.predict_completion_factors()
 print(cf[["occurrence_period", "completion_factor", "ibnr_count"]])
 
-# Segment-level factors — what you actually want for GLM adjustment
+# Segment-level factors  -  what you actually want for GLM adjustment
 cf_by_channel = model.predict_completion_factors(df=df, by=["channel"])
 ```
 

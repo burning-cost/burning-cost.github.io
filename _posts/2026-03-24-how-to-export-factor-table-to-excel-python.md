@@ -21,7 +21,7 @@ This post shows how to produce an Excel file that a pricing actuary can actually
 uv add "shap-relativities[all]" openpyxl
 ```
 
-`shap-relativities[all]` brings in CatBoost, SHAP, and pandas. `openpyxl` is the Excel writer we will use directly — we want control over formatting that pandas `to_excel()` does not give us cleanly.
+`shap-relativities[all]` brings in CatBoost, SHAP, and pandas. `openpyxl` is the Excel writer we will use directly  -  we want control over formatting that pandas `to_excel()` does not give us cleanly.
 
 ---
 
@@ -90,8 +90,8 @@ from openpyxl.formatting.rule import ColorScaleRule
 
 HEADER_FILL  = PatternFill("solid", fgColor="1F3864")   # dark navy
 ALT_FILL     = PatternFill("solid", fgColor="EEF2F7")   # light blue-grey
-BASE_FILL    = PatternFill("solid", fgColor="FFF2CC")   # amber — marks base level
-THIN_FILL    = PatternFill("solid", fgColor="FFE0E0")   # light red — thin levels
+BASE_FILL    = PatternFill("solid", fgColor="FFF2CC")   # amber  -  marks base level
+THIN_FILL    = PatternFill("solid", fgColor="FFE0E0")   # light red  -  thin levels
 HEADER_FONT  = Font(bold=True, color="FFFFFF", size=10)
 BODY_FONT    = Font(size=10)
 BORDER_SIDE  = Side(style="thin", color="CCCCCC")
@@ -169,7 +169,7 @@ def _write_factor_sheet(ws, feature_rels: pl.DataFrame, feature_name: str):
             elif row_idx % 2 == 0:
                 cell.fill = ALT_FILL
 
-    # Colour scale on CI width column (G) — wider CI = more red
+    # Colour scale on CI width column (G)  -  wider CI = more red
     last_row = len(feature_rels) + 1
     ws.conditional_formatting.add(
         f"G2:G{last_row}",
@@ -242,7 +242,7 @@ The output:
 
 ## What the formatting is telling you
 
-**Amber row** = base level. This is the level with relativity 1.0. Everything else is expressed relative to it. Make sure the pricing committee knows which level is base before the meeting — "area A is base" is a fact that gets forgotten between quarterly reviews and causes confusion when a column of relativities shows what looks like two rows of 1.000.
+**Amber row** = base level. This is the level with relativity 1.0. Everything else is expressed relative to it. Make sure the pricing committee knows which level is base before the meeting  -  "area A is base" is a fact that gets forgotten between quarterly reviews and causes confusion when a column of relativities shows what looks like two rows of 1.000.
 
 **Red row** = thin level. Fewer than 100 observations means the CLT confidence interval is unreliable. You should not present relativities for these levels without a credibility weight or a note in the commentary. The red flag is a reminder to flag them explicitly rather than presenting them on equal footing with well-observed levels.
 
@@ -252,7 +252,7 @@ The output:
 
 ## The Radar/Emblem workflow
 
-A Radar import template expects: factor name, factor level, relativity (numeric, to at least 3 decimal places), and usually a min/max override column and a load/deduction flag. The `factor_table.xlsx` structure above is close but not identical — Radar's native import format uses a fixed column order and expects the factor levels in exactly the form they appear in the rating algorithm's factor table reference.
+A Radar import template expects: factor name, factor level, relativity (numeric, to at least 3 decimal places), and usually a min/max override column and a load/deduction flag. The `factor_table.xlsx` structure above is close but not identical  -  Radar's native import format uses a fixed column order and expects the factor levels in exactly the form they appear in the rating algorithm's factor table reference.
 
 The practical workflow most teams use is: export the `factor_table.xlsx` as a reference document for the pricing committee review, then produce a separate `radar_import.xlsx` with Radar's specific column layout derived from the same `rels` DataFrame. These are two different files for two different audiences. The formatted one is for the governance review. The import file is for the systems team. Conflating them causes problems in both directions.
 
@@ -262,11 +262,11 @@ For Emblem (Guidewire), the equivalent is the `.xml` factors file or the CSV rat
 
 ## What to tell the pricing committee about thin levels
 
-The model has a relativity for every level it has seen in the training data. Some of those levels have five observations. Some have fifteen. The relativity for those levels is not meaningless — the SHAP values are real — but the uncertainty is very large. The 95% confidence interval for a level with 12 observations typically spans ±0.5 to ±1.2 log-points, which corresponds to a multiplicative uncertainty range of roughly 0.6× to 1.8× on the point estimate.
+The model has a relativity for every level it has seen in the training data. Some of those levels have five observations. Some have fifteen. The relativity for those levels is not meaningless  -  the SHAP values are real  -  but the uncertainty is very large. The 95% confidence interval for a level with 12 observations typically spans ±0.5 to ±1.2 log-points, which corresponds to a multiplicative uncertainty range of roughly 0.6× to 1.8× on the point estimate.
 
-Our recommendation: for levels with fewer than 100 observations, credibility-weight the GBM relativity against the GLM relativity or against the portfolio mean. The library does not do this automatically — it is a judgment call that depends on how different the GBM and GLM are for that level and how comfortable the pricing committee is with the exposure. What the library does give you is the observation count and the CI, which are the two numbers you need to have that conversation.
+Our recommendation: for levels with fewer than 100 observations, credibility-weight the GBM relativity against the GLM relativity or against the portfolio mean. The library does not do this automatically  -  it is a judgment call that depends on how different the GBM and GLM are for that level and how comfortable the pricing committee is with the exposure. What the library does give you is the observation count and the CI, which are the two numbers you need to have that conversation.
 
-If your portfolio has many thin levels — small commercial lines, niche vehicle types, high-performance segments — consider whether the SHAP relativity extraction is the right approach at all. The `shap-relativities` library was designed for personal lines frequency models where most factor levels have sufficient volume. For very thin books, a Bayesian hierarchical model or explicit credibility weighting at the modelling stage is more appropriate.
+If your portfolio has many thin levels  -  small commercial lines, niche vehicle types, high-performance segments  -  consider whether the SHAP relativity extraction is the right approach at all. The `shap-relativities` library was designed for personal lines frequency models where most factor levels have sufficient volume. For very thin books, a Bayesian hierarchical model or explicit credibility weighting at the modelling stage is more appropriate.
 
 ---
 
@@ -274,6 +274,6 @@ If your portfolio has many thin levels — small commercial lines, niche vehicle
 
 Source at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities).
 
-- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/) — the upstream step: fitting the model and running `extract_relativities()`
-- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/) — the conceptual background
-- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — when the factor tables diverge and what to do about it
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)  -  the upstream step: fitting the model and running `extract_relativities()`
+- [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)  -  the conceptual background
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)  -  when the factor tables diverge and what to do about it

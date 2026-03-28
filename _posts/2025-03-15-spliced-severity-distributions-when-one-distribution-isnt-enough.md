@@ -157,7 +157,7 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(figsize=(9, 5))
 mean_excess_plot(claims, ax=ax)
-ax.set_title("Mean Excess Plot — UK Motor BI Severity")
+ax.set_title("Mean Excess Plot  -  UK Motor BI Severity")
 plt.tight_layout()
 plt.savefig("mean_excess_plot.png", dpi=150)
 ```

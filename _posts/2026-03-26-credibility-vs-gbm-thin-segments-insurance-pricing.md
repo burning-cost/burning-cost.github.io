@@ -21,13 +21,13 @@ We mean two things by thin, and they require different treatments:
 
 **Thin as an absolute count**: you have 1,200 EV motor policies total. Not enough to fit a stable GLM from scratch, let alone a GBM, even if you ignore the within-segment factor structure.
 
-Bühlmann-Straub credibility addresses the first problem well. It is less useful for the second. GBM transfer learning addresses the second problem, and can also address the first — but only if a related source book exists and the covariate shift is not severe.
+Bühlmann-Straub credibility addresses the first problem well. It is less useful for the second. GBM transfer learning addresses the second problem, and can also address the first  -  but only if a related source book exists and the covariate shift is not severe.
 
 ---
 
 ## Bühlmann-Straub: the right tool for segment-level blending
 
-If your data is structured as a panel — loss rates and exposures across multiple segments and multiple periods — Bühlmann-Straub is simple, auditable, and theoretically correct.
+If your data is structured as a panel  -  loss rates and exposures across multiple segments and multiple periods  -  Bühlmann-Straub is simple, auditable, and theoretically correct.
 
 The model estimates three numbers from your data:
 
@@ -35,7 +35,7 @@ The model estimates three numbers from your data:
 - **v**: the expected within-segment process variance (noise)
 - **a**: the between-segment variance of the true underlying rates (signal)
 
-From these, k = v/a gives the noise-to-signal ratio, and the credibility factor for each segment is Z_i = w_i / (w_i + k), where w_i is the segment's total exposure. Small exposure means small Z_i — the segment's own experience gets little weight and the premium stays close to the collective mean. Large exposure means Z_i approaching 1 and the segment is largely rated on its own experience.
+From these, k = v/a gives the noise-to-signal ratio, and the credibility factor for each segment is Z_i = w_i / (w_i + k), where w_i is the segment's total exposure. Small exposure means small Z_i  -  the segment's own experience gets little weight and the premium stays close to the collective mean. Large exposure means Z_i approaching 1 and the segment is largely rated on its own experience.
 
 ```python
 import polars as pl
@@ -74,9 +74,9 @@ print(bs.z_)
 # scheme C: Z ≈ 0.999  (76,500 total exposure >> k)
 ```
 
-In this example, k = 0.134 is very small — the groups are genuinely different — so even scheme B, with only 2,000 earned vehicle years, earns high credibility. If k were 500, the picture would reverse: scheme B's 2,000 exposures would give Z ≈ 0.004 and its premium would track the collective mean almost entirely.
+In this example, k = 0.134 is very small  -  the groups are genuinely different  -  so even scheme B, with only 2,000 earned vehicle years, earns high credibility. If k were 500, the picture would reverse: scheme B's 2,000 exposures would give Z ≈ 0.004 and its premium would track the collective mean almost entirely.
 
-The crucial diagnostic is k itself. When k is large relative to typical segment exposures, the portfolio is noisy and relatively homogeneous — trust the collective. When k is small relative to typical exposures, the groups genuinely differ and even modest experience should move the premium.
+The crucial diagnostic is k itself. When k is large relative to typical segment exposures, the portfolio is noisy and relatively homogeneous  -  trust the collective. When k is small relative to typical exposures, the groups genuinely differ and even modest experience should move the premium.
 
 **Where Bühlmann-Straub works well:**
 - Aggregate panel data only (no policy-level features)
@@ -89,7 +89,7 @@ The crucial diagnostic is k itself. When k is large relative to typical segment 
 - You have policy-level features and want to use them
 - Segments have fewer than 3 years of data and the variance estimates become unreliable
 
-For the individual policy-level version — adjusting the a priori premium for a specific policyholder's own claims history — `insurance-credibility` also provides `StaticCredibilityModel`:
+For the individual policy-level version  -  adjusting the a priori premium for a specific policyholder's own claims history  -  `insurance-credibility` also provides `StaticCredibilityModel`:
 
 ```python
 from insurance_credibility import StaticCredibilityModel, ClaimsHistory
@@ -110,13 +110,13 @@ cf = model.predict(new_history)
 posterior_premium = new_history.prior_premium * cf
 ```
 
-`StaticCredibilityModel` estimates the structural parameter kappa = sigma²/tau² from the portfolio and applies the Bühlmann credibility formula at policy level. A policy with three claim-free years earns a factor below 1.0; a policy with a bad run earns a factor above 1.0. The shrinkage depends entirely on kappa — estimated from the whole portfolio, not assumed.
+`StaticCredibilityModel` estimates the structural parameter kappa = sigma²/tau² from the portfolio and applies the Bühlmann credibility formula at policy level. A policy with three claim-free years earns a factor below 1.0; a policy with a bad run earns a factor above 1.0. The shrinkage depends entirely on kappa  -  estimated from the whole portfolio, not assumed.
 
 ---
 
 ## GBM transfer: the right tool when you have a source book
 
-Transfer learning solves a different problem. You have a thin *total* book — 1,200 EV motor policies, not 1,200 policies per segment of a large book — and you want to estimate the full factor structure: how age, mileage, vehicle age, and postcode interact to determine risk.
+Transfer learning solves a different problem. You have a thin *total* book  -  1,200 EV motor policies, not 1,200 policies per segment of a large book  -  and you want to estimate the full factor structure: how age, mileage, vehicle age, and postcode interact to determine risk.
 
 Bühlmann-Straub cannot help here. You have one "segment" (EVs) and not enough data within it. The solution is to borrow the factor structure from a related, larger book (ICE motor, 80,000 policies) and then fine-tune to capture what is genuinely different about EVs.
 
@@ -152,7 +152,7 @@ transfer.fit(X_target_ev, y_target_ev, exposure=exposure_ev)
 predictions = transfer.predict(X_test_ev, exposure=exposure_test_ev)
 ```
 
-The `mode="offset"` pattern is the key design choice. The source model's log-predictions are passed as a fixed baseline offset when training the target CatBoost model. The target model then learns the residual — the systematic deviation of EV risk from the source model's prediction — rather than the full risk level. This means the target model needs far fewer trees to converge: the source has already explained most of the variance structure.
+The `mode="offset"` pattern is the key design choice. The source model's log-predictions are passed as a fixed baseline offset when training the target CatBoost model. The target model then learns the residual  -  the systematic deviation of EV risk from the source model's prediction  -  rather than the full risk level. This means the target model needs far fewer trees to converge: the source has already explained most of the variance structure.
 
 For a GLM base and thin target, `GLMTransfer` from the same package implements the Tian and Feng (JASA, 2023) two-step penalised estimator:
 
@@ -191,7 +191,7 @@ The debiasing delta (`transfer_glm.delta_`) shows you which coefficients are gen
 The question is not "which method is better" but "what does my data structure look like and what am I trying to produce?"
 
 **Use Bühlmann-Straub when:**
-- Your data is at the segment level — aggregate loss rates and exposures, not policy-level feature matrices
+- Your data is at the segment level  -  aggregate loss rates and exposures, not policy-level feature matrices
 - You have 3+ periods per segment and are adjusting rates for 15–300 segments
 - The output needs to be a credibility premium (a scalar per segment) that can be directly loaded into a rating structure
 - You have no related source book to borrow from
@@ -200,7 +200,7 @@ The question is not "which method is better" but "what does my data structure lo
 **Use GBM transfer learning when:**
 - Your data is at the policy level with a full feature matrix
 - You have a related, larger source book with a well-fitted model
-- You need to understand how factors interact within the thin segment — not just what the average loss rate is, but whether young drivers are riskier in this segment than elsewhere
+- You need to understand how factors interact within the thin segment  -  not just what the average loss rate is, but whether young drivers are riskier in this segment than elsewhere
 - You have at least 300 policies in the thin segment (below this, the target model cannot meaningfully learn any residual)
 
 **Use both, sequentially, when:**
@@ -211,11 +211,11 @@ The question is not "which method is better" but "what does my data structure lo
 
 ## The 300-policy threshold
 
-Below 300 policies, neither approach is fully reliable. Bühlmann-Straub will estimate a credibility premium that is almost entirely the collective mean — there is not enough within-segment experience to move the needle. GBM transfer will fit a target model that adds very little to the source offset, because the residual variance is dominated by noise.
+Below 300 policies, neither approach is fully reliable. Bühlmann-Straub will estimate a credibility premium that is almost entirely the collective mean  -  there is not enough within-segment experience to move the needle. GBM transfer will fit a target model that adds very little to the source offset, because the residual variance is dominated by noise.
 
 Below 200 policies, we recommend against fitting a segment-specific model at all. Use the collective mean (from Bühlmann-Straub on the broader book) plus a manual loading for any known structural differences. Document that you have insufficient data to estimate a segment-specific model and review annually as data accumulates.
 
-This is an uncomfortable answer but an honest one. The alternative — presenting a confidently wrong model as if it were reliably estimated — is worse for your book and worse for your regulatory standing.
+This is an uncomfortable answer but an honest one. The alternative  -  presenting a confidently wrong model as if it were reliably estimated  -  is worse for your book and worse for your regulatory standing.
 
 ---
 
@@ -223,15 +223,15 @@ This is an uncomfortable answer but an honest one. The alternative — presentin
 
 The naive approach is to fit a single model on the combined book, include a segment indicator, and read off the segment effect. This works when the segment is large enough that the model can estimate its effect reliably. When the segment is thin, the model interpolates from the rest of the book and the segment indicator absorbs only the level difference.
 
-The problem: this assumes the factor *structure* is the same in the thin segment as in the full book. If EV motor risk has a different mileage-frequency relationship than ICE motor — which the evidence suggests it does — the combined model will miss this. You get the wrong shape even if the level is approximately right.
+The problem: this assumes the factor *structure* is the same in the thin segment as in the full book. If EV motor risk has a different mileage-frequency relationship than ICE motor  -  which the evidence suggests it does  -  the combined model will miss this. You get the wrong shape even if the level is approximately right.
 
 GBM transfer via source-as-offset explicitly models the residual. Where the segment genuinely departs from the source model, the target model learns it. Where the segment behaves identically to the source, the target model stays flat. This is structurally more honest than a single indicator in a combined model.
 
 ---
 
 **Code:**
-- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility) — `uv add insurance-credibility`
-- [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data) — `uv add insurance-thin-data`
+- [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)  -  `uv add insurance-credibility`
+- [`insurance-thin-data`](https://github.com/burning-cost/insurance-thin-data)  -  `uv add insurance-thin-data`
 
 **Related:**
 - [When You Can't Fit a GLM from Scratch: Transfer Learning for Thin Segments](/2026/03/10/transfer-learning-for-thin-segments/)

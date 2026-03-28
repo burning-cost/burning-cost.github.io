@@ -8,7 +8,7 @@ description: "Insurance model monitoring in Python that understands exposure wei
 tags: [insurance-model-monitoring-python, model-monitoring, PSI, CSI, ae-ratio, gini-drift, sequential-testing, mSPRT, insurance-monitoring, Evidently, NannyML, model-risk, pricing, python, uk-insurance, polars]
 ---
 
-Insurance model monitoring in Python is a specific problem that generic drift detection tools solve only partially. Those tools — Evidently, NannyML, and their equivalents — are built for the modal ML use case: tabular or unstructured data, i-i-d records, binary or regression targets. They work well for churn models, credit scoring pipelines, and fraud detection. They work less well for insurance pricing, and the failure modes are not cosmetic.
+Insurance model monitoring in Python is a specific problem that generic drift detection tools solve only partially. Those tools  -  Evidently, NannyML, and their equivalents  -  are built for the modal ML use case: tabular or unstructured data, i-i-d records, binary or regression targets. They work well for churn models, credit scoring pipelines, and fraud detection. They work less well for insurance pricing, and the failure modes are not cosmetic.
 
 The problem is not that tools like Evidently or NannyML are badly engineered. The problem is that insurance data has structure those tools do not model:
 
@@ -63,10 +63,10 @@ ages_cur = np.concatenate([
 exp_ref = np.where(ages_ref < 25, rng.uniform(0.2, 0.4, n_ref), rng.uniform(0.7, 1.0, n_ref))
 exp_cur = np.where(ages_cur < 25, rng.uniform(0.2, 0.4, n_cur), rng.uniform(0.7, 1.0, n_cur))
 
-# Unweighted PSI — understates the shift
+# Unweighted PSI  -  understates the shift
 psi_unweighted = psi(ages_ref, ages_cur, n_bins=10)
 
-# Exposure-weighted PSI — correct for insurance
+# Exposure-weighted PSI  -  correct for insurance
 psi_weighted = psi(
     ages_ref,
     ages_cur,
@@ -93,7 +93,7 @@ Wasserstein distance is the best statistic for communication: it tells an underw
 
 Aggregate A/E monitoring is now standard practice on most UK pricing teams. What is not standard is Gini drift monitoring - and this is the gap that matters most.
 
-A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale — [Whittaker-Henderson smoothing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) of the affected rating tables is often the right first step before a full refit. The model predicts the right mean by coincidence — cheap and expensive errors cancel — but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
+A model can maintain a stable aggregate A/E while losing discriminatory power. The mechanism is covariate shift: as the portfolio ages and mix shifts, the model's relativities become stale  -  [Whittaker-Henderson smoothing](/2026/03/09/whittaker-henderson-smoothing-for-insurance-pricing/) of the affected rating tables is often the right first step before a full refit. The model predicts the right mean by coincidence  -  cheap and expensive errors cancel  -  but it no longer ranks risks correctly. Cheap risks are priced expensively; expensive risks are priced cheaply. This is adverse selection by another name, and it proceeds silently until retention data reveals the pattern.
 
 `insurance-monitoring` implements the Gini drift z-test from [arXiv 2510.04556](https://arxiv.org/abs/2510.04556), which establishes the asymptotic normality of the sample Gini and derives a proper bootstrap variance estimator. This is not a heuristic threshold; it is a proper hypothesis test.
 
@@ -173,7 +173,7 @@ Segment-level A/E is the tool that reveals the 15%/−15% cancellation pattern. 
 
 The hardest decision in model monitoring is not "is the model drifting?" It is "what do we do about it?"
 
-Recalibration — applying a scalar multiplier across all predictions — takes hours. Refitting — rebuilding the model on recent data — takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time. When a refit is warranted, it is also the right moment to ask whether the new model should be an [interpretable GAM rather than a plain GLM](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — the shape functions make future monitoring conversations substantially easier.
+Recalibration  -  applying a scalar multiplier across all predictions  -  takes hours. Refitting  -  rebuilding the model on recent data  -  takes weeks. Getting the decision wrong in either direction is expensive. A team that recalibrates when a refit is needed has patched over a broken ranking and will face the same problem again at the next quarterly review. A team that refits when recalibration was sufficient has wasted three weeks of pricing analyst time. When a refit is warranted, it is also the right moment to ask whether the new model should be an [interpretable GAM rather than a plain GLM](/2026/03/14/insurance-gam-interpretable-nonlinearity/)  -  the shape functions make future monitoring conversations substantially easier.
 
 The Murphy decomposition (Lindholm & Wüthrich, SAJ 2025) resolves this. It decomposes forecast error into:
 

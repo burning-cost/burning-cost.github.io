@@ -12,7 +12,7 @@ Many UK pricing teams find themselves in some version of the same situation: a G
 
 So the GBM sits in a notebook. The GLM goes to production. And the team loses the lift.
 
-We built `shap-relativities` to close that gap. It extracts SHAP relativities from insurance GBMs — multiplicative rating factors in the same `exp(beta)` format as a GLM, with confidence intervals, exposure weighting, and a validation check that the numbers actually reconstruct the model's predictions.
+We built `shap-relativities` to close that gap. It extracts SHAP relativities from insurance GBMs  -  multiplicative rating factors in the same `exp(beta)` format as a GLM, with confidence intervals, exposure weighting, and a validation check that the numbers actually reconstruct the model's predictions.
 
 ---
 

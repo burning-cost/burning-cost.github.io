@@ -15,11 +15,11 @@ This post explains what each method actually computes, where each breaks down, a
 
 ## What each method computes
 
-This distinction is not pedantic — it determines whether the output is fit for your purpose.
+This distinction is not pedantic  -  it determines whether the output is fit for your purpose.
 
-**The parametric bootstrap** answers: if I refit my model on resampled training data, how much do my predicted values move? The output is a *parameter uncertainty interval* — it reflects the sampling variability of the model's coefficients given finite training data. It does not account for the irreducible randomness of future claims. A policy with a stable estimated frequency of 0.08 claims per year will still generate 0 or 1 or 2 claims. The bootstrap interval says nothing about that.
+**The parametric bootstrap** answers: if I refit my model on resampled training data, how much do my predicted values move? The output is a *parameter uncertainty interval*  -  it reflects the sampling variability of the model's coefficients given finite training data. It does not account for the irreducible randomness of future claims. A policy with a stable estimated frequency of 0.08 claims per year will still generate 0 or 1 or 2 claims. The bootstrap interval says nothing about that.
 
-**Conformal prediction** answers: given what I have seen from this model's calibration errors, where will a future realisation of Y fall? The output is a *prediction interval* — it covers future observations, not future fitted values. The coverage guarantee — P(Y ∈ [lower, upper]) ≥ 1 − alpha — is non-asymptotic, distribution-free, and holds for any calibration set above roughly 200 observations.
+**Conformal prediction** answers: given what I have seen from this model's calibration errors, where will a future realisation of Y fall? The output is a *prediction interval*  -  it covers future observations, not future fitted values. The coverage guarantee  -  P(Y ∈ [lower, upper]) ≥ 1 − alpha  -  is non-asymptotic, distribution-free, and holds for any calibration set above roughly 200 observations.
 
 For pricing purposes, the prediction interval is almost always what you want. You are pricing future claims, not future model fits. For capital modelling and regulatory submissions where the question is "how uncertain are your model parameters", the bootstrap interval is the correct tool.
 
@@ -27,7 +27,7 @@ For pricing purposes, the prediction interval is almost always what you want. Yo
 
 ## Bootstrap: what it costs and when it breaks
 
-The parametric bootstrap for a Poisson GLM with 300,000 policies and 40 rating factors runs to roughly 8–15 minutes per 500 bootstrap iterations on a single machine (depending on your optimisation flags and whether you are refitting from scratch or using warm starts). For a CatBoost model with 500 trees, that climbs sharply — CatBoost does not expose a warm-start interface that preserves the early-stopping behaviour, so each bootstrap sample requires a full refit.
+The parametric bootstrap for a Poisson GLM with 300,000 policies and 40 rating factors runs to roughly 8–15 minutes per 500 bootstrap iterations on a single machine (depending on your optimisation flags and whether you are refitting from scratch or using warm starts). For a CatBoost model with 500 trees, that climbs sharply  -  CatBoost does not expose a warm-start interface that preserves the early-stopping behaviour, so each bootstrap sample requires a full refit.
 
 The code is straightforward:
 
@@ -81,13 +81,13 @@ pred_upper = stats.poisson.ppf(0.95, mu=upper_param)
 pred_lower = stats.poisson.ppf(0.05, mu=lower_param)
 ```
 
-The bootstrap breaks in two failure modes. First, with thin cells: if a bootstrap sample draws no observations from a rating factor level, the MLE for that level fails or diverges. You handle this with the `try/except` fallback above, which biases the interval toward the baseline estimate for that iteration — not catastrophic, but not honest. Second, the bootstrap assumes model structure is correct. If the GLM is missing an interaction, bootstrapping 500 misspecified models gives you 500 confident wrong answers. The interval reflects parameter uncertainty conditional on the model being right.
+The bootstrap breaks in two failure modes. First, with thin cells: if a bootstrap sample draws no observations from a rating factor level, the MLE for that level fails or diverges. You handle this with the `try/except` fallback above, which biases the interval toward the baseline estimate for that iteration  -  not catastrophic, but not honest. Second, the bootstrap assumes model structure is correct. If the GLM is missing an interaction, bootstrapping 500 misspecified models gives you 500 confident wrong answers. The interval reflects parameter uncertainty conditional on the model being right.
 
 ---
 
 ## Conformal prediction: the mechanics and the limitations
 
-Split conformal prediction requires a held-out calibration set that the model never trained on. For a temporal dataset — which all insurance pricing datasets are — this is typically the most recent year of policy experience, used as neither training nor tuning data:
+Split conformal prediction requires a held-out calibration set that the model never trained on. For a temporal dataset  -  which all insurance pricing datasets are  -  this is typically the most recent year of policy experience, used as neither training nor tuning data:
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
@@ -123,7 +123,7 @@ print(by_decile)
 # 10      1000   0.891     0.90    £6,843
 ```
 
-A top-decile coverage of 88% when your target is 90% is a 2pp miss that most regulators will accept. A 15pp miss — which is possible if your model is severely miscalibrated in the tail — is a problem that wider intervals will not fix. The right response there is to re-examine the calibration set, not to widen alpha.
+A top-decile coverage of 88% when your target is 90% is a 2pp miss that most regulators will accept. A 15pp miss  -  which is possible if your model is severely miscalibrated in the tail  -  is a problem that wider intervals will not fix. The right response there is to re-examine the calibration set, not to widen alpha.
 
 ---
 
@@ -135,7 +135,7 @@ You need at least 200 calibration observations for the finite-sample guarantee t
 
 The formula: for a calibration set of size n and target coverage 1 − alpha, the expected deviation from target coverage is approximately `sqrt(alpha(1-alpha)/n)`. At n=200 and alpha=0.10, that is ±2.1pp. At n=1,000, it is ±0.9pp.
 
-For most personal lines motor portfolios — which run to tens of thousands of policies per underwriting year — this is not a constraint. It becomes one for commercial lines, niche products, or thin segments. If your calibration set is 150 policies, use the bootstrap.
+For most personal lines motor portfolios  -  which run to tens of thousands of policies per underwriting year  -  this is not a constraint. It becomes one for commercial lines, niche products, or thin segments. If your calibration set is 150 policies, use the bootstrap.
 
 ---
 
@@ -143,7 +143,7 @@ For most personal lines motor portfolios — which run to tens of thousands of p
 
 Use the bootstrap in these situations:
 
-**Your model is a GLM and the output must be fully auditable.** Every bootstrap sample is a refit of the same GLM formula. An auditor or model validator can reproduce the interval with the training data, the model specification, and a random seed. The mechanics are self-evident. Conformal prediction is not opaque — it is four lines of code — but "sort calibration residuals and take the 90th percentile" is harder to explain to a non-quantitative stakeholder than "we refitted the model 500 times."
+**Your model is a GLM and the output must be fully auditable.** Every bootstrap sample is a refit of the same GLM formula. An auditor or model validator can reproduce the interval with the training data, the model specification, and a random seed. The mechanics are self-evident. Conformal prediction is not opaque  -  it is four lines of code  -  but "sort calibration residuals and take the 90th percentile" is harder to explain to a non-quantitative stakeholder than "we refitted the model 500 times."
 
 **You need parameter uncertainty rather than prediction uncertainty.** Capital model validation often asks: how sensitive are your rate indications to sampling variation in the training data? That question requires a bootstrap, not a conformal predictor. The conformal interval is not informative about whether the estimated age-frequency relativities would be different with a different training sample.
 
@@ -161,9 +161,9 @@ Use conformal prediction in these situations:
 
 **You need a coverage guarantee rather than a calibrated estimate.** The bootstrap interval is approximately correct under large-sample theory and correct model specification. The conformal interval is exactly correct (up to the finite-sample deviation described above) regardless of whether the model is misspecified. For Solvency II per-risk SCR bounds, distribution-free is better than asymptotically correct.
 
-**You want per-decile coverage diagnostics.** `CoverageDiagnostics` in insurance-conformal tells you whether the 90% guarantee holds across the risk distribution, not just in aggregate. There is no equivalent in a standard bootstrap workflow — you would need to write it yourself and the bootstrap interval has no theoretical connection to per-decile coverage.
+**You want per-decile coverage diagnostics.** `CoverageDiagnostics` in insurance-conformal tells you whether the 90% guarantee holds across the risk distribution, not just in aggregate. There is no equivalent in a standard bootstrap workflow  -  you would need to write it yourself and the bootstrap interval has no theoretical connection to per-decile coverage.
 
-**You have a frequency-severity model.** The correct conformal protocol for two-stage models — using predicted rather than observed claim counts in the calibration scoring — is implemented in `insurance_conformal.claims.FrequencySeverityConformal`. Bootstrapping a two-stage frequency-severity model requires careful handling of the dependent bootstrap to avoid breaking the conditional independence structure.
+**You have a frequency-severity model.** The correct conformal protocol for two-stage models  -  using predicted rather than observed claim counts in the calibration scoring  -  is implemented in `insurance_conformal.claims.FrequencySeverityConformal`. Bootstrapping a two-stage frequency-severity model requires careful handling of the dependent bootstrap to avoid breaking the conditional independence structure.
 
 **You need SCR bounds.** The SCR reporting in insurance-conformal is designed for this:
 
@@ -178,7 +178,7 @@ scr_bounds = scr.solvency_capital_requirement(X_test, alpha=0.005)
 print(scr.to_markdown())
 ```
 
-The SCR upper bound at the 99.5th percentile has a finite-sample coverage guarantee. A bootstrap SCR interval does not — it relies on asymptotic normality of the GLM estimator, which may not hold in the extreme tail.
+The SCR upper bound at the 99.5th percentile has a finite-sample coverage guarantee. A bootstrap SCR interval does not  -  it relies on asymptotic normality of the GLM estimator, which may not hold in the extreme tail.
 
 ---
 
@@ -188,7 +188,7 @@ Both methods struggle with highly heteroskedastic data, but they fail differentl
 
 The bootstrap applies a single quantile across the whole test set. If the high-risk tail of your book has genuinely higher residual variance than the model's Tweedie variance function implies, the single quantile will be too narrow for high-risk policies and too wide for low-risk ones.
 
-Standard conformal prediction with `pearson_weighted` scores adapts to the model-implied heteroskedasticity (yhat^(p/2)) but not to residual variance that the model itself has not captured. For this case, `LocallyWeightedConformal` fits a secondary model on the absolute Pearson residuals to estimate rho_hat(x) — the actual residual spread as a function of features — and produces intervals that are ~24% narrower than standard conformal whilst maintaining coverage:
+Standard conformal prediction with `pearson_weighted` scores adapts to the model-implied heteroskedasticity (yhat^(p/2)) but not to residual variance that the model itself has not captured. For this case, `LocallyWeightedConformal` fits a secondary model on the absolute Pearson residuals to estimate rho_hat(x)  -  the actual residual spread as a function of features  -  and produces intervals that are ~24% narrower than standard conformal whilst maintaining coverage:
 
 ```python
 from insurance_conformal import LocallyWeightedConformal
@@ -222,7 +222,7 @@ They are not substitutes for each other. They answer different questions.
 ---
 
 **Code:**
-- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — install with `uv add insurance-conformal`
+- [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal)  -  install with `uv add insurance-conformal`
 
 **Related:**
 - [MAPIE vs insurance-conformal: Why Generic Conformal Prediction Breaks on Insurance Data](/2026/03/20/mapie-vs-insurance-conformal-prediction-intervals/)

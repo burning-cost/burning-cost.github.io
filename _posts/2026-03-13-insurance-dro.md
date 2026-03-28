@@ -8,7 +8,7 @@ description: "Distributionally robust rate optimisation: worst-case demand withi
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-dro` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise` — distributionally robust rate optimisation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
+**Package update:** `insurance-dro` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise`  -  distributionally robust rate optimisation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
 </div>
 
 

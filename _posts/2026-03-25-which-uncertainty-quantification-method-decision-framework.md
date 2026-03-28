@@ -9,7 +9,7 @@ description: "A structured decision framework for choosing between conformal pre
 
 There is no shortage of uncertainty quantification methods in the actuarial toolkit. There is a shortage of clear guidance on which one to use when. Most posts on this topic either describe a single method in isolation or give you a list of options without telling you how to choose. This is the post we wish existed when we started building pricing models that had to satisfy both a CFO wanting capital numbers and a regulatory team wanting auditable intervals.
 
-The framework below has five decision nodes. Work through them in order. The recommendations at each leaf are opinionated — we explain why, and we give you the code.
+The framework below has five decision nodes. Work through them in order. The recommendations at each leaf are opinionated  -  we explain why, and we give you the code.
 
 ---
 
@@ -64,11 +64,11 @@ The answer to this determines the entire downstream choice more than any other f
 
 ---
 
-## Recommendation A: Conformal prediction — [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal)
+## Recommendation A: Conformal prediction  -  [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal)
 
-**When to use it.** Your model is a fitted GBM (CatBoost, LightGBM) or GLM, you need a prediction interval with a statistical coverage guarantee, and you do not want to make parametric assumptions about the error distribution. This is the right tool for Solvency II per-risk upper bounds, for pricing intervals that need to survive a PRA review, and for any situation where "I calibrated this on 5,000 policies so the interval is actually 91.3% rather than exactly 90%" is an acceptable answer. The finite-sample guarantee — P(y ∈ [lower, upper]) ≥ 1 − alpha — is distribution-free and holds for any calibration set size above around 200 observations.
+**When to use it.** Your model is a fitted GBM (CatBoost, LightGBM) or GLM, you need a prediction interval with a statistical coverage guarantee, and you do not want to make parametric assumptions about the error distribution. This is the right tool for Solvency II per-risk upper bounds, for pricing intervals that need to survive a PRA review, and for any situation where "I calibrated this on 5,000 policies so the interval is actually 91.3% rather than exactly 90%" is an acceptable answer. The finite-sample guarantee  -  P(y ∈ [lower, upper]) ≥ 1 − alpha  -  is distribution-free and holds for any calibration set size above around 200 observations.
 
-The non-conformity score matters. For Tweedie or Poisson models, use `pearson_weighted` (the default). Raw residual scores give wider intervals in the tails and narrower intervals at low predicted values, which is exactly backwards for insurance. Check `coverage_by_decile()` after calibrating — if any decile deviates more than 5pp from the target, switch to `deviance`.
+The non-conformity score matters. For Tweedie or Poisson models, use `pearson_weighted` (the default). Raw residual scores give wider intervals in the tails and narrower intervals at low predicted values, which is exactly backwards for insurance. Check `coverage_by_decile()` after calibrating  -  if any decile deviates more than 5pp from the target, switch to `deviance`.
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
@@ -89,7 +89,7 @@ cp.calibrate(X_cal, y_cal)
 intervals = cp.predict_interval(X_test, alpha=0.10)
 # pl.DataFrame with columns: lower, point, upper
 
-# Coverage diagnostic — check this before submitting to a regulator
+# Coverage diagnostic  -  check this before submitting to a regulator
 cp.summary(X_test, y_test, alpha=0.10)
 
 # Solvency II per-risk SCR upper bounds at 99.5th percentile
@@ -97,13 +97,13 @@ scr = SCRReport(predictor=cp)
 scr_table = scr.solvency_capital_requirement(X_test, alpha=0.005)
 ```
 
-One honest caveat: conformal prediction gives you *marginal* coverage, not *conditional*. It guarantees that 90% of all risks are covered on average. It does not guarantee that 90% of high-value risks specifically are covered. Use `coverage_by_decile()` to check this. If you need conditional coverage — equal coverage at every risk level — the literature has no fully satisfying answer yet, and neither do we.
+One honest caveat: conformal prediction gives you *marginal* coverage, not *conditional*. It guarantees that 90% of all risks are covered on average. It does not guarantee that 90% of high-value risks specifically are covered. Use `coverage_by_decile()` to check this. If you need conditional coverage  -  equal coverage at every risk level  -  the literature has no fully satisfying answer yet, and neither do we.
 
 ---
 
-## Recommendation B: Distributional GBM — [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional)
+## Recommendation B: Distributional GBM  -  [`insurance-distributional`](https://github.com/burning-cost/insurance-distributional)
 
-**When to use it.** You need the *full conditional distribution* of losses, not just an interval. The motivating cases: pricing an excess-of-loss layer (you need E[max(Y − d, 0) ∧ l | x] computed from the conditional distribution, not from a point prediction), IFRS 17 risk adjustment (you need CoV per risk to calculate the risk adjustment at policy level), or capital modelling where a scalar phi assumption has been challenged. Also use this when you have evidence of heteroscedastic dispersion — risks with the same expected loss but materially different volatility — which is the norm in UK motor rather than the exception.
+**When to use it.** You need the *full conditional distribution* of losses, not just an interval. The motivating cases: pricing an excess-of-loss layer (you need E[max(Y − d, 0) ∧ l | x] computed from the conditional distribution, not from a point prediction), IFRS 17 risk adjustment (you need CoV per risk to calculate the risk adjustment at policy level), or capital modelling where a scalar phi assumption has been challenged. Also use this when you have evidence of heteroscedastic dispersion  -  risks with the same expected loss but materially different volatility  -  which is the norm in UK motor rather than the exception.
 
 The `TweedieGBM` model fits a joint mean and dispersion model using the Smyth-Jørgensen double GLM with CatBoost. The key output beyond the mean is `pred.volatility_score()`, which is the per-risk coefficient of variation. That number is what turns a distributional model into something actionable for pricing.
 
@@ -118,13 +118,13 @@ pred = model.predict(X_test, exposure=exposure_test)
 
 # Point prediction and distributional outputs
 mu      = pred.mean          # E[Y | X]
-phi     = pred.variance      # Var[Y | X] — per-risk, not portfolio scalar
+phi     = pred.variance      # Var[Y | X]  -  per-risk, not portfolio scalar
 cov_per_risk = pred.volatility_score()  # CoV = sqrt(phi) * mu^(p/2 - 1)
 
 # Proper scoring: CRPS is the most informative for distributional models
 crps_score = model.crps(X_test, y_test)
 
-# PIT histogram — should be uniform if distributional calibration is good
+# PIT histogram  -  should be uniform if distributional calibration is good
 pit = pit_values(y_test, pred)
 ```
 
@@ -132,13 +132,13 @@ If you are pricing XL layers or per-risk excess structures, use `FlexCodeDensity
 
 ---
 
-## Recommendation C: Bühlmann-Straub credibility — [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)
+## Recommendation C: Bühlmann-Straub credibility  -  [`insurance-credibility`](https://github.com/burning-cost/insurance-credibility)
 
-**When to use it.** You have a book with meaningful grouping structure — schemes, territories, affinity partners, NCD classes — and not enough exposure in each group to rely solely on group-level experience. The Bühlmann-Straub model is the actuarial standard answer to this question and has been since 1970. It is not glamorous, it is not machine learning, and it is exactly right for the job. It produces credibility factors Z_i ∈ [0, 1] for each group that blend the group's own weighted-average loss rate with the portfolio collective mean. The structural parameters v (within-group variance) and a (between-group variance) are estimated from the data, not assumed.
+**When to use it.** You have a book with meaningful grouping structure  -  schemes, territories, affinity partners, NCD classes  -  and not enough exposure in each group to rely solely on group-level experience. The Bühlmann-Straub model is the actuarial standard answer to this question and has been since 1970. It is not glamorous, it is not machine learning, and it is exactly right for the job. It produces credibility factors Z_i ∈ [0, 1] for each group that blend the group's own weighted-average loss rate with the portfolio collective mean. The structural parameters v (within-group variance) and a (between-group variance) are estimated from the data, not assumed.
 
-The critical diagnostic is Bühlmann's k = v/a. A large k (say k > 100) means the groups are genuinely homogeneous and the data is noisy — you should trust the collective. A small k (say k < 5) means the groups differ substantially — even thin experience should move the premium. Both outcomes are informative.
+The critical diagnostic is Bühlmann's k = v/a. A large k (say k > 100) means the groups are genuinely homogeneous and the data is noisy  -  you should trust the collective. A small k (say k < 5) means the groups differ substantially  -  even thin experience should move the premium. Both outcomes are informative.
 
-For experience rating at individual policy level — adjusting a priori premiums based on a policyholder's own claims history — use `StaticCredibilityModel` from `insurance_credibility.experience` rather than `BuhlmannStraub`.
+For experience rating at individual policy level  -  adjusting a priori premiums based on a policyholder's own claims history  -  use `StaticCredibilityModel` from `insurance_credibility.experience` rather than `BuhlmannStraub`.
 
 ```python
 import polars as pl
@@ -164,11 +164,11 @@ bs.summary()
 # Structural parameters: mu_hat, v_hat (EPV), a_hat (VHM), k = v/a
 # Group results: z_ (credibility factors), premiums_
 
-print(bs.z_)       # credibility factors — scheme A gets ~0.72, scheme C gets ~0.95
+print(bs.z_)       # credibility factors  -  scheme A gets ~0.72, scheme C gets ~0.95
 print(bs.premiums_)  # blended credibility premiums per scheme
 ```
 
-The uncertainty in the credibility premium is quantified implicitly by Z_i itself: a low Z_i means the interval around the credibility premium is wide. For explicit confidence intervals on the structural parameters, the bootstrap is appropriate, but in practice the credibility factor tells you what you need to know — how much to trust a group's own experience.
+The uncertainty in the credibility premium is quantified implicitly by Z_i itself: a low Z_i means the interval around the credibility premium is wide. For explicit confidence intervals on the structural parameters, the bootstrap is appropriate, but in practice the credibility factor tells you what you need to know  -  how much to trust a group's own experience.
 
 ---
 
@@ -176,7 +176,7 @@ The uncertainty in the credibility premium is quantified implicitly by Z_i itsel
 
 **When to use it.** Your model is a GLM, it must be fully auditable, and the regulator or model governance committee will not accept "this is a black-box interval from a machine learning procedure." The parametric bootstrap is the conservative, explainable choice: refit the GLM on B bootstrap samples of the training data, compute B sets of predicted values, and take the empirical quantiles of those predictions as your interval. This approach cannot fail a model validation review because it is entirely transparent about its assumptions.
 
-The limitations are real. The parametric bootstrap is slow for large GLMs, it understates interval width when the model is misspecified (and it is always misspecified), and it gives you parameter uncertainty intervals rather than prediction intervals — the two are different things. For a Poisson frequency model, the bootstrap interval around mu_i reflects uncertainty in the fitted relativities, but it does not account for the process variance of realised claims around mu_i. Add the Poisson variance term explicitly if you need a genuine prediction interval rather than a parameter uncertainty interval.
+The limitations are real. The parametric bootstrap is slow for large GLMs, it understates interval width when the model is misspecified (and it is always misspecified), and it gives you parameter uncertainty intervals rather than prediction intervals  -  the two are different things. For a Poisson frequency model, the bootstrap interval around mu_i reflects uncertainty in the fitted relativities, but it does not account for the process variance of realised claims around mu_i. Add the Poisson variance term explicitly if you need a genuine prediction interval rather than a parameter uncertainty interval.
 
 ```python
 import numpy as np
@@ -224,9 +224,9 @@ Use 500 bootstrap samples as a minimum. Below that, the quantile estimates becom
 
 ---
 
-## Recommendation E: GAM with EBM uncertainty — [`insurance-gam`](https://github.com/burning-cost/insurance-gam)
+## Recommendation E: GAM with EBM uncertainty  -  [`insurance-gam`](https://github.com/burning-cost/insurance-gam)
 
-**When to use it.** You need interpretability as a hard requirement — every shape function must be inspectable, editable by a senior actuary, and explainable to a non-technical audience — and you also need uncertainty quantification on those shape functions. The `InsuranceEBM` from `insurance-gam` wraps interpretML's Explainable Boosting Machine, which is a GAM with pairwise interactions fitted by gradient boosting. Each feature's contribution is a learned shape function that can be plotted, inspected, and adjusted.
+**When to use it.** You need interpretability as a hard requirement  -  every shape function must be inspectable, editable by a senior actuary, and explainable to a non-technical audience  -  and you also need uncertainty quantification on those shape functions. The `InsuranceEBM` from `insurance-gam` wraps interpretML's Explainable Boosting Machine, which is a GAM with pairwise interactions fitted by gradient boosting. Each feature's contribution is a learned shape function that can be plotted, inspected, and adjusted.
 
 Bagging in EBM gives you uncertainty on each shape function. The `inner_bags` parameter controls the number of internal bagging models; 100 inner bags gives stable uncertainty estimates on the shape functions at moderate computational cost. The uncertainty here is on the *model* (parameter uncertainty), not on future realisations of claims.
 
@@ -266,9 +266,9 @@ The honest limitation: EBM is not competitive with CatBoost on predictive perfor
 
 ## What we do not recommend
 
-**Quantile regression alone.** Quantile regression gives you the alpha-th quantile of Y | X, not a calibrated prediction interval. Two quantile models at 5% and 95% do not jointly guarantee 90% coverage — they are each individually calibrated at their respective quantiles, but the joint coverage depends on their correlation structure. Use conformal prediction if you want a coverage guarantee.
+**Quantile regression alone.** Quantile regression gives you the alpha-th quantile of Y | X, not a calibrated prediction interval. Two quantile models at 5% and 95% do not jointly guarantee 90% coverage  -  they are each individually calibrated at their respective quantiles, but the joint coverage depends on their correlation structure. Use conformal prediction if you want a coverage guarantee.
 
-**Bayesian GLMs for large portfolios.** MCMC-based Bayesian GLMs are computationally prohibitive at personal lines scale (millions of policies, dozens of rating factors). Variational Bayes approximations are faster but introduce approximation error that is hard to quantify. The bootstrap gives you equivalent parameter uncertainty estimates at a fraction of the computational cost, with full transparency. Use Bayesian methods when you have a genuine strong prior — structured expert knowledge that dominates the data — which is rare in personal lines.
+**Bayesian GLMs for large portfolios.** MCMC-based Bayesian GLMs are computationally prohibitive at personal lines scale (millions of policies, dozens of rating factors). Variational Bayes approximations are faster but introduce approximation error that is hard to quantify. The bootstrap gives you equivalent parameter uncertainty estimates at a fraction of the computational cost, with full transparency. Use Bayesian methods when you have a genuine strong prior  -  structured expert knowledge that dominates the data  -  which is rare in personal lines.
 
 **Neural network uncertainty (MC dropout, deep ensembles).** These methods are powerful and well-studied in the machine learning literature. They are not ready for regulatory insurance pricing in the UK. The uncertainty estimates are sensitive to hyperparameter choices, they are not auditable in the way a regulator expects, and there is no equivalent of conformal prediction's finite-sample guarantee. Watch this space; it will change.
 
@@ -277,16 +277,16 @@ The honest limitation: EBM is not competitive with CatBoost on predictive perfor
 ## Quick-reference installation
 
 ```bash
-# Conformal prediction — any model type, distribution-free intervals
+# Conformal prediction  -  any model type, distribution-free intervals
 uv add insurance-conformal
 
-# Distributional GBM — full conditional distribution, per-risk dispersion
+# Distributional GBM  -  full conditional distribution, per-risk dispersion
 uv add insurance-distributional
 
-# Credibility — group-level blending, experience rating
+# Credibility  -  group-level blending, experience rating
 uv add insurance-credibility
 
-# GAM / EBM — interpretable shape functions with uncertainty
+# GAM / EBM  -  interpretable shape functions with uncertainty
 uv add "insurance-gam[ebm]"
 ```
 

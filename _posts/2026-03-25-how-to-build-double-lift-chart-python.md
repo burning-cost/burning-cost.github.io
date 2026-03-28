@@ -30,7 +30,7 @@ No additional library required for the basic version. We will show the `insuranc
 
 ## Step 1: Synthetic data
 
-We need actual claims, two sets of predictions, and exposure. We will construct a scenario where the GLM systematically underprices young drivers in high-performance vehicles — a common pattern in UK motor — and the GBM has picked it up.
+We need actual claims, two sets of predictions, and exposure. We will construct a scenario where the GLM systematically underprices young drivers in high-performance vehicles  -  a common pattern in UK motor  -  and the GBM has picked it up.
 
 ```python
 rng = np.random.default_rng(42)
@@ -64,7 +64,7 @@ gbm_pred = base_freq * (1 + 0.36 * (young & high_group))
 gbm_pred *= rng.uniform(0.97, 1.03, n)
 ```
 
-The GLM knows about young drivers (1.18×) and high vehicle groups (1.12×). What it does not know is that the combination is worse than their product. The young/high-group cell true frequency is 1.45× base, but the GLM predicts 1.18 × 1.12 = 1.32× — a consistent 10% underpricing in that cell. The GBM has captured about 80% of this interaction.
+The GLM knows about young drivers (1.18×) and high vehicle groups (1.12×). What it does not know is that the combination is worse than their product. The young/high-group cell true frequency is 1.45× base, but the GLM predicts 1.18 × 1.12 = 1.32×  -  a consistent 10% underpricing in that cell. The GBM has captured about 80% of this interaction.
 
 ---
 
@@ -183,7 +183,7 @@ def plot_double_lift(
     ax.set_title("A/E by Decile")
     ax.grid(axis="y", alpha=0.3)
 
-    # Right panel: exposure share — check for balanced deciles
+    # Right panel: exposure share  -  check for balanced deciles
     ax2 = axes[1]
     ax2.bar(deciles, chart["exposure_share"].to_numpy() * 100,
             color="#4472C4", alpha=0.75, edgecolor="white")
@@ -210,25 +210,25 @@ plot_double_lift(
 
 The left panel is the main diagnostic. You want to see: the challenger's A/E line flat near 1.0 across all deciles. If the champion's line slopes (high in top deciles, low in bottom deciles) while the challenger's is flat, the challenger is correctly identifying where the champion is wrong.
 
-The right panel is a quality check. Each decile should contain roughly 10% of earned exposure. If one decile has 25% and another has 3%, the exposure-weighted binning has been defeated by a concentration of policies at a particular prediction ratio — usually because of a single dominant factor level. In that case, consider using finer bins (20 vingtiles) or segmenting separately.
+The right panel is a quality check. Each decile should contain roughly 10% of earned exposure. If one decile has 25% and another has 3%, the exposure-weighted binning has been defeated by a concentration of policies at a particular prediction ratio  -  usually because of a single dominant factor level. In that case, consider using finer bins (20 vingtiles) or segmenting separately.
 
 ---
 
 ## Reading the output
 
-**A sloped GLM line with a flat GBM line** — the GBM has genuinely improved discrimination. Take the challenger forward to a full validation exercise. The decile pattern tells you *which risks* the improvement is concentrated in: if the slope is in deciles 8-10, the GBM is better at the expensive tail. If the slope is in deciles 1-3, it is better at identifying the cheap risks.
+**A sloped GLM line with a flat GBM line**  -  the GBM has genuinely improved discrimination. Take the challenger forward to a full validation exercise. The decile pattern tells you *which risks* the improvement is concentrated in: if the slope is in deciles 8-10, the GBM is better at the expensive tail. If the slope is in deciles 1-3, it is better at identifying the cheap risks.
 
-**Both lines flat near 1.0** — the models agree on risk ordering. The GBM may still have a higher Gini (it ranks better), but it is not wrong in any systematic way that the GLM is right about. The champion-vs-challenger decision comes down to which Gini improvement is worth the governance cost of a model change.
+**Both lines flat near 1.0**  -  the models agree on risk ordering. The GBM may still have a higher Gini (it ranks better), but it is not wrong in any systematic way that the GLM is right about. The champion-vs-challenger decision comes down to which Gini improvement is worth the governance cost of a model change.
 
-**Both lines sloped** — neither model is well-calibrated for this comparison. This usually means the models are being compared on out-of-time data where the claims environment has shifted since training. Check aggregate A/E before interpreting the double-lift. If aggregate A/E > 1.1 for both models, the double-lift is telling you about miscalibration, not about model discrimination.
+**Both lines sloped**  -  neither model is well-calibrated for this comparison. This usually means the models are being compared on out-of-time data where the claims environment has shifted since training. Check aggregate A/E before interpreting the double-lift. If aggregate A/E > 1.1 for both models, the double-lift is telling you about miscalibration, not about model discrimination.
 
-**The GBM line is worse in some deciles** — this happens. It means the GBM is better overall (higher Gini) but miscalibrated in specific risk segments. This is actually important to know before deploying: a model can win on a Gini test while systematically mispricing a specific cell. The double-lift surfaces this before it reaches the rating algorithm.
+**The GBM line is worse in some deciles**  -  this happens. It means the GBM is better overall (higher Gini) but miscalibrated in specific risk segments. This is actually important to know before deploying: a model can win on a Gini test while systematically mispricing a specific cell. The double-lift surfaces this before it reaches the rating algorithm.
 
 ---
 
 ## The `insurance-distill` version
 
-If your challenger is a GLM distilled from a GBM — a pseudo-model produced by fitting a GLM on GBM predictions and then applying it to production data — the `insurance-distill` library has `double_lift_chart()` built in.
+If your challenger is a GLM distilled from a GBM  -  a pseudo-model produced by fitting a GLM on GBM predictions and then applying it to production data  -  the `insurance-distill` library has `double_lift_chart()` built in.
 
 ```python
 from insurance_distill import double_lift_chart
@@ -247,9 +247,9 @@ print(chart_dl)
 # Columns: decile, avg_gbm, avg_glm, ratio_gbm_to_glm, exposure_share
 ```
 
-The `insurance-distill` variant uses the same exposure-weighted decile construction but returns average predicted rates per decile (not A/E — there is no actual claims column in the distillation workflow). Use it when you are validating a distilled GLM against its parent GBM, not when you have actual claims and want to know which model wins.
+The `insurance-distill` variant uses the same exposure-weighted decile construction but returns average predicted rates per decile (not A/E  -  there is no actual claims column in the distillation workflow). Use it when you are validating a distilled GLM against its parent GBM, not when you have actual claims and want to know which model wins.
 
-For champion/challenger validation against claims experience — the more common use case — the manual implementation above is what you want.
+For champion/challenger validation against claims experience  -  the more common use case  -  the manual implementation above is what you want.
 
 ---
 
@@ -259,7 +259,7 @@ A PRA SS1/23 model validation pack typically requires the double-lift chart as e
 
 - How deciles were constructed (exposure-weighted, sorted by ratio of challenger to champion)
 - The A/E for each model in each decile, with confidence intervals if the decile size permits it
-- Whether any decile shows the challenger performing materially worse than the champion — and if so, why, and whether it affects the deployment decision
+- Whether any decile shows the challenger performing materially worse than the champion  -  and if so, why, and whether it affects the deployment decision
 - The holdout period and whether it is representative of the deployment period (out-of-time vs out-of-sample)
 
 The double-lift chart alone does not justify a model change. It is one piece of evidence alongside the Gini comparison, the reconstruction check, the factor table review, and the stress test. But it is the piece that most directly answers the pricing committee's question: where does the new model say something different, and is it right?
@@ -273,8 +273,8 @@ uv add insurance-monitoring
 uv add insurance-distill
 ```
 
-- [Insurance Model Monitoring: Gini, A/E, and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/) — the full monitoring context around the double-lift chart
-- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/) — once the challenger wins, extract its factor table
-- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/) — why the champion/challenger framing is correct and the GLM-vs-GBM framing is not
-- [`insurance-distill` source](https://github.com/burning-cost/insurance-distill) — for distilled pseudo-model workflows
-- [`insurance-monitoring` source](https://github.com/burning-cost/insurance-monitoring) — for the full production monitoring suite
+- [Insurance Model Monitoring: Gini, A/E, and Double-Lift](/2026/03/22/insurance-model-monitoring-gini-ae-double-lift-python/)  -  the full monitoring context around the double-lift chart
+- [How to Extract GLM-Style Rating Factors from a CatBoost Model](/2026/03/02/how-to-extract-rating-factors-from-catboost/)  -  once the challenger wins, extract its factor table
+- [Your GBM and GLM Are Not Competitors](/2026/02/28/your-gbm-and-glm-are-not-competitors/)  -  why the champion/challenger framing is correct and the GLM-vs-GBM framing is not
+- [`insurance-distill` source](https://github.com/burning-cost/insurance-distill)  -  for distilled pseudo-model workflows
+- [`insurance-monitoring` source](https://github.com/burning-cost/insurance-monitoring)  -  for the full production monitoring suite

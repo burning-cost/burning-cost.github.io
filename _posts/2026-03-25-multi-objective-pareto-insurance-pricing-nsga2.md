@@ -17,11 +17,11 @@ This post shows how to run that workflow in practice using [`insurance-fairness`
 
 ## Why multi-objective, and why NSGA-II specifically
 
-The standard approach — single-objective optimisation with fairness constraints — has a fundamental limitation: you need to pre-specify the constraint level before you know what it costs in accuracy. Set the demographic parity tolerance at 0.10 and you might be sacrificing 4 Gini points for a constraint you could have met at 0.15 for 1 Gini point. You cannot see this from inside the single-objective solve.
+The standard approach  -  single-objective optimisation with fairness constraints  -  has a fundamental limitation: you need to pre-specify the constraint level before you know what it costs in accuracy. Set the demographic parity tolerance at 0.10 and you might be sacrificing 4 Gini points for a constraint you could have met at 0.15 for 1 Gini point. You cannot see this from inside the single-objective solve.
 
 NSGA-II (Non-dominated Sorting Genetic Algorithm II, Deb et al. 2002) operates over a population of candidate solutions and evolves them across generations, using dominance-based selection to maintain a diverse Pareto front. A solution A dominates solution B if A is at least as good on every objective and strictly better on at least one. After 200 generations with a population of 100, the surviving solutions form the Pareto front: no dominated strategies remain.
 
-For the insurance-fairness library, NSGA-II works over an ensemble of pre-trained models. The decision variables are the mixing weights over K models — for example, 70% weight on a standard GBM and 30% on a fairness-constrained variant. This is deliberate. We are not asking NSGA-II to explore a 10,000-dimensional space of per-policy premiums (where it would fail). We are asking it to explore a K-dimensional simplex of model blends, which is a tractable problem even for K=5.
+For the insurance-fairness library, NSGA-II works over an ensemble of pre-trained models. The decision variables are the mixing weights over K models  -  for example, 70% weight on a standard GBM and 30% on a fairness-constrained variant. This is deliberate. We are not asking NSGA-II to explore a 10,000-dimensional space of per-policy premiums (where it would fail). We are asking it to explore a K-dimensional simplex of model blends, which is a tractable problem even for K=5.
 
 The `insurance-fairness` library uses the `pymoo` package for NSGA-II and requires it as an optional dependency:
 
@@ -41,7 +41,7 @@ Bellamy et al. identify four fairness criteria that matter for insurance pricing
 
 **3. Counterfactual fairness.** For each policy, flip the protected characteristic and re-predict. The objective measures the fraction of policies where |log(price_flipped / price_original)| ≥ 0.05 (a 5% threshold). Policies where the premium changes materially when gender is counterfactually swapped are "counterfactually unfair". The objective is 1 − proportion_of_fair_policies.
 
-**4. Individual fairness (Lipschitz condition).** Similar policies should receive similar prices. The library estimates the Lipschitz constant of the pricing function: the supremum of |f(x) − f(x')| / d(x, x') over sampled policy pairs. A lower Lipschitz constant means the model is smoother — pricing changes are proportionate to risk differences rather than erratic. This is computed post-hoc as a diagnostic, not as a NSGA-II objective (adding a fourth dimension to the Pareto front makes governance harder, not easier).
+**4. Individual fairness (Lipschitz condition).** Similar policies should receive similar prices. The library estimates the Lipschitz constant of the pricing function: the supremum of |f(x) − f(x')| / d(x, x') over sampled policy pairs. A lower Lipschitz constant means the model is smoother  -  pricing changes are proportionate to risk differences rather than erratic. This is computed post-hoc as a diagnostic, not as a NSGA-II objective (adding a fourth dimension to the Pareto front makes governance harder, not easier).
 
 ---
 
@@ -100,7 +100,7 @@ model_a = Pipeline([
 ])
 model_a.fit(X_train, y_train, glm__sample_weight=exp_train)
 
-# Model B: fairness-reweighted — down-weights policies that
+# Model B: fairness-reweighted  -  down-weights policies that
 # reveal the protected attribute strongly
 from insurance_fairness import DiscriminationInsensitiveReweighter
 import pandas as pd
@@ -115,7 +115,7 @@ model_b = Pipeline([
 ])
 model_b.fit(X_train, y_train, glm__sample_weight=fair_weights)
 
-# Model C: conservative — clamp extreme relativities by penalising large weights
+# Model C: conservative  -  clamp extreme relativities by penalising large weights
 model_c = Pipeline([
     ("scaler", StandardScaler()),
     ("glm", TweedieRegressor(power=1.5, alpha=0.5, max_iter=500))  # strong regularisation
@@ -155,7 +155,7 @@ result = optimiser.run(pop_size=100, n_gen=200, seed=42, verbose=False)
 print(result.summary())
 ```
 
-Running NSGA-II for 200 generations over 100 candidate weight vectors takes roughly 45 seconds on a modern laptop (the bulk of time is in prediction, not in NSGA-II itself — predictions are pre-computed at construction time and ensemble blending is cheap).
+Running NSGA-II for 200 generations over 100 candidate weight vectors takes roughly 45 seconds on a modern laptop (the bulk of time is in prediction, not in NSGA-II itself  -  predictions are pre-computed at construction time and ensemble blending is cheap).
 
 The summary output shows:
 
@@ -176,13 +176,13 @@ TOPSIS-selected solution (equal weights): index 23
   Objectives: neg_gini=-0.3817, group_unfairness=0.0614, cf_unfairness=0.0891
 ```
 
-47 non-dominated solutions on the front. The accuracy range spans Gini 0.329 to 0.412 — that is a meaningful sacrifice. At the pure accuracy extreme (Gini 0.412), group unfairness is 0.183, meaning the gender proxy drives an 18-point parity gap in exposure-weighted mean prices. At the pure fairness extreme, Gini falls to 0.329 and the parity gap drops to 0.019.
+47 non-dominated solutions on the front. The accuracy range spans Gini 0.329 to 0.412  -  that is a meaningful sacrifice. At the pure accuracy extreme (Gini 0.412), group unfairness is 0.183, meaning the gender proxy drives an 18-point parity gap in exposure-weighted mean prices. At the pure fairness extreme, Gini falls to 0.329 and the parity gap drops to 0.019.
 
 ### Step 3: Apply TOPSIS with actuarial priorities
 
 TOPSIS (Technique for Order of Preference by Similarity to Ideal Solution) selects the Pareto point closest to the ideal solution and furthest from the anti-ideal. The weights express the relative importance of each objective to the pricing team.
 
-For a standard UK motor book where the regulator is focused on Consumer Duty Outcome 4 (price and value), a reasonable starting position weights accuracy highest — it is the foundation of technical pricing — with meaningful but lower weights on the two fairness objectives:
+For a standard UK motor book where the regulator is focused on Consumer Duty Outcome 4 (price and value), a reasonable starting position weights accuracy highest  -  it is the foundation of technical pricing  -  with meaningful but lower weights on the two fairness objectives:
 
 ```python
 # Weights: [accuracy, group_fairness, counterfactual_fairness]
@@ -202,9 +202,9 @@ Model blend: {'standard': 0.489, 'fair_reweighted': 0.389, 'conservative': 0.122
 Objectives: {'neg_gini': -0.3983, 'group_unfairness': 0.0481, 'cf_unfairness': 0.0712}
 ```
 
-The selected blend is nearly 49% standard model, 39% fairness-reweighted, 12% conservative. Gini is 0.398 — we have given up 1.4 Gini points versus the pure accuracy model in exchange for cutting the group parity gap from 18.3% to 4.8% and counterfactual unfairness from 22.4% to 7.1%.
+The selected blend is nearly 49% standard model, 39% fairness-reweighted, 12% conservative. Gini is 0.398  -  we have given up 1.4 Gini points versus the pure accuracy model in exchange for cutting the group parity gap from 18.3% to 4.8% and counterfactual unfairness from 22.4% to 7.1%.
 
-If the pricing committee decides group fairness is the primary concern — perhaps following a Thematic Review finding — they can re-run with `weights=[0.30, 0.50, 0.20]`. The regulatory record shows both runs, the chosen weights, and the resulting trade-off. That is the point.
+If the pricing committee decides group fairness is the primary concern  -  perhaps following a Thematic Review finding  -  they can re-run with `weights=[0.30, 0.50, 0.20]`. The regulatory record shows both runs, the chosen weights, and the resulting trade-off. That is the point.
 
 ### Step 4: Individual fairness diagnostic
 
@@ -249,7 +249,7 @@ Lipschitz constant (sampled):  2.847
 Median ratio:                  0.341
 ```
 
-The max ratio of 2.847 indicates there exist pairs of policies that appear similar in risk space but receive premiums differing by up to e^(2.847 * d) — the extremes. The P95 of 1.203 tells us that 95% of policy pairs are within a factor of e^(1.203 * d), which is acceptable for a multiplicative pricing model. We flag any value above 3.0 for manual review.
+The max ratio of 2.847 indicates there exist pairs of policies that appear similar in risk space but receive premiums differing by up to e^(2.847 * d)  -  the extremes. The P95 of 1.203 tells us that 95% of policy pairs are within a factor of e^(1.203 * d), which is acceptable for a multiplicative pricing model. We flag any value above 3.0 for manual review.
 
 ### Step 5: Portfolio-level pricing with the selected blend
 
@@ -326,7 +326,7 @@ fairness_disparity_min        1.07
 fairness_disparity_max        1.38
 ```
 
-We select from the Pareto surface using TOPSIS, weighting profit highest because the portfolio needs to cover reinsurance costs, then retention, then fairness (deprivation disparity is a secondary concern here — the primary fairness work was done at the model blend stage):
+We select from the Pareto surface using TOPSIS, weighting profit highest because the portfolio needs to cover reinsurance costs, then retention, then fairness (deprivation disparity is a secondary concern here  -  the primary fairness work was done at the model blend stage):
 
 ```python
 surface = surface.select(method="topsis", weights=(0.5, 0.3, 0.2))
@@ -393,13 +393,13 @@ Before running the NSGA-II search, you need to decide what "fairness" means in y
 
 **Demographic parity ratio** measures exposure-weighted mean price differences between groups. A ratio of 1.0 means groups pay the same on average. This is the easiest to defend in a board presentation; it is not the most defensible under the Equality Act.
 
-**Calibration by group (sufficiency)** measures actual-to-expected ratios within pricing deciles, separately by group. A model equally calibrated for all groups does not systematically over-charge any group — price differences reflect genuine risk differences. This is the most defensible criterion under Equality Act 2010 Section 19: indirect discrimination requires that a neutral criterion (your pricing model) produces a disproportionate outcome not justified by a legitimate aim applied proportionately. Equal calibration is your proportionality argument.
+**Calibration by group (sufficiency)** measures actual-to-expected ratios within pricing deciles, separately by group. A model equally calibrated for all groups does not systematically over-charge any group  -  price differences reflect genuine risk differences. This is the most defensible criterion under Equality Act 2010 Section 19: indirect discrimination requires that a neutral criterion (your pricing model) produces a disproportionate outcome not justified by a legitimate aim applied proportionately. Equal calibration is your proportionality argument.
 
-**Disparate impact ratio** (mean price for the more expensive group divided by the less expensive group) is a useful headline number but should not be read against the US EEOC 4/5ths rule in a UK context — apply it directionally, not mechanically.
+**Disparate impact ratio** (mean price for the more expensive group divided by the less expensive group) is a useful headline number but should not be read against the US EEOC 4/5ths rule in a UK context  -  apply it directionally, not mechanically.
 
-**Theil index decomposition** separates within-group inequality (risk heterogeneity — acceptable) from between-group inequality (systematic group loading — the thing you need to explain). When T_between / T_total is high, pricing inequality is driven by group membership rather than individual risk. It belongs in the FCA evidence pack alongside the Pareto front.
+**Theil index decomposition** separates within-group inequality (risk heterogeneity  -  acceptable) from between-group inequality (systematic group loading  -  the thing you need to explain). When T_between / T_total is high, pricing inequality is driven by group membership rather than individual risk. It belongs in the FCA evidence pack alongside the Pareto front.
 
-For Consumer Duty purposes, run calibration by group as the primary metric — it survives scrutiny under UK law — and use demographic parity ratio as the secondary monitor.
+For Consumer Duty purposes, run calibration by group as the primary metric  -  it survives scrutiny under UK law  -  and use demographic parity ratio as the secondary monitor.
 
 ---
 
@@ -440,7 +440,7 @@ On a representative UK motor book, the three canonical operating points from a l
 | Balanced (LR 67%) | £28,940 | 1.043 | 9% profit cost, 74% of disparity eliminated |
 | Min-disparity (LR 74%) | £22,180 | 1.011 | 30% profit cost, near-parity |
 
-The governance decision — which of those three to choose — belongs with the pricing committee. The actuary's job is to put the numbers on the table.
+The governance decision  -  which of those three to choose  -  belongs with the pricing committee. The actuary's job is to put the numbers on the table.
 
 ---
 
@@ -448,21 +448,21 @@ The governance decision — which of those three to choose — belongs with the 
 
 The FCA's current posture makes this urgent rather than optional.
 
-Consumer Duty Outcome 4 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. TR24/2 (August 2024) found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
+Consumer Duty Outcome 4 (Price and Value) requires firms to demonstrate that products provide fair value  -  not just that premiums were set without using protected characteristics at quoting time. TR24/2 (August 2024) found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
 
 `insurance-fairness` v0.6.0 ships `DoubleFairnessAudit`, which computes the Pareto front across action fairness (pricing equality at quoting time) and outcome fairness (claims ratio equality post-sale) simultaneously. This directly addresses TR24/2's finding that firms were auditing at quoting time and missing the post-sale obligation. The audit JSON from `DoubleFairnessAudit` is structured for inclusion in the FCA evidence pack alongside the NSGA-II and optimise outputs above.
 
-A firm that can show the Pareto surface — the set of non-dominated trade-offs considered before choosing an operating point — and document why they chose that point is in a materially better position than a firm that can only show a single demographic parity ratio.
+A firm that can show the Pareto surface  -  the set of non-dominated trade-offs considered before choosing an operating point  -  and document why they chose that point is in a materially better position than a firm that can only show a single demographic parity ratio.
 
 ---
 
 ## What this is not
 
-The NSGA-II approach works over model blending weights, not per-policy decisions. It will not find every point on the true Pareto front — it finds good approximations. For the insurance-optimise side, the `ParetoFrontier` uses SLSQP with analytical gradients on price multipliers, which is exact at each grid point but covers a pre-specified grid rather than a continuous surface.
+The NSGA-II approach works over model blending weights, not per-policy decisions. It will not find every point on the true Pareto front  -  it finds good approximations. For the insurance-optimise side, the `ParetoFrontier` uses SLSQP with analytical gradients on price multipliers, which is exact at each grid point but covers a pre-specified grid rather than a continuous surface.
 
 Neither approach eliminates the need for governance judgment. The Pareto front shows you the feasible trade-offs; it does not tell you which trade-off to make. That is a decision for pricing governance, and the weights passed to TOPSIS are where that judgment lives. Get the weights wrong and you select a defensible but wrong operating point. The workflow makes the judgment explicit and auditable, which is the goal.
 
-arXiv:2512.24747 also discusses individual fairness more carefully than we do here — specifically, they propose weighting the Lipschitz pairs by a meaningful semantic distance rather than the Euclidean approximation we use above. For a production implementation on UK motor, the distance metric should account for tariff rating factor granularity: two policies that differ only in postcode district but are otherwise identical should receive prices within the band implied by that postcode's risk differential, not an arbitrary Lipschitz bound.
+arXiv:2512.24747 also discusses individual fairness more carefully than we do here  -  specifically, they propose weighting the Lipschitz pairs by a meaningful semantic distance rather than the Euclidean approximation we use above. For a production implementation on UK motor, the distance metric should account for tariff rating factor granularity: two policies that differ only in postcode district but are otherwise identical should receive prices within the band implied by that postcode's risk differential, not an arbitrary Lipschitz bound.
 
 ---
 
@@ -476,9 +476,9 @@ The paper (Bellamy et al., arXiv:2512.24747) is worth reading in full for the th
 
 ---
 
-- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/) — the full `PortfolioOptimiser` benchmark and 3-objective `ParetoFrontier` results
-- [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — postcode as ethnicity proxy: CatBoost proxy R² = 0.62, detection rate 0/50 vs 50/50
-- [What Can I Change to Lower My Premium?](/2026/03/25/fca-consumer-duty-premium-explanation-algorithmic-recourse/) — Consumer Duty recourse obligation: `insurance-recourse` for constrained counterfactual search
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)  -  the full `PortfolioOptimiser` benchmark and 3-objective `ParetoFrontier` results
+- [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/)  -  postcode as ethnicity proxy: CatBoost proxy R² = 0.62, detection rate 0/50 vs 50/50
+- [What Can I Change to Lower My Premium?](/2026/03/25/fca-consumer-duty-premium-explanation-algorithmic-recourse/)  -  Consumer Duty recourse obligation: `insurance-recourse` for constrained counterfactual search
 
 ```bash
 uv add insurance-optimise

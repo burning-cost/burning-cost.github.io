@@ -131,7 +131,7 @@ A random 80/20 split mixes accident years in training and validation. A 2022 pol
 ```python
 from insurance_cv import walk_forward_split
 
-# Generate walk-forward temporal splits — expanding window, 12-month IBNR buffer
+# Generate walk-forward temporal splits  -  expanding window, 12-month IBNR buffer
 # Note: walk_forward_split requires a date column, not an integer year column.
 # Convert accident_year to a date first (use Jan 1 of each year).
 df_pd = df.with_columns(

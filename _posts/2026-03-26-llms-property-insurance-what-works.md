@@ -7,7 +7,7 @@ tags: [llm, gpt-4, nlp, property-risk, underwriting, claims, survey-processing, 
 description: "LLMs can extract structured data from surveys, flag non-standard construction in loss adjuster notes, and rate categorical variables at scale. They cannot reliably assess claim liability. This is what the evidence actually shows."
 ---
 
-Large language models are not primarily a pricing tool for property insurance. They are an operational tool. The pricing discussion — can we use LLMs to score property risk from images — belongs in a different category to what LLMs are genuinely good at in the insurance workflow: reading documents that humans currently read, extracting structured fields from unstructured text, and processing categorical data at a scale that human experts cannot match.
+Large language models are not primarily a pricing tool for property insurance. They are an operational tool. The pricing discussion  -  can we use LLMs to score property risk from images  -  belongs in a different category to what LLMs are genuinely good at in the insurance workflow: reading documents that humans currently read, extracting structured fields from unstructured text, and processing categorical data at a scale that human experts cannot match.
 
 We think the operational applications are more immediately deployable than the imagery applications and are underinvested by UK insurers. This post is about those applications, where the evidence is solid, where it is weak, and why the claims use case demands more caution than the underwriting use case.
 
@@ -19,9 +19,9 @@ This is the third post in our series on computer vision and LLMs for property in
 
 The most rigorous published evidence for LLM use in insurance pricing comes from the Actuaries Institute of Australia, in work published in 2024–2025 on LLM feature engineering for insurance pricing.
 
-The core result: LLMs can assign risk-relevant ratings to large categorical variable lists at a fraction of the cost and time of human expert review. A motor insurer might have 3,000 distinct vehicle model descriptions in their portfolio — far too many for an actuary to assign relativities to individually, so most models collapse rare levels or use reference tables that go stale. An LLM can process all 3,000 levels in seconds, producing structured ratings along specified dimensions: vehicle year, performance characteristics, size category, repair cost tier. The authors distinguish "factual" ratings (engine size is a verifiable fact) from "subjective" ratings (is this model likely to attract high-risk drivers) and flag that the subjective ratings encode the LLM's training data biases.
+The core result: LLMs can assign risk-relevant ratings to large categorical variable lists at a fraction of the cost and time of human expert review. A motor insurer might have 3,000 distinct vehicle model descriptions in their portfolio  -  far too many for an actuary to assign relativities to individually, so most models collapse rare levels or use reference tables that go stale. An LLM can process all 3,000 levels in seconds, producing structured ratings along specified dimensions: vehicle year, performance characteristics, size category, repair cost tier. The authors distinguish "factual" ratings (engine size is a verifiable fact) from "subjective" ratings (is this model likely to attract high-risk drivers) and flag that the subjective ratings encode the LLM's training data biases.
 
-The direct property insurance extension: **occupation and property use classification**. UK home insurance applications contain free-text fields — "describe your occupation", "is the property used for any business purpose", "any unusual features". These are currently processed by rules engines or junior underwriters. An LLM can classify these consistently and at scale: flagging business use that increases liability exposure, identifying holiday let or AirBnB declarations, catching descriptions that suggest non-standard construction not elsewhere declared. This is not a research project. It is a configuration task on a deployed LLM API.
+The direct property insurance extension: **occupation and property use classification**. UK home insurance applications contain free-text fields  -  "describe your occupation", "is the property used for any business purpose", "any unusual features". These are currently processed by rules engines or junior underwriters. An LLM can classify these consistently and at scale: flagging business use that increases liability exposure, identifying holiday let or AirBnB declarations, catching descriptions that suggest non-standard construction not elsewhere declared. This is not a research project. It is a configuration task on a deployed LLM API.
 
 ---
 
@@ -37,15 +37,15 @@ LLMs can extract structured fields from these documents reliably for a defined s
 
 For loss adjuster reports post-claim, the extraction task is similar but the stakes are higher. We cover that separately below.
 
-**EPC ROOF_DESCRIPTION extraction** is a specific application we would prioritise for UK home insurers. The 30 million EPC records available from MHCLG contain a ROOF_DESCRIPTION free-text field that describes insulation type and condition. These range from "flat, no insulation (assumed)" to "pitched, 300mm loft insulation" to "thatched". A simple classifier — LLM-based or even a regex — can convert these into structured risk flags: thatched construction (specialist underwriting required), flat roof present (higher maintenance cost exposure), no insulation (property age indicator). This is immediately actionable with a free public dataset.
+**EPC ROOF_DESCRIPTION extraction** is a specific application we would prioritise for UK home insurers. The 30 million EPC records available from MHCLG contain a ROOF_DESCRIPTION free-text field that describes insulation type and condition. These range from "flat, no insulation (assumed)" to "pitched, 300mm loft insulation" to "thatched". A simple classifier  -  LLM-based or even a regex  -  can convert these into structured risk flags: thatched construction (specialist underwriting required), flat roof present (higher maintenance cost exposure), no insulation (property age indicator). This is immediately actionable with a free public dataset.
 
 ---
 
 ## Structuring historical claims narratives
 
-UK home insurance portfolios typically hold years of claims handler notes, loss adjuster summaries, and legal correspondence — all unstructured text. This data is rarely used in pricing models because extracting features from it at scale has been prohibitively expensive.
+UK home insurance portfolios typically hold years of claims handler notes, loss adjuster summaries, and legal correspondence  -  all unstructured text. This data is rarely used in pricing models because extracting features from it at scale has been prohibitively expensive.
 
-LLMs change the cost equation. For a modest portfolio of 500,000 historical claims, extracting a defined feature set — cause of loss reclassification, non-standard construction flags, fraudulent indicator keywords, third-party liability involvement — at $0.01–0.02 per document would cost £4,000–£8,000 at current API rates. That is within the exploratory budget for a pricing project.
+LLMs change the cost equation. For a modest portfolio of 500,000 historical claims, extracting a defined feature set  -  cause of loss reclassification, non-standard construction flags, fraudulent indicator keywords, third-party liability involvement  -  at $0.01–0.02 per document would cost £4,000–£8,000 at current API rates. That is within the exploratory budget for a pricing project.
 
 The validated use case: **cause of loss standardisation**. Claims handlers record cause using free text that varies across handlers, offices, and time. "Leak from upstairs flat", "water ingress via ceiling", "escape of water from neighbour's property" are the same peril but may be coded inconsistently. An LLM applying a defined taxonomy produces consistent codes. This is a data quality improvement that directly benefits frequency model credibility by reducing noise in the target variable.
 
@@ -59,13 +59,13 @@ In underwriting feature extraction, a hallucinated field value (the LLM invents 
 
 In claims contexts, a hallucinated output can cause an immediate and irreversible wrong decision about a customer.
 
-LLMs hallucinate. This is not a property of poor models or bad prompts — it is an intrinsic characteristic of autoregressive language models that produce plausible-sounding completions even when ground truth is unavailable. The rate varies by model and task: GPT-4o on well-structured extraction from clear source documents produces very low hallucination rates. GPT-4o asked to summarise a long, complex loss adjuster report and produce a liability assessment will occasionally invent details not in the source.
+LLMs hallucinate. This is not a property of poor models or bad prompts  -  it is an intrinsic characteristic of autoregressive language models that produce plausible-sounding completions even when ground truth is unavailable. The rate varies by model and task: GPT-4o on well-structured extraction from clear source documents produces very low hallucination rates. GPT-4o asked to summarise a long, complex loss adjuster report and produce a liability assessment will occasionally invent details not in the source.
 
 The specific failure mode in property claims: a loss adjuster report might contain ambiguous language about policy coverage, exclusion applicability, or causation. Asked to summarise the coverage position, an LLM might generate a clean, authoritative-sounding summary that resolves the ambiguity in a direction not supported by the underlying documents. If a human reads that summary and acts on it without reviewing the source, a customer gets a wrong decision.
 
-Our position: LLMs should not be used for coverage decisions without human review of the underlying source documents. Full extraction and summarisation assistance — yes. Autonomous coverage determination — no. This is not a conservative position driven by general AI caution; it follows from the specific failure characteristics of these models on ambiguous text.
+Our position: LLMs should not be used for coverage decisions without human review of the underlying source documents. Full extraction and summarisation assistance  -  yes. Autonomous coverage determination  -  no. This is not a conservative position driven by general AI caution; it follows from the specific failure characteristics of these models on ambiguous text.
 
-**The governance parallel**: our [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) and [insurance-governance](https://github.com/burning-cost/insurance-governance) libraries both handle model monitoring and output logging. Any LLM deployed in a claims workflow needs the same monitoring infrastructure as a pricing model: output logging, anomaly detection, regular review of samples, and a documented escalation path when the LLM flags uncertainty. LLM uncertainty is not always explicit — a hallucinated output typically does not come with a low-confidence flag — which makes sampling-based human review more important, not less.
+**The governance parallel**: our [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) and [insurance-governance](https://github.com/burning-cost/insurance-governance) libraries both handle model monitoring and output logging. Any LLM deployed in a claims workflow needs the same monitoring infrastructure as a pricing model: output logging, anomaly detection, regular review of samples, and a documented escalation path when the LLM flags uncertainty. LLM uncertainty is not always explicit  -  a hallucinated output typically does not come with a low-confidence flag  -  which makes sampling-based human review more important, not less.
 
 ---
 
@@ -87,7 +87,7 @@ The literature review for this series required stating honestly what has not bee
 
 **No published peer-reviewed paper demonstrates an LLM or VLM directly improving UK property claims prediction on a representative dataset.** The Johansson et al. (2026) Swedish building heritage classification result is the closest analogue and it is not an insurance study. The Actuaries Institute Australia work is a practitioner article, not peer-reviewed research. The gap between "plausibly works" and "validated against claims outcomes" is wide in this domain.
 
-**No published study shows LLM-extracted property features outperforming actuary-assessed features on insurance loss ratios.** This is the study that would matter most for a UK pricing team justifying an LLM investment. It does not exist in the public literature. The US vendor claims — AIG citing 15% improvement in underwriting data accuracy from a generative AI platform — conflate data quality improvement (an operational benefit) with pricing model improvement (a different claim requiring actuarial validation).
+**No published study shows LLM-extracted property features outperforming actuary-assessed features on insurance loss ratios.** This is the study that would matter most for a UK pricing team justifying an LLM investment. It does not exist in the public literature. The US vendor claims  -  AIG citing 15% improvement in underwriting data accuracy from a generative AI platform  -  conflate data quality improvement (an operational benefit) with pricing model improvement (a different claim requiring actuarial validation).
 
 **Hallucination rates on insurance documents have not been systematically benchmarked.** General-purpose hallucination benchmarks exist, but the rate of fabricated details in property survey extraction, claims narrative summarisation, and coverage interpretation tasks has not been published. Any team deploying LLMs in these workflows is operating without knowing their error rate. That needs to be measured, and measuring it requires a labelled evaluation set.
 
@@ -97,11 +97,11 @@ The literature review for this series required stating honestly what has not bee
 
 The realistic deployment pattern for a UK insurer in 2026:
 
-**Stage 1 — Data enrichment at underwriting.** LLM processes free-text application fields, EPC descriptions, and Street View visual descriptions (if available) to produce structured risk flags. Output feeds into pricing model as additional covariates. Human review is not required at this stage — errors affect pricing, are observable over time, and the model is explicit about the features it uses.
+**Stage 1  -  Data enrichment at underwriting.** LLM processes free-text application fields, EPC descriptions, and Street View visual descriptions (if available) to produce structured risk flags. Output feeds into pricing model as additional covariates. Human review is not required at this stage  -  errors affect pricing, are observable over time, and the model is explicit about the features it uses.
 
-**Stage 2 — Claims triage and note structuring.** LLM extracts structured fields from incoming claims notifications and loss adjuster reports: cause of loss, property features relevant to the claim, declared vs observed discrepancies. Output supports handler prioritisation. Human review of source documents required before coverage decisions.
+**Stage 2  -  Claims triage and note structuring.** LLM extracts structured fields from incoming claims notifications and loss adjuster reports: cause of loss, property features relevant to the claim, declared vs observed discrepancies. Output supports handler prioritisation. Human review of source documents required before coverage decisions.
 
-**Stage 3 — Portfolio retrospective.** LLM processes historical claims narratives to enrich historical data for pricing model development. This is pure data science; no customer-facing decisions involved. Lowest governance overhead.
+**Stage 3  -  Portfolio retrospective.** LLM processes historical claims narratives to enrich historical data for pricing model development. This is pure data science; no customer-facing decisions involved. Lowest governance overhead.
 
 This is the same layered approach we use in our actuarial model governance work. The key principle from [insurance-governance](https://github.com/burning-cost/insurance-governance): the riskiness of an automated output scales with how reversible the downstream decision is. Pricing a renewal slightly wrong is more reversible than declining a claim. Calibrate the human review requirement accordingly.
 
@@ -111,11 +111,11 @@ This is the same layered approach we use in our actuarial model governance work.
 
 The cost argument for LLM-based operational tooling is strong relative to the alternatives.
 
-A bespoke OCR and rules-based extraction system for property surveys — the traditional approach — requires significant NLP engineering for each document type, breaks on formatting variation, and needs maintenance when document templates change. An LLM prompt requires no engineering for each new document type, handles formatting variation gracefully, and updates when the base model improves.
+A bespoke OCR and rules-based extraction system for property surveys  -  the traditional approach  -  requires significant NLP engineering for each document type, breaks on formatting variation, and needs maintenance when document templates change. An LLM prompt requires no engineering for each new document type, handles formatting variation gracefully, and updates when the base model improves.
 
 The build cost for a survey extraction pipeline: one prompt template, an evaluation dataset of 50–100 manually labelled surveys, and an API integration. Measured in days of engineering time, not months. The ongoing cost: API fees (pennies per document for document-length inputs to GPT-4o) and the human review process for monitoring output quality.
 
-The build cost for a claims narrative structuring system: similar. The additional cost is the human review infrastructure — the sampling, labelling, and escalation processes that convert an LLM pipeline into a governed system.
+The build cost for a claims narrative structuring system: similar. The additional cost is the human review infrastructure  -  the sampling, labelling, and escalation processes that convert an LLM pipeline into a governed system.
 
 The operational case is strong. The reason more UK insurers have not deployed this is not technical difficulty. It is the combination of data governance questions (where does the document go when it is sent to an external API), IT integration requirements (getting document pipelines to route through an LLM service), and the audit trail requirements for FCA Consumer Duty purposes. Those are solvable problems that do not require better models.
 
@@ -131,8 +131,8 @@ If you are a UK actuarial or data science team with an interest in this area, th
 
 **Do not start with claims.** The hallucination risk and governance overhead in claims contexts make it the wrong place to prototype. Start where errors are observable and reversible.
 
-The tools are available, the cost is accessible, and the data is — in the case of EPC — free. The gap between where most UK insurers are and where they could be on this is primarily organisational, not technical.
+The tools are available, the cost is accessible, and the data is  -  in the case of EPC  -  free. The gap between where most UK insurers are and where they could be on this is primarily organisational, not technical.
 
 ---
 
-*This concludes our three-part series on computer vision and LLMs for property insurance. The series covers: [the vendor landscape and UK infrastructure constraints](/2026/03/26/computer-vision-property-insurance-what-actually-works/), [the open-source CV tooling and its honest limitations](/2026/03/26/open-source-cv-tools-property-risk/), and this post on the LLM operational layer. For proxy discrimination governance — the third constraint in deploying any imagery or LLM-derived pricing feature — we cover the technical framework in our [insurance-governance](https://github.com/burning-cost/insurance-governance) library.*
+*This concludes our three-part series on computer vision and LLMs for property insurance. The series covers: [the vendor landscape and UK infrastructure constraints](/2026/03/26/computer-vision-property-insurance-what-actually-works/), [the open-source CV tooling and its honest limitations](/2026/03/26/open-source-cv-tools-property-risk/), and this post on the LLM operational layer. For proxy discrimination governance  -  the third constraint in deploying any imagery or LLM-derived pricing feature  -  we cover the technical framework in our [insurance-governance](https://github.com/burning-cost/insurance-governance) library.*

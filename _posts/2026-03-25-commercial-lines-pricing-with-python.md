@@ -7,7 +7,7 @@ tags: [commercial-lines, fleet, credibility, buhlmann-straub, ILF, excess-of-los
 description: "Fleet motor, property, and liability pricing in Python. Covers Bühlmann-Straub credibility for fleet schemes, GPD large loss loading, MBBEFD ILF tables, and PSI drift detection on commercial books."
 ---
 
-Most of what we publish here is personal lines motor. That is the dominant UK GI pricing discipline and where most of the open-source tooling has been aimed. But the actuarial problems in commercial lines are at least as interesting — and the tooling gap is larger. A fleet motor actuary or a commercial property pricing team is more likely to be doing things in Excel than a personal lines team, not less.
+Most of what we publish here is personal lines motor. That is the dominant UK GI pricing discipline and where most of the open-source tooling has been aimed. But the actuarial problems in commercial lines are at least as interesting  -  and the tooling gap is larger. A fleet motor actuary or a commercial property pricing team is more likely to be doing things in Excel than a personal lines team, not less.
 
 This post is for them. We cover four commercial pricing problems using our Python libraries, with code that reflects how each calculation actually works rather than pseudocode that sidesteps the awkward details.
 
@@ -17,9 +17,9 @@ The four problems: fleet credibility, large loss loading, layered structures, an
 
 ## 1. Fleet motor: Bühlmann-Straub credibility for scheme pricing
 
-A fleet scheme has two sources of evidence: its own claims history, and the underwriter's portfolio of similar fleets. Neither is fully trusted on its own. The scheme's history is often thin — fifty vehicles, three years, a handful of claims per year. The portfolio prior is a noisy average that may include road haulage firms, courier operations, and mixed commercial vehicle schemes that have nothing to do with this fleet.
+A fleet scheme has two sources of evidence: its own claims history, and the underwriter's portfolio of similar fleets. Neither is fully trusted on its own. The scheme's history is often thin  -  fifty vehicles, three years, a handful of claims per year. The portfolio prior is a noisy average that may include road haulage firms, courier operations, and mixed commercial vehicle schemes that have nothing to do with this fleet.
 
-The Bühlmann-Straub model resolves this. It estimates, from the observed distribution of experience across all schemes, how much between-scheme heterogeneity is signal versus noise. That ratio — the Bühlmann K — determines how much weight to give each scheme's own experience.
+The Bühlmann-Straub model resolves this. It estimates, from the observed distribution of experience across all schemes, how much between-scheme heterogeneity is signal versus noise. That ratio  -  the Bühlmann K  -  determines how much weight to give each scheme's own experience.
 
 The data structure is a panel: one row per scheme per year, with loss rate (claims per vehicle year, or cost per vehicle year) and exposure (vehicle years).
 
@@ -72,15 +72,15 @@ print()
 print(bs.premiums_)
 ```
 
-The K here will be around 1,200-1,500 vehicle years in this data. That means a fleet with 1,400 total vehicle years across the experience window gets Z ≈ 0.5: equal weight on its own history and the portfolio mean. Fleet B has 6,350 vehicle years total and sits at Z ≈ 0.82 — its elevated experience dominates. Fleet C has only 1,185 vehicle years and Z ≈ 0.44 — the low observed rate of £0.154/veh-year pulls back substantially toward the portfolio.
+The K here will be around 1,200-1,500 vehicle years in this data. That means a fleet with 1,400 total vehicle years across the experience window gets Z ≈ 0.5: equal weight on its own history and the portfolio mean. Fleet B has 6,350 vehicle years total and sits at Z ≈ 0.82  -  its elevated experience dominates. Fleet C has only 1,185 vehicle years and Z ≈ 0.44  -  the low observed rate of £0.154/veh-year pulls back substantially toward the portfolio.
 
-Two practical notes. First, the loss rate here is total incurred per vehicle year, which already conflates frequency and severity. For large fleets with heterogeneous vehicle types, you usually want to model these separately and blend them — but Bühlmann-Straub can be applied to total cost if that is how your scheme data arrives. Second, if schemes have genuinely different vehicle compositions (a 30-tonne HGV fleet versus company cars), the portfolio mean μ̂ may not be an appropriate complement. You would want to pass a normalised or risk-adjusted rate rather than use the raw grand mean.
+Two practical notes. First, the loss rate here is total incurred per vehicle year, which already conflates frequency and severity. For large fleets with heterogeneous vehicle types, you usually want to model these separately and blend them  -  but Bühlmann-Straub can be applied to total cost if that is how your scheme data arrives. Second, if schemes have genuinely different vehicle compositions (a 30-tonne HGV fleet versus company cars), the portfolio mean μ̂ may not be an appropriate complement. You would want to pass a normalised or risk-adjusted rate rather than use the raw grand mean.
 
 ---
 
 ## 2. Large loss loading: capping, Pareto fitting, and reloading
 
-Commercial lines loss data is heavy-tailed. A single large fire, one liability judgment, a multi-vehicle motorway collision — these events are not outliers to be discarded. They are part of the risk profile and need to be priced.
+Commercial lines loss data is heavy-tailed. A single large fire, one liability judgment, a multi-vehicle motorway collision  -  these events are not outliers to be discarded. They are part of the risk profile and need to be priced.
 
 The standard approach has three steps:
 
@@ -112,7 +112,7 @@ bc_attritional = capped.sum() / vehicle_years
 print(f"Attritional burning cost (capped at £{retention:,.0f}): £{bc_attritional:,.2f}/veh-yr")
 ```
 
-Now fit the tail above the cap using `TruncatedGPD` from `insurance-severity`. This class corrects for the fact that policies have per-risk limits, so the exceedances you observe are drawn from a truncated distribution — standard GPD MLE underestimates the tail index when you ignore this.
+Now fit the tail above the cap using `TruncatedGPD` from `insurance-severity`. This class corrects for the fact that policies have per-risk limits, so the exceedances you observe are drawn from a truncated distribution  -  standard GPD MLE underestimates the tail index when you ignore this.
 
 ```python
 from insurance_severity.evt import TruncatedGPD
@@ -131,7 +131,7 @@ print(f"GPD tail index xi:     {gpd.xi:.3f}")
 print(f"GPD scale sigma:       £{gpd.sigma:,.0f}")
 ```
 
-A tail index xi around 0.5-0.8 is typical for fleet motor large losses. Higher xi means heavier tail and more sensitivity to the upper limit assumption. If xi > 1, the theoretical mean does not exist — worth flagging to underwriting.
+A tail index xi around 0.5-0.8 is typical for fleet motor large losses. Higher xi means heavier tail and more sensitivity to the upper limit assumption. If xi > 1, the theoretical mean does not exist  -  worth flagging to underwriting.
 
 Step 3: compute the large loss loading using numerical integration of the fitted tail. The expected cost of a loss above the retention, per claim, is the integral of the survival function from 0 to the maximum loss cap (limit minus retention):
 
@@ -152,9 +152,9 @@ print(f"Large loss loading:    £{bc_large:,.2f}/veh-yr")
 print(f"Total burning cost:    £{bc_attritional + bc_large:,.2f}/veh-yr")
 ```
 
-The `WeibullTemperedPareto` class is the alternative when the tail is heavy but physically bounded — property, D&O, PI. It fits a survival function `S(x) = x^{-alpha} * exp(-lambda * x^tau)` which has a Pareto core but dampens off at extreme values. Use it when you have a credible cap on maximum loss size from engineering surveys or policy limits that genuinely constrain the tail.
+The `WeibullTemperedPareto` class is the alternative when the tail is heavy but physically bounded  -  property, D&O, PI. It fits a survival function `S(x) = x^{-alpha} * exp(-lambda * x^tau)` which has a Pareto core but dampens off at extreme values. Use it when you have a credible cap on maximum loss size from engineering surveys or policy limits that genuinely constrain the tail.
 
-For severity modelling more generally, the `insurance-severity` library also includes composite body-tail models and a distributional regression network (DRN) for when the severity distribution varies by risk characteristic. For a commercial fleet, the DRN approach is probably overkill — but if you are pricing property and the loss distribution genuinely differs between timber-frame and concrete construction, it earns its keep.
+For severity modelling more generally, the `insurance-severity` library also includes composite body-tail models and a distributional regression network (DRN) for when the severity distribution varies by risk characteristic. For a commercial fleet, the DRN approach is probably overkill  -  but if you are pricing property and the loss distribution genuinely differs between timber-frame and concrete construction, it earns its keep.
 
 ---
 
@@ -186,9 +186,9 @@ table = ilf_table(
 print(table[["limit", "ilf", "marginal_ilf"]])
 ```
 
-The ILF at £2m xs £0 (i.e., a £2m limit) is the ratio of expected loss at £2m to expected loss at the basic limit of £1m. The marginal ILF is the incremental factor between successive limits in the table — useful for pricing the £1m xs £1m layer separately from the ground-up £2m.
+The ILF at £2m xs £0 (i.e., a £2m limit) is the ratio of expected loss at £2m to expected loss at the basic limit of £1m. The marginal ILF is the incremental factor between successive limits in the table  -  useful for pricing the £1m xs £1m layer separately from the ground-up £2m.
 
-For a per-risk XL layer — where the reinsurer pays losses in the band `[AP, AP+L]` on each individual risk — use `layer_expected_loss` directly:
+For a per-risk XL layer  -  where the reinsurer pays losses in the band `[AP, AP+L]` on each individual risk  -  use `layer_expected_loss` directly:
 
 ```python
 # A single property risk:
@@ -207,7 +207,7 @@ el = layer_expected_loss(
 print(f"Expected loss to £1m xs £1m layer: £{el:,.0f}")
 ```
 
-For treaty pricing, you work from the cedant's risk profile — the distribution of their book by sum insured band:
+For treaty pricing, you work from the cedant's risk profile  -  the distribution of their book by sum insured band:
 
 ```python
 # Cedant's risk profile: three SI bands
@@ -235,7 +235,7 @@ print(f"Rate on line:                 {result['rol']:.4f}")
 
 The `technical_rate` here is expected loss / subject premium: what proportion of the burning cost attaches to this layer. The `rol` (rate on line) is the traditional reinsurance pricing metric: expected loss as a proportion of the layer limit capacity.
 
-One limitation to flag: the MBBEFD family assumes the shape of the severity distribution is the same for all sum insured bands, scaled by SI. For a genuinely heterogeneous book — say, mixing high-rise residential with single-storey warehousing — you should fit separate distributions by occupancy class and apply them separately. `per_risk_xl_rate` works band by band, so you can pass it a risk profile with per-band curve parameters if you pre-compute `dist` separately for each segment.
+One limitation to flag: the MBBEFD family assumes the shape of the severity distribution is the same for all sum insured bands, scaled by SI. For a genuinely heterogeneous book  -  say, mixing high-rise residential with single-storey warehousing  -  you should fit separate distributions by occupancy class and apply them separately. `per_risk_xl_rate` works band by band, so you can pass it a risk profile with per-band curve parameters if you pre-compute `dist` separately for each segment.
 
 ---
 
@@ -272,7 +272,7 @@ for i, (dp, raw, smooth) in enumerate(zip(dev_periods, ata_factors, result.fitte
           f"CI=[{result.ci_lower[i]:.4f}, {result.ci_upper[i]:.4f}]")
 ```
 
-The 95% credible interval comes from the hat matrix diagonal — it tells you where the smoother is uncertain. For development periods with only one or two contributing diagonals, the interval will be wide and you should consider whether you want to manually constrain those factors to a tail pattern assumption.
+The 95% credible interval comes from the hat matrix diagonal  -  it tells you where the smoother is uncertain. For development periods with only one or two contributing diagonals, the interval will be wide and you should consider whether you want to manually constrain those factors to a tail pattern assumption.
 
 The smoother also works on relativities across vehicle groups, fleet age bands, or any ordered rating variable where you want smoothed factors rather than unsmoothed GLM output. The `order=2` default gives cubic-spline-like smoothness; `order=1` gives piecewise-linear smoothing, appropriate if you believe there is a genuine kink in the curve at some development period.
 
@@ -286,7 +286,7 @@ For schemes with multi-year history and a credible claim count, experience ratin
 EAF = Z * (actual_claims / expected_claims) + (1 - Z)
 ```
 
-where Z is the credibility factor. The question is how to set Z. Using `BuhlmannStraub` across the portfolio of schemes is the right answer — it estimates K from the actual observed heterogeneity across schemes rather than assuming an arbitrary credibility schedule.
+where Z is the credibility factor. The question is how to set Z. Using `BuhlmannStraub` across the portfolio of schemes is the right answer  -  it estimates K from the actual observed heterogeneity across schemes rather than assuming an arbitrary credibility schedule.
 
 Here is a worked example for a portfolio of liability schemes:
 
@@ -338,13 +338,13 @@ for row in premiums.iter_rows(named=True):
           f"credibility A/E={eaf:.3f}")
 ```
 
-The `credibility_premium` here is the credibility-weighted A/E ratio. Multiply the scheme's current technical rate by this factor for the renewal loading. A scheme with Z = 0.35 and a raw A/E of 1.40 gets a credibility-weighted A/E of roughly 1.14 (pulling toward the portfolio mean of 1.0). Price accordingly — the 40% adverse experience is probably real but you don't fully believe it yet.
+The `credibility_premium` here is the credibility-weighted A/E ratio. Multiply the scheme's current technical rate by this factor for the renewal loading. A scheme with Z = 0.35 and a raw A/E of 1.40 gets a credibility-weighted A/E of roughly 1.14 (pulling toward the portfolio mean of 1.0). Price accordingly  -  the 40% adverse experience is probably real but you don't fully believe it yet.
 
 ---
 
 ## 6. Drift detection on commercial books
 
-Commercial books change composition faster than personal lines. A new broker relationship, a change in the minimum fleet size you will write, a recession affecting one industry sector — all of these shift the underwritten population in ways that can silently invalidate a pricing model.
+Commercial books change composition faster than personal lines. A new broker relationship, a change in the minimum fleet size you will write, a recession affecting one industry sector  -  all of these shift the underwritten population in ways that can silently invalidate a pricing model.
 
 `insurance-monitoring` provides PSI (Population Stability Index) for operational monitoring. The exposure-weighted variant matters for insurance: a bin with 30 annual policies is not equivalent to a bin with 300 one-month policies.
 
@@ -376,7 +376,7 @@ print(f"Fleet size PSI: {psi_val:.3f}")
 
 The thresholds come from banking credit-scoring practice (FICO, 1990s) but apply equally to insurance. A PSI of 0.25 on fleet size means the distribution has shifted enough that a model trained on the old mix should be re-validated before relying on it for renewal rates.
 
-For commercial property, the relevant drift variables are sum insured band, occupancy class, and construction type. Run PSI on each quarterly. If occupancy class has PSI > 0.20 — say, a shift from retail (less fire risk) toward food processing (more fire risk) — your book-level loss ratio will move faster than the model predicts.
+For commercial property, the relevant drift variables are sum insured band, occupancy class, and construction type. Run PSI on each quarterly. If occupancy class has PSI > 0.20  -  say, a shift from retail (less fire risk) toward food processing (more fire risk)  -  your book-level loss ratio will move faster than the model predicts.
 
 ---
 
@@ -384,11 +384,11 @@ For commercial property, the relevant drift variables are sum insured band, occu
 
 Several commercial pricing problems are either too specialised or need their own post:
 
-**Catastrophe loading.** Property accumulation modelling requires a cat model output (RMS, AIR, or Oasis) and an allocation methodology. We have not built a cat model and do not intend to. The loading calculation itself — expected annual loss from the cat model, allocated to individual risks by SI band and location — can be done with standard pandas arithmetic once you have the AAL output.
+**Catastrophe loading.** Property accumulation modelling requires a cat model output (RMS, AIR, or Oasis) and an allocation methodology. We have not built a cat model and do not intend to. The loading calculation itself  -  expected annual loss from the cat model, allocated to individual risks by SI band and location  -  can be done with standard pandas arithmetic once you have the AAL output.
 
 **Motor trade and non-standard motor.** These require separate frequency models for road risk versus premises risk. The Bühlmann-Straub approach applies to the individual location or garage, not the headline account.
 
-**Casualty reserving.** The Whittaker-Henderson smoother helps with development factor selection, but the full chain-ladder, BF, or Clark LDF method is a separate exercise. We are not aware of a good open-source Python reserving library — if you know of one, tell us.
+**Casualty reserving.** The Whittaker-Henderson smoother helps with development factor selection, but the full chain-ladder, BF, or Clark LDF method is a separate exercise. We are not aware of a good open-source Python reserving library  -  if you know of one, tell us.
 
 **Pricing adjustments for deductibles.** The ELF (excess loss factor) from `insurance-ilf` handles per-risk deductibles on property. For casualty, deductible pricing is more complex because the attachment interacts with the claims frequency distribution. This deserves a dedicated post.
 
@@ -414,5 +414,5 @@ All five packages are available on PyPI and work with Python 3.10+. They use Pol
 
 ---
 
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the `insurance-credibility` library for the credibility weighting of fleet and commercial segments
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — model governance documentation for commercial lines models, which typically sit at Tier 1 given higher GWP per model
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)  -  the `insurance-credibility` library for the credibility weighting of fleet and commercial segments
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  model governance documentation for commercial lines models, which typically sit at Tier 1 given higher GWP per model

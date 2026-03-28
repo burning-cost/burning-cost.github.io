@@ -8,13 +8,13 @@ description: "Mixture cure models for UK motor: separates non-claimers from susc
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). Install with `pip install insurance-survival`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
 </div>
 
 
-A UK motor book typically has an observed claims frequency of around 8% per year. Run a Kaplan-Meier curve on policyholder tenure against first-claim indicator and watch what happens to the survival curve after year three: it levels off. The plateau never reaches zero. A substantial fraction of the portfolio will never claim regardless of how long you keep watching them. Standard survival models — exponential, Weibull, Cox — cannot fit a non-zero asymptote. They assume everyone eventually claims, given enough time. On a long-retention motor book, this assumption is demonstrably wrong.
+A UK motor book typically has an observed claims frequency of around 8% per year. Run a Kaplan-Meier curve on policyholder tenure against first-claim indicator and watch what happens to the survival curve after year three: it levels off. The plateau never reaches zero. A substantial fraction of the portfolio will never claim regardless of how long you keep watching them. Standard survival models  -  exponential, Weibull, Cox  -  cannot fit a non-zero asymptote. They assume everyone eventually claims, given enough time. On a long-retention motor book, this assumption is demonstrably wrong.
 
-The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival — the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.
+The biostatistics literature has had a model for this since Boag (1949) applied it to cancer survival  -  the mixture cure model. Farewell (1982) formalised the covariate structure. Peng and Dear (2000) and Sy and Taylor (2000) gave us the EM estimation framework. R has had usable implementations (`smcure`, `flexsurvcure`, `cuRe`) for years. Python has had nothing pip-installable that fits covariate-aware MCMs with actuarial output.
 
 [`insurance-cure`](https://github.com/burning-cost/insurance-survival) fills that gap.
 
@@ -34,19 +34,19 @@ S_pop(t | x, z) = pi(z) * S_u(t | x) + [1 - pi(z)]
 
 The right-hand term `[1 - pi(z)]` is the cure fraction: the probability that policyholder `i` is structurally immune and will never claim. It does not shrink to zero as `t` grows. It is a permanent floor.
 
-The left-hand term `pi(z) * S_u(t | x)` models the susceptible subpopulation. `pi(z)` is the probability of being susceptible — estimated by a logistic regression on incidence covariates `z`. `S_u(t | x)` is the conditional survival function for susceptibles — how long it takes them to claim, modelled by a Weibull AFT, log-normal AFT, or Cox proportional hazards model on latency covariates `x`.
+The left-hand term `pi(z) * S_u(t | x)` models the susceptible subpopulation. `pi(z)` is the probability of being susceptible  -  estimated by a logistic regression on incidence covariates `z`. `S_u(t | x)` is the conditional survival function for susceptibles  -  how long it takes them to claim, modelled by a Weibull AFT, log-normal AFT, or Cox proportional hazards model on latency covariates `x`.
 
 The two sub-models can have different covariate sets. This is the key degree of freedom. In motor, we expect:
 - **Incidence** (who is immune?): NCB years, claim history, driver age, vehicle type. A driver with nine years of NCB who has never claimed is probably genuinely immune, not just lucky.
 - **Latency** (how quickly do susceptibles claim?): vehicle age, annual mileage, area. Among policyholders who will eventually claim, these factors determine when.
 
-Conflating these two processes — as every frequency GLM does — produces systematically wrong predictions. The GLM assigns a low frequency to a nine-year NCB driver because it interpolates from nearby historical rates. The MCM assigns a high cure probability to that driver because it has explicitly modelled the immune fraction. The predictions converge in the centre of the covariate space and diverge at the extremes. Those extremes are where the pricing errors are.
+Conflating these two processes  -  as every frequency GLM does  -  produces systematically wrong predictions. The GLM assigns a low frequency to a nine-year NCB driver because it interpolates from nearby historical rates. The MCM assigns a high cure probability to that driver because it has explicitly modelled the immune fraction. The predictions converge in the centre of the covariate space and diverge at the extremes. Those extremes are where the pricing errors are.
 
 ---
 
 ## Before you fit anything: the Maller-Zhou test
 
-The MCM has an identifiability problem. If your observation window is short relative to the latency distribution of susceptibles, you cannot distinguish between a high cure fraction (many structural non-claimers) and a long-tailed latency (susceptibles who simply have not claimed yet). Both produce the same Kaplan-Meier plateau. If follow-up is insufficient, the estimated cure fraction will be upwardly biased — you will classify too many policyholders as immune.
+The MCM has an identifiability problem. If your observation window is short relative to the latency distribution of susceptibles, you cannot distinguish between a high cure fraction (many structural non-claimers) and a long-tailed latency (susceptibles who simply have not claimed yet). Both produce the same Kaplan-Meier plateau. If follow-up is insufficient, the estimated cure fraction will be upwardly biased  -  you will classify too many policyholders as immune.
 
 Maller and Zhou (1996) proposed the Qn statistic to test for sufficient follow-up before trusting any cure fraction estimate. The statistic measures the proportion of censored observations whose tenure exceeds the final event time. Under the null hypothesis of no cure fraction (standard exponential tail), this proportion converges to zero. A significant Qn provides evidence that the observed plateau reflects a genuine immune fraction.
 
@@ -71,13 +71,13 @@ Maller-Zhou Sufficient Follow-Up Test
   MCM estimates can be trusted.
 ```
 
-Run this before fitting anything. A non-significant Qn does not mean you cannot fit an MCM — it means the cure fraction estimate will be unreliable, and you should interpret the output as a lower bound on pricing differentiation rather than an absolute calibrated score. A five-year motor book with heavy early attrition is typically marginal on this test; a seven-year book with stable retention usually passes comfortably.
+Run this before fitting anything. A non-significant Qn does not mean you cannot fit an MCM  -  it means the cure fraction estimate will be unreliable, and you should interpret the output as a lower bound on pricing differentiation rather than an absolute calibrated score. A five-year motor book with heavy early attrition is typically marginal on this test; a seven-year book with stable retention usually passes comfortably.
 
 ---
 
 ## Fitting the model
 
-The primary workhorse is `WeibullMixtureCure`. The Weibull AFT latency is the right default: it extrapolates cleanly beyond the observation window, the shape parameter has a direct interpretation (sub-exponential vs. super-exponential hazard for susceptibles), and the EM algorithm is numerically stable with it. Log-normal is better when the conditional hazard for susceptibles peaks and then falls — this can happen with pet insurance where very young and very old animals have different claim timing — but it will not extrapolate as gracefully.
+The primary workhorse is `WeibullMixtureCure`. The Weibull AFT latency is the right default: it extrapolates cleanly beyond the observation window, the shape parameter has a direct interpretation (sub-exponential vs. super-exponential hazard for susceptibles), and the EM algorithm is numerically stable with it. Log-normal is better when the conditional hazard for susceptibles peaks and then falls  -  this can happen with pet insurance where very young and very old animals have different claim timing  -  but it will not extrapolate as gracefully.
 
 ```python
 import pandas as pd
@@ -125,7 +125,7 @@ Latency sub-model:
   beta_age            : -0.0031
 ```
 
-The recovered cure fraction of 0.398 is close to the true 0.40 — the EM has correctly separated the latent groups. The incidence coefficient on `ncb_years` is -0.30: each additional NCB year reduces the log-odds of susceptibility by 0.30, meaning a nine-year NCB driver has a log-odds of susceptibility roughly 2.7 lower than a zero-NCB driver. On the probability scale, that is a substantial shift in cure probability.
+The recovered cure fraction of 0.398 is close to the true 0.40  -  the EM has correctly separated the latent groups. The incidence coefficient on `ncb_years` is -0.30: each additional NCB year reduces the log-odds of susceptibility by 0.30, meaning a nine-year NCB driver has a log-odds of susceptibility roughly 2.7 lower than a zero-NCB driver. On the probability scale, that is a substantial shift in cure probability.
 
 The multiple restarts (`n_em_starts=5`) are not optional. The EM objective for MCMs has local optima, particularly when the incidence and latency sub-models compete to explain the same policyholders. With a single start, you will occasionally converge to a degenerate solution where the algorithm has assigned everyone to the cure fraction and the latency sub-model is uninformative. Five starts takes five times longer but eliminates this failure mode in practice.
 
@@ -135,9 +135,9 @@ The multiple restarts (`n_em_starts=5`) are not optional. The EM objective for M
 
 Two predictions come out of a fitted MCM:
 
-**Cure fraction per policyholder** — `predict_cure_fraction()` returns P(immune | z_i) for each row. This is the non-claimer propensity score. It drives pricing differentiation between structural non-claimers and genuine risk.
+**Cure fraction per policyholder**  -  `predict_cure_fraction()` returns P(immune | z_i) for each row. This is the non-claimer propensity score. It drives pricing differentiation between structural non-claimers and genuine risk.
 
-**Population survival** — `predict_population_survival()` returns S_pop(t | x_i, z_i) at specified times. This is the probability of no claim by time t, combining both the immune fraction and the latency distribution for susceptibles.
+**Population survival**  -  `predict_population_survival()` returns S_pop(t | x_i, z_i) at specified times. This is the probability of no claim by time t, combining both the immune fraction and the latency distribution for susceptibles.
 
 ```python
 # Non-claimer propensity scores
@@ -153,7 +153,7 @@ pop_surv = model.predict_population_survival(
 # Returns a DataFrame with one column per time point
 ```
 
-For pricing use, the cure score is the primary output. You are not replacing your frequency GLM — you are augmenting it with a new feature. The cure score captures something the frequency GLM cannot: the probability that the policyholder is not in the risk pool at all. A high-NCB young driver with a high cure score should be priced below what the frequency GLM suggests, because the frequency GLM's low-frequency prediction still implies they will eventually claim.
+For pricing use, the cure score is the primary output. You are not replacing your frequency GLM  -  you are augmenting it with a new feature. The cure score captures something the frequency GLM cannot: the probability that the policyholder is not in the risk pool at all. A high-NCB young driver with a high cure score should be priced below what the frequency GLM suggests, because the frequency GLM's low-frequency prediction still implies they will eventually claim.
 
 ---
 
@@ -185,7 +185,7 @@ Decile      N   Cure Min  Cure Mean   Cure Max  Events  Event Rate
 ======================================================================
 ```
 
-The event rate drops from 72% in the bottom decile to 4.3% in the top. That gradient is exactly what the model promises: the top decile contains mostly structurally immune policyholders. A frequency GLM would assign these policyholders a low expected frequency but still above zero. The MCM assigns them a probability of being in the risk pool at all — which is the right question.
+The event rate drops from 72% in the bottom decile to 4.3% in the top. That gradient is exactly what the model promises: the top decile contains mostly structurally immune policyholders. A frequency GLM would assign these policyholders a low expected frequency but still above zero. The MCM assigns them a probability of being in the risk pool at all  -  which is the right question.
 
 ---
 
@@ -193,9 +193,9 @@ The event rate drops from 72% in the bottom decile to 4.3% in the top. That grad
 
 Three models are available. `WeibullMixtureCure` is the right default for most applications: parametric extrapolation, stable EM, interpretable shape parameter. The Weibull shape `rho` (exponentiated from `log_rho` in the output) tells you whether the hazard for susceptibles is increasing (rho > 1), constant (rho = 1), or decreasing (rho < 1) over time. UK motor tends to show rho slightly above 1: susceptible policyholders become slightly more likely to claim as tenure increases, probably due to exposure accumulation.
 
-`LogNormalMixtureCure` is better when the conditional hazard for susceptibles has a non-monotone shape — rises then falls. Pet insurance is the clearest example: very young animals have high claim rates, rates peak at middle age, and older animals have high rates again. A Weibull cannot fit this shape; a log-normal can. The trade-off is that log-normal extrapolation beyond the observation window is less reliable.
+`LogNormalMixtureCure` is better when the conditional hazard for susceptibles has a non-monotone shape  -  rises then falls. Pet insurance is the clearest example: very young animals have high claim rates, rates peak at middle age, and older animals have high rates again. A Weibull cannot fit this shape; a log-normal can. The trade-off is that log-normal extrapolation beyond the observation window is less reliable.
 
-`CoxMixtureCure` uses a semiparametric baseline hazard — no distributional assumption on the latency component. Most flexible, but cannot extrapolate beyond the maximum observed time. Use it for model comparison when you want to check whether the Weibull assumption is materially distorting the incidence estimates.
+`CoxMixtureCure` uses a semiparametric baseline hazard  -  no distributional assumption on the latency component. Most flexible, but cannot extrapolate beyond the maximum observed time. Use it for model comparison when you want to check whether the Weibull assumption is materially distorting the incidence estimates.
 
 For most UK motor pricing applications, `WeibullMixtureCure` with `n_em_starts=5` and `bootstrap_se=True` is the production configuration.
 
@@ -224,23 +224,23 @@ The `result_.summary()` output then includes SE columns for each coefficient. Th
 
 ## Where this fits the wider toolkit
 
-`insurance-cure` is not a replacement for a frequency GLM. It is a feature factory. The cure score from a fitted MCM is a new predictor you feed into your existing pricing model alongside the usual rating factors. The MCM does one thing — estimate the immune fraction — and it does it with the right statistical machinery.
+`insurance-cure` is not a replacement for a frequency GLM. It is a feature factory. The cure score from a fitted MCM is a new predictor you feed into your existing pricing model alongside the usual rating factors. The MCM does one thing  -  estimate the immune fraction  -  and it does it with the right statistical machinery.
 
 The natural place for it is in a two-stage pricing stack. Stage one: fit the MCM to the historical book. Stage two: use `predict_cure_fraction()` as a feature in your main frequency GLM or GBM, alongside NCB, driver age, vehicle age, and the other standard factors. The MCM has already extracted the structural non-claimer signal; the downstream model then blends it with the remaining frequency predictors.
 
-For lines where structural zeros are the main story — UK flood home insurance, where many properties genuinely cannot experience a qualifying flood claim regardless of exposure — the MCM cure fraction may be the dominant pricing factor rather than just one feature among many. The `PromotionTimeCure` variant (Tsodikov 1998) provides a different non-mixture parameterisation for those applications where population-level proportional hazards structure is preferred.
+For lines where structural zeros are the main story  -  UK flood home insurance, where many properties genuinely cannot experience a qualifying flood claim regardless of exposure  -  the MCM cure fraction may be the dominant pricing factor rather than just one feature among many. The `PromotionTimeCure` variant (Tsodikov 1998) provides a different non-mixture parameterisation for those applications where population-level proportional hazards structure is preferred.
 
 ---
 
-**[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)** — MIT-licensed, PyPI. 158 tests, 8 modules.
+**[insurance-survival on GitHub](https://github.com/burning-cost/insurance-survival)**  -  MIT-licensed, PyPI. 158 tests, 8 modules.
 
 ---
 
 ## See Also
 
-- **[insurance-survival](/2026/03/11/survival-models-for-insurance-retention/)** — Retention and lapse modelling with competing risks; the customer lifetime value counterpart to the pricing-focused MCM
-- **[insurance-credibility](https://github.com/burning-cost/insurance-credibility)** — Individual policy-level Bayesian posterior experience rating; use alongside cure scores for policyholders with observed claim history
-- **[insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools)** — GLM with cluster-robust standard errors; relevant when you introduce cure scores as new features and need correct inference on their coefficients
+- **[insurance-survival](/2026/03/11/survival-models-for-insurance-retention/)**  -  Retention and lapse modelling with competing risks; the customer lifetime value counterpart to the pricing-focused MCM
+- **[insurance-credibility](https://github.com/burning-cost/insurance-credibility)**  -  Individual policy-level Bayesian posterior experience rating; use alongside cure scores for policyholders with observed claim history
+- **[insurance-glm-tools](https://github.com/burning-cost/insurance-glm-tools)**  -  GLM with cluster-robust standard errors; relevant when you introduce cure scores as new features and need correct inference on their coefficients
 
 ---
 

@@ -44,7 +44,7 @@ synth.fit(
     severity_col='claim_amount',
 )
 
-# Inspect the vine structure — which families were selected for each pair
+# Inspect the vine structure  -  which families were selected for each pair
 synth.summary()
 ```
 

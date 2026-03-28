@@ -176,7 +176,7 @@ extractor = SHAPRelativities(
     model=catboost_model,
     X=X_train,
     exposure=exposure_train,
-    # annualise_exposure=True by default — rates are per policy year
+    # annualise_exposure=True by default  -  rates are per policy year
 )
 relativities = extractor.fit()
 
@@ -228,7 +228,7 @@ lower, upper = cp.predict_interval(X_new)
 from insurance_distributional import GammaGBM
 
 # GammaGBM predicts the full Gamma distribution per risk
-# — mean, variance, and any percentile
+#  -  mean, variance, and any percentile
 dgbm = GammaGBM()
 dgbm.fit(X_train, y_train, sample_weight=exposure_train)
 

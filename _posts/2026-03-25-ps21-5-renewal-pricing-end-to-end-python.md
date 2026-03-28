@@ -9,7 +9,7 @@ description: "The complete PS21/5 compliance workflow: CATE estimation with insu
 
 Most UK pricing teams implemented PS21/5 the same way: build the renewal price as usual, then clip anything above ENBP at the end. That approach is legally sufficient. It is not optimal, and it misses what the FCA was actually asking for.
 
-The ENBP cap, bolted on as a post-hoc check, does not redistribute the margin that the constraint removes. It just cuts it. A renewal book where 15% of policies are sitting exactly at the ENBP ceiling has a pricing strategy that is running close to the regulatory edge, and it is leaving profit on the table because the optimisation was not done jointly. The commercially correct way to comply with PS21/5 is to feed ENBP as a hard constraint into the optimiser — the solver then actively redistributes margin to compliant policies rather than blindly discarding it.
+The ENBP cap, bolted on as a post-hoc check, does not redistribute the margin that the constraint removes. It just cuts it. A renewal book where 15% of policies are sitting exactly at the ENBP ceiling has a pricing strategy that is running close to the regulatory edge, and it is leaving profit on the table because the optimisation was not done jointly. The commercially correct way to comply with PS21/5 is to feed ENBP as a hard constraint into the optimiser  -  the solver then actively redistributes margin to compliant policies rather than blindly discarding it.
 
 This post shows the complete workflow: causal CATE estimation, customer segmentation by price sensitivity, constrained optimisation with ENBP enforcement, fairness checks, and a governance sign-off pack.
 
@@ -23,7 +23,7 @@ pip install insurance-causal insurance-optimise insurance-fairness insurance-gov
 
 ## Step 1: Estimate per-customer CATE
 
-The input to any renewal optimiser is a price elasticity — the rate at which renewal probability changes with price. The question is where that elasticity comes from.
+The input to any renewal optimiser is a price elasticity  -  the rate at which renewal probability changes with price. The question is where that elasticity comes from.
 
 An OLS regression of renewal indicator on log price change is wrong. The same risk factors that drive your technical price also drive whether a customer renews independently of price. High-risk customers are harder to retain for reasons that have nothing to do with what you charge them. OLS conflates the causal price effect with this risk-lapse correlation, and the resulting elasticity is biased: typically underestimated for high-risk segments and overestimated for loyal, low-risk customers.
 
@@ -55,7 +55,7 @@ print(hte_result.summary())
 hte_result.plot_gates()
 ```
 
-The `HeterogeneousInference` step matters. Without the BLP test, the CATE estimates are point estimates without statistical guarantees — useful for ranking, but not for formal evidence. BLP (Best Linear Predictor) tests whether the CATE proxy is a significant predictor of heterogeneity. GATES reports the average treatment effect for each quintile of the CATE distribution. In a typical UK motor book, you will see a 3–4x spread between the most and least price-sensitive quintiles: NCD 0–1 customers on PCW tend to be much more elastic than NCD 4–5 direct customers.
+The `HeterogeneousInference` step matters. Without the BLP test, the CATE estimates are point estimates without statistical guarantees  -  useful for ranking, but not for formal evidence. BLP (Best Linear Predictor) tests whether the CATE proxy is a significant predictor of heterogeneity. GATES reports the average treatment effect for each quintile of the CATE distribution. In a typical UK motor book, you will see a 3–4x spread between the most and least price-sensitive quintiles: NCD 0–1 customers on PCW tend to be much more elastic than NCD 4–5 direct customers.
 
 For a detailed walkthrough of the causal forest workflow, see [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/).
 
@@ -113,7 +113,7 @@ result = opt.optimise()
 print(result)
 ```
 
-The `enbp_buffer=0.02` parameter sets the effective ENBP upper bound to `ENBP × 0.98` rather than `ENBP × 1.0`. We recommend maintaining a small buffer. The FCA's rule is a hard ceiling, and ENBP estimates carry their own uncertainty — if your new business quote engine is periodically re-rated, there is a risk that a policy priced exactly at ENBP today will breach on re-rate tomorrow.
+The `enbp_buffer=0.02` parameter sets the effective ENBP upper bound to `ENBP × 0.98` rather than `ENBP × 1.0`. We recommend maintaining a small buffer. The FCA's rule is a hard ceiling, and ENBP estimates carry their own uncertainty  -  if your new business quote engine is periodically re-rated, there is a risk that a policy priced exactly at ENBP today will breach on re-rate tomorrow.
 
 The result exposes the key PS21/5 diagnostic you should be reporting to your Board:
 
@@ -129,7 +129,7 @@ print(f"Expected retention:   {result.expected_retention:.3f}")
 print(f"Expected profit:      £{result.expected_profit:,.0f}")
 ```
 
-If `pct_at_ceiling` is above 15%, the book is running close to the regulatory edge. That is not necessarily a compliance problem — it may reflect that your technical prices are well-calibrated and the market is competitive — but it warrants explicit sign-off. The audit trail is JSON:
+If `pct_at_ceiling` is above 15%, the book is running close to the regulatory edge. That is not necessarily a compliance problem  -  it may reflect that your technical prices are well-calibrated and the market is competitive  -  but it warrants explicit sign-off. The audit trail is JSON:
 
 ```python
 import json
@@ -285,7 +285,7 @@ Run through, the five steps produce:
 4. Proxy detection results for deprivation and age; `FairnessAudit` covering calibration, demographic parity, Gini, and Theil across protected groups
 5. An MRM model card with risk-rated assumptions and an HTML governance pack
 
-That is a defensible PS21/5 compliance programme. It is not a legal opinion. Whether any specific set of renewal prices satisfies ICOBS 6B.2 is a judgement call that requires review by your legal and actuarial leads — code cannot substitute for that. What the code can do is make the inputs to that review precise, repeatable, and auditable.
+That is a defensible PS21/5 compliance programme. It is not a legal opinion. Whether any specific set of renewal prices satisfies ICOBS 6B.2 is a judgement call that requires review by your legal and actuarial leads  -  code cannot substitute for that. What the code can do is make the inputs to that review precise, repeatable, and auditable.
 
 The constraint we are most often asked about is ENBP quality. Quarterly back-tests comparing ENBP estimates to live new business quotes are non-negotiable. A 5% systematic error in ENBP estimates means you cannot be confident the constraint is binding where you think it is. The `enbp_buffer` parameter gives you a safety margin, but it should not substitute for measuring the estimation error directly.
 

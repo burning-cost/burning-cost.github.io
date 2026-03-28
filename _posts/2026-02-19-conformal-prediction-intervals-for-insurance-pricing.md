@@ -191,7 +191,7 @@ decile_df = cp.coverage_by_decile(X_test, y_test, alpha=0.10)
 print(decile_df)
 ```
 
-`summary()` prints marginal coverage and per-decile breakdown. `coverage_by_decile()` returns a Polars DataFrame — use it with matplotlib or polars.plot() to produce the governance chart. With 400 observations per decile, the Wilson score bands on individual coverage estimates are roughly ±4pp, enough to distinguish a 65% coverage reading from a 90% one unambiguously.
+`summary()` prints marginal coverage and per-decile breakdown. `coverage_by_decile()` returns a Polars DataFrame  -  use it with matplotlib or polars.plot() to produce the governance chart. With 400 observations per decile, the Wilson score bands on individual coverage estimates are roughly ±4pp, enough to distinguish a 65% coverage reading from a 90% one unambiguously.
 
 ---
 
@@ -246,12 +246,12 @@ uv add insurance-conformal
 
 Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-conformal) and available on [PyPI](https://pypi.org/project/insurance-conformal/). The library is built around a single entry point - `InsuranceConformalPredictor` - and wraps any sklearn-compatible model. The coverage diagnostics work independently of the predictor via `CoverageDiagnostics` if you have intervals from another source and want to apply the same framework.
 
-The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate. Once deployed, recalibrate on the same quarterly cadence you validate the point forecast — [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) will alert you to feature distribution shifts that may have invalidated the calibration set.
+The first thing to check after calibrating is always `coverage_by_decile()`. If the top decile is more than 5 percentage points below target, switch from `raw` to `pearson_weighted`. If it is still off, try `deviance`. If coverage is non-monotone across deciles - high in the middle, low at both ends - your calibration data is not representative of the test distribution, and the temporal split is the first place to investigate. Once deployed, recalibrate on the same quarterly cadence you validate the point forecast  -  [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) will alert you to feature distribution shifts that may have invalidated the calibration set.
 
-- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — the complement to conformal intervals: conformal tells you about uncertainty, calibration tells you whether the point predictions are at the right level
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the coverage-by-decile table from this library is a structured evidence artefact for SS1/23 Principle 4 documentation
+- [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/)  -  the complement to conformal intervals: conformal tells you about uncertainty, calibration tells you whether the point predictions are at the right level
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  the coverage-by-decile table from this library is a structured evidence artefact for SS1/23 Principle 4 documentation
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/)
 - [Quantile GBMs for Insurance: TVaR, ILFs, and Large Loss Loadings](/2026/03/07/insurance-quantile/)
 - [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)
-- [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — benchmark: parametric Tweedie intervals undercover high-risk policies by 10-15pp; pearson_weighted conformal fixes it
-- [Conformal Prediction for Solvency II SCR Validation](/2026/03/26/conformal-prediction-for-solvency-ii-scr-validation/) — applying the same framework to SCR estimation: per-risk non-parametric bounds for capital model validation
+- [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/)  -  benchmark: parametric Tweedie intervals undercover high-risk policies by 10-15pp; pearson_weighted conformal fixes it
+- [Conformal Prediction for Solvency II SCR Validation](/2026/03/26/conformal-prediction-for-solvency-ii-scr-validation/)  -  applying the same framework to SCR estimation: per-risk non-parametric bounds for capital model validation

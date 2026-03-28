@@ -100,14 +100,14 @@ Without exposure weighting, the calibration quantile is contaminated by the easi
 The conformal coverage guarantee is marginal: `P(y in interval) >= 1 - alpha` averaged over all observations. A model can achieve 90% aggregate coverage while covering only 65% of high-risk policies. MAPIE gives you aggregate coverage. It does not give you a tool to check whether that coverage is uniform across risk deciles.
 
 ```python
-# MAPIE — you have to write this yourself
+# MAPIE  -  you have to write this yourself
 coverage = np.mean((y_test >= y_pi[:, 0, 0]) & (y_test <= y_pi[:, 1, 0]))
 print(f"Aggregate coverage: {coverage:.3f}")
 # No per-decile breakdown, no segment analysis
 ```
 
 ```python
-# insurance-conformal — built in
+# insurance-conformal  -  built in
 diag = cp.coverage_by_decile(X_test, y_test, alpha=0.10)
 print(diag)
 #    decile  mean_predicted  n_obs  coverage  target_coverage

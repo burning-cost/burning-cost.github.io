@@ -382,7 +382,7 @@ uv add insurance-cv
 from insurance_cv import walk_forward_split, InsuranceCV
 import polars as pl
 
-# Build walk-forward folds — expanding training window, 6-month IBNR buffer
+# Build walk-forward folds  -  expanding training window, 6-month IBNR buffer
 splits = walk_forward_split(
     df=df,
     date_col="inception_year",
@@ -597,6 +597,6 @@ glum handles all of this correctly. The code in this post is the working foundat
 
 *Libraries referenced in this post: [glum](https://github.com/Quantco/glum), [insurance-cv](https://github.com/burning-cost/insurance-cv), [insurance-distill](https://github.com/burning-cost/insurance-distill), [shap-relativities](https://github.com/burning-cost/shap-relativities), [insurance-fairness](https://github.com/burning-cost/insurance-fairness), [insurance-whittaker](https://github.com/burning-cost/insurance-whittaker)*
 
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the LRTW framework and `insurance-fairness` library for the proxy discrimination audit mentioned in this post
-- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/) — when you need to move beyond the GLM while keeping the factor-table output format
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — how to take the GLM's validation metrics (Gini CI, A/E by segment, Hosmer-Lemeshow) and package them into a compliant MRM artefact
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)  -  the LRTW framework and `insurance-fairness` library for the proxy discrimination audit mentioned in this post
+- [EBM, ANAM, or PIN: Choosing an Interpretable Architecture for UK Insurance Pricing](/2026/03/14/insurance-gam-interpretable-nonlinearity/)  -  when you need to move beyond the GLM while keeping the factor-table output format
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  how to take the GLM's validation metrics (Gini CI, A/E by segment, Hosmer-Lemeshow) and package them into a compliant MRM artefact

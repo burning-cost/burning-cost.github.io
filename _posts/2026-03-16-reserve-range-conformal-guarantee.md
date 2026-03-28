@@ -87,9 +87,9 @@ mscp.calibrate(y_cal, alpha=0.10)  # target 90% coverage at each horizon
 
 # Fan chart: dictionary keyed by horizon
 fan = mscp.predict_fan(alpha=0.10)
-# fan[1]  = (lower_1step,  upper_1step)  — one month ahead
-# fan[6]  = (lower_6step,  upper_6step)  — six months ahead
-# fan[12] = (lower_12step, upper_12step) — one year ahead
+# fan[1]  = (lower_1step,  upper_1step)   -  one month ahead
+# fan[6]  = (lower_6step,  upper_6step)   -  six months ahead
+# fan[12] = (lower_12step, upper_12step)  -  one year ahead
 
 print("Horizon  Lower   Upper   Width")
 for h in [1, 3, 6, 12]:

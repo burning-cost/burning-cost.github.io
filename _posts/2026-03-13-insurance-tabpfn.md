@@ -7,7 +7,7 @@ tags: [TabPFN, TabICLv2, foundation-model, thin-data, in-context-learning, GLM, 
 description: "TabPFN and TabICLv2 for thin-segment UK insurance pricing. In-context learning at inference, no gradient descent. insurance-thin-data wraps both for actuaries."
 ---
 
-When your home insurance team prices thatched properties, new-build flats in a specific postcode cluster, or a freshly launched e-bike product, they are almost always working from fewer than a thousand policy-years. Often fewer than two hundred. At that data volume, a Poisson GLM's MLE has not converged. The confidence intervals on your rating factors are so wide they are informative about almost nothing. The standard response is credibility blending — shrink toward the overall book mean, apply a judgement overlay, call it done. That is not a method. It is a controlled way of saying "we do not have enough data."
+When your home insurance team prices thatched properties, new-build flats in a specific postcode cluster, or a freshly launched e-bike product, they are almost always working from fewer than a thousand policy-years. Often fewer than two hundred. At that data volume, a Poisson GLM's MLE has not converged. The confidence intervals on your rating factors are so wide they are informative about almost nothing. The standard response is credibility blending  -  shrink toward the overall book mean, apply a judgement overlay, call it done. That is not a method. It is a controlled way of saying "we do not have enough data."
 
 The question worth asking in 2026 is whether there is something better.
 
@@ -21,21 +21,21 @@ uv add insurance-thin-data
 
 ## What foundation models for tabular data actually do
 
-TabPFN v2, published in Nature 637:319–326 by Hollmann et al. in January 2025, is not a model you train on your data. It is a model pretrained on millions of synthetically generated tabular datasets — datasets drawn from a prior over data-generating processes that covers a huge range of functional forms, noise structures, and feature correlations.
+TabPFN v2, published in Nature 637:319–326 by Hollmann et al. in January 2025, is not a model you train on your data. It is a model pretrained on millions of synthetically generated tabular datasets  -  datasets drawn from a prior over data-generating processes that covers a huge range of functional forms, noise structures, and feature correlations.
 
 At inference time, you pass in your labelled training set as context. The model has never seen your data before. But it has seen enough diversity during pretraining that it can, in a single forward pass, produce a posterior-predictive distribution over test labels. No gradient descent. No hyperparameter tuning. No CV loop. The training set literally becomes part of the input.
 
-This is in-context learning. The same mechanism that lets a large language model answer questions about a document it has never seen — by conditioning on that document in the prompt — lets TabPFN produce calibrated predictions from a dataset it was never trained on.
+This is in-context learning. The same mechanism that lets a large language model answer questions about a document it has never seen  -  by conditioning on that document in the prompt  -  lets TabPFN produce calibrated predictions from a dataset it was never trained on.
 
-The performance claims in the Nature paper are not modest. On datasets under 10,000 samples, TabPFN v2 outperforms XGBoost, LightGBM, and tuned neural networks across 300+ benchmarks. The margin is meaningful — Gini improvements of 3–8 points in the regimes where these models have genuinely thin data. Hollmann et al. attribute this to the synthetic pretraining: the model has effectively been regularised by an enormous implicit prior over tabular data-generating processes.
+The performance claims in the Nature paper are not modest. On datasets under 10,000 samples, TabPFN v2 outperforms XGBoost, LightGBM, and tuned neural networks across 300+ benchmarks. The margin is meaningful  -  Gini improvements of 3–8 points in the regimes where these models have genuinely thin data. Hollmann et al. attribute this to the synthetic pretraining: the model has effectively been regularised by an enormous implicit prior over tabular data-generating processes.
 
-TabICLv2 (arXiv preprint, INRIA's SODA team) superseded TabPFN v2.5 on the same benchmarks as of early 2026. It is Apache 2.0-licensed and available on PyPI. `insurance-thin-data` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI — no GPU, no API key, no cost.
+TabICLv2 (arXiv preprint, INRIA's SODA team) superseded TabPFN v2.5 on the same benchmarks as of early 2026. It is Apache 2.0-licensed and available on PyPI. `insurance-thin-data` abstracts over both backends via a `BackendProtocol` interface, so you can switch without touching your pricing code. A `MockBackend` ships for CI  -  no GPU, no API key, no cost.
 
 ---
 
 ## The insurance use case
 
-The canonical thin-data problem in UK personal lines is not the main book — it is the edge. Some examples from current UK pricing practice:
+The canonical thin-data problem in UK personal lines is not the main book  -  it is the edge. Some examples from current UK pricing practice:
 
 **E-bike and cargo bike.** Products launched in 2022–2024. The oldest books have three years of development. Frequency by age band is unstable because the young-driver cohort is small and claims are sparse.
 
@@ -45,9 +45,9 @@ The canonical thin-data problem in UK personal lines is not the main book — it
 
 **New-to-market demographics.** A young non-binary driver cohort or a new immigrant community. Small sample, genuine heterogeneity, no legacy data.
 
-In each case, the actuarial instinct is to borrow. Credibility blending borrows from the overall mean. Hierarchical Bayes borrows from the parent segment. Both work reasonably well when the sub-segment is a well-understood perturbation of the parent. When it is genuinely different — new product, different risk behaviour, no natural parent — borrowing from the wrong place is actively misleading.
+In each case, the actuarial instinct is to borrow. Credibility blending borrows from the overall mean. Hierarchical Bayes borrows from the parent segment. Both work reasonably well when the sub-segment is a well-understood perturbation of the parent. When it is genuinely different  -  new product, different risk behaviour, no natural parent  -  borrowing from the wrong place is actively misleading.
 
-TabPFN's pretraining prior is broad enough that it does not borrow from any one place. It generalises from the implicit structure in millions of synthetic datasets. That is a different kind of shrinkage — not toward your book, but toward reasonable functional forms for tabular data.
+TabPFN's pretraining prior is broad enough that it does not borrow from any one place. It generalises from the implicit structure in millions of synthetic datasets. That is a different kind of shrinkage  -  not toward your book, but toward reasonable functional forms for tabular data.
 
 ---
 
@@ -69,9 +69,9 @@ preds = model.predict(X_test)
 intervals = model.predict_interval(X_test)   # split conformal, finite-sample guarantee
 ```
 
-The `exposure` argument to `fit()` handles the standard insurance problem that you are modelling a rate, not a count. There is no native exposure offset in TabPFN — the library implements a log-rate workaround: the target is log(claims / exposure), the model fits on log-rate, and predictions are exponentiated back to rate. This is a genuine limitation: it is not the same as a proper Poisson offset, and it will not produce well-calibrated Poisson deviance scores. We document this explicitly in every committee report the library generates.
+The `exposure` argument to `fit()` handles the standard insurance problem that you are modelling a rate, not a count. There is no native exposure offset in TabPFN  -  the library implements a log-rate workaround: the target is log(claims / exposure), the model fits on log-rate, and predictions are exponentiated back to rate. This is a genuine limitation: it is not the same as a proper Poisson offset, and it will not produce well-calibrated Poisson deviance scores. We document this explicitly in every committee report the library generates.
 
-The prediction intervals use split conformal prediction — the same approach as [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal), adapted for regression. The coverage guarantee is finite-sample and distribution-free: if you specify `conformal_coverage=0.9`, the intervals will contain the true value at least 90% of the time on exchangeable test data, regardless of the true data-generating process.
+The prediction intervals use split conformal prediction  -  the same approach as [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal), adapted for regression. The coverage guarantee is finite-sample and distribution-free: if you specify `conformal_coverage=0.9`, the intervals will contain the true value at least 90% of the time on exchangeable test data, regardless of the true data-generating process.
 
 ---
 
@@ -104,7 +104,7 @@ print(results.to_dataframe())
 
 The double-lift chart compares the top-decile observed loss ratio for policies ranked by each model against the bottom decile. If the foundation model is genuinely separating risk better, the spread widens. In our test runs on simulated thin-book data (500 policies, 5 features, Poisson-Gamma frequency-severity), the foundation model's double-lift spread was consistently 10–15 percentage points wider than the GLM.
 
-The Gini formula in the benchmark is the standard insurance definition: twice the area between the Lorenz curve and the diagonal, with cumulation by predicted rank. We caught and corrected an inversion in the Gini formula during build — the initial implementation was computing 1 − Gini, producing metrics below 0.5 for models with genuine discrimination power. Obvious once you see it; easy to miss in a unit test that only checks the range.
+The Gini formula in the benchmark is the standard insurance definition: twice the area between the Lorenz curve and the diagonal, with cumulation by predicted rank. We caught and corrected an inversion in the Gini formula during build  -  the initial implementation was computing 1 − Gini, producing metrics below 0.5 for models with genuine discrimination power. Obvious once you see it; easy to miss in a unit test that only checks the range.
 
 ---
 
@@ -132,7 +132,7 @@ rels["vehicle_age"]
 # ...
 ```
 
-The intervals on the relativities are conformal — inherited from the underlying `predict_interval` method. They reflect genuine uncertainty in the model's predictions at each grid point, not parametric bootstrap approximations.
+The intervals on the relativities are conformal  -  inherited from the underlying `predict_interval` method. They reflect genuine uncertainty in the model's predictions at each grid point, not parametric bootstrap approximations.
 
 These are PDP-based relativities, not GLM coefficients. They are not marginalised in the same way; they will include interaction effects in the average. Whether that is what you want depends on your rating engine. We think it is often more honest than forcing an additive log-linear structure onto genuinely non-linear risk.
 
@@ -156,7 +156,7 @@ with open("tabpfn_review.html", "w") as f:
 
 The five mandatory limitations are:
 
-1. **Maximum dataset size.** TabPFN v2 supports up to approximately 10,000 rows. TabICLv2 has a similar practical limit. This library is not appropriate for portfolios above that threshold — use a GLM or GBM.
+1. **Maximum dataset size.** TabPFN v2 supports up to approximately 10,000 rows. TabICLv2 has a similar practical limit. This library is not appropriate for portfolios above that threshold  -  use a GLM or GBM.
 
 2. **No exposure offset.** The log-rate workaround is not a proper Poisson offset. Poisson deviance scores are approximate. Do not rely on them for regulatory model validation without additional testing.
 
@@ -180,23 +180,23 @@ We want to be specific about the position of this library in a pricing toolkit.
 
 **It is a thin-segment specialist.** When you have 200–2,000 policies, no natural parent segment to borrow from, and a GLM that is either flat or unstable, TabPFN or TabICLv2 in-context learning is the best tool we have seen. The pretraining acts as a prior that is broader and less committal than anything you would elicit from your book.
 
-The BUILD score we assigned during development was 16/20. The four missing points are: no sample weights (critical for exposure-varying portfolios), no proper exposure offset (critical for Poisson frequency), max 10K rows (critical for mid-size books), and no Gamma family (critical for severity). These are not bugs to be fixed — they are architectural limits of the underlying TabPFN/TabICLv2 backends. The library documents them and stops you from using it outside its scope.
+The BUILD score we assigned during development was 16/20. The four missing points are: no sample weights (critical for exposure-varying portfolios), no proper exposure offset (critical for Poisson frequency), max 10K rows (critical for mid-size books), and no Gamma family (critical for severity). These are not bugs to be fixed  -  they are architectural limits of the underlying TabPFN/TabICLv2 backends. The library documents them and stops you from using it outside its scope.
 
 ---
 
 ## A note on the academic lineage
 
-The Nature paper — Hollmann, Müller, Purucker, Krishnakumar, Körfer, Hoo, Shen, Hutter (2025), "TabPFN v2: Improved In-Context Learning for Tabular Data", Nature 637:319–326 — is not a typical ML conference paper. Nature peer review is substantially more rigorous, and the 300-dataset benchmark leaves less room for cherry-picking than single-paper results. The actuarial credibility of the method is grounded in that publication, not in our endorsement.
+The Nature paper  -  Hollmann, Müller, Purucker, Krishnakumar, Körfer, Hoo, Shen, Hutter (2025), "TabPFN v2: Improved In-Context Learning for Tabular Data", Nature 637:319–326  -  is not a typical ML conference paper. Nature peer review is substantially more rigorous, and the 300-dataset benchmark leaves less room for cherry-picking than single-paper results. The actuarial credibility of the method is grounded in that publication, not in our endorsement.
 
-TabICLv2 from INRIA/SODA (arXiv preprint) does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-thin-data` is deliberately designed so that when the next generation of foundation models for tabular data arrives — and there will be a next generation — swapping backends requires changing one string.
+TabICLv2 from INRIA/SODA (arXiv preprint) does not yet have a comparable peer-reviewed publication. It outperforms TabPFN v2.5 on the standard benchmark suite, but that is a newer and less thoroughly scrutinised result. The `BackendProtocol` abstraction in `insurance-thin-data` is deliberately designed so that when the next generation of foundation models for tabular data arrives  -  and there will be a next generation  -  swapping backends requires changing one string.
 
 ---
 
-**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)** — MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.
+**[insurance-thin-data on GitHub](https://github.com/burning-cost/insurance-thin-data)**  -  MIT-licensed, PyPI, 72 tests. For the segments your GLM cannot see.
 
 ---
 
 **Related reading:**
-- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — partial pooling across segments using MCMC; the full Bayesian alternative for when interpretability and uncertainty quantification matter more than raw accuracy
-- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/) — frequentist credibility for thin segments; simpler and faster than TabPFN, appropriate when the segment structure is one-dimensional
-- [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/) — transfer learning for thin-segment pricing; three approaches for adapting a model trained on a related, data-rich segment
+- [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)  -  partial pooling across segments using MCMC; the full Bayesian alternative for when interpretability and uncertainty quantification matter more than raw accuracy
+- [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/)  -  frequentist credibility for thin segments; simpler and faster than TabPFN, appropriate when the segment structure is one-dimensional
+- [Borrowing Experience You Don't Have](/2026/03/12/borrowing-experience-you-dont-have/)  -  transfer learning for thin-segment pricing; three approaches for adapting a model trained on a related, data-rich segment

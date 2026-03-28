@@ -65,7 +65,7 @@ lg = LassoGuidedGLM(
     gbm_model=fitted_catboost,
     feature_names=["customer_age", "declared_value", "purchase_category", "term_days"],
     n_bins=8,
-    alpha=0.5,       # lasso regularisation — tighten if feature space is thin
+    alpha=0.5,       # lasso regularisation  -  tighten if feature space is thin
     family="gamma",  # severity model
 )
 lg.fit(X_train, y_train, exposure=exposure_arr)
@@ -200,6 +200,6 @@ This is not a novel architecture. It is the standard multiplicative rating engin
 
 ---
 
-**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) - GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) - model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty. See also: [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/) — the SS1/23 validation suite that embedded models must pass. [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/) — the full distillation workflow end to end.
+**Related tools:** [insurance-distill](https://burning-cost.github.io/insurance-distill) - GBM to GLM distillation via surrogate fitting and partial-dependence-guided binning. [insurance-governance](https://burning-cost.github.io/insurance-governance) - model cards, risk tier scoring, and validation reports for PRA SS1/23 and Consumer Duty. See also: [Your Model Validation Is a Checklist, Not a Test](/2025/07/13/model-validation-pra-ss123/)  -  the SS1/23 validation suite that embedded models must pass. [From GBM to Radar: A Complete Databricks Workflow](/2026/02/21/from-gbm-to-radar-databricks-workflow/)  -  the full distillation workflow end to end.
 
 **References:** BCG Embedded Finance Report 2025; FCA Consumer Duty Guidance FG22/5 (July 2022); FCA Model Risk Management Discussion Paper MS23/1; PRA Supervisory Statement SS1/23; Lindholm & Palmquist (2024) SSRN 4691626.

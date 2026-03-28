@@ -64,8 +64,8 @@ psi_weighted = psi(
     reference_exposure=earned_exposure_ref,
 )
 
-print(f"Unweighted PSI: {psi_unweighted:.3f}")  # 0.18 — amber
-print(f"Weighted PSI:   {psi_weighted:.3f}")    # 0.27 — red
+print(f"Unweighted PSI: {psi_unweighted:.3f}")  # 0.18  -  amber
+print(f"Weighted PSI:   {psi_weighted:.3f}")    # 0.27  -  red
 ```
 
 In the `insurance-monitoring` benchmark (50,000 training policies, 2019–2021 reference, 2023 current cohort with 2x young driver oversampling): unweighted PSI reads amber at 0.18, exposure-weighted PSI reads red at 0.27. These are different governance conclusions. The weighted version is correct - the young drivers entering via comparison sites are on short-term monthly policies and each count once regardless of their actual exposure contribution.
@@ -150,7 +150,7 @@ test = SequentialTest(
     min_exposure_per_arm=100.0,  # car-years before any decision
 )
 
-# Feed monthly increments — check whenever you like
+# Feed monthly increments  -  check whenever you like
 result = test.update(
     champion_claims=42,   challenger_claims=29,
     champion_exposure=510, challenger_exposure=505,

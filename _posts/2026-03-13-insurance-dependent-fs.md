@@ -9,7 +9,7 @@ description: "Shared-trunk neural model for frequency-severity dependence in UK 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-dependent-fs` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `pip install insurance-frequency-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
+**Package update:** `insurance-dependent-fs` has been consolidated into [`insurance-frequency-severity`](https://pypi.org/project/insurance-frequency-severity/). Install with `pip install insurance-frequency-severity`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-frequency-severity)
 </div>
 
 

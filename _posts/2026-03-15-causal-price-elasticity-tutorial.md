@@ -63,7 +63,7 @@ confounders = [
     "region",
     "vehicle_age",
     "occupation_band",
-    "channel",          # PCW vs direct — must be here, not optional
+    "channel",          # PCW vs direct  -  must be here, not optional
     "months_since_claim",
 ]
 ```
@@ -182,7 +182,7 @@ The DR-Learner GATEs:
 
 ```python
 gate_ncd_dr = est_dr.gate(df, by="ncd_years")
-# Compare against gate_ncd from the forest — confirm direction and approximate magnitudes match
+# Compare against gate_ncd from the forest  -  confirm direction and approximate magnitudes match
 ```
 
 We do not recommend choosing between the two estimators based on which gives a better-looking answer. Use the forest as primary; use the DR-Learner to confirm. If they disagree, treat both with caution until you have understood why.
@@ -257,7 +257,7 @@ diag = ElasticityDiagnostics()
 report = diag.treatment_variation_report(df, treatment='log_price_change', confounders=confounders)
 print(f"Variation fraction: {report.variation_fraction:.3f}")
 # Variation fraction: 0.180
-# 18% of price variation is unexplained by risk factors — adequate but not generous
+# 18% of price variation is unexplained by risk factors  -  adequate but not generous
 
 print(report.summary())
 # Treatment Variation Diagnostic
@@ -275,7 +275,7 @@ The 10% threshold is not a formal test statistic - it is a rule of thumb. Below 
 
 ```python
 if report.variation_fraction < 0.10:
-    print("WARNING: weak treatment — DML estimates will be noisy")
+    print("WARNING: weak treatment  -  DML estimates will be noisy")
     print("Consider restricting to periods with exogenous rate movements")
     for suggestion in report.suggestions:
         print(f"  - {suggestion}")

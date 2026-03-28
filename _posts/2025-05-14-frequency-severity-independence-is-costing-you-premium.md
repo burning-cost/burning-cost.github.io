@@ -247,7 +247,7 @@ Copula modelling for frequency-severity dependence has been in the actuarial lit
 
 `insurance-frequency-severity` makes this a two-line addition to your existing GLM pipeline. The correction is analytic, so runtime scoring is unaffected. The output is an interpretable omega parameter that you can defend in a committee paper and record in the [model inventory under insurance-governance](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). The test suite gives you the diagnostic to confirm whether the correction is warranted on your data before you commit to it.
 
-On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium correction concentrated in the high-frequency tail is real money. Track whether the correction is holding post-deployment with [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s segment-level A/E — if the high-frequency decile starts showing A/E above 1.10 again, omega has drifted and needs reestimating. It is also a systematic bias rather than noise, which means it will show up in your A/E ratios if you look for it.
+On a 50,000-policy UK motor book with typical NCD structure, a 3-5% pure premium correction concentrated in the high-frequency tail is real money. Track whether the correction is holding post-deployment with [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s segment-level A/E  -  if the high-frequency decile starts showing A/E above 1.10 again, omega has drifted and needs reestimating. It is also a systematic bias rather than noise, which means it will show up in your A/E ratios if you look for it.
 
 ---
 

@@ -7,7 +7,7 @@ tags: [bayesian, hierarchical, mixed-effects, credibility, neural-mixed-effects,
 description: "Bühlmann-Straub credibility breaks when your hierarchy has more than two levels or when the random effects interact with pricing factors. Here is when to upgrade to a full Bayesian hierarchical model, and how to do it with insurance-credibility and PyMC."
 ---
 
-Bühlmann-Straub is correct — in the precise mathematical sense that it produces the minimum-variance linear estimator of each group's true rate given the data structure it assumes. The assumptions are: observations within a group are exchangeable, variance components are constant across groups, and the random effect enters linearly. On a simple two-level structure — risk nested within scheme, or scheme within book — these assumptions are usually defensible.
+Bühlmann-Straub is correct  -  in the precise mathematical sense that it produces the minimum-variance linear estimator of each group's true rate given the data structure it assumes. The assumptions are: observations within a group are exchangeable, variance components are constant across groups, and the random effect enters linearly. On a simple two-level structure  -  risk nested within scheme, or scheme within book  -  these assumptions are usually defensible.
 
 They break down in three common situations:
 
@@ -17,7 +17,7 @@ They break down in three common situations:
 
 3. **Thin segments with strong prior information**: you have a new MGA with six months of data and a credible view from the cedant's previous book about likely loss ratios. B-S has no mechanism for injecting informative priors. The choice is either ignore the prior information or use it informally via a manual loading.
 
-The Bayesian hierarchical model handles all three. The price is computational complexity and the need to specify priors explicitly — which is either a cost or a feature depending on your perspective.
+The Bayesian hierarchical model handles all three. The price is computational complexity and the need to specify priors explicitly  -  which is either a cost or a feature depending on your perspective.
 
 ---
 
@@ -33,11 +33,11 @@ The resulting model is:
 λ_ig = f(X_i; ω) · exp(θ_g)
 ```
 
-where f(X_i; ω) is the neural network component (or GBM — the specific architecture matters less than the structure), θ_g ~ N(μ_g, σ²_g) is the group random effect, and λ_ig is the expected claim frequency for policy i in group g.
+where f(X_i; ω) is the neural network component (or GBM  -  the specific architecture matters less than the structure), θ_g ~ N(μ_g, σ²_g) is the group random effect, and λ_ig is the expected claim frequency for policy i in group g.
 
 The posterior for θ_g given observations is analytically tractable for the Poisson-lognormal pair (Hinde 1982). Wüthrich provides the EM algorithm for fitting the variance components σ²_g jointly with the neural network weights ω.
 
-For pure Bayesian inference — where you want proper posterior uncertainty on all parameters, not just point estimates — PyMC is the cleaner tool.
+For pure Bayesian inference  -  where you want proper posterior uncertainty on all parameters, not just point estimates  -  PyMC is the cleaner tool.
 
 ---
 
@@ -56,7 +56,7 @@ Switch to the full Bayesian hierarchical model when any of these apply:
 - The random effects interact with pricing factors (e.g., broker effects vary by vehicle type)
 - You need proper posterior intervals on group-level premiums, not just credibility factors
 
-The last point matters more than it sounds. A B-S Z-factor of 0.6 tells you the credibility-weighted premium but not the uncertainty around it. A Bayesian model gives you the posterior distribution of the group premium — the 5th and 95th percentiles. For capital modelling, reinsurance treaty pricing, or scheme renewal terms, this is often the number that matters.
+The last point matters more than it sounds. A B-S Z-factor of 0.6 tells you the credibility-weighted premium but not the uncertainty around it. A Bayesian model gives you the posterior distribution of the group premium  -  the 5th and 95th percentiles. For capital modelling, reinsurance treaty pricing, or scheme renewal terms, this is often the number that matters.
 
 ---
 
@@ -171,7 +171,7 @@ scheme_effect_hdi  = pm.hdi(theta_posterior, hdi_prob=0.9)              # 90% HD
 scheme_loading = np.exp(scheme_effect_mean)   # multiplicative adjustment
 ```
 
-The non-centred parameterisation (`theta_offset`) is not aesthetic preference — it is necessary for efficient sampling when schemes are thin. The centred version (`theta ~ N(mu, sigma)` directly) produces funnel geometry in the posterior that causes NUTS to struggle. You will see divergences in the trace if you use the centred version on a portfolio where some schemes have fewer than 200 policy-years.
+The non-centred parameterisation (`theta_offset`) is not aesthetic preference  -  it is necessary for efficient sampling when schemes are thin. The centred version (`theta ~ N(mu, sigma)` directly) produces funnel geometry in the posterior that causes NUTS to struggle. You will see divergences in the trace if you use the centred version on a portfolio where some schemes have fewer than 200 policy-years.
 
 ---
 
@@ -179,10 +179,10 @@ The non-centred parameterisation (`theta_offset`) is not aesthetic preference �
 
 This is the practical advantage of Bayesian over B-S that matters for MGA and scheme pricing. Suppose you are pricing a new book from a cedant. The cedant provides a historical loss ratio of 72% and a view that between-scheme variance is moderate (schemes differ by about ±25% around the mean). You translate this into:
 
-- `prior_scheme_mean = np.log(0.72 / portfolio_expected_lr)` — the cedant's prior on the book mean relative to your portfolio
-- `prior_scheme_sd = 0.12` — consistent with ±25% 2σ scheme range on the log scale (since exp(2 × 0.12) ≈ 1.27)
+- `prior_scheme_mean = np.log(0.72 / portfolio_expected_lr)`  -  the cedant's prior on the book mean relative to your portfolio
+- `prior_scheme_sd = 0.12`  -  consistent with ±25% 2σ scheme range on the log scale (since exp(2 × 0.12) ≈ 1.27)
 
-After six months of live data, the posterior naturally blends the prior with the emerging experience. A scheme with 30 claims after six months still has meaningful uncertainty — the posterior HDI will be wide — but the centre of the distribution is already being pulled towards the data. After 18-24 months of full experience, the data dominates and the prior matters only at the hyperprior level (σ_theta).
+After six months of live data, the posterior naturally blends the prior with the emerging experience. A scheme with 30 claims after six months still has meaningful uncertainty  -  the posterior HDI will be wide  -  but the centre of the distribution is already being pulled towards the data. After 18-24 months of full experience, the data dominates and the prior matters only at the hyperprior level (σ_theta).
 
 This is exactly what B-S credibility does, but the Bayesian formulation makes the prior explicit and auditable. Under Solvency II internal model governance and the FCA's SR3/25 model risk framework, explicit parameterised priors are easier to validate than implicit ones embedded in a K ratio that emerges from method-of-moments estimation.
 
@@ -196,10 +196,10 @@ The key diagnostics from either B-S or the Bayesian model are the variance compo
 |---|---|---|---|
 | Within-group variance | v | σ²_within | Process noise: how much do outcomes vary around a group's true rate? |
 | Between-group variance | a | σ²_theta | Genuine group heterogeneity: how much do true rates differ across groups? |
-| Bühlmann's k | k = v/a | — | Noise-to-signal ratio |
+| Bühlmann's k | k = v/a |  -  | Noise-to-signal ratio |
 | Credibility factor | Z = w/(w+k) | Posterior shrinkage | How much to trust a group's own data |
 
-On UK commercial motor, typical values are v ≈ 0.015-0.025 (within-scheme year-to-year noise) and a ≈ 0.003-0.008 (genuine between-scheme rate variation). This gives k in the range 2-8 for typical fleet schemes. A scheme with 300 policy-years has Z = 300/(300+k). At k=5, Z = 0.98 — nearly fully trusted. At k=5 with only 30 policy-years, Z = 0.86 — still pulling heavily towards its own experience. The portfolio average is almost irrelevant for anything above 50 policy-years when the between-scheme variance is this large.
+On UK commercial motor, typical values are v ≈ 0.015-0.025 (within-scheme year-to-year noise) and a ≈ 0.003-0.008 (genuine between-scheme rate variation). This gives k in the range 2-8 for typical fleet schemes. A scheme with 300 policy-years has Z = 300/(300+k). At k=5, Z = 0.98  -  nearly fully trusted. At k=5 with only 30 policy-years, Z = 0.86  -  still pulling heavily towards its own experience. The portfolio average is almost irrelevant for anything above 50 policy-years when the between-scheme variance is this large.
 
 The Bayesian model gives you `sigma_theta` directly from the posterior. If the posterior 90% HDI for `sigma_theta` spans 0.05 to 0.25, that is an honest statement about how uncertain you are about between-scheme heterogeneity. The B-S v̂ and â are point estimates with no uncertainty quantification.
 
@@ -213,9 +213,9 @@ The canonical use case where the classical model breaks hardest is an MGA portfo
 - The remaining 12 have 2-5 years of data
 - Underwriting authority varies: some schemes can write up to £10m CSL, others are restricted to standard risks
 
-B-S treats the 3 new schemes as having Z=0 — they get the portfolio mean regardless of any prior information. In practice, the MGA onboarding process produces a view of expected loss ratios, risk appetite, and underwriting quality that should inform the starting premium. The Bayesian model encodes this as the prior on `mu_theta` per scheme (or a hierarchical prior on scheme quality by underwriting class).
+B-S treats the 3 new schemes as having Z=0  -  they get the portfolio mean regardless of any prior information. In practice, the MGA onboarding process produces a view of expected loss ratios, risk appetite, and underwriting quality that should inform the starting premium. The Bayesian model encodes this as the prior on `mu_theta` per scheme (or a hierarchical prior on scheme quality by underwriting class).
 
-For capital modelling, the scheme-level posterior also feeds directly into the aggregate distribution. The posterior samples for each scheme's random effect θ_g can be used to simulate correlated loss ratios across schemes — accounting for the fact that a bad year at the scheme level is partly driven by systematic factors (the MGA's underwriting culture) that affect all schemes.
+For capital modelling, the scheme-level posterior also feeds directly into the aggregate distribution. The posterior samples for each scheme's random effect θ_g can be used to simulate correlated loss ratios across schemes  -  accounting for the fact that a bad year at the scheme level is partly driven by systematic factors (the MGA's underwriting culture) that affect all schemes.
 
 ```python
 # Simulate aggregate loss ratio distribution from posterior
@@ -233,7 +233,7 @@ print(f"90th percentile:       {np.percentile(aggregate_lr_samples, 90):.3f}")
 print(f"1-in-10 year event:    {np.percentile(aggregate_lr_samples, 90):.3f}")
 ```
 
-The correlated scheme effects — because they share the hyperprior σ_theta — naturally produce heavier tails in the aggregate distribution than independent scheme models would. This is the right structure: bad underwriting years tend to be bad across schemes, not independently bad.
+The correlated scheme effects  -  because they share the hyperprior σ_theta  -  naturally produce heavier tails in the aggregate distribution than independent scheme models would. This is the right structure: bad underwriting years tend to be bad across schemes, not independently bad.
 
 ---
 
@@ -241,15 +241,15 @@ The correlated scheme effects — because they share the hyperprior σ_theta —
 
 The hierarchical model is not a drop-in replacement for a B-S spreadsheet. It requires:
 
-**Tooling**: PyMC or Stan. Both run in Python. PyMC is the easier entry point — it uses NumPy-compatible syntax and the `pm.sample()` interface hides most of the MCMC complexity. Expect 2-5 minutes per model fit on a portfolio of 50 schemes and 5 years of data. This is not a real-time scoring model; it is an offline tool for pricing decisions.
+**Tooling**: PyMC or Stan. Both run in Python. PyMC is the easier entry point  -  it uses NumPy-compatible syntax and the `pm.sample()` interface hides most of the MCMC complexity. Expect 2-5 minutes per model fit on a portfolio of 50 schemes and 5 years of data. This is not a real-time scoring model; it is an offline tool for pricing decisions.
 
 **Prior specification**: someone needs to own the prior distributions and justify them. For scheme-level random effects, weakly informative priors (HalfNormal with σ=0.15-0.20 for the between-scheme standard deviation) are appropriate unless you have cedant data. Document the prior choices and check sensitivity.
 
-**Convergence checking**: `pm.summary(trace)` gives R-hat statistics for each parameter. R-hat > 1.01 is a warning. R-hat > 1.1 means the chains have not converged and results should not be used. Thin-segment models with fewer than 20 observed claims per group will struggle — consider collapsing groups or strengthening the prior.
+**Convergence checking**: `pm.summary(trace)` gives R-hat statistics for each parameter. R-hat > 1.01 is a warning. R-hat > 1.1 means the chains have not converged and results should not be used. Thin-segment models with fewer than 20 observed claims per group will struggle  -  consider collapsing groups or strengthening the prior.
 
 **Integration with the GLM**: the random effects model θ_g is a multiplicative adjustment on top of your GLM or GBM fixed-effects prediction. This means you need a clean separation between the risk-level rating model and the group-level experience model. If your current process bakes broker effects into the GLM factors, you need to strip them out before fitting the hierarchical model.
 
-The [`insurance-credibility`](/2026/02/19/buhlmann-straub-credibility-in-python/) library handles the classical case with the `HierarchicalBuhlmannStraub` class. For the full Bayesian version with PyMC, the pattern above is our recommended starting point — it is the minimum viable model that gives you proper posterior uncertainty and the ability to inject informative priors. The Wüthrich (2025) neural mixed effects extension — replacing the GLM offset with a neural network trained jointly with the random effects — is the research frontier, but the pure-Bayesian version is sufficient for most pricing decisions.
+The [`insurance-credibility`](/2026/02/19/buhlmann-straub-credibility-in-python/) library handles the classical case with the `HierarchicalBuhlmannStraub` class. For the full Bayesian version with PyMC, the pattern above is our recommended starting point  -  it is the minimum viable model that gives you proper posterior uncertainty and the ability to inject informative priors. The Wüthrich (2025) neural mixed effects extension  -  replacing the GLM offset with a neural network trained jointly with the random effects  -  is the research frontier, but the pure-Bayesian version is sufficient for most pricing decisions.
 
-- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/) — the closed-form classical alternative that requires no MCMC and runs in under a second
-- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) — when the Bayesian posterior intervals are too wide or too narrow, split conformal provides a distribution-free coverage guarantee
+- [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)  -  the closed-form classical alternative that requires no MCMC and runs in under a second
+- [Conformal Prediction Intervals for Insurance Pricing Models](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/)  -  when the Bayesian posterior intervals are too wide or too narrow, split conformal provides a distribution-free coverage guarantee

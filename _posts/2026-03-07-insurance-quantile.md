@@ -89,7 +89,7 @@ print(tvar_result.values.describe())
 # mean: 4821.33
 # 99th percentile: 18420.10
 
-# The loading over VaR — how much tail risk sits above the 95th percentile
+# The loading over VaR  -  how much tail risk sits above the 95th percentile
 loading_over_var = tvar_result.loading_over_var  # TVaR - VaR per risk
 ```
 
@@ -181,7 +181,7 @@ report = model.calibration_report(X_val, y_val)
 print(report["coverage"])
 # {'q_0.5': 0.503, 'q_0.75': 0.748, 'q_0.9': 0.871, 'q_0.95': 0.932, 'q_0.99': 0.981}
 
-# q_0.9 observed coverage: 0.871 — 12.9% of validation losses exceed the predicted 90th percentile
+# q_0.9 observed coverage: 0.871  -  12.9% of validation losses exceed the predicted 90th percentile
 # For a correctly calibrated model, it should be 10%.
 # Undercoverage at the 90th: the model is underestimating tail severity.
 ```

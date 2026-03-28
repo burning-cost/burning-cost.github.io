@@ -179,7 +179,7 @@ For a UK personal lines motor portfolio with direct and broker channels mixed to
 
 Step 3 is what makes this architecture work in practice. The base rate review and the scheme rate review happen on different cycles and involve different stakeholders. Separating them structurally -- rather than baking everything into one model that nobody can decompose -- is what allows the pricing function to actually manage the portfolio.
 
-The credibility approach did not disappear when GBMs arrived. It got a better Stage 1. Once the base rate and group adjustments are in production, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) can wrap the combined model to provide per-risk uncertainty bounds — distribution-free coverage guarantees that neither the CatBoost model nor the credibility layer can provide on their own.
+The credibility approach did not disappear when GBMs arrived. It got a better Stage 1. Once the base rate and group adjustments are in production, [conformal prediction intervals](/2026/02/19/conformal-prediction-intervals-for-insurance-pricing/) can wrap the combined model to provide per-risk uncertainty bounds  -  distribution-free coverage guarantees that neither the CatBoost model nor the credibility layer can provide on their own.
 
 ---
 

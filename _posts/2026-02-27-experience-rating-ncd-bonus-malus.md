@@ -59,7 +59,7 @@ shape: (10, 6)
 └───────┴──────────┴────────────────┴─────────────┴─────────────────────┴─────────────────┘
 ```
 
-The code above defines the ABI standard scale as a plain Python dictionary. For a non-standard BM system with different transition rules — some affinity schemes use bespoke progressions — modify the `ncd_levels`, `premium_factors`, `claim_free_dest`, and `one_claim_dest` arrays directly. The scale is just data; there is no hidden logic to validate against.
+The code above defines the ABI standard scale as a plain Python dictionary. For a non-standard BM system with different transition rules  -  some affinity schemes use bespoke progressions  -  modify the `ncd_levels`, `premium_factors`, `claim_free_dest`, and `one_claim_dest` arrays directly. The scale is just data; there is no hidden logic to validate against.
 
 ### What the stationary distribution tells you
 

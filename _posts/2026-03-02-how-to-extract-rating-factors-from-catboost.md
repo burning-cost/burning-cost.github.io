@@ -52,7 +52,7 @@ import catboost
 from shap_relativities import SHAPRelativities
 from shap_relativities.datasets.motor import load_motor, TRUE_FREQ_PARAMS
 
-# 50,000 synthetic UK motor policies — known DGP, Poisson frequency
+# 50,000 synthetic UK motor policies  -  known DGP, Poisson frequency
 df = load_motor(n_policies=50_000, seed=42)
 
 # Feature engineering: area A-F to integer code, binary conviction flag
@@ -98,11 +98,11 @@ Note `loss_function="Poisson"`. This is what ensures the model predicts in log s
 sr = SHAPRelativities(
     model=model,
     X=X,                         # Polars DataFrame
-    exposure=df["exposure"],     # Polars Series — earned car-years
+    exposure=df["exposure"],     # Polars Series  -  earned car-years
     categorical_features=cat_features,
     continuous_features=cont_features,
 )
-sr.fit()   # computes SHAP values — the slow step, scales with n_obs × n_trees
+sr.fit()   # computes SHAP values  -  the slow step, scales with n_obs × n_trees
 
 rels = sr.extract_relativities(
     normalise_to="base_level",
@@ -173,7 +173,7 @@ The practical question is not just "what do the SHAP relativities say" but "wher
 ```python
 import statsmodels.formula.api as smf
 
-# Fit a Poisson GLM on the same features — main effects only
+# Fit a Poisson GLM on the same features  -  main effects only
 df_model = df.with_columns([
     pl.col("area_code").cast(pl.Utf8).alias("area_str"),
     pl.col("ncd_years").cast(pl.Utf8).alias("ncd_str"),

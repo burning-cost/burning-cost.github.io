@@ -52,7 +52,7 @@ Install with uv:
 uv add insurance-optimise
 ```
 
-The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-causal`](https://github.com/burning-cost/insurance-causal) feeds directly in — for the DML methodology behind those elasticity estimates, see the [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) post.
+The main input is segment-level data: technical price, expected loss cost, baseline demand probability (renewal rate or conversion rate at current price), and price elasticity from your demand model. The elasticity output from [`insurance-causal`](https://github.com/burning-cost/insurance-causal) feeds directly in  -  for the DML methodology behind those elasticity estimates, see the [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) post.
 
 ```python
 from insurance_optimise import PortfolioOptimiser, ConstraintConfig
@@ -127,7 +127,7 @@ The first term is the marginal revenue from increasing this policy's price. The 
 One genuine trap with SLSQP: it can return `success=True` even when constraint violations are material (scipy issue #8986). The library does not trust the success flag. After every solve, we check:
 
 ```python
-# In _check_feasibility — always run after scipy returns
+# In _check_feasibility  -  always run after scipy returns
 for con in self._scipy_constraints:
     val = con["fun"](m)
     if val < -tol:   # constraint violated

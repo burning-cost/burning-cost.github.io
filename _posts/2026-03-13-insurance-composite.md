@@ -100,7 +100,7 @@ print(model.summary(y))
 print(f"VaR 99.5%  : £{model.var(0.995):,.0f}")
 print(f"TVaR 99.5% : £{model.tvar(0.995):,.0f}")
 
-# Randomized quantile residuals — should look N(0,1)
+# Randomized quantile residuals  -  should look N(0,1)
 resid = model.quantile_residuals(y)
 ```
 
@@ -268,7 +268,7 @@ print(f"Skew: {((resid - resid.mean())**3).mean() / resid.std()**3:.3f}")
 import matplotlib.pyplot as plt
 from scipy.stats import probplot
 probplot(resid, plot=plt)
-plt.title("Quantile residuals — composite model")
+plt.title("Quantile residuals  -  composite model")
 plt.show()
 ```
 

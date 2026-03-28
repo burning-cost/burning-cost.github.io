@@ -4,10 +4,10 @@ title: "EU AI Act August 2026: What Your Pricing Team Must Do"
 date: 2026-03-25
 categories: [regulation]
 tags: [eu-ai-act, regulation, model-governance, mrm, compliance, pra-ss123, insurance-governance, insurance-monitoring, insurance-fairness, annex-iii, high-risk-ai]
-description: "Insurance pricing models are high-risk AI under Annex III of the EU AI Act. The compliance deadline is 2 August 2026 — five months away. Here is what that means in practice for a UK pricing team."
+description: "Insurance pricing models are high-risk AI under Annex III of the EU AI Act. The compliance deadline is 2 August 2026  -  five months away. Here is what that means in practice for a UK pricing team."
 ---
 
-The EU AI Act's full enforcement regime for high-risk AI systems lands on 2 August 2026. For most UK insurers, that is five months away. We will be blunt: the majority of pricing teams are not ready, and the compliance gap is not a documentation problem — it is a structural one. The requirements in Articles 9 through 15 assume a level of systematic model governance that most pricing functions have never had to build.
+The EU AI Act's full enforcement regime for high-risk AI systems lands on 2 August 2026. For most UK insurers, that is five months away. We will be blunt: the majority of pricing teams are not ready, and the compliance gap is not a documentation problem  -  it is a structural one. The requirements in Articles 9 through 15 assume a level of systematic model governance that most pricing functions have never had to build.
 
 This post sets out what the Act requires, which requirements map onto existing tooling, and what you actually need to do before August.
 
@@ -15,9 +15,9 @@ This post sets out what the Act requires, which requirements map onto existing t
 
 ## Why insurance pricing is high-risk AI
 
-Annex III of the Act classifies AI systems used "for risk assessment and pricing in relation to natural persons in the case of life and health insurance" as high-risk. The broader catch is that general insurance pricing — motor, home, commercial — falls under the "essential services" category in Annex III point 5(b): systems used to "evaluate the creditworthiness of natural persons or establish their credit score" and, critically, systems used for insurance pricing.
+Annex III of the Act classifies AI systems used "for risk assessment and pricing in relation to natural persons in the case of life and health insurance" as high-risk. The broader catch is that general insurance pricing  -  motor, home, commercial  -  falls under the "essential services" category in Annex III point 5(b): systems used to "evaluate the creditworthiness of natural persons or establish their credit score" and, critically, systems used for insurance pricing.
 
-The FCA has confirmed that pricing AI in scope of Annex III will be treated as high-risk. The penalty for non-compliance is up to €35 million or 7% of global annual revenue — whichever is higher.
+The FCA has confirmed that pricing AI in scope of Annex III will be treated as high-risk. The penalty for non-compliance is up to €35 million or 7% of global annual revenue  -  whichever is higher.
 
 One note on timing: the European Commission's Digital Omnibus proposal from late 2025 floated a possible extension to December 2027 for some Annex III obligations. We would not plan around that. Nothing has been enacted, and prudent compliance planning means treating 2 August 2026 as binding.
 
@@ -29,7 +29,7 @@ One note on timing: the European Commission's Digital Omnibus proposal from late
 
 The Act requires a continuous, documented risk management process covering identification of known and foreseeable risks, risk estimation and evaluation, and mitigation measures. "Continuous" means it cannot be a one-off document produced at model launch and never updated.
 
-In practice, this means maintaining a live model card for every production pricing model, with documented assumptions, risk ratings, and outstanding issues. The card must be updated when the model's risk profile changes — not just annually.
+In practice, this means maintaining a live model card for every production pricing model, with documented assumptions, risk ratings, and outstanding issues. The card must be updated when the model's risk profile changes  -  not just annually.
 
 `insurance-governance` implements this directly:
 
@@ -70,7 +70,7 @@ inventory = ModelInventory("mrm_registry.json")
 inventory.register(card, tier)
 ```
 
-Article 9 also requires documented risk mitigations. Listing assumptions without risk ratings and mitigations is compliance theatre — the Act's auditors will not accept it.
+Article 9 also requires documented risk mitigations. Listing assumptions without risk ratings and mitigations is compliance theatre  -  the Act's auditors will not accept it.
 
 ### Article 10: Data governance
 
@@ -97,7 +97,7 @@ report = audit.run()
 report.to_markdown("article10_data_governance_audit.md")
 ```
 
-Run this as part of model development, not as a sign-off checkbox. The output — disparate impact ratios, proxy R-squared scores, counterfactual premium impacts — becomes the Article 10 evidence record. Our earlier post on [proxy discrimination testing](/2026/03/28/does-proxy-discrimination-testing-actually-work/) covers why manual Spearman correlation misses the cases that matter.
+Run this as part of model development, not as a sign-off checkbox. The output  -  disparate impact ratios, proxy R-squared scores, counterfactual premium impacts  -  becomes the Article 10 evidence record. Our earlier post on [proxy discrimination testing](/2026/03/28/does-proxy-discrimination-testing-actually-work/) covers why manual Spearman correlation misses the cases that matter.
 
 ### Article 11: Technical documentation
 
@@ -162,7 +162,7 @@ The registry writes to a plain JSON file that can live in version control. Every
 
 ### Article 13: Transparency to deployers
 
-Insurers deploying high-risk AI must provide deployers (underwriters, brokers, internal users) with documentation enabling them to understand the system's capabilities, limitations, and conditions of use. This is distinct from the technical documentation in Article 11 — it is the operational guide for humans who use the system's outputs.
+Insurers deploying high-risk AI must provide deployers (underwriters, brokers, internal users) with documentation enabling them to understand the system's capabilities, limitations, and conditions of use. This is distinct from the technical documentation in Article 11  -  it is the operational guide for humans who use the system's outputs.
 
 For a pricing model, this means a governance report that a non-technical committee member can read and understand:
 
@@ -201,7 +201,7 @@ This is partly a process requirement, not a tooling one. Pricing teams must docu
 
 High-risk AI systems must be designed to achieve an appropriate level of accuracy, robustness, and cybersecurity throughout their lifecycle. Accuracy must be declared in the technical documentation, and systems must be resilient to errors and inconsistencies.
 
-For pricing, robustness testing means demonstrating that the model's performance degrades gracefully under data quality issues — missing values, outlier inputs, distribution shift. It also means having a documented monitoring regime that detects degradation before it becomes material.
+For pricing, robustness testing means demonstrating that the model's performance degrades gracefully under data quality issues  -  missing values, outlier inputs, distribution shift. It also means having a documented monitoring regime that detects degradation before it becomes material.
 
 The `MonitoringReport` runs this in one pass:
 
@@ -224,7 +224,7 @@ print(report.recommendation)  # "CONTINUE" | "RECALIBRATE" | "REFIT"
 print(report.to_polars())     # Write to Delta table for audit trail
 ```
 
-The three-way recommendation — Continue / Recalibrate / Refit — maps cleanly to Article 15's requirement for documented responses to accuracy degradation. Our post on [when to recalibrate versus refit](/2026/02/28/recalibrate-or-refit/) covers the Murphy decomposition logic that drives this decision.
+The three-way recommendation  -  Continue / Recalibrate / Refit  -  maps cleanly to Article 15's requirement for documented responses to accuracy degradation. Our post on [when to recalibrate versus refit](/2026/02/28/recalibrate-or-refit/) covers the Murphy decomposition logic that drives this decision.
 
 ---
 
@@ -232,7 +232,7 @@ The three-way recommendation — Continue / Recalibrate / Refit — maps cleanly
 
 **Conformity assessment** (Article 43): Before deployment, high-risk AI systems require a conformity assessment confirming they meet the Act's requirements. For most Annex III systems, this is a self-assessment (an internal audit process), not a third-party certification. But it must be documented in the technical documentation and the declaration of conformity signed off by a responsible person.
 
-**EU database registration** (Article 71): Providers of high-risk AI systems must register their systems in the EU AI database before placing them on the market or putting them into service. The database is operated by the European AI Office. The registration form asks for the information in your technical documentation — if you have that in order, registration is administrative, not technical. The registration portal opened in Q4 2025; FCA guidance on the UK equivalent is expected mid-2026.
+**EU database registration** (Article 71): Providers of high-risk AI systems must register their systems in the EU AI database before placing them on the market or putting them into service. The database is operated by the European AI Office. The registration form asks for the information in your technical documentation  -  if you have that in order, registration is administrative, not technical. The registration portal opened in Q4 2025; FCA guidance on the UK equivalent is expected mid-2026.
 
 ---
 
@@ -240,7 +240,7 @@ The three-way recommendation — Continue / Recalibrate / Refit — maps cleanly
 
 If your team is starting from scratch, here is the sequence that makes sense:
 
-**Months 1–2 (April–May)**: Build the model inventory. Every production model gets an `MRMModelCard` with real fields — no placeholders. Run `RiskTierScorer` to assign tiers. Any Tier 1 model (GWP > £50m or customer-facing with no recent validation) goes to the top of the queue.
+**Months 1–2 (April–May)**: Build the model inventory. Every production model gets an `MRMModelCard` with real fields  -  no placeholders. Run `RiskTierScorer` to assign tiers. Any Tier 1 model (GWP > £50m or customer-facing with no recent validation) goes to the top of the queue.
 
 **Month 3 (June)**: Run validation reports for all Tier 1 models. The output is your Article 11 technical documentation. Run `FairnessAudit` to generate Article 10 data governance evidence. Fill the Article 12 logging gap by instrumenting monitoring pipelines to write to the inventory.
 
@@ -256,18 +256,18 @@ The Act does not require that your models are accurate by some absolute standard
 
 It does not require explainability at the individual prediction level. Article 13 requires transparency to deployers, not to policyholders (Article 86 creates individual rights to explanation, but that is a separate obligation from the Article 13 deployer transparency requirement).
 
-It does not require model-free pricing. The Act specifically accommodates risk-based pricing where it is actuarially justified and non-discriminatory — that is the same standard the FCA has applied since the Gender Directive.
+It does not require model-free pricing. The Act specifically accommodates risk-based pricing where it is actuarially justified and non-discriminatory  -  that is the same standard the FCA has applied since the Gender Directive.
 
 ---
 
-The compliance burden is real, but it is not a new kind of burden for insurers who already comply with PRA SS1/23. It is the same governance discipline — model cards, validation reports, monitoring plans, MRC sign-off — made mandatory by law. Teams that have built these practices already are finishing a project. Teams that have not are starting one.
+The compliance burden is real, but it is not a new kind of burden for insurers who already comply with PRA SS1/23. It is the same governance discipline  -  model cards, validation reports, monitoring plans, MRC sign-off  -  made mandatory by law. Teams that have built these practices already are finishing a project. Teams that have not are starting one.
 
 Five months is enough time. But only just.
 
 ---
 
-*The libraries referenced in this post — [`insurance-governance`](https://github.com/burning-cost/insurance-governance), [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), and [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — are open source and available on PyPI.*
+*The libraries referenced in this post  -  [`insurance-governance`](https://github.com/burning-cost/insurance-governance), [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring), and [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness)  -  are open source and available on PyPI.*
 
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the `insurance-governance` library: model inventory, risk tier scoring, and the executive pack for Model Risk Committee sign-off
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — the `insurance-monitoring` library: PSI, segmented A/E, Gini drift test, and REFIT vs RECALIBRATE recommendation
-- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library: proxy R², disparate impact measurement, and discrimination-free pricing
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)  -  the `insurance-governance` library: model inventory, risk tier scoring, and the executive pack for Model Risk Committee sign-off
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)  -  the `insurance-monitoring` library: PSI, segmented A/E, Gini drift test, and REFIT vs RECALIBRATE recommendation
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)  -  the `insurance-fairness` library: proxy R², disparate impact measurement, and discrimination-free pricing

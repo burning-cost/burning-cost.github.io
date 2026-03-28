@@ -8,7 +8,7 @@ description: "Bandit algorithms for FCA GIPP-compliant price experimentation in 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-online` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise` — bandit pricing algorithms are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
+**Package update:** `insurance-online` has been consolidated into [`insurance-optimise`](https://pypi.org/project/insurance-optimise/). Install with `pip install insurance-optimise`  -  bandit pricing algorithms are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-optimise)
 </div>
 
 
@@ -70,7 +70,7 @@ bandit = ThompsonBandit(
 At quote time, you call `select_price()`, passing the base premium. The bandit returns the selected price level:
 
 ```python
-# Quote arrives — GLM produces technical price
+# Quote arrives  -  GLM produces technical price
 base_premium = 398.0
 price_level = bandit.select_price(base_premium)
 # Ensure the offered price does not exceed ENBP (FCA PS21/5 obligation)

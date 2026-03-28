@@ -158,6 +158,6 @@ The protocol sounds involved but it is considerably less involved than the claim
 
 ---
 
-**Related tools:** [insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) - EVT tail modelling including TruncatedGPD, CensoredHillEstimator, TailVariableImportance. [insurance-conformal](https://burning-cost.github.io/insurance-conformal) - distribution-free prediction intervals for uncertainty quantification. See also: [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — empirical benchmark of conformal methods on real insurance data.
+**Related tools:** [insurance-severity](https://burning-cost.github.io/insurance-frequency-severity) - EVT tail modelling including TruncatedGPD, CensoredHillEstimator, TailVariableImportance. [insurance-conformal](https://burning-cost.github.io/insurance-conformal) - distribution-free prediction intervals for uncertainty quantification. See also: [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/)  -  empirical benchmark of conformal methods on real insurance data.
 
 **References:** SOA January 2026 Parametric Insurance Monograph; Boucher & Côté, CAS Proceedings vol. 112 (2025); Albrecher, Beirlant & Teugels (arXiv:2511.22272); arXiv:2504.06984 (tail variable importance).

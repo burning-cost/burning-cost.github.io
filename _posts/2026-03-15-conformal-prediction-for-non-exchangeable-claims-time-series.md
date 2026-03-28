@@ -239,7 +239,7 @@ ccc = ClaimsCountConformal(exposure=exposure)
 # Fit on training data
 ccc.fit(y_train, n_train=60)
 
-# Warm up on cal period — save the intervals rather than discarding them
+# Warm up on cal period  -  save the intervals rather than discarding them
 # (predict_interval is stateful: it updates alpha_t and the calibration window)
 lower_ccc_cal, upper_ccc_cal = ccc.predict_interval(y_cal, alpha=0.10, exposure=exp_cal)
 

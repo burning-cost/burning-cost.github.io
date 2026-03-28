@@ -116,8 +116,8 @@ ae_weighted = (
     / np.average(predicted_holdout, weights=weights)
 )
 
-print(f"Standard A/E:  {ae_standard:.3f}")   # 0.987 — looks fine
-print(f"Weighted A/E:  {ae_weighted:.3f}")   # 1.064 — 6.4% underpriced on current mix
+print(f"Standard A/E:  {ae_standard:.3f}")   # 0.987  -  looks fine
+print(f"Weighted A/E:  {ae_weighted:.3f}")   # 1.064  -  6.4% underpriced on current mix
 ```
 
 The weighted A/E does not require a single labelled observation from the 2027 book. It reweights the source holdout to reflect the current distribution. The claims data comes entirely from 2025. The only input from 2027 is the unlabelled feature matrix.

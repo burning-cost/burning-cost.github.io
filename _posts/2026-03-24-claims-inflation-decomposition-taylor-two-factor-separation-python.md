@@ -7,7 +7,7 @@ tags: [claims-inflation, taylor-separation, development-triangles, severity-tren
 description: "Extract the calendar-year inflation component from a claims development triangle using Taylor's two-factor separation. Python from scratch, then connect to severity trending."
 ---
 
-Every reserving actuary knows that a claims development triangle contains more than development: the diagonals carry calendar-year effects — inflation, claims handling changes, legal environment shifts. Stacking these together and projecting a single development pattern through is the silent assumption in a chain-ladder reserve. For pricing, it is worse: your severity trend is often derived from the same triangle without ever isolating the inflation component from the development component.
+Every reserving actuary knows that a claims development triangle contains more than development: the diagonals carry calendar-year effects  -  inflation, claims handling changes, legal environment shifts. Stacking these together and projecting a single development pattern through is the silent assumption in a chain-ladder reserve. For pricing, it is worse: your severity trend is often derived from the same triangle without ever isolating the inflation component from the development component.
 
 Taylor's two-factor separation (G. C. Taylor, 1977) decomposes the triangle into row factors, column factors, and calendar-year (diagonal) factors. The calendar-year factors are your inflation series. The method is a 50-year-old actuarial standard, taught in every Casualty Actuarial Society course, referenced in every UK reserving textbook. There is not a clean Python implementation available anywhere.
 
@@ -24,9 +24,9 @@ C_{ij} = R_i * x_j * y_{i+j}
 ```
 
 where:
-- `R_i` is a row parameter — the ultimate loss scale for accident year _i_
-- `x_j` is a column parameter — the proportion of ultimate paid in development period _j_
-- `y_{i+j}` is a calendar-year parameter for diagonal _i+j_ — the inflation/deflation factor for that period
+- `R_i` is a row parameter  -  the ultimate loss scale for accident year _i_
+- `x_j` is a column parameter  -  the proportion of ultimate paid in development period _j_
+- `y_{i+j}` is a calendar-year parameter for diagonal _i+j_  -  the inflation/deflation factor for that period
 
 The column parameters `x_j` sum to 1 across all development years (they represent a partitioning of ultimate). The calendar-year parameters `y_k` are the thing we actually want: they encode the claims inflation experience, stripped of the cross-sectional development pattern.
 
@@ -49,7 +49,7 @@ rng = np.random.default_rng(2026)
 
 n = 10  # accident years (rows) and development years (columns)
 
-# True parameters — what we will try to recover
+# True parameters  -  what we will try to recover
 true_row    = np.array([1.0, 1.05, 1.08, 1.12, 1.15, 1.20, 1.22, 1.25, 1.28, 1.30])
 true_col    = np.array([0.30, 0.25, 0.18, 0.12, 0.07, 0.04, 0.02, 0.01, 0.005, 0.005])
 true_col   /= true_col.sum()   # must sum to 1
@@ -97,7 +97,7 @@ The observed upper-left triangle has `n*(n+1)/2 = 55` data points for a 10×10 t
 
 ## The separation algorithm
 
-The classical Taylor (1977) iterative algorithm alternates between estimating column parameters and calendar-year parameters, holding the other fixed. The key insight is that once you fix `y_{i+j}`, the column factors are just weighted averages across rows — and vice versa. The algorithm converges in a handful of iterations for well-conditioned triangles.
+The classical Taylor (1977) iterative algorithm alternates between estimating column parameters and calendar-year parameters, holding the other fixed. The key insight is that once you fix `y_{i+j}`, the column factors are just weighted averages across rows  -  and vice versa. The algorithm converges in a handful of iterations for well-conditioned triangles.
 
 ```python
 def taylor_separation(incremental: np.ndarray, max_iter: int = 200, tol: float = 1e-8):
@@ -116,11 +116,11 @@ def taylor_separation(incremental: np.ndarray, max_iter: int = 200, tol: float =
     Returns
     -------
     row_factors : np.ndarray, shape (n,)
-        R_i — accident year scales.
+        R_i  -  accident year scales.
     col_factors : np.ndarray, shape (n,)
-        x_j — development proportions (sum to 1).
+        x_j  -  development proportions (sum to 1).
     diag_factors : np.ndarray, shape (2n-1,)
-        y_k — calendar-year inflation indices.
+        y_k  -  calendar-year inflation indices.
     fitted : np.ndarray, shape (n, n)
         Fitted values under the model, NaN where unobserved.
     """
@@ -245,7 +245,7 @@ Calendar-year inflation index (first diagonal = 1.0):
   2023: 1.4669
 ```
 
-The algorithm recovers the true structure: roughly 3% per annum, with the 2021 spike (used-car parts shortages, supply chain disruption) visible as a step change from index 1.198 to 1.289 — a 7.6% year rather than 3%. That is the signal your chain-ladder projection is smoothing away.
+The algorithm recovers the true structure: roughly 3% per annum, with the 2021 spike (used-car parts shortages, supply chain disruption) visible as a step change from index 1.198 to 1.289  -  a 7.6% year rather than 3%. That is the signal your chain-ladder projection is smoothing away.
 
 ---
 
@@ -283,7 +283,7 @@ This is the series that should feed your severity trend selection. Not the raw y
 
 ## Smoothing for projection with insurance-whittaker
 
-The raw series is noisy — each diagonal in the observed triangle may be based on only two or three data points at the extremes. The 10.4% inflation in 2021-22 is real, but you would not want to project it forward as a trend. What you want is a smoothed version that captures the structural level shift while not over-fitting the year-to-year noise.
+The raw series is noisy  -  each diagonal in the observed triangle may be based on only two or three data points at the extremes. The 10.4% inflation in 2021-22 is real, but you would not want to project it forward as a trend. What you want is a smoothed version that captures the structural level shift while not over-fitting the year-to-year noise.
 
 This is exactly the [`insurance-whittaker`](https://github.com/burning-cost/insurance-whittaker) use case.
 
@@ -330,7 +330,7 @@ for k in range(n):
   9    2023    1.4711    1.4681    1.4188    1.5174
 ```
 
-The smoothed series confirms the structural break in 2020-2022 but does not over-fit the individual diagonals. The credible intervals widen at 2022-2023, where the latest diagonals have the fewest data points — exactly where you want caution.
+The smoothed series confirms the structural break in 2020-2022 but does not over-fit the individual diagonals. The credible intervals widen at 2022-2023, where the latest diagonals have the fewest data points  -  exactly where you want caution.
 
 The smoothed index is what you pass to the pricing actuary as the claims inflation trend for severity loading in the next rate review.
 
@@ -378,7 +378,7 @@ Two common failure modes:
 
 The calendar-year index from two-factor separation feeds the severity trending calculation in your rate review.
 
-In a standard frequency-severity rate review, you project past severity to the future policy period using a trend factor. The usual approach — regress log(average paid severity) against calendar year and exponentiate the coefficient — is conflating development mix with genuine price level changes. If your accident years are at different stages of development, the average severity for recent years is lower (less developed) than for older years. A regression on that series will understate trend.
+In a standard frequency-severity rate review, you project past severity to the future policy period using a trend factor. The usual approach  -  regress log(average paid severity) against calendar year and exponentiate the coefficient  -  is conflating development mix with genuine price level changes. If your accident years are at different stages of development, the average severity for recent years is lower (less developed) than for older years. A regression on that series will understate trend.
 
 Two-factor separation removes the development component first. The calendar-year factors you extract are clean inflation estimates at a consistent development basis. The year-on-year rate from the smoothed series is the input to your severity trend selection, not the raw movement in reported severity.
 
@@ -409,7 +409,7 @@ print(f"Severity trend factor ({experience_midpoint} -> {future_midpoint}): {tre
 Severity trend factor (2022.0 -> 2025.5): 1.1124
 ```
 
-An 11.1% uplift in projected severity — which is the annualised smoothed trend bridging the experience period to the future policy period. If your current rates were set using experience from 2022 and your competitors are using a flat 5% trend assumption, this is a material difference.
+An 11.1% uplift in projected severity  -  which is the annualised smoothed trend bridging the experience period to the future policy period. If your current rates were set using experience from 2022 and your competitors are using a flat 5% trend assumption, this is a material difference.
 
 ---
 
@@ -417,7 +417,7 @@ An 11.1% uplift in projected severity — which is the annualised smoothed trend
 
 Two-factor separation is not a complete reserving method. It is a diagnostic and trend extraction tool. Three limitations to document clearly.
 
-**Tail development.** The column factors only extend as far as your triangle. If you have a 10-year run-off triangle, your `x_j` estimates for development years 1 through 10 are estimated. Beyond that you need a tail factor from elsewhere — either a parametric tail fit or industry benchmarks. The calendar-year factors do not help with tail extrapolation.
+**Tail development.** The column factors only extend as far as your triangle. If you have a 10-year run-off triangle, your `x_j` estimates for development years 1 through 10 are estimated. Beyond that you need a tail factor from elsewhere  -  either a parametric tail fit or industry benchmarks. The calendar-year factors do not help with tail extrapolation.
 
 **Negative incrementals.** Salvage, subrogation recoveries, and reserve releases can make incremental cells negative. The multiplicative model requires positive values. Standard practice is to either truncate to zero, model the two components separately, or work on a paid net basis. None of these is a free lunch: each changes what the calendar-year factors represent.
 
@@ -431,7 +431,7 @@ Two-factor separation is not a complete reserving method. It is a diagnostic and
 uv add insurance-whittaker
 ```
 
-The Whittaker smoother is doing one job here — cleaning the raw inflation index for projection — but `insurance-whittaker` handles all the standard actuarial smoothing problems: age curves, NCD scales, 2D rating surfaces. If you are smoothing anything from a pricing table in Python, this is the tool.
+The Whittaker smoother is doing one job here  -  cleaning the raw inflation index for projection  -  but `insurance-whittaker` handles all the standard actuarial smoothing problems: age curves, NCD scales, 2D rating surfaces. If you are smoothing anything from a pricing table in Python, this is the tool.
 
 Source and notebooks: [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker)
 
@@ -439,6 +439,6 @@ Source and notebooks: [github.com/burning-cost/insurance-whittaker](https://gith
 
 **Related posts:**
 
-- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/) — the library introduction
-- [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — separate treatment of tail severity, which the inflation index feeds into
-- [Reserve Range with a Conformal Guarantee](/2026/03/16/reserve-range-conformal-guarantee/) — a different approach to reserving uncertainty, complementary to trend extraction
+- [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/)  -  the library introduction
+- [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/)  -  separate treatment of tail severity, which the inflation index feeds into
+- [Reserve Range with a Conformal Guarantee](/2026/03/16/reserve-range-conformal-guarantee/)  -  a different approach to reserving uncertainty, complementary to trend extraction

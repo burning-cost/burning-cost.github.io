@@ -8,7 +8,7 @@ description: "EVT for UK motor large loss pricing: censored GPD for open TPBI cl
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-evt` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity` — extreme value theory for large loss pricing is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-evt` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity`  -  extreme value theory for large loss pricing is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 
@@ -119,7 +119,7 @@ The profile likelihood CI is the correct approach (Coles, 2001; McNeil, Frey, Em
 xi_lo, xi_hi = fitter.profile_likelihood_ci("xi", alpha=0.05)
 print(f"xi: {result.xi:.3f} (95% profile CI: {xi_lo:.3f}, {xi_hi:.3f})")
 # xi: 0.412 (95% profile CI: 0.218, 0.681)
-# vs Wald: 0.412 ± 0.183 => (0.229, 0.595) — upper bound is 13% too low
+# vs Wald: 0.412 ± 0.183 => (0.229, 0.595)  -  upper bound is 13% too low
 ```
 
 The asymmetry matters most at small samples (below 50 exceedances), which is exactly when it tends to come up in practice. Large loss registers above £500k do not typically have thousands of events.

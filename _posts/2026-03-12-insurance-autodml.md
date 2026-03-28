@@ -8,7 +8,7 @@ description: "Automatic Debiased ML via Riesz Representers for continuous price 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-autodml` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-autodml` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 
@@ -113,7 +113,7 @@ drc.fit(X, D, Y, exposure=exposure)
 d_grid = np.linspace(300, 800, 50)     # £300 to £800 premium grid
 result = drc.predict(d_grid)
 
-# result.ate: array of shape (50,) — estimated E[Y(d)] at each grid point
+# result.ate: array of shape (50,)  -  estimated E[Y(d)] at each grid point
 # result.ci_low, result.ci_high: pointwise 95% confidence bands
 ```
 
@@ -181,7 +181,7 @@ You can assess Riesz representer quality using the held-out minimax loss:
 ```python
 loss = model.riesz_loss()
 # Lower is better. Values above 0.1 (on standardised scale) suggest poor
-# Riesz estimation — consider more flexible nuisance models.
+# Riesz estimation  -  consider more flexible nuisance models.
 ```
 
 For fast experimentation or when you want a linear baseline before committing to the forest:
@@ -206,7 +206,7 @@ If you estimate the AME naively on renewals, you understate the true causal effe
 from insurance_causal import SelectionCorrectedElasticity
 
 # S: renewal indicator (1 = renewed, 0 = lapsed)
-# Y: claims — for S=0 observations, Y is ignored (can be 0 or NaN)
+# Y: claims  -  for S=0 observations, Y is ignored (can be 0 or NaN)
 model = SelectionCorrectedElasticity(
     outcome_family="poisson",
     n_folds=5,
@@ -291,5 +291,5 @@ Source and tests: [github.com/burning-cost/insurance-causal](https://github.com/
 The academic groundwork is Hirshberg & Wager (2021), *Double Robustness of Local Average Treatment Effects in the Frequentist and Bayesian Settings*, *Annals of Statistics*; the ForestRiesz construction and the missing-outcome extension are from arXiv:2601.08643; the dose-response curve implementation follows Colangelo & Lee, *Journal of Business & Economic Statistics* (2025), arXiv:2004.03036.
 
 - [Your Demand Model Is Confounded](/2026/03/01/your-demand-model-is-confounded/)
-- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — monitoring whether the DML elasticity estimate has remained stable as the portfolio shifts
+- [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)  -  monitoring whether the DML elasticity estimate has remained stable as the portfolio shifts
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)

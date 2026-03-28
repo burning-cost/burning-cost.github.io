@@ -24,10 +24,10 @@ import polars as pl
 # One row per PCW quote (not per policy)
 schema = {
     "quote_id":        pl.Utf8,    # unique quote identifier
-    "quote_date":      pl.Date,    # date of quote — used to join rate review periods
+    "quote_date":      pl.Date,    # date of quote  -  used to join rate review periods
     "converted":       pl.Int8,    # 1 = bought, 0 = did not buy
     "own_price":       pl.Float64, # your quoted premium (£)
-    "tech_prem":       pl.Float64, # technical premium at quote time — CRITICAL
+    "tech_prem":       pl.Float64, # technical premium at quote time  -  CRITICAL
     "rate_review_id":  pl.Utf8,    # which quarterly rate review applies to this quote
     "log_cl":          pl.Float64, # log(own_price / tech_prem): the commercial loading
     # Risk confounders
@@ -39,11 +39,11 @@ schema = {
     "comp_price_1":    pl.Float64, # cheapest competitor
     "comp_price_2":    pl.Float64, # second cheapest
     "comp_price_3":    pl.Float64,
-    "rank":            pl.Int32,   # your rank on the results page — DO NOT USE AS PREDICTOR
+    "rank":            pl.Int32,   # your rank on the results page  -  DO NOT USE AS PREDICTOR
 }
 ```
 
-A few points worth flagging. `tech_prem` must be the technical premium as it existed at quote time — not recalculated retroactively from current rate tables. Most insurers store only the final commercial price; if yours does, you need to reconstruct technical premium from rate review records, which is doable but tedious. `rank` is in the schema because you will need it for diagnostics, but do not put it in the confounder set — see post 1 for why.
+A few points worth flagging. `tech_prem` must be the technical premium as it existed at quote time  -  not recalculated retroactively from current rate tables. Most insurers store only the final commercial price; if yours does, you need to reconstruct technical premium from rate review records, which is doable but tedious. `rank` is in the schema because you will need it for diagnostics, but do not put it in the confounder set  -  see post 1 for why.
 
 You need at least three rate review periods with meaningful loading changes (> ±2%). A single flat period gives you no instrument. For a medium-sized motor book, one calendar year of PCW quotes gives 50,000–200,000 records with four rate review periods, which is enough.
 
@@ -51,7 +51,7 @@ You need at least three rate review periods with meaningful loading changes (> �
 
 ## Step 1: Build the instrument
 
-The identification strategy is Hausman-style IV via DML. The idea: commercial loading decisions are made at the segment/quarter level by underwriters and actuaries who do not know which specific customers will quote in that period. Loading variation across review periods is therefore orthogonal to individual unobserved risk — it shifts `own_price` without being caused by the customer-level confounders that contaminate raw price.
+The identification strategy is Hausman-style IV via DML. The idea: commercial loading decisions are made at the segment/quarter level by underwriters and actuaries who do not know which specific customers will quote in that period. Loading variation across review periods is therefore orthogonal to individual unobserved risk  -  it shifts `own_price` without being caused by the customer-level confounders that contaminate raw price.
 
 ```python
 import numpy as np
@@ -65,7 +65,7 @@ def build_instruments(df: pl.DataFrame) -> pl.DataFrame:
         Variation comes from rate review decisions, not from customer risk.
         Validity requires: loading decisions not correlated with unobserved
         customer risk within the same quarter. This holds if the underwriting
-        team applied loadings uniformly across the segment — standard practice.
+        team applied loadings uniformly across the segment  -  standard practice.
 
     Instrument 2: competitor regional loading shift
         For each competitor, compute their average price in OTHER regions
@@ -75,7 +75,7 @@ def build_instruments(df: pl.DataFrame) -> pl.DataFrame:
         customer's unobserved risk in your region.
     """
 
-    # Instrument 1: Own commercial loading — already in schema as log_cl
+    # Instrument 1: Own commercial loading  -  already in schema as log_cl
     # No transformation needed.
 
     # Instrument 2: Leave-one-out competitor price index
@@ -157,7 +157,7 @@ def fit_pliv(df: pl.DataFrame) -> dml.DoubleMLPLIV:
     Fit the partially linear IV regression via DML.
 
     Five-fold cross-fitting. CatBoost for all nuisance models.
-    The treatment model (E[D|X]) is the first stage — its residuals
+    The treatment model (E[D|X]) is the first stage  -  its residuals
     are what the instrument needs to predict.
     """
     confounders = ["age", "ncd_years", "vehicle_group", "region"]
@@ -169,18 +169,18 @@ def fit_pliv(df: pl.DataFrame) -> dml.DoubleMLPLIV:
     )
 
     # Nuisance models
-    # ml_l: E[Y|X] — outcome model (CatBoost classifier for binary Y)
+    # ml_l: E[Y|X]  -  outcome model (CatBoost classifier for binary Y)
     ml_l = CatBoostClassifier(
         iterations=500, depth=6, learning_rate=0.05,
         verbose=0, random_seed=42,
         eval_metric="Logloss",
     )
-    # ml_m: E[D|X] — treatment model (first stage denominator)
+    # ml_m: E[D|X]  -  treatment model (first stage denominator)
     ml_m = CatBoostRegressor(
         iterations=500, depth=6, learning_rate=0.05,
         verbose=0, random_seed=42,
     )
-    # ml_r: E[Z|X] — reduced form (instrument model)
+    # ml_r: E[Z|X]  -  reduced form (instrument model)
     # With two instruments, doubleml fits one model per instrument column
     ml_r = CatBoostRegressor(
         iterations=500, depth=6, learning_rate=0.05,
@@ -199,7 +199,7 @@ def fit_pliv(df: pl.DataFrame) -> dml.DoubleMLPLIV:
     return pliv
 ```
 
-Running `pliv.summary` gives you the ATE — the portfolio-average semi-elasticity. A typical result for a UK motor PCW book might look like:
+Running `pliv.summary` gives you the ATE  -  the portfolio-average semi-elasticity. A typical result for a UK motor PCW book might look like:
 
 ```
              coef  std err    t     P>|t|   2.5%   97.5%
@@ -261,7 +261,7 @@ If F < 10, you have two options: (a) extend the data to include more rate review
 
 ## Step 4: Segment-level GATES with `insurance-causal`
 
-The portfolio-average elasticity is useful for a sanity check, but the pricing optimiser needs a CATE surface. For PLIV, heterogeneous effects require a different estimator — the AIPW-IV forest. The `insurance-causal` library's `RenewalElasticityEstimator` handles the renewal case with CausalForestDML; for the conversion case we use the same machinery adapted to the PCW schema.
+The portfolio-average elasticity is useful for a sanity check, but the pricing optimiser needs a CATE surface. For PLIV, heterogeneous effects require a different estimator  -  the AIPW-IV forest. The `insurance-causal` library's `RenewalElasticityEstimator` handles the renewal case with CausalForestDML; for the conversion case we use the same machinery adapted to the PCW schema.
 
 ```python
 from insurance_causal.elasticity import RenewalElasticityEstimator
@@ -273,7 +273,7 @@ def estimate_conversion_elasticity(df: pl.DataFrame) -> RenewalElasticityEstimat
     The schema differences:
     - outcome: "converted" instead of "renewed"
     - treatment: "log_price_change" computed as log(own_price / tech_prem)
-      — this is the commercial loading, which is our instrument. For CATE
+       -  this is the commercial loading, which is our instrument. For CATE
       estimation we treat the loading as the treatment directly, which gives
       us the effect of commercial loading decisions on conversion. This is
       actually the policy-relevant quantity: actuaries set loadings, not
@@ -343,13 +343,13 @@ def print_gates(est: RenewalElasticityEstimator, df: pl.DataFrame) -> None:
     print(gates_vg)
 ```
 
-The NCD band result is the most consistent finding across the insurers we have looked at. Customers with NCD 0–1 are roughly 3× more price-sensitive than those at NCD 5. This is not surprising — NCD 0 customers are predominantly young drivers who price-shop heavily on PCWs and have limited brand loyalty. But the *magnitude* of the gradient matters for optimisation: if your current loading is uniform across NCD bands, you are leaving conversion volume on the table at NCD 0–1 and over-discounting relative to elasticity at NCD 4–5.
+The NCD band result is the most consistent finding across the insurers we have looked at. Customers with NCD 0–1 are roughly 3× more price-sensitive than those at NCD 5. This is not surprising  -  NCD 0 customers are predominantly young drivers who price-shop heavily on PCWs and have limited brand loyalty. But the *magnitude* of the gradient matters for optimisation: if your current loading is uniform across NCD bands, you are leaving conversion volume on the table at NCD 0–1 and over-discounting relative to elasticity at NCD 4–5.
 
 ---
 
 ## Step 5: The regulatory check
 
-FCA EP25/2 (July 2025) was explicit that elasticity-based pricing requires controls to prevent charging less price-sensitive customers more — particularly where price sensitivity is correlated with protected or proxy-protected characteristics.
+FCA EP25/2 (July 2025) was explicit that elasticity-based pricing requires controls to prevent charging less price-sensitive customers more  -  particularly where price sensitivity is correlated with protected or proxy-protected characteristics.
 
 NCD band, region, and vehicle group are all proxy-correlated with age. Before feeding the GATE surface into your pricing optimiser, run this:
 
@@ -414,9 +414,9 @@ The practical differences from the naive model are usually:
 
 **Segment gradient is steeper.** Causal elasticities show more variation across NCD bands and age groups than naive logistic regression estimates, because the naive model's endogeneity bias partly averages out across segments. The causal model says: you can load NCD 4–5 customers harder than your current model suggests, and you should discount NCD 0–1 customers more aggressively than your model suggests. Both adjustments increase portfolio NPV.
 
-**Rank should not be in the optimiser objective.** Post 1 established that rank is a mediator, not a confounder. The total-effect elasticity estimated here — without rank in the confounder set — already includes the conversion improvement from rank improvement that comes with a price cut. If your optimiser also includes a rank-conversion curve and tries to model those effects separately, it will double-count.
+**Rank should not be in the optimiser objective.** Post 1 established that rank is a mediator, not a confounder. The total-effect elasticity estimated here  -  without rank in the confounder set  -  already includes the conversion improvement from rank improvement that comes with a price cut. If your optimiser also includes a rank-conversion curve and tries to model those effects separately, it will double-count.
 
-**The instrument tells you something about pricing team behaviour.** The first-stage relationship between loading decisions and price is, by construction, what the instrument exploits. A strong first stage (F > 20) means your loading decisions are having their intended effect on prices. A weak first stage (F < 10) may mean that commercial loadings are being overridden by individual underwriter adjustments, or that loading decisions are smaller than they used to be — both operationally interesting findings independent of the elasticity estimation.
+**The instrument tells you something about pricing team behaviour.** The first-stage relationship between loading decisions and price is, by construction, what the instrument exploits. A strong first stage (F > 20) means your loading decisions are having their intended effect on prices. A weak first stage (F < 10) may mean that commercial loadings are being overridden by individual underwriter adjustments, or that loading decisions are smaller than they used to be  -  both operationally interesting findings independent of the elasticity estimation.
 
 ---
 
@@ -428,7 +428,7 @@ We said in post 1 that there are three problems, and this post addresses two of 
 
 **Rank mediation trap:** fixed by excluding rank from the confounder set. The total-effect elasticity you estimate includes the rank-mediated pathway, which is the right quantity for pricing optimisation.
 
-**Competitor price simultaneity:** partially addressed. The region-demeaned competitor instrument soaks up the common regional claims trend, but does not fully control for market-wide cost shocks that hit all regions simultaneously (a sustained repair cost inflation, for instance). For a full BLP-style demand system you would need structural price equations for each competitor — a substantial additional step. For most UK motor pricing teams, the two-instrument approach above gives a materially better estimate than naive logistic regression, and the remaining bias is small relative to the improvement from addressing endogeneity.
+**Competitor price simultaneity:** partially addressed. The region-demeaned competitor instrument soaks up the common regional claims trend, but does not fully control for market-wide cost shocks that hit all regions simultaneously (a sustained repair cost inflation, for instance). For a full BLP-style demand system you would need structural price equations for each competitor  -  a substantial additional step. For most UK motor pricing teams, the two-instrument approach above gives a materially better estimate than naive logistic regression, and the remaining bias is small relative to the improvement from addressing endogeneity.
 
 ---
 
@@ -437,14 +437,14 @@ We said in post 1 that there are three problems, and this post addresses two of 
 - [`insurance-causal`](https://github.com/pricing-frontier/insurance-causal): `RenewalElasticityEstimator`, `RenewalPricingOptimiser`
 - [`doubleml`](https://docs.doubleml.org/): `DoubleMLPLIV` for the IV step
 - [`econml`](https://econml.azurewebsites.net/): `CausalForestDML` (used internally by insurance-causal)
-- Chernozhukov et al. (2018), *Econometrics Journal* 21(1) — the DML paper
-- Chernozhukov et al. (2020), *Review of Economic Studies* 87(1) — GATES/BLP inference
-- Schultz et al. (2023), arXiv:2312.15282 — causal forecasting for pricing, directly applicable
-- Muijsson (2022), *Expert Systems with Applications* — DML for insurance renewal, the closest published insurance application
+- Chernozhukov et al. (2018), *Econometrics Journal* 21(1)  -  the DML paper
+- Chernozhukov et al. (2020), *Review of Economic Studies* 87(1)  -  GATES/BLP inference
+- Schultz et al. (2023), arXiv:2312.15282  -  causal forecasting for pricing, directly applicable
+- Muijsson (2022), *Expert Systems with Applications*  -  DML for insurance renewal, the closest published insurance application
 ---
 
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that packages the DML elasticity pipeline for portfolio pricing, with the ENBP compliance checker
-- [The PCW Endogeneity Problem: Why Your Conversion Model Is Biased](/2026/03/26/the-pcw-endogeneity-problem-why-your-conversion-model-is-biased/) — part 1 of this series: the causal structure behind the bias this post fixes
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/)  -  the `insurance-optimise` library that packages the DML elasticity pipeline for portfolio pricing, with the ENBP compliance checker
+- [The PCW Endogeneity Problem: Why Your Conversion Model Is Biased](/2026/03/26/the-pcw-endogeneity-problem-why-your-conversion-model-is-biased/)  -  part 1 of this series: the causal structure behind the bias this post fixes
 
 ---
 

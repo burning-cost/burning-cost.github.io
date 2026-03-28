@@ -77,7 +77,7 @@ The frequency column (`claim_count` in the example above) gets fitted as a margi
 You can see what the fitter selected with `synth.summary()`:
 
 ```
-InsuranceSynthesizer — fitted model summary
+InsuranceSynthesizer  -  fitted model summary
 ==================================================
 
 Method: vine
@@ -90,10 +90,10 @@ Fitted marginals:
   driver_age                continuous   beta                     312445.2
   vehicle_age               continuous   gamma                    289332.1
   vehicle_group             discrete     poisson                  191204.7
-  region                    categorical  Categorical(12 levels)         —
+  region                    categorical  Categorical(12 levels)          - 
   ncd_years                 discrete     nbinom                   204891.3
-  cover_type                categorical  Categorical(3 levels)          —
-  payment_method            categorical  Categorical(3 levels)          —
+  cover_type                categorical  Categorical(3 levels)           - 
+  payment_method            categorical  Categorical(3 levels)           - 
   annual_mileage            continuous   lognorm                  421038.4
   exposure                  continuous   beta                     -18442.1
   claim_count               discrete     poisson                   44201.8
@@ -230,7 +230,7 @@ synth.fit(real_df, exposure_col="exposure", frequency_col="claim_count")
 test_portfolio = synth.generate(100_000, constraints=schema["constraints"])
 
 # The vine copula preserves the correlation structure between
-# age, vehicle_group, annual_mileage, and region — so the
+# age, vehicle_group, annual_mileage, and region  -  so the
 # counterfactual customers are internally consistent
 ```
 

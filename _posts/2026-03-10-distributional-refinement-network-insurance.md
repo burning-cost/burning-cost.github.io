@@ -8,7 +8,7 @@ description: "Distributional Refinement Networks wrap any GLM to produce a full 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](https://pypi.org/project/insurance-severity/). Install with `pip install insurance-severity`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 
@@ -61,7 +61,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from insurance_severity.drn import DRN, GLMBaseline
 
-# GLMBaseline wraps a fitted statsmodels GLM — fit the GLM first
+# GLMBaseline wraps a fitted statsmodels GLM  -  fit the GLM first
 sm_glm = smf.glm(
     "claim_amount ~ age_band + vehicle_group + ncd + region",
     data=df_train,
@@ -75,7 +75,7 @@ drn = DRN(
     hidden_size=75,
     num_hidden_layers=2,
     dropout_rate=0.2,
-    baseline_start=True,   # initialise at baseline — recommended
+    baseline_start=True,   # initialise at baseline  -  recommended
     lr=1e-3,
     max_epochs=200,
     patience=20,           # early stopping
@@ -97,17 +97,17 @@ The output of `drn.predict_distribution(X)` is an `ExtendedHistogramBatch` - a v
 # Predict full distributions for 10,000 policies
 dist = drn.predict_distribution(X_holdout)   # ExtendedHistogramBatch of shape (10_000,)
 
-# Conditional mean — should match GLM closely if baseline is well-calibrated
+# Conditional mean  -  should match GLM closely if baseline is well-calibrated
 means = dist.mean()             # shape (10_000,)
 
-# Quantiles — CDF-inverted, vectorised
+# Quantiles  -  CDF-inverted, vectorised
 median    = dist.quantile(0.50)
 p75       = dist.quantile(0.75)
 p99       = dist.quantile(0.99)
 scr_level = dist.quantile(0.995)  # Solvency II SCR per policy
 
-# CRPS — proper scoring rule for distributional accuracy
-crps = dist.crps(y_holdout)     # shape (10_000,) — lower is better
+# CRPS  -  proper scoring rule for distributional accuracy
+crps = dist.crps(y_holdout)     # shape (10_000,)  -  lower is better
 
 # Expected Shortfall above 99th percentile
 es99 = dist.expected_shortfall(0.99)
@@ -132,7 +132,7 @@ A GLM with a Gamma distribution will give you a 99.5th percentile, but it assume
 # Per-policy SCR (99.5th percentile of individual claim severity)
 scr = dist.quantile(0.995)
 
-# Ratio of SCR to mean — measures tail heaviness by policy
+# Ratio of SCR to mean  -  measures tail heaviness by policy
 tail_ratio = scr / dist.mean()
 
 # Segment by age band (for a motor portfolio)
@@ -153,7 +153,7 @@ DRN is a neural network, which raises the usual model risk questions. The `adjus
 ```python
 # Adjustment factors: DRN probability / baseline probability, per bin
 factors = drn.adjustment_factors(X_holdout)
-# shape: (n_policies, K) — values > 1 mean DRN assigns more mass than GLM
+# shape: (n_policies, K)  -  values > 1 mean DRN assigns more mass than GLM
 
 # For a specific high-risk policy profile (factors is a Polars DataFrame)
 young_driver_idx = int((X_holdout['age'] < 22).arg_true()[0])
@@ -186,13 +186,13 @@ from insurance_severity.drn import DRNDiagnostics
 
 diag = DRNDiagnostics(drn)
 
-# PIT histogram — should be uniform if calibration is right
+# PIT histogram  -  should be uniform if calibration is right
 diag.pit_histogram(X_holdout, y_holdout)
 
-# Quantile calibration — empirical vs predicted coverage
+# Quantile calibration  -  empirical vs predicted coverage
 diag.quantile_calibration(X_holdout, y_holdout)
 
-# CRPS by segment — where is the model weakest?
+# CRPS by segment  -  where is the model weakest?
 diag.crps_by_segment(
     X_holdout, y_holdout,
     segment_col='age_band'

@@ -9,7 +9,7 @@ description: "insurance-gam wraps EBM for UK pricing teams: Poisson/Tweedie loss
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-ebm` has been consolidated into [`insurance-gam`](https://pypi.org/project/insurance-gam/). Install with `pip install insurance-gam` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
+**Package update:** `insurance-ebm` has been consolidated into [`insurance-gam`](https://pypi.org/project/insurance-gam/). Install with `pip install insurance-gam`  -  all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
 </div>
 
 
@@ -220,7 +220,7 @@ from insurance_gam.ebm import double_lift
 lift = double_lift(y_test['claim_count'], preds, exposure=y_test['exposure'],
                    n_bands=10)
 print(lift)
-# shape: (10, 5) — band, exposure, actual, predicted, ae_ratio
+# shape: (10, 5)  -  band, exposure, actual, predicted, ae_ratio
 ```
 
 Monotone A/E deviation across bands indicates a calibration problem (model over- or under-dispersed). U-shaped deviation indicates missing interactions.
@@ -238,7 +238,7 @@ tbl = calibration_table(
     exposure=y_test['exposure']
 )
 print(tbl)
-# sorted by ae_ratio descending — worst-calibrated segments first
+# sorted by ae_ratio descending  -  worst-calibrated segments first
 ```
 
 **Residual plots.** Deviance residuals by feature bin, useful for diagnosing systematic mis-estimation of features that are in the model.
@@ -262,7 +262,7 @@ The case is about the quality of evidence you can produce when asked to demonstr
 
 SHAP values on a GBM satisfy the Shapley axioms and are internally consistent. They tell you which features drove a particular prediction, averaged over all feature orderings. What they do not tell you is the model's shape function - what the GBM would predict if only this one feature changed, continuously, across its full range. The EBM shape function does tell you that, exactly, because the additive structure is the architecture. The shape function is not derived from the model. It is the model.
 
-This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under SS1/23, the shape function table is a cleaner primary artefact than a SHAP summary — and the [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) produces the structured validation report that links those shape function tables to the model inventory record.
+This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under SS1/23, the shape function table is a cleaner primary artefact than a SHAP summary  -  and the [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) produces the structured validation report that links those shape function tables to the model inventory record.
 
 The honest trade-off: a well-tuned GBM will outperform an EBM on most high-volume datasets with complex interactions. The EBM is not always the best-predicting model. It is the model with the best trade-off between predictive performance and intrinsic interpretability on typical UK personal lines data (10-30 features, hundreds of thousands of policies, Poisson or Tweedie target).
 

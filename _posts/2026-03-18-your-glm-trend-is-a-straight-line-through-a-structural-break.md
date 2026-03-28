@@ -47,7 +47,7 @@ exposures = rng.uniform(900, 1100, T)
 
 # True underlying frequency: two regimes
 # Pre-whiplash reform: 0.082 annual frequency
-# Post-whiplash reform (from month 52, May 2021): 0.064 — material step-down
+# Post-whiplash reform (from month 52, May 2021): 0.064  -  material step-down
 true_rate = np.where(np.arange(T) < 52, 0.082, 0.064)
 counts = rng.poisson(true_rate * exposures / 12)  # monthly counts
 
@@ -87,7 +87,7 @@ For historical review of a longer series - say, when building a new pricing mode
 obs_freq = counts / (exposures / 12)
 
 finder = RetrospectiveBreakFinder(
-    model="l2",      # Gaussian mean change — appropriate for smoothed loss ratios
+    model="l2",      # Gaussian mean change  -  appropriate for smoothed loss ratios
     penalty="bic",   # BIC penalty: log(T), conservative
     n_bootstraps=1000,
     seed=42,
@@ -177,7 +177,7 @@ The practical workflow:
 
 5. For the rate indication, carry forward the current regime level, not the average across regimes.
 
-The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. If your concern is model drift rather than regime shift, the complementary tool is [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — which tracks whether your model's calibration and discrimination have changed relative to the training period. Run this monthly. It is not a replacement for the analytical step above - you still need to interpret what the break means - but it ensures you are not missing a new regime shift between annual pricing reviews.
+The `LossRatioMonitor` in `insurance-dynamics` automates this: it monitors both frequency and severity jointly and returns a `retrain` or `monitor` recommendation based on whether a new break has occurred. If your concern is model drift rather than regime shift, the complementary tool is [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)  -  which tracks whether your model's calibration and discrimination have changed relative to the training period. Run this monthly. It is not a replacement for the analytical step above - you still need to interpret what the break means - but it ensures you are not missing a new regime shift between annual pricing reviews.
 
 ---
 

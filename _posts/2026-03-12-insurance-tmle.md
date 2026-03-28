@@ -8,7 +8,7 @@ description: "Doubly robust TMLE for insurance pricing with Poisson outcomes and
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-tmle` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal` — TMLE doubly robust estimation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-tmle` has been consolidated into [`insurance-causal`](https://pypi.org/project/insurance-causal/). Install with `pip install insurance-causal`  -  TMLE doubly robust estimation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 
@@ -142,7 +142,7 @@ from insurance_tmle import TMLE, DoubleMLE, NaiveGLM
 import pandas as pd
 import dataclasses
 
-# Run each estimator and compare — agreement is evidence of robustness
+# Run each estimator and compare  -  agreement is evidence of robustness
 # fit() returns the result object directly for NaiveGLM and DoubleMLE
 naive_result = NaiveGLM().fit(Y, A, W)
 dml_result = DoubleMLE().fit(Y, A, W)
@@ -227,7 +227,7 @@ result = tmle.result
 print(f"Mean propensity: {result.propensity_mean:.3f}")
 print(f"Min propensity: {result.propensity_min:.4f}")
 if result.propensity_min < 0.05:
-    print("WARNING: some propensity scores are near 0 — positivity may be violated.")
+    print("WARNING: some propensity scores are near 0  -  positivity may be violated.")
 # propensity_clip=0.05 (default) trims to [0.05, 0.95] before the targeting step
 ```
 
