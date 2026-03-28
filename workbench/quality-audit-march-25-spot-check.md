@@ -41,7 +41,7 @@ EP25/2 is real, published July 2025. The specific figures are confirmed against 
 - CDiD methodology description is correct
 - Claims ratio fall 64% to 56% in motor: **plausible from paper context**
 
-The final disclaimer is precise and honest: "EP25/2 does not address proxy discrimination or demographic disparity in pricing. That is covered by Consumer Duty (PRIN 2A) and TR24/2, not this paper. Anyone citing EP25/2 as authority for fair value monitoring across protected characteristics is misattributing the source." That is exactly the kind of sourcing discipline we want.
+The final disclaimer is precise and honest: "EP25/2 does not address proxy discrimination or demographic disparity in pricing. That is covered by Consumer Duty (PRIN 2A) and FG22/5, not this paper. Anyone citing EP25/2 as authority for fair value monitoring across protected characteristics is misattributing the source." That is exactly the kind of sourcing discipline we want.
 
 ### API correctness
 
