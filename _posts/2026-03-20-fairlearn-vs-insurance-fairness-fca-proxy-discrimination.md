@@ -6,7 +6,7 @@ featured: true
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "Fairlearn is excellent for classification fairness. It was not built for insurance pricing, the Equality Act 2010, or the FCA's specific concern: proxy discrimination in a multiplicative rating model. Here is what the difference means in practice."
-tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
+tags: [fairlearn, insurance-fairness, FCA, proxy-discrimination, Consumer-Duty, pricing, fairness, python, uk-insurance, Equality-Act, demographic-parity]
 ---
 
 Fairlearn is the obvious starting point when a team is asked to audit an ML model for fairness. It's well-engineered, maintained by Microsoft, has clean scikit-learn compatibility, and implements the standard academic fairness criteria - demographic parity, equalised odds, equitable predictions - through both assessment and mitigation. If you're auditing a fraud classifier or a claims triage model, it is a reasonable first tool to reach for.
@@ -27,11 +27,11 @@ This is the central point, and it is worth stating plainly before going any furt
 
 Demographic parity says: the average prediction (or premium) should be the same across protected groups. This is the default framing in most ML fairness literature, and it is the framing Fairlearn was designed to enforce.
 
-Insurance pricing is legally and actuarially different. UK motor, home, and commercial insurers are explicitly permitted to charge different premiums to different risk groups, including groups that correlate with protected characteristics. An older driver does pay more than a 25-year-old. A high-theft-rate postcode does attract a higher premium. This is not discrimination - it is risk differentiation, and it is the basis on which the entire Lloyd's market operates. The Gender Directive (EU, 2012, implemented 2013) banned the use of gender as a direct rating factor, but it did not require premium equality between men and women; risk-based differentiation through other actuarially justified factors is still lawful.
+Insurance pricing is legally and actuarially different. UK motor, home, and commercial insurers are explicitly permitted to charge different premiums to different risk groups, including groups that correlate with protected characteristics. An older driver does pay more than a 25-year-old. A high-theft-rate postcode does attract a higher premium. This is not discrimination - it is risk differentiation, and it is the basis on which the entire Lloyd's market operates. The Gender Directive (EU, effective December 2012) banned the use of gender as a direct rating factor, but it did not require premium equality between men and women; risk-based differentiation through other actuarially justified factors is still lawful.
 
 What the FCA cares about - and what Fairlearn cannot detect - is **proxy discrimination**: a model that does not use a protected characteristic directly, but uses non-protected rating factors that are sufficiently correlated with it that the effect is the same as if it had. The postcode is the canonical example. Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m per year, driven entirely by postcodes that encode demographic information without any insurer explicitly modelling ethnicity.
 
-This is the test FCA Exploratory Paper EP25/2 is designed to address. The question is not "is the average premium the same for men and women?" The question is "do your non-protected rating factors act as conduits for characteristics you cannot legally use?"
+This is the proxy discrimination test under Consumer Duty (PS22/9) and Equality Act 2010 Section 19. The question is not "is the average premium the same for men and women?" The question is "do your non-protected rating factors act as conduits for characteristics you cannot legally use?"
 
 Those are different questions. They require different tools.
 
@@ -199,7 +199,7 @@ The Citizens Advice (2022) estimate of £213m per year in ethnicity-related over
 | | Fairlearn | insurance-fairness |
 |---|---|---|
 | Primary use case | Classification fairness | Pricing proxy discrimination detection |
-| Regulatory context | General algorithmic fairness | FCA EP25/2, Consumer Duty, Equality Act 2010 s.19 |
+| Regulatory context | General algorithmic fairness | Consumer Duty (PS22/9), Equality Act 2010 s.19 |
 | Core metric | Demographic parity, equalised odds | Proxy R-squared, mutual information, SHAP proxy scores |
 | Exposure weighting | No | Throughout |
 | Model structure | Any scikit-learn estimator | Poisson/Tweedie rate models |
@@ -209,7 +209,7 @@ The Citizens Advice (2022) estimate of £213m per year in ethnicity-related over
 | Financial impact quantification | No | ProxyVulnerabilityScore, parity cost in £ |
 | Double fairness (action vs outcome) | No | DoubleFairnessAudit with full Pareto front |
 
-The asymmetry that matters most is in the fourth-to-last row. Fairlearn assumes you have access to the protected characteristic at training time and wants to ensure your model's outputs are fair with respect to it. The FCA EP25/2 framework starts from the opposite position: your model probably does not use the protected characteristic directly (gender has been a prohibited direct rating factor since 2013), but your rating factors may carry it implicitly. The compliance test is whether you have checked for that implicitness - and Fairlearn's architecture is not designed to run that check.
+The asymmetry that matters most is in the fourth-to-last row. Fairlearn assumes you have access to the protected characteristic at training time and wants to ensure your model's outputs are fair with respect to it. The Consumer Duty and Equality Act Section 19 framework starts from the opposite position: your model probably does not use the protected characteristic directly (gender has been a prohibited direct rating factor since December 2012), but your rating factors may carry it implicitly. The compliance test is whether you have checked for that implicitness - and Fairlearn's architecture is not designed to run that check.
 
 ---
 
@@ -227,7 +227,7 @@ Fairlearn is a good library. Its documentation is clear, its academic grounding 
 Use `insurance-fairness` for:
 
 - Pricing model audits under FCA Consumer Duty (PS22/9) or Equality Act 2010 Section 19
-- EP25/2 compliance evidence: detecting whether rating factors act as proxies for protected characteristics
+- Consumer Duty (PS22/9) and Equality Act Section 19 compliance evidence: detecting whether rating factors act as proxies for protected characteristics
 - Exposure-weighted fairness metrics appropriate for Poisson/Tweedie rate models
 - Producing audit reports with explicit regulatory mapping for pricing committees and FCA file reviews
 - Quantifying the financial impact of proxy discrimination in sterling

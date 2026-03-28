@@ -207,6 +207,8 @@ pip install "insurance-conformal[all]"
 
 The library has no MAPIE dependency. The split conformal algorithm is 20 lines of code for the core quantile function plus the score implementations. We chose to own this rather than wrapping MAPIE, because MAPIE does not expose the score functions we need as a stable API.
 
+**Version note:** The structural comparisons in this post were written with MAPIE 0.8.x in mind. MAPIE's API has changed across versions (particularly the `MapieRegressor` interface and `method` arguments). If you are using a different version, check the MAPIE changelog before assuming the code snippets above translate directly.
+
 ---
 
 ## Summary

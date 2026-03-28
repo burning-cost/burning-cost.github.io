@@ -8,7 +8,7 @@ description: "Active Consumer Duty investigations in home and travel insurance. 
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, compliance, home-insurance, travel-insurance, PS22/9, pricing, python, uk-insurance]
 ---
 
-Following the Which? super-complaint on home and travel insurance, the FCA has indicated - according to market commentary and its own published supervisory communications - that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
+Following the Citizens Advice 2022 ethnicity penalty report and subsequent supervisory engagement, the FCA has indicated - according to market commentary and its own published supervisory communications - that enforcement activity is under way on fair value grounds in the home and travel sector. Reports suggest this includes restrictions on book growth for at least one firm, skilled person reviews into claims handling systems, and remedial commitments from senior managers, including consideration of whether redress may be due to customers.
 
 This is not a hypothetical compliance risk.
 
@@ -20,7 +20,7 @@ The question for any home or travel pricing team is whether their model governan
 
 Consumer Duty came into force in July 2023. The rules sit in PRIN 2A, with the detailed framework set out in PS22/9 and finalised guidance in FG22/5.
 
-PRIN 2A.4.6 requires firms to monitor whether their products and services provide fair value and whether different groups of customers are experiencing poor outcomes. This is not satisfied by a paragraph in a board paper. The monitoring must be ongoing, it must be segmented by customer group, and it must produce quantitative evidence that the pricing model does not systematically disadvantage any group.
+PRIN 2A.9 requires firms to monitor whether their products and services provide fair value and whether different groups of customers are experiencing poor outcomes. This is not satisfied by a paragraph in a board paper. The monitoring must be ongoing, it must be segmented by customer group, and it must produce quantitative evidence that the pricing model does not systematically disadvantage any group.
 
 The key word is "evidence." The Consumer Duty is not a principles-based obligation where good intentions count. The FCA expects firms to be able to demonstrate, with data, that their pricing produces fair value outcomes across the relevant customer population.
 
@@ -78,7 +78,7 @@ report = audit.run()
 report.to_markdown("fair_value_evidence_2026q1.md")
 ```
 
-`MulticalibrationAudit` handles the within-premium-band analysis. It segments policyholders into predicted premium deciles, then tests for systematic A/E bias within each (decile, group) cell. The correction mechanism applies credibility-weighted adjustments where cells fail the test, following the Denuit, Michaelides and Trufin (2026) framework adapted for UK insurance conventions.
+`MulticalibrationAudit` handles the within-premium-band analysis. It segments policyholders into predicted premium deciles, then tests for systematic A/E bias within each (decile, group) cell. The correction mechanism applies credibility-weighted adjustments where cells fail the test, following the Denuit, Michaelides and Trufin (March 2026 arXiv preprint, arXiv:2603.16317) framework adapted for UK insurance conventions.
 
 `WassersteinCorrector` handles the harder case: where a proxy factor has been identified and needs to be corrected rather than just flagged. It computes discrimination-free premiums using Wasserstein barycenter correction, following the Lindholm-Richman-Tsanakas-Wuthrich (2022) framework. The output is a set of corrected predictions that can go straight into a GLM tariff as multiplicative relativities.
 

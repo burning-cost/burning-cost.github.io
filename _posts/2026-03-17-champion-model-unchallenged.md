@@ -138,7 +138,7 @@ At 10% challenger allocation with 3,000 bound policies per month:
 - The challenger receives roughly 300 bound policies per month
 - Hit rate significance (a 2-percentage-point delta, 80% power): approximately 5 months
 - Claim frequency significance (a 0.5-percentage-point delta): approximately 10 months
-- Developed loss ratio significance (a 3-percentage-point delta with 12-month claims development): approximately 17 months to accumulate data, plus 12 months development - **29 months total from experiment start**
+- Developed loss ratio significance (a 3-percentage-point delta with 12-month claims development): approximately 17 months to accumulate data, plus 12 months development - **28 months total from experiment start**
 
 This is not a limitation of the library. It is the physics of insurance data. Loss ratio has a 12-to-36-month reward tail. Any framework claiming to optimise on LR signal faster than this is using a proxy metric - hit rate, frequency, average premium - rather than actual loss ratio. Proxy optimisation in pricing is how you promote a model that looks good on conversion but destroys underwriting margin.
 

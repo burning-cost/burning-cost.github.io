@@ -171,7 +171,7 @@ The practical workflow:
 
 2. Review the detected breaks against what you know about your book. A break in March 2017 on a motor book is the Ogden change, not a data error. A break in May 2021 on motor frequency is the whiplash reform. A break in mid-2022 on average repair cost is inflation.
 
-3. Identify your current regime. For most UK motor books analysed in January 2029, the current frequency regime started in mid-2021 and severity has been in a post-inflation plateau since late 2023 or 2024.
+3. Identify your current regime. For most UK motor books analysed in early 2026, the current frequency regime started in mid-2021 and severity has been in a post-inflation plateau since late 2023 or 2024.
 
 4. Fit your trend within the current regime. If the within-regime series shows no significant slope, your trend loading is zero. If it shows a slope, project that. Do not blend across the regime boundary.
 

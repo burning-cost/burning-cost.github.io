@@ -111,7 +111,7 @@ These are the published benchmark results from the `insurance-synthetic` README,
 
 **Spearman Frobenius norm vs real:** vine = 0.315, naive = 0.880. The vine preserves correlation structure 64% better than naive independent sampling. The naive method destroys the age/NCD relationship almost entirely (Spearman +0.001 vs true +0.502).
 
-**TVaR ratio at 99th percentile (claim_count):** vine = 1.59, naive = 1.01. The vine over-estimates tail risk by 59% on this dataset. The naive result of 1.01 looks right, but for the wrong reason: naive sampling has no joint tail structure, so it produces roughly the right univariate TVaR by chance while generating a joint distribution that is independent. A capital model run on the naive portfolio will compute diversification credits that do not reflect the real dependence between risk factors.
+**TVaR ratio at 99th percentile (claim_count):** vine = 1.59, naive = 1.01. The vine generates a stress portfolio with 59% higher tail risk than the seed — which is the intended outcome: the stress portfolio is supposed to represent a more adverse scenario. The naive result of 1.01 looks superficially correct, but for the wrong reason: naive sampling has no joint tail structure, so it produces roughly the right univariate TVaR by chance while generating a joint distribution that is independent. A capital model run on the naive portfolio will compute diversification credits that do not reflect the real dependence between risk factors.
 
 **Impossible combinations (young driver, high NCD):** real = 0.32%, vine = 0.26%, naive = 2.30%. The vine suppresses physically implausible policies through its correlation structure. Naive sampling generates seven times as many impossible rows as the real portfolio.
 
@@ -139,7 +139,7 @@ For independent validators reviewing an internal model, the vine summary is a di
 
 ## Limitations
 
-**99.9th percentile underestimation.** The vine over-estimates tail risk at the 99th percentile by 59% (TVaR ratio 1.59), but for very extreme percentiles - 99.9th and beyond - the vine tends to underestimate. The fitted bivariate families are calibrated on the body of the joint distribution; extreme quantile extrapolation depends on the tail index of the selected family, which may not match the true tail behaviour of your book. Do not use this tool for 1-in-1000 catastrophe scenarios without further validation.
+**99.9th percentile underestimation.** The vine produces a TVaR ratio of 1.59 at the 99th percentile on this dataset — the intended elevation for a stress portfolio — but for very extreme percentiles (99.9th and beyond) the vine tends to underestimate. The fitted bivariate families are calibrated on the body of the joint distribution; extreme quantile extrapolation depends on the tail index of the selected family, which may not match the true tail behaviour of your book. Do not use this tool for 1-in-1000 catastrophe scenarios without further validation.
 
 **Small book attenuation.** The vine is fitted on a seed portfolio. With fewer than roughly 5,000 policies, the correlation estimates become noisy and the fitted vine attenuates strong correlations - on our 8,000-policy benchmark, the age/NCD Spearman drops from 0.502 to 0.400 even in the vine case. For small books, generate more seed data from a synthetic portfolio with a known DGP (see [insurance-datasets](https://github.com/burning-cost/insurance-datasets)) before fitting the vine.
 
