@@ -175,5 +175,5 @@ Source and full freMTPL2 benchmark at [GitHub](https://github.com/burning-cost/i
 Reference: Bühlmann, H. & Straub, E. (1970). Glaubwürdigkeit für Schadensätze. *Mitteilungen der Vereinigung Schweizerischer Versicherungsmathematiker*, 70, 111–133.
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
-- [Does Bühlmann-Straub Credibility Actually Work?](/2026/04/01/does-buhlmann-straub-credibility-actually-work/)
+- [Does Bühlmann-Straub Credibility Actually Work?](/2026/03/28/does-buhlmann-straub-credibility-actually-work/)
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)

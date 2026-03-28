@@ -67,7 +67,7 @@ Why does this matter for UK non-life pricing specifically?
 
 The FCA's Consumer Duty obligation requires actuaries to be able to explain why a 19-year-old driver pays more than a 35-year-old, and to do so in terms that a reasonably sophisticated regulator can scrutinise. The PRA's January 2026 Dear CEO letter expects firms to demonstrate robust justification for model assumptions — a standard that implicitly follows the principles of PRA SS1/23 (the Model Risk Management supervisory statement written for banks) even though no direct insurance equivalent exists. When a GBM enforces monotonicity via a training flag, the guarantee is structural but not certified: the model *should* be monotone in the specified feature, but the guarantee degrades at feature values far from the training distribution. MonoKAN's guarantee is architectural — the model cannot produce a non-monotone output for the specified factors regardless of input values.
 
-This matters for factors where monotonicity is a regulatory and commercial baseline, not an empirical hypothesis: vehicle age increasing risk, no-claims bonus increasing discount, years of driving experience generally decreasing risk above a threshold. In [our post on constrained EBMs](/2026/04/05/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/), we found that unconstrained EBMs violate young-driver monotonicity in 31% of training runs. A MonoKAN would not: the constraint is baked into the architecture.
+This matters for factors where monotonicity is a regulatory and commercial baseline, not an empirical hypothesis: vehicle age increasing risk, no-claims bonus increasing discount, years of driving experience generally decreasing risk above a threshold. In [our post on constrained EBMs](/2026/03/28/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/), we found that unconstrained EBMs violate young-driver monotonicity in 31% of training runs. A MonoKAN would not: the constraint is baked into the architecture.
 
 The MonoKAN paper benchmarks against monotone MLP baselines (MonoNN, COMET, and others) and outperforms all of them with exact monotonicity. There is no public MonoKAN repository at the time of writing — it is implementable in PyTorch from the paper, but requires some engineering. This is a friction point.
 
@@ -111,6 +111,6 @@ We are planning to build `insurance-kan` — a pykan wrapper with Poisson freque
 ---
 
 Related posts:
-- [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/04/05/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)
-- [The PRA Just Named AI a Supervisory Theme. What That Means for Your Pricing Models.](/2026/04/10/pra-ai-supervisory-theme-pricing-models/)
+- [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/03/28/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)
+- [The PRA Just Named AI a Supervisory Theme. What That Means for Your Pricing Models.](/2026/03/28/pra-ai-supervisory-theme-pricing-models/)
 - [Actuarial Neural Additive Model: What the Paper Actually Does](/2026/03/25/actuarial-neural-additive-model-anam-arxiv-2509-08467/)

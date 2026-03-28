@@ -216,5 +216,5 @@ References:
 - Denuit, M., Maréchal, X., Pitrebois, S., & Walhin, J.-F. (2007). *Actuarial Modelling of Claim Counts*. Wiley.
 
 - [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/)
-- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/30/does-whittaker-henderson-smoothing-actually-work/)
+- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/28/does-whittaker-henderson-smoothing-actually-work/)
 - [Bühlmann-Straub on freMTPL2: What Regional Credibility Actually Looks Like](/2026/03/28/buhlmann-straub-credibility-fremtpl2-regional-pricing/)

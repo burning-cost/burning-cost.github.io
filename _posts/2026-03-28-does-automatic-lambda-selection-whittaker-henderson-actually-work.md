@@ -139,6 +139,6 @@ Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-whit
 
 Reference: Biessy, G. (2026). 'Whittaker-Henderson Smoothing Revisited: A Modern Statistical Framework for Practical Use.' *ASTIN Bulletin* 56, 1–31. doi:10.1017/asb.2025.10061.
 
-- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/30/does-whittaker-henderson-smoothing-actually-work/)
-- [Does Bühlmann-Straub Credibility Actually Work?](/2026/04/01/does-buhlmann-straub-credibility-actually-work/)
+- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/28/does-whittaker-henderson-smoothing-actually-work/)
+- [Does Bühlmann-Straub Credibility Actually Work?](/2026/03/28/does-buhlmann-straub-credibility-actually-work/)
 - [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/)

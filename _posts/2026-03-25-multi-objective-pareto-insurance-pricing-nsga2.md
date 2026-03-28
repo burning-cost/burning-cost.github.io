@@ -476,7 +476,7 @@ The paper (Bellamy et al., arXiv:2512.24747) is worth reading in full for the th
 
 ---
 
-- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/) — the full `PortfolioOptimiser` benchmark and 3-objective `ParetoFrontier` results
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/28/does-constrained-rate-optimisation-actually-work/) — the full `PortfolioOptimiser` benchmark and 3-objective `ParetoFrontier` results
 - [Does Proxy Discrimination Testing Actually Work?](/2026/03/28/does-proxy-discrimination-testing-actually-work/) — postcode as ethnicity proxy: CatBoost proxy R² = 0.62, detection rate 0/50 vs 50/50
 - [What Can I Change to Lower My Premium?](/2026/03/25/fca-consumer-duty-premium-explanation-algorithmic-recourse/) — Consumer Duty recourse obligation: `insurance-recourse` for constrained counterfactual search
 

@@ -113,5 +113,5 @@ Third, use the bimodal structure even if the parameters are blunt. Even a simple
 
 ---
 
-- [Does Bühlmann-Straub Credibility Actually Work?](/2026/04/01/does-buhlmann-straub-credibility-actually-work/) — credibility weighting mechanics for thin segments
+- [Does Bühlmann-Straub Credibility Actually Work?](/2026/03/28/does-buhlmann-straub-credibility-actually-work/) — credibility weighting mechanics for thin segments
 - [Spatial Panel GBMs: A Better Way to Price Geography](/2026/03/26/spatial-panel-gbm-geographic-insurance-pricing/) — when and how to handle geographic structure in GBM models

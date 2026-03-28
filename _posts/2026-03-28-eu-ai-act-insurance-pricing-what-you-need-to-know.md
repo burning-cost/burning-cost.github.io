@@ -236,5 +236,5 @@ It does not require model-free pricing or remove actuarial discretion. The human
 
 - [EU AI Act update: motor pricing probably isn't high-risk (and your GLMs may not be AI)](/2026/03/28/eu-ai-act-motor-pricing-not-high-risk-glm-scope/) — the corrections post that preceded this guide
 - [EU AI Act August 2026: What Your Pricing Team Must Do](/2026/03/25/eu-ai-act-august-2026-insurance-pricing/) — the original post, accurate for life/health teams, overstated for general insurance
-- [The PRA Just Named AI a Supervisory Theme](/2026/04/10/pra-ai-supervisory-theme-pricing-models/) — the UK domestic governance picture
+- [The PRA Just Named AI a Supervisory Theme](/2026/03/28/pra-ai-supervisory-theme-pricing-models/) — the UK domestic governance picture
 - [Proxy Discrimination in UK Motor Pricing](/2026/03/03/your-pricing-model-might-be-discriminating/) — the `insurance-fairness` library for EIOPA proxy discrimination requirements

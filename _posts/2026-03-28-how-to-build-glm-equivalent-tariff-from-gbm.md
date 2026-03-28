@@ -251,4 +251,4 @@ pip install "shap-relativities[all]"
 Source, benchmarks, and Colab notebooks at [GitHub](https://github.com/burning-cost/shap-relativities). Start with `benchmarks/benchmark.py` for the head-to-head against GLM; `benchmarks/benchmark_interactions.py` for the interaction DGP where the advantage is largest.
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
-- [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/04/05/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)
+- [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/03/28/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)

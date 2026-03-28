@@ -189,5 +189,5 @@ Source, benchmarks, and Databricks notebook at [GitHub](https://github.com/burni
 Reference: Biessy (2026), *Whittaker-Henderson Smoothing Revisited*, ASTIN Bulletin. [arXiv:2306.06932](https://arxiv.org/abs/2306.06932).
 
 - [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/)
-- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/28/does-constrained-rate-optimisation-actually-work/)
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/)

@@ -127,4 +127,4 @@ Source, benchmarks, and a Databricks validation notebook with known-DGP omega re
 
 - [Your Frequency-Severity Independence Assumption Is Costing You Premium](/2025/05/14/frequency-severity-independence-is-costing-you-premium/)
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/)
-- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/)
+- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/28/does-hmm-telematics-risk-scoring-actually-work/)

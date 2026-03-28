@@ -135,5 +135,5 @@ Source and benchmarks at [GitHub](https://github.com/burning-cost/insurance-cred
 Reference: Bühlmann, H. & Gisler, A. (2005). *A Course in Credibility Theory and Its Applications*. Springer.
 
 - [Bühlmann-Straub Credibility in Python: Blending Thin Segments with Portfolio Experience](/2026/02/19/buhlmann-straub-credibility-in-python/)
-- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/30/does-whittaker-henderson-smoothing-actually-work/)
+- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/28/does-whittaker-henderson-smoothing-actually-work/)
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/)

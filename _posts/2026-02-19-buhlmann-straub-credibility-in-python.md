@@ -331,4 +331,4 @@ For multi-dimensional crossed effects (vehicle group and driver age and postcode
 - [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/)
 - [Credibility-Weighted Broker and Scheme Effects with REML](/2026/03/13/your-broker-adjustments-are-guesswork/)
 - [Experience Rating: NCD and Bonus-Malus](/2026/02/27/experience-rating-ncd-bonus-malus/)
-- [Does Bühlmann-Straub Credibility Actually Work?](/2026/04/01/does-buhlmann-straub-credibility-actually-work/) — benchmark results on a 30-scheme synthetic book: 30-50% MSE reduction on thin segments versus raw experience
+- [Does Bühlmann-Straub Credibility Actually Work?](/2026/03/28/does-buhlmann-straub-credibility-actually-work/) — benchmark results on a 30-scheme synthetic book: 30-50% MSE reduction on thin segments versus raw experience

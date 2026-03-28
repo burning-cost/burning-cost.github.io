@@ -149,4 +149,4 @@ References:
 
 - [Does insurance-gam actually work for insurance pricing?](/2026/03/24/does-insurance-gam-actually-work-pricing/)
 - [Actuarial Neural Additive Model: What the Paper Actually Does](/2026/03/25/actuarial-neural-additive-model-anam-arxiv-2509-08467/)
-- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/31/does-hmm-telematics-risk-scoring-actually-work/)
+- [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/28/does-hmm-telematics-risk-scoring-actually-work/)

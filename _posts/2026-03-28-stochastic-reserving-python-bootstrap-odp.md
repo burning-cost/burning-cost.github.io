@@ -7,7 +7,7 @@ tags: [reserving, IBNR, stochastic-reserving, bootstrap-ODP, Mack, chainladder, 
 description: "How to produce a full IBNR distribution in Python using the Mack method and Bootstrap ODP sampling. Covers analytical standard errors, 5,000-simulation bootstrap, percentile tables for Solvency II SCR and IFRS 17 risk adjustment, and a Mack vs Bootstrap comparison on the RAA dataset."
 ---
 
-[Part 1 of this series](/2026/04/13/chain-ladder-python-reserving-tutorial/) showed how to build and fit a chain ladder model on the RAA triangle using the `chainladder` library, and how to extract the IBNR estimate of 52,135. That figure is a point estimate. It tells you the expected shortfall between current reserves and ultimate losses. It does not tell you how wrong it could be.
+[Part 1 of this series](/2026/03/28/chain-ladder-python-reserving-tutorial/) showed how to build and fit a chain ladder model on the RAA triangle using the `chainladder` library, and how to extract the IBNR estimate of 52,135. That figure is a point estimate. It tells you the expected shortfall between current reserves and ultimate losses. It does not tell you how wrong it could be.
 
 This post addresses that gap. We cover two methods for quantifying reserve uncertainty:
 
@@ -308,4 +308,4 @@ Or leave it — it is informative rather than alarming.
 
 ## What's next
 
-[Part 3](/2026/04/17/bornhuetter-ferguson-python-reserving/) will cover the **Bornhuetter-Ferguson method** — the industry's preferred approach when the chain ladder is unreliable on thin or volatile triangles. BF blends a prior expected loss ratio with the emerging development pattern, borrowing strength from your pricing assumptions to stabilise immature accident years. We will fit it to the RAA triangle, compare it with the chain ladder, and show how to set and test the prior assumption.
+Part 3 (coming soon) will cover the **Bornhuetter-Ferguson method** — the industry's preferred approach when the chain ladder is unreliable on thin or volatile triangles. BF blends a prior expected loss ratio with the emerging development pattern, borrowing strength from your pricing assumptions to stabilise immature accident years. We will fit it to the RAA triangle, compare it with the chain ladder, and show how to set and test the prior assumption.

@@ -7,7 +7,7 @@ tags: [eu-ai-act, regulation, model-governance, article-13, transparency, model-
 description: "Article 13 of the EU AI Act is not about SHAP values. It is about deployer-facing documentation — what the underwriter or product team needs to interpret and use a pricing model correctly. We walk through what the Article actually requires, where PRA SS1/23 already covers the ground, and what is missing."
 ---
 
-This is the third post in our EU AI Act series for insurance pricing teams. [Post 1]({{ site.baseurl }}{% post_url 2026-03-28-eu-ai-act-insurance-pricing-what-you-need-to-know %}) covered scope — who is in scope, which model types qualify as AI systems, and what the four-step decision sequence looks like. [Post 2](/2026/03/29/eu-ai-act-conformity-assessment-pricing-model/) covered the self-assessment process under Annex VI. This post is about Article 13 specifically.
+This is the third post in our EU AI Act series for insurance pricing teams. [Post 1]({{ site.baseurl }}{% post_url 2026-03-28-eu-ai-act-insurance-pricing-what-you-need-to-know %}) covered scope — who is in scope, which model types qualify as AI systems, and what the four-step decision sequence looks like. [Post 2](/2026/03/28/eu-ai-act-conformity-assessment-pricing-model/) covered the self-assessment process under Annex VI. This post is about Article 13 specifically.
 
 Article 13 is one of the Articles that generates the most confusion, for a simple reason: people conflate "transparency" with "interpretability" or "explainability." They are different things, and the Act cares about a different one than most teams assume.
 
@@ -631,4 +631,4 @@ The Commission's Q2 2026 transparency guidelines will add interpretive clarity o
 
 ---
 
-*Post 1 in this series: [EU AI Act and Insurance Pricing — What You Actually Need to Know]({{ site.baseurl }}{% post_url 2026-03-28-eu-ai-act-insurance-pricing-what-you-need-to-know %}). Post 2: [EU AI Act Conformity Assessment for Pricing Models](/2026/03/29/eu-ai-act-conformity-assessment-pricing-model/). Primary sources: Regulation (EU) 2024/1689, OJ 12.7.2024; EIOPA-BoS-25-360, August 2025.*
+*Post 1 in this series: [EU AI Act and Insurance Pricing — What You Actually Need to Know]({{ site.baseurl }}{% post_url 2026-03-28-eu-ai-act-insurance-pricing-what-you-need-to-know %}). Post 2: [EU AI Act Conformity Assessment for Pricing Models](/2026/03/28/eu-ai-act-conformity-assessment-pricing-model/). Primary sources: Regulation (EU) 2024/1689, OJ 12.7.2024; EIOPA-BoS-25-360, August 2025.*

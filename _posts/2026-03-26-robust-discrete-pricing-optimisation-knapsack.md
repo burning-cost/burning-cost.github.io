@@ -147,5 +147,5 @@ Related:
 
 - [Constrained Portfolio Rate Optimisation with FCA ENBP Enforcement](/2026/03/07/insurance-optimise/)
 - [Constrained Rate Optimisation and the Efficient Frontier](/2026/02/21/constrained-rate-optimisation-efficient-frontier/)
-- [Does Constrained Rate Optimisation Actually Work?](/2026/03/29/does-constrained-rate-optimisation-actually-work/)
+- [Does Constrained Rate Optimisation Actually Work?](/2026/03/28/does-constrained-rate-optimisation-actually-work/)
 - [What FCA EP25/2 Actually Shows](/2026/03/25/fca-ep25-2-gipp-market-outcomes-cost-push-not-regulation/)

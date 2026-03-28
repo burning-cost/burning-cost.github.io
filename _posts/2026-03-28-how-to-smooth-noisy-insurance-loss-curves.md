@@ -285,6 +285,6 @@ Source, benchmarks, and the REML vs manual lambda comparison at [GitHub](https:/
 
 Reference: Biessy, G. (2026). 'Graduation by maximum marginal likelihood.' ASTIN Bulletin 56(1). arXiv:2306.06932.
 
-- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/30/does-whittaker-henderson-smoothing-actually-work/)
-- [Does Automatic Lambda Selection Actually Work?](/2026/04/03/does-automatic-lambda-selection-whittaker-henderson-actually-work/)
+- [Does Whittaker-Henderson Smoothing Actually Work?](/2026/03/28/does-whittaker-henderson-smoothing-actually-work/)
+- [Does Automatic Lambda Selection Actually Work?](/2026/03/28/does-automatic-lambda-selection-whittaker-henderson-actually-work/)
 - [Whittaker-Henderson Poisson Age Curve on freMTPL2](/2026/03/28/whittaker-henderson-poisson-age-curve-fremtpl2/)
