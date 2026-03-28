@@ -380,6 +380,6 @@ The canonical reference for Tweedie GLMs in insurance is **England & Verrall (20
 
 For the compound Poisson-gamma derivation: **Jørgensen & Paes de Souza (1994)** "Fitting Tweedie's compound Poisson model to insurance claims data", Scandinavian Actuarial Journal.
 
-For the practical comparison with frequency-severity in a GBM context: **Delong, Kozak & Lindholm (2023)** "Making Tweedie's compound Poisson model more accessible", European Actuarial Journal.
+For the practical comparison with frequency-severity in a GBM context: **Delong, Lindholm & Wüthrich (2021)** "Making Tweedie's compound Poisson model more accessible", European Actuarial Journal. SSRN 3622871.
 
 If your data has structural zeros, our [ZI-Tweedie post]({% post_url 2026-03-28-zero-inflated-tweedie-gbm-insurance-pricing %}) covers the extension to a two-part model with `insurance-distributional`.

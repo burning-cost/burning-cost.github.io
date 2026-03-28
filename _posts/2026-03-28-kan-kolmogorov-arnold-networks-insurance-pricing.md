@@ -82,7 +82,7 @@ Xu et al. train on mortality, where monotonicity requirements are less pressing.
 
 The FCA's consumer duty pricing rules require firms to be able to explain and justify pricing factors. In practice, "vehicle age increases risk" needs to be monotone: if your model prices a 12-year-old car lower risk than a 10-year-old car of the same type, you will need to explain why. The same applies to NCD discount trajectories. Regulators and pricing committees are not sympathetic to "the model found a local optimum."
 
-Standard KANs provide no monotonicity guarantee. Inchingolo, Ferroni, and Bacciu (2024), "MonoKAN: Certified Monotonic Kolmogorov-Arnold Network" (arXiv:2409.11078), address this directly. They replace B-splines with cubic Hermite splines parameterised so that the derivative is always non-negative (or non-positive) by construction. The monotonicity is certified: it is a mathematical property of the parameterisation, not a penalty term that could be violated by a sufficiently large gradient step.
+Standard KANs provide no monotonicity guarantee. Polo-Molina, Alfaya, and Portela (2024), "MonoKAN: Certified Monotonic Kolmogorov-Arnold Network" (arXiv:2409.11078), address this directly. They replace B-splines with cubic Hermite splines parameterised so that the derivative is always non-negative (or non-positive) by construction. The monotonicity is certified: it is a mathematical property of the parameterisation, not a penalty term that could be violated by a sufficiently large gradient step.
 
 This is the key distinction from how [`insurance-gam`](https://github.com/burning-cost/insurance-gam) handles it. The EBM wrapper in `insurance-gam` accepts a `monotone_constraints` dict, which passes through to interpretML's boosting algorithm as a constraint on which tree splits are permitted. That is an approximately-monotone solution — it works well in practice and passes audit, but it is not *certified* in the MonoKAN sense. MonoKAN's guarantee is stronger and more defensible under a formal model governance review.
 
@@ -224,6 +224,6 @@ Liu, Z., Wang, Y., Vaidya, S., Ruehle, F., Halverson, J., Soljačić, M., Hou, T
 
 Xu, X., Badescu, A. and Pesenti, S. (2026). What KAN mortality say: smooth and interpretable mortality modeling using Kolmogorov-Arnold networks. *ASTIN Bulletin*, 56(1), pp. 32–59. DOI: [10.1017/asb.2025.10079](https://doi.org/10.1017/asb.2025.10079).
 
-Inchingolo, G., Ferroni, F. and Bacciu, D. (2024). MonoKAN: Certified Monotonic Kolmogorov-Arnold Network. arXiv:2409.11078.
+Polo-Molina, A., Alfaya, D. and Portela, J. (2024). MonoKAN: Certified Monotonic Kolmogorov-Arnold Network. arXiv:2409.11078.
 
 Poeta, E., Giobergia, F., Pastor, E., Cerquitelli, T. and Baralis, E. (2024). A Benchmarking Study of Kolmogorov-Arnold Networks on Tabular Data. arXiv:2406.14529.

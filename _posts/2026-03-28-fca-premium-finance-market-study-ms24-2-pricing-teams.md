@@ -15,7 +15,7 @@ This post covers: what the FCA found, what double dipping means for your GLM, th
 
 ## What the FCA found
 
-Premium finance is larger than most pricing teams appreciate. Roughly 23 million motor and home policies were financed via instalments in 2023. About 48% of UK motor and home policies are paid monthly. Sixty percent of motor insurance customers paid monthly in 2024 — primarily because they cannot afford the annual payment. The outstanding loan balance across the market exceeds £5 billion; annual revenue is approximately £1.2 billion.
+Premium finance is larger than most pricing teams appreciate. Roughly 23 million motor and home policies were financed via instalments in 2023. About 48% of UK motor and home policies are paid monthly. Around half of motor insurance customers paid monthly in 2024 — primarily because they cannot afford the annual payment (the confirmed combined motor and home figure is approximately 48%). The outstanding loan balance across the market exceeds £5 billion; annual revenue is approximately £1.2 billion.
 
 The average APR fell from 23.3% in 2022 to 19.2% in 2026. That 4.1 percentage point reduction happened under Consumer Duty pressure before the final report landed. When the FCA directly challenged individual firms, APRs fell by up to 8 percentage points. The market moved because it was told to — not because firms reworked their cost models. That matters for what happens next.
 
