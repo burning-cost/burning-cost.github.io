@@ -263,8 +263,8 @@ Source is on [GitHub](https://github.com/burning-cost/insurance-glm-tools). The 
 ## References
 
 - Wang, Y., Shi, P., & Cao, C. (2025). A nested GLM framework with neural network encoding and spatially constrained clustering in non-life insurance ratemaking. *North American Actuarial Journal*.
-- Shi, P., & Shi, K. (2023). Non-life insurance risk classification using categorical embedding. *North American Actuarial Journal*, 27(1), 175-205.
-- Avanzi, B., Taylor, G., Wang, M., & Wong, B. (2024). GLMMNet: a generalised linear mixed model representation for deep learning. *ASTIN Bulletin*, 54(1), 1-29.
+- Shi, P., & Shi, K. (2023). Non-life insurance risk classification using categorical embedding. *North American Actuarial Journal*, 27(3), 579–601.
+- Avanzi, B., Taylor, G., Wang, M., & Wong, B. (2024). GLMMNet: a generalised linear mixed model representation for deep learning. *ASTIN Bulletin*, 54(2), 213–238.
 - Assuncao, R.M., Neves, M.C., Camara, G., & Freitas, C.D.C. (2006). Efficient regionalisation techniques for socio-economic geographical units using minimum spanning trees. *International Journal of Geographical Information Science*, 20(7), 797-811.
 - Guo, C., & Berkhahn, F. (2016). Entity embeddings of categorical variables. *arXiv:1604.06737*.
 

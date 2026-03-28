@@ -291,6 +291,6 @@ The library is at v0.1.0. API stability will improve as we use it in anger on re
 
 The generic tools are not going to add Tweedie marginals or exposure-weighted KS statistics any time soon. DataCebo's SDV roadmap is finance and healthcare. The actuarial gap is real, and it is ours to fill.
 
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
+- [Solvency II / PRA SS3/18-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/)
 - [Why k-Fold CV Is Wrong for Insurance](/2026/03/21/why-k-fold-cv-is-wrong-for-insurance/)

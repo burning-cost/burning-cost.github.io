@@ -336,7 +336,7 @@ Source at [github.com/burning-cost/insurance-spatial](https://github.com/burning
 ## References
 
 - Riebler, A., Sorbye, S.H., Simpson, D., & Rue, H. (2016). An intuitive Bayesian spatial model for disease mapping that accounts for scaling. *Statistical Methods in Medical Research*, 25(4), 1145-1165.
-- Gschlohl, S., Czado, C., & Held, L. (2019). Spatial statistical modelling of insurance risk: a spatial epidemiological approach to car insurance. *Scandinavian Actuarial Journal*.
+- Gschlößl, S., &amp; Czado, C. (2007). Modelling count data with overdispersion and spatial effects. *Scandinavian Actuarial Journal*, 2007(3), 202–225.
 - Besag, J., York, J., & Mollie, A. (1991). Bayesian image restoration, with two applications in spatial statistics. *Annals of the Institute of Statistical Mathematics*, 43(1), 1-59.
 - Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., & Burkner, P.C. (2021). Rank-normalization, folding, and localization: an improved R-hat for assessing convergence of MCMC. *Bayesian Analysis*, 16(2), 667-718.
 

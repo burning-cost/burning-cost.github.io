@@ -8,7 +8,7 @@ description: "Distributional Refinement Networks wrap any GLM to produce a full 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](/insurance-distributional/). Install with `pip install insurance-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
+**Package update:** `insurance-drn` has been consolidated into [`insurance-severity`](/insurance-severity/). Install with `pip install insurance-severity` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-severity)
 </div>
 
 
@@ -221,7 +221,7 @@ The two approaches are complementary. We use the GLM as baseline for DRN on line
 
 DRN introduces neural network parameters on top of a well-understood GLM baseline. There are three things to watch.
 
-First, overfitting in the upper bins. With few extreme observations, the neural network can overfit bin probabilities in the tail. The KL regularisation term in the loss (`drn_regularisation`) penalises large departures from the baseline; increase `kl_alpha` if you see validation CRPS diverging from training CRPS.
+First, overfitting in the upper bins. With few extreme observations, the neural network can overfit bin probabilities in the tail. The KL regularisation term in the loss (`drn_regularisation`) penalises large departures from the baseline; increase `kl_alpha` if you see validation CRPS diverging from training CRPS. **Note:** the `kl_alpha` regularisation parameter and the associated KL penalty are additions in this library implementation and are not present in the original DRN paper (arXiv:2406.00998). The core architecture — bin probabilities, JBCE loss, and baseline refinement — follows the paper; the KL term is a practical enhancement for production use where overfitting in sparse tail bins is a real concern.
 
 Second, the baseline is frozen. The GLM is not updated during DRN training. If the GLM mean prediction is wrong for a particular segment, DRN cannot correct the mean - it can only adjust the shape. Run `diag.quantile_calibration` and verify that DRN's 50th percentile tracks the GLM mean before trusting the tail.
 

@@ -22,7 +22,7 @@ GLMs pass both tests. The factor table is the explanation. Each row says exactly
 
 Gradient boosted models go the other way. On most insurance datasets with enough volume, a well-tuned GBM outperforms a GLM. The difficulty is the explanation step. SHAP values are post-hoc attributions, not the model itself. "The SHAP values look reasonable" is a meaningful statement about the training data but a weaker one about model behaviour at margins, under distributional shift, or on the specific policy you're trying to explain to a customer who has received an adverse decision.
 
-Explainable Boosting Machines sit between these two. They are a class of Generalised Additive Model fitted using gradient boosting - the prediction is an additive sum of per-feature shape functions, each learned by a boosting process that cycles through features one at a time. The shape functions are exact and intrinsic: you are not post-hoc summarising a black box, you are reading the model directly. The boosting fitting process captures nonlinear within-feature effects that a GLM would miss. And the family of models they belong to - GA2M when you include pairwise interactions - has the theoretical underpinning of Lou et al. (2012, KDD) and the production implementation in interpretML's `ExplainableBoostingMachine`, documented in Nori et al. (2019, arXiv:1909.09223).
+Explainable Boosting Machines sit between these two. They are a class of Generalised Additive Model fitted using gradient boosting - the prediction is an additive sum of per-feature shape functions, each learned by a boosting process that cycles through features one at a time. The shape functions are exact and intrinsic: you are not post-hoc summarising a black box, you are reading the model directly. The boosting fitting process captures nonlinear within-feature effects that a GLM would miss. And the family of models they belong to - GA2M when you include pairwise interactions - has the theoretical underpinning of Lou et al. (2013, KDD) and the production implementation in interpretML's `ExplainableBoostingMachine`, documented in Nori et al. (2019, arXiv:1909.09223).
 
 What interpretML already gives you is substantial: Poisson, Gamma, and Tweedie deviance objectives; exposure as an init_score offset; monotonicity constraints at fit time; automatic interaction detection via the FAST algorithm. These are not bolted-on features. They are first-class parts of the API.
 
@@ -256,13 +256,13 @@ residual_plot(model, X_test, y_test['claim_count'],
 
 We should be direct about what the EBM advantage actually is and what it is not.
 
-The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. The PRA's SS1/23 model risk management guidance (effective May 2024) requires validators to understand model decision boundaries and test behaviour at margins - but it does not specify architectures.
+The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. Solvency II Article 121 and PRA SS3/18 (model risk management for Solvency II firms) require validators to understand model decision boundaries and test behaviour at margins - but neither specifies architectures.
 
 The case is about the quality of evidence you can produce when asked to demonstrate that your model does what you think it does.
 
 SHAP values on a GBM satisfy the Shapley axioms and are internally consistent. They tell you which features drove a particular prediction, averaged over all feature orderings. What they do not tell you is the model's shape function - what the GBM would predict if only this one feature changed, continuously, across its full range. The EBM shape function does tell you that, exactly, because the additive structure is the architecture. The shape function is not derived from the model. It is the model.
 
-This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under SS1/23, the shape function table is a cleaner primary artefact than a SHAP summary.
+This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under Solvency II Article 121 and PRA SS3/18, the shape function table is a cleaner primary artefact than a SHAP summary.
 
 The honest trade-off: a well-tuned GBM will outperform an EBM on most high-volume datasets with complex interactions. The EBM is not always the best-predicting model. It is the model with the best trade-off between predictive performance and intrinsic interpretability on typical UK personal lines data (10-30 features, hundreds of thousands of policies, Poisson or Tweedie target).
 
@@ -295,7 +295,7 @@ The full workflow demo is in `notebooks/insurance_gam_demo.py`. It runs a Poisso
 Source: [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam)
 PyPI: [pypi.org/project/insurance-gam](https://pypi.org/project/insurance-gam)
 
-The architecture builds on interpretML's `ExplainableBoostingMachine` (Nori et al., arXiv:1909.09223, 2019), which in turn builds on the GA2M framework of Lou et al. (KDD 2012). The actuarial workflow layer - relativities, diagnostics, GLM comparison - is specific to this library.
+The architecture builds on interpretML's `ExplainableBoostingMachine` (Nori et al., arXiv:1909.09223, 2019), which in turn builds on the GA2M framework of Lou, Caruana, Gehrke, and Hooker (KDD 2013). The actuarial workflow layer - relativities, diagnostics, GLM comparison - is specific to this library.
 
 - [Extracting Rating Relativities from GBMs with SHAP](/2026/02/17/extracting-rating-relativities-from-gbms-with-shap/)
 - [Actuarial Neural Additive Models: Exact Interpretability with Tweedie Loss](/2026/03/13/your-interpretable-model-isnt-interpretable-enough/)
