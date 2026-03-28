@@ -226,6 +226,6 @@ A before/after chart is not evidence. It is a description of what happened. The 
 
 ## See also
 
-- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/) - panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
+- [Causal Fixed Effects for Rate Change Evaluation](/insurance-causal/) - panel fixed effects as a complementary identification strategy for rate changes with multi-year policy histories
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) - DML for continuous treatment; applies when the rate change was applied at varying levels rather than as a clean step
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) - why A/B rate testing and pre/post comparisons both fail for the same structural reason

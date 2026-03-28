@@ -314,5 +314,5 @@ The point of this library is not that it is sophisticated. DiD and ITS are forty
 ## See also
 
 - [Your Rate Change Didn't Prove Anything](/2026/03/13/your-rate-change-didnt-prove-anything/)  -  the conceptual argument for why before/after comparisons fail under FCA TR24/2, and how `insurance-causal-policy` handles the harder SDID case with staggered adoption
-- [Causal Fixed Effects for Rate Change Evaluation](/2026/03/12/insurance-causal-panel/)  -  panel fixed effects as a complementary identification strategy
+- [Causal Fixed Effects for Rate Change Evaluation](/insurance-causal/)  -  panel fixed effects as a complementary identification strategy
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/)  -  why the identification problems in rate change evaluation and price elasticity estimation share the same root
