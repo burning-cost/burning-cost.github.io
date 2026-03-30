@@ -48,7 +48,7 @@ test = SequentialTest(
     metric="frequency",       # Poisson rate ratio
     alternative="less",       # challenger has lower frequency than champion
     alpha=0.05,               # threshold Lambda = 20
-    tau=0.03,                 # prior std dev on log-rate-ratio: ~3% effect
+    tau=0.015,                # prior std dev on log-rate-ratio: set for ~3-5% effect (tau < theta/2.45)
     max_duration_years=2.0,
     min_exposure_per_arm=500.0,  # car-years before any stopping decision
     futility_threshold=0.1,   # stop if evidence falls below 0.1
@@ -100,7 +100,7 @@ result = sequential_test_from_df(
     challenger_exposure_col="chal_caryears",
     date_col="period_end",
     metric="frequency",
-    tau=0.03,
+    tau=0.015,
     alpha=0.05,
 )
 print(result.summary)
@@ -125,13 +125,13 @@ Our rule of thumb for UK motor:
 
 | Scenario | Recommended tau |
 |---|---|
-| Pricing rule change, expected 2–5% frequency lift | 0.03 |
-| New telematics scoring model, expected 5–10% lift | 0.05 |
-| Major rating factor restructure, expected >10% lift | 0.10 |
-| Fraud detection model (frequency proxy) | 0.05 |
-| Severity-focused change (repair network, excess) | 0.05 on severity metric |
+| Pricing rule change, expected 2–5% frequency lift | 0.015 |
+| New telematics scoring model, expected 5–10% lift | 0.03 |
+| Major rating factor restructure, expected >10% lift | 0.05 |
+| Fraud detection model (frequency proxy) | 0.03 |
+| Severity-focused change (repair network, excess) | 0.03 on severity metric |
 
-These are starting points. If you have a strong prior from modelling — e.g., your frequency model predicts a 6.3% lift on the test segment — use that directly: tau = 0.063. The test is robust to moderate misspecification of tau; a factor of 2x wrong does not collapse the type I error guarantee, it just costs power.
+The values above satisfy the detectability constraint: for the mSPRT to be capable of rejecting H0 at all, the maximum evidence achievable must exceed the threshold, which requires `tau < theta / sqrt(2 * log(1/alpha))`. At alpha=0.05, `log(1/alpha) = log(20) ≈ 3.0`, so the constraint is `tau < theta / 2.45`. For a 5% effect (theta ≈ 0.05), tau must be at most ~0.020; the table uses 0.015 for the 2–5% row as a conservative starting point. Setting tau larger than this means the test can never accumulate enough evidence to reject at the specified alpha, regardless of how much data you collect. If you have a strong prior from modelling — e.g., your frequency model predicts a 6.3% lift on the test segment — use that as theta directly and set tau = theta / 3 as a practical rule. The test is robust to moderate misspecification of tau in the direction of being smaller than optimal; it costs power but does not break the type I error guarantee.
 
 ---
 

@@ -64,7 +64,7 @@ When someone asks you to use 12 months of IBNR buffer for motor BI and you reply
 
 ## The insurance-cv API
 
-[`insurance-cv`](/insurance-governance/) provides `walk_forward_split()`, which generates a list of `TemporalSplit` objects directly from your DataFrame. It accepts either Polars or Pandas frames.
+[`insurance-cv`](/insurance-cv/) provides `walk_forward_split()`, which generates a list of `TemporalSplit` objects directly from your DataFrame. It accepts either Polars or Pandas frames.
 
 ```python
 from insurance_cv import walk_forward_split, split_summary, temporal_leakage_check, InsuranceCV
@@ -229,7 +229,7 @@ for split in splits:
     order = np.argsort(pred_freq)
     cum_exp = np.cumsum(w_test.values[order])
     cum_claims = np.cumsum(y_test.values[order])
-    gini = 1 - 2 * np.trapz(cum_claims / cum_claims[-1], cum_exp / cum_exp[-1])
+    gini = 1 - 2 * np.trapezoid(cum_claims / cum_claims[-1], cum_exp / cum_exp[-1])
 
     fold_results.append({
         "fold": split.label.split()[0],

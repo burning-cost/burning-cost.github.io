@@ -9,7 +9,7 @@ description: "How the Ogden discount rate and Periodical Payment Orders change t
 
 Every UK motor liability and employers' liability pricing actuary knows the Ogden rate exists. Fewer have built the discount cash flow calculation from scratch, or thought carefully about what happens when the court awards a PPO instead of a lump sum. This post works through both.
 
-The Ogden rate is currently -0.25% (set August 2019 under the Civil Liability Act 2018 framework). That negative sign is not a typo. On a serious injury claim where a 30-year-old claimant needs £60,000 per year in care costs for life, the lump sum under the current rate is over twice the lump sum at the 2.5% rate that applied before 2017. Get this wrong and the error sits quietly in your reserve until it does not.
+The Ogden rate is currently +0.5% (effective 11 January 2025, under the Civil Liability Act 2018 framework). The rate was -0.25% from August 2019 until January 2025. On a serious injury claim where a 30-year-old claimant needs £60,000 per year in care costs for life, the lump sum under the new +0.5% rate is substantially less than it was under the -0.25% rate, and still much higher than at the pre-2017 rate of 2.5%. Get this wrong and the error sits quietly in your reserve until it does not.
 
 ---
 
@@ -17,9 +17,9 @@ The Ogden rate is currently -0.25% (set August 2019 under the Civil Liability Ac
 
 The Ogden discount rate is used by UK courts when awarding lump sum damages for future financial losses. The court multiplies the annual loss by an Ogden multiplier from the Government Actuary's Department tables to arrive at a lump sum. The multiplier depends on age, sex, assumed investment return (the Ogden rate), and mortality assumptions.
 
-The logic is: a claimant receiving £X today can invest it and earn returns over the period, so the lump sum should be discounted by the assumed net rate of return. At a positive rate, the lump sum is less than the undiscounted sum of future losses. At -0.25%, the lump sum is slightly more.
+The logic is: a claimant receiving £X today can invest it and earn returns over the period, so the lump sum should be discounted by the assumed net rate of return. At a positive rate, the lump sum is less than the undiscounted sum of future losses. At +0.5%, the lump sum is slightly less than the undiscounted total — a return to the position of a very small positive return assumption.
 
-The rate was set at 2.5% from 2001 to 2017. It then dropped to -0.75% in March 2017 — a shock to the industry that added billions to outstanding large BI reserves overnight. The Civil Liability Act 2018 changed the methodology: the rate is now set by reference to a diversified portfolio including equities (not purely index-linked gilts as previously), which produced the current -0.25% in August 2019. The next review was due in 2024; as of early 2026, no revision has been announced, though the Lord Chancellor retains the power to revise it.
+The rate was set at 2.5% from 2001 to 2017. It then dropped to -0.75% in March 2017 — a shock to the industry that added billions to outstanding large BI reserves overnight. The Civil Liability Act 2018 changed the methodology: the rate is now set by reference to a diversified portfolio including equities (not purely index-linked gilts as previously). This produced -0.25% in August 2019. The next review was conducted in late 2024, and the Lord Chancellor set the rate at +0.5%, effective 11 January 2025. The positive rate means claimants are now assumed to achieve a small real return on their invested lump sum, reducing awards compared with the -0.25% basis. The Lord Chancellor retains the power to revise the rate at future reviews.
 
 The negative rate reflects the view that claimants investing a lump sum will achieve returns slightly below inflation — a cautious but not absurd assumption for a claimant who cannot bear investment risk. For insurers, it means every pound of future annual loss becomes slightly more than a pound of reserve.
 
@@ -36,10 +36,11 @@ import numpy as np
 
 # Ogden discount rates to compare
 RATES = {
-    "pre_2017":  0.025,   # 2.5%: rate before March 2017
-    "post_2017": -0.0075, # -0.75%: March 2017 to August 2019
-    "current":   -0.0025, # -0.25%: August 2019 onwards
-    "stress_up": 0.010,   # +1.0%: plausible upward revision scenario
+    "pre_2017":        0.025,   # 2.5%: rate before March 2017
+    "post_2017":      -0.0075,  # -0.75%: March 2017 to August 2019
+    "pre_jan_2025":   -0.0025,  # -0.25%: August 2019 to 10 January 2025
+    "current":         0.005,   # +0.5%: effective 11 January 2025
+    "stress_up":       0.010,   # +1.0%: plausible upward revision scenario
 }
 
 def ogden_annuity_factor(age: int, sex: str, rate: float, max_age: int = 110) -> float:
@@ -83,13 +84,14 @@ Rate              Annuity factor        Lump sum
 -----------------------------------------------
 pre_2017               29.99          1,799,636
 post_2017              71.07          4,264,005
-current                60.70          3,641,845
+pre_jan_2025           60.70          3,641,845
+current                55.82          3,349,200
 stress_up              42.66          2,559,613
 ```
 
-The move from 2.5% to -0.75% in 2017 added £2.46m to this single claimant's award under these mortality assumptions. The current -0.25% sits at £3.64m. The stress scenario at +1% produces £2.56m — £1.08m less than today. Note: the simplified Makeham model overstates longevity for young claimants compared with the published GAD period life tables; the actual GAD multipliers are lower, but the sensitivity to rate changes is directionally identical.
+The move from 2.5% to -0.75% in 2017 added £2.46m to this single claimant's award under these mortality assumptions. The January 2025 change from -0.25% to +0.5% reduces the award from approximately £3.64m to £3.35m — a saving of roughly £290k on this single claim. The stress scenario at +1% produces £2.56m. Note: the simplified Makeham model overstates longevity for young claimants compared with the published GAD period life tables; the actual GAD multipliers are lower, but the sensitivity to rate changes is directionally identical.
 
-On a portfolio of serious injury claims, this stress is not academic. A review that moves the rate from -0.25% to +0.5% would reduce large BI outstanding reserves by hundreds of thousands per open claim. That is why the rate review is a permanent agenda item at actuarial committees.
+On a portfolio of serious injury claims, this is not academic. The January 2025 change from -0.25% to +0.5% reduced large BI outstanding reserves by hundreds of thousands per open claim for insurers that had not already loaded for the change. Kennedys estimated the change saves the industry around £150m per annum, with lump sum payments for the most severe injuries reducing by up to 25% compared with the -0.25% basis. That is why the rate and any future reviews remain permanent agenda items at actuarial committees.
 
 ---
 
@@ -151,7 +153,7 @@ def ppo_reserve(
 # The same 30-year-old female claimant; annual payment £60,000 indexed to ASHE 6115
 claimant_age = 30
 annual_payment = 60_000
-ogden_lump_sum = annual_payment * ogden_annuity_factor(claimant_age, "F", -0.0025)
+ogden_lump_sum = annual_payment * ogden_annuity_factor(claimant_age, "F", 0.005)  # current rate: +0.5%
 
 scenarios = [
     ("Base: 4% disc / 3% wage", 0.04, 0.03),
@@ -173,7 +175,7 @@ for label, disc_r, wage_inf in scenarios:
 
 ```
 PPO reserve sensitivity — 30F, £60,000/year indexed to ASHE 6115
-Ogden lump sum (current rate): £3,641,845
+Ogden lump sum (current rate +0.5%): £3,349,200
 
 Scenario                            Reserve   vs Ogden lump sum
 ----------------------------------------------------------------
@@ -198,7 +200,7 @@ PPOs change the shape. Instead of a single large payment, the insurer has a stre
 The propensity of a claim to convert to a PPO is hard to model. The main drivers are:
 
 - **Claim size.** Claims above approximately £500k are consistently more likely to attract a PPO application. Below £250k, PPOs are rare.
-- **Claimant solicitor strategy.** A well-resourced claimant legal team will push for a PPO if the current Ogden rate produces a lump sum that looks conservative compared with a PPO valued at the insurer's assumed discount rate. At -0.25%, the incentive to prefer a lump sum is lower than it was at -0.75%, but the analysis is claim-specific.
+- **Claimant solicitor strategy.** A well-resourced claimant legal team will push for a PPO if the current Ogden rate produces a lump sum that looks conservative compared with a PPO valued at the insurer's assumed discount rate. At +0.5%, the lump sum is lower than it was at -0.25%, which reduces the absolute incentive to prefer a lump sum, but the analysis is claim-specific and depends on the insurer's assumed discount rate for PPO valuation.
 - **Court appetite.** Different circuit judges have materially different propensities. There is no systematic public data on this.
 - **Insurer financial strength.** Courts will not impose a PPO on an insurer that cannot demonstrate capacity to meet the obligation indefinitely. Lloyd's syndicates, for example, have historically had more PPOs directed to structured settlement providers rather than left on the syndicate.
 
@@ -256,7 +258,7 @@ card = ValidationModelCard(
     features=["age", "injury_type", "liability_split", "legal_rep"],
     limitations=[
         "Lump sum basis only — PPO propensity not modelled",
-        "Ogden rate hard-coded at -0.25%; no dynamic rate input",
+        "Ogden rate hard-coded at +0.5% (effective January 2025); no dynamic rate input",
         "Calibrated on 2015-2023 settlements; pre-dates current claims environment",
     ],
     owner="Reserving & Pricing",
@@ -280,7 +282,7 @@ The `limitations` field is where the Ogden and PPO assumptions belong. PRA super
 
 Two things are genuinely not modellable and should not be dressed up as if they were.
 
-**Ogden rate changes are political and judicial, not statistical.** The rate is set by the Lord Chancellor after actuarial advice from the GAD. The process is rule-based (the Civil Liability Act 2018 specifies the methodology) but the output depends on current gilt yields, equity risk premium assumptions, and the political context at the time of review. You can build a scenario grid — as we have above — but do not attach a probability distribution to the scenarios. Any model that says "we estimate a 35% probability the Ogden rate moves to +0.5% by 2026" is fabricating precision.
+**Ogden rate changes are political and judicial, not statistical.** The rate is set by the Lord Chancellor after actuarial advice from the GAD. The process is rule-based (the Civil Liability Act 2018 specifies the methodology) but the output depends on current gilt yields, equity risk premium assumptions, and the political context at the time of review. You can build a scenario grid — as we have above — but do not attach a probability distribution to the scenarios. Any model that says "we estimate a 35% probability the Ogden rate moves to +1.0% by 2027" is fabricating precision.
 
 **PPO propensity is driven by claimant solicitor strategy, not features of the risk.** The decision to push for a PPO is made by the claimant's legal team. A claims feature model built on policy data will capture some correlation — claim size, injury type, age — but will miss the dominant variable, which is which law firm is on the other side of the claim. We do not have that data at pricing time, and modelling around it produces false confidence.
 
@@ -290,7 +292,7 @@ Both limitations belong in the governance documentation. Uncertainty is not a pr
 
 ## Summary
 
-The Ogden rate at -0.25% produces lump sum awards that are roughly double those calculated at the pre-2017 rate of 2.5%, for a young serious injury claimant with substantial ongoing care needs. PPOs remove the Ogden calculation entirely and replace it with a duration and wage inflation problem that is harder to hedge and harder to reserve for.
+The Ogden rate moved to +0.5% effective 11 January 2025, down from -0.25%. Lump sum awards under the current rate are still substantially higher than those calculated at the pre-2017 rate of 2.5%, but materially lower than under the -0.25% basis that applied from August 2019. The January 2025 change saves approximately £290k on a single young serious injury claim at £60k/year — a material reserve release for insurers with open large BI claims. PPOs remove the Ogden calculation entirely and replace it with a duration and wage inflation problem that is harder to hedge and harder to reserve for.
 
 The Python code above gets you to a defensible lump sum reserve and a PPO sensitivity table. Use `insurance-conformal` to put uncertainty bounds on individual claim severity estimates — the `deviance` non-conformity score with `distribution='gamma'` is appropriate for this distribution. Use `insurance-governance` to document the Ogden rate assumption, the PPO propensity assumption, and their sensitivities in the model validation report where they belong.
 

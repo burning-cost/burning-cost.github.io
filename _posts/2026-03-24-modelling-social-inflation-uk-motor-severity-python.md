@@ -11,7 +11,7 @@ published: true
 
 Every UK motor pricing team wrestling with bodily injury severity knows the same uncomfortable fact: the number is going up faster than CPI, has been since at least 2022, and the standard approach of "take last three years, fit a line, call it a day" is increasingly indefensible.
 
-The ABI reported motor claims hitting a record £11.7bn in 2024. Average claim severity rose 13% year-on-year to £4,900, with Q4 2024 reaching £5,300 — an all-time high. BI claim volume is down 41% since the 2021 whiplash reforms, but total BI cost is up 7% over the same period. The frequency trend is doing what we hoped. The severity trend is doing something else entirely.
+The ABI reported motor claims hitting a record £11.7bn in 2024 [ABI, *UK Motor Insurance: Premium, Claims and Profit*, 2023/2024]. Average claim severity rose 13% year-on-year to £4,900, with Q4 2024 reaching £5,300 — an all-time high. BI claim volume is down 41% since the 2021 whiplash reforms, but total BI cost is up 7% over the same period. The frequency trend is doing what we hoped. The severity trend is doing something else entirely.
 
 That "something else" has a name: superimposed inflation, or social inflation in American parlance. It is claims severity growth above general economic inflation. Measuring it correctly — separating the component that tracks CPI from the component that does not — is the single hardest and most commercially important calibration problem in UK motor pricing right now.
 

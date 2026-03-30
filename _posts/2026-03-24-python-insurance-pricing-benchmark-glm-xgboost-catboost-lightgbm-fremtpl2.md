@@ -85,6 +85,8 @@ def gini_coefficient(y_true, y_pred, exposure):
     """
     Normalised Gini coefficient (Lorenz-based, exposure-weighted).
     Measures ranking quality: higher is better.
+    Formula: 1 - 2 * trapezoid(Lorenz curve), consistent with ascending-sort convention
+    where perfect equality gives 0 and perfect discrimination gives 1.
     """
     order = np.argsort(y_pred)
     y_sorted = y_true[order]
@@ -95,8 +97,7 @@ def gini_coefficient(y_true, y_pred, exposure):
     cum_y_norm = cum_y / cum_y[-1]
     cum_e_norm = cum_e / cum_e[-1]
 
-    auc = np.trapz(cum_y_norm, cum_e_norm)
-    return 2.0 * auc - 1.0
+    return 1.0 - 2.0 * np.trapezoid(cum_y_norm, cum_e_norm)
 
 
 def calibration_by_decile(y_true, y_pred_freq, exposure, n_bins=10):
@@ -126,6 +127,8 @@ def calibration_by_decile(y_true, y_pred_freq, exposure, n_bins=10):
 ```
 
 A few decisions worth noting. Poisson deviance is preferred over RMSE for count models because it respects the heteroscedasticity of Poisson data — a miss on a high-frequency risk costs more than the same absolute miss on a low-frequency risk. Normalised Gini is the ranking metric used by the actuarial literature on freMTPL2 (Noll, Salzmann, Wüthrich 2020; Henckaerts et al. 2021); it is exposure-weighted because policies have different time-at-risk. The A/E by decile test is the calibration check your pricing committee will actually ask for.
+
+**A note on Gini formulations.** Two equivalent formulae appear in the literature. This post uses `1 - 2 * trapezoid(Lorenz curve)` with ascending sort (lower predicted risk on the left). Some posts — including the walk-forward CV post in this series — use `2 * AUC - 1` via sklearn's `roc_auc_score` with a binary claim indicator. Both give the same non-negative value when sorting is consistent: if you sort ascending by predicted frequency and compute the area under the Lorenz curve, the complement `1 - 2*area` is positive for a discriminating model. The `2*AUC-1` formula computed via sklearn sorts by descending score internally (higher predicted = more likely positive), which is the mirror image. Either is correct; what matters is consistency within a comparison.
 
 ---
 
@@ -247,13 +250,13 @@ cat_idx = [FEATURES.index(c) for c in cat_cols]
 train_pool = Pool(
     data=train_df[FEATURES],
     label=train_df["ClaimNb"].values,
-    weight=train_df["Exposure"].values,
+    baseline=np.log(train_df["Exposure"].values),  # log-offset: correct for Poisson count model
     cat_features=cat_idx,
 )
 test_pool = Pool(
     data=test_df[FEATURES],
     label=test_df["ClaimNb"].values,
-    weight=test_df["Exposure"].values,
+    baseline=np.log(test_df["Exposure"].values),
     cat_features=cat_idx,
 )
 
@@ -271,7 +274,8 @@ cb_model = CatBoostRegressor(
 )
 cb_model.fit(train_pool, eval_set=test_pool)
 
-cb_pred_count = cb_model.predict(test_df[FEATURES])
+# predict() returns expected count (baseline/offset is baked in)
+cb_pred_count = cb_model.predict(test_pool)
 cb_pred_freq  = cb_pred_count / test_df["Exposure"].values
 
 cb_deviance = poisson_deviance(
@@ -285,7 +289,7 @@ print(f"CB  | Poisson deviance: {cb_deviance:.4f} | Gini: {cb_gini:.4f}")
 # CB  | Poisson deviance: 0.2944 | Gini: 0.3408
 ```
 
-CatBoost receives the categorical columns as raw strings — no encoding step required. The Poisson loss function in CatBoost multiplies each observation's Hessian by the `weight` (exposure), giving full-year policies proportionally more influence. This is the correct treatment when the target is claim count rather than claim frequency — the model is fitting `E[ClaimNb] = mu * exposure`, not `E[ClaimNb/Exposure] = mu`.
+CatBoost receives the categorical columns as raw strings — no encoding step required. Exposure enters via the `baseline` parameter in `Pool`, which is added to the raw model output before the Poisson loss is computed — identical to the `log(exposure)` offset in statsmodels. This is the correct treatment for a Poisson count model: the model fits `E[ClaimNb] = exp(log(exposure) + f(x))`, so the baseline is the log-exposure offset, not a multiplicative weight. Passing exposure as `weight=` instead applies it as a case weight, which modifies the gradient magnitudes but does not properly offset the predicted count — a common mistake that miscalibrates predictions on short-exposure policies.
 
 This matters more on richer datasets than freMTPL2, where `Region` has 22 levels and `VehBrand` has 11, but the principle carries directly to a UK motor book where vehicle make has 400+ levels. On those books, CatBoost's ordered target statistics prevent the leakage that OrdinalEncoder + XGBoost produces when levels are rare.
 
@@ -306,14 +310,14 @@ for c in cat_cols:
 lgb_train = lgb.Dataset(
     train_lgb,
     label=train_df["ClaimNb"].values,
-    weight=train_df["Exposure"].values,
+    init_score=np.log(train_df["Exposure"].values),  # log-offset: correct for Poisson count model
     categorical_feature=cat_cols,
     free_raw_data=False,
 )
 lgb_test = lgb.Dataset(
     test_lgb,
     label=test_df["ClaimNb"].values,
-    weight=test_df["Exposure"].values,
+    init_score=np.log(test_df["Exposure"].values),
     reference=lgb_train,
     free_raw_data=False,
 )
@@ -353,6 +357,8 @@ lgb_gini = gini_coefficient(
 print(f"LGB | Poisson deviance: {lgb_deviance:.4f} | Gini: {lgb_gini:.4f}")
 # LGB | Poisson deviance: 0.2951 | Gini: 0.3389
 ```
+
+Exposure enters LightGBM via `init_score=np.log(exposure)` on the `Dataset`, which initialises each observation's score to the log-exposure before any tree is added. This is the correct log-offset approach for a Poisson count model: the model fits `E[ClaimNb] = exp(log(exposure) + f(x))`, and `init_score` ensures the offset is baked into the model from the first iteration. Passing exposure as `weight=` applies it as a case weight instead, changing gradient magnitudes but not offsetting the count correctly on short-exposure policies.
 
 LightGBM's `min_sum_hessian_in_leaf` is the direct equivalent of XGBoost's `min_child_weight` for Poisson models. `num_leaves=63` gives a maximum tree with 63 leaf nodes — equivalent to depth 6 in a balanced tree, but LightGBM's leaf-wise growth allows asymmetric trees to spend budget where the data has the most signal. For insurance data with non-linear but smooth feature effects, this typically outperforms the symmetric depth-limited trees XGBoost and CatBoost use by default.
 
