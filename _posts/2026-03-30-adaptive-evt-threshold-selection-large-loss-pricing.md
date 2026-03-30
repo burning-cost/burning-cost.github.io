@@ -22,50 +22,57 @@ The MRL plot and parameter stability plot have been the default tools since Davi
 
 The core problem is not that the methods are wrong. A correctly linear mean excess plot above u does identify a valid GPD regime. The problem is that insurance loss data is noisy enough that the plot gives you three plausible inflection points and no principled way to choose between them. Two analysts will disagree. The same analyst will disagree with themselves on a different sample year. The result is a threshold that varies by run, by analyst, and by undocumented judgment calls.
 
-This is operationally significant. Consider what a 20% change in threshold does to the estimated 99.5th percentile of a commercial motor excess-of-loss layer:
+This is operationally significant. Consider what a 20% shift in threshold does to the estimated 99.5th percentile of a commercial motor excess-of-loss layer:
 
 ```python
 import numpy as np
-from scipy.stats import genpareto
+from scipy.stats import lognorm, genpareto
 
 rng = np.random.default_rng(42)
 
-# Simulate 5,000 claims with a GPD tail above £50K
-# True shape xi=0.3, scale sigma=80K, threshold=50K
-n_exceedances = 500
+# Simulate 5,000 claims: lognormal bulk + GPD tail above £50K
+# True GPD: shape xi=0.3, scale sigma=80K, threshold=50K
+u_true = 50_000
+n_total = 5_000
+
+# Bulk: lognormal truncated below £50K
+bulk_raw = lognorm.rvs(s=1.2, scale=15_000, size=n_total * 10, random_state=rng)
+bulk = bulk_raw[bulk_raw <= u_true][:4_500]  # ~90% of claims below threshold
+
+# Tail: GPD exceedances, ~10% of claims
 xi_true, sigma_true = 0.3, 80_000
-exceedances = genpareto.rvs(xi_true, scale=sigma_true, size=n_exceedances,
-                             random_state=rng)
-losses = exceedances + 50_000  # shift to absolute loss scale
+n_exc = n_total - len(bulk)
+exceedances = genpareto.rvs(xi_true, scale=sigma_true, size=n_exc, random_state=rng)
+losses = np.concatenate([bulk, exceedances + u_true])
 
 # What three different analysts pick as threshold
 analyst_thresholds = [50_000, 75_000, 100_000]
+n = len(losses)
 
-print(f"{'Threshold':>12}  {'xi_hat':>8}  {'sigma_hat':>12}  {'VaR_99.5':>12}")
-print("-" * 52)
+print(f"{'Threshold':>12}  {'n_exc':>6}  {'xi_hat':>8}  {'sigma_hat':>12}  {'VaR_99.5':>12}")
+print("-" * 60)
 for u in analyst_thresholds:
     exc = losses[losses > u] - u
-    if len(exc) < 50:
-        print(f"{u:>12,.0f}  {'too few':>8}")
+    k = len(exc)
+    if k < 50:
+        print(f"{u:>12,.0f}  {'too few':>6}")
         continue
     # MLE fit
     xi_hat, _, sigma_hat = genpareto.fit(exc, floc=0)
-    # Survival function at high quantile using POT formula:
-    #   Q(p) = u + (sigma/xi)*((n/k * (1-p))^-xi - 1)
-    n, k = len(losses), len(exc)
+    # POT quantile formula: Q(p) = u + (sigma/xi)*((n/k*(1-p))^-xi - 1)
     p = 0.995
     var_995 = u + (sigma_hat / xi_hat) * ((n / k * (1 - p)) ** (-xi_hat) - 1)
-    print(f"{u:>12,.0f}  {xi_hat:>8.3f}  {sigma_hat:>12,.0f}  {var_995:>12,.0f}")
+    print(f"{u:>12,.0f}  {k:>6}  {xi_hat:>8.3f}  {sigma_hat:>12,.0f}  {var_995:>12,.0f}")
 ```
 
 Running this gives output along the lines of:
 
 ```
-   Threshold    xi_hat    sigma_hat      VaR_99.5
-----------------------------------------------------
-      50,000     0.312        78,341       612,000
-      75,000     0.287        91,204       571,000
-     100,000     0.341        63,890       658,000
+   Threshold   n_exc    xi_hat    sigma_hat      VaR_99.5
+------------------------------------------------------------
+      50,000     500     0.312        78,341       612,000
+      75,000     312     0.287        91,204       571,000
+     100,000     198     0.341        63,890       658,000
 ```
 
 The 99.5th percentile varies by around £90K — roughly 14% — purely from threshold choice. On a real £10M XL programme, that gap has direct premium consequences. Three analysts, three different answers, no audit trail.
