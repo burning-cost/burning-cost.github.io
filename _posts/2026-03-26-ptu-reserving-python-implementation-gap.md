@@ -251,7 +251,7 @@ Pricing actuaries tend to think reserving is someone else's problem. We think th
 
 **Data quality dependency.** The method requires claims incurred history, consistent claim status coding, and reliable reporting delays. UK legacy claims systems vary substantially in what they retain. If your system overwrites case reserves, you lose the incurred feature and fall back to cumulative paid — the weaker predictor. This is a data engineering problem, not a modelling problem, but it is the showstopper in practice for many books.
 
-**PRA SS8/24 validation burden.** A novel reserving methodology requires documented backtesting, comparison against established methods, and sign-off under Solvency II validation requirements. Running PtU individual reserving as a shadow model alongside chain-ladder for two years before seeking regulatory approval for use in technical provisions is the realistic path for firms subject to PRA oversight.
+**Validation burden under Solvency II technical provisions requirements.** A novel reserving methodology requires documented backtesting, comparison against established methods, and sign-off under Solvency II validation requirements — specifically the SS15/16 (Solvency II: technical provisions) standard for the appropriateness and validation of actuarial assumptions used in best estimates. Running PtU individual reserving as a shadow model alongside chain-ladder for two years before seeking regulatory approval for use in technical provisions is the realistic path for firms subject to PRA oversight.
 
 ---
 

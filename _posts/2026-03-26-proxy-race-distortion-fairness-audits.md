@@ -61,7 +61,7 @@ The idea is to treat the proxy accuracy parameters as partially unknown, constru
 
 For UK pricing teams, the practical implication is this: treat proxy-regression disparity estimates as diagnostic screens with bounds, not as point estimates. If a proxy audit shows no material disparity, that is evidence but not proof — because the direction and magnitude of proxy-induced distortion is unknown for your book. If a proxy audit shows a material disparity, the first question to investigate is whether the result is consistent across multiple proxy methods (LSOA composition, name matching, IMD decile) before treating it as a reliable signal requiring remediation.
 
-The FCA's EP25/2 does not specify methodology at this level of detail, but the expectation under Consumer Duty is that firms take reasonable steps to understand the limitations of their methodology. "We used a proxy and report the number" is not taking reasonable steps. "We used a proxy, we quantified the uncertainty in that proxy's accuracy, and we present our results with explicit bounds" is.
+FCA Consumer Duty expectations (PRIN 2A) require that firms take reasonable steps to understand the limitations of their methodology, and proxy audit bounds are directly relevant to demonstrating good outcomes for customers. "We used a proxy and report the number" is not taking reasonable steps. "We used a proxy, we quantified the uncertainty in that proxy's accuracy, and we present our results with explicit bounds" is.
 
 ---
 

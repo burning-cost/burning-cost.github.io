@@ -11,7 +11,7 @@ Every pricing review ends the same way. The actuaries present a lift chart, a Gi
 
 The problem is not that the actuaries do not know. It is that the standard validation metrics — Gini coefficient, double-lift chart ratio, normalised Gini index — are dimensionless. They rank model quality but do not translate to pounds. You need an additional step: a relationship between model discrimination and expected portfolio loss ratio.
 
-Evans Hedges (2025), arXiv:2512.03242, provides one. It is the first published closed-form formula connecting a model validation metric to expected loss ratio. We implemented it in [`insurance-monitoring`](/insurance-monitoring/) v0.9.1 as the `business_value` module.
+Evans Hedges (2025), arXiv:2512.03242, provides one. Per Evans & Hedges, this is the first published closed-form formula connecting a model validation metric to expected loss ratio — the derivation and results below are attributed to that paper. We implemented it in [`insurance-monitoring`](/insurance-monitoring/) v0.9.1 as the `business_value` module.
 
 This post explains the formula, shows the calibrate-then-forecast workflow in code, and is honest about where the assumptions break down — particularly under PS21/5.
 
@@ -19,7 +19,7 @@ This post explains the formula, shows the calibrate-then-forecast workflow in co
 
 ## The formula
 
-Theorem 1 of Evans Hedges (2025) gives the expected portfolio loss ratio as a function of model quality:
+Per Evans & Hedges (Theorem 1 of arXiv:2512.03242), the expected portfolio loss ratio as a function of model quality is:
 
 ```
 LR = (1/M) * [(1 + ρ² CV⁻²) / (ρ² (1 + CV⁻²))]^{(2η−1)/2}

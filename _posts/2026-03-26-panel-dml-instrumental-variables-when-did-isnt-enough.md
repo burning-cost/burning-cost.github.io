@@ -9,7 +9,7 @@ description: "A new paper combines panel fixed effects, double machine learning,
 
 There is a class of pricing question that difference-in-differences cannot answer cleanly. DiD handles confounding from observed and unobserved time-invariant characteristics. It does not handle the case where the treatment itself — the rate change — was endogenous to something unobserved that was also shifting at the same time.
 
-That is the panel IV problem. A new paper, Baiardi, Clarke, Naghi and Polselli (arXiv:2603.20464, March 2026), addresses it by combining three things: panel fixed effects via first-differencing, Neyman-orthogonal DML moment conditions, and instrumental variables. The result is Panel IV DML — or, in the R package they've built alongside it, `xtivdml`.
+That is the panel IV problem. A new paper, Baiardi, Clarke, Naghi and Polselli (arXiv:2603.20464, March 2026), addresses it by combining three things: panel fixed effects via first-differencing, Neyman-orthogonal DML moment conditions, and instrumental variables. The result is Panel IV DML — or, in the R package they've built alongside it, `xtivdml`. Note the distinction: `xtdml` is the stable CRAN package for panel DML without IV; `xtivdml` is the experimental IV extension, available on GitHub only and not yet on CRAN.
 
 We are not building a Python implementation. We will explain why not, and what pricing actuaries should actually take from this paper.
 

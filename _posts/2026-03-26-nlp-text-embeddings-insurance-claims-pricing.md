@@ -89,7 +89,7 @@ Xu, Manathunga and Hong (2023, *Variance*, Vol. 16, Issue 2) is the other key re
 
 The Kaggle "Actuarial Loss Estimation" competition (closed, ~90,000 synthetic workers compensation claims with claim description text) provides the clearest public benchmark of the full pipeline. Worth examining because competition settings force honest head-to-head comparisons.
 
-The winning solution (Yi Li, PRISM, 91.3% accuracy, best of 3,633 submissions) used rule-based NLP — specifically negation detection to correctly identify body parts involved in injuries, rather than transformer embeddings. "Not" and "no longer" in front of a body part flip the diagnosis. That turned out to be more predictive than the geometry of the embedding space.
+The winning solution (reportedly: Yi Li, PRISM, 91.3% accuracy, best of 3,633 submissions) used rule-based NLP — specifically negation detection to correctly identify body parts involved in injuries, rather than transformer embeddings. "Not" and "no longer" in front of a body part flip the diagnosis. That turned out to be more predictive than the geometry of the embedding space.
 
 The winning approach being rule-based is the most important lesson from this competition. It reflects something real: for well-structured workers compensation claims text with consistent terminology, you can often extract the signal you need with a targeted rule rather than an opaque 768-dimensional projection. Rules are auditable; embeddings are not. When you can write the rule, write the rule.
 
