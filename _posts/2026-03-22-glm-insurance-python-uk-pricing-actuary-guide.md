@@ -84,7 +84,7 @@ freMTPL2 uses French-specific variables. The mapping to UK motor factors is appr
 
 | freMTPL2 variable | UK equivalent | Notes |
 |---|---|---|
-| `BonusMalus` (0-350 scale) | NCD years (0-5 typically) | French scale runs higher; UK NCD is capped at 5 years protected/unprotected |
+| `BonusMalus` (0-350 scale) | NCD years (0-5 typically) | French scale runs higher; UK NCD accumulates to a maximum of 5 years; separately, customers may purchase NCD protection (preventing step-back after a claim) |
 | `Region` (22 French regions) | Postcode sector (~ 9,000 in UK) | UK postcode is the highest-cardinality factor |
 | `VehPower` | ABI vehicle group (1-50) | Composite score: performance, security, repairability |
 | `VehBrand` | Make and model | UK uses ABI group as the rating dimension, not raw make |

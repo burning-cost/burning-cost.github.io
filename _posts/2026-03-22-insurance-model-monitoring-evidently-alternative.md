@@ -262,7 +262,7 @@ print(report.to_polars())
 # recommendation         | nan    | RECALIBRATE
 ```
 
-The `to_polars()` output is designed to be written to a database and used as a model risk artefact. Under PRA SS3/17 (insurer model risk management), you need structured evidence of ongoing model monitoring. A traffic-light report with named metrics, values, thresholds, and an actionable recommendation is the right format.
+The `to_polars()` output is designed to be written to a database and used as a model risk artefact. Under PRA SS1/23 (model risk management), you need structured evidence of ongoing model monitoring. A traffic-light report with named metrics, values, thresholds, and an actionable recommendation is the right format.
 
 ---
 

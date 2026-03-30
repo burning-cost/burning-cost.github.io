@@ -14,7 +14,7 @@ The problem is not that tools like Evidently or NannyML are badly engineered. Th
 
 1. **Exposure weighting.** A policy in force for one month contributes the same features to an unweighted PSI calculation as a policy in force for twelve months. The twelve-month policy contributes twelve times as much to the claims experience. Unweighted feature drift detection gives you the wrong signal.
 
-2. **Development lags.** An A/E alert raised on undeveloped accident months is comparing immature claims to a model trained on mature ones. The ratio is biased downward by as much as 30–40% for liability lines. Generic calibration monitoring does not know what IBNR is.
+2. **Development lags.** An A/E alert raised on undeveloped accident months is comparing immature claims to a model trained on mature ones. The ratio is biased downward substantially for liability lines -- in motor TP bodily injury at 12--18 months development, 30--40% is plausible, but the bias is line-dependent and can be far higher for long-tail commercial classes. Generic calibration monitoring does not know what IBNR is.
 
 3. **The discrimination dimension.** A pricing model can have a stable A/E - correct on average - while its Gini coefficient erodes. The model still predicts the right mean but has lost the ability to rank risks. An adverse selection consequence follows as surely as from explicit mispricing, and generic monitoring does not test for it.
 

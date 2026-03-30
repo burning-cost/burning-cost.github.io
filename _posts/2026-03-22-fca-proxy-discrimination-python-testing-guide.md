@@ -3,25 +3,27 @@ layout: post
 title: "FCA Proxy Discrimination Testing in Python: A Practical Guide"
 date: 2026-03-22
 categories: [fairness, regulation, techniques]
-tags: [fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, insurance-fairness, python, Equality-Act, pricing, audit]
-description: "EP25/2 requires non-life insurers to test whether rating factors act as proxies for protected characteristics. Here is exactly how to run that test in Python, with the correct statistical methods and an audit-ready output."
+tags: [fairness, FCA, proxy-discrimination, Consumer-Duty, insurance-fairness, python, Equality-Act, pricing, audit, PS22/9, GIPP]
+description: "Under Consumer Duty and the Equality Act 2010, non-life insurers must test whether rating factors act as proxies for protected characteristics. Here is exactly how to run that test in Python, with the correct statistical methods and an audit-ready output."
 ---
 
-The FCA's Evaluation Paper EP25/2, published in early 2025, is the most specific regulatory guidance yet on what a proxy discrimination audit for a non-life pricing model should look like. It is not Consumer Duty in general. It is not the Gender Directive. It is the question: do your rating factors act as conduits for protected characteristics you are not permitted to use directly?
+The FCA's Consumer Duty (PS22/9, in force July 2023) and the General Insurance Pricing Practices rules (PS21/5) together create a clear obligation: firms must be able to demonstrate that their pricing models produce fair outcomes and do not use factors that act as conduits for protected characteristics the firm is not permitted to use directly. This is not a new idea, but the FCA's 2024 multi-firm Consumer Duty review made clear that the standard of evidence most firms were producing was inadequate.
 
-This post explains what EP25/2 actually requires, why the general-purpose fairness tooling you might reach for first does not answer that question, and how to run a conformant proxy discrimination audit in Python using the `insurance-fairness` library.
+This post explains what that obligation actually requires technically, why the general-purpose fairness tooling you might reach for first does not answer the right question, and how to run a conformant proxy discrimination audit in Python using the `insurance-fairness` library.
 
 ---
 
-## What EP25/2 actually requires
+## What the regulatory obligation actually requires
 
-EP25/2 does not specify a test statistic or a software tool. What it specifies is the question firms need to be able to answer, and the standard of evidence required to answer it.
+The obligation comes from two directions simultaneously.
 
-The core obligation, in plain terms: a firm using a pricing model must be able to demonstrate that its rating factors do not systematically proxy for protected characteristics in a way that produces discriminatory pricing outcomes. The word "systematically" matters - the FCA is not looking for zero correlation (which is impossible, since almost every rating factor correlates with something that correlates with something protected). It is looking for material correlation that has not been investigated and documented.
+**From the FCA side**: Consumer Duty's Price and Value Outcome (PRIN 2A.4) requires firms to demonstrate that their products and services represent fair value. The FCA's multi-firm review of Consumer Duty implementation (2024) found that evidence quality was "too high level and lacking the granularity to adequately evidence good outcomes." General Insurance Pricing Practices (PS21/5) adds the specific prohibition on price walking and the requirement that renewal premiums are fair. Both require documented, reproducible evidence — not a one-line assertion.
+
+**From the Equality Act side**: Section 19 prohibits indirect discrimination — applying a provision, criterion, or practice that is not directly related to a protected characteristic but which puts persons sharing a protected characteristic at a particular disadvantage. A rating factor that is a strong statistical proxy for ethnicity or disability may constitute indirect discrimination unless the firm can demonstrate a legitimate aim proportionate to the discriminatory effect. This is a factor-level question, not an output-level question.
 
 Three things follow from this that shape what a technical audit needs to produce.
 
-**First, the test is about factor-level correlation, not output-level disparity.** A model that charges different average premiums to men and women is not necessarily discriminating - risk differs. A model that uses a factor which is a strong predictor of gender, without having considered that relationship, is a problem. EP25/2 wants you to examine the inputs, not just compare the group average outputs.
+**First, the test is about factor-level correlation, not output-level disparity.** A model that charges different average premiums to men and women is not necessarily discriminating - risk differs. A model that uses a factor which is a strong predictor of gender, without having considered that relationship, is a problem. The regulatory obligation is to examine the inputs, not just compare the group average outputs.
 
 **Second, conditional independence is the legal standard.** The Lindholm, Richman, Tsanakas and Wüthrich (LRTW) framework, now the academic reference point for FCA enforcement discussions, defines discrimination as: a pricing model that is not conditionally independent of a protected attribute S given the observed rating factors X. In other words, if knowing a customer's protected characteristic tells you something about what the model will charge them - even after you know all their risk factors - the model is discriminating. This is a stricter and more precise test than demographic parity.
 
@@ -35,7 +37,7 @@ The two most widely used Python fairness libraries are Fairlearn (Microsoft) and
 
 **They implement demographic parity.** The core metric in both libraries is a comparison of model outputs across protected groups - are the average predictions, positive prediction rates, or error rates similar across groups? This is the right question for fraud classification or credit approval. For insurance pricing, it is the wrong question. UK insurers are explicitly permitted to charge different average premiums to different groups when risk differs. A pricing model that achieves demographic parity is not compliant - it is probably mispricing some risks.
 
-**They do not test rating factor inputs.** Fairlearn's `MetricFrame` and AIF360's `ClassificationMetric` both take model outputs and ask how those outputs vary by protected characteristic. They cannot tell you whether `occupation` carries ethnicity information, or whether `postcode_district` is a stronger predictor of the protected characteristic than it is of claim frequency. Factor-level proxy detection - the thing EP25/2 requires - is not in either library's scope.
+**They do not test rating factor inputs.** Fairlearn's `MetricFrame` and AIF360's `ClassificationMetric` both take model outputs and ask how those outputs vary by protected characteristic. They cannot tell you whether `occupation` carries ethnicity information, or whether `postcode_district` is a stronger predictor of the protected characteristic than it is of claim frequency. Factor-level proxy detection - the thing the Equality Act Section 19 analysis requires - is not in either library's scope.
 
 **They do not handle exposure weights.** Insurance portfolios are not rows. A single-month policy contributes a twelfth of the exposure of an annual policy on the same risk. Both libraries treat every row equally. For calibration-by-group or demographic parity computations in insurance, unweighted metrics are wrong.
 
@@ -201,7 +203,7 @@ print(f"Flagged proxy factors: {report.flagged_factors}")
 
 The `insurance-governance` library's model registry is designed to accept `FairnessReport` outputs as structured evidence items in the model risk register. Linking the two means that every model deployment is associated with a dated fairness audit, the audit output is retrievable on demand, and changes in RAG status between review cycles are logged automatically. See [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) for the governance integration.
 
-The EP25/2 obligation is ongoing. The FCA is explicit that Consumer Duty monitoring requires regular review, not a single assessment at model launch. Annual re-run on the current in-force book is the minimum; quarterly on books with significant mix shifts is more defensible.
+The Consumer Duty obligation is ongoing. The FCA is explicit that Consumer Duty monitoring requires regular review, not a single assessment at model launch. Annual re-run on the current in-force book is the minimum; quarterly on books with significant mix shifts is more defensible.
 
 ---
 
@@ -211,13 +213,13 @@ The biggest practical obstacle for most firms is not the statistical method - it
 
 For ethnicity in UK motor and home insurance, the standard approach is the ONS Census 2021 ethnic group tables at Lower Layer Super Output Area (LSOA) level, joined to your policy data via postcode-to-LSOA lookup. The ONS publishes both: the `TS021` ethnic group tables and the National Statistics Postcode Lookup (NSPL). The join is a standard left join on postcode sector. The result is a floating-point ethnicity proportion per policy, which you pass as `ethnicity_prop` in the protected characteristic column. The library handles continuous protected characteristic proxies natively; you do not need to binarise.
 
-For gender, the situation has changed since the Gender Directive (2013). Insurers no longer hold gender at quote, so building a gender proxy requires either a name-based estimation method or a proxy from fleet composition data. This is harder and the proxies are noisier.
+For gender, the situation has changed since the EU Test-Achats ruling (effective December 2012). Insurers no longer hold gender at quote, so building a gender proxy requires either a name-based estimation method or a proxy from fleet composition data. This is harder and the proxies are noisier.
 
 For disability, the Equality Act 2010 definition covers a broad range of conditions that insurers do not ask about and would not be permitted to use. A disability proxy requires either self-reported data or area-level DWP statistics. The library accepts any numeric column as a protected characteristic - the statistical machinery is the same regardless of which protected characteristic the column represents.
 
 ---
 
-The regulatory timetable here is not abstract. The FCA's 2024 Consumer Duty multi-firm review told the market that the quality of evidence firms were producing was inadequate. EP25/2 (2025) set the analytical standard more precisely. The next intervention from Stratford will be enforcement, not another paper.
+The regulatory timetable here is not abstract. The FCA's 2024 Consumer Duty multi-firm review told the market that the quality of evidence firms were producing was inadequate. Consumer Duty (PS22/9) set the analytical standard and the FCA has signalled that the next intervention will be enforcement, not another consultation paper.
 
 A `FairnessAudit` on your current production model takes an afternoon of data engineering and a few minutes of compute. The output is a dated, factor-level, RAG-rated document with regulatory mapping. That is what the FCA is asking for.
 

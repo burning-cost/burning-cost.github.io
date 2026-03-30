@@ -207,6 +207,7 @@ The double-lift chart is the standard UK actuarial tool for comparing two models
 The double-lift chart is particularly useful when introducing a new model: it shows the pricing committee exactly which segments the new model rates differently from the old one, and whether the observed experience validates that difference.
 
 ```python
+import pandas as pd
 # Simulate champion (current GLM) and challenger (new GBM) predictions
 # In a real deployment: champion = incumbent model, challenger = candidate replacement
 

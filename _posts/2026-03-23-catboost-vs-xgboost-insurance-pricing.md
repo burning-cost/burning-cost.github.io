@@ -129,7 +129,7 @@ freq_model.fit(cb.Pool(X, label=claim_counts, weight=exposure, cat_features=cat_
 
 # CatBoost severity model
 sev_model = cb.CatBoostRegressor(
-    loss_function="RMSE",      # Gamma not in catboost directly; use log-transformed target
+    loss_function="Gamma",     # CatBoost supports Gamma loss natively
     iterations=1000,
     learning_rate=0.03,
     depth=5,

@@ -540,7 +540,7 @@ print(results)
 # SCH003        14.1      0.091  0.967          0.091       0.087
 ```
 
-A credibility factor of 0.341 means a scheme has only 1.3 years of effective exposure - trust the portfolio mean heavily. At 0.967, the scheme is large enough to stand on its own experience.
+A credibility factor of 0.341 means a scheme has approximately 2.1 years of effective exposure (w = Z × k / (1 − Z) = 0.341 × 4.12 / 0.659 ≈ 2.13 vehicle-years) -- trust the portfolio mean heavily. At 0.967, the scheme is large enough to stand on its own experience.
 
 ---
 

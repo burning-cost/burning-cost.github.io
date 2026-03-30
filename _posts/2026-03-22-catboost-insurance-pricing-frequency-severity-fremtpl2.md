@@ -164,7 +164,7 @@ sev_model.fit(sev_train_pool, eval_set=sev_test_pool, early_stopping_rounds=50)
 
 Gamma loss is appropriate for right-skewed positive continuous targets like claim amounts. It assumes the coefficient of variation is constant -- a reasonable approximation for property damage in motor, where larger losses are not necessarily more variable in relative terms than smaller ones. If your claim amount distribution has a very heavy tail (e.g., bodily injury), Tweedie with p > 1 or a separate excess-layer model may be a better fit.
 
-Note that we do not weight by anything in the severity model. Each row is one claim. The Gamma loss is already claim-count-weighted implicitly because policies with multiple claims appear multiple times.
+This dataset structure — one row per individual claim from freMTPL2sev, not aggregated to policy level — means no explicit claim-count weighting is needed. Policies with multiple claims appear multiple times in the training data, so the Gamma loss naturally gives more influence to high-frequency risks. If you instead aggregate to policy-level average severity (total_claim_amount / claim_count), you must explicitly weight the Pool by claim count to recover the same effect.
 
 ---
 

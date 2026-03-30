@@ -4,8 +4,8 @@ title: "NannyML vs insurance-monitoring: Drift Detection Built for Insurance Por
 date: 2026-03-21
 author: Burning Cost
 categories: [monitoring, model-risk, libraries, comparisons]
-description: "NannyML is the best general-purpose ML monitoring library for teams without ground truth labels. For insurance pricing, it doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS3/17 framing. Here is the direct comparison."
-tags: [nannyml-insurance, nannyml-model-monitoring-insurance, NannyML, insurance-monitoring, CBPE, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, model-drift-insurance-pricing, PRA-SS3-17, python, uk-insurance, polars]
+description: "NannyML is the best general-purpose ML monitoring library for teams without ground truth labels. For insurance pricing, it doesn't do exposure-weighted PSI, segmented A/E ratios, Gini discrimination drift, or PRA SS1/23 framing. Here is the direct comparison."
+tags: [nannyml-insurance, nannyml-model-monitoring-insurance, NannyML, insurance-monitoring, CBPE, PSI, ae-ratio, gini-drift, mSPRT, sequential-testing, model-drift-insurance-pricing, PRA-SS1-23, python, uk-insurance, polars]
 ---
 
 If you search "ML model monitoring Python", NannyML appears at or near the top. It earns that position. The confidence-based performance estimation (CBPE) capability - estimating model performance metrics when ground truth labels are delayed or unavailable - is genuinely clever and has no close equivalent in the open-source ecosystem. The visualisations are the best in class across monitoring tools. For a data science team monitoring a classification model in a delayed-label setting, NannyML is probably the right default.
@@ -280,7 +280,7 @@ Beyond CBPE, a few NannyML capabilities are worth naming explicitly.
 - You need Murphy decomposition to distinguish RECALIBRATE (multiplier fix) from REFIT (model rebuild)
 - You need `PITMonitor` for calibration change detection that does not false-alarm under repeated monthly testing
 - You need `SequentialTest` for champion/challenger experiments that are checked monthly without FPR inflation
-- You need `MonitoringReport` producing a structured output for PRA SS3/17 model risk documentation
+- You need `MonitoringReport` producing a structured output for PRA SS1/23 model risk documentation
 
 The two tools are not alternatives for the same problem. NannyML is excellent for general ML monitoring with strong performance estimation and visualisation. `insurance-monitoring` is purpose-built for the actuarial monitoring workflow: exposure-weighted distributions, A/E by segment, Gini drift significance testing, and the RECALIBRATE-or-REFIT decision. A pricing team in a larger organisation might run both - NannyML for engineering-facing dashboards, `insurance-monitoring` for the actuarial outputs that feed model governance.
 
