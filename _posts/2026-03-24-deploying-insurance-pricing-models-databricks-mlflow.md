@@ -22,7 +22,7 @@ What MLflow does not provide is insurance-specific:
 
 - It has no concept of a champion/challenger experiment with deterministic routing.
 - It logs nothing about individual pricing decisions - which model priced which quote, at what price, with what ENBP.
-- It has no ICOBS 6B compliance tracking. It cannot generate the audit report an SMF holder needs to sign for the FCA's annual ENBP attestation.
+- It has no ICOBS 6B compliance tracking. It cannot generate the audit evidence an SMF holder needs to produce for FCA supervisory review of ENBP compliance.
 - It has no power analysis for how long your challenger needs to run before you have credible evidence to promote it.
 
 `insurance-deploy` fills those gaps. It does not replace MLflow; they address different layers of the problem. MLflow handles the model experiment tracking and notebook-level artefact storage. `insurance-deploy` handles the operational pricing lifecycle that starts when a model is declared production-ready.
@@ -153,7 +153,7 @@ logger.log_quote(
 
 The ENBP field is where `insurance-deploy` diverges most clearly from a generic MLops tool. ICOBS 6B.2.51R requires that renewal prices do not exceed the Equivalent New Business Price for an identical risk profile. The library does not calculate ENBP - that calculation is your pricing team's responsibility, per ICOBS 6B methodology - but it records the value you provide and flags breaches in real time.
 
-When you log a renewal quote with an ENBP, the library sets `enbp_flag = 1` if `quoted_price <= enbp`, and `enbp_flag = 0` (a breach) otherwise. A breach triggers an immediate `UserWarning`. The FCA's 2023 multi-firm review found 83% of firms non-compliant with ICOBS 6B. That rate is almost certainly partly a record-keeping failure - firms that were compliant in practice but could not demonstrate it. `QuoteLogger` makes the demonstration straightforward.
+When you log a renewal quote with an ENBP, the library sets `enbp_flag = 1` if `quoted_price <= enbp`, and `enbp_flag = 0` (a breach) otherwise. A breach triggers an immediate `UserWarning`. The FCA's multi-firm review found widespread non-compliance with ICOBS 6B across the market. Much of that was almost certainly a record-keeping failure - firms that were compliant in practice but could not demonstrate it. `QuoteLogger` makes the demonstration straightforward.
 
 ## Tracking KPIs
 

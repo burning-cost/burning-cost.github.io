@@ -105,7 +105,7 @@ The `glm()` formula interface handles offsets, interactions, and factor encoding
 
 The R ecosystem around GLMs is also strong: `car::Anova()` for type II/III likelihood ratio tests, `emmeans` for estimated marginal means, `ggeffects` for plotting factor effects. These are mature tools.
 
-The Python alternative we use is [glum](https://github.com/Quantco/glum), built by QuantCo. It is faster than `statsmodels.GLM` for large datasets (Cholesky factorisation path vs pure IRLS), supports per-coefficient L2 penalty matrices (useful for applying different regularisation strengths to main effects vs interactions), and returns coefficient standard errors - which `sklearn.linear_model.PoissonRegressor` does not.
+The Python alternative we use is [glum](https://github.com/Quantco/glum), built by QuantCo. It is faster than `statsmodels.GLM` for large datasets (sparse cyclic coordinate descent which scales better than statsmodels' IRLS for high-dimensional factor matrices), supports per-coefficient L2 penalty matrices (useful for applying different regularisation strengths to main effects vs interactions), and returns coefficient standard errors - which `sklearn.linear_model.PoissonRegressor` does not.
 
 ```python
 from glum import GeneralizedLinearRegressor

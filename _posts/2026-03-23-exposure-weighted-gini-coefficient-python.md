@@ -242,6 +242,6 @@ auc = _trapz(y, x)
 
 ---
 
-The Gini is the single most important discrimination metric for a deployed pricing model. For a full model validation framework that uses Gini alongside A/E ratios and PSI drift detection, see [PRA SS1/23-compliant model validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). Getting it wrong by ignoring exposure is not a theoretical concern — it is a systematic bias that goes in a consistent direction (overstatement) and is large enough to affect governance decisions. The implementation above costs nothing to use correctly.
+The Gini is the single most important discrimination metric for a deployed pricing model. For a full model validation framework that uses Gini alongside A/E ratios and PSI drift detection, see [model validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) (the referenced post covers a validation framework drawn from the PRA's SS1/23 guidance — a banking standard applied by convention in insurance model governance). Getting it wrong by ignoring exposure is not a theoretical concern — it is a systematic bias that goes in a consistent direction (overstatement) and is large enough to affect governance decisions. The implementation above costs nothing to use correctly.
 
 For the drift test on top of the Gini, see [insurance-monitoring](https://github.com/burning-cost/insurance-monitoring).

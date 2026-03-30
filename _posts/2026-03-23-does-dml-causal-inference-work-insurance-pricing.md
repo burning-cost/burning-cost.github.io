@@ -153,4 +153,4 @@ We think DML should be the default for any causal question in insurance where tr
 
 - [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the renewal pricing specialist: CausalForestDML for per-customer CATE, the near-deterministic price diagnostic, and the FCA PS21/5 ENBP-constrained optimiser
 - [Fairness Auditing When You Don't Have Sensitive Attributes](/2026/03/20/fairness-auditing-without-sensitive-attributes/) — run this after the DML step: the telematics treatment effect may correlate with protected characteristics
-- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — record the DML model version, sensitivity analysis results, and sign-off in the model inventory
+- [Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — record the DML model version, sensitivity analysis results, and sign-off in the model inventory (note: the referenced SS1/23 standard is a PRA banking supervisory statement applied by convention in insurance model governance)

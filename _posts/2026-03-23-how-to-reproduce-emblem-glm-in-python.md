@@ -357,16 +357,22 @@ cb_model = CatBoostRegressor(
     verbose       = 0,
 )
 
-# Fit on observed frequency, weighted by exposure
-df_pd["obs_freq"] = df_pd["claim_count"] / df_pd["exposure"]
+# CatBoost Poisson expects count targets, not rates.
+# Pass claim_count as label and exposure as sample_weight.
+# Divide predictions by exposure to recover the frequency scale.
+from catboost import Pool
 
-cb_model.fit(
-    df_pd[X_cols],
-    df_pd["obs_freq"],
+train_pool = Pool(
+    data          = df_pd[X_cols],
+    label         = df_pd["claim_count"],
     sample_weight = df_pd["exposure"],
+    cat_features  = cat_features,
 )
 
-df_pd["cb_freq"] = cb_model.predict(df_pd[X_cols])
+cb_model.fit(train_pool)
+
+# predict() returns predicted counts; divide by exposure for frequency
+df_pd["cb_freq"] = cb_model.predict(df_pd[X_cols]) / df_pd["exposure"]
 ```
 
 Now build the lift chart:

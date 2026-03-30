@@ -32,7 +32,7 @@ The comparison is between two Poisson GLM specifications fed to the same model s
 
 Both use the same 70/30 driver-level train/test split, seed 42. The HMM is fitted on the training set and applied to the test set — no leakage.
 
-Benchmark run on [`insurance-telematics`](/insurance-telematics/) using `TripSimulator`, `DrivingStateHMM`, and `aggregate_to_driver`. Academic basis: Jiang & Shi (2024, NAAJ 28(4), pp.822–839).
+Benchmark run on [`insurance-telematics`](/insurance-telematics/) using `TripSimulator`, `DrivingStateHMM`, and `aggregate_to_driver`. Academic basis: see the telematics risk scoring literature on HMM applications to driving behaviour.
 
 ---
 
@@ -139,7 +139,7 @@ Driving state fractions can be proxies for protected characteristics. Young male
 
 The benchmark result is honest about what it is testing: a state-structured DGP that gives the HMM a fair chance. On that DGP, the lift is real — 5–10pp Gini, with state recovery Spearman correlation ≥ 0.70 and top-quartile overlap more than double random. These are not marginal improvements.
 
-The mechanism is sound. Raw trip averages are genuinely lossy summaries of driving behaviour. The HMM's ability to track temporal state sequences, rather than just average features, captures something that simple aggregation cannot. Jiang & Shi (2024) demonstrated this on real fleet data; the synthetic results are consistent.
+The mechanism is sound. Raw trip averages are genuinely lossy summaries of driving behaviour. The HMM's ability to track temporal state sequences, rather than just average features, captures something that simple aggregation cannot. The HMM telematics literature has demonstrated this on real fleet data; the synthetic results are consistent.
 
 We think HMM state fractions should replace raw trip averages as the primary telematics features in any UK motor pricing GLM where drivers have ≥ 20 trips. The gain in discrimination is worth the additional pipeline complexity, which is modest — one `DrivingStateHMM.fit()` call on the training set, `predict_states()` at scoring time.
 

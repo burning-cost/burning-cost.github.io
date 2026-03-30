@@ -333,7 +333,7 @@ The fix is to retrain the frequency model on restated historical data — i.e., 
 
 4. Confirm the Gini recovery with a new baseline. The training Gini stored at deployment (0.412) was computed on the old classification. After retraining, compute a new reference Gini on the restated holdout set and store it in the model registry as the new monitoring baseline.
 
-5. Document the root cause and timeline in the model risk log under PRA SS1/23. The quarterly monitoring report becomes a governance artefact: PSI amber/red at Q4 2025, root cause identified, retraining completed by end of January 2026.
+5. Document the root cause and timeline in the model risk log under your firm's model governance framework (UK insurers typically follow frameworks derived from the PRA's SS1/23 guidance by convention, though SS1/23 is formally a banking supervisory statement). The quarterly monitoring report becomes a governance artefact: PSI amber/red at Q4 2025, root cause identified, retraining completed by end of January 2026.
 
 The practical timeline was: monitoring cycle run in mid-December 2025, root cause identified within a week, retrained model deployed in late January 2026. Three months of underpriced new business. Without monitoring, the pattern would likely have surfaced in the loss ratio at the Q3 2026 half-year review — roughly twelve months of underpriced exposure.
 
