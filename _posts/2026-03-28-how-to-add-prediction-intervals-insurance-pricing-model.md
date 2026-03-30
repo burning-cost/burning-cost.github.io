@@ -204,7 +204,7 @@ Three uses for these intervals in an insurance context:
 upper_995 = cp.predict_interval(X_test, alpha=0.005)["upper"]
 ```
 
-**2. SCR stress-testing.** The PRA's SS1/23 asks internal model teams to validate the predictive distribution of the model, not just point estimates. A coverage table by risk segment — showing the model meets its stated confidence level across all deciles — is the direct evidence the validation team needs.
+**2. SCR stress-testing.** Solvency II internal model validation requirements ask internal model teams to validate the predictive distribution of the model, not just point estimates (aligned to SS1/23 best practice principles, which apply formally to banks but set the benchmark for insurer model governance too). A coverage table by risk segment — showing the model meets its stated confidence level across all deciles — is the direct evidence the validation team needs.
 
 **3. Pricing review alerts.** In a monitoring dashboard, track the empirical coverage rate on new business month-by-month. When coverage in any decile drops below the target, the model is producing intervals that are too narrow for that segment — a signal of distribution shift worth investigating before it shows up in claims.
 

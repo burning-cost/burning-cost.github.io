@@ -202,7 +202,7 @@ edge(driver_age → hidden[1]): 0.84 * exp(-0.04 * (age - 35)^2)
 edge(vehicle_group → hidden[2]): 0.12 * vehicle_group
 ```
 
-This is a closed-form expression for what the model learned. It is not a SHAP attribution — it is the model's actual weight functions, readable as mathematical expressions. For a model governance submission, "the model assigns log-linear NCD discounts with coefficient −0.31" is a statement of model structure. "SHAP values for NCD_years average −0.28 across the portfolio" is a statement about model behaviour on the training data. These are different things, and model governance under SS1/23 requires the former.
+This is a closed-form expression for what the model learned. It is not a SHAP attribution — it is the model's actual weight functions, readable as mathematical expressions. For a model governance submission, "the model assigns log-linear NCD discounts with coefficient −0.31" is a statement of model structure. "SHAP values for NCD_years average −0.28 across the portfolio" is a statement about model behaviour on the training data. These are different things, and model governance aligned to SS1/23 best practice principles requires the former.
 
 No other architecture in our stack produces this. EBMs produce lookup tables (close, but not symbolic). NAMs produce neural network weights (not symbolic). SHAP is post-hoc attribution. Only KAN, via symbolic regression, can output a closed-form mathematical expression for what it learned — and that expression can be inspected, challenged, and justified in a way that a neural network weight matrix cannot.
 

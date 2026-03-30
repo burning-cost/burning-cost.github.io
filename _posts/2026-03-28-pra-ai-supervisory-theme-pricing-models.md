@@ -43,7 +43,7 @@ The mechanism for enforcement already exists. FCA Guidance FG22/5 (Consumer Duty
 
 The February 2026 FCA insurance priorities publication adds a further signal: the FCA will "evaluate the risks and opportunities of AI for insurance, assess how firms are using AI in their operations." It specifically flags that AI-enabled hyper-personalisation of insurance "runs the risk of rendering some customers uninsurable, or even potential discrimination." This is not a fringe concern internally — it is a stated 2026 priority.
 
-The Treasury Committee's January 2026 report is more pointed still. It criticised the FCA and PRA for a "wait-and-see" approach to AI and called for the FCA to publish comprehensive guidance on consumer protection rules applied to AI by end of 2026. That guidance, if and when it arrives, will almost certainly reference algorithmic pricing bias. The FCA has a 90-day deadline to respond to the Committee's recommendations.
+Treasury Committee scrutiny of AI in financial services is more pointed still. The Committee has criticised the FCA and PRA for a "wait-and-see" approach to AI and called for the FCA to publish comprehensive guidance on consumer protection rules applied to AI. That guidance, if and when it arrives, will almost certainly reference algorithmic pricing bias.
 
 ---
 
@@ -65,7 +65,7 @@ The EU AI Act came into force in August 2024. The full compliance deadline for h
 
 Under Annex III, AI systems for "risk assessment and pricing in relation to natural persons in the case of life and health insurance" are explicitly classified as high-risk. Obligations include conformity assessments, technical documentation, quality management systems, automated operational logs, Fundamental Rights Impact Assessments before deployment, human oversight requirements, and minimum six-month log retention.
 
-Two important caveats. First, this is life and health pricing only — P&C pricing AI is not explicitly high-risk under Annex III. Second, UK firms without EU exposure are not legally subject. But UK firms with EU operations, EU-admitted business, or EU customer exposure face direct compliance obligations regardless of where they are headquartered.
+Two important caveats. First, this is life and health pricing only — P&C pricing AI is not explicitly high-risk under Annex III, though the high-risk list can be extended via delegated acts under Article 7, which the Commission may use to add further insurance categories. Second, UK firms without EU exposure are not legally subject. But UK firms with EU operations, EU-admitted business, or EU customer exposure face direct compliance obligations regardless of where they are headquartered.
 
 The UK government has not issued guidance on EU AI Act compliance for UK firms. The joint April 2024 BoE/FCA/PRA statement confirmed no new AI-specific UK rules. This creates a deliberate regulatory divergence — UK supervisors are relying on principles-based frameworks while the EU has prescriptive technical requirements. UK firms with EU exposure have to navigate both simultaneously, which in practice means the stricter EU requirements define the floor.
 

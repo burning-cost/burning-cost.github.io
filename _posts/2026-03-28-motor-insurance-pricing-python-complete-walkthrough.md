@@ -460,7 +460,7 @@ What you want: the two lines to track each other closely. Systematic divergence 
 
 ### Gini coefficient
 
-The Gini coefficient measures the model's ability to rank risks. A Gini of 0 means the model has no discriminatory power (predicts the same rate for everyone); a Gini of 1 means it perfectly separates high and low risk. UK motor models typically achieve Gini coefficients of 0.35–0.55 on frequency.
+The Gini coefficient measures the model's ability to rank risks. A Gini of 0 means the model has no discriminatory power (predicts the same rate for everyone); a Gini of 1 means it perfectly separates high and low risk. UK motor models typically achieve Gini coefficients of 0.35–0.55 on frequency on datasets with NCD and telematics features; on freMTPL2 (which lacks NCD), expect 0.20–0.35.
 
 ```python
 def gini_coefficient(actual, predicted, weight=None):
