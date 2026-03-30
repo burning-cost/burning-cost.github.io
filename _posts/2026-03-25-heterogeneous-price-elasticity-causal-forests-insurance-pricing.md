@@ -140,7 +140,7 @@ From `result.clan` (a polars DataFrame with columns `feature`, `mean_top`, `mean
 
 Group 5 is disproportionately NCD band 0–1, under-25, on PCW. Group 1 is NCD 4–5, over-50, direct channel. The CLAN output confirms what experienced actuaries would tell you informally — but it also quantifies the difference. A 50-percentage-point gap in PCW prevalence between the most and least elastic quintiles is the kind of number that makes the case for segment-specific discount parameters in a pricing optimisation.
 
-The same analysis provides a fairness diagnostic: if the CLAN output shows that Group 5 (most elastic, earns the largest discount) is strongly correlated with age, that is a FCA PS22/9 indirect discrimination concern. Running CLAN on protected characteristics is not optional.
+The same analysis provides a fairness diagnostic: if the CLAN output shows that Group 5 (most elastic, earns the largest discount) is strongly correlated with age, that is an Equality Act 2010 s.19 (indirect discrimination) concern. Running CLAN on protected characteristics is not optional.
 
 ---
 

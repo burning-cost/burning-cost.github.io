@@ -49,7 +49,7 @@ The FCA's reference to firms needing to "evidence the fairness of their algorith
 
 SMCR means that someone is personally accountable for every material AI system. A Senior Manager signing off a pricing model that the firm cannot explain, cannot monitor, and cannot correct is exposed. The FCA does not need to create new AI liability rules; SMCR already provides the mechanism.
 
-PRA SS1/23 — the model risk management supervisory statement, published January 2023 — established the governance expectations for model risk in regulated UK firms: model inventory, tiered oversight based on materiality, independent validation, documented assumptions, monitoring plans, and audit trails. SS1/23 applies to PRA-regulated insurers directly. For FCA-solo firms, it is the effective standard of practice because it is what the FCA will reach for when assessing whether model governance is adequate.
+PRA SS1/23 — the model risk management supervisory statement, published January 2023 — established the governance expectations for model risk in regulated UK firms: model inventory, tiered oversight based on materiality, independent validation, documented assumptions, monitoring plans, and audit trails. SS1/23 applies to UK banks directly. For insurers, the equivalent obligation comes from Solvency II Article 121 and PRA SS3/18; for FCA-solo firms, SS1/23 is the effective standard of practice because it is what the FCA will reach for when assessing whether model governance is adequate.
 
 The FCA's 2026 evaluation will be asking, in effect: does your governance for AI pricing models meet the standard that SS1/23 sets out for models generally? Most pricing teams have not applied that rigour.
 

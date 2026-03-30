@@ -157,7 +157,7 @@ statistically significant at alpha=0.32 (z=-17.14, p=0.0000). Investigate
 for model or population drift.
 ```
 
-This is the artefact you paste into your quarterly model monitoring report. It records what test was run, what data it ran on, what the result was, and what action is indicated. Under PRA SS3/17 and Consumer Duty monitoring requirements, this is the structured evidence you want.
+This is the artefact you paste into your quarterly model monitoring report. It records what test was run, what data it ran on, what the result was, and what action is indicated. Under PRA SS3/18 and Consumer Duty monitoring requirements, this is the structured evidence you want.
 
 ---
 

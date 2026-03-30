@@ -255,7 +255,7 @@ For champion/challenger validation against claims experience — the more common
 
 ## What to put in the model documentation
 
-A PRA SS1/23 model validation pack typically requires the double-lift chart as evidence that the proposed model improves on the current champion and that the improvement is consistent across the risk spectrum. The relevant things to document are:
+A model validation pack typically requires the double-lift chart as evidence that the proposed model improves on the current champion and that the improvement is consistent across the risk spectrum. The relevant things to document are:
 
 - How deciles were constructed (exposure-weighted, sorted by ratio of challenger to champion)
 - The A/E for each model in each decile, with confidence intervals if the decile size permits it
