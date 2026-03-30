@@ -33,7 +33,7 @@ The definition of 'operational incident' in PS26/2 captures "incidents affecting
 - **Safety and soundness**: poses a risk to the firm's soundness, stability, or resilience
 - **Market integrity**: could risk the integrity, stability, or resilience of the UK financial system
 
-For a pricing team, the consumer harm threshold is the one to focus on. The FCA's guidance (FG26/3) is explicit that market integrity exposure can arise where PCW data feeds are affected at scale, because prolonged failures affect price comparison across the market simultaneously. A rating API outage at a large direct insurer with a major PCW share is not just an IT problem.
+For a pricing team, the consumer harm threshold is the one to focus on. FCA guidance on operational resilience is explicit that market integrity exposure can arise where PCW data feeds are affected at scale, because prolonged failures affect price comparison across the market simultaneously. A rating API outage at a large direct insurer with a major PCW share is not just an IT problem.
 
 The 24-hour reporting clock starts when the firm "becomes aware" of the incident — not when it is fully diagnosed. This is a hard governance requirement. You need to know who in your organisation becomes "aware," and what the escalation path looks like from a pricing system failure to whoever makes the regulatory notification.
 
@@ -51,7 +51,7 @@ The FCA's guidance contains no pricing-specific examples. What follows is our re
 
 **Telematics data connectors** — Usage-based insurance introduces a pricing dependency on telemetry data. If a connected insurer cannot receive telematics signals and is using them to price or rate-adjust, a connector outage affects accurate pricing in a way that could cause consumer harm — particularly for policyholders mid-policy whose behaviour scores should have reduced their premium. Whether this rises to reportable depends on materiality and duration. It is worth mapping your telematics dependency explicitly.
 
-**PCW integrations** — The insurer's integration with GoCompare, Confused.com, or MoneySuperMarket sends prices out; the PCW is a distribution channel, not a supplier. But any data normalisation platform or third-party aggregator API that the insurer relies on to receive and process PCW traffic is a candidate third-party arrangement. The FCA's guidance (FG26/4 3.7) explicitly names "aggregators such as pricing comparison platforms" as examples of non-outsourcing third-party arrangements, with materiality assessed case-by-case.
+**PCW integrations** — The insurer's integration with GoCompare, Confused.com, or MoneySuperMarket sends prices out; the PCW is a distribution channel, not a supplier. But any data normalisation platform or third-party aggregator API that the insurer relies on to receive and process PCW traffic is a candidate third-party arrangement. FCA guidance on operational resilience explicitly names "aggregators such as pricing comparison platforms" as examples of non-outsourcing third-party arrangements, with materiality assessed case-by-case.
 
 ---
 
@@ -93,13 +93,13 @@ The implementation period runs until 18 March 2027. Here is what a pricing actua
 
 PS26/2 is an operational infrastructure regulation, not a pricing accuracy regulation. It does not require firms to demonstrate that their pricing models are good. It does not add to Consumer Duty pricing fairness obligations. It does not change PS21/5 renewal pricing rules.
 
-What it does do is put formal reporting obligations on firms when infrastructure failures cause consumer harm — and it extends those obligations to third-party dependencies that no previous regulation specifically covered. For pricing teams, the relevant question is not whether the rules are burdensome (the FCA's own cost-benefit analysis estimated £16–25m in industry-wide costs over ten years, or roughly £2m per year). The question is whether the systems your team owns and relies on are mapped, assessed, and documented before March 2027.
+What it does do is put formal reporting obligations on firms when infrastructure failures cause consumer harm — and it extends those obligations to third-party dependencies that no previous regulation specifically covered. For pricing teams, the relevant question is not whether the rules are burdensome (the FCA's own cost-benefit analysis estimated £16–25m in industry-wide costs over ten years, or £1.6–2.5m per year). The question is whether the systems your team owns and relies on are mapped, assessed, and documented before March 2027.
 
 The FCA has form on enforcement where firms were aware of a regulatory obligation and had twelve months to prepare. "We did not think this applied to our pricing systems" is not a defence that has aged well in previous Consumer Duty and operational resilience enforcement actions.
 
 ---
 
-PS26/2 is available at [fca.org.uk/publication/policy/ps26-2.pdf](https://www.fca.org.uk/publication/policy/ps26-2.pdf). The accompanying guidance is FG26/3 (incident reporting) and FG26/4 (material third parties), published the same day.
+PS26/2 is available at [fca.org.uk/publication/policy/ps26-2.pdf](https://www.fca.org.uk/publication/policy/ps26-2.pdf). Accompanying FCA guidance on operational resilience covers incident reporting and material third parties; check the FCA website for the latest guidance documents published alongside PS26/2.
 
 The [`insurance-monitoring`](/insurance-monitoring/) library for model drift and calibration monitoring is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring).
 

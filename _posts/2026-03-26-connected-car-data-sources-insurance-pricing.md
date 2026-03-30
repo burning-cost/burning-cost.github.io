@@ -32,7 +32,7 @@ What these APIs expose depends on the OEM:
 - **Hard events**: Tesla and some BMW models expose harsh braking and acceleration events; most OEMs do not
 - **ADAS activations**: automatic emergency braking (AEB) interventions, lane-keep assist events — patchy coverage, but growing
 
-The significant exception is **Tesla**, which does not participate in third-party data-sharing programmes. You cannot access Tesla fleet data through Smartcar, Enode, or HighMobility unless the individual policyholder connects their Tesla account directly. Given that Tesla is ~40% of UK BEV registrations, this gap is not trivial. Ford, Mercedes, and Volkswagen Group do participate in OEM data partnerships; LexisNexis has a confirmed data partnership with Mercedes.
+The significant exception is **Tesla**, which does not participate in third-party data-sharing programmes. You cannot access Tesla fleet data through Smartcar, Enode, or HighMobility unless the individual policyholder connects their Tesla account directly. Given that Tesla is around 15-20% of UK BEV registrations (SMMT data, 2023-24), this gap is not trivial. Ford, Mercedes, and Volkswagen Group do participate in OEM data partnerships; LexisNexis has a confirmed data partnership with Mercedes.
 
 **LexisNexis Telematics Exchange** operates in this space as a normalisation layer for insurers specifically: it ingests OEM API data, smartphone app data, and third-party device data and outputs a standardised driving behaviour score for UBI. LexisNexis Vehicle Build separately provides ADAS classification at VIN level across 2.5 million UK vehicles — this is available now and does not require any policyholder data-sharing consent.
 

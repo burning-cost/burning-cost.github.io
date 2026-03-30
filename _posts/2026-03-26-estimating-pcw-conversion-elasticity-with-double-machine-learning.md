@@ -349,7 +349,7 @@ The NCD band result is the most consistent finding across the insurers we have l
 
 ## Step 5: The regulatory check
 
-FCA EP25/2 (July 2025) was explicit that elasticity-based pricing requires controls to prevent charging less price-sensitive customers more — particularly where price sensitivity is correlated with protected or proxy-protected characteristics.
+EP25/2's evaluation of pricing practices highlights the regulatory scrutiny applied to elasticity-based approaches — particularly where price sensitivity is correlated with protected or proxy-protected characteristics. The concern is clear even if EP25/2 does not prescribe specific controls: using elasticity as a pricing lever requires you to understand and document what the elasticity is proxying for.
 
 NCD band, region, and vehicle group are all proxy-correlated with age. Before feeding the GATE surface into your pricing optimiser, run this:
 

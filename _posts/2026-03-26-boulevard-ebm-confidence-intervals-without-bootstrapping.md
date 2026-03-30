@@ -119,7 +119,7 @@ As of March 2026, there is no public implementation of Boulevard EBMs from the a
 
 We are not building this yet. The decision: watch for either a public implementation from the Hooker group, or an exponential family extension, and reassess. If either appears, Boulevard becomes an immediate BUILD candidate for `insurance-gam`.
 
-The existing `outer_bags` approach in InterpretML remains the default. It is slow at B=100, but it is honest about what it is: an empirical uncertainty estimate that does not claim theoretical coverage guarantees. For regulatory submissions under the expected PRA SS1/23 extension to insurers, an empirically validated uncertainty band with acknowledged limitations is defensible. A misapplied Gaussian CI is not.
+The existing `outer_bags` approach in InterpretML remains the default. It is slow at B=100, but it is honest about what it is: an empirical uncertainty estimate that does not claim theoretical coverage guarantees. For regulatory submissions consistent with PRA SS1/23 model risk management requirements, an empirically validated uncertainty band with acknowledged limitations is defensible. A misapplied Gaussian CI is not.
 
 ---
 

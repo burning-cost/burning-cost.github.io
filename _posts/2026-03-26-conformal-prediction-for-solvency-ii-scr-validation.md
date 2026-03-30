@@ -4,7 +4,7 @@ title: "Conformal Prediction for Solvency II SCR Validation"
 date: 2026-03-26
 categories: [pricing, techniques, research]
 tags: [conformal-prediction, solvency-ii, scr, capital-modelling, model-validation, pra, ss1-23, var-backtesting, insurance-conformal, python, tweedie]
-description: "Conformal prediction gives finite-sample valid 99.5% risk bounds for individual policies — useful for premium risk SCR validation and PRA SS1/23 backtesting, but not a replacement for aggregate capital modelling."
+description: "Conformal prediction gives finite-sample valid 99.5% risk bounds for individual policies — useful for premium risk SCR validation and model validation consistent with SS1/23 requirements, but not a replacement for aggregate capital modelling."
 ---
 
 The SCR at 99.5% VaR has always had an uncomfortable relationship with the data. You need to estimate the 1-in-200 tail from a history that, for most personal lines books, contains perhaps 5-10 years of decent data. The standard tools — lognormal severity, Pareto tails, bootstrap CIs on GLM parameters — make distributional assumptions that are hard to validate in the tail and essentially impossible to challenge statistically with 200+ observations at the 99.5th percentile.
@@ -72,7 +72,7 @@ The `exposure` parameter handles policies with different term lengths — a 6-mo
 
 ---
 
-## Where it helps: model validation and PRA SS1/23 backtesting
+## Where it helps: model validation and backtesting
 
 This is the application we find most compelling commercially, and it comes from Retzlaff et al. (ICML 2025), which proves formal equivalence between conformal coverage tests and standard VaR backtests — specifically the Kupiec (1995) and Christoffersen (1998) tests that market risk practitioners have used for decades.
 
@@ -163,7 +163,7 @@ The `scr.py` module docstring notes this explicitly. We have not softened the la
 | SCR component | Conformal value | Note |
 |---|---|---|
 | Premium risk — individual bounds | High | Finite-sample valid 99.5% upper bounds per policy. Use `LocallyWeightedConformal` + `SCRReport`. |
-| Model validation / VaR backtesting | High | Formal equivalence to Kupiec/Christoffersen (Retzlaff et al. ICML 2025). Directly relevant to SS1/23. |
+| Model validation / VaR backtesting | High | Formal equivalence to Kupiec/Christoffersen (Retzlaff et al. ICML 2025). Consistent with SS1/23 model risk management requirements. |
 | Premium sufficiency | Moderate | `PremiumSufficiencyController` controls expected loss ratio, not just coverage. |
 | Aggregate portfolio SCR | None | Summing individual bounds ignores diversification. Massively conservative. |
 | Cat risk SCR | None | Needs 200+ observations at 99.5th percentile. Cat models are the right tool. |

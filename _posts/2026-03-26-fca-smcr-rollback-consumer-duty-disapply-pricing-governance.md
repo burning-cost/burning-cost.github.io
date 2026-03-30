@@ -75,7 +75,7 @@ If the disapply proceeds as signalled, what changes:
 - **ICOBS disclosure requirements** — suitability documentation and customer communication standards may not apply to non-UK business.
 - **Pricing fairness audits** — the PRIN 2A.4 requirement to evidence that prices do not produce poor value outcomes would not apply to those lines.
 
-What remains uncertain: the definition of 'non-UK customer' (domicile, risk location, or policy jurisdiction?), treatment of UK entities in the distribution chain, whether the FCA imposes a lighter alternative framework rather than clean removal, and whether ICOBS and PROD 4 changes are bundled into the same consultation or separate. PS25/21 (November 2025) has already simplified some ICOBS provisions and introduced the lead firm model for co-insurance PROD 4 obligations — that is already live and operational.
+What remains uncertain: the definition of 'non-UK customer' (domicile, risk location, or policy jurisdiction?), treatment of UK entities in the distribution chain, whether the FCA imposes a lighter alternative framework rather than clean removal, and whether ICOBS and PROD 4 changes are bundled into the same consultation or separate. Proposed ICOBS simplification measures have been in development alongside these consultations, with some changes to the lead firm model for co-insurance PROD 4 obligations already in train.
 
 ---
 

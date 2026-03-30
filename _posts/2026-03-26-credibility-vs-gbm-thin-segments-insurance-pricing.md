@@ -70,7 +70,7 @@ bs.summary()
 print(bs.z_)
 # shape: (3, 2)  columns: ['group', 'Z']
 # scheme A: Z ≈ 0.998  (44,100 total exposure >> k)
-# scheme B: Z ≈ 0.937  (2,000 total exposure >> k)
+# scheme B: Z ≈ 0.9999  (2,000 total exposure >> k)
 # scheme C: Z ≈ 0.999  (76,500 total exposure >> k)
 ```
 
