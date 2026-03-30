@@ -64,7 +64,7 @@ All three methods are essentially identical here. This is the honest result: if 
 
 REML selected lambda = 55,539 with effective degrees of freedom = 7.7. The algorithm chose substantial smoothing -- correct given the noisy tails. REML, GCV, AIC, and BIC produce qualitatively similar results; REML is preferred because it has a unique, well-defined maximum and does not occasionally select pathological lambdas the way GCV can on extreme datasets.
 
-The four methods on the standard lambda comparison benchmark (64-band age curve, ages 17-80):
+The four methods on the standard lambda comparison benchmark (63-band age curve, ages 17-79):
 
 | Method | Lambda | Effective df |
 |---|---|---|
@@ -150,7 +150,7 @@ result.lambda_x  # REML-selected smoothing in age direction
 result.lambda_z  # REML-selected smoothing in vehicle direction
 ```
 
-Fit time is under 0.1 seconds for a 64-band curve. Cholesky solve -- essentially free.
+Fit time is under 0.1 seconds for a 63-band curve. Cholesky solve -- essentially free.
 
 ---
 
@@ -186,7 +186,7 @@ uv add insurance-whittaker
 
 Source, benchmarks, and Databricks notebook at [GitHub](https://github.com/burning-cost/insurance-whittaker). Start with `benchmarks/benchmark.py` for the head-to-head vs moving average, then `databricks/benchmark_whittaker_vs_baselines.py` for the kernel smoother comparison.
 
-Reference: Biessy (2026), *Whittaker-Henderson Smoothing Revisited*, ASTIN Bulletin. [arXiv:2306.06932](https://arxiv.org/abs/2306.06932).
+Reference: Biessy, G. (2026). Whittaker-Henderson Smoothing Revisited. *ASTIN Bulletin*, published online. DOI: [10.1017/asb.2025.10061](https://doi.org/10.1017/asb.2025.10061). Preprint: [arXiv:2306.06932](https://arxiv.org/abs/2306.06932).
 
 - [Your Rating Table Smoothing Is Wrong](/2026/03/18/your-rating-table-smoothing-is-wrong/)
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/28/does-constrained-rate-optimisation-actually-work/)

@@ -321,7 +321,7 @@ report = ModelValidationReport(
 )
 
 report.run()
-report.to_html("article_15_validation_2026_03.html")
+report.generate("article_15_validation_2026_03.html")
 ```
 
 The HTML report output maps to Article 15 requirements: accuracy metrics with confidence intervals, stability assessment (PSI), calibration check (A/E), and discrimination assessment (Gini). Keep this report in your technical documentation pack. When you re-run at the annual validation, the new report replaces or supplements it.

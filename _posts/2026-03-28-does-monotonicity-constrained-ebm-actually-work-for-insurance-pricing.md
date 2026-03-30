@@ -34,8 +34,8 @@ Benchmark: 10,000 synthetic UK motor policies, 70/30 train/test split. DGP: five
 Three models:
 
 - **Poisson GLM baseline**: quadratic age term, linear NCD, linear vehicle age, log(annual miles), area dummies. Monotone by construction in the young driver range (quadratic is forced to be decreasing by the sign of the coefficient).
-- **Unconstrained EBM**: `InsuranceEBM(loss='poisson', interactions='3x')` — no monotonicity enforcement.
-- **Constrained EBM**: `InsuranceEBM(loss='poisson', interactions='3x', monotone_increasing=[], monotone_decreasing=['driver_age_17_40'])` — monotone decreasing in the 17–40 age range.
+- **Unconstrained EBM**: `InsuranceEBM(loss='poisson', interactions=5)` — no monotonicity enforcement.
+- **Constrained EBM**: `InsuranceEBM(loss='poisson', interactions=5, monotone_increasing=[], monotone_decreasing=['driver_age_17_40'])` — monotone decreasing in the 17–40 age range.
 
 Monotonicity compliance is measured as the fraction of (age_i, age_j) pairs with i < j <= 40 where the model's predicted relative rate for i exceeds that for j, across 100 seeds.
 
@@ -53,7 +53,7 @@ Monotonicity compliance is measured as the fraction of (age_i, age_j) pairs with
 
 Three things to read from this table:
 
-First, the unconstrained EBM's Gini of 0.347 versus the GLM's 0.181 is a 19-point absolute improvement. This is real. It comes primarily from the vehicle age × driver age interaction: young drivers in older vehicles have materially different claim rates from young drivers in new vehicles, and the EBM captures this; the GLM does not, even with a quadratic age term.
+First, the unconstrained EBM's Gini of 0.347 versus the GLM's 0.181 is a 19-point absolute improvement. This is real. It comes primarily from the vehicle age × driver age interaction: young drivers in older vehicles have materially different claim rates from young drivers in new vehicles, and the EBM captures this; the GLM does not, even with a quadratic age term. Note that this magnitude is specific to this synthetic DGP, which was constructed with a planted vehicle age × driver age interaction — real-data improvements will depend on whether a genuine interaction of similar size exists in your book.
 
 Second, the unconstrained EBM violates monotonicity in the young driver range 31% of the time across seeds. This is not a fluke — it is the model fitting noise in thin age bands. On a fresh UK motor book the failure rate will vary, but the structural cause is the same: gradient boosting has no reason to impose monotonicity if the training data do not enforce it.
 
@@ -69,7 +69,7 @@ import polars as pl
 
 ebm_constrained = InsuranceEBM(
     loss='poisson',
-    interactions='3x',
+    interactions=5,
     monotone_decreasing=['driver_age_17_40']  # non-increasing 17→40
 )
 ebm_constrained.fit(X_train, y_train, exposure=exposure_train)

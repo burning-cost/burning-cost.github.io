@@ -177,6 +177,6 @@ If you have estimated the true causal elasticity on UK motor PCW data with a pro
 - Woodard, J.D. & Yi, F. (2020). Estimation of Insurance Deductible Demand Under Endogenous Premium Rates. *Journal of Risk & Insurance*, 87(2), 477–500.
 - Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J. (2018). Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal*, 21(1), C1–C68.
 - Kumar, A., Boluki, S., Isler, V., Rauch, C., & Walczak, T. (2022). Machine Learning based Framework for Robust Price-Sensitivity Estimation with Application to Airline Pricing. arXiv:2205.01875.
-- FCA (2021). General Insurance Pricing Practices: final rules. PS21/5. Financial Conduct Authority, January 2021.
+- FCA (2021). General Insurance Pricing Practices: final rules. PS21/5. Financial Conduct Authority, May 2021.
 - FCA (2025). Evaluation Paper 25/2: An evaluation of our General Insurance Pricing Practices (GIPP) remedies. Financial Conduct Authority, July 2025.
 - Burning Cost [insurance-causal](https://github.com/burning-cost/insurance-causal): Double Machine Learning for causal price elasticity in insurance.

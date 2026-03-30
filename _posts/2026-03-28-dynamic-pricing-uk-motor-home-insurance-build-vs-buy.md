@@ -48,7 +48,7 @@ This distinction matters. The entire machine learning, optimisation, and demand 
 
 **The live tension:** Real-time new business price optimisation creates a compliance problem that almost nobody has solved cleanly. If your new business pricing system adjusts prices intraday — responding to PCW competitor movements, time-of-day conversion rates, or marketing spend levels — then the ENBP calculation becomes a moving target. A customer who received their renewal notice at 9am with an ENBP of £480 can, by 2pm, find the same risk quoted at £450 through the new business channel. Technically compliant on the renewal notice date. Practically a loyalty penalty.
 
-The FCA's three-year evaluation of GIPP (EP25/2, July 2025) confirmed that price walking is largely eliminated — the headline metrics moved in the right direction, with average inception price rising from £248.52 to £260.92, driven by claims inflation rather than any reversal of GIPP compliance. But EP25/2 also documented that a significant proportion of firms could not demonstrate ENBP compliance with sufficient granularity, and that a significant number of firms had inadequate documentary evidence that their controls were working as intended. The root cause in most cases: complex algorithmic pricing made the ENBP calculation difficult to trace.
+The FCA's three-year evaluation of GIPP (EP25/2, July 2025) confirmed that price walking is largely eliminated — the headline metrics moved in the right direction, with average new business motor inception price rising from £248.52 (Q1 2022) to £260.92 (Q4 2024), driven by claims inflation rather than any reversal of GIPP compliance. But EP25/2 also documented that a significant proportion of firms could not demonstrate ENBP compliance with sufficient granularity, and that a significant number of firms had inadequate documentary evidence that their controls were working as intended. The root cause in most cases: complex algorithmic pricing made the ENBP calculation difficult to trace.
 
 The implication for any dynamic pricing build is that ENBP compliance cannot be a bolt-on. It has to be an architectural constraint — either a hard bound in the optimiser, or a real-time monitoring system that flags when dynamic new business pricing has created a gap relative to outstanding renewal notices. No commercial platform we have assessed has this implemented as a documented feature. It is also the most significant gap in open-source tooling.
 
@@ -144,7 +144,7 @@ But Radar Live is a deployment and rating engine, not an optimiser. There is no 
 
 ## Where the open-source tools are and where the gaps are
 
-The honest landscape in March 2026:
+The honest picture of open-source tooling in March 2026:
 
 | Capability | Status |
 |---|---|
