@@ -189,6 +189,6 @@ The proxy R² approach catches what direct correlation measures miss. A factor c
 - [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/) — the Lindholm-Richman-Tsanakas-Wüthrich framework, the Citizens Advice data, and what a defensible audit trail looks like
 - [FCA Consumer Duty Pricing Fairness in Python](https://burning-cost.github.io/2026/03/20/fca-consumer-duty-pricing-fairness-python/)
 - [Fairness Auditing Without Sensitive Attributes](https://burning-cost.github.io/2026/03/20/fairness-auditing-without-sensitive-attributes/)
-- [insurance-fairness vs fairlearn](https://burning-cost.github.io/2026/03/22/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/)
+- [insurance-fairness vs fairlearn](https://burning-cost.github.io/2026/03/20/fairlearn-vs-insurance-fairness-fca-proxy-discrimination/)
 - [insurance-fairness vs equiPy](https://burning-cost.github.io/2026/03/22/equipy-vs-insurance-fairness/)
 - [Discrimination-Free Pricing via Optimal Transport](https://burning-cost.github.io/2026/03/10/insurance-fairness-ot/) — the causal path decomposition and OT correction approach now implemented in `insurance_fairness.optimal_transport`
