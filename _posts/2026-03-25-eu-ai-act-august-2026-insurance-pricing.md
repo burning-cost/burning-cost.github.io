@@ -4,7 +4,7 @@ title: "EU AI Act August 2026: What Your Pricing Team Must Do"
 date: 2026-03-25
 categories: [regulation]
 tags: [eu-ai-act, regulation, model-governance, mrm, compliance, pra-ss123, insurance-governance, insurance-monitoring, insurance-fairness, annex-iii, high-risk-ai]
-description: "Insurance pricing models are high-risk AI under Annex III of the EU AI Act. The compliance deadline is 2 August 2026 — five months away. Here is what that means in practice for a UK pricing team."
+description: "Life and health insurance pricing models are high-risk AI under Annex III of the EU AI Act. General insurance (motor, home) may also be in scope but the classification is not explicit. The compliance deadline is 2 August 2026. Here is what that means in practice for a UK pricing team."
 ---
 
 The EU AI Act's full enforcement regime for high-risk AI systems lands on 2 August 2026. For most UK insurers, that is five months away. We will be blunt: the majority of pricing teams are not ready, and the compliance gap is not a documentation problem — it is a structural one. The requirements in Articles 9 through 15 assume a level of systematic model governance that most pricing functions have never had to build.
@@ -13,11 +13,15 @@ This post sets out what the Act requires, which requirements map onto existing t
 
 ---
 
-## Why insurance pricing is high-risk AI
+## Why insurance pricing may be high-risk AI
 
-Annex III of the Act classifies AI systems used "for risk assessment and pricing in relation to natural persons in the case of life and health insurance" as high-risk. The broader catch is that general insurance pricing — motor, home, commercial — falls under the "essential services" category in Annex III point 5(b): systems used to "evaluate the creditworthiness of natural persons or establish their credit score" and, critically, systems used for insurance pricing.
+Annex III point 5(a) of the Act explicitly classifies AI systems used "for risk assessment and pricing in relation to natural persons in the case of life and health insurance" as high-risk. This is unambiguous.
 
-The FCA has confirmed that pricing AI in scope of Annex III will be treated as high-risk. The penalty for non-compliance is up to €35 million or 7% of global annual revenue — whichever is higher.
+General insurance pricing — motor, home, commercial — is less clear. The Act does not explicitly list general insurance pricing in Annex III. There is an argument that general insurance pricing systems could fall under Annex III point 5(b) as systems affecting access to essential services, but this classification has not been confirmed by the European AI Office or the FCA. The FCA has not formally stated that general insurance pricing AI is within the scope of Annex III.
+
+Prudent firms are treating their general insurance pricing models as though they are in scope: the governance requirements are reasonable practice regardless of the regulatory question, and a retrospective finding of non-compliance would be costly. But the legal picture is not settled. If you are preparing a conformity assessment, record the classification question explicitly and the basis on which you have concluded your system is or is not high-risk.
+
+The penalty for confirmed non-compliance is up to €35 million or 7% of global annual revenue — whichever is higher.
 
 One note on timing: the European Commission's Digital Omnibus proposal from late 2025 floated a possible extension to December 2027 for some Annex III obligations. We would not plan around that. Nothing has been enacted, and prudent compliance planning means treating 2 August 2026 as binding.
 

@@ -103,6 +103,7 @@ For MGA portfolios, scheme business, or any setting with strong informative prio
 import numpy as np
 import pymc as pm
 import pytensor.tensor as pt
+import arviz as az
 
 def build_hierarchical_model(
     scheme_idx: np.ndarray,   # integer index: which scheme for each policy
@@ -165,7 +166,7 @@ with build_hierarchical_model(
 # Posterior scheme effects: θ_g
 theta_posterior = trace.posterior["theta"]
 scheme_effect_mean = theta_posterior.mean(dim=["chain", "draw"]).values  # shape (n_schemes,)
-scheme_effect_hdi  = pm.hdi(theta_posterior, hdi_prob=0.9)              # 90% HDI
+scheme_effect_hdi  = az.hdi(theta_posterior, hdi_prob=0.9)              # 90% HDI
 
 # Scheme-level premium (relative to portfolio mean)
 scheme_loading = np.exp(scheme_effect_mean)   # multiplicative adjustment

@@ -409,7 +409,7 @@ All five packages are available on PyPI and work with Python 3.10+. They use Pol
 - Bühlmann, H. & Straub, E. (1970). Glaubwürdigkeit für Schadensätze. *Mitteilungen VSVM*, 70, 111-133.
 - Bernegger, S. (1997). The Swiss Re Exposure Curves And The MBBEFD Distribution Class. *ASTIN Bulletin*, 27(1), 99-111.
 - Clark, D.R. (2014). Basics of Reinsurance Pricing. CAS Study Note.
-- Albrecher, H., Beirlant, J. & Teugels, J. (2025). Extremes for insurance losses with censoring. *arXiv:2511.22272*.
+- Albrecher, H. & Beirlant, J. (2025). Statistics of Extremes for the Insurance Industry. *arXiv:2511.22272*.
 - Biessy, G. (2026). Whittaker-Henderson Smoothing Revisited. *ASTIN Bulletin*. arXiv:2306.06932.
 
 ---

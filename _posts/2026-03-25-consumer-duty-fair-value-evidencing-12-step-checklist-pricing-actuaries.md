@@ -5,11 +5,11 @@ date: 2026-03-25
 featured: true
 author: Burning Cost
 categories: [compliance, fairness, monitoring, tutorials]
-description: "FCA PS24/1 confirms enhanced Consumer Duty requirements from April 2026. EP25/2 flags ongoing fair value supervision in motor and home. No single technical checklist exists for the pricing actuary's portion of the annual fair value assessment. Here is one."
+description: "EP25/2 (the FCA's evaluation of GIPP price-walking remedies) flags ongoing fair value supervision in motor and home. No single technical checklist exists for the pricing actuary's portion of the annual fair value assessment. Here is one."
 tags: [FCA, Consumer-Duty, PS24-1, EP25-2, PRIN-2A, fair-value, fairness, monitoring, calibration, proxy-discrimination, insurance-monitoring, insurance-fairness, insurance-conformal, pricing-actuary, compliance, uk-insurance, tutorial]
 ---
 
-The FCA confirmed enhanced Consumer Duty requirements in PS24/1 with April 2026 as the effective date. EP25/2 (the FCA's 2026 Insurance Supervision priorities, published February 2025) explicitly names ongoing fair value supervision across motor and home as a standing priority. The FCA's 2024 multi-firm review of Consumer Duty implementation described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
+EP25/2 is the FCA's backward-looking evaluation of the GIPP price-walking remedies (PS21/5), published February 2025. It explicitly names ongoing fair value supervision across motor and home as a standing priority. The FCA's 2024 multi-firm review of Consumer Duty implementation described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
 
 That gap between what firms are submitting and what the FCA expects has not closed. What is missing is not intent — it is a concrete technical process that a pricing actuary can execute, document, and defend. This post provides one.
 
@@ -23,7 +23,7 @@ All code uses the `insurance-monitoring`, `insurance-fairness`, and `insurance-c
 
 PRIN 2A.4 (the Price and Value Outcome) requires firms to charge prices that represent fair value. Critically, this is an ongoing obligation, not a point-in-time assessment. PRIN 2A.4.6 specifically requires firms to monitor outcomes and have a process for identifying when their pricing is no longer delivering fair value.
 
-The FCA has not published a prescriptive method for how pricing actuaries should discharge this. PS24/1 adds the April 2026 enhanced requirements for annual assessment frequency and board reporting. EP25/2 signals that supervisors will be examining actual evidence packs, not just process descriptions.
+The FCA has not published a prescriptive method for how pricing actuaries should discharge this. EP25/2 signals that supervisors will be examining actual evidence packs, not just process descriptions, with motor and home fair value a standing supervision priority.
 
 The 12 steps below map to the evidence a supervisor would want to see.
 
@@ -457,7 +457,7 @@ The `lambda_hat_` value is the guaranteed loading factor. Document it as: "The c
 
 **Requirement:** Consolidate all outputs into a versioned, dated evidence pack that names the certifying actuary, the model versions, the monitoring period, and the regulatory mapping. This is the document the FCA would request under s166 or equivalent.
 
-**Why it matters:** The FCA's Consumer Duty supervisory reviews found evidence packs that were undated, not reproducible, and contained no regulatory mapping. An evidence pack that does not explicitly state which requirement each section addresses gives a supervisor no path through it. Include explicit mappings to PRIN 2A.4.6, PS24/1, and EP25/2.
+**Why it matters:** The FCA's Consumer Duty supervisory reviews found evidence packs that were undated, not reproducible, and contained no regulatory mapping. An evidence pack that does not explicitly state which requirement each section addresses gives a supervisor no path through it. Include explicit mappings to PRIN 2A.4.6 and EP25/2.
 
 **Code:**
 
@@ -500,7 +500,6 @@ evidence_pack = {
 
     "regulatory_mapping": {
         "PRIN_2A_4_6": "Steps 2, 4, 8, 9, 10 — ongoing outcome monitoring",
-        "PS24_1":      "Annual assessment frequency and board reporting (all steps)",
         "EP25_2":      "Motor and home fair value supervision priority (Steps 5, 6, 7)",
     },
 }

@@ -184,7 +184,7 @@ The call to `compute_posterior()` is the only step that scales non-trivially wit
 
 ## Why this matters for Solvency II internal models
 
-Parameter risk under Solvency II is the uncertainty in your SCR estimate attributable to the fact that your model parameters are estimated from finite data, not known exactly. The PRA's internal model tests (CP13/17, updated in SS3/17) require that internal models "make appropriate allowance for parameter uncertainty." In practice, this usually means either a stress-and-scenario approach (bump the parameters by ±k standard errors, see what happens to the SCR) or a full stochastic model.
+Parameter risk under Solvency II is the uncertainty in your SCR estimate attributable to the fact that your model parameters are estimated from finite data, not known exactly. The PRA's internal model requirements for insurers (SS1/24, February 2024) require that internal models "make appropriate allowance for parameter uncertainty." In practice, this usually means either a stress-and-scenario approach (bump the parameters by ±k standard errors, see what happens to the SCR) or a full stochastic model.
 
 BLL gives you a third option that sits between those two. After training, `posterior_cov` is the exact posterior covariance over the last-layer weights given your training data and prior. You can sample from it:
 
