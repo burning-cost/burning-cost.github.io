@@ -17,7 +17,7 @@ The privacy-preserving answer is federated learning with differential privacy. T
 
 ## What UK GDPR actually says
 
-The relevant constraint is not that data cannot be shared — it is that processing must have a lawful basis, a specified purpose, and that purpose must be compatible with the original collection purpose. Insurers collect customer data for underwriting. Using that data to train a joint model for a PCW consortium is a new processing purpose. Article 6(4) requires a compatibility assessment. Legitimate interests (Article 6(1)(f)) require a balancing test. Special category data — anything that can function as a proxy for protected characteristics — requires explicit consent or a Schedule 2 DPA 2018 condition.
+The relevant constraint is not that data cannot be shared — it is that processing must have a lawful basis, a specified purpose, and that purpose must be compatible with the original collection purpose. Insurers collect customer data for underwriting. Using that data to train a joint model for a PCW consortium is a new processing purpose. Article 6(4) requires a compatibility assessment. Legitimate interests (Article 6(1)(f)) require a balancing test. Special category data — anything that can function as a proxy for protected characteristics — requires explicit consent or a Schedule 1 DPA 2018 condition. (Schedule 1 covers special category data; Schedule 2 covers conditions for criminal offence data.)
 
 The ICO's guidance on data sharing (updated November 2024) is explicit that pseudonymisation does not make personal data anonymous. A quote record containing vehicle details, postcode, age band, and NCD level is re-identifiable given any of the source CRM systems. The practical implication: sharing raw quote records with a joint modelling entity exposes every contributing insurer to a processing activity that needs its own legal basis, purpose limitation assessment, and controller-processor agreement.
 
@@ -109,6 +109,8 @@ Pr[M(D) ∈ S] ≤ exp(ε) · Pr[M(D') ∈ S] + δ
 ```
 
 ε is the privacy budget. Lower ε means stronger privacy. δ is the failure probability — typically set at 1/n where n is the dataset size. The mechanism: clip gradients to a maximum norm C, then add Gaussian noise scaled to σ = C · √(2 ln(1.25/δ)) / ε before sharing.
+
+**Caveat on the formula above:** the analytic Gaussian mechanism expression σ = C · √(2 ln(1.25/δ)) / ε is an approximation that is valid for ε ≤ 1. For ε > 1 (including the ε = 2.0 and ε = 10.0 values used in the ASTRI benchmark below), this formula over-specifies the required noise — meaning it is conservative, not dangerous — but it is not the tightest bound available. For production implementations, use a DP accounting library (e.g., Google's `dp-accounting` or PyTorch's `Opacus`) to compute the exact noise multiplier for your chosen (ε, δ, rounds) combination.
 
 In the NeurIPS 2025 f-DP work (Dong, Roth & Su), the guarantee is tightened using the f-divergence framework. Classical (ε, δ)-DP uses a crude union bound that overstates the privacy cost of composition — running DP training for R rounds. The f-DP result gives tighter composition bounds: the actual privacy cost of R rounds of DP-SGD with noise σ is:
 

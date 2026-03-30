@@ -9,7 +9,7 @@ description: "NSGA-II finds the non-dominated pricing strategies across accuracy
 
 Most fairness work in insurance pricing proceeds one objective at a time. You train a model, discover it has a demographic parity gap, apply a constraint or a correction, and check whether accuracy held up. Repeat for each fairness criterion you care about. The problem with this sequential approach is that you never see the full trade-off surface. You pick an arbitrary point and call it a policy.
 
-Bellamy et al. (2025, arXiv:2512.24747) propose something structurally different: treat accuracy, group fairness, and counterfactual fairness as simultaneous objectives, find every non-dominated combination, and present the resulting Pareto front to pricing governance. The team then picks a point on that front explicitly, with documented weights. That is a decision regulators can evaluate. "We chose a Gini of 0.38 rather than 0.41 because we weighted group fairness at 0.35 in our TOPSIS ranking" is auditable in a way that "we applied a fairness penalty" is not.
+This approach proposes something structurally different: treat accuracy, group fairness, and counterfactual fairness as simultaneous objectives, find every non-dominated combination, and present the resulting Pareto front to pricing governance. The team then picks a point on that front explicitly, with documented weights. That is a decision regulators can evaluate. "We chose a Gini of 0.38 rather than 0.41 because we weighted group fairness at 0.35 in our TOPSIS ranking" is auditable in a way that "we applied a fairness penalty" is not.
 
 This post shows how to run that workflow in practice using [`insurance-fairness`](/insurance-fairness/) (which wraps NSGA-II via pymoo) and [`insurance-optimise`](/insurance-optimise/) (for portfolio-level pricing with the TOPSIS-selected solution). The worked example uses a synthetic UK motor portfolio styled on FReMTPL2.
 
@@ -33,7 +33,7 @@ pip install "pymoo>=0.6.1"
 
 ## The four objectives
 
-Bellamy et al. identify four fairness criteria that matter for insurance pricing:
+The multi-objective Pareto approach identifies four fairness criteria that matter for insurance pricing:
 
 **1. Predictive accuracy (Gini coefficient).** The Lorenz-curve-based Gini measures how well predictions rank actual outcomes. Higher Gini = better discrimination, fewer cross-subsidies. The NSGA-II problem minimises *negative* Gini (so that all objectives face the same direction).
 
@@ -462,7 +462,7 @@ The NSGA-II approach works over model blending weights, not per-policy decisions
 
 Neither approach eliminates the need for governance judgment. The Pareto front shows you the feasible trade-offs; it does not tell you which trade-off to make. That is a decision for pricing governance, and the weights passed to TOPSIS are where that judgment lives. Get the weights wrong and you select a defensible but wrong operating point. The workflow makes the judgment explicit and auditable, which is the goal.
 
-arXiv:2512.24747 also discusses individual fairness more carefully than we do here — specifically, they propose weighting the Lipschitz pairs by a meaningful semantic distance rather than the Euclidean approximation we use above. For a production implementation on UK motor, the distance metric should account for tariff rating factor granularity: two policies that differ only in postcode district but are otherwise identical should receive prices within the band implied by that postcode's risk differential, not an arbitrary Lipschitz bound.
+The individual fairness literature also discusses more careful treatment than we do here — specifically, weighting the Lipschitz pairs by a meaningful semantic distance rather than the Euclidean approximation we use above. For a production implementation on UK motor, the distance metric should account for tariff rating factor granularity: two policies that differ only in postcode district but are otherwise identical should receive prices within the band implied by that postcode's risk differential, not an arbitrary Lipschitz bound.
 
 ---
 
@@ -472,7 +472,7 @@ Multi-objective Pareto optimisation changes the structure of the fairness conver
 
 The `insurance-fairness` library implements this in under 30 lines of calling code. The `insurance-optimise` library handles the downstream portfolio pricing with an analogous Pareto surface over retention and deprivation-based premium disparity. Both produce JSON audit trails that satisfy FCA Consumer Duty auditability requirements.
 
-The paper (Bellamy et al., arXiv:2512.24747) is worth reading in full for the theoretical grounding. The practical upshot is: stop solving the fairness problem one criterion at a time. Map the front first.
+The practical upshot is: stop solving the fairness problem one criterion at a time. Map the front first.
 
 ---
 

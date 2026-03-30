@@ -7,7 +7,7 @@ tags: [reserving, reinforcement-learning, mdp, individual-claims, micro-level, s
 description: "Avanzi, Richman, and Wüthrich reformulate individual claims reserving as a Markov Decision Process. We explain why it matters, what it actually does, and when a UK reserving actuary would use it."
 ---
 
-Benjamin Avanzi, Ronald Richman, Bernard Wong, Mario Wüthrich, and Yagebu Xie published [arXiv:2601.07637](https://arxiv.org/abs/2601.07637) in January 2026. The paper reformulates individual claims reserving as a claim-level Markov Decision Process in which an agent sequentially updates Outstanding Claim Liability (OCL) estimates over development. The reward function is designed to balance predictive accuracy against reserve stability. The implementation uses Soft Actor-Critic (SAC) — a standard deep RL algorithm — and evaluation runs on two datasets: the CAS loss development data and the SPLICE synthetic insurance dataset.
+Benjamin Avanzi, Ronald Richman, Bernard Wong, Mario Wüthrich, and colleagues published [arXiv:2601.07637](https://arxiv.org/abs/2601.07637) in January 2026. The paper reformulates individual claims reserving as a claim-level Markov Decision Process in which an agent sequentially updates Outstanding Claim Liability (OCL) estimates over development. The reward function is designed to balance predictive accuracy against reserve stability. The implementation uses Soft Actor-Critic (SAC) — a standard deep RL algorithm — and evaluation runs on two datasets: the CAS loss development data and the SPLICE synthetic insurance dataset.
 
 This post explains why the problem is hard, what the MDP formulation achieves, how it fits the pattern of neural reserving we have been tracking, and where the practical limits are for UK actuaries.
 
@@ -79,7 +79,7 @@ The use case is narrow but real. The approach is relevant when:
 
 3. **Reserve stability is a genuine objective.** If your board, regulator, or investors are sensitive to period-on-period reserve movements, an objective function that explicitly penalises instability is better aligned with real constraints than one that minimises RMSEP alone. Solvency II SCR calculations are affected by reserve volatility; reducing it directly is not just aesthetically satisfying.
 
-4. **You have actuarial resource to implement and validate it.** This is not a drop-in replacement for a reserving triangle. You need to validate the MDP state specification, tune the reward function, and back-test the rolling-settlement scheme. PRA SS1/23 validation requirements apply. The interpretability challenge is significant — explaining to a reserving committee why the agent revised OCL from £85k to £92k requires more than pointing at a triangle.
+4. **You have actuarial resource to implement and validate it.** This is not a drop-in replacement for a reserving triangle. You need to validate the MDP state specification, tune the reward function, and back-test the rolling-settlement scheme. Solvency II Article 121 and PRA SS3/18 validation requirements apply (for an internal model change application under Solvency II). The interpretability challenge is significant — explaining to a reserving committee why the agent revised OCL from £85k to £92k requires more than pointing at a triangle.
 
 The last point is the honest constraint. For most UK non-life teams, the practical path is to use this as a benchmark or sensitivity check alongside chain ladder and Bornhuetter-Ferguson, not as the primary reserve estimate until there is more regulatory familiarity with RL-derived reserves.
 

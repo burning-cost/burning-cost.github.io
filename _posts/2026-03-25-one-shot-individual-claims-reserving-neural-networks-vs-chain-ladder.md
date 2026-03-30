@@ -81,7 +81,7 @@ Where does chain ladder hold its own?
 
 - **Short-tailed homogeneous books.** Motor physical damage, household buildings. If claims develop predictably and the portfolio is large, the aggregate approach loses little information.
 - **Data quality is poor at claim level.** Individual reserving requires clean, claim-level data with consistent coding. If your claims system has coding errors in claim status, inconsistent handler reserves, or missing reporting delays, the individual model will absorb that noise. Chain ladder is more robust to data quality problems because aggregation smooths over individual coding errors.
-- **Governance.** A Mack chain-ladder reserve is explainable to a non-technical committee in ten minutes. An individual-level model with claim-status and handler-reserve features requires more documentation to sign off under PRA SS1/23. This is not a technical argument against individual methods, but it is a real adoption barrier.
+- **Governance.** A Mack chain-ladder reserve is explainable to a non-technical committee in ten minutes. An individual-level model with claim-status and handler-reserve features requires more documentation to sign off under the firm's internal model governance framework (Solvency II Article 121 and PRA SS3/18 for insurers). This is not a technical argument against individual methods, but it is a real adoption barrier.
 
 The paper does not claim the neural network beats chain ladder. It claims the individual structure beats chain ladder, and that a linear regression on individual features already achieves most of that gain.
 

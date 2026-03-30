@@ -271,7 +271,7 @@ report.save_html("renewal_optimiser_governance_pack.html")
 
 The HTML report is print-to-PDF ready. The two assumptions marked `HIGH` and `MEDIUM` risk are the ones the Model Risk Committee should be asking about. In practice, ENBP quality is the weak point of most PS21/5 implementations: the regulatory constraint is only as tight as your ability to accurately estimate what you would charge the same customer as new business through the same channel. If that estimate is noisy, the constraint is noisy.
 
-For the full governance workflow, see [One Package, One Install: PRA SS1/23 Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/).
+For the full governance workflow, see [One Package, One Install: Solvency II Article 121 / PRA SS3/18 Model Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). Note: insurer model governance is governed by Solvency II Article 121 and PRA SS3/18, not SS1/23 (which applies to banks).
 
 ---
 

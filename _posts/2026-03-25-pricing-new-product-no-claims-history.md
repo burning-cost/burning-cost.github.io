@@ -91,8 +91,8 @@ log_std = 0.8                # moderate right skew
 
 sev_dist = lognorm(s=log_std, scale=np.exp(log_mean))
 print(f"Median: £{sev_dist.median():.0f}")      # £160
-print(f"Mean: £{sev_dist.mean():.0f}")          # £228 (higher than median, right skew)
-print(f"95th pct: £{sev_dist.ppf(0.95):.0f}")  # £546
+print(f"Mean: £{sev_dist.mean():.0f}")          # £220 (higher than median, right skew)
+print(f"95th pct: £{sev_dist.ppf(0.95):.0f}")  # £594
 ```
 
 Run at least two elicitation sessions independently. Where the underwriters disagree, do not average — treat the disagreement as a second source of uncertainty and widen the prior. An elicited prior that is too tight will be overconfident; the model will resist updating even when early experience says the rate is wrong.
