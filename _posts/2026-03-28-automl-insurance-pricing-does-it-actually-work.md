@@ -82,7 +82,7 @@ H2O supports Poisson and Tweedie at the individual algorithm level but not throu
 
 ### 3. High-cardinality categoricals — manageable
 
-freMTPL2 has Region (22 categories) and VehBrand (~11 categories). These are not difficult. Real UK motor data has postcode district (2,700+ categories) and ABI vehicle group (1,200+ categories). H2O has built-in target encoding in the AutoML preprocessing pipeline. AutoGluon v1.5 added TabPrep-LightGBM with target mean encoding and feature crossing. FLAML delegates to LightGBM's native categorical handling, which is adequate. PyCaret one-hot encodes by default — do not use PyCaret on real UK pricing data.
+freMTPL2 has Region (22 categories) and VehBrand (~11 categories). These are not difficult. Real UK motor data has postcode district (2,700+ categories) and ABI vehicle group (~50 categories). H2O has built-in target encoding in the AutoML preprocessing pipeline. AutoGluon v1.5 added TabPrep-LightGBM with target mean encoding and feature crossing. FLAML delegates to LightGBM's native categorical handling, which is adequate. PyCaret one-hot encodes by default — do not use PyCaret on real UK pricing data.
 
 ### 4. Regulatory interpretability
 

@@ -38,6 +38,8 @@ The 1990 row has only one data point: we are at development age 12. The 1981 row
 pip install chainladder
 ```
 
+> **Version note:** Tested with `chainladder==0.8.19` and `pandas<3.0`. The `chainladder` 0.9.x series has a known compatibility issue with pandas 3.0+ that causes `Chainladder().fit()` to fail.
+
 We will use the RAA dataset throughout: a classic 10x10 cumulative triangle of general liability losses, originally from the 1989 CAS study on loss development. It is widely used as a textbook example precisely because its development factors are well-behaved, which makes it a good teaching dataset before you get to real-world misbehaviour.
 
 ```python

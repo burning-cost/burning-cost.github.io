@@ -49,7 +49,7 @@ The offset argument for exposure is clean: `glm = smf.glm(formula, data, family=
 
 The `formula` API (via patsy) handles factor encoding, interaction terms, and spline bases. Smoothing via penalised regression (ridge) is in there but clunky.
 
-`statsmodels` is notably absent from most ML blog posts because it does not do gradient boosting. For GLM-native actuarial work, it is the right tool.
+`statsmodels` is absent from most ML blog posts because it does not do gradient boosting. For GLM-native actuarial work, it is the right tool.
 
 **Honest verdict:** Use `statsmodels` for any GLM where you need proper statistical inference — coefficient CIs, LRT tests, deviance. Do not use it as a drop-in for GBM.
 
@@ -229,7 +229,7 @@ If you are running a UK personal lines pricing function and you do not already h
 
 **Earnix** provides a combined pricing and optimisation platform with real-time pricing capability. The commercial case is strongest where you need real-time rating model updates and direct integration with the policy administration system. Open-source cannot match this.
 
-**Willis Towers Watson (ICT, ResQ)** covers reserving at the enterprise level in ways chainladder-python does not. For a large carrier doing complex commercial lines IBNR, a commercial reserving system is the right tool.
+**Willis Towers Watson (ICT, Radar)** covers reserving at the enterprise level in ways chainladder-python does not. For a large carrier doing complex commercial lines IBNR, a commercial reserving system is the right tool.
 
 **Guidewire** is a policy administration platform, not a pricing tool. It appears in these conversations because it can consume pricing model outputs, but pricing in Guidewire is typically done via rule engines rather than statistical models.
 

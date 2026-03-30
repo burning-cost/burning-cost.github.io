@@ -21,9 +21,9 @@ The Civil Liability Act introduced a fixed tariff for whiplash and minor soft ti
 
 The effect on volume was immediate. MoJ statistics recorded 386,000 personal injury claims in the first year post-reform against 650,000-plus in the pre-pandemic peak years. Average sub-£5k claim cost fell by roughly 25% as tariff replaced the previous negotiated settlement process.
 
-So far, so good. But large BI claims — typically those above £25k involving multiple heads of damage, rehabilitation costs, or long-term care — were not meaningfully affected by the tariff structure. They continue to develop under the same cost pressures as before: Ogden discount rate at minus 0.25%, care cost inflation running well above general CPI, and periodical payment orders becoming more common for catastrophic injury. Our [`insurance-severity`](/insurance-distributional/) library shows the large-loss tail thickening in recent development years rather than compressing.
+So far, so good. But large BI claims — typically those above £25k involving multiple heads of damage, rehabilitation costs, or long-term care — were not meaningfully affected by the tariff structure. They continue to develop under the same cost pressures as before: Ogden discount rate at minus 0.25%, care cost inflation running well above general CPI, and periodical payment orders becoming more common for catastrophic injury. Our [`insurance-severity`](/insurance-severity/) library shows the large-loss tail thickening in recent development years rather than compressing.
 
-This creates a bimodal claims landscape. Sub-£5k claims: volume compressed, unit cost capped, settled quickly via OIC portal. Large claims: fewer in number, but average severity increasing at 6-8% annually in real terms on recent experience. The arithmetic means are meaningless; what matters is the pathway a claim follows and when.
+This creates two distinct claim populations. Sub-£5k claims: volume compressed, unit cost capped, settled quickly via OIC portal. Large claims: fewer in number, but average severity increasing at 6-8% annually in real terms on recent experience. The arithmetic means are meaningless; what matters is the pathway a claim follows and when.
 
 ---
 
@@ -80,7 +80,7 @@ Three sources cover the post-reform picture adequately:
 
 **ABI claims data and industry schemes.** The ABI's motor statistics report provides the BI share figures (16% to 9%) and average claim cost data. Internal claims data with a state flag (portal vs. litigated vs. neither) is necessary for fitting any multi-state model. If your internal data predates April 2021, you will need to reconstruct portal eligibility from claim value bands and accident date.
 
-**Ogden tables (8th edition, 2020).** For large loss severity, the discount rate assumption dominates. The minus 0.25% rate continues to produce substantial multipliers for periodical payments: a 40-year-old with annual care costs of £80,000 has a capital value of roughly £3.5m at minus 0.25% versus £2.4m at 1.5% (the pre-2017 rate). Sensitivity analysis on the Ogden rate belongs inside any large-loss severity model; our `insurance-severity` library's `TruncatedGPD` class is appropriate for modelling the tail above £100k.
+**Ogden tables (8th edition, 2020).** For large loss severity, the discount rate assumption dominates. The minus 0.25% rate continues to produce substantial multipliers for periodical payments: a 40-year-old with annual care costs of £80,000 has a capital value of roughly £3.5m at minus 0.25% versus £2.4m at 2.5% (the pre-2017 rate). Sensitivity analysis on the Ogden rate belongs inside any large-loss severity model; our `insurance-severity` library's `TruncatedGPD` class is appropriate for modelling the tail above £100k.
 
 For claims inflation on the large-loss book, `insurance-trend`'s `SeverityTrendFitter` with `superimposed_inflation()` separates tariff-effect from general cost-of-living movements — exactly the decomposition needed when comparing 2019 and 2024 BI development.
 
@@ -108,5 +108,5 @@ The Poisson GLM approximation is sufficient for covariate estimation. The full C
 - ABI: [Motor insurance premium tracker and claims data](https://www.abi.org.uk/data-and-research/resources/motor/) — BI share of motor spend
 - Jackson C.H. (2011). 'Multi-State Models for Panel Data: The msm Package for R.' *Journal of Statistical Software* 38(8):1–29
 - Haberman S., Pitacco E. (1999). *Actuarial Models for Disability Insurance*. Chapman & Hall/CRC — the standard reference for illness-death multi-state models
-- Ogden Tables, 8th edition (2020), Government Actuary's Department — Ogden discount rate minus 0.25% as of 2017 review; unchanged since
+- Ogden Tables, 8th edition (2020), Government Actuary's Department — Ogden discount rate minus 0.25% as of 2019 review; unchanged since
 - Titman A.C., Sharples L.D. (2010). 'Semi-Markov Models with Phase-Type Sojourn Distributions.' *Biometrics* 66(3):742–752 — for duration-dependent transition rates
