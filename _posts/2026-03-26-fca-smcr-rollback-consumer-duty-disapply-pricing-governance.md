@@ -3,7 +3,7 @@ layout: post
 title: "FCA SMCR Rollback: What It Actually Means for Pricing Governance"
 date: 2026-03-26
 categories: [regulation]
-tags: [fca, smcr, consumer-duty, pricing-governance, ss123, model-risk, lloyds, cp25-21, pra, insurance-governance, insurance-monitoring, uk]
+tags: [fca, smcr, consumer-duty, pricing-governance, model-risk, lloyds, cp25-21, pra, insurance-governance, insurance-monitoring, uk, tr24-2, sop3-24]
 description: "Two deregulatory signals in the FCA's February 2026 insurance priorities document. The SMCR one is almost entirely administrative. The Consumer Duty one is real but has no CP number yet. Here is what pricing governance teams should and should not do."
 ---
 
@@ -48,15 +48,21 @@ For Solvency II insurers: PRA CP18/25 runs parallel to CP25/21. Where a Key Func
 
 ## Why this matters almost nothing for model risk governance
 
-PRA SS1/23 (May 2023) is the supervisory statement on Model Risk Management. It requires explicit SMCR linkage: a named SMF holder implements the MRM framework, that person's Statement of Responsibilities names the MRM implementation accountability, and Internal Audit (SMF5) provides independent annual effectiveness assessment.
+A word on SS1/23 first, because it appears frequently in commentary on this topic. PRA SS1/23 (May 2023) is titled "Model risk management principles for banks." It applies to UK-incorporated banks, building societies, and PRA-designated investment firms — not to Solvency II insurers or reinsurers. Insurers are explicitly out of scope. The PRA's January 2023 Dear CEO letter separately encouraged insurers to consider whether SS1/23 principles could inform their own MRM frameworks, which is a reasonable suggestion, but that is voluntary adoption of a best-practice framework, not compliance with a mandatory supervisory statement.
 
-In most insurers, SMF4 (the CRO) owns the MRM framework — not SMF20 (Head of Actuarial). The sign-off chain for new pricing models runs through independent validation (typically the CRO's team) to SMF4. If you have a Chief Actuary who is an SMF20, their SoR covers the actuarial function; model risk policy ownership sits with risk, not actuarial, in the standard configuration.
+The actual mandatory governance anchors for insurance pricing are different:
 
-Phase 1 changes one thing here: if your Head of Validation leaves and a replacement joins, you now have 6 months rather than immediate obligation to file the updated SoR acknowledging the new person's model governance responsibilities. That is it. The MRM policy ownership, the validation sign-off chains, the model inventory, the model approval governance — none of it is touched.
+**Consumer Duty (PRIN 2A)** is the primary FCA obligation. Boards must approve an annual fair value assessment. The FCA's TR24/2 thematic review (August 2024) examined Consumer Duty implementation in general insurance and found many firms had no records of senior manager approval for product governance decisions. The sign-off requirement sits with whichever SMF holds the product governance prescribed responsibility — typically the equivalent of SMF21 or whoever has named accountability for product oversight in the firm's SoR. This is already a live obligation, and Phase 1 does not touch it.
 
-We have read the law firm summaries. None of them mention SS1/23. We think that is the right conclusion from Phase 1: nothing to mention.
+**PRA SoP3/24** (effective December 2024) introduces the Internal Model Ongoing Review (IMOR) framework for Solvency II internal model firms. It requires an annual attestation from a named SMF — most likely the CRO (SMF4) — that the internal model continues to meet PRA permission requirements. The attestation accompanies an annual Analysis of Change report submitted to the PRA. This is the live named-SMF accountability requirement for insurer model governance in 2026. It derives from the Solvency II use test logic (Article 120), not from SS1/23.
 
-If you are considering pre-emptive redesign of your accountability maps in anticipation of Phase 2, stop. Phase 2 requires primary legislation. As of March 2026, no draft legislation has been published. The plausible horizon is 2027 at earliest — and whether Phase 2 includes a reduction in named SMF roles remains speculative. The [`insurance-governance`](/insurance-governance/) MRM inventory currently maps to SMF4 as the default MRM accountable role. We will update the library when there is a substantive change to document.
+For standard formula firms writing general insurance pricing models, the governance chain runs through Solvency II Pillar II (board responsibility for the system of governance), Consumer Duty outcomes monitoring obligations, and the firm's own MRM policy. There is no equivalent of SoP3/24 IMOR attestation for standard formula pricing models — the mandatory governance hook is Consumer Duty, not a specific PRA model rule.
+
+Phase 1 changes one operational thing here: if your Head of Validation leaves and a replacement joins, you now have 6 months rather than immediate obligation to file the updated SoR acknowledging the new person's model governance responsibilities. That is it. Consumer Duty board sign-off requirements, IMOR attestation for IM firms, pricing model sign-off chains — none of it is touched.
+
+We have read the law firm summaries. None of them mention SS1/23. That is the right conclusion from Phase 1: nothing to mention there. The more important governance question for pricing teams in 2026 is whether their Consumer Duty audit trail — particularly the TR24/2 finding about missing senior manager sign-off records — is in order.
+
+If you are considering pre-emptive redesign of your accountability maps in anticipation of Phase 2, stop. Phase 2 requires primary legislation. As of March 2026, no draft legislation has been published. The plausible horizon is 2027 at earliest — and whether Phase 2 includes a reduction in named SMF roles remains speculative. We will update our governance guidance when there is a substantive change to document.
 
 ---
 
@@ -83,7 +89,9 @@ What remains uncertain: the definition of 'non-UK customer' (domicile, risk loca
 
 **Do not drop Consumer Duty compliance for non-UK business.** The consultation has not been published. The rules as they stand apply. Any firm that pulls its Consumer Duty documentation for international lines before the Policy Statement is in force is taking regulatory risk on a commitment letter, not a confirmed rule change.
 
-**Do not redesign your SMCR accountability maps.** Phase 1 changes nothing structural. Phase 2 has no confirmed timeline or confirmed scope. Your SoR, your MRM policy ownership, your SS1/23 governance chain — leave it alone until there is something to respond to.
+**Do not redesign your SMCR accountability maps.** Phase 1 changes nothing structural. Phase 2 has no confirmed timeline or confirmed scope. Your SoR, your MRM policy ownership, your product governance accountability chain — leave it alone until there is something to respond to.
+
+**If you are an internal model firm, ensure your IMOR attestation process is in place.** PRA SoP3/24 has been effective since December 2024. The annual attestation from a named SMF is not a Phase 2 question — it is live now. If your CRO's SoR does not explicitly reference internal model governance accountability, that is worth reviewing in the current 6-month window, not waiting for SMCR Phase 2.
 
 **Do map your Consumer Duty compliance cost on non-UK lines now.** When the Q2 2026 consultation lands, you will want to respond with specifics: what documentation you are currently producing, how many analyst days per year it requires, which lines it covers. Firms with precise compliance cost data will be better positioned to respond to the consultation and will have the evidence to move quickly once the Policy Statement confirms scope. The [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) outcomes monitoring module tracks Consumer Duty outcome data at line-of-business level — if you are using it, tagging your non-UK lines explicitly now means you can pull that cost picture cleanly when the CP drops.
 
@@ -95,12 +103,12 @@ What remains uncertain: the definition of 'non-UK customer' (domicile, risk loca
 
 The Browne Jacobson "unprecedented rollback" headline is accurate as a statement about the direction of travel over a 3-5 year horizon. As a description of what has changed in Q1 2026, it overstates the position substantially.
 
-SMCR Phase 1 is process relief. It is genuinely useful — the 6-month SoR window and deduplication of certification checks reduce administrative overhead — but it changes nothing about who is accountable for what. SS1/23, model risk governance, pricing model sign-off chains: untouched.
+SMCR Phase 1 is process relief. It is genuinely useful — the 6-month SoR window and deduplication of certification checks reduce administrative overhead — but it changes nothing about who is accountable for what. Model risk governance and pricing model sign-off chains are untouched.
 
-The Consumer Duty non-UK signal is the more consequential one, and it is at consultation design stage, not implementation stage. For Lloyd's and specialty market pricing teams, Q2 2026 is when the work starts.
+The live mandatory governance questions for pricing teams are Consumer Duty (PRIN 2A board sign-off, TR24/2 audit trail) and, for internal model firms, the IMOR annual attestation under SoP3/24. Neither of those is moved by SMCR Phase 1. The Consumer Duty non-UK signal is the more consequential development in the February 2026 document, and it is at consultation design stage, not implementation stage. For Lloyd's and specialty market pricing teams, Q2 2026 is when the work starts.
 
 ---
 
 - [The FCA's First Consolidated Insurance Priorities](/2026/03/25/fca-2026-consolidated-regulatory-priorities-insurance/) — the source document in full, all four pillars
-- [One Package, One Install: PRA SS1/23 Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the `insurance-governance` library and how SS1/23 accountability links to SMF4
+- [One Package, One Install: MRM Governance for Insurance Teams](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) — the `insurance-governance` library and how model accountability links to SMF4
 - [Consumer Duty Outcomes Monitoring](/2026/03/25/consumer-duty-outcomes-monitoring/) — tracking PRIN 2A outcomes at line-of-business level
