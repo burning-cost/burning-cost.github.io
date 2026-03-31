@@ -81,7 +81,7 @@ The main comparison table (Table 4) reports:
 | NSGA-II (genetic algorithm) | $12,467 | 0.0% | 8.52 |
 | **VAE + PPO** | **$14,281** | **0.0%** | **7.92** |
 
-A 14% surplus improvement over the next-best method (Monte Carlo at $12,803), achieved in less time than dynamic programming. Out-of-sample, the mean surplus is $16,687 with 0% ruin probability.
+An 11.5% surplus improvement over the next-best method (Monte Carlo at $12,803), achieved in less time than dynamic programming. Out-of-sample, the mean surplus is $16,687 with 0% ruin probability.
 
 On the numbers, this looks impressive. We have some reservations.
 

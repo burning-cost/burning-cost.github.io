@@ -45,7 +45,7 @@ Starting from the library we have actually built and tested — [insurance-gam](
 
 No → use **EBM** (InsuranceEBM). Zero-configuration, sklearn API, automatic interaction detection via the FAST algorithm, near-XGBoost accuracy on benchmarks. Default choice for the majority of UK personal lines teams.
 
-Exception: if *n* < 10,000 policies, prefer a traditional **GLM**. At small sample sizes, GAMs and GLMs provide exact confidence intervals via MLE theory and satisfy the actuarial balance property by construction. Neural approaches gain nothing on thin books and lose interpretability.
+Exception: if *n* < 10,000 policy-years, prefer a traditional **GLM**. At small sample sizes, GAMs and GLMs provide exact confidence intervals via MLE theory and satisfy the actuarial balance property by construction. Neural approaches gain nothing on thin books and lose interpretability.
 
 Yes (ML infra available) → **Are hard monotonicity constraints required?**
 
