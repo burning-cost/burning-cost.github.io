@@ -80,6 +80,18 @@ There is also an adverse selection dynamic. If one insurer corrects for the supp
 
 ---
 
+## When the contract nears its end: arXiv:2601.07655
+
+A companion paper from a different author group (arXiv:2601.07655, January 2026) approaches the same problem from a continuous-time angle and adds a result that Liang et al. do not cover: how the reporting threshold changes *over the life of the policy*, not just at steady state.
+
+The model uses Piecewise Deterministic Markov Processes and solves the Hamilton-Jacobi-Bellman system to find the optimal barrier b(t) as a function of remaining contract time. The core result: the retention threshold decreases as the policy approaches its expiry date. Near renewal, even small claims become worth reporting, because the NCD disadvantage lasts less time before the policyholder is repriced anyway. The paper proves the value function is the unique viscosity solution to the HJB system — technically the strongest result available for this class of problem.
+
+The practical implication for UK motor is underappreciated. Mid-year claims have a higher rational threshold than end-of-year claims. If your claims development patterns show a spike in reported small losses in the fourth quarter of policy years, this is part of the explanation — and it is not noise, it is rational behaviour. Standard GLMs fit on policy-year claims data aggregate across policy ages and miss this intra-period variation entirely.
+
+The two papers are complementary. Liang et al. gives you the competitive equilibrium — the right premiums to charge given that policyholders and competitors are both playing strategically. The second paper gives you the within-year barrier dynamics — the right shape of the reporting threshold over the contract term. A complete model would incorporate both.
+
+---
+
 ## What the FCA has and has not said
 
 GIPP (PS21/5, effective January 2022) eliminated price walking — the renewal premium for existing customers must be no higher than the equivalent new business price through the same channel. The FCA's 2025 evaluation paper (EP25/2) confirmed GIPP has held: the new-to-renewal gap has not returned, even as claims costs rose 49% between 2022 and 2024 (expected cost per policy from £92 to £138).
