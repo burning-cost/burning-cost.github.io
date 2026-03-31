@@ -9,7 +9,7 @@ description: "arXiv:2510.24601 reviewed 143 papers across 430 datasets and found
 
 A systematic review published on arXiv in October 2025 — Doohan, Kook and Burke, [arXiv:2510.24601](https://arxiv.org/abs/2510.24601) — reviewed 143 papers covering 430 datasets across environmental science, engineering and health research from 1998 to 2024. Its conclusion: by 2024, there is no statistically significant accuracy gap between GAMs and neural networks on tabular data. The confidence bands for RMSE ratio, at every network complexity level, include zero.
 
-This matters for insurance pricing teams because the standard justification for black-box gradient-boosted trees over interpretable models has been accuracy. If you cannot demonstrate a meaningful accuracy advantage for XGBoost over an Explainable Boosting Machine, the trade-off looks very different — particularly post-FCA Consumer Duty and with the EU AI Act now in force.
+This matters for insurance pricing teams because the standard justification for black-box gradient-boosted trees over interpretable models has been accuracy. If you cannot demonstrate a meaningful accuracy advantage for XGBoost over an Explainable Boosting Machine, the trade-off looks very different — particularly post-FCA Consumer Duty and with EU AI Act high-risk AI obligations applying from 2 August 2026.
 
 There is an important caveat. We will come to it. But the direction of evidence is clear.
 
@@ -92,7 +92,7 @@ There are also books where it is the right *final* model:
 
 ## The regulatory context
 
-The FCA Consumer Duty (PS22/9, July 2022) requires firms to be able to explain pricing outcomes to customers on request. The EU AI Act (Articles 13 and Annex III, in force August 2024) imposes transparency requirements on high-risk AI systems — insurance pricing falls under Annex III. Glass-box models satisfy these requirements directly. XGBoost with SHAP post-hoc explanation satisfies them indirectly, and SHAP approximate values are not identical to the model's actual decision process.
+The FCA Consumer Duty (PS22/9, July 2022) requires firms to be able to explain pricing outcomes to customers on request. The EU AI Act (Articles 13 and Annex III, high-risk obligations applying from 2 August 2026) imposes transparency requirements on high-risk AI systems - insurance pricing falls under Annex III. Glass-box models satisfy these requirements directly. XGBoost with SHAP post-hoc explanation satisfies them indirectly, and SHAP approximate values are not identical to the model's actual decision process.
 
 The ICC finding from arXiv:2510.24601 provides indirect support here. If the accuracy advantage of black-box models is not real — if it is primarily an artefact of who tuned the comparison — then there is no meaningful trade-off between accuracy and interpretability. You are not giving up 3% Gini for glass-box compliance. You are giving up researcher-dominated noise.
 

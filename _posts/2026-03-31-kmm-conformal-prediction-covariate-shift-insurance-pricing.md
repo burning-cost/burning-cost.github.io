@@ -69,7 +69,7 @@ This has three immediate applications in UK insurance:
 
 **New product launch pricing.** When your calibration set is from legacy business and new business has materially different covariate distribution, SKMM can identify the subset of new risks where coverage guarantees cannot be established. Rather than setting a uniform wide interval for all new business, you identify the specific risks where the interval is uninformative and escalate them.
 
-**FCA SUP 15.3 documentation.** The FCA expects firms to document the limitations of their models. "Model is not valid for risks outside the following covariate region" is a documentable, auditable claim when it is produced by a defined algorithm. SKMM generates exactly this output. This is stronger than "we reviewed the model documentation and believe it is appropriate" — which is what most current model governance produces.
+**Model documentation under Consumer Duty.** The FCA expects firms to document the limitations of their models. "Model is not valid for risks outside the following covariate region" is a documentable, auditable claim when it is produced by a defined algorithm. SKMM generates exactly this output. This is stronger than "we reviewed the model documentation and believe it is appropriate" — which is what most current model governance produces.
 
 ---
 
@@ -112,7 +112,7 @@ The four gaps we have identified for implementation work, in order of value vs. 
 
 ## The guarantee question, honestly
 
-The finite-sample vs. asymptotic distinction matters more in insurance than in the molecular biology applications the paper benchmarks against. Actuaries working within Solvency II and the PRA's SS1/23 framework need to be able to say "this coverage guarantee holds for this sample size." Asymptotic guarantees do not provide that.
+The finite-sample vs. asymptotic distinction matters more in insurance than in the molecular biology applications the paper benchmarks against. Actuaries working within Solvency II and the PRA's internal model framework (SS1/24) need to be able to say "this coverage guarantee holds for this sample size." Asymptotic guarantees do not provide that.
 
 If you are using conformal intervals for SCR estimation — as we described in the distribution-free conformal post — you need the finite-sample guarantee from Tibshirani or from the h-transformation approach. KMM-CP's asymptotic guarantee is insufficient for capital modelling sign-off.
 
