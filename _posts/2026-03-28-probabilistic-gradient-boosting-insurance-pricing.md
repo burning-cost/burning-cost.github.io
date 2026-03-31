@@ -29,7 +29,7 @@ Three practical situations where this becomes acute:
 
 ---
 
-## The landscape
+## Current probabilistic GBM options
 
 There are three structurally different approaches to getting a full conditional distribution from a gradient boosted tree.
 

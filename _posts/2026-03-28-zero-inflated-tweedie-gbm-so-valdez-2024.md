@@ -4,12 +4,12 @@ title: "ZeroInflatedTweedieGBM: The So & Valdez (2024) Implementation"
 date: 2026-03-28
 categories: [techniques, libraries]
 tags: [zero-inflation, tweedie, catboost, gbm, insurance-distributional, so-valdez, pure-premium, contents-insurance, astin, severity, frequency-severity, python]
-description: "The first open-source implementation of So & Valdez (2024) Scenario 2: a two-stage CatBoost model that separates structural zero probability from Tweedie severity. When standard Tweedie's implicit zero-handling is too crude, this is the fix."
+description: "The first pip-installable implementation we know of for So & Valdez (2024) Scenario 2: a two-stage CatBoost model that separates structural zero probability from Tweedie severity. When standard Tweedie's implicit zero-handling is too crude, this is the fix."
 ---
 
 The [previous post on zero-inflated models](/2026/03/24/zero-inflated-and-hurdle-models-for-insurance-claims/) covered the count side: ZIP for frequency, the structural-vs-sampling-zero distinction, and when Tweedie's implicit zero handling breaks down. That post deliberately sidestepped the continuous aggregate cost version.
 
-This post covers the continuous version. Specifically: `ZeroInflatedTweedieGBM`, the first open-source implementation of Scenario 2 from So & Valdez's ASTIN 2024 Best Paper (*Boosted trees for zero-inflated counts with an offset for insurance ratemaking*, arXiv 2406.16206). If you are modelling aggregate losses — not claim counts — on a book where 85–95% of policies have zero outgo, this is the model that fits the problem.
+This post covers the continuous version. Specifically: `ZeroInflatedTweedieGBM`, the first pip-installable implementation of Scenario 2 that we are aware of from So & Valdez's ASTIN 2024 Best Paper (*Boosted trees for zero-inflated counts with an offset for insurance ratemaking*, arXiv 2406.16206). If you are modelling aggregate losses — not claim counts — on a book where 85–95% of policies have zero outgo, this is the model that fits the problem.
 
 ---
 
@@ -211,7 +211,7 @@ A concrete diagnostic before you decide: compute the Tweedie-implied zero rate f
 
 So & Valdez (2024) won the ASTIN Best Paper precisely because it addressed a real problem that every pricing team with a zero-heavy book has, and it addressed it rigorously. The paper covers Scenario 1 (joint ZI-Tweedie likelihood with gradient boosting) and Scenario 2 (the two-stage model here). Scenario 1 produces marginally better likelihood scores on the paper's datasets. Scenario 2 is substantially easier to implement cleanly, is more stable on small non-zero subsets, and produces diagnostics that practitioners can act on.
 
-We implement Scenario 2. We think this is the right choice for a library aimed at production use. If you need Scenario 1's joint gradient, the paper gives you enough to implement it on top of a custom CatBoost objective — the mathematical formulation is clear. What it has not had, until now, is an open-source Python implementation of either scenario.
+We implement Scenario 2. We think this is the right choice for a library aimed at production use. If you need Scenario 1's joint gradient, the paper gives you enough to implement it on top of a custom CatBoost objective — the mathematical formulation is clear. We are not aware of another pip-installable Python implementation of either scenario.
 
 The [distributional GBMs overview post](/2026/03/05/insurance-distributional/) gives the broader context on where this sits in the `insurance-distributional` library alongside `TweedieGBM`, `ZIPGBM`, `GammaGBM`, and the dispersion models.
 

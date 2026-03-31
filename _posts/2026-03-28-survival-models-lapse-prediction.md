@@ -54,7 +54,9 @@ For a UK motor book with 5+ years of policy history, all five of these apply. Yo
 
 ## Classical survival methods: the honest benchmark
 
-The reference benchmark we are working from is PMC11531126, which evaluated Cox PH, Random Survival Forest, and DeepHit across 11 high-dimensional datasets:
+Note: PMC11531126 is a medical-domain benchmark — these datasets are not insurance data. The results transfer as a directional signal, not a definitive insurance-specific comparison. With that caveat, the findings are consistent with what practitioners observe on insurance tabular data.
+
+The benchmark evaluated Cox PH, Random Survival Forest, and DeepHit across 11 high-dimensional medical datasets:
 
 | Method | C-index (avg) | IBS (avg) |
 |---|---|---|
@@ -178,7 +180,7 @@ The `cure_prob` column is directly actionable: policies with `cure_prob > 0.7` a
 
 ---
 
-## Python tooling: the honest landscape
+## Python tooling for survival analysis
 
 The four main libraries for survival analysis in Python:
 
@@ -188,7 +190,7 @@ The four main libraries for survival analysis in Python:
 
 **pycox (v0.3+)** — DeepSurv, DeepHit, LogisticHazard, CoxTime, MTLR. Built on PyTorch. Functional but slow to maintain; last major update around 2022. Use it if you specifically need one of these architectures.
 
-**torchsurv (Novartis, v0.1.5, 2024)** — pure PyTorch toolkit. Unlike pycox, which ships fixed architectures, torchsurv gives you Cox and Weibull loss functions and metrics (time-dependent C-index, AUC, Brier score) to plug into your own PyTorch model. Listed in the FDA CDRH regulatory science tool catalog as of October 2025, which is the strongest production credibility signal available for a Python survival library. Use this if you are building custom deep survival architectures for telematics or high-dimensional feature spaces.
+**torchsurv (Novartis, v0.1.5, 2024)** — pure PyTorch toolkit. Unlike pycox, which ships fixed architectures, torchsurv gives you Cox and Weibull loss functions and metrics (time-dependent C-index, AUC, Brier score) to plug into your own PyTorch model. Used in medical research applications including regulatory science contexts — it has a strong track record outside insurance, which is the main credibility signal for a relatively young Python survival library. Use this if you are building custom deep survival architectures for telematics or high-dimensional feature spaces.
 
 The recommended stack for UK insurance lapse modelling:
 

@@ -93,7 +93,9 @@ Bootstrap uncertainty is built in: resample exceedances, refit the GPD, recomput
 
 The paper's empirical results are clear. Against Wadsworth (2016) — the previous best automated method — EQD achieves 1.2 to 7.7 times smaller RMSE on return level estimation across a range of test cases. Against threshr cross-validation, EQD wins on most configurations. It is also simpler to implement: no Fisher information matrix (which fails to be positive definite in Wadsworth's method on heavy-tailed data), no Markov chain, just bootstrap quantile discrepancy.
 
-The interface we are planning for `insurance-severity`:
+The interface we are planning for `insurance-severity` — this API is not yet released:
+
+> **Planned interface — not yet released.** `select_threshold_eqd` does not exist in the current `insurance-severity` package. The code below illustrates the intended API.
 
 ```python
 from insurance_severity.evt import select_threshold_eqd
@@ -135,7 +137,9 @@ Fitting one threshold to pooled commercial motor data when the GPD kick-in for v
 
 The empirical validation uses both Danish reinsurance data (2,167 losses up to 263M DKK) and a Canadian automobile insurer dataset of over one million claims. On the automobile data, heterogeneous w-EI achieves Hellinger distance of 5.97×10⁻⁴ vs 6.21×10⁻⁴ for single-threshold fitting. The absolute gain looks small but the relative improvement in the tail matters more than the distributional distance metric implies — the tail is where the money is.
 
-The planned `BMAThresholdSelector` interface:
+The planned `BMAThresholdSelector` interface — also not yet released:
+
+> **Planned interface — not yet released.** `BMAThresholdSelector` does not exist in the current `insurance-severity` package. The code below illustrates the intended API.
 
 ```python
 from insurance_severity.evt import BMAThresholdSelector
