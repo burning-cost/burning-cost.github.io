@@ -5,6 +5,8 @@ date: 2026-03-31
 categories: [techniques, pricing]
 tags: [ncd, bms, bonus-malus, underreporting, game-theory, nash-equilibrium, uk-motor, frequency-model, glm, lemaire, claim-suppression, pricing-bias, motor-insurance, personal-lines]
 description: "Policyholders with good NCD rationally choose not to report small claims. Your frequency model is trained on that suppressed data. Two January 2026 papers formalise what this means for pricing, and the answer is worse than most teams assume."
+math: true
+author: burning-cost
 ---
 
 Your 5-year NCD customer has a small scrape. The repair is £250. They do not call you. They fix it themselves, quietly, and protect their 65% discount.
@@ -92,6 +94,27 @@ The two papers are complementary. Liang et al. gives you the competitive equilib
 
 ---
 
+## Why a flat underreporting loading is the wrong fix
+
+The instinctive response, once you accept that reported frequencies are too low at mid-ladder NCD classes, is to apply a uniform upward correction — add 10% (or 15%, or 20%) to your NCD relativity across the board and move on. This is wrong, and it is worth being specific about why.
+
+The suppression rate is not uniform across NCD classes. From the table above: the rational retention threshold is ~£93 at 9-year NCD, ~£278 at 5-year, ~£370 at 3-year, and ~£285 at 1-year. If your severity distribution is Gamma with mean £1,500, the implied reporting probabilities are approximately:
+
+| NCD years | Retention threshold | P(Y > threshold) | Implied suppression |
+|-----------|--------------------|--------------------|---------------------|
+| 9 | ~£93 | ~0.93 | ~7% |
+| 5 | ~£278 | ~0.65 | ~35% |
+| 3 | ~£370 | ~0.57 | ~43% |
+| 1 | ~£285 | ~0.64 | ~36% |
+
+A flat 20% uplift overcorrects at 9-year NCD (true suppression ~7%), undercorrects at 3-year NCD (true suppression ~43%), and applies an uplift to 1-year NCD where suppression is meaningful but originates from a different position on the penalty gradient.
+
+The pattern is genuinely non-monotone: the highest-NCD class has the lowest suppression, mid-ladder classes have the most, and the distribution of the severity model governs the precise shape. A flat loading applies the same correction to a class with 7% suppression as to one with 43% suppression. That is not a calibration improvement — it is a different shape of the wrong answer.
+
+The correction must be class-by-class, derived from the retention threshold at each class and the relevant severity distribution. The suppression calculation is specific to own-damage versus third-party claims (the penalty calculation and the typical severity differ), to vehicle segment (severity distributions are not homogeneous), and to the insurer's specific NCD ladder. None of that heterogeneity can be captured with a single loading percentage.
+
+---
+
 ## What the FCA has and has not said
 
 GIPP (PS21/5, effective January 2022) eliminated price walking — the renewal premium for existing customers must be no higher than the equivalent new business price through the same channel. The FCA's 2025 evaluation paper (EP25/2) confirmed GIPP has held: the new-to-renewal gap has not returned, even as claims costs rose 49% between 2022 and 2024 (expected cost per policy from £92 to £138).
@@ -108,15 +131,17 @@ No off-the-shelf package handles the full correction pipeline — not in R, not 
 
 We think a working first-pass is achievable in a few days.
 
-**Implement Lemaire's algorithm for your own ladder.** This is roughly 50 lines of NumPy. Inputs are your NCD discount percentages, your step-back rules, your average base premium by segment, and a severity distribution. Output is a retention table b*_n for each NCD class. The severity distribution you already have — use the Gamma parameters from your existing severity GLM, stratified by cover type.
+**Step 1: Implement Lemaire's algorithm for your own ladder.** This is roughly 50 lines of NumPy. Inputs are your NCD discount percentages, your step-back rules, your average base premium by segment, and a severity distribution. Output is a retention table b*_n for each NCD class. The severity distribution you already have — use the Gamma parameters from your existing severity GLM, stratified by cover type.
 
-**Compute the censoring correction per class.** For each NCD class, p_n = P(Y > b*_n) under your severity distribution. Compare λ_obs / p_n to λ_obs. If the correction factors are within 5% across all classes, the bias is not material for your portfolio and you can stop. Our guess is they will not be.
+**Step 2: Compute the censoring correction per class.** For each NCD class, p_n = P(Y > b*_n) under your severity distribution. Compare λ_obs / p_n to λ_obs. If the correction factors are within 5% across all classes, the bias is not material for your portfolio and you can stop. Our guess is they will not be.
 
-**Re-examine your NCD relativities against corrected frequencies.** You are not necessarily re-fitting the full GLM at this stage — you are asking whether the size of the bias is consistent with how much your current 5-year relativities differ from 0-year. If your observed 5-year relativity is 0.60 but the corrected frequency implies 0.68, that is meaningful. You are undercharging that segment by roughly 13%.
+**Step 3: Re-examine your NCD relativities against corrected frequencies.** You are not necessarily re-fitting the full GLM at this stage — you are asking whether the size of the bias is consistent with how much your current 5-year relativities differ from 0-year. If your observed 5-year relativity is 0.60 but the corrected frequency implies 0.68, that is meaningful. You are undercharging that segment by roughly 13%.
 
-**Look at your FNOL withdrawal data.** Claims that are opened and then withdrawn — the policyholder called to register a claim, then settled it themselves — are your cleanest signal for calibrating the retention threshold empirically. If your claims system captures these with an indicative reserve or loss estimate at FNOL, the size distribution of withdrawals at each NCD class directly estimates b*_n. This data almost certainly exists somewhere in your claims system. Most teams have never looked at it this way.
+Steps 1–3 require nothing beyond internal data — your NCD ladder, your severity model, and your claims system. They quantify the first-order bias before you need to consider competitive dynamics.
 
-The full competitive equilibrium from Liang et al. — where you jointly solve for your own premiums and competitor premiums given optimal policyholder behaviour — requires market-level competitor premium data at NCD class level. That means PCW aggregator data or industry sharing arrangements, and it is a larger project. But the single-insurer correction (the first three steps above) does not require any of that, and it quantifies the first-order bias from internal data alone.
+**Step 4 (the full solution): Iterate toward Nash equilibrium.** Per Liang et al., premiums and reporting thresholds are jointly determined — each insurer's rates affect what thresholds are rational for policyholders, which affects the stationary distribution of policyholders, which affects expected profit, which feeds back into rate-setting. Solving this properly requires market-level competitor premium data at NCD class resolution. That means PCW aggregator data or an industry data-sharing arrangement — a larger project. But if the step 1–3 analysis shows the bias is large enough to matter commercially, the step 4 project becomes justifiable.
+
+**Look at your FNOL withdrawal data.** Claims that are opened and then withdrawn — the policyholder called to register a claim, then settled it themselves — are your cleanest empirical signal for calibrating b*_n directly. If your claims system captures indicative reserves or loss estimates at FNOL, the size distribution of withdrawals at each NCD class directly estimates the retention threshold without any model assumption. This data almost certainly exists somewhere in your claims system. Most teams have never looked at it this way.
 
 ---
 
@@ -138,4 +163,13 @@ Policyholders with 3-to-5 years of NCD are rationally self-insuring losses up to
 
 This is not a new finding — Lemaire documented it in 1977 — but the UK industry has not corrected for it, there is no regulatory requirement to do so, and no standard tool exists. Liang et al. (2026) show that the problem is structurally worse in a competitive market: the naive GLM re-fit does not converge to the right equilibrium.
 
+The temptation is to apply a flat loading and call the problem addressed. Do not. The suppression rates vary from ~7% at 9-year NCD to ~43% at 3-year NCD. A flat correction applies the same number to both and creates a different pattern of mispricing. The correction needs to be class-by-class and severity-distribution-aware.
+
 The full correction is not a one-week project. Estimating the size of the bias is. If you have a pricing model and a severity distribution, you can quantify whether your NCD relativities have a material bias problem in a few days of work. We think you should.
+
+---
+
+## Related reading
+
+- [Protected NCD Is a Fair Value Problem Waiting to Happen](/regulation/pricing/2026/04/01/protected-ncd-consumer-duty-fair-value-pricing/) — how the underreporting literature interacts with PNCD pricing adequacy under Consumer Duty
+- [Profit-Fairness Market Equilibria: Why Consumer Duty Audits the Wrong Unit](/fairness/regulation/2026/03/31/profit-fairness-market-equilibria-consumer-duty/) — the market-level fair value problem that firm-level Consumer Duty compliance cannot capture
