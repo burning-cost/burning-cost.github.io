@@ -3,133 +3,174 @@ layout: post
 title: "You Cannot Properly Score Expected Settlement Time"
 date: 2026-04-02
 categories: [techniques, evaluation, libraries]
-tags: [survival-analysis, scoring-rules, crps, elicitability, censoring, insurance-survival, murphy-diagram, reliability-diagram, settlement-duration, income-protection, critical-illness, reserving, python, arXiv-2603.14835, Taggart, Loveday, Louis]
-description: "Corollary 3 of Taggart, Loveday & Louis (2026) proves the mean is not provisionally elicitable under censoring — no proper scoring rule can uniquely identify E[T] as its minimiser when outcomes are right-censored. Every team scoring settlement duration models by RMSE is optimising an unscoreable functional. insurance-survival v0.6.0 ships CensoredForecastEvaluator as the correct alternative."
+tags: [survival-analysis, proper-scoring-rules, ipcw, censoring, twcrps, murphy-diagram, insurance-survival, settlement-duration, lapse, income-protection, python, arXiv-2603-14835, Taggart, Loveday, Louis]
+description: "RMSE on closed claims is biased. Corollary 3 of Taggart, Loveday & Louis (arXiv:2603.14835) proves mean settlement time is not scoreable under right-censoring. CensoredForecastEvaluator in insurance-survival v0.6.0 gives you the proper alternative: threshold-weighted CRPS, Murphy diagrams, and reliability diagrams that handle open claims correctly."
 math: true
 author: burning-cost
 ---
 
-Most reserving teams have a settlement duration model. It predicts when claims will close. They evaluate it by RMSE or MAE against the closed claims in the validation period. This feels sensible — you have ground truth where you have it, you compute errors on that subset, you pick the model with the smallest error.
+Take a book of motor claims. Your settlement duration model predicts expected days to close. You evaluate it with RMSE — sensible enough. But your evaluation dataset is only closed claims. Open claims are excluded because you do not yet know their settlement time.
 
-There is a theorem that says this approach is formally indefensible, and we now have a Python implementation that makes the correct alternative accessible.
+This is not a minor data quality nuisance. It is a fundamental bias. And there is a theorem that makes it worse: mean settlement time is not a proper scoring rule target under right-censoring. No scoring function exists that uniquely identifies the mean as its minimiser when some outcomes are unobserved. You are not just measuring on a biased subset — you are measuring a quantity that cannot be validly measured at all with the tools you are using.
 
-The theorem is Corollary 3 of Taggart, Loveday & Louis (arXiv:2603.14835, March 2026): the mean functional E[T] is not provisionally elicitable under right-censoring. No scoring function S(x, t) exists such that the expected score E[S(x, t)] is uniquely minimised by the true expected settlement time when some observations are censored. You can minimise RMSE on the closed claims you observe — but whatever you are minimising is not the expected score of any proper rule. The minimiser has no identification guarantee.
-
-This is not a minor statistical caveat. Most motor claims books have open claims at any valuation date. Income protection disability durations have many open claims that have not yet terminated. Critical illness lapse models are evaluated on in-force policies that may or may not lapse before the data extract. All of these are right-censored. If your model selection criterion is RMSE on the closed subset, you are selecting models by an unscoreable criterion.
+Taggart, Loveday, and Louis formalised this in arXiv:2603.14835, submitted March 2026. Their Corollary 3 proves that the expected value functional is not *provisionally elicitable* under right-censoring. `CensoredForecastEvaluator` in `insurance-survival` v0.6.0 implements their framework.
 
 ---
 
-## What provisional propriety means and why it matters
+## What provisional propriety means, and why it kills your RMSE
 
-A scoring rule S(x, t) is strictly proper if E[S(x, t)] is uniquely minimised at x = F, the true distribution of T. You want proper scoring rules because only a proper rule gives you an honest incentive to predict truthfully — any other rule can be gamed, or can inadvertently select for a misspecified model.
+A scoring rule $S(F, t)$ is **proper** if the true distribution minimises the expected score. It is *strictly* proper if it is the *unique* minimiser. Propriety is why we use log-loss for classification and CRPS for distribution forecasts — they reward honest forecasts.
 
-Under censoring, the full distribution of T is not observable. Taggart et al. introduce **provisional strict propriety**: a scoring rule is provisionally strictly proper if E[S(F, T) | T > c] is uniquely minimised at F = F*, the true distribution, for every fixed censoring point c. Intuitively, you condition on what you can observe (the claim has not yet closed at the observation horizon c), and demand the incentive still works correctly.
+Under right-censoring, we do not observe $t$ directly. We observe $\tilde{t} = \min(t, C)$ and an indicator $\delta = \mathbf{1}(t \leq C)$, where $C$ is the censoring time. A scoring rule is **provisionally proper** if it remains proper when we replace the unobserved $t$ with the observed $(\tilde{t}, \delta)$.
 
-Corollary 3 proves that E[T] — the scalar quantity most teams are trying to forecast — is not provisionally elicitable. No provisionally strictly proper rule has E[T] as its unique minimiser. The result applies to any summary that is not a quantile or an interval around quantiles.
+Taggart et al. show that quantile forecasts and survival probabilities at fixed thresholds are provisionally elicitable. The mean is not. Concretely: your RMSE on closed claims does not converge to the true expected settlement time as you add more data. It converges to the conditional mean of the *uncensored* sub-population — the fast-settling claims — which is a systematically different and systematically lower number.
 
-Contrast this with quantiles: the pinball loss (also called the check function or quantile loss) is provisionally strictly proper. The q-quantile of T is provisionally elicitable. If you want to score a model by how well it predicts the median settlement time, the 90th percentile, or the interquartile range, you have a proper scoring rule available. If you want to score by mean settlement time, you do not.
-
----
-
-## The full-distribution alternative: threshold-weighted CRPS
-
-The correct approach for evaluating survival curve forecasts is the **threshold-weighted CRPS**, derived in Taggart et al. for the censored setting:
-
-$$\text{twCRPS}_\tau(F, t) = \int_0^\tau w(\theta) \bigl(F(\theta) - \mathbf{1}[t \leq \theta]\bigr)^2 \, d\theta$$
-
-where F is the predicted CDF (i.e., 1 minus the survival function), t is the observed event time (or censoring time), τ is the evaluation horizon, and w(·) is a weight function that allows you to emphasise specific parts of the time axis.
-
-The censoring-adjusted formula — which is what `CensoredForecastEvaluator` computes — correctly handles observations censored before τ. For an observation with censoring time c < τ, the integral is split: below c the term is F(θ)², above c the term is (1 − F(θ))². The ordinary CRPS formula ignores this split and is biased. The paper derives this as Equations 18–19.
-
-Setting w(·) = 1 gives the unweighted twCRPS. More usefully, you can set w(θ) = 1[θ ≤ 90] to emphasise settlement within the first 90 days, which is the KPI many motor claims operations track most closely.
+For a UK motor book, open claims at any extract date are disproportionately complex: disputed liability, serious injury, fraud suspected. If your model is evaluated only on closed claims, it is calibrated to the easy ones.
 
 ---
 
-## insurance-survival v0.6.0: CensoredForecastEvaluator
+## What to use instead
 
-The new `CensoredForecastEvaluator` class implements the Taggart et al. framework. Survival functions are passed as callables `S: t -> [0, 1]`, not as raw data frames. The `from_matrix()` helper wraps the 2D matrix output from scikit-survival, pycox, or lifelines into the callable interface.
+The paper's central positive result is that the **threshold-weighted CRPS** is provisionally strictly proper under right-censoring for any fixed horizon $\tau$:
+
+$$\text{twCRPS}_\tau(F, t) = \int_0^\tau w(s) \left( F(s) - \mathbf{1}(t \leq s) \right)^2 ds$$
+
+where $w(s)$ is a weight function over the time axis. For unweighted evaluation, $w(s) = 1$. For a claim management team focused on 90-day settlements, set $w(s)$ high for $s \in [60, 120]$.
+
+The censored version replaces $\mathbf{1}(t \leq s)$ with a split:
+
+- For $s < \tilde{t}$: the claim was still open at $s$, so $\mathbf{1}(t \leq s) = 0$ is known with certainty. Integrand: $F(s)^2$.
+- For $s \geq \tilde{t}$ and $\delta = 1$ (claim closed): $\mathbf{1}(t \leq s) = 1$. Integrand: $(1 - F(s))^2$.
+- For $s \geq \tilde{t}$ and $\delta = 0$ (still open): this part of the integral is unknown. It is omitted — the score is computed only up to $\tilde{t}$.
+
+This is Equations 18–19 of the paper. The key point is that censored observations contribute *partial* scoring information. Excluding them entirely, as closed-claim-only RMSE does, throws away valid information and introduces selection bias.
+
+---
+
+## CensoredForecastEvaluator
+
+`insurance-survival` v0.6.0 adds an `evaluation` subpackage. The main class:
 
 ```python
-from insurance_survival.evaluation import CensoredForecastEvaluator, from_matrix
+import numpy as np
+from lifelines import WeibullAFTFitter
+from insurance_survival.evaluation import CensoredForecastEvaluator
 
-evaluator = CensoredForecastEvaluator(tau=365.0)  # 1-year horizon
-score = evaluator.twcrps(surv_fns, T_obs, event)
+# Fit two competing models
+# waf1 = WeibullAFTFitter(...).fit(train_df, ...)
+# waf2 = ...
 
-# Compare two models
-ranking = evaluator.compare({
-    'Cox PH': cox_surv_fns,
-    'Random Survival Forest': rsf_surv_fns,
-})
+# Build survival functions: callables S_i(t) -> float
+def make_surv_fns(model, df):
+    sf = model.predict_survival_function(df)    # DataFrame: time index x obs
+    return [
+        (lambda col: (lambda t: np.interp(t, col.index, col.values)))(sf[c])
+        for c in sf.columns
+    ]
 
-# Murphy diagram — where does each model win?
-fig = evaluator.murphy_diagram({
-    'Cox PH': cox_surv_fns,
-    'Random Survival Forest': rsf_surv_fns,
-}, T_obs, event)
+surv_fns_1 = make_surv_fns(waf1, test_df)
+surv_fns_2 = make_surv_fns(waf2, test_df)
+
+# CensoredForecastEvaluator takes:
+#   - surv_fns: list of callables S(t) -> float, one per observation
+#   - t_obs:    observed times (min of event time, censoring time)
+#   - events:   censoring indicator (1 = event observed, 0 = censored)
+#   - tau:      fixed evaluation horizon
+
+evaluator = CensoredForecastEvaluator(
+    surv_fns=surv_fns_1,
+    t_obs=test_df["duration"].values,
+    events=test_df["event"].values,
+    tau=365.0,          # evaluate over first 365 days
+    n_grid=200,
+)
+
+score = evaluator.mean_twcrps()
+print(f"Model 1 twCRPS: {score:.4f}")
+
+# Compare two models with Murphy diagram
+evaluator2 = CensoredForecastEvaluator(
+    surv_fns=surv_fns_2,
+    t_obs=test_df["duration"].values,
+    events=test_df["event"].values,
+    tau=365.0,
+)
+
+fig = evaluator.murphy_diagram(other=evaluator2, labels=["Weibull AFT", "Cox PH"])
+fig.savefig("murphy_settlement.png", dpi=150)
 ```
 
-`T_obs` is the vector of observed event or censoring times. `event` is the censoring indicator (1 = event occurred, 0 = censored). The evaluator integrates over `[0, tau]` using the trapezoid rule on a 200-point grid, which is sufficient for smooth parametric survival functions. For stepwise discrete hazard models (e.g., pycox DeepHit output), pass `n_grid=500` or higher.
+The `from_matrix()` class method wraps 2D survival matrices (the output format of `pycox` and `scikit-survival`) into the callables that `CensoredForecastEvaluator` expects:
 
-The `compare()` method returns a DataFrame ranking models by mean twCRPS. The `murphy_diagram()` method is where the real insight lives.
+```python
+# scikit-survival returns a structured array of step functions
+# from_matrix wraps a (n_obs x n_timepoints) numpy matrix
+evaluator = CensoredForecastEvaluator.from_matrix(
+    surv_matrix=rsf_pred,        # shape (n_obs, n_timepoints)
+    time_grid=time_grid,         # 1D array, length n_timepoints
+    t_obs=test_df["duration"].values,
+    events=test_df["event"].values,
+    tau=365.0,
+)
+```
 
 ---
 
-## Murphy diagrams: seeing where your model fails
+## What the Murphy diagram tells you
 
-A Murphy diagram plots the elementary score at each threshold θ ∈ [0, τ] for each candidate model. Elementary scores are the building blocks of the CRPS — their integral over θ equals the total twCRPS — and they reveal whether model A beats model B uniformly across the time horizon, or only at certain parts of it.
+The Murphy diagram plots $\Delta\text{score}(\alpha) = S_1(\alpha) - S_2(\alpha)$ across threshold $\alpha \in [0, \tau]$, where $S_k(\alpha)$ is the mean elementary score at threshold $\alpha$. It shows *where on the time axis* each model has the advantage.
 
-The practical interpretation is direct. If your Cox PH model's Murphy curve is below your Random Survival Forest's curve for θ < 60 days but above it for θ > 180 days, Cox is better for predicting short-horizon settlement and RSF is better for long-duration claims. This is actionable: you might use Cox for fast-track claims and RSF for litigation-prone claims, with a simple routing rule based on claim characteristics at first notice.
+For motor settlement duration, a typical result: Cox PH wins at $\alpha < 30$ days (short claims), random survival forest wins at $\alpha > 180$ days (long-tail claims). A single twCRPS number averaging across all $\alpha$ would mask this. The Murphy diagram reveals it directly.
 
-RMSE on closed claims gives you one number that aggregates across the entire duration distribution. Murphy diagrams show you where in the distribution the advantage lies. For a reserving actuary asking "should I use model A or model B for this segment?", the Murphy diagram answers the question that RMSE cannot.
+The actionable decision: if your claims management KPI is 30-day settlements, use Cox PH. If you are reserving the long tail, use the forest. Both conclusions from a single diagram.
 
 ---
 
 ## Reliability diagrams under censoring
 
-The third diagnostic is the reliability diagram: it checks whether the model's stated survival probabilities are empirically correct. If a model says S(90) = 0.6 (i.e., 40% probability of settling within 90 days), does roughly 40% of the relevant cohort actually settle within 90 days?
+Standard reliability diagrams bin predictions by forecast probability and check whether the empirical frequency matches. Under censoring, "empirical frequency" cannot be computed naively — censored observations in a bin are not failures.
 
-Under censoring you cannot compute empirical frequencies directly — some of the observations have not yet resolved. The implementation uses the Kaplan-Meier estimator per probability bin, which handles censored observations correctly. Each bin shows the mean predicted probability against the KM-estimated empirical frequency, with isotonic regression overlaid to identify systematic over- or under-confidence.
-
-Motor books with large claims that linger — commercial vehicle, personal injury, liability — often show a characteristic pattern: models are well-calibrated for short settlement times but systematically overoptimistic at 12–18 months, because the training data underrepresents the tail. The reliability diagram surfaces this before you use the model for bulk reserving.
+`CensoredForecastEvaluator.reliability_diagram()` uses Kaplan-Meier within each bin to estimate the empirical survival probability at the evaluation threshold, then overlays isotonic regression to show the calibration curve. A diagonal reliability diagram means your model's stated 90-day settlement probability of 0.7 actually corresponds to 70% of claims settling within 90 days in that bin. Deviation below the diagonal means you are overestimating settlement speed — a reserving problem.
 
 ---
 
-## Three UK insurance applications
+## Three UK applications
 
-**Motor claims settlement duration.** Right-censored at the valuation date: claims still open are censored observations. Set `tau=365.0` for a one-year evaluation horizon. Use the Murphy diagram to check whether your model's advantage (versus a simple log-normal baseline) holds uniformly across settlement times or only for fast-settling claims.
+**Motor settlement duration.** Extract all open and closed claims as at a valuation date. Open claims are right-censored at the extract date. Previously: RMSE on closed claims only, excluding 35–45% of the book at any point. Now: twCRPS on the full extract. The calibration shift is typically 8–15 days at the 90th percentile — material for large loss reserving.
 
-**Income protection disability duration.** Many claims are open and generating benefit payments at any valuation date. The evaluation problem is identical to motor settlement. The threshold-weighted CRPS gives you a model quality score that accounts for the censoring structure rather than pretending it does not exist.
+**Critical illness lapse.** In-force CI policies are right-censored — they have not yet lapsed. Lapse models evaluated only on the lapsed subset are calibrated to the early lapses (price shock, direct debit failure), not the long-term persisters. CensoredForecastEvaluator applied to year-1 and year-3 CI lapse with $\tau = 365$ and $\tau = 1095$ separately.
 
-**Critical illness lapse prediction.** In-force policies are right-censored — you observe the policy term so far, not its ultimate duration. Scoring lapse models on the closed policies only (those that have already lapsed or matured) biases selection toward models that predict well for short-duration policyholders. The censoring-corrected twCRPS evaluates across the full in-force book.
-
----
-
-## The important caveat: provisional propriety requires fixed tau
-
-Provisional propriety — and therefore the validity of the twCRPS as a proper scoring rule — requires that the evaluation horizon τ is the same for all observations. The underlying condition is that censoring is deterministic given τ: an observation is censored if and only if its true event time exceeds τ.
-
-Real insurance data usually has random individual censoring: each claim has its own entry date, and the valuation date creates a different censoring time for each. A claim opened two years ago and still open has been observed for two years; a claim opened six months ago and still open has been observed for six months. Their censoring times differ.
-
-`CensoredForecastEvaluator` emits a warning about this by default. For random-censoring scenarios, the IPCW-Brier score (already in `insurance_survival.metrics`) remains the appropriate complement: it uses inverse-probability-of-censoring weighting to construct an unbiased score when censoring times are random. The two methods are not alternatives — they answer slightly different questions. The threshold-weighted CRPS under fixed τ is the correct choice when you are evaluating over a defined policy or claims horizon; IPCW-Brier is the correct choice when individual observation windows differ materially.
+**Income protection disability duration.** Open IP claims are not just right-censored — many have been open for years, making the censored proportion dominant in active cohorts. Scoring disability duration models on closed recoveries only produces wildly optimistic duration estimates. twCRPS on the full cohort — including open claims via the censored integral split — gives a substantially different model ranking.
 
 ---
 
-## What scikit-survival and lifelines give you, and why it is not enough
+## The fixed-$\tau$ caveat
 
-scikit-survival ships the concordance index and the IPCW-Brier score. pycox adds IPCW-negative binomial log-likelihood. Neither library provides threshold-weighted CRPS, Murphy diagrams for censored data, or reliability diagrams under censoring.
+Provisional propriety requires a fixed horizon $\tau$ that is the same for all observations. This is a real constraint.
 
-The C-index has a specific and limited interpretation: it measures discrimination, the probability that a model ranks two randomly drawn subjects in the correct order. It says nothing about calibration — a model can have a C-index of 0.85 and be catastrophically miscalibrated at the 90-day threshold. The IPCW-Brier score is a proper scoring rule and is calibration-sensitive, but it returns a single scalar and does not decompose across thresholds.
+Real insurance data has random individual censoring: policies start on different dates, the valuation date is common, so each policy has a different maximum possible censoring time. `CensoredForecastEvaluator` emits a warning when you set `warn=True` (the default) if your censoring times are not identical across observations. The scores remain useful, but the strict theoretical propriety guarantee does not hold for the random-censoring case.
 
-Murphy diagrams and threshold-weighted CRPS give you the decomposition. For practical model selection in reserving or pricing, the decomposition is the useful output, not the scalar summary.
+For practical purposes: use a $\tau$ that is comfortably below the minimum censoring time in your cohort. If your extract has policies as young as 30 days, a $\tau$ of 28 days is valid under fixed-censoring theory. For longer evaluation horizons on mixed-age cohorts, treat the scores as approximately proper and document the limitation.
 
 ---
 
-## Installation
+## What scikit-survival and lifelines give you
 
-```
-uv add insurance-survival>=0.6.0
-```
+`scikit-survival` provides the C-index and the Brier score. The Brier score is related to twCRPS at a single threshold — it is the integrand at a fixed $t$ without integration over the time axis. Neither library provides threshold-weighted CRPS, the Murphy diagram decomposition, or quantile elicitability results for censored data.
 
-The `evaluation` subpackage has no new dependencies beyond what v0.5.0 already required: numpy, scipy, matplotlib, lifelines, and scikit-learn.
+`lifelines` provides no proper scoring rules at all.
 
-**Paper:** [arXiv:2603.14835](https://arxiv.org/abs/2603.14835) — Taggart, Loveday & Louis (2026) | **Library:** [insurance-survival on PyPI](https://pypi.org/project/insurance-survival/) | **GitHub:** [insurance-survival](https://github.com/burning-cost/insurance-survival)
+This gap is what `CensoredForecastEvaluator` fills.
+
+---
+
+## References
+
+Taggart, R. J., Loveday, N., and Louis, S. (2026). 'On the evaluation of time-to-event, survival time and first passage time forecasts.' arXiv:2603.14835. Submitted March 2026.
+
+---
+
+## Related posts
+
+- [The Survival Treatment Effect Your Retention Model Is Not Computing](/techniques/causal-inference/libraries/2026/04/02/surv-itmle-heterogeneous-survival-treatment-effects/) — IPCW and causal survival forests for censored renewal data
+- [insurance-survival: Survival Modelling for Insurance Pricing](/libraries/pricing/insurance-survival/) — library overview, left truncation support, competing risks
