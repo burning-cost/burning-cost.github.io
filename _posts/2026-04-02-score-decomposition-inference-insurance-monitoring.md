@@ -1,117 +1,138 @@
 ---
 layout: post
-title: "Testing Whether Your Challenger Model Actually Discriminates Better"
+title: "Your Model Comparison Has No Error Bars"
 date: 2026-04-02
-categories: [insurance-pricing, model-monitoring]
-tags: [calibration, discrimination, score-decomposition, hypothesis-testing, mincer-zarnowitz, hac, glm, gbm, insurance-monitoring, actuarial, pra-ss1-23, fca-consumer-duty, arXiv-2603.04275]
-description: "Dimitriadis & Puke (2026) solve how to attach p-values to the MCB/DSC/UNC score decomposition. insurance-monitoring v1.2.0 implements it. When your GBM beats your GLM on deviance, this tells you whether that gap is in calibration, discrimination, or noise."
+categories: [libraries]
+tags: [insurance-monitoring, calibration, scoring-rules, inference, governance, fca, consumer-duty, arXiv-2603.04275, Dimitriadis, Puke, mcb, discrimination]
+description: "insurance-monitoring v1.2.0 adds ScoreDecompositionTest: HAC-robust p-values on the miscalibration and discrimination components of any scoring rule. When your pricing team argues about whether Model A is better than Model B, they need more than two RMSE numbers."
 author: burning-cost
 ---
 
-A challenger GBM beats the champion GLM by 0.8% on Poisson deviance across a 120,000-policy motor holdout. The team debates deployment. The model owner says the improvement is real. The validation actuary says it might be sampling noise. Nobody can say with certainty whether the GBM is actually better at ranking risks, or whether it is simply better calibrated, or whether those 0.8 percentage points are statistically distinguishable from zero.
+Every model comparison in a UK pricing team's governance pack has the same structure: Model A achieved RMSE 0.847, Model B achieved RMSE 0.831. Someone declares Model B the winner. The meeting moves on.
 
-This is not a hypothetical. It is the standard state of model validation in UK personal lines pricing as of 2026.
+Nobody asked: is the difference statistically meaningful? And if it is real, is Model B better because it ranks risks more accurately, or because it is better calibrated — or both?
 
-PRA SS1/23 requires firms to demonstrate that their pricing models are fit for purpose — adequate calibration and adequate discrimination — and to show that deterioration in either is detected before it affects pricing adequacy. Most monitoring frameworks do neither rigorously. They report Gini, A/E, and deviance as point estimates with no standard errors and no decomposition of which part of model behaviour has changed.
+These are not pedantic questions. A model that improves on RMSE purely through calibration can be recalibrated away by a competitor. A model that improves through discrimination is structurally better at pricing. Under FCA Consumer Duty, the obligation is to demonstrate that model governance produces good outcomes — and "our RMSE went down" is not that demonstration.
 
-[insurance-monitoring v1.2.0](https://pypi.org/project/insurance-monitoring/) ships `ScoreDecompositionTest`, based on Dimitriadis & Puke (arXiv:2603.04275, March 2026). It decomposes any proper scoring rule into Miscalibration and Discrimination components and attaches asymptotic p-values to each.
+[insurance-monitoring v1.2.0](https://pypi.org/project/insurance-monitoring/) adds `ScoreDecompositionTest`, implementing Dimitriadis & Puke (arXiv:2603.04275, March 2026). It gives you HAC-robust p-values on the components that matter.
 
 ---
 
 ## The decomposition
 
-For any proper scoring rule S, a forecast F, and observed outcomes y:
+For any proper scoring rule S — MSE, MAE, quantile score — there is an exact additive decomposition:
 
 ```
-S(F, y) = MCB(F, y) + UNC(y) − DSC(F, y)
+S(F, y) = MCB(F, y) + UNC(y) - DSC(F, y)
 ```
 
-Three components:
+- **MCB** (miscalibration): how much worse your forecasts are than their best linear recalibration. If MCB > 0, your model is making systematic errors — the direction and magnitude could be corrected by a simple affine transformation of the outputs.
+- **UNC** (uncertainty): the irreducible difficulty of the problem. Fixed for a given dataset. Depends only on the distribution of actuals, not on your model.
+- **DSC** (discrimination): how much better your recalibrated forecasts are than just predicting the mean. This is the component that measures genuine ranking ability.
 
-**UNC — Uncertainty.** The score you would achieve by predicting the grand mean on every risk. It is a property of the data, not the model.
+A good model has low MCB and high DSC. UNC cancels when you compare two models on the same dataset.
 
-**MCB — Miscalibration.** How much worse than a linearly recalibrated version of your own forecast are you? A perfectly calibrated model has MCB = 0. Non-zero MCB means a simple linear adjustment — changing the overall mean level or applying a slope correction — would improve the score without touching the underlying risk ranking.
-
-**DSC — Discrimination.** How much better than the grand-mean forecast is your recalibrated forecast? This is the pure ranking signal. A model that separates high-risk from low-risk policies well has high DSC. Random relativities give DSC near zero.
-
-The identity is exact, not approximate. It holds for MSE, Poisson deviance, quantile scores, and interval scores.
-
-The recalibration step is a Mincer-Zarnowitz (MZ) regression: regress observed outcomes y on your forecast F. For mean scores (MSE, Poisson deviance), this is OLS — the classical MZ regression from econometrics (1969). The recalibrated forecast is F* = aF + b. An MZ slope near 1 and intercept near 0 means your model is well-calibrated. A slope significantly below 1 means your model's relativities are compressed — it does not move enough across risk segments. MCB quantifies the cost of that miscalibration in score units.
-
-For quantile scores (pinball loss, reserve models targeting a specific loss percentile), the MZ step uses quantile regression rather than OLS. This is the genuine technical contribution of Dimitriadis & Puke: extending the inference to non-smooth loss functions via the Galvao-Yoon (2024) HAC covariance estimator. Standard errors for quantile regression MZ — properly corrected for serial dependence in policy-period data — did not exist before this paper.
+The paper extends the standard Mincer-Zarnowitz regression framework — originally developed for mean forecasts — to non-smooth scoring functions including quantile scores. This matters for reserving teams working with VaR or ES targets. HAC standard errors handle autocorrelation in monitoring windows where consecutive months overlap.
 
 ---
 
-## The GLM versus GBM question
+## Why single-number comparisons mislead
 
-Returning to the opening scenario: GLM champion versus GBM challenger, 0.8% deviance improvement, 120,000 policies.
+Consider two motor frequency models, both fitted to the same development dataset, evaluated on 18 months of hold-out data:
 
-The decomposition for a realistic motor frequency book might look like this:
+| | RMSE | MCB | DSC |
+|---|---|---|---|
+| Model A (GLM, current) | 0.847 | 0.018 | 0.129 |
+| Model B (GBM, challenger) | 0.831 | 0.041 | 0.147 |
 
-| Component | GLM | GBM | Difference | p-value |
-|-----------|-----|-----|------------|---------|
-| Score (Poisson deviance) | 0.4821 | 0.4782 | 0.0039 | 0.003 |
-| MCB | 0.0043 | 0.0008 | 0.0035 | 0.001 |
-| DSC | 0.1187 | 0.1191 | −0.0004 | 0.61 |
-| UNC | 0.5965 | 0.5965 | — | — |
+Model B has lower RMSE and looks like the clear winner. But break it down: Model A is better calibrated (lower MCB at 0.018 vs 0.041), whilst Model B discriminates more (higher DSC at 0.147 vs 0.129). The RMSE improvement comes entirely from discrimination. The calibration picture has actually got worse. Now the question is whether that DSC gap is statistically real, or whether Model B just got lucky on this hold-out window. A committee armed with p-values makes a different decision than one looking at two RMSE numbers.
 
-The GBM's total score is significantly better (p = 0.003). But the decomposition shows the entire gain sits in MCB: the GBM is better calibrated by 0.0035 deviance units (p = 0.001), while its discrimination is statistically indistinguishable from the GLM's (p = 0.61).
-
-This matters for the deployment decision. The GBM does not rank risks more accurately. It is better calibrated — probably because its more flexible functional form fits the training data mean more closely across age and vehicle bands where the GLM uses coarser bins. You could achieve a comparable MCB improvement by recalibrating the existing GLM: run the MZ regression, apply the slope and intercept corrections as rating adjustments. That takes a day and does not require deploying a new model, a new IT build, and a new governance sign-off.
-
-This is not an argument against GBMs. It is an argument for knowing what you are buying when you deploy one.
+The Diebold-Mariano test, the standard tool for comparing forecast accuracy, tests whether S(A, y) - S(B, y) = 0 in expectation. It misses scenarios where models differ on only one component. Two models can have identical overall score whilst one is better calibrated but worse at ranking, and the DM test will correctly say "no difference" whilst the DSC test will catch the divergence.
 
 ---
 
-## Why Diebold-Mariano misses this
-
-The standard two-sample forecast comparison is the Diebold-Mariano test: is S(A, y) − S(B, y) significantly non-zero? It is a single test on the total score difference. It cannot say which component drives it.
-
-Dimitriadis & Puke prove that the component tests have strictly higher power than DM when models differ in only one component. If your challenger improves calibration but discrimination is identical, DM mixes the calibration signal with the noise from the discrimination comparison. The MCB component test isolates the calibration effect. In the table above, DM correctly finds a significant result at p = 0.003; without the decomposition, you would not know the significant effect is entirely in calibration and the discrimination comparison is noise at p = 0.61.
-
----
-
-## Using ScoreDecompositionTest
+## The API
 
 ```python
+import numpy as np
 from insurance_monitoring.calibration import ScoreDecompositionTest
 
-sdi = ScoreDecompositionTest(score_type='mse', exposure=vehicle_years)
+rng = np.random.default_rng(42)
+n = 5_000
 
-# Single model
-result = sdi.fit_single(y_test, y_pred_glm)
-print(f"MCB: {result.miscalibration:.4f} (p={result.mcb_pvalue:.3f})")
-print(f"DSC: {result.discrimination:.4f} (p={result.dsc_pvalue:.3f})")
-print(f"MZ slope: {result.recalib_slope:.3f}  intercept: {result.recalib_intercept:.4f}")
+# Simulated motor frequency data
+true_rate = rng.uniform(0.04, 0.18, n)
+actual = rng.poisson(true_rate).astype(float)
+exposure = rng.uniform(0.5, 1.0, n)
 
-# Champion vs challenger
-comp = sdi.fit_two(y_test, y_pred_glm, y_pred_gbm)
-print(f"ΔMCB: {comp.delta_mcb:.4f}  p={comp.delta_mcb_pvalue:.3f}")
-print(f"ΔDSC: {comp.delta_dsc:.4f}  p={comp.delta_dsc_pvalue:.3f}")
+# Model A: GLM — well calibrated, modest discrimination
+pred_a = true_rate * rng.lognormal(0, 0.05, n)
+
+# Model B: GBM challenger — slightly miscalibrated, stronger discrimination
+pred_b = true_rate * rng.lognormal(0.03, 0.02, n) * (1 + 0.4 * (true_rate - true_rate.mean()))
+
+sdt = ScoreDecompositionTest(score_type="mse", exposure=exposure)
+
+# Single-model decomposition
+result_a = sdt.fit_single(actual, pred_a)
+print(f"Model A — MCB: {result_a.miscalibration:.4f} (p={result_a.mcb_pvalue:.3f}), "
+      f"DSC: {result_a.discrimination:.4f} (p={result_a.dsc_pvalue:.3f})")
+
+result_b = sdt.fit_single(actual, pred_b)
+print(f"Model B — MCB: {result_b.miscalibration:.4f} (p={result_b.mcb_pvalue:.3f}), "
+      f"DSC: {result_b.discrimination:.4f} (p={result_b.dsc_pvalue:.3f})")
+
+# Two-model comparison: tests delta-MCB and delta-DSC separately
+comparison = sdt.fit_two(actual, pred_a, pred_b)
+print(f"\nDelta-MCB (B - A): {comparison.delta_mcb:.4f} (p={comparison.delta_mcb_pvalue:.3f})")
+print(f"Delta-DSC (B - A): {comparison.delta_dsc:.4f} (p={comparison.delta_dsc_pvalue:.3f})")
+print(f"Combined IU p-value: {comparison.combined_pvalue:.3f}")
+
+sdt.summary(comparison)
 ```
 
-Pass `exposure=vehicle_years` for frequency models — the weighted MZ regression handles variable policy durations. For severity or reserve models, `score_type='quantile'` with an `alpha` parameter covers pinball loss at any quantile level.
+The `fit_two` method tests delta-MCB and delta-DSC independently, then combines them via an intersection-union test. The combined p-value is the maximum of the two component p-values. To reject the joint null — that both MCB and DSC are equal — you need both individual tests to be significant at your chosen alpha. Conservative, but valid: it controls size without requiring any correlation assumption between the two test statistics.
 
-The `summary()` method produces a plain-text report for governance packs. The `plot()` method draws a stacked MCB/DSC/UNC bar chart with p-value annotations.
+For frequency models, pass `exposure` as a vector and the regressions use WLS automatically. The HAC lag order defaults to `floor(4 * (n/100)^(2/9))`, which works for most monitoring windows; override with `hac_lags=k` if your experience data is more serially dependent.
 
 ---
 
-## How this fits the monitoring stack
+## Pairing with murphy_decomposition
 
-insurance-monitoring already runs PSI/CSI on input feature distributions, `check_auto_calibration()` on cohort-level A/E with bootstrap MCB, `murphy_decomposition()` for MCB/DSC/UNC point estimates via isotonic recalibration, and `GiniDriftTest` for rank-based drift detection.
+`ScoreDecompositionTest` uses linear recalibration (the MZ regression) to define MCB and DSC. `murphy_decomposition` uses isotonic regression (PAVA) — a non-parametric approach that gives a more complete calibration picture at the cost of not producing hypothesis tests.
 
-`ScoreDecompositionTest` adds inference to the MCB and DSC components. The existing `murphy_decomposition()` uses PAVA (non-parametric isotonic recalibration), which captures any monotone miscalibration. The new class uses linear MZ recalibration — more conservative, understates MCB for models with non-linear miscalibration, but yields a tractable asymptotic distribution. Run both: `murphy_decomposition()` for the complete point-estimate picture, `ScoreDecompositionTest` for the p-values.
+We recommend running both. `murphy_decomposition` gives you the full calibration curve and a granular view of where the model is wrong. `ScoreDecompositionTest` tells you whether the differences you are seeing are statistically credible and whether model replacement is warranted, not just model recalibration.
 
-The governance chain that ties this together: `GiniDriftTest` tells you the Gini has fallen by 0.4 percentage points since deployment. `ScoreDecompositionTest` tells you whether that fall is statistically significant and whether it is in calibration (a rate review fixes it) or discrimination (requires a refit). A PRA reviewer or an internal CRO should expect a firm to be able to answer both questions. Most currently cannot.
+```python
+from insurance_monitoring.calibration import murphy_decomposition
+
+# Run murphy for the diagnostic picture
+murphy_result = murphy_decomposition(actual, pred_b, distribution="poisson")
+murphy_result.plot()  # calibration and discrimination curves
+
+# Run SDT for the inference question
+result = sdt.fit_single(actual, pred_b)
+print(f"MCB p-value: {result.mcb_pvalue:.3f}")
+# p > 0.05: calibration deviation is not statistically significant
+# Safe to recalibrate rather than refit
+```
 
 ---
 
-## Installation
+## Governance angle
 
+FCA Consumer Duty SS1/23 model governance frameworks — increasingly adopted by UK insurers beyond the banking sector where they originated — require documented evidence that model monitoring detects calibration and discrimination degradation as distinct phenomena. A single RMSE trend chart does not satisfy that requirement. A committee pack that shows MCB stable at p=0.42 and DSC declining with p=0.03 says something precise: the model's ranking ability is degrading but its bias is under control. That is actionable, and it is auditable.
+
+The quantile score path (`score_type="quantile"`, `alpha=0.05` for a 5th percentile) is directly applicable to reserve adequacy monitoring where the target is not the mean but a specific quantile of the loss distribution. The inference framework is the same: HAC-robust, distribution-free, valid under temporal dependence.
+
+---
+
+## Install
+
+```bash
+pip install "insurance-monitoring>=1.2.0"
 ```
-uv add insurance-monitoring>=1.2.0
-```
 
-The `model-diagnostics` package (PyPI, v1.4.3, December 2025) provides the MCB/DSC/UNC point estimates without inference. The R `SDI` package by the paper's authors implements the full test suite. Our implementation follows their algorithm with insurance-specific exposure weighting added.
+`ScoreDecompositionTest` is in `insurance_monitoring.calibration`. The class, result types, and `summary()` and `plot()` methods are all documented in the [API reference](https://burning-cost.github.io/insurance-monitoring/api/).
 
-**Paper:** [arXiv:2603.04275](https://arxiv.org/abs/2603.04275) — Dimitriadis & Puke (2026) | **Library:** [insurance-monitoring on PyPI](https://pypi.org/project/insurance-monitoring/)
+The paper is Dimitriadis, T. & Puke, M. (2026), "Statistical Inference for Score Decompositions", arXiv:2603.04275. The R reference implementation is the `SDI` package.
