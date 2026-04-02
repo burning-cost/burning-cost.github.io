@@ -3,6 +3,10 @@ layout: post
 title: "When Burr XII Isn't Fat Enough — The PowerBurr Family for Large-Loss Severity Modelling"
 date: 2026-04-02
 categories: [insurance-pricing, severity]
+tags: [severity-modelling, burr-xii, gb2, powerburr, heavy-tails, tail-index, motor-insurance, bodily-injury, xl-reinsurance, insurance-severity, Liu-Meng-2026, regression, spliced-distributions, actuarial]
+description: "Burr XII's body and tail are controlled by the same parameters — you can't fix one without breaking the other. Liu & Meng's PowerBurr adds a fourth parameter that decouples them. Here is what it actually does and where it earns its keep on UK large-loss books."
+math: true
+author: burning-cost
 ---
 
 You've fitted every distribution in your toolkit to the motor BI large-loss dataset. Log-normal is out on AIC by a country mile — the tail is far too light. Weibull fails similarly. Burr XII wins, comfortably, with α̂ = 1.4, δ̂ = 1.8, β̂ = 12,000. The QQ plot looks reasonable up to the 97th percentile. Then the top twenty claims — the PPO awards, the catastrophic spinal injuries priced under Ogden tables with a -0.25% discount rate — all sit above the 45-degree line.

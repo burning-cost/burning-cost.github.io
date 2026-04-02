@@ -5,6 +5,7 @@ date: 2026-04-02
 categories: [techniques, pricing]
 tags: [severity-modelling, gaussian-mixture, bimodal, energy-score, neural-network, motor-insurance, bodily-injury, reserve-quantiles, xl-reinsurance, ifrs17, insurance-distributional, NE-GMM, arXiv, UK-insurance, python]
 description: "UK motor bodily injury severity is structurally bimodal. A GammaGBM fits one mode between two humps, understating the 95th percentile by 30-40%. NeuralGaussianMixture fixes this without parametric assumptions."
+author: burning-cost
 ---
 
 UK motor bodily injury severity has two humps. Everyone who has spent time with raw claims data knows this. Attritional soft tissue claims settle under £5,000. Serious injury claims — fractures, brain injuries, PPO cases — start around £15,000 and have no ceiling. These are not the same population. The mechanisms are different, the litigation timelines are different, the reserve development patterns are different.

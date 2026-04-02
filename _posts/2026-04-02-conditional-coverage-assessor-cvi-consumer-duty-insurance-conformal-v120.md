@@ -202,8 +202,6 @@ print(f"Best predictor: {names[best_idx]}")
 
 ```bash
 uv add "insurance-conformal[lightgbm]"
-# or
-uv add "insurance-conformal[lightgbm]"
 ```
 
 `ConditionalCoverageAssessor` and `CVIResult` are importable from both `insurance_conformal.assessment` and the top-level `insurance_conformal` namespace in v1.2.0.

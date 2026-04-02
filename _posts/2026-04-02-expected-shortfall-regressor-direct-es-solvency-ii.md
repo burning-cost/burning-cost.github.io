@@ -175,8 +175,6 @@ Three caveats worth stating explicitly.
 
 ```bash
 uv add insurance-quantile
-# or
-uv add insurance-quantile
 ```
 
 Source: [github.com/burning-cost/insurance-quantile](https://github.com/burning-cost/insurance-quantile). The library now has 412 tests passing, 44 of which are specific to the ES regressor.
