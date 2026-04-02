@@ -12,7 +12,7 @@ The Actuary Magazine ran a piece on causal AI this month. It covered the concept
 This post fills that gap. We will go from the specific problem with GLM price coefficients, through Double Machine Learning with CatBoost nuisance models, causal forests for heterogeneous treatment effects, and the `RateChangeEvaluator` for measuring what actually happened after your last rate change. Every code example uses the real `insurance-causal` API -- verified against the source.
 
 ```bash
-pip install insurance-causal
+uv add insurance-causal
 ```
 
 ---
@@ -294,7 +294,7 @@ Two things worth being clear about.
 
 GLM price coefficients are confounded. DML removes that confounding by partialling out the risk factor influence from both outcome and treatment before regressing residual on residual. The `insurance-causal` library makes this straightforward: `CausalPricingModel` handles the plumbing, the `causal_forest` subpackage gives you per-customer CATEs with formal heterogeneity tests, and `RateChangeEvaluator` gives you credible estimates of what your last rate action actually caused.
 
-The library is at `pip install insurance-causal`. The source is on GitHub at [insurance-causal](https://github.com/burningcost/insurance-causal). If you are reading this having come from the Actuary Magazine piece and want to talk through an application to your book, [get in touch](/work-with-us/).
+The library is at `uv add insurance-causal`. The source is on GitHub at [insurance-causal](https://github.com/burningcost/insurance-causal). If you are reading this having come from the Actuary Magazine piece and want to talk through an application to your book, [get in touch](/work-with-us/).
 
 - [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the full library post with the complete DML pipeline: conversion model, retention model, ENBP compliance checker, and demand curves
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/) — post-deployment monitoring that tells you whether the causal elasticity estimate has remained stable as the portfolio shifts

@@ -13,7 +13,7 @@ A Python fairness library published on arXiv in March 2025: [EquiPy](https://arx
 EquiPy and `insurance-fairness` both touch on pricing fairness. The comparison is worth making precisely, because the tools address fundamentally different stages of the compliance problem. Running EquiPy in place of `insurance-fairness` — or vice versa — will leave a UK insurer with the wrong deliverable for their situation.
 
 ```bash
-pip install equipy
+uv add equipy
 uv add insurance-fairness
 ```
 

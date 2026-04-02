@@ -137,7 +137,7 @@ That has always been the job.
 
 ---
 
-**Install:** `pip install insurance-gam`
+**Install:** `uv add insurance-gam`
 
 **Source:** [burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam)
 

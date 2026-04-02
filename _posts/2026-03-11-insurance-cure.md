@@ -8,7 +8,7 @@ description: "Mixture cure models for UK motor: separates non-claimers from susc
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). For causal retention analysis, see [insurance-causal](/insurance-causal/). Install with `pip install insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
+**Package update:** `insurance-cure` has been consolidated into [`insurance-survival`](https://pypi.org/project/insurance-survival/). For causal retention analysis, see [insurance-causal](/insurance-causal/). Install with `uv add insurance-survival` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-survival)
 </div>
 
 
@@ -19,7 +19,7 @@ The biostatistics literature has had a model for this since Boag (1949) applied 
 [`insurance-cure`](/insurance-monitoring/) fills that gap. For the full monitoring framework that catches structural shifts in your claims frequency, see [insurance-monitoring](/insurance-monitoring/).
 
 ```bash
-pip install insurance-survival
+uv add insurance-survival
 ```
 
 ---

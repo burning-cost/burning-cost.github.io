@@ -78,7 +78,7 @@ The 0.3% deviance improvement over PIN is real. On a £500M GWP motor portfolio 
 
 **No severity model.** Tab-TRM addresses claim frequency only (Poisson). A complete pricing model requires a severity side. Until there is a Tab-TRM Gamma severity variant that matches the frequency architecture, you cannot actually replace a GLM with it.
 
-**No pip-installable package.** There is no `pip install tab-trm`. Implementing from scratch means 1,200–1,500 lines of code, a test suite, and no reference implementation to validate against.
+**No pip-installable package.** There is no `uv add tab-trm`. Implementing from scratch means 1,200–1,500 lines of code, a test suite, and no reference implementation to validate against.
 
 **No interpretability advantage.** The FCA governance path for a model with no factor tables and no Shapley values is unclear. The EBM in insurance-gam has the clearest governance path of any neural architecture we know of.
 

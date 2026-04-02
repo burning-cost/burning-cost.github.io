@@ -18,7 +18,7 @@ Whittaker-Henderson smoothing avoids these problems. It is a penalised least-squ
 ## Installation
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 Or with uv:
@@ -27,7 +27,7 @@ Or with uv:
 uv add insurance-whittaker
 ```
 
-For plots, add the `[plot]` extra: `pip install "insurance-whittaker[plot]"`.
+For plots, add the `[plot]` extra: `uv add "insurance-whittaker[plot]"`.
 
 ---
 
@@ -278,7 +278,7 @@ The moving average is defensible for a quick sanity check. It is not defensible 
 The one honest limitation: REML selects the lambda that maximises the marginal likelihood under the random walk prior. If your prior expectation is that the curve should be very smooth — smoother than the data alone would suggest — you can override with a specific lambda value: `WhittakerHenderson1D(order=2, lambda_method="reml")` followed by `wh.fit(ages, lr, weights=exp, lambda_=5000)` uses your specified value rather than the REML optimum. But in our experience, REML almost always selects a value that experienced actuaries would have chosen manually, and the automatic selection saves the conversation about whether lambda=800 is better than lambda=1200.
 
 ```bash
-pip install insurance-whittaker
+uv add insurance-whittaker
 ```
 
 Source, benchmarks, and the REML vs manual lambda comparison at [GitHub](https://github.com/burning-cost/insurance-whittaker). The age-curve benchmark against a 5-year moving average is at `benchmarks/benchmark.py`.

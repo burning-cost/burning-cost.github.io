@@ -82,7 +82,7 @@ These are coherent with the total-mortality improvement by construction. You can
 Install with the optional mortality dependencies:
 
 ```bash
-pip install "insurance-survival[mortality]"
+uv add "insurance-survival[mortality]"
 ```
 
 This pulls in `numpyro>=0.13` and `jax`. NumPyro was chosen over PyStan because it avoids the C++ toolchain — NUTS sampling runs on pure Python/JAX with no compilation step.

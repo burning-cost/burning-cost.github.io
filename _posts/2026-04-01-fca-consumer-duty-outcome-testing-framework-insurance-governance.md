@@ -251,7 +251,7 @@ report = GovernanceReport(
 ## Installation
 
 ```bash
-pip install "insurance-governance>=0.2.0"
+uv add "insurance-governance>=0.2.0"
 ```
 
 The new subpackage is at `insurance_governance.outcome`. Clean re-exports:

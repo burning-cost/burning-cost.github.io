@@ -16,7 +16,7 @@ This post shows the complete workflow: causal CATE estimation, customer segmenta
 Four libraries: [`insurance-causal`](/insurance-causal/), [`insurance-optimise`](/insurance-optimise/), [`insurance-fairness`](/insurance-fairness/), [`insurance-governance`](/insurance-governance/).
 
 ```bash
-pip install insurance-causal insurance-optimise insurance-fairness insurance-governance
+uv add insurance-causal insurance-optimise insurance-fairness insurance-governance
 ```
 
 ---

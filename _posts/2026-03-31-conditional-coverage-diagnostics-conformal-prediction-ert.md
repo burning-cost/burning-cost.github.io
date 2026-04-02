@@ -82,7 +82,7 @@ The sample efficiency comes from the classifier framing. Rather than searching f
 The reference implementation is `covmetrics`, an open-source Python package by one of the paper authors:
 
 ```bash
-pip install covmetrics
+uv add covmetrics
 ```
 
 Given a calibrated conformal predictor, compute coverage indicators and run ERT:
@@ -253,6 +253,6 @@ ERT also does not distinguish between violations caused by covariate shift, viol
 
 Braun, S., Holzmüller, D., Jordan, M. I. & Bach, F. (2025). *Conditional Coverage Diagnostics for Conformal Prediction*. arXiv:2512.11779. Submitted 12 December 2025.
 
-The `covmetrics` package (open source, MIT licence): `pip install covmetrics`. GitHub: [ElSacho/covmetrics](https://github.com/ElSacho/covmetrics).
+The `covmetrics` package (open source, MIT licence): `uv add covmetrics`. GitHub: [ElSacho/covmetrics](https://github.com/ElSacho/covmetrics).
 
 Our implementation of locally weighted conformal prediction and CQR, with the existing approximate coverage diagnostics: [`insurance-conformal`](/insurance-conformal/).

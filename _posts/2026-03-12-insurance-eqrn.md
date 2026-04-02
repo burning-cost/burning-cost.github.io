@@ -8,7 +8,7 @@ description: "EQRN covariate-dependent GPD tail modelling for XL pricing. Per-ri
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-eqrn` has been consolidated into [`insurance-quantile`](/insurance-distributional/). Install with `pip install insurance-quantile` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-quantile)
+**Package update:** `insurance-eqrn` has been consolidated into [`insurance-quantile`](/insurance-distributional/). Install with `uv add insurance-quantile` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-quantile)
 </div>
 
 

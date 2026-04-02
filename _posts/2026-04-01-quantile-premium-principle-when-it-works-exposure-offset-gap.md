@@ -163,7 +163,7 @@ Our default in `insurance-quantile` is CatBoost via `QuantileGBM`. The QPP formu
 `TwoPartQuantilePremium` is in [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile), v0.3.1+. Full usage in the [earlier post](https://burning-cost.github.io/pricing/machine-learning/2026/03/31/quantile-premium-pricing-neural-networks/).
 
 ```bash
-pip install "insurance-quantile>=0.3.1"
+uv add "insurance-quantile>=0.3.1"
 ```
 
 ```python

@@ -82,7 +82,7 @@ The selection is provably consistent: if predictor A has strictly lower true con
 ## Code example
 
 ```bash
-pip install "insurance-conformal[lightgbm]"
+uv add "insurance-conformal[lightgbm]"
 ```
 
 ### Evaluating a single predictor
@@ -181,7 +181,7 @@ The other caveat is computational. CC-Select with `n_splits=5` and four candidat
 ## Installation and references
 
 ```bash
-pip install "insurance-conformal[lightgbm]"
+uv add "insurance-conformal[lightgbm]"
 ```
 
 Source: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).

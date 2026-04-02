@@ -78,7 +78,7 @@ The most credible approach for a UK pricing team is both: fit EBM as the baselin
 The `insurance-gam` library ships ANAM as a sklearn-compatible estimator. Install it:
 
 ```bash
-pip install insurance-gam
+uv add insurance-gam
 ```
 
 The full API lives in `insurance_gam.anam`. There are two ways to specify features. The shorthand, using constructor keyword arguments:
@@ -197,7 +197,7 @@ The question for pricing teams is not "can we afford to use neural models?" It i
 
 ---
 
-**Install:** `pip install insurance-gam`
+**Install:** `uv add insurance-gam`
 
 **Source:** [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam)
 

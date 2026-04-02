@@ -36,7 +36,7 @@ The Loss/ALAE public dataset (general liability, n = 1,500, 34 censored losses, 
 Albrecher and Beirlant (2025) identify three estimators that handle these problems properly. All three are in `insurance-severity` v0.3.1.
 
 ```bash
-pip install insurance-severity
+uv add insurance-severity
 ```
 
 ### 1. Censored Hill Estimator

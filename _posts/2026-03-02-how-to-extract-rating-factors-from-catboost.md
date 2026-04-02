@@ -30,7 +30,7 @@ Three situations force this conversation.
 ## Setup
 
 ```bash
-uv pip install "shap-relativities[all]"
+uv add "shap-relativities[all]"
 # or
 uv add "shap-relativities[all]"
 ```
@@ -267,7 +267,7 @@ A PRA SS1/23 model validation committee will ask several specific questions abou
 ## The full library and notebook
 
 ```bash
-uv pip install "shap-relativities[all]"
+uv add "shap-relativities[all]"
 ```
 
 Source at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities). A ready-to-run Databricks notebook - covering model fit, SHAP extraction, reconstruction validation, GLM comparison, and the continuous driver age curve - is at [burning-cost-examples/notebooks/shap\_relativities\_demo.py](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/shap_relativities_demo.py).

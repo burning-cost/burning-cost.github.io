@@ -211,7 +211,7 @@ The coverage guarantees are not unconditional. Before relying on online conforma
 ## Getting the library
 
 ```python
-pip install insurance-conformal-ts
+uv add insurance-conformal-ts
 ```
 
 `WeightedConformalPredictor` is available from v0.2.0. The existing ACI, EnbPI, SPCI, and ConformalPID are in all versions from v0.1.0.

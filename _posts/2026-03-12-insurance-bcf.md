@@ -8,7 +8,7 @@ description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insu
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-bcf` has been consolidated into [`insurance-causal`](/insurance-causal/). Install with `pip install insurance-causal` — Bayesian Causal Forests are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
+**Package update:** `insurance-bcf` has been consolidated into [`insurance-causal`](/insurance-causal/). Install with `uv add insurance-causal` — Bayesian Causal Forests are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-causal)
 </div>
 
 
@@ -21,7 +21,7 @@ The GLM cannot tell you this. It is built to estimate population-averaged effect
 [`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) wraps Bayesian Causal Forests for insurance pricing teams. It estimates the treatment effect for every policy in your portfolio - not an average - with a posterior distribution and credible intervals suitable for Consumer Duty audit documentation.
 
 ```bash
-pip install insurance-bcf
+uv add insurance-bcf
 ```
 
 ---
@@ -244,9 +244,9 @@ Data spanning the GIPP break should generally be split. Pre-GIPP renewal behavio
 [`insurance-bcf`](https://github.com/burning-cost/insurance-bcf) is MIT-licensed and on PyPI. 149 tests across four modules: `BayesianCausalForest`, `ElasticityEstimator`, `BCFAuditReport`, and `simulate`. It wraps stochtree 0.4.0 and requires a C++ build; wheels are available for Linux x86_64, macOS (Intel + Apple Silicon), and Windows x86_64.
 
 ```bash
-pip install stochtree>=0.4.0
-pip install insurance-bcf
-pip install insurance-bcf[diagnostics]   # includes arviz for multi-chain R-hat
+uv add stochtree>=0.4.0
+uv add insurance-bcf
+uv add insurance-bcf[diagnostics]   # includes arviz for multi-chain R-hat
 ```
 
 It is the 73rd library in the Burning Cost open-source portfolio.

@@ -290,7 +290,7 @@ The real barrier is data quality.
 ```bash
 uv add insurance-trend
 # or
-pip install insurance-trend
+uv add insurance-trend
 ```
 
 `SeverityTrendFitter` with `external_index` handles single-index deflation directly. The multi-index OLS shown above uses `statsmodels`, which `insurance-trend` already depends on. `ExternalIndex.from_ons()` fetches HPTH, D7DO, L7JE, CZEA, and (as of the latest release) KAB9 and HPTD from the ONS API.

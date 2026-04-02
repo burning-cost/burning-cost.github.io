@@ -208,7 +208,7 @@ The anchor-point estimator (Procedure 4.5 in the paper) is the alternative when 
 ## Installation
 
 ```bash
-pip install "insurance-fairness>=1.1.1"
+uv add "insurance-fairness>=1.1.1"
 ```
 
 `OptimalLDPMechanism` and `LDPEpsilonAdvisor` live in `insurance_fairness.optimal_ldp`. The `mechanism='optimal'` parameter is in `PrivatizedFairnessAudit` in `insurance_fairness.privatized_audit`. Source: [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).

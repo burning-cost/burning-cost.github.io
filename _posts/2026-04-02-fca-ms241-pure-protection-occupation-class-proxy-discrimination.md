@@ -135,7 +135,7 @@ The tool is in production. It requires polars, numpy, and scipy. The data requir
 ## Install
 
 ```bash
-pip install insurance-fairness==1.1.0
+uv add insurance-fairness==1.1.0
 ```
 
 The multi-state module is in `insurance_fairness.multi_state`. Full pipeline documentation and a worked example on synthetic ELSA-format panel data are in the [multi-state notebook](https://github.com/burning-cost/insurance-fairness/blob/main/notebooks/multi_state_income_protection.ipynb).

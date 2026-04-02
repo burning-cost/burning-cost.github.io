@@ -145,7 +145,7 @@ Install:
 ```bash
 uv add smartnoise-synth
 # AIM also requires private-pgm (not on PyPI):
-pip install git+https://github.com/ryan112358/private-pgm.git
+uv add git+https://github.com/ryan112358/private-pgm.git
 ```
 
 Minimal working example:

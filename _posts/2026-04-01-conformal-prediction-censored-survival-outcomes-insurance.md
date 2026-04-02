@@ -54,10 +54,10 @@ This is a meaningful property for insurance. You are never fully confident in ei
 ## Setting it up
 
 ```bash
-pip install insurance-conformal[survival]
+uv add insurance-conformal[survival]
 ```
 
-The `[survival]` extra installs `lifelines>=0.27` and `scikit-survival>=0.22`. Both are optional — if you only need the `KaplanMeierCensoringModel` (which assumes covariate-independent censoring), the base `pip install insurance-conformal` is sufficient.
+The `[survival]` extra installs `lifelines>=0.27` and `scikit-survival>=0.22`. Both are optional — if you only need the `KaplanMeierCensoringModel` (which assumes covariate-independent censoring), the base `uv add insurance-conformal` is sufficient.
 
 ---
 
@@ -263,7 +263,7 @@ The coverage guarantee is asymptotic, not finite-sample. Standard split conforma
 ## Getting it
 
 ```bash
-pip install "insurance-conformal[survival]>=1.2.0"
+uv add "insurance-conformal[survival]>=1.2.0"
 ```
 
 ```python

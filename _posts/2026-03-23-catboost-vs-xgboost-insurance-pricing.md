@@ -13,7 +13,7 @@ Both CatBoost and XGBoost fit gradient-boosted trees. Both support Tweedie loss.
 All Burning Cost libraries use CatBoost as the primary GBM. This post explains why, and where XGBoost still has a genuine edge.
 
 ```bash
-pip install catboost xgboost polars
+uv add catboost xgboost polars
 ```
 
 ---

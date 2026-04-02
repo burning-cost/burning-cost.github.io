@@ -9,7 +9,7 @@ description: "insurance-gam wraps EBM for UK pricing teams: Poisson/Tweedie loss
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-ebm` has been consolidated into [`insurance-gam`](/insurance-gam/). Install with `pip install insurance-gam` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
+**Package update:** `insurance-ebm` has been consolidated into [`insurance-gam`](/insurance-gam/). Install with `uv add insurance-gam` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-gam)
 </div>
 
 

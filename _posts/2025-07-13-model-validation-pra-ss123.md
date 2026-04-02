@@ -14,7 +14,7 @@ Most UK pricing teams treat model validation as a documentation exercise. Run th
 [`insurance-governance`](/insurance-governance/) automates the full SS1/23 validation suite: Gini with bootstrap CI, Hosmer-Lemeshow goodness-of-fit, PSI on score distributions, actual-vs-expected by decile with Poisson CI, [calibration slope](/2026/03/09/insurance-calibration/), and a risk-tier scorecard. It outputs a self-contained HTML report plus a JSON sidecar. The entire suite runs in under five seconds on a 50,000-row validation set.
 
 ```bash
-pip install insurance-governance
+uv add insurance-governance
 ```
 
 ---

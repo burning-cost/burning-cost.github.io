@@ -233,7 +233,7 @@ The two approaches are formally independent. The CUSUM monitors calibration drif
 ## Getting the library
 
 ```
-pip install insurance-monitoring
+uv add insurance-monitoring
 ```
 
 Version 0.10.0. Both classes are available from the package top level:

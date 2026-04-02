@@ -15,8 +15,8 @@ This is not a GLM tutorial. We assume you know what a link function is, you have
 The answer centres on [glum](https://github.com/Quantco/glum) for the GLM fitting, Polars for data handling, and a set of UK-specific choices that differ from what generic Python tutorials describe.
 
 ```bash
-uv pip install glum polars scikit-learn catboost
-uv pip install scikit-learn-intelex  # optional, speeds up preprocessing on x86
+uv add glum polars scikit-learn catboost
+uv add scikit-learn-intelex  # optional, speeds up preprocessing on x86
 ```
 
 ---

@@ -221,7 +221,7 @@ One important distinction: CCdCov targets demographic parity ($\hat{y} \perp S$)
 ## Installation
 
 ```bash
-pip install "insurance-fairness[intersectional]"
+uv add "insurance-fairness[intersectional]"
 ```
 
 The `[intersectional]` extra pulls in `dcor>=0.6`. Without it, importing from `insurance_fairness.intersectional` will raise an `ImportError` with installation instructions. The base `insurance-fairness` package does not require `dcor` for the other modules.

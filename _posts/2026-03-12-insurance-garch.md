@@ -8,7 +8,7 @@ description: "GARCH for UK insurance claims inflation: time-varying variance in 
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-garch` has been consolidated into [`insurance-dynamics`](/insurance-monitoring/). Install with `pip install insurance-dynamics` — GARCH volatility modelling for claims inflation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
+**Package update:** `insurance-garch` has been consolidated into [`insurance-dynamics`](/insurance-monitoring/). Install with `uv add insurance-dynamics` — GARCH volatility modelling for claims inflation is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-dynamics)
 </div>
 
 

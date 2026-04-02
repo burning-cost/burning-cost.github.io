@@ -18,7 +18,7 @@ The GLM has a factor table by construction — `exp(β)` for each level of each 
 ## Installation
 
 ```bash
-pip install "shap-relativities[all]"
+uv add "shap-relativities[all]"
 ```
 
 Or with uv:
@@ -245,7 +245,7 @@ So why bother? The GLM with binned age requires the actuary to have already done
 The GBM also outperforms the GLM more clearly when the true structure includes interactions — specifically on the interaction DGP (vehicle age × driver area), where the GLM cannot compete regardless of how carefully the main effects are specified.
 
 ```bash
-pip install "shap-relativities[all]"
+uv add "shap-relativities[all]"
 ```
 
 Source, benchmarks, and Colab notebooks at [GitHub](https://github.com/burning-cost/shap-relativities). Start with `benchmarks/benchmark.py` for the head-to-head against GLM; `benchmarks/benchmark_interactions.py` for the interaction DGP where the advantage is largest.

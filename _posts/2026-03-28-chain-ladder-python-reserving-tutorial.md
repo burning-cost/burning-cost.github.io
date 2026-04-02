@@ -35,7 +35,7 @@ The 1990 row has only one data point: we are at development age 12. The 1981 row
 ## Setup
 
 ```bash
-pip install chainladder
+uv add chainladder
 ```
 
 > **Version note:** Tested with `chainladder==0.8.19` and `pandas<3.0`. The `chainladder` 0.9.x series has a known compatibility issue with pandas 3.0+ that causes `Chainladder().fit()` to fail.

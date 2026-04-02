@@ -225,7 +225,7 @@ The implementation follows Option A from our research brief: closed-form for $p=
 The module is available from `insurance-quantile` v0.4.0:
 
 ```bash
-pip install "insurance-quantile>=0.4.0"
+uv add "insurance-quantile>=0.4.0"
 ```
 
 ```python

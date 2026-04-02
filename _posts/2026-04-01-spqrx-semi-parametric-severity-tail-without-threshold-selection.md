@@ -18,7 +18,7 @@ Majumder and Richards ([arXiv:2504.19994](https://arxiv.org/abs/2504.19994), Uni
 We have implemented this in `insurance-severity` v0.3.3 as `SPQRxSeverity`.
 
 ```bash
-pip install "insurance-severity>=0.3.3"
+uv add "insurance-severity>=0.3.3"
 ```
 
 ---

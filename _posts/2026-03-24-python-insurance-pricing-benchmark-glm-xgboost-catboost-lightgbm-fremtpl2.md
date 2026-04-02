@@ -19,7 +19,7 @@ We also state our view on when to use each approach, because "it depends on your
 ## Setup
 
 ```bash
-pip install statsmodels xgboost catboost lightgbm scikit-learn pandas numpy matplotlib
+uv add statsmodels xgboost catboost lightgbm scikit-learn pandas numpy matplotlib
 ```
 
 ---
@@ -446,7 +446,7 @@ Our view: use GBMs to set the performance ceiling and understand the nonlinear s
 Between the interpretable-but-limited GLM and the accurate-but-opaque GBM, there is a genuinely useful middle tier. Explainable Boosting Machines (EBMs) — available via [`insurance-gam`](https://github.com/burning-cost/insurance-gam) — achieve Gini coefficients roughly halfway between the GLM and the GBMs on freMTPL2, while producing per-feature shape functions that a pricing committee can inspect factor by factor. The shape function for driver age is not a coefficient — it is a curve showing the full U-shape from age 18 to 80, without the actuary first specifying bins or polynomial terms.
 
 ```bash
-pip install "insurance-gam[ebm]"
+uv add "insurance-gam[ebm]"
 ```
 
 On the insurance-gam benchmark (synthetic UK motor, 10,000 policies), EBM ranked risks 28% better than a main-effects GLM by Gini. On freMTPL2 the gap is smaller because freMTPL2 has fewer categorical levels and less interaction structure, but the EBM still outperforms the unspecified GLM without requiring any shape analysis up front.

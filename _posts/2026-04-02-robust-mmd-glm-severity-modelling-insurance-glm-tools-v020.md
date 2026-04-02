@@ -159,7 +159,7 @@ A few things we learnt fitting this on held-out datasets:
 ## Installation
 
 ```
-pip install insurance-glm-tools>=0.2.0
+uv add insurance-glm-tools>=0.2.0
 ```
 
 The `robust` subpackage has no additional mandatory dependencies beyond numpy, scipy, and pandas. sklearn is used only for warm-start initialisation and can be excluded by setting `init="zeros"`.

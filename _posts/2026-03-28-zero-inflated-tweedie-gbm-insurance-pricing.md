@@ -103,7 +103,7 @@ The model pickles cleanly — useful for Databricks MLflow logging and for servi
 ```bash
 uv add insurance-distributional
 # or
-pip install insurance-distributional
+uv add insurance-distributional
 ```
 
 v0.3.0 is on PyPI now. Requires Python 3.10+, CatBoost, NumPy, SciPy.

@@ -230,7 +230,7 @@ where $r_{\text{NN}(i)}$ is the rank of the target at the nearest neighbour of o
 ## Installation
 
 ```bash
-pip install "insurance-cv>=0.3.0"
+uv add "insurance-cv>=0.3.0"
 ```
 
 `SupportPointSplit` has no new dependencies beyond what insurance-cv already requires — the energy distance computation uses `scipy.spatial.distance.cdist`, which comes in via scikit-learn. `ChatterjeeSelector` implements Xi natively in ~15 lines using `scipy.stats.rankdata`, so it also adds no new PyPI dependencies.

@@ -149,8 +149,8 @@ The building blocks exist. `insurance-survival` v0.4.0 has `SurvivalCLV` with NC
 ## Install
 
 ```bash
-pip install insurance-survival  # SurvivalCLV, discount_sensitivity
-pip install insurance-optimise  # RiskInformedRetentionModel, demand subpackage
+uv add insurance-survival  # SurvivalCLV, discount_sensitivity
+uv add insurance-optimise  # RiskInformedRetentionModel, demand subpackage
 ```
 
 The libraries are independent. You can use `SurvivalCLV` with any fitted lifelines survival model — you do not need `insurance-optimise` installed, and vice versa.

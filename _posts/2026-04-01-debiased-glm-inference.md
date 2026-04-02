@@ -52,7 +52,7 @@ The Gamma gap was the material one. Gamma severity models are standard in UK mot
 Install with:
 
 ```bash
-pip install "insurance-gam[glm]>=0.4.0"
+uv add "insurance-gam[glm]>=0.4.0"
 ```
 
 ### Poisson frequency model with exposure
@@ -193,7 +193,7 @@ Steps 2 and 3 answer different questions. You need both.
 ## Installation and source
 
 ```bash
-pip install "insurance-gam[glm]>=0.4.0"
+uv add "insurance-gam[glm]>=0.4.0"
 ```
 
 ```python

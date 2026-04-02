@@ -345,4 +345,4 @@ print(f"Projected loss cost: £{projected:.2f} per vehicle-year")
 
 ---
 
-The code in this post is [available as a notebook](https://github.com/burning-cost/burning-cost-examples) in the burning-cost-examples repository. The insurance-trend library handles the structural break and superimposed inflation extensions: `uv add insurance-trend` or `pip install insurance-trend`.
+The code in this post is [available as a notebook](https://github.com/burning-cost/burning-cost-examples) in the burning-cost-examples repository. The insurance-trend library handles the structural break and superimposed inflation extensions: `uv add insurance-trend` or `uv add insurance-trend`.

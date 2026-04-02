@@ -126,7 +126,7 @@ Do this for each accident year in your experience data and stack the results int
 With prepared data, the frequency model is a Poisson GLM with a log link and log(exposure) as an offset. We use [glum](https://github.com/Quantco/glum), which is substantially faster than sklearn for large datasets and exposes the offset term cleanly.
 
 ```bash
-uv pip install glum polars scikit-learn
+uv add glum polars scikit-learn
 ```
 
 ```python

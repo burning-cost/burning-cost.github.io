@@ -264,7 +264,7 @@ What the benchmark does tell you is that both models can be validated with the s
 The benchmark notebook is at [github.com/burning-cost/insurance-governance](https://github.com/burning-cost/insurance-governance) (`notebooks/benchmark_fremtpl2.py`). It downloads freMTPL2 from OpenML and produces the full side-by-side validation for both models.
 
 ```
-pip install insurance-governance statsmodels catboost scikit-learn
+uv add insurance-governance statsmodels catboost scikit-learn
 ```
 
 One note on `fetch_openml`: several numeric columns come back as Python object dtype. Coerce them explicitly with `pd.to_numeric(errors='coerce')` before fitting. CatBoost accepts string categoricals natively via the `cat_features` list; statsmodels needs `pd.get_dummies()` or equivalent. The notebook handles both.

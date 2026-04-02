@@ -198,7 +198,7 @@ The Act's obligations apply from August 2026 for most high-risk applications. Pr
 Install:
 
 ```bash
-pip install insurance-gam
+uv add insurance-gam
 ```
 
 The `insurance_gam.ebm` subpackage wraps InterpretML's `ExplainableBoostingRegressor` with actuarial conventions: exposure as a log offset, Polars DataFrame support, relativities extraction, GLM comparison, and monotonicity enforcement. The `insurance_gam.ebm._comparison.GLMComparison` class runs a direct deviance comparison between the EBM and a Poisson GLM on the same data, which is useful for internal model governance sign-off.

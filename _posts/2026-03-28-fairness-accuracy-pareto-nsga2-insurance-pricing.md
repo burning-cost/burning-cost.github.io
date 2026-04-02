@@ -59,7 +59,7 @@ Boonen et al. define four objectives: predictive accuracy, group fairness, indiv
 Install with:
 
 ```bash
-pip install insurance-fairness[pareto]
+uv add insurance-fairness[pareto]
 ```
 
 This pulls in `pymoo>=0.6.1` as the NSGA-II engine. The example below uses synthetic UK motor data with 5,000 policies and a binary gender column.
@@ -246,7 +246,7 @@ report = audit.run()
 The paper by Boonen, Fan & Quan is the academic grounding; the library is the practitioner implementation. There is no code in the paper — this is, as far as we know, the only public implementation.
 
 ```bash
-pip install "insurance-fairness[pareto]>=0.6.9"
+uv add "insurance-fairness[pareto]>=0.6.9"
 ```
 
 Full API documentation at [insurance-fairness.readthedocs.io](https://insurance-fairness.readthedocs.io). Source and 145 tests at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).

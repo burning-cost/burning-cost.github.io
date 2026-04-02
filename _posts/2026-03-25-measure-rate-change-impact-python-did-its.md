@@ -298,7 +298,7 @@ We should say this plainly rather than bury it.
 ## Installation
 
 ```bash
-pip install insurance-causal
+uv add insurance-causal
 ```
 
 Python 3.10 or later. Dependencies: pandas, numpy, scipy, statsmodels. The `rate_change` sub-package uses statsmodels WLS/OLS for estimation and Newey-West HAC for ITS standard errors — no optional extras required.

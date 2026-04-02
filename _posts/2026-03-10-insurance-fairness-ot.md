@@ -9,7 +9,7 @@ description: "Discrimination-free UK insurance pricing via Wasserstein barycente
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-fairness-ot` has been consolidated into [`insurance-fairness`](/insurance-fairness/). Install with `pip install insurance-fairness` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-fairness)
+**Package update:** `insurance-fairness-ot` has been consolidated into [`insurance-fairness`](/insurance-fairness/). Install with `uv add insurance-fairness` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-fairness)
 </div>
 
 
@@ -22,7 +22,7 @@ That is what [`insurance-fairness-ot`](https://github.com/burning-cost/insurance
 ```bash
 uv add insurance-fairness
 # or
-pip install insurance-fairness
+uv add insurance-fairness
 ```
 
 ---

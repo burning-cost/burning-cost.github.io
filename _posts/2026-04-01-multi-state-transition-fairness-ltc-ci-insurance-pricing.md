@@ -198,7 +198,7 @@ Adversarial in-processing requires torch. We are not adding torch as a dependenc
 ## Install
 
 ```bash
-pip install insurance-fairness==1.1.0
+uv add insurance-fairness==1.1.0
 ```
 
 The module requires polars, numpy, and scipy — no additional dependencies beyond what insurance-fairness already carries.

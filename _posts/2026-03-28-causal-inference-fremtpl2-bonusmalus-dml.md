@@ -169,7 +169,7 @@ Two things we would push back on immediately if we heard them in a pricing revie
 The benchmark notebook is at [github.com/burning-cost/insurance-causal](https://github.com/burning-cost/insurance-causal) (`notebooks/benchmark_fremtpl2.py`), structured for Databricks. It downloads freMTPL2 directly from OpenML.
 
 ```
-pip install insurance-causal scikit-learn statsmodels
+uv add insurance-causal scikit-learn statsmodels
 ```
 
 The notebook has 14 sections: data loading, type coercion, confounding visualisation, naive GLM (numeric-only and full), DML fit, ATE results, nuisance diagnostics, Rosenbaum sensitivity, CATE by age band, naive vs causal comparison, a four-panel visualisation, confounding bias report, and summary. Each section is self-contained and can be run independently once the data is loaded.

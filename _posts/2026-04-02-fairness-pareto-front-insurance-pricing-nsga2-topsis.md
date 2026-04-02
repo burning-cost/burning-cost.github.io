@@ -151,7 +151,7 @@ The Pareto front workflow sits after model development but before model governan
 
 Step 3 adds roughly 10-20 minutes to a model review cycle for a typical personal lines portfolio. The governance benefit is substantially larger than the runtime cost.
 
-The library is available at `pip install insurance-fairness[pareto]`. The `[pareto]` optional dependency installs `pymoo>=0.6.1`. Everything else — `polars`, `numpy` — is a standard dependency.
+The library is available at `uv add insurance-fairness[pareto]`. The `[pareto]` optional dependency installs `pymoo>=0.6.1`. Everything else — `polars`, `numpy` — is a standard dependency.
 
 ---
 

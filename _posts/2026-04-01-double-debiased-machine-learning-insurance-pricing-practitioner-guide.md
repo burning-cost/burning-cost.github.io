@@ -303,7 +303,7 @@ The AutoDML Riesz representer approach used in `PremiumElasticity`: Chernozhukov
 ## Installation and source
 
 ```bash
-pip install "insurance-causal[all]"
+uv add "insurance-causal[all]"
 ```
 
 ```python

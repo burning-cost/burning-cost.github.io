@@ -18,7 +18,7 @@ This tutorial shows how to attach distribution-free prediction intervals to a Tw
 ## Installation
 
 ```bash
-pip install "insurance-conformal[catboost]"
+uv add "insurance-conformal[catboost]"
 ```
 
 Or with uv:
@@ -227,7 +227,7 @@ Adding conformal prediction intervals to a Tweedie pricing model takes under 20 
 The per-decile coverage table is the check to run every time you recalibrate. If top-decile coverage is below target, switch to `LocallyWeightedConformal`. If it is above target, your intervals are too conservative — the parametric baseline is wasting width on low-risk policies.
 
 ```bash
-pip install "insurance-conformal[catboost]"
+uv add "insurance-conformal[catboost]"
 ```
 
 Source, benchmarks, and full Databricks notebooks at [GitHub](https://github.com/burning-cost/insurance-conformal). The benchmark comparing parametric, conformal, and locally-weighted approaches is at `benchmarks/benchmark.py`.

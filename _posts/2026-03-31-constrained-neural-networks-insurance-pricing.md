@@ -96,7 +96,7 @@ For personal lines motor and home — where Consumer Duty exposure is highest �
 Here is the minimum viable implementation of a monotone frequency network using `monotonic-nn`. The architecture mirrors a standard CANN structure, with the prior estimates from a GLM entering as an offset.
 
 ```bash
-pip install monotonic-nn
+uv add monotonic-nn
 ```
 
 ```python
@@ -162,7 +162,7 @@ The constraint guarantee here is architectural: this network cannot produce a lo
 
 **If you are fitting a neural network:** Do you need smoothness as well as monotonicity? If yes — and for most commercial actuarial use cases, you do — ICEnet is the only published approach that handles both. Get the code from the paper supplementary (Richman & Wüthrich 2024, doi:10.1017/S174849952400006X). It requires penalty parameter tuning via cross-validation or actuarial judgment, but the mechanism is sound.
 
-**If you only need monotonicity and not smoothness:** Use `pip install monotonic-nn` and the MonoDense layer. Hard architectural guarantee, negligible accuracy cost, Keras-compatible, no TF-lattice dependency.
+**If you only need monotonicity and not smoothness:** Use `uv add monotonic-nn` and the MonoDense layer. Hard architectural guarantee, negligible accuracy cost, Keras-compatible, no TF-lattice dependency.
 
 **If you are on a TF stack and need multiple constraint types** (monotonicity + convexity + pairwise trust): use tensorflow-lattice. Most mature production option.
 

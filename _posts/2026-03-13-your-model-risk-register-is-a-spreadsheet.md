@@ -4,7 +4,7 @@ title: "Model Risk Governance for UK Insurers: Beyond the Excel Register"
 date: 2026-03-13
 categories: [libraries, regulation]
 tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-monitoring]
-description: "PRA SS1/23 model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. insurance-governance - one pip install."
+description: "PRA SS1/23 model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. insurance-governance - one uv add."
 ---
 
 *This post covers the governance workflow: model inventory, risk tier scoring, and executive committee reporting via `insurance-governance`. For the release note explaining why we merged `insurance-validation` and `insurance-mrm` into a single package, see [One Package, One Install](/2026/03/14/insurance-governance-unified-pra-ss123-validation/).*

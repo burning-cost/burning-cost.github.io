@@ -287,16 +287,16 @@ Three things worth being honest about.
 ## Installation
 
 ```bash
-pip install insurance-conformal
+uv add insurance-conformal
 
 # With CatBoost support:
-pip install "insurance-conformal[catboost]"
+uv add "insurance-conformal[catboost]"
 
 # With LightGBM support:
-pip install "insurance-conformal[lightgbm]"
+uv add "insurance-conformal[lightgbm]"
 
 # With everything:
-pip install "insurance-conformal[all]"
+uv add "insurance-conformal[all]"
 ```
 
 Source and documentation: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).

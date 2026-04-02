@@ -266,10 +266,10 @@ Our recommendation for UK insurance: order by regulatory priority, most salient 
 ## Installation and source
 
 ```bash
-pip install insurance-fairness
+uv add insurance-fairness
 
 # or with all optional dependencies
-pip install "insurance-fairness[all]"
+uv add "insurance-fairness[all]"
 ```
 
 `SequentialOTCorrector` ships in `v0.4.0` alongside the existing `WassersteinCorrector`. The single-attribute API is unchanged. Source: [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness).

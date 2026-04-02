@@ -16,7 +16,7 @@ This matters more than it might appear. If your PSI threshold is too tight, you 
 Christopher Burger ([arXiv:2512.23602](https://arxiv.org/abs/2512.23602), University of Mississippi, December 2025) provides the fix. His paper applies conformal prediction to statistical process control, replacing parametric Shewhart limits and arbitrary threshold conventions with a control limit that has a proven distribution-free false alarm rate guarantee. We have implemented both his univariate and multivariate constructions in `insurance-monitoring` v0.11.0.
 
 ```bash
-pip install "insurance-monitoring>=0.11.0"
+uv add "insurance-monitoring>=0.11.0"
 ```
 
 ---

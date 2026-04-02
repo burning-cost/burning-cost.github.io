@@ -109,7 +109,7 @@ The `pykan` library is pip-installable. The gap for actuarial use is the Poisson
 ```python
 import torch
 import torch.nn as nn
-from kan import KAN  # pip install pykan
+from kan import KAN  # uv add pykan
 
 # Assume X is a torch.Tensor of shape (n, p) - rating factors
 # y is claim counts, exposure is policy years

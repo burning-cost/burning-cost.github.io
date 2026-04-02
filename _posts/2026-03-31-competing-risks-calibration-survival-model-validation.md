@@ -104,7 +104,7 @@ For UK pricing: you need a calibration holdout of roughly 500 policies per compe
 These metrics are in `insurance-survival` v0.3.9:
 
 ```python
-pip install "insurance-survival>=0.3.9"
+uv add "insurance-survival>=0.3.9"
 ```
 
 ```python
@@ -195,4 +195,4 @@ One thing that does not change: the underlying Fine-Gray model does not need to 
 
 **Paper:** Alberge, J., Aghbalou, A., Sabourin, A., Mozharovskyi, P. & d'Alché-Buc, F. (2026). 'Calibration of Survival Models.' arXiv:2602.00194. AISTATS 2026, Tangier.
 
-**Library:** [github.com/burning-cost/insurance-survival](https://github.com/burning-cost/insurance-survival) — `pip install "insurance-survival>=0.3.9"`.
+**Library:** [github.com/burning-cost/insurance-survival](https://github.com/burning-cost/insurance-survival) — `uv add "insurance-survival>=0.3.9"`.

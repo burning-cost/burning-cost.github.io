@@ -61,7 +61,7 @@ The [`insurance-governance`](/insurance-governance/) library was built around PR
 `ModelInventory` is a JSON-backed registry of your production models. Each entry carries a `next_review_date` and a validation run history. The important addition under the PS25/21 framework is that next review date should now be set by your risk classification policy, not by a calendar default.
 
 ```bash
-pip install insurance-governance
+uv add insurance-governance
 ```
 
 ```python

@@ -8,7 +8,7 @@ description: "The full calibration framework for insurance pricing: balance prop
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-calibration` has been consolidated into [`insurance-monitoring`](/insurance-monitoring/). Install with `pip install insurance-monitoring` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
+**Package update:** `insurance-calibration` has been consolidated into [`insurance-monitoring`](/insurance-monitoring/). Install with `uv add insurance-monitoring` — all functionality described here is available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-monitoring)
 </div>
 
 

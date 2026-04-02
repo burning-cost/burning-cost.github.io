@@ -73,7 +73,7 @@ There is no regulatory guidance yet on what a "acceptable" CVI_U is for a pricin
 ## Code example
 
 ```bash
-pip install "insurance-conformal[lightgbm]"
+uv add "insurance-conformal[lightgbm]"
 ```
 
 The workflow: fit conformal intervals separately, then assess conditional coverage.
@@ -201,7 +201,7 @@ print(f"Best predictor: {names[best_idx]}")
 ## Installation
 
 ```bash
-pip install "insurance-conformal[lightgbm]"
+uv add "insurance-conformal[lightgbm]"
 # or
 uv add "insurance-conformal[lightgbm]"
 ```

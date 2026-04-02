@@ -8,7 +8,7 @@ description: "Four-tier experience rating in Python: Buhlmann-Straub, Poisson-Ga
 ---
 
 <div class="notice--warning" markdown="1">
-**Package update:** `insurance-experience` has been consolidated into [`insurance-credibility`](/insurance-credibility/). Install with `pip install insurance-credibility` — individual experience rating models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
+**Package update:** `insurance-experience` has been consolidated into [`insurance-credibility`](/insurance-credibility/). Install with `uv add insurance-credibility` — individual experience rating models are available as a submodule. [View on GitHub →](https://github.com/burning-cost/insurance-credibility)
 </div>
 
 
