@@ -351,7 +351,7 @@ You cannot include a plot in a Markdown post, but here is what to look for when 
 
 The paper uses [40%, 70%] for French pet insurers in May 2024. UK personal lines are not France. Some calibration anchors:
 
-**UK pet (2024-25):** FCA's 2024 pet insurance market study noted elevated combined ratios across the main providers — Petplan, Agria, and Direct Line all reported combined ratios above 100% in their 2023 statutory accounts. A reasonable corridor is [50%, 75%]. Do not copy the paper's [40%, 70%] without adjustment.
+**UK pet (2024-25):** The UK pet insurance market ran at combined ratios above 100% through 2023-24 — Direct Line exited pet lines entirely in 2024, citing claims severity outstripping premium growth. A reasonable corridor is [50%, 75%]. Do not copy the paper's [40%, 70%] without adjustment.
 
 **UK home contents (2024-25):** ABI data shows home combined ratios running 95-105% in 2023-24 after the subsidence and storm claims spike. Loss ratios of 55-70% imply a corridor of [50%, 70%].
 
