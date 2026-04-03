@@ -367,7 +367,7 @@ Three things go in the model sign-off for a large loss loading.
 
 **Reinsurance alignment.** The ILF results should be compared against the treaty pricing. If the treaty was negotiated assuming an ILF of 0.05 for all construction types and the model says listed buildings are at 0.19, that is a material discrepancy that belongs in the model risk register.
 
-PRA SS1/23 requires that pricing models can be explained and that their limitations are documented. The explicit large loss loading satisfies both: the loading is an auditable number, derived from a calibrated quantile model, expressed as a separate component of the risk premium. That is a better position than "we apply a 20% large loss factor across the board because we always have."
+PRA SoP3/24 (the PRA's model risk management supervisory statement for insurers, published September 2024) requires that pricing models can be explained and that their limitations are documented. Consumer Duty PRIN 2A adds an outcomes layer: fair value assessments must be supportable at the sub-segment level, which means being able to explain why listed buildings carry a different large loss loading than standard construction. The explicit large loss loading satisfies both requirements: the loading is an auditable number, derived from a calibrated quantile model, expressed as a separate component of the risk premium. That is a better position than "we apply a 20% large loss factor across the board because we always have."
 
 ---
 

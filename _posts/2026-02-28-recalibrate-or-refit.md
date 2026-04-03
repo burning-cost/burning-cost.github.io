@@ -197,7 +197,7 @@ When the Murphy distribution is set, this is the logic that runs. Without it, th
 
 ## The governance case
 
-PRA SS1/23 (effective May 2024) requires model validators to document the basis for decisions about model updates. The Murphy decomposition provides exactly the right level of evidence: a quantitative split between GMCB and LMCB with a documented decision rule.
+PRA SoP3/24 (the PRA model risk management supervisory statement for insurers, published September 2024) requires model validators to document the basis for decisions about model updates. The Murphy decomposition provides exactly the right level of evidence: a quantitative split between GMCB and LMCB with a documented decision rule.
 
 A model risk note that reads "A/E of 1.07 observed, Murphy GMCB of 0.000341 versus LMCB of 0.000019, GMCB/MCB ratio = 0.95, recalibration applied per monitoring framework" is a substantively different document from "A/E of 1.07 observed, intercept adjusted to restore balance." The first can be audited against the framework. The second requires a validator to take the pricing team's word for it.
 

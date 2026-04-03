@@ -85,7 +85,7 @@ Three things are worth doing now.
 
 **Put monitoring in place before it is required.** The advisory and autonomous AI scenarios Mills describes require robust monitoring infrastructure to be regulatory defensible. If your firm is experimenting with agentic components — even internally — you need to know what those systems are doing and be able to demonstrate that knowledge. [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) covers drift detection, calibration monitoring, and performance tracking in production.
 
-None of this is speculative preparation. Consumer Duty and SS1/23 already require it. The Mills Review will, at most, raise the documentation standard that the FCA expects when it comes to ask about your AI systems. The firms that are already meeting that standard have less to do when it does.
+None of this is speculative preparation. Consumer Duty and SoP3/24 already require it. The Mills Review will, at most, raise the documentation standard that the FCA expects when it comes to ask about your AI systems. The firms that are already meeting that standard have less to do when it does.
 
 ---
 

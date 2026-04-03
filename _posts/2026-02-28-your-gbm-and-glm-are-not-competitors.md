@@ -5,7 +5,7 @@ date: 2026-02-28
 featured: true
 categories: [pricing, techniques]
 tags: [GLM, GBM, model-blending, stacking, catboost, insurance-cv, shap-relativities, insurance-governance, pra-ss123, python, temporal-cv]
-description: "How to combine GLM and GBM predictions for production pricing: cross-validated blend weights, PRA interpretability, and when blending actually helps. Once the blended model is validated, document it in [`insurance-governance`](/insurance-governance/) for SS1/23 audit trail."
+description: "How to combine GLM and GBM predictions for production pricing: cross-validated blend weights, PRA interpretability, and when blending actually helps. Once the blended model is validated, document it in [`insurance-governance`](/insurance-governance/) for SoP3/24 audit trail."
 ---
 
 Most UK pricing teams frame the GLM-vs-GBM question as a choice: run the GLM because it's defensible, or run the GBM and spend the rest of your life arguing with compliance. We think this is the wrong frame entirely.
@@ -210,7 +210,7 @@ report = ModelValidationReport(
 report.to_json("validation/motor_freq_blend_2026q1.json")
 ```
 
-`RiskTierScorer` maps the model to a materiality tier aligned with PRA SS1/23. A blend that is rate-setting for a significant book is almost certainly Tier 2. The generated report includes the RAG status the PRA executive pack needs, cross-referenced to the validation metrics, with the `run_id` linking the validation output to the inventory record.
+`RiskTierScorer` maps the model to a materiality tier aligned with PRA SoP3/24. A blend that is rate-setting for a significant book is almost certainly Tier 2. The generated report includes the RAG status the PRA executive pack needs, cross-referenced to the validation metrics, with the `run_id` linking the validation output to the inventory record.
 
 ---
 
@@ -232,7 +232,7 @@ Blending does not help when:
 
 ## The PRA interpretability question
 
-PRA SS1/23 does not ban GBMs. It requires that material models have documented validation, clear ownership, a risk-tiered governance process, and that model outputs can be explained to senior management and, if asked, to the regulator.
+PRA SoP3/24 does not ban GBMs. It requires that material models have documented validation, clear ownership, a risk-tiered governance process, and that model outputs can be explained to senior management and, if asked, to the regulator.
 
 "Explained" does not mean "reconstructed from a hand-drawn factor table." It means understood: why is this risk segment priced higher? What factors drive it? What assumptions underlie the model? Are those assumptions monitored?
 

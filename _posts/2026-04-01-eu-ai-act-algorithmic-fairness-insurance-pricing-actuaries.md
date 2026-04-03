@@ -60,7 +60,7 @@ Under EU law, the Racial Equality Directive (2000/43/EC) prohibits discriminatio
 
 ## What the UK framework says — and where it is clearer
 
-The UK position after Brexit is that the EU AI Act does not apply as domestic law. The relevant UK frameworks are the Equality Act 2010, FCA Consumer Duty (PS22/9, in force July 2023), FCA PS22/3 (home and motor pricing practices), and PRA SS1/23.
+The UK position after Brexit is that the EU AI Act does not apply as domestic law. The relevant UK frameworks are the Equality Act 2010, FCA Consumer Duty (PS22/9, in force July 2023), FCA PS22/3 (home and motor pricing practices), and PRA SoP3/24 (model risk management for insurers).
 
 For age specifically, the UK Equality Act 2010 includes an insurance exception — Schedule 3, paragraph 20 — that permits age-related differences in insurance premiums and benefits where they are based on actuarial or other relevant data that it is reasonable to rely on. This is a cleaner resolution than the EU AI Act provides: the actuarial exception is statutory and explicit. A UK life insurer using age as a rating factor with actuarial justification has a defined legal basis for doing so.
 
