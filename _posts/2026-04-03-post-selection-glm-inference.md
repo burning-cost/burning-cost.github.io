@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-We [published last week](/techniques/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/) on post-selection inference: the paper by Shen, Gregory, and Huang (arXiv:2603.24875, March 2026) that provides valid confidence intervals for Poisson GLMs after Lasso variable selection. If your pricing pipeline runs Lasso to select rating factors and then reports Wald CIs, those CIs are covering at 70–80% when you think you are at 95%. The paper fixes this for Poisson.
+We [published last week](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) on post-selection inference: the paper by Shen, Gregory, and Huang (arXiv:2603.24875, March 2026) that provides valid confidence intervals for Poisson GLMs after Lasso variable selection. If your pricing pipeline runs Lasso to select rating factors and then reports Wald CIs, those CIs are covering at 70–80% when you think you are at 95%. The paper fixes this for Poisson.
 
 The fix matters. But it is easy to read the paper and conclude that the post-selection inference problem is now solved for UK motor pricing. It is not.
 
@@ -149,5 +149,5 @@ The paper is Shen, K., Gregory, K.B., and Huang, S. (2026), "Post-selection infe
 
 ## Related
 
-- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/techniques/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/) — the theory post: what post-selection bias is, why it matters, and how the Fisher scoring linearisation works
+- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the theory post: what post-selection bias is, why it matters, and how the Fisher scoring linearisation works
 - [Post-Selection GLM Inference Is Now Usable in Python](/techniques/2026/04/03/post-selection-glm-confidence-intervals-insurance-pricing/) — the implementation post: `PostSelectionGLM` and `DataSplitPostSelectionGLM` in detail, with worked examples

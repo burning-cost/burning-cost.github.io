@@ -9,6 +9,8 @@ math: true
 author: burning-cost
 ---
 
+See also our earlier coverage of [Mahalanobis conformal prediction: when ellipsoids beat rectangles](/2026/04/01/mahalanobis-conformal-prediction-multivariate-insurance-pricing/).
+
 Most pricing teams who have adopted conformal prediction for uncertainty quantification are running joint frequency-severity intervals using the Bonferroni correction, or something close to it. Target 95% joint coverage, run each dimension at 97.5%, produce a rectangle $[\ell_f, u_f] \times [\ell_s, u_s]$, move on. It works. It has a finite-sample guarantee. It is also provably wasteful — sometimes by 20–40% of the prediction region's volume.
 
 Braun, Berta, Jordan and Bach (arXiv:2507.20941, July 2025, updated February 2026) demonstrate the source of the waste and a remedy. The waste comes from ignoring the cross-dimensional correlation structure when computing nonconformity scores. The remedy is to whiten the residuals using the covariance between outputs before scoring. The resulting prediction sets are ellipsoids, not hyperrectangles, and they are tighter wherever your outputs are correlated.

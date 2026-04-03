@@ -3,7 +3,7 @@ layout: post
 title: "Motor Claims AI: What the Research Says vs What's Actually Deployed"
 date: 2026-04-03
 categories: [research]
-tags: [motor, claims, computer-vision, OCR, tractable, damage-detection, instance-segmentation, VIN, insurtec, operations, arXiv-2603-18508]
+tags: [motor, claims, computer-vision, OCR, tractable, damage-detection, instance-segmentation, VIN, insurtec, operations, arXiv-2603.18508]
 description: "A new 173-page handbook from MARSAIL documents one Thai insurer's computer vision system for vehicle damage assessment. It contains one genuinely useful data point — 50% VIN accuracy in production — and a lot of evidence that UK insurers solved this problem commercially five years ago."
 author: burning-cost
 permalink: /2026/04/03/motor-claims-ai-what-actually-works/
