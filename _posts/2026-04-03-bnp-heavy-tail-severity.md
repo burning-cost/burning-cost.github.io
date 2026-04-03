@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "What Fraction of Your Book Has Infinite-Variance Losses?"
+title: "What Fraction of Your Book Has Infinite-Mean Losses?"
 date: 2026-04-03
 author: burning-cost
 categories: [research, severity-modelling]
 tags: [bayesian-nonparametric, heavy-tail, severity, evt, gpd, dirichlet-process, normalised-stable, shifted-gamma-gamma, subsidence, escape-of-water, reinsurance, insurance-severity, arXiv-2602.07228, nieto-barajas, MCMC, python, actuarial]
-description: "Nieto-Barajas (arXiv:2602.07228) proposes a Bayesian nonparametric mixture of Shifted Gamma-Gamma distributions that eliminates the EVT threshold selection problem. The posterior of a tail index parameter answers a question no other method in our toolkit can: what fraction of this book has genuinely infinite-variance loss potential? Useful for reinsurance triaging and subsidence/flood portfolios. Not yet in insurance-severity — here is why."
+description: "Nieto-Barajas (arXiv:2602.07228) proposes a Bayesian nonparametric mixture of Shifted Gamma-Gamma distributions that eliminates the EVT threshold selection problem. The posterior of a tail index parameter answers a question no other method in our toolkit can: what fraction of this book has genuinely infinite-mean loss potential? Useful for reinsurance triaging and subsidence/flood portfolios. Not yet in insurance-severity — here is why."
 permalink: /2026/04/03/bnp-heavy-tail-severity-arXiv-2602-07228/
 ---
 
 One of the permanent embarrassments of extreme value theory in insurance is the threshold problem. To fit a Generalised Pareto Distribution to a claims portfolio you must first choose a threshold u above which GPD applies. The usual toolkit — mean excess plots, Hill plots, automated profile likelihood — all require you to eyeball something or pick a parameter. The threshold drives the fitted tail index, the tail index drives the TVaR, and the TVaR drives the reinsurance pricing. The entire chain hangs on a choice that has no principled answer.
 
-Luis Nieto-Barajas at ITAM in Mexico City submitted a paper to arXiv in February 2026 (arXiv:2602.07228) that proposes a way to sidestep this. It does not solve every problem in severe-loss modelling — it introduces new ones — but it answers one question no other tool in our kit currently addresses: *what fraction of this book has genuinely infinite-variance loss potential?*
+Luis Nieto-Barajas at ITAM in Mexico City submitted a paper to arXiv in February 2026 (arXiv:2602.07228) that proposes a way to sidestep this. It does not solve every problem in severe-loss modelling — it introduces new ones — but it answers one question no other tool in our kit currently addresses: *what fraction of this book has genuinely infinite-mean loss potential?*
 
 That is not an academic question. It determines whether you should be buying excess-of-loss cover or aggregate stop-loss cover. It determines whether your reinsurer's price is expensive or correct. For certain UK peril classes — subsidence, escape of water, bodily injury — we think it is a question worth being able to answer precisely.
 
@@ -35,11 +35,11 @@ Marginalising over Y gives a four-parameter family with support on [mu, infinity
 | alpha     | **Tail index** — this is the one that matters |
 | beta      | Scale |
 
-The tail index alpha is the key diagnostic. When alpha < 1, the distribution has infinite variance. When alpha < 0.5, it has infinite mean. The classification:
+The tail index alpha is the key diagnostic. The SGG nests GPD as a special case when gamma = 1, with shape parameter xi = 1/alpha. Under the GPD correspondence, the k-th moment is finite iff xi < 1/k, i.e. alpha > k. The classification therefore follows directly:
 
-- **alpha < 1**: heavy tail — the reinsurance concern zone
-- **1 ≤ alpha < 2**: intermediate — finite mean, infinite variance
-- **alpha ≥ 2**: light tail — all moments finite
+- **alpha < 1**: infinite mean (and therefore infinite variance) — the reinsurance concern zone
+- **1 ≤ alpha < 2**: finite mean, infinite variance — intermediate
+- **alpha ≥ 2**: all moments finite — light tail
 
 This structure is not arbitrary. When gamma = 1, the SGG reduces exactly to a GPD with shape parameter xi = 1/alpha and scale sigma = beta/alpha. The SGG nests GPD as a special case while allowing the body shape to depart from the exponential — something GPD cannot do. For claims distributions that are neither pure Pareto nor pure exponential in the body, this matters.
 
@@ -47,7 +47,7 @@ This structure is not arbitrary. When gamma = 1, the SGG reduces exactly to a GP
 
 ## The BNP mixing step
 
-Fitting a single SGG to a claims portfolio assumes all risks share the same tail character. That assumption is obviously wrong for any heterogeneous book. Subsidence claims include both minor cosmetic cracking (alpha large — finite moments, no reinsurance concern) and structural failures requiring full demolition (alpha small — infinite variance, serious reinsurance concern). A single-component SGG will average these two populations and tell you nothing useful about either.
+Fitting a single SGG to a claims portfolio assumes all risks share the same tail character. That assumption is obviously wrong for any heterogeneous book. Subsidence claims include both minor cosmetic cracking (alpha large — finite moments, no reinsurance concern) and structural failures requiring full demolition (alpha small — infinite mean, serious reinsurance concern). A single-component SGG will average these two populations and tell you nothing useful about either.
 
 Nieto-Barajas addresses this by placing a Bayesian nonparametric prior on the mixing distribution. Each observation gets its own parameter vector (mu_i, gamma_i, alpha_i, beta_i), drawn from an unknown mixing distribution G. Rather than assuming G is, say, a Normal or a Dirichlet, the prior on G is a Normalised Stable (N-stable) process:
 
@@ -72,11 +72,11 @@ G              ~  NS(nu, G_0)
 
 The posterior of alpha_i for each observation answers, directly, whether that observation belongs to a heavy-tail cluster or a light-tail cluster. Aggregate over the posterior and you get the tail decomposition:
 
-- P(alpha < 1): fraction of observations in the infinite-variance regime
+- P(alpha < 1): fraction of observations in the infinite-mean regime
 - P(1 ≤ alpha < 2): fraction in the intermediate regime
 - P(alpha ≥ 2): fraction in the light-tail regime
 
-On the paper's accident insurance dataset (n = 1,383 claims, median $6,000, mean $17,158), the fitted model finds: **14.4% of observations in infinite-variance territory, 58.8% intermediate, 26.8% light-tail**. This is not a histogram curiosity. It means that 14% of claims, by count, are drawn from a distributional family where the standard actuarial assumption of finite variance is wrong.
+On the paper's accident insurance dataset (n = 1,383 claims, median $6,000, mean $17,158), the fitted model finds: **14.4% of observations in infinite-mean territory, 58.8% intermediate, 26.8% light-tail**. This is not a histogram curiosity. It means that 14% of claims, by count, are drawn from a distributional family where the standard actuarial assumption of finite mean is wrong.
 
 ---
 
@@ -86,7 +86,7 @@ On the paper's accident insurance dataset (n = 1,383 claims, median $6,000, mean
 
 **Escape of water.** The same logic applies, with three natural modes: contained drying (£1,500–£3,500), full strip-out and reinstatement (£8,000–£20,000), and structural damage requiring decant and major reinstatement (£60,000+). As we noted in the [two-hump distributions post](/2026/04/02/two-hump-distributions-severity-model-95th-percentile/), a unimodal model fitted to EoW data is wrong about the structure from the start. BNP SGG's clustering identifies these sub-populations without requiring you to pre-specify how many there are.
 
-**Bodily injury.** Whiplash and soft tissue claims settle under £5,000. Serious and catastrophic injury claims — brain injury, spinal cord injury, PPO cases — start at £15,000 and have no ceiling. The infinite-variance question is directly relevant to PPO cases, where the settlement is an annuity rather than a lump sum, and the variance of the long-run liability is theoretically unbounded. Knowing what fraction of a BI book sits in the alpha < 1 regime is a reinsurance structuring input.
+**Bodily injury.** Whiplash and soft tissue claims settle under £5,000. Serious and catastrophic injury claims — brain injury, spinal cord injury, PPO cases — start at £15,000 and have no ceiling. The infinite-mean question is directly relevant to PPO cases, where the settlement is an annuity rather than a lump sum, and the expected long-run liability may be theoretically unbounded. Knowing what fraction of a BI book sits in the alpha < 1 regime is a reinsurance structuring input.
 
 ---
 
@@ -103,7 +103,7 @@ We maintain a growing collection of extreme value methods in [insurance-severity
 | EQRN | Required | Yes | No | GPU | Bootstrap |
 | **BNP SGG** | **None** | **No** | **No** | **Slow** | **Posterior** |
 
-The two columns where BNP SGG is uniquely better are the first and the last. No threshold, and the tail uncertainty quantification is a proper Bayesian posterior rather than a profile likelihood or bootstrap approximation. No other method in the toolkit answers: "What fraction of this book has infinite-variance losses?" with a posterior distribution over that fraction.
+The two columns where BNP SGG is uniquely better are the first and the last. No threshold, and the tail uncertainty quantification is a proper Bayesian posterior rather than a profile likelihood or bootstrap approximation. No other method in the toolkit answers: "What fraction of this book has infinite-mean losses?" with a posterior distribution over that fraction.
 
 The columns where it loses are real problems for production use. No covariates means it cannot do per-risk tail estimation — EQRN already does that. No truncation support means it cannot handle the per-policy limits that are standard in UK personal lines, which would cause it to systematically overestimate how heavy the tail is (censored observations look heavier than they are). The speed is genuinely prohibitive: the paper's Fortran implementation takes 40 minutes for n = 1,383 on a 3.00 GHz Intel Xeon. A Python/NumPyro reimplementation would be slower.
 
@@ -189,7 +189,7 @@ Without a production implementation, the paper's contribution is still immediate
 
 **Reinsurance triage.** Before buying or renewing an excess-of-loss treaty, run a visual tail analysis using insurance-severity's existing EVT toolkit. If the mean excess plot shows strong non-linearity (the mean excess function is not approximately linear above a threshold), a single GPD is likely misspecified. This is the signature of a multi-regime tail — the case where BNP SGG would tell you something a single GPD cannot. Flag it for qualitative discussion with your reinsurer.
 
-**Subsidence and EoW reserve review.** For a book with 500–2,000 large subsidence or EoW claims above a reporting threshold, a rough two-component analysis — split the data at an obvious trough in the loss distribution, fit GPD separately above and below — gives you a first approximation to the tail decomposition that BNP SGG would produce automatically. It is manual and fragile, but it answers the same qualitative question: is the heavy-loss sub-population pulling the tail into infinite-variance territory?
+**Subsidence and EoW reserve review.** For a book with 500–2,000 large subsidence or EoW claims above a reporting threshold, a rough two-component analysis — split the data at an obvious trough in the loss distribution, fit GPD separately above and below — gives you a first approximation to the tail decomposition that BNP SGG would produce automatically. It is manual and fragile, but it answers the same qualitative question: is the heavy-loss sub-population pulling the tail into infinite-mean territory?
 
 ```python
 from insurance_severity.evt import TruncatedGPD
@@ -214,8 +214,8 @@ for component, name in [(attritional_large, "attritional-large"),
 
     xi = gpd.xi_  # tail index; 1/xi maps to alpha in SGG notation
     print(f"{name}: xi={xi:.3f}, alpha_approx={1/xi:.3f}")
-    print(f"  Infinite variance: {xi > 1.0}")
-    print(f"  Infinite mean: {xi > 2.0}")
+    print(f"  Infinite mean:     {xi > 1.0}")   # xi > 1 <=> alpha < 1
+    print(f"  Infinite variance: {xi > 0.5}")   # xi > 0.5 <=> alpha < 2
 ```
 
 This is a workaround, not a solution. It requires a user-specified split point (the trough), assumes both sub-populations are Pareto-tailed, and produces no posterior uncertainty on the tail decomposition fractions. What BNP SGG would give you is the same decomposition without the arbitrary split, with a posterior distribution over the fraction in each regime, and with automatic detection of how many distinct tail sub-populations exist.
@@ -224,7 +224,7 @@ This is a workaround, not a solution. It requires a user-specified split point (
 
 ## The verdict
 
-Nieto-Barajas (arXiv:2602.07228) is a genuine methodological contribution. The SGG+N-stable combination is new in Python — there is no existing implementation. The posterior tail decomposition is a diagnostic that has no equivalent in the current EVT toolkit. For reinsurance structuring decisions on UK specialty books — subsidence, EoW, bodily injury — knowing what fraction of the portfolio has infinite-variance loss potential is a question worth answering rigorously.
+Nieto-Barajas (arXiv:2602.07228) is a genuine methodological contribution. The SGG+N-stable combination is new in Python — there is no existing implementation. The posterior tail decomposition is a diagnostic that has no equivalent in the current EVT toolkit. For reinsurance structuring decisions on UK specialty books — subsidence, EoW, bodily injury — knowing what fraction of the portfolio has infinite-mean loss potential is a question worth answering rigorously.
 
 The barriers are real: no truncation support (a systematic bias risk for real insurance data), no covariate extension, and computational cost that is prohibitive for large books without subsampling. We are not building it in the current phase. When the author releases code, or when a follow-up paper addresses truncation, the calculus changes.
 

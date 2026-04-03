@@ -34,6 +34,8 @@ A good model has low MCB and high DSC. UNC cancels when you compare two models o
 
 The paper extends the standard Mincer-Zarnowitz regression framework — originally developed for mean forecasts — to non-smooth scoring functions including quantile scores. This matters for reserving teams working with VaR or ES targets. HAC standard errors handle autocorrelation in monitoring windows where consecutive months overlap.
 
+The mechanics of the decomposition and the HAC variance estimator are covered in detail in [Is Your Model Miscalibrated, or Is That Just Noise?](/2026/04/02/score-decomposition-test-insurance-model-monitoring/). This post focuses on the two-model comparison use case — specifically the question that comes up before a deployment decision.
+
 ---
 
 ## Why single-number comparisons mislead

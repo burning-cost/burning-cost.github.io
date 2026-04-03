@@ -3,7 +3,7 @@ layout: post
 title: "What You Can Actually Say in a Fairness Attestation (and What You Cannot)"
 date: 2026-04-03
 categories: [fairness, compliance]
-tags: [FCA, EP25-2, Consumer-Duty, PRIN-2A, fairness-attestation, KL-divergence, discrimination-insensitive, Miao-Pesenti, arXiv-2603-16720, model-validation, Equality-Act, insurance-fairness, DiscriminationInsensitiveReweighter, multicalibration, UK-insurance, pricing-actuary, python]
+tags: [FCA, EP25-2, Consumer-Duty, fairness-attestation, KL-divergence, discrimination-insensitive, Miao-Pesenti, arXiv-2603-16720, model-validation, Equality-Act, insurance-fairness, DiscriminationInsensitiveReweighter, multicalibration, UK-insurance, pricing-actuary, python]
 description: "Most fairness sections in model validation reports say nothing. The KL discrimination-insensitive result from Miao & Pesenti (2026) gives you a precise, defensible claim: we applied the minimum correction needed to achieve sensitivity-zero. Here is what to write, why it holds, and where the limits are."
 author: burning-cost
 ---

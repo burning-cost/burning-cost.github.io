@@ -131,7 +131,7 @@ Steps 1–3 above are achievable with internal data in less than a week of imple
 
 ---
 
-*Primary papers: Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." arXiv:2601.12655. And: [second author group] (2026). "To report or not to report: Optimal claim reporting in a bonus-malus system." arXiv:2601.07655.*
+*Primary papers: Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." arXiv:2601.12655. And: author names unconfirmed (2026). "To report or not to report: Optimal claim reporting in a bonus-malus system." arXiv:2601.07655 (authors not verified at time of publication).*
 
 *Classical foundation: Lemaire, J. (1977). "La Soif du Bonus." ASTIN Bulletin 9(1-2):181–190. The 1995 monograph (Kluwer) remains the definitive treatment.*
 
