@@ -3,7 +3,7 @@ layout: post
 title: "Is Your Model Miscalibrated, or Is That Just Noise?"
 date: 2026-04-02
 categories: [model-monitoring, insurance-pricing]
-tags: [calibration, discrimination, score-decomposition, hypothesis-testing, mincer-zarnowitz, hac, p-value, insurance-monitoring, actuarial, pra-ss123, arXiv-2603.04275, mcb, dsc, unc, scoring-rules, python]
+tags: [calibration, discrimination, score-decomposition, hypothesis-testing, mincer-zarnowitz, hac, p-value, insurance-monitoring, actuarial, arXiv-2603.04275, mcb, dsc, unc, scoring-rules, python]
 description: "Most pricing teams eyeball calibration plots or track PSI. Neither tells you whether observed miscalibration is statistically significant. ScoreDecompositionTest in insurance-monitoring v1.2.0 gives you a p-value for MCB and DSC, based on Dimitriadis & Puke (arXiv:2603.04275, March 2026)."
 author: burning-cost
 ---

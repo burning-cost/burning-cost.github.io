@@ -121,7 +121,7 @@ print(f"MCB p-value: {result.mcb_pvalue:.3f}")
 
 ## Governance angle
 
-FCA Consumer Duty SS1/23 model governance frameworks — increasingly adopted by UK insurers beyond the banking sector where they originated — require documented evidence that model monitoring detects calibration and discrimination degradation as distinct phenomena. A single RMSE trend chart does not satisfy that requirement. A committee pack that shows MCB stable at p=0.42 and DSC declining with p=0.03 says something precise: the model's ranking ability is degrading but its bias is under control. That is actionable, and it is auditable.
+FCA Consumer Duty model governance expectations require documented evidence that model monitoring detects calibration and discrimination degradation as distinct phenomena. A single RMSE trend chart does not satisfy that requirement. A committee pack that shows MCB stable at p=0.42 and DSC declining with p=0.03 says something precise: the model's ranking ability is degrading but its bias is under control. That is actionable, and it is auditable.
 
 The quantile score path (`score_type="quantile"`, `alpha=0.05` for a 5th percentile) is directly applicable to reserve adequacy monitoring where the target is not the mean but a specific quantile of the loss distribution. The inference framework is the same: HAC-robust, distribution-free, valid under temporal dependence.
 

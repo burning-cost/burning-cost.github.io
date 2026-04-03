@@ -4,7 +4,7 @@ title: "Your SHAP Bar Chart Has No Error Bars"
 date: 2026-04-02
 categories: [libraries]
 tags: [shap, governance, fca, shap-relativities, consumer-duty, feature-importance, inference, arXiv-2602.10532, Whitehouse, Sawarni, Syrgkanis]
-description: "shap-relativities v0.5.0 adds SHAPInference: asymptotically valid confidence intervals on global SHAP feature importance using de-biased U-statistics. Every SHAP importance ranking you have ever put in a governance document is a point estimate. This fixes that."
+description: "SHAPInference (in development for shap-relativities): asymptotically valid confidence intervals on global SHAP feature importance using de-biased U-statistics. Every SHAP importance ranking you have ever put in a governance document is a point estimate. This is the fix."
 author: burning-cost
 ---
 
@@ -12,7 +12,7 @@ Every SHAP importance bar chart you have ever put in a pricing committee pack, a
 
 This is not a minor presentation issue. It is a governance problem. When you write "vehicle group is the third most important pricing factor", you are making a claim about your model's structure that your evidence does not actually support. You have a single realisation from the distribution of importance estimates. The ranking is a random variable, and you have no interval on it.
 
-[shap-relativities v0.5.0](https://pypi.org/project/shap-relativities/) adds `SHAPInference`, implementing the de-biased U-statistic estimator from Whitehouse, Sawarni, and Syrgkanis (arXiv:2602.10532, February 2026). It produces asymptotically valid confidence intervals on theta_p = E[|phi_a(X)|^p] for each feature — the standard global SHAP importance measure — and a direct test for whether feature A is truly more important than feature B.
+`SHAPInference` is being added to [shap-relativities](https://pypi.org/project/shap-relativities/), implementing the de-biased U-statistic estimator from Whitehouse, Sawarni, and Syrgkanis (arXiv:2602.10532, February 2026). It produces asymptotically valid confidence intervals on theta_p = E[|phi_a(X)|^p] for each feature — the standard global SHAP importance measure — and a direct test for whether feature A is truly more important than feature B.
 
 ---
 
@@ -111,10 +111,8 @@ The existing shap-relativities per-level CIs remain. Those answer a different qu
 
 ## Getting it
 
-```
-pip install shap-relativities>=0.5.0
-```
+**Note: `SHAPInference` is not yet released.** The current library version is v0.2.6; v0.5.0 is in development. The API shown above reflects the planned implementation. Watch the [GitHub repository](https://github.com/burning-cost/shap-relativities) for the release.
 
-The source is at [github.com/burning-cost/shap-relativities](https://github.com/burning-cost/shap-relativities). The underlying paper is Whitehouse, Sawarni, Syrgkanis (2026), arXiv:2602.10532.
+The underlying paper is Whitehouse, Sawarni, Syrgkanis (2026), arXiv:2602.10532.
 
-If you are writing a Consumer Duty model governance pack and want to put defensible confidence intervals on your feature importance rankings, this is the tool. If you have questions about whether your data meets the sample size requirements, or about interventional vs path-dependent SHAP in your specific architecture, the issue tracker is open.
+If you are writing a Consumer Duty model governance pack and want to put defensible confidence intervals on your feature importance rankings, this is the tool we are building. Questions and use-case input welcome via the issue tracker.

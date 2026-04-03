@@ -127,7 +127,7 @@ The `summary()` method on `ConformalChartResult` produces a governance-ready par
 
 ## Why this matters for governance
 
-PRA SS1/23 and FCA Consumer Duty both require that model monitoring is systematic and proportionate. "We check the PSI quarterly and it has been amber for six months" is not a systematic monitoring framework — it is a record of the number of times you looked at an amber number and decided not to act. A conformal control chart with a documented calibration period, a stated false alarm rate, and a clear trigger for investigation is a systematic framework. It is auditable. The threshold is derived from data, not convention.
+FCA Consumer Duty requires that model monitoring is systematic and proportionate. (PRA SS1/23, which establishes model risk governance principles, applies to banks — not insurers. The applicable framework for GI and life firms is Consumer Duty and the Senior Managers regime.) "We check the PSI quarterly and it has been amber for six months" is not a systematic monitoring framework — it is a record of the number of times you looked at an amber number and decided not to act. A conformal control chart with a documented calibration period, a stated false alarm rate, and a clear trigger for investigation is a systematic framework. It is auditable. The threshold is derived from data, not convention.
 
 The `summary()` output from the library includes the arXiv reference for the underlying methodology. That is a small thing, but it matters: it means your governance documentation can point to peer-reviewed methods rather than industry folklore.
 
