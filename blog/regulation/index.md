@@ -1,7 +1,7 @@
 ---
 layout: category-index
 title: "Regulation & Fairness"
-description: "FCA Consumer Duty, PRA SS1/23, proxy discrimination, and model risk governance. These posts translate regulatory requirements into concrete technical tests — not generic compliance checklists, but Python code that produces audit-ready output."
+description: "FCA Consumer Duty, CP6/24 model risk, proxy discrimination, and insurance model governance. These posts translate regulatory requirements into concrete technical tests — not generic compliance checklists, but Python code that produces audit-ready output."
 permalink: /blog/regulation/
 category_slug: regulation
 match_tags:

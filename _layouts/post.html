@@ -513,6 +513,47 @@
 
     .article-back a:hover { color: var(--accent-hover); text-decoration: none; }
 
+    /* -- Prev/Next navigation -- */
+    .post-prevnext {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .post-prevnext-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .post-prevnext-item.next { text-align: right; }
+
+    .post-prevnext-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .post-prevnext-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .post-prevnext-title:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .post-prevnext { grid-template-columns: 1fr; }
+      .post-prevnext-item.next { text-align: left; }
+    }
+
     /* ── Footer ──────────────────────────────────────────────────── */
 
     .footer {
@@ -661,9 +702,26 @@
 
       {% include related-posts.html %}
 
-      <div class="article-back">
-        <a href="/blog/">Back to all articles</a>
-      </div>
+
+      {% if page.previous or page.next %}
+      {% if page.previous or page.next %}
+      <nav class="post-prevnext" aria-label="Previous and next articles">
+        {% if page.previous %}
+        <div class="post-prevnext-item prev">
+          <span class="post-prevnext-label">Previous</span>
+          <a class="post-prevnext-title" href="{{ page.previous.url | relative_url }}">{{ page.previous.title | escape }}</a>
+        </div>
+        {% else %}
+        <div></div>
+        {% endif %}
+        {% if page.next %}
+        <div class="post-prevnext-item next">
+          <span class="post-prevnext-label">Next</span>
+          <a class="post-prevnext-title" href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }}</a>
+        </div>
+        {% endif %}
+      </nav>
+      {% endif %}
 
     </div>
   </div>

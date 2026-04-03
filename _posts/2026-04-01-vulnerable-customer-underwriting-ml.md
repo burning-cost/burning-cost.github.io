@@ -3,6 +3,8 @@ layout: post
 title: "What Machine Learning Can (and Cannot) Do for Vulnerable Customer Underwriting"
 date: 2026-04-01
 categories: [regulation, fairness]
+tags: [vulnerable-customers, fca, consumer-duty, mental-health, travel-insurance, social-renters, proxy-discrimination, fairness, underwriting, fca-fg21-1, equality-act-2010, uk-insurance, insurance-fairness, access-to-insurance]
+description: "The FCA has flagged travel insurance for mental health conditions and contents insurance for social renters as supervisory priorities. Here is what ML can genuinely help with, what it cannot fix, and what good practice looks like under Consumer Duty."
 ---
 
 On 24 February 2026, the FCA published its first annual Regulatory Priorities report for the insurance sector — replacing the old portfolio letter format with something it intends to be clearer and more binding in tone. Two items on the access agenda stand out for pricing actuaries: the FCA's commitment to review travel insurance underwriting decisions for consumers with pre-existing mental health conditions, and its work with Fair4All Finance to increase home contents insurance uptake among social renters.

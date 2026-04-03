@@ -4,6 +4,7 @@ title: "What Can I Change to Lower My Premium? The Consumer Duty Obligation Most
 date: 2026-03-25
 author: burning-cost
 categories: [compliance, pricing, libraries, tutorials]
+tags: [consumer-duty, fca, algorithmic-recourse, counterfactual-explanation, insurance-recourse, python, PRIN-2A, fca-fg22-5, actionability, pricing, transparency, uk-insurance]
 description: "FCA Consumer Duty PRIN 2A requires insurers to tell policyholders what they can change to get a better outcome. Most pricing teams have not built this. insurance-recourse does it in Python with FCA-audit output."
 ---
 

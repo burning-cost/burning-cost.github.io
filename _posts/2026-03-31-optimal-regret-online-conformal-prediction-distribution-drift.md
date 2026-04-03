@@ -3,6 +3,8 @@ layout: post
 title: "When your coverage guarantee means nothing: optimal regret in online conformal prediction under drift"
 date: 2026-03-31
 categories: [conformal-prediction, model-monitoring]
+tags: [conformal-prediction, coverage-guarantee, distribution-drift, aci, adaptive-conformal-inference, cusum, change-point, claims-inflation, model-monitoring, insurance-conformal, online-learning, minimax, training-conditional, uk-insurance]
+description: "ACI satisfies its marginal coverage guarantee while producing months of invalid intervals after a claims inflation shock. A new paper proves the minimax-optimal algorithm flushes stale calibration on regime change rather than downweighting it. What this means for conformal prediction in live pricing models."
 ---
 
 A conformal prediction interval that satisfies its coverage guarantee on paper can still leave you with three months of useless intervals after a claims inflation event. That is not a theoretical curiosity — it is how adaptive conformal inference (ACI) behaves in practice when you hit an abrupt regime shift. Jiadong Liang, Zhimei Ren, and Yuxin Chen's recent paper (arXiv:2602.16537, February 2026) pinpoints why, and shows what a better algorithm looks like.
