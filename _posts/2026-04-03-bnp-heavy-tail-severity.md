@@ -1,240 +1,197 @@
 ---
 layout: post
-title: "What Fraction of Your Book Has Infinite-Mean Losses?"
+title: "Bayesian Nonparametric Severity: Fitting Heavy Tails Without Choosing a Threshold"
 date: 2026-04-03
-author: burning-cost
-categories: [research, severity-modelling]
-tags: [bayesian-nonparametric, heavy-tail, severity, evt, gpd, dirichlet-process, normalised-stable, shifted-gamma-gamma, subsidence, escape-of-water, reinsurance, insurance-severity, arXiv-2602.07228, nieto-barajas, MCMC, python, actuarial]
-description: "Nieto-Barajas (arXiv:2602.07228) proposes a Bayesian nonparametric mixture of Shifted Gamma-Gamma distributions that eliminates the EVT threshold selection problem. The posterior of a tail index parameter answers a question no other method in our toolkit can: what fraction of this book has genuinely infinite-mean loss potential? Useful for reinsurance triaging and subsidence/flood portfolios. Not yet in insurance-severity — here is why."
-permalink: /2026/04/03/bnp-heavy-tail-severity-arXiv-2602-07228/
+author: Burning Cost
+categories: [pricing, severity, techniques]
+tags: [BNP, bayesian-nonparametric, heavy-tail, EVT, severity, Dirichlet-process, N-stable, SGG, shifted-gamma-gamma, threshold-selection, MCMC, reinsurance, subsidence, motor-BI, UK-insurance, arXiv-2602.07228, tail-index]
+description: "The hardest part of fitting a GPD is picking the threshold. A new Bayesian nonparametric approach eliminates the choice entirely — and tells you what fraction of your book has infinite-variance loss potential. Here is what it does, where it adds value, and where to use something simpler."
 ---
 
-One of the permanent embarrassments of extreme value theory in insurance is the threshold problem. To fit a Generalised Pareto Distribution to a claims portfolio you must first choose a threshold u above which GPD applies. The usual toolkit — mean excess plots, Hill plots, automated profile likelihood — all require you to eyeball something or pick a parameter. The threshold drives the fitted tail index, the tail index drives the TVaR, and the TVaR drives the reinsurance pricing. The entire chain hangs on a choice that has no principled answer.
+Every EVT workflow begins with the same uncomfortable question: where does the tail start?
 
-Luis Nieto-Barajas at ITAM in Mexico City submitted a paper to arXiv in February 2026 (arXiv:2602.07228) that proposes a way to sidestep this. It does not solve every problem in severe-loss modelling — it introduces new ones — but it answers one question no other tool in our kit currently addresses: *what fraction of this book has genuinely infinite-mean loss potential?*
+You plot the mean excess function. You look for a region where it rises roughly linearly. You pick a threshold. Then a colleague picks a different threshold and gets a different tail index. Neither of you is wrong — the choice is genuinely arbitrary above a certain point, and the downstream numbers (ILF schedules, XL layer costs, large loss loadings) are sensitive to it. The standard fix is profile likelihood: scan a grid of candidate thresholds and pick the one that maximises the likelihood. This is better than eyeballing, but it is still fitting the wrong model at every candidate and picking the least-wrong one.
 
-That is not an academic question. It determines whether you should be buying excess-of-loss cover or aggregate stop-loss cover. It determines whether your reinsurer's price is expensive or correct. For certain UK peril classes — subsidence, escape of water, bodily injury — we think it is a question worth being able to answer precisely.
+Luis Nieto-Barajas at ITAM published a paper in February 2026 (arXiv:2602.07228) proposing a different approach: eliminate the threshold entirely. Instead of splitting the distribution at some cutoff and fitting a GPD to exceedances, he fits the whole distribution simultaneously using a Bayesian nonparametric mixture. The model figures out, from the data, which observations are heavy-tailed and which are not — without you specifying a cutoff in advance.
+
+This is a genuine methodological advance. It is also, as we will explain, a tool with serious practical limitations for day-to-day insurance pricing. But for portfolio-level tail diagnostics — particularly in specialty lines, casualty reserving, and subsidence — it offers something no other method in the toolkit provides.
 
 ---
 
-## The Shifted Gamma-Gamma distribution
+## The threshold problem in UK insurance
 
-The paper's load-bearing object is the Shifted Gamma-Gamma (SGG) distribution. It is built from a two-stage hierarchy:
+To see why threshold selection matters, consider three UK scenarios where the tail is commercially important.
+
+**Motor bodily injury.** UK motor BI claims above £100k have a GPD tail index (ξ) in the range 0.15–0.45, depending on vehicle group and claim type. The ILF from a basic limit of £500k to £1m changes materially if ξ shifts from 0.20 to 0.35. That shift is plausibly explained by threshold selection alone — move the threshold from the 90th to the 95th percentile and you are fitting GPD to a different slice of data with different empirical properties. We showed in a previous post that [truncation bias from policy limits](/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/) makes this worse: you may be fitting the wrong distribution to the wrong data simultaneously.
+
+**Property subsidence.** Subsidence claims in England are bimodal in a way that most severity models cannot capture. Minor claims (cracking, cosmetic movement, soil compaction) cluster around £8k–£20k. Structural claims (underpinning, rebuild, NHBC involvement) cluster around £45k–£90k with a heavy tail above that. A single GPD fitted above a threshold will either miss the bimodality entirely (threshold too low) or fit only the structural sub-population with inadequate data (threshold too high). Neither is satisfactory.
+
+**Liability long-tail.** Employers liability and public liability claims exhibit what reinsurers call "clash risk" — a small fraction of claims that are genuinely catastrophic (catastrophic injury, multi-claimant events, long-tail mesothelioma) sit in the same dataset as routine settlement-range claims. These sub-populations have fundamentally different tail behaviour. A single-threshold GPD imposes one tail index on what is effectively a mixture.
+
+The common thread is that the underlying loss-generating process is not homogeneous above the threshold. There are multiple sub-populations with different tail behaviour. The standard approach — pick a threshold, fit GPD — aggregates them into a single tail index and pretends it is structural.
+
+---
+
+## How BNP mixture models work
+
+The core idea is to model the entire severity distribution as a mixture of simpler distributions, where the number of mixture components is not fixed in advance. The data determines how many components are needed.
+
+### The building block: Shifted Gamma-Gamma
+
+The paper's building block is the Shifted Gamma-Gamma (SGG) distribution, a four-parameter family built from a hierarchical Gamma construction:
 
 ```
-X - mu | Y  ~  Gamma(gamma, y)       [shape gamma, rate y]
+X - mu | Y  ~  Gamma(gamma, Y)      [shape gamma, rate Y]
 Y | alpha, beta  ~  Gamma(alpha, beta)
 ```
 
-Marginalising over Y gives a four-parameter family with support on [mu, infinity). The four parameters do distinct jobs:
+Integrating out Y gives a distribution with location mu, shape gamma, tail index alpha, and scale beta. The critical parameter is **alpha**:
 
-| Parameter | Role |
-|-----------|------|
-| mu        | Location shift — keeps support on [mu, ∞) |
-| gamma     | Body shape — controls the peak |
-| alpha     | **Tail index** — this is the one that matters |
-| beta      | Scale |
+- alpha < 1: infinite variance — the reinsurance concern zone. Claims in this regime can be unboundedly expensive in the aggregate sense; the variance of total losses diverges.
+- 1 ≤ alpha < 2: finite mean but infinite variance — still dangerous for excess-of-loss pricing.
+- alpha ≥ 2: light tail, all moments finite — routine claims.
 
-The tail index alpha is the key diagnostic. The SGG nests GPD as a special case when gamma = 1, with shape parameter xi = 1/alpha. Under the GPD correspondence, the k-th moment is finite iff xi < 1/k, i.e. alpha > k. The classification therefore follows directly:
+Two things make SGG particularly useful. First, when the shape parameter gamma equals 1, SGG reduces exactly to a Generalised Pareto Distribution with tail index ξ = 1/alpha. So GPD is a special case — SGG is strictly more flexible. Second, the tail classification above maps directly onto reinsurance decisions: infinite-variance claims behave differently in aggregate, and knowing what fraction of a portfolio sits in that regime is directly actionable.
 
-- **alpha < 1**: infinite mean (and therefore infinite variance) — the reinsurance concern zone
-- **1 ≤ alpha < 2**: finite mean, infinite variance — intermediate
-- **alpha ≥ 2**: all moments finite — light tail
+### The Dirichlet Process, and why we need something heavier
 
-This structure is not arbitrary. When gamma = 1, the SGG reduces exactly to a GPD with shape parameter xi = 1/alpha and scale sigma = beta/alpha. The SGG nests GPD as a special case while allowing the body shape to depart from the exponential — something GPD cannot do. For claims distributions that are neither pure Pareto nor pure exponential in the body, this matters.
+In standard Bayesian nonparametrics, the mixing distribution — the distribution over cluster identities — typically follows a Dirichlet process (DP). The DP is almost surely discrete, which means draws from it naturally cluster observations. You do not specify how many clusters there are; the model infers the number from the data.
 
----
+The paper uses a Normalised Stable (N-stable) process instead of a DP. The difference is subtle but relevant for heavy-tailed data: the N-stable process generates weight distributions with heavier tails than the DP, making it more natural for situations where one cluster accounts for a disproportionate fraction of extreme observations. The concentration parameter nu, between 0 and 1, controls the clustering tendency. At nu = 0 you recover the Dirichlet process. The paper recommends nu ~ Beta(0.5, 0.5) as a prior, letting the data decide.
 
-## The BNP mixing step
-
-Fitting a single SGG to a claims portfolio assumes all risks share the same tail character. That assumption is obviously wrong for any heterogeneous book. Subsidence claims include both minor cosmetic cracking (alpha large — finite moments, no reinsurance concern) and structural failures requiring full demolition (alpha small — infinite mean, serious reinsurance concern). A single-component SGG will average these two populations and tell you nothing useful about either.
-
-Nieto-Barajas addresses this by placing a Bayesian nonparametric prior on the mixing distribution. Each observation gets its own parameter vector (mu_i, gamma_i, alpha_i, beta_i), drawn from an unknown mixing distribution G. Rather than assuming G is, say, a Normal or a Dirichlet, the prior on G is a Normalised Stable (N-stable) process:
-
-```
-G ~ NS(nu, G_0)
-```
-
-where nu ∈ (0, 1) is a concentration parameter and G_0 is the centering measure — the "average" distribution over SGG parameters. The N-stable process is almost surely discrete, which means it naturally induces clustering of observations into a finite (but data-determined) number of groups. At nu = 0.5, the N-stable produces heavier-tailed weight distributions than the Dirichlet process (which is the nu → 0 limit). The stick-breaking weights are:
-
-```
-V_j ~ iid Beta(1 - nu, j * nu)
-W_j = V_j * prod_{k < j} (1 - V_k)
-```
-
-The full model hierarchy, concisely:
+The full model is:
 
 ```
 X_i | theta_i  ~  SGG(mu_i, gamma_i, alpha_i, beta_i)
-theta_i | G    ~  iid G
-G              ~  NS(nu, G_0)
+theta_i | G  ~  iid G
+G  ~  N-stable(nu, G_0)
 ```
 
-The posterior of alpha_i for each observation answers, directly, whether that observation belongs to a heavy-tail cluster or a light-tail cluster. Aggregate over the posterior and you get the tail decomposition:
+Each observation is assigned to a cluster with its own SGG parameters. The mixture is infinite in principle, but the posterior concentrates on a finite number of clusters. In the paper's accident insurance dataset (n = 1,383 claims, median $6,000, mean $17,158 — substantial right skew), the posterior settles on around 19 clusters, not a pre-specified number.
 
-- P(alpha < 1): fraction of observations in the infinite-mean regime
-- P(1 ≤ alpha < 2): fraction in the intermediate regime
-- P(alpha ≥ 2): fraction in the light-tail regime
+### What the posterior gives you
 
-On the paper's accident insurance dataset (n = 1,383 claims, median $6,000, mean $17,158), the fitted model finds: **14.4% of observations in infinite-mean territory, 58.8% intermediate, 26.8% light-tail**. This is not a histogram curiosity. It means that 14% of claims, by count, are drawn from a distributional family where the standard actuarial assumption of finite mean is wrong.
+After running MCMC, you have a posterior distribution over the tail index alpha for every observation. This lets you compute:
 
----
-
-## UK personal lines where this matters
-
-**Subsidence.** UK household subsidence is structurally bimodal. The majority of claims are cosmetic — hairline cracks, minor movement, monitoring and underpinning costs running to £5,000–£15,000. A small fraction are structural failures requiring demolition, rebuild, or extensive civil engineering, with costs from £60,000 to over £500,000. These two populations have different tail indices. A single GPD fitted to all subsidence claims will be wrong about both. BNP SGG will identify the structural failure cluster and report its alpha separately. The tail decomposition tells you directly what fraction of your subsidence book is in a regime where excess-of-loss protection is structurally necessary rather than optional.
-
-**Escape of water.** The same logic applies, with three natural modes: contained drying (£1,500–£3,500), full strip-out and reinstatement (£8,000–£20,000), and structural damage requiring decant and major reinstatement (£60,000+). As we noted in the [two-hump distributions post](/2026/04/02/two-hump-distributions-severity-model-95th-percentile/), a unimodal model fitted to EoW data is wrong about the structure from the start. BNP SGG's clustering identifies these sub-populations without requiring you to pre-specify how many there are.
-
-**Bodily injury.** Whiplash and soft tissue claims settle under £5,000. Serious and catastrophic injury claims — brain injury, spinal cord injury, PPO cases — start at £15,000 and have no ceiling. The infinite-mean question is directly relevant to PPO cases, where the settlement is an annuity rather than a lump sum, and the expected long-run liability may be theoretically unbounded. Knowing what fraction of a BI book sits in the alpha < 1 regime is a reinsurance structuring input.
-
----
-
-## What this gives you that nothing else does
-
-We maintain a growing collection of extreme value methods in [insurance-severity](https://pypi.org/project/insurance-severity/). To be direct about where BNP SGG stands relative to what already exists:
-
-| Method | Threshold needed | Covariates | Truncation/limits | Speed | Tail UQ |
-|--------|-----------------|------------|-------------------|-------|---------|
-| TruncatedGPD | Required | No | Yes | Fast | Profile lik |
-| Spliced composite | Required | Partial | No | Fast | Bootstrap |
-| BMA threshold (pipeline) | Averaged | Yes | No | Moderate | BMA weights |
-| BayesianGPD (pipeline) | Required | No | No | MCMC | Honest CrI |
-| EQRN | Required | Yes | No | GPU | Bootstrap |
-| **BNP SGG** | **None** | **No** | **No** | **Slow** | **Posterior** |
-
-The two columns where BNP SGG is uniquely better are the first and the last. No threshold, and the tail uncertainty quantification is a proper Bayesian posterior rather than a profile likelihood or bootstrap approximation. No other method in the toolkit answers: "What fraction of this book has infinite-mean losses?" with a posterior distribution over that fraction.
-
-The columns where it loses are real problems for production use. No covariates means it cannot do per-risk tail estimation — EQRN already does that. No truncation support means it cannot handle the per-policy limits that are standard in UK personal lines, which would cause it to systematically overestimate how heavy the tail is (censored observations look heavier than they are). The speed is genuinely prohibitive: the paper's Fortran implementation takes 40 minutes for n = 1,383 on a 3.00 GHz Intel Xeon. A Python/NumPyro reimplementation would be slower.
-
----
-
-## The MCMC machinery
-
-The fitting algorithm is a Gibbs sampler extending Neal's Algorithm 8 to the N-stable process setting. Five steps per sweep:
-
-1. **Latent Y_i update**: conjugate — the conditional posterior is Gamma(gamma_i + alpha_i, x_i - mu_i + beta_i). No Metropolis step; this is a direct draw.
-
-2. **Auxiliary values**: draw r = 3 new parameter vectors from the centering measure G_0. This is Neal's augmentation trick for handling non-conjugate cluster assignment.
-
-3. **Cluster assignment**: assign each observation to an existing cluster or a new one. The probability of joining cluster j is proportional to (n*_j - nu) × f(x_i | theta*_j), where n*_j is the cluster size excluding observation i. The (n*_j - nu) term is the N-stable analogue of the Dirichlet n_j term; nu acts as a discount factor penalising small clusters.
-
-4. **Cluster parameter update**: Metropolis-Hastings on (mu, gamma, alpha, beta) within each cluster, using a uniform random walk proposal with adaptive step sizes tuned in batches of 50 iterations.
-
-5. **nu update**: the concentration parameter nu is sampled via adaptive MH, with prior Be(0.5, 0.5) — the arcsine prior, which allows the data to determine whether clustering is tight or diffuse.
-
-The paper reports that on both real datasets (accident claims and England population data), the model over-clusters slightly relative to the truth — 19 posterior clusters on 1,383 observations vs a true structural count of perhaps 3–4 — but correctly identifies the heavy and light tail sub-populations despite this over-clustering. For tail decomposition purposes, over-clustering is harmless; what matters is that the alpha posteriors correctly separate into the right regimes.
-
----
-
-## What a Python implementation would look like
-
-We have not built this yet. The scoring puts it at 12/20 against our 14/20 build threshold — primarily because the 40-minute MCMC runtime is prohibitive for production use, and because the missing truncation support is a systematic bias risk on real UK insurance data with heterogeneous policy limits. BayesianGPD (arXiv:2510.14637) scores 16/20 and addresses a different problem (honest credible intervals under serial dependence); it is the higher priority Bayesian EVT addition.
-
-If we were building it, the API would follow the existing insurance-severity sklearn-compatible pattern:
-
-```python
-from insurance_severity import BNPHeavyTailSeverity
-
-model = BNPHeavyTailSeverity(
-    n_components_max=30,   # truncation level for N-stable stick-breaking
-    nu_prior=(0.5, 0.5),   # arcsine prior — paper's recommended default
-    n_warmup=1000,
-    n_samples=2000,
-    seed=42,
-)
-model.fit(large_losses)    # positive claims above a reporting threshold
-
-# The novel output: posterior tail decomposition
-decomp = model.tail_decomposition()
-# {'heavy': 0.144, 'intermediate': 0.588, 'light': 0.268}
-
-# Posterior mean number of clusters
-print(model.n_clusters_)   # e.g. 19
-
-# Density and quantile estimates from posterior predictive
-model.pdf(x)
-model.ppf(0.99)
-model.tvar(0.99)
+```
+P(alpha < 1)        = fraction of claims with infinite-variance tail potential
+P(1 ≤ alpha < 2)    = fraction with finite mean, infinite variance
+P(alpha ≥ 2)        = fraction with light tail
 ```
 
-The `tail_decomposition()` method is the uniquely novel output. Everything else — density, quantile, TVaR — can be approximated from existing tools. The posterior fraction in each tail regime is what no other method delivers.
+On the paper's accident insurance dataset, the decomposition comes out as:
 
-The dependency recommendation is NumPyro (≥0.15.0) with JAX (≥0.4.25). The N-stable stick-breaking construction is expressible in NumPyro's distribution language; JAX handles vectorised cluster parameter updates. The SGG log-likelihood must be implemented from scratch — it is not in NumPyro's distribution library. The critical constraint on x - mu > 0 (the SGG has support [mu, ∞)) requires careful handling in the log-likelihood to avoid NaN gradients.
+| Tail regime | Posterior probability |
+|---|---|
+| Heavy tail (alpha < 1, infinite variance) | 14.4% |
+| Intermediate (1 ≤ alpha < 2) | 58.8% |
+| Light tail (alpha ≥ 2) | 26.8% |
 
-For truncation — when policy limits cap individual claims — the corrected log-likelihood requires the SGG survival function:
+This is a number no other severity fitting method produces. The Hill estimator gives you a single ξ for the whole dataset. The spliced composite gives you a single GPD shape above the threshold. Neither tells you "14% of claims are coming from a regime where the variance is infinite." The BNP mixture does.
 
-```python
-# Per-observation truncation correction (policy limit T_i)
-log_lik_corrected = log_f_SGG(x, theta) - log_F_SGG(T, theta)
-```
-
-The SGG CDF has no closed form; it requires numerical integration. Without this correction, fitting BNP SGG to UK personal lines data with heterogeneous limits will underestimate alpha — making tails appear heavier than they are. We would not ship a version without truncation support.
-
----
-
-## What the paper does not tell you
-
-**No covariate extension.** The model fits a portfolio-level tail distribution. It cannot produce per-risk alpha estimates. If you want to know whether older properties have heavier subsidence tail distributions than newer ones — a straightforward and actuarially relevant question — BNP SGG has no answer. You could, in principle, parameterise the centering measure G_0 as a function of covariates, but this extension is not in the paper and is non-trivial to implement correctly.
-
-**No formal equivalence to the spliced approach.** The connection between BNP SGG and a spliced body-plus-GPD model is intuitive — both are trying to describe a multi-regime loss distribution — but there is no formal result here. The BNP approach makes the regime boundaries soft and data-determined; the splice makes them hard and user-specified. The BNP approach is more principled; the splice is more interpretable and directly produces ILF schedules. These are not the same model with different parameterisations.
-
-**Computational cost is a real barrier.** The 40-minute Fortran runtime for n = 1,383 claims scales badly. For a UK personal lines motor book with 50,000 large losses, the model is computationally infeasible without subsampling. The paper does not address subsampling. Variational inference exists as an alternative but VI with discrete latents is unreliable for BNP models — the posterior tail fraction estimates under VI are likely to be biased in ways that are hard to detect.
+For a subsidence portfolio, an analogous decomposition might reveal that the minor-claim sub-population sits clearly in the light-tail regime (alpha ≥ 2) while the structural-claim sub-population sits firmly in the heavy-tail regime (alpha < 1), validating the intuition that the distribution is genuinely bimodal in tail behaviour — not just in location.
 
 ---
 
-## How to use the ideas now
+## Against the alternatives
 
-Without a production implementation, the paper's contribution is still immediately useful for two things.
+The standard UK pricing toolkit for heavy-tail severity has several options. Here is where BNP mixture models sit relative to each.
 
-**Reinsurance triage.** Before buying or renewing an excess-of-loss treaty, run a visual tail analysis using insurance-severity's existing EVT toolkit. If the mean excess plot shows strong non-linearity (the mean excess function is not approximately linear above a threshold), a single GPD is likely misspecified. This is the signature of a multi-regime tail — the case where BNP SGG would tell you something a single GPD cannot. Flag it for qualitative discussion with your reinsurer.
+**Lognormal, Gamma, Burr.** These are single-family distributions fitted to the whole severity range. Their tail behaviour is fixed by the family — lognormal has a fixed tail index of zero (light tail in the GPD sense), which makes it structurally wrong for BI above £200k or subsidence structural claims. These distributions are appropriate for attritional claims, not for tail analysis.
 
-**Subsidence and EoW reserve review.** For a book with 500–2,000 large subsidence or EoW claims above a reporting threshold, a rough two-component analysis — split the data at an obvious trough in the loss distribution, fit GPD separately above and below — gives you a first approximation to the tail decomposition that BNP SGG would produce automatically. It is manual and fragile, but it answers the same qualitative question: is the heavy-loss sub-population pulling the tail into infinite-mean territory?
+**Spliced composites (Lognormal-GPD, Gamma-GPD).** A body distribution below a threshold, a GPD tail above it. The [composite models in insurance-severity](/2026/03/13/insurance-composite/) implement this properly, with mode-matching for covariate-dependent thresholds and direct ILF output. For most pricing applications, this is the right tool. The limitation is the threshold: it must be chosen, and a single GPD above it cannot represent a mixture of tail regimes.
 
-```python
-from insurance_severity.evt import TruncatedGPD
-import numpy as np
+**TruncatedGPD.** The [truncation-corrected EVT approach](/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/) handles policy limits properly and eliminates the truncation bias. Still requires a threshold, still single-regime above it.
 
-# Rough manual two-component approximation
-# Claims above reporting threshold, with per-claim policy limits
-large_losses = np.array([...])  # claims > £25,000
-policy_limits = np.array([...])  # per-claim
+**BNP SGG mixture.** No threshold required. Multiple tail regimes identified automatically. Posterior alpha decomposition. But: no covariate support (every risk in the portfolio gets the same model), no truncation correction (a serious problem for real insurance data with policy limits), slow MCMC (40 minutes on n = 1,383 claims in Fortran; expect 2–5 hours in Python), no direct ILF output.
 
-# Split at a natural trough — inspect histogram first
-attritional_large = large_losses[large_losses < 100_000]
-structural = large_losses[large_losses >= 100_000]
+| Method | Threshold needed? | Covariates | Policy limit correction | ILF output | Runtime |
+|---|---|---|---|---|---|
+| Spliced composite | Yes | Yes (mode-matching) | No | Direct | Seconds |
+| TruncatedGPD | Yes | No | Yes | Via EVT | Seconds |
+| BMA threshold selection | Averaged | Yes | No | Yes | Minutes |
+| BNP SGG mixture | **No** | **No** | **No** | Indirect | **Hours** |
 
-for component, name in [(attritional_large, "attritional-large"),
-                        (structural, "structural")]:
-    limits_component = policy_limits[large_losses >= (100_000 if name == "structural" else 0)]
-    limits_component = limits_component[limits_component >= component.min()]
-
-    gpd = TruncatedGPD()
-    gpd.fit(component, upper_truncation=limits_component)
-
-    xi = gpd.xi_  # tail index; 1/xi maps to alpha in SGG notation
-    print(f"{name}: xi={xi:.3f}, alpha_approx={1/xi:.3f}")
-    print(f"  Infinite mean:     {xi > 1.0}")   # xi > 1 <=> alpha < 1
-    print(f"  Infinite variance: {xi > 0.5}")   # xi > 0.5 <=> alpha < 2
-```
-
-This is a workaround, not a solution. It requires a user-specified split point (the trough), assumes both sub-populations are Pareto-tailed, and produces no posterior uncertainty on the tail decomposition fractions. What BNP SGG would give you is the same decomposition without the arbitrary split, with a posterior distribution over the fraction in each regime, and with automatic detection of how many distinct tail sub-populations exist.
+The BNP SGG mixture is uniquely threshold-free and uniquely gives a posterior tail decomposition. It gives up everything else to get there.
 
 ---
 
-## The verdict
+## Concrete example: UK subsidence claims
 
-Nieto-Barajas (arXiv:2602.07228) is a genuine methodological contribution. The SGG+N-stable combination is new in Python — there is no existing implementation. The posterior tail decomposition is a diagnostic that has no equivalent in the current EVT toolkit. For reinsurance structuring decisions on UK specialty books — subsidence, EoW, bodily injury — knowing what fraction of the portfolio has infinite-mean loss potential is a question worth answering rigorously.
+Consider a hypothetical subsidence portfolio with 800 large claims above a £10k deductible. The empirical distribution shows the bimodal pattern: a cluster around £12k–£25k (cosmetic/minor structural) and a cluster around £60k–£100k (underpinning, significant structural intervention), with a heavy tail above £200k for complete rebuilds.
 
-The barriers are real: no truncation support (a systematic bias risk for real insurance data), no covariate extension, and computational cost that is prohibitive for large books without subsampling. We are not building it in the current phase. When the author releases code, or when a follow-up paper addresses truncation, the calculus changes.
+A standard GPD fitted above a £50k threshold might give ξ ≈ 0.35. A standard GPD fitted above a £75k threshold might give ξ ≈ 0.50. The difference matters: at a £1m reinsurance attachment point, these two tail indices imply materially different layer costs.
 
-For now, the paper earns a careful read for anyone doing reinsurance analytics or tail risk diagnostics on heterogeneous portfolios. The SGG structure is worth understanding even if you are not running the full Bayesian machinery — the insight that gamma ≠ 1 allows body shapes that GPD cannot capture, while nesting GPD exactly when gamma = 1, is directly useful for understanding when GPD is misspecified.
+A BNP SGG mixture, fitted to the whole distribution without a threshold, would likely identify two or three clusters with distinct alpha values:
+- Cluster 1 (minor claims): alpha ≈ 2.5–3.0 — light tail, all moments finite
+- Cluster 2 (structural claims): alpha ≈ 1.2–1.5 — intermediate, finite mean but heavy variance
+- Cluster 3 (catastrophic claims): alpha ≈ 0.5–0.8 — heavy tail, infinite variance
+
+The posterior tail decomposition then gives you: roughly 8–12% of this portfolio is generating infinite-variance losses. That is the number you want when deciding whether to buy aggregate stop-loss cover versus per-risk excess of loss, or when stress-testing the XL layer under extreme scenarios. No other method gives you that fraction directly.
 
 ---
 
-*The paper is Nieto-Barajas, L.E. (2026), "Modelling heavy tail data with bayesian nonparametric mixtures", arXiv:2602.07228, stat.ME. Submitted February 2026.*
+## The limitations are real
 
-*Related:*
-- *[Two-Hump Distributions: Why Your Severity Model Gets the 95th Percentile Wrong](/2026/04/02/two-hump-distributions-severity-model-95th-percentile/) — bimodal severity in UK motor BI and EoW; NeuralGaussianMixture*
-- *[Stochastic Ordering for Extreme Claims: What It Actually Tells Cat XL Pricers](/2026/04/02/stochastic-ordering-extreme-claims-cat-xl-reinsurance/) — structural portfolio comparison for cat XL*
-- *[Spliced Severity Distributions: When One Distribution Isn't Enough](/2025/03/15/spliced-severity-distributions-when-one-distribution-isnt-enough/) — the parametric alternative with explicit threshold*
+We want to be specific about where BNP SGG breaks down for standard UK insurance use.
+
+**No truncation correction.** Most UK insurance claims data is truncated. Policy limits cap what you observe above the retention. Reinsurance data is available only above the attachment point (left-truncated). IBNR claims introduce right-censoring. The paper provides no treatment for any of this.
+
+This is not a minor omission. When you fit BNP SGG to data that is right-truncated at policy limits, the model sees a pile-up of claims at the limit and interprets it as genuine observations, not censored ones. This pulls alpha estimates upward — the model thinks the tails are lighter than they are. The bias is systematic and does not average out with more data. For real UK motor BI data with heterogeneous policy limits, fitting BNP SGG without a truncation correction will give you systematically wrong tail decompositions. No truncation correction currently exists for this model.
+
+**No covariates.** Every risk in the portfolio gets the same posterior tail decomposition. You cannot ask "what fraction of young driver BI claims have infinite-variance loss potential?" because there is no mechanism to condition on covariates. For personal lines pricing, where per-risk differentiation is the whole point, this is a fundamental limitation. The composite regression models and extreme quantile regression networks both handle covariates; BNP SGG does not.
+
+**Computational cost.** The paper's Fortran implementation takes 40 minutes on n = 1,383 claims. A Python implementation would likely take 2–5 hours for the same dataset. For a UK motor BI book with 50,000+ claims, this is infeasible without significant subsampling or approximation. Variational inference can cut the runtime, but VI with discrete latent variables (cluster assignments) is known to underestimate posterior uncertainty — potentially biasing the tail decomposition estimates you care about most.
+
+**No direct ILF or TVaR output.** Pricing outputs require additional post-processing via posterior predictive simulation. For a team that needs a number for a treaty negotiation on Tuesday morning, this is friction.
+
+---
+
+## When to use it
+
+Given these limitations, where does BNP SGG genuinely add value?
+
+**Portfolio-level tail triaging.** For a specialty lines book with 500–2,000 large losses above a reporting threshold — a mid-tier Lloyd's syndicate's large-loss run, a reinsurer's ground-up analysis of a casualty portfolio — the posterior tail decomposition is a legitimate diagnostic. The question "what fraction of this portfolio is generating infinite-variance losses?" has a defensible answer via BNP SGG that no other method provides. This is valuable input to treaty structure decisions.
+
+**Heterogeneous populations without a known split.** Subsidence (minor vs structural vs catastrophic), bodily injury (soft tissue vs catastrophic disability vs fatality), D&O (settlement-range vs litigation-range vs class action) — these are genuinely multi-regime distributions where the sub-populations are not known in advance. BNP SGG's clustering identifies them without requiring you to pre-specify the number of regimes or their locations.
+
+**Actuarial reserve reviews.** For a closed portfolio of large claims, the BNP SGG posterior gives a more rigorous characterisation of the tail than a mean excess plot or a parametric GPD fitted to the top 200 claims. The posterior credible intervals around the tail fraction estimates are honest — they reflect the genuine uncertainty in how many observations are in the heavy-tail regime.
+
+**Where not to use it:** personal lines pricing with covariates, any dataset with material policy limit truncation, any analysis where you need ILF tables or TVaR numbers on a normal timeline.
+
+---
+
+## Implementation status
+
+The paper's Fortran code is not released. A Python implementation requires around 800 lines: SGG log-likelihood from scratch, N-stable stick-breaking weights, Neal's Algorithm 8 extended to the N-stable process, adaptive Metropolis-Hastings for cluster parameter updates, and post-MCMC tail decomposition. The recommended dependencies are NumPyro and JAX.
+
+We have not built this and are not planning to build it in the near term. Our standard research evaluation gives it 12/20 — below the 14/20 threshold for a full implementation. The novelty is genuine (the SGG + N-stable combination does not exist in Python, and the tail decomposition is a new actuarial diagnostic concept), but the feasibility is low and the value is constrained by the lack of truncation handling and covariates.
+
+The conditions that would change this: the author releases code (cuts implementation effort by roughly 60%); a truncation extension appears in a follow-up paper; or a specific use case emerges where the portfolio-level tail decomposition is the direct deliverable and the data limitations are manageable.
+
+---
+
+## What to use instead, now
+
+For most UK personal lines pricing problems involving heavy tails:
+
+If your problem is **body and tail, with covariates**: use `LognormalBurrComposite` or `LognormalGPDComposite` from `insurance-severity`. These handle covariate-dependent thresholds, produce ILF schedules, and run in seconds. See [Composite Severity Regression](/2026/03/13/insurance-composite/).
+
+If your problem is **tail only, with policy limit truncation**: use `TruncatedGPD` from `insurance-severity`. The truncation correction is free if you have the censoring flag. See [Truncation-Corrected GPD](/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/).
+
+If your problem is **per-risk large loss loadings without parametric assumptions**: use quantile GBMs via `insurance-quantile`. See [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/).
+
+If your problem is **portfolio-level tail characterisation for specialty lines or casualty, with clean (non-truncated) data, and you have the compute time**: BNP SGG mixture models are the right conceptual tool. Wait for a Python implementation before committing to it — or expect to invest several weeks in the implementation yourself.
+
+The paper is worth reading regardless of whether you implement it. The connection between SGG and GPD (gamma = 1 reduces exactly to GPD, so the whole EVT toolkit nests inside the BNP framework), the N-stable process as a heavier-weighted alternative to the Dirichlet process, and the posterior tail decomposition framework are ideas that should inform how you think about severity modelling even if you never run the MCMC.
+
+---
+
+**Reference:** Nieto-Barajas, L.E. (2026). Modelling heavy tail data with bayesian nonparametric mixtures. arXiv:2602.07228.
+
+---
+
+**Related posts:**
+- [Truncation-Corrected GPD: Unbiased Tail Index Under Policy Limits](/2026/03/20/your-gpd-is-lying-because-your-claims-are-truncated/) — the right tool when you have censored claims data and need a tail index
+- [Composite Severity Regression: Getting the Tail Right Without Throwing Away the Body](/2026/03/13/insurance-composite/) — spliced models with covariate-dependent thresholds for pricing
+- [Large Loss Loading for Home Insurance](/2026/03/04/large-loss-loading-for-home-insurance/) — per-risk tail loadings using quantile GBMs when parametric EVT is too restrictive
