@@ -4,7 +4,7 @@ title: "Conformal Risk Control Assumes Your Loss Decreases With Interval Width. 
 date: 2026-04-04
 categories: [conformal-prediction, insurance-pricing]
 tags: [conformal-risk-control, non-monotone-loss, interval-scoring, winkler-score, solvency-ii, finite-sample-guarantee, insurance-conformal, aldirawi-2026, arXiv-2604.01502, model-validation, uncertainty-quantification, actuarial]
-description: "Conformal risk control (Angelopoulos et al. 2022) requires monotone loss functions for its finite-sample guarantees. The Winkler score, two-sided regulatory tests, and capital requirement functions are all non-monotone. Aldirawi, Li and Guo (arXiv:2604.01502, April 2026) generalise CRC to this setting with an O(sqrt(log(m)/n)) bound. We explain what breaks without monotonicity and why this matters for insurance model validation."
+description: "Conformal risk control (Angelopoulos et al. ICLR 2024) requires monotone loss functions for its finite-sample guarantees. The Winkler score, two-sided regulatory tests, and capital requirement functions are all non-monotone. Aldirawi, Li and Guo (arXiv:2604.01502, April 2026) generalise CRC to this setting with an O(sqrt(log(m)/n)) bound. We explain what breaks without monotonicity and why this matters for insurance model validation."
 math: true
 author: burning-cost
 ---
@@ -95,7 +95,7 @@ The grid size $m$ matters in the bound. For dense grids ($m = 1{,}000$), the $\s
 
 The paper also does not address the case where the risk function is continuous but non-monotone, and you want to optimise over a continuous $\lambda$. The finite-grid framework is natural for implementations but there will be problems where the grid approximation introduces meaningful discretisation error.
 
-The preprint was submitted April 2, 2026. It has not been peer reviewed.
+The preprint was submitted 2 April 2026. It has not been peer reviewed.
 
 ---
 
@@ -103,7 +103,7 @@ The preprint was submitted April 2, 2026. It has not been peer reviewed.
 
 Standard conformal risk control is already the right framework for insurance model validation when the loss is monotone — we laid out the case in detail in [Coverage Is the Wrong Guarantee for Pricing Actuaries](/libraries/pricing/uncertainty/2026/03/13/insurance-conformal-risk/). This paper removes the restriction that was most likely to cause problems in practice.
 
-The Winkler score case matters most immediately. Interval scoring rules are the standard way to evaluate probabilistic forecasts in meteorology, macroeconomics, and increasingly in actuarial science — the Institute and Faculty of Actuaries working party on model uncertainty has circulated draft guidance recommending interval scores for reserve range communication. Using CRC with the Winkler score loss gives you a prediction interval that is calibrated not just to coverage probability but to the expected value of the interval-scoring-rule loss — a materially stronger claim about the quality of your uncertainty estimates.
+The Winkler score case matters most immediately. Interval scoring rules are the standard way to evaluate probabilistic forecasts in meteorology, macroeconomics, and increasingly in actuarial science. Using CRC with the Winkler score loss gives you a prediction interval that is calibrated not just to coverage probability but to the expected value of the interval-scoring-rule loss — a materially stronger claim about the quality of your uncertainty estimates than "this interval contains the true value 95% of the time".
 
 The two-sided regulatory test case has longer-term relevance. PRA CP6/24 model risk guidance for insurance is still relatively new and model validation practice under it is not settled. As validation frameworks mature, we expect two-sided performance criteria to become more common — "the model should neither significantly under-estimate nor significantly over-estimate" is a natural requirement that has no one-sided expression. Non-monotone CRC is the tool for that.
 
@@ -111,13 +111,12 @@ The two-sided regulatory test case has longer-term relevance. PRA CP6/24 model r
 
 ## The paper
 
-Tareq Aldirawi, Yun Li and Wenge Guo, "Non-monotonicity in Conformal Risk Control", arXiv:2604.01502, April 2026. 38 pages. The main bound is Theorem 1; the lower bound establishing minimax optimality is Theorem 2; Lipschitz and monotone refinements are in Section 3; importance-weighted extension in Section 4.
+Tareq Aldirawi, Yun Li and Wenge Guo, "Non-monotonicity in Conformal Risk Control", arXiv:2604.01502, April 2026. The main bound is Theorem 1; the lower bound establishing minimax optimality is Theorem 2; Lipschitz and monotone refinements are in Section 3; importance-weighted extension in Section 4.
 
 ---
 
 ## Related
 
 - [Coverage Is the Wrong Guarantee for Pricing Actuaries](/libraries/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control foundations and `insurance-conformal.risk`
-- [Your Conformal Intervals Are 95% on Average — and That Is Not Good Enough](/conformal-prediction/insurance-pricing/2026/04/04/conditional-validity-index-conformal-model-selection/) — conditional coverage and the CVI
-- [Conformal Prediction for Joint Frequency-Severity Models](/conformal-prediction/insurance-pricing/2026/03/20/conformal-prediction-joint-frequency-severity-models/) — multivariate prediction sets
+- [Conformal Prediction Works on Average — But Does It Work for Your Riskiest Customers?](/conformal-prediction/insurance-pricing/2026/04/04/conditional-validity-index-conformal-model-selection/) — conditional coverage and the CVI
 - [Your Joint Prediction Sets Are 20–40% Too Wide](/conformal-prediction/insurance-pricing/2026/04/03/multivariate-conformal-prediction-mahalanobis-insurance/) — Mahalanobis non-conformity scores
