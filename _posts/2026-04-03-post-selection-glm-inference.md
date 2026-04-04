@@ -150,4 +150,4 @@ The paper is Shen, K., Gregory, K.B., and Huang, S. (2026), "Post-selection infe
 ## Related
 
 - [Your GLM Confidence Intervals Are Wrong After Variable Selection](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the theory post: what post-selection bias is, why it matters, and how the Fisher scoring linearisation works
-- [Post-Selection GLM Inference Is Now Usable in Python](/techniques/2026/04/03/post-selection-glm-confidence-intervals-insurance-pricing/) — the implementation post: `PostSelectionGLM` and `DataSplitPostSelectionGLM` in detail, with worked examples
+- [Post-Selection GLM Inference Is Now Usable in Python](/2026/04/03/post-selection-glm-confidence-intervals-insurance-pricing/) — the implementation post: `PostSelectionGLM` and `DataSplitPostSelectionGLM` in detail, with worked examples

@@ -106,6 +106,6 @@ The code does not exist yet. The mathematics does.
 ---
 
 *Related:*
-- [Credibility Theory in Python: A Complete Bühlmann-Straub Tutorial](/blog/2026/04/04/credibility-theory-python-buhlmann-straub-tutorial/) — the practical implementation of classical B-S and Poisson-Gamma, the starting point before amortized inference becomes relevant
-- [When Empirical Bayes Goes Wrong: Lessons From Conformal Inference for Insurance Credibility](/blog/2026/04/04/coin-conformal-empirical-bayes-prior-misspecification-credibility/) — prior misspecification in the B-S context: why small group counts corrupt the structural parameters
-- [Does Bühlmann-Straub Credibility Actually Work in Insurance Pricing?](/blog/2026/03/28/does-buhlmann-straub-credibility-actually-work/) — benchmark evidence on when the classical approach is reliable and when uncertainty intervals are needed
+- [Credibility Theory in Python: A Complete Bühlmann-Straub Tutorial](/2026/04/04/credibility-theory-python-buhlmann-straub-tutorial/) — the practical implementation of classical B-S and Poisson-Gamma, the starting point before amortized inference becomes relevant
+- [When Empirical Bayes Goes Wrong: Lessons From Conformal Inference for Insurance Credibility](/2026/04/04/coin-conformal-empirical-bayes-prior-misspecification-credibility/) — prior misspecification in the B-S context: why small group counts corrupt the structural parameters
+- [Does Bühlmann-Straub Credibility Actually Work in Insurance Pricing?](/2026/03/28/does-buhlmann-straub-credibility-actually-work/) — benchmark evidence on when the classical approach is reliable and when uncertainty intervals are needed

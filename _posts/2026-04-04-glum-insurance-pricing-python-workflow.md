@@ -22,7 +22,7 @@ uv add glum insurance-conformal insurance-monitoring insurance-fairness insuranc
 
 ## 1. Fit a Tweedie GLM with glum
 
-freMTPL2 is the standard benchmark dataset for non-life pricing. It contains about 678,000 French motor policies with claim counts, exposure, and nine rating factors. If you want the full step-by-step on building the Poisson frequency GLM itself — data prep, offset handling, deviance residuals, factor relativities — that is covered separately in the [GLM frequency model tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/).
+freMTPL2 is the standard benchmark dataset for non-life pricing. It contains about 678,000 French motor policies with claim counts, exposure, and nine rating factors. If you want the full step-by-step on building the Poisson frequency GLM itself — data prep, offset handling, deviance residuals, factor relativities — that is covered separately in the [GLM frequency model tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/).
 
 ```python
 import numpy as np
@@ -344,6 +344,6 @@ The [insurance-conformal](/insurance-conformal/) and [insurance-governance](/ins
 ---
 
 *Related:*
-- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the Poisson frequency model build that feeds into this workflow
-- [Insurance Model Monitoring in Python: A Practitioner's Guide](/blog/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) — deeper coverage of the three monitoring scenarios and when each action is warranted
-- [Five Libraries, One Pipeline: End-to-End Motor Pricing in Python](/blog/2026/04/04/five-libraries-one-pipeline-end-to-end-motor-pricing/) — an EBM-based alternative that shows the same five libraries working from model fit through governance report
+- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the Poisson frequency model build that feeds into this workflow
+- [Insurance Model Monitoring in Python: A Practitioner's Guide](/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) — deeper coverage of the three monitoring scenarios and when each action is warranted
+- [Five Libraries, One Pipeline: End-to-End Motor Pricing in Python](/2026/04/04/five-libraries-one-pipeline-end-to-end-motor-pricing/) — an EBM-based alternative that shows the same five libraries working from model fit through governance report

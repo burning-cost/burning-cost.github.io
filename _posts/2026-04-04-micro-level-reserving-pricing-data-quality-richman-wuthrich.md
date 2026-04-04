@@ -137,5 +137,5 @@ The Python ecosystem does not yet have a complete individual-level reserving sol
 ---
 
 *Related:*
-- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/blog/2026/04/04/actuarial-model-validation-python/) — the five-test validation suite that should include reserve bias checks for BI and liability pricing models
-- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the GLM workflow where chain-ladder ultimate estimates feed in as the dependent variable
+- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/2026/04/04/actuarial-model-validation-python/) — the five-test validation suite that should include reserve bias checks for BI and liability pricing models
+- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the GLM workflow where chain-ladder ultimate estimates feed in as the dependent variable

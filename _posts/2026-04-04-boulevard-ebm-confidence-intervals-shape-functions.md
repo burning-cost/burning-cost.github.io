@@ -139,4 +139,4 @@ Reference: Fang, R., Tan, Z., Pipping-Gamon, T. & Hooker, G. (2026). 'Statistica
 
 - [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/03/28/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)
 - [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/)
-- [Five Libraries, One Pipeline: End-to-End Motor Pricing in Python](/blog/2026/04/04/five-libraries-one-pipeline-end-to-end-motor-pricing/) — EBM as the core model in a complete pricing pipeline from tariff to governance report
+- [Five Libraries, One Pipeline: End-to-End Motor Pricing in Python](/2026/04/04/five-libraries-one-pipeline-end-to-end-motor-pricing/) — EBM as the core model in a complete pricing pipeline from tariff to governance report

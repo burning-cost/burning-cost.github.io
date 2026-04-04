@@ -96,7 +96,7 @@ On top of handling right censoring and left truncation jointly, the algorithm's 
 
 The algorithm is a TMLE in three stages: cross-fitted nuisance estimation (propensity, conditional survival, censoring survival, and an entry time hazard for left truncation), a single logistic-regression TMLE fluctuation step targeting the efficient influence function across all time points jointly, and influence-function variance with simultaneous confidence bands over $t$.
 
-We covered the methodology in detail [yesterday's post](/techniques/causal-inference/2026/04/01/surv-itmle-survival-causal-heterogeneous-treatment-effects-insurance-pricing/). The short version for practitioners: it is theoretically the right answer, it handles data structures that IPCW cannot, and there is currently **no Python package for it**. No R package either. The paper is five days old.
+We covered the methodology in detail [yesterday's post](/2026/04/01/surv-itmle-survival-causal-heterogeneous-treatment-effects-insurance-pricing/). The short version for practitioners: it is theoretically the right answer, it handles data structures that IPCW cannot, and there is currently **no Python package for it**. No R package either. The paper is five days old.
 
 ---
 
@@ -160,6 +160,6 @@ Cui, R., Kosorok, M., Sverdrup, E., Wager, S., and Zhu, R. (2023). 'Estimating h
 
 ## Related posts
 
-- [Your Retention Model Is Wrong About When Customers Lapse](/techniques/causal-inference/2026/04/01/surv-itmle-survival-causal-heterogeneous-treatment-effects-insurance-pricing/) — full methodology explainer for surv-iTMLE
-- [insurance-survival: Survival Modelling for Insurance Pricing](/libraries/pricing/insurance-survival/) — `CauseSpecificMortality`, `AJRecalibrator`, and left-truncation support
-- [insurance-uplift: Individual-Level Treatment Effect Estimation](/libraries/causal-inference/insurance-uplift/) — library overview and current scope
+- [Your Retention Model Is Wrong About When Customers Lapse](/2026/04/01/surv-itmle-survival-causal-heterogeneous-treatment-effects-insurance-pricing/) — full methodology explainer for surv-iTMLE
+- [insurance-survival: Survival Modelling for Insurance Pricing](https://github.com/burning-cost/insurance-survival) — `CauseSpecificMortality`, `AJRecalibrator`, and left-truncation support
+- [insurance-uplift: Individual-Level Treatment Effect Estimation](https://github.com/burning-cost/insurance-uplift) — library overview and current scope

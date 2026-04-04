@@ -274,6 +274,6 @@ The FCA's February 2026 report is at fca.org.uk, Pub ref: 1-009074. The Consumer
 
 ## Related posts
 
-- [insurance-governance: MRM Model Cards and Validation Reports](/governance/2026/03/25/insurance-governance-mrm-model-cards/) — the development-phase validation layer that OutcomeTestingFramework complements
-- [The EU AI Act and Insurance Pricing Fairness](/regulation/fairness/2026/04/01/eu-ai-act-algorithmic-fairness-insurance-pricing-actuaries/) — the broader AI regulation context
-- [FCA PS25/21 and Proxy Discrimination in Motor Pricing](/regulation/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the pricing practices regulatory background
+- [insurance-governance: MRM Model Cards and Validation Reports](/2026/03/25/insurance-governance-mrm-model-cards/) — the development-phase validation layer that OutcomeTestingFramework complements
+- [The EU AI Act and Insurance Pricing Fairness](/2026/04/01/eu-ai-act-algorithmic-fairness-insurance-pricing-actuaries/) — the broader AI regulation context
+- [FCA PS25/21 and Proxy Discrimination in Motor Pricing](/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the pricing practices regulatory background

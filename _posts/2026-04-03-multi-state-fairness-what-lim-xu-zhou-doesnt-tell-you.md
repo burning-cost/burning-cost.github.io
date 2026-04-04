@@ -9,7 +9,7 @@ math: true
 author: Burning Cost
 ---
 
-We have covered the core argument of Lim, Xu, and Zhou (arXiv:2602.04791) twice on this site — [in March](https://burning-cost.github.io/fairness/regulation/life-insurance/2026/03/25/fair-pricing-long-term-insurance/) and [again in April](https://burning-cost.github.io/fairness/insurance-pricing/2026/04/01/lindholm-fairness-is-not-enough-for-income-protection-pricing/). The central claim — apply Lindholm marginalisation per transition, not on the aggregate premium, then rerun Kolmogorov — is correct. If you price income protection or critical illness and you are thinking about fairness compliance, this is the paper that matters.
+We have covered the core argument of Lim, Xu, and Zhou (arXiv:2602.04791) twice on this site — [in March](https://burning-cost.github.io/2026/03/25/fair-pricing-long-term-insurance/) and [again in April](https://burning-cost.github.io/2026/04/01/lindholm-fairness-is-not-enough-for-income-protection-pricing/). The central claim — apply Lindholm marginalisation per transition, not on the aggregate premium, then rerun Kolmogorov — is correct. If you price income protection or critical illness and you are thinking about fairness compliance, this is the paper that matters.
 
 But after a careful read of the full paper, including the appendices, there are four things it does not tell you that you need to know before you build.
 
@@ -141,7 +141,7 @@ The paper is good work. It makes the right architectural argument. But it is a r
 
 ---
 
-- [Multi-State Fairness in Income Protection and Critical Illness: Why Lindholm on the Aggregate Premium Is Wrong](/fairness/life-insurance/2026/03/31/multi-state-fairness-income-protection-critical-illness-poisson-decomposition/) — the full technical argument
-- [Lindholm Fairness Is Not Enough for Income Protection Pricing](/fairness/insurance-pricing/2026/04/01/lindholm-fairness-is-not-enough-for-income-protection-pricing/) — `insurance-fairness` v1.1.0 implementation and worked example
-- [Sequential Optimal Transport for Multi-Attribute Fairness](/fairness/machine-learning/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — extending OT pre-processing to multiple sensitive attributes simultaneously
-- [Fairness-Accuracy Pareto Frontiers with NSGA-II](/tutorials/fairness/2026/03/28/fairness-accuracy-pareto-nsga2-insurance-pricing/) — quantifying the tradeoff explicitly for governance
+- [Multi-State Fairness in Income Protection and Critical Illness: Why Lindholm on the Aggregate Premium Is Wrong](/2026/03/31/multi-state-fairness-income-protection-critical-illness-poisson-decomposition/) — the full technical argument
+- [Lindholm Fairness Is Not Enough for Income Protection Pricing](/2026/04/01/lindholm-fairness-is-not-enough-for-income-protection-pricing/) — `insurance-fairness` v1.1.0 implementation and worked example
+- [Sequential Optimal Transport for Multi-Attribute Fairness](/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — extending OT pre-processing to multiple sensitive attributes simultaneously
+- [Fairness-Accuracy Pareto Frontiers with NSGA-II](/2026/03/28/fairness-accuracy-pareto-nsga2-insurance-pricing/) — quantifying the tradeoff explicitly for governance

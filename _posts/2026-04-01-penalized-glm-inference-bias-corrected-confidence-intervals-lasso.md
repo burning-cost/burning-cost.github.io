@@ -160,7 +160,7 @@ Manna, Alokesh, Zijian Huang, Dipak K. Dey, Yuwen Gu, and Robin He. "Interval Es
 
 ## Related posts
 
-- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/techniques/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the motivation post: why naive post-selection CIs cover at 70–80%
-- [DebiasedGLM: Honest Confidence Intervals for Lasso-Selected Rating Models](/techniques/2026/04/01/debiased-glm-inference/) — the v0.4.0 predecessor, covering Poisson and Gamma with a single-strategy API
-- [GAM vs NAM for Insurance Pricing: A Decision Guide](/techniques/pricing/2026/03/31/gam-vs-nam-insurance-pricing-decision-guide/) — interpretability tradeoffs when moving beyond the standard GLM
-- [GLM Insurance Python: UK Pricing Actuary Guide](/techniques/pricing/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/) — the foundational GLM reference for the library
+- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the motivation post: why naive post-selection CIs cover at 70–80%
+- [DebiasedGLM: Honest Confidence Intervals for Lasso-Selected Rating Models](/2026/04/01/debiased-glm-inference/) — the v0.4.0 predecessor, covering Poisson and Gamma with a single-strategy API
+- [GAM vs NAM for Insurance Pricing: A Decision Guide](/2026/03/31/gam-vs-nam-insurance-pricing-decision-guide/) — interpretability tradeoffs when moving beyond the standard GLM
+- [GLM Insurance Python: UK Pricing Actuary Guide](/2026/03/22/glm-insurance-python-uk-pricing-actuary-guide/) — the foundational GLM reference for the library

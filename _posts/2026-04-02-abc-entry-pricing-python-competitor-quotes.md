@@ -386,7 +386,7 @@ credibility_model = BuhlmannStraub(
 )
 ```
 
-The [`insurance-credibility` library](/libraries/insurance-credibility/) documents the full API. The point here is that the ABC output is already in the right form — a scalar prior and a variance — without any additional transformation. You do not need to fit a parametric prior; the posterior already is the prior.
+The [`insurance-credibility` library](/insurance-credibility/) documents the full API. The point here is that the ABC output is already in the right form — a scalar prior and a variance — without any additional transformation. You do not need to fit a parametric prior; the posterior already is the prior.
 
 On a UK pet book writing 2,000-3,000 policies in Year 1, expect Z to reach 0.3-0.4 by month 18 and 0.6+ by month 30, assuming reasonable spread across risk classes. By Year 3 you should have enough to run a proper GLM. The ABC prior then becomes a historical artefact and the credibility blending is with the GLM relativities rather than the market MAP.
 

@@ -139,5 +139,5 @@ Steps 1–3 above are achievable with internal data in less than a week of imple
 
 ## Related posts
 
-- [Applying Bonus-Malus to Driving Behaviour, Not Just Claims](/telematics/techniques/2026/04/01/weekly-dynamic-telematics-bms-bonus-malus-driving-behaviour/) — the telematics extension of BMS, which changes the game-theoretic structure for policyholders with black-box devices
+- [Applying Bonus-Malus to Driving Behaviour, Not Just Claims](/2026/04/01/weekly-dynamic-telematics-bms-bonus-malus-driving-behaviour/) — the telematics extension of BMS, which changes the game-theoretic structure for policyholders with black-box devices
 - [Why Your Reinsurer Is Never Offering You a Fair Deal](/2026/04/02/reinsurer-never-fair-deal-game-theory-treaty-pricing/) — the Boonen/Ghossoub result on Stackelberg inefficiency in treaty pricing; same game-theoretic framework, different application

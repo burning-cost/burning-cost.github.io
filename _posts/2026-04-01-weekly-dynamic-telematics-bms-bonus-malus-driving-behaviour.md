@@ -163,5 +163,5 @@ The precursor: Guillen, M., Perez-Marin, A.M. & Nielsen, J.P. (2024). 'Weekly dy
 
 ## Related posts
 
-- [Scoring a Trip as a Function, Not a Feature Vector](/telematics/techniques/2026/03/31/telematics-trip-scoring-functional-data-wavelets/) — the CTHMM and wavelet approaches that produce the weekly features the BMS then tracks
-- [Cross-Product Claim Scores: Do They Work in the UK?](/techniques/pricing/2026/04/01/cross-product-claim-scores-uk-viability/) — the classical BM-panel framework for claims history, which this paper extends to telematics signals
+- [Scoring a Trip as a Function, Not a Feature Vector](/2026/03/31/telematics-trip-scoring-functional-data-wavelets/) — the CTHMM and wavelet approaches that produce the weekly features the BMS then tracks
+- [Cross-Product Claim Scores: Do They Work in the UK?](/2026/04/01/cross-product-claim-scores-uk-viability/) — the classical BM-panel framework for claims history, which this paper extends to telematics signals

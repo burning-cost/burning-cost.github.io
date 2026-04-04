@@ -166,6 +166,6 @@ Burger, Andreas. "Distribution-Free Process Monitoring Using Conformal Predictio
 
 ## Related
 
-- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/techniques/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — shift detection and importance weighting before conformal correction
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/techniques/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control and the full `insurance-conformal` library
-- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/techniques/pricing/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI and group-conditional calibration for Tweedie models
+- [Covariate Shift in Motor Pricing: Detection, Correction, and Conformal Intervals](/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — shift detection and importance weighting before conformal correction
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control and the full `insurance-conformal` library
+- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI and group-conditional calibration for Tweedie models

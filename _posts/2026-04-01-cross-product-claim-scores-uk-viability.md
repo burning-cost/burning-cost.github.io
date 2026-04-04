@@ -131,5 +131,5 @@ Verschuren, R.M. (2021). 'Predictive Claim Scores for Dynamic Multi-Product Risk
 
 ## Related posts
 
-- [Dynamic Credibility in Insurance Pricing: The insurance-credibility Library](/techniques/pricing/2025/11/18/dynamic-credibility-insurance-credibility/) — the single-product dynamic claim score foundation this extends
-- [Gamma Decay and Claims Inflation Persistence](/techniques/pricing/2026/03/31/gamma-decay-claims-inflation-persistence/) — the inflation persistence mechanism in our credibility framework
+- [Dynamic Credibility in Insurance Pricing: The insurance-credibility Library](/2025/11/18/dynamic-credibility-insurance-credibility/) — the single-product dynamic claim score foundation this extends
+- [Gamma Decay and Claims Inflation Persistence](/2026/03/31/gamma-decay-claims-inflation-persistence/) — the inflation persistence mechanism in our credibility framework

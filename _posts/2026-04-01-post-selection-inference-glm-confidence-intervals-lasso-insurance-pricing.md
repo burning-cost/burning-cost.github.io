@@ -223,5 +223,5 @@ Prior work: Lee, J.D., Sun, D.L., Sun, Y., Taylor, J.E. (2016). 'Exact post-sele
 
 ## Related posts
 
-- [GAM Pricing with insurance-gam](/techniques/2025/09/01/insurance-gam-pricing/) — the GLM/GAM library where post-selection inference will eventually integrate
-- [Sparse Deep Two-Part Models for Frequency-Severity](/techniques/pricing/2026/03/31/sparse-deep-two-part-frequency-severity/) — joint variable selection across frequency and severity, same inference problem applies
+- [GAM Pricing with insurance-gam](/insurance-gam/) — the GLM/GAM library where post-selection inference will eventually integrate
+- [Sparse Deep Two-Part Models for Frequency-Severity](/2026/03/31/sparse-deep-two-part-frequency-severity/) — joint variable selection across frequency and severity, same inference problem applies

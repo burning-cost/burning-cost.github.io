@@ -171,5 +171,5 @@ The full correction is not a one-week project. Estimating the size of the bias i
 
 ## Related reading
 
-- [Protected NCD Is a Fair Value Problem Waiting to Happen](/regulation/pricing/2026/04/01/protected-ncd-consumer-duty-fair-value-pricing/) — how the underreporting literature interacts with PNCD pricing adequacy under Consumer Duty
-- [Profit-Fairness Market Equilibria: Why Consumer Duty Audits the Wrong Unit](/fairness/regulation/2026/03/31/profit-fairness-market-equilibria-consumer-duty/) — the market-level fair value problem that firm-level Consumer Duty compliance cannot capture
+- [Protected NCD Is a Fair Value Problem Waiting to Happen](/2026/04/01/protected-ncd-consumer-duty-fair-value-pricing/) — how the underreporting literature interacts with PNCD pricing adequacy under Consumer Duty
+- [Profit-Fairness Market Equilibria: Why Consumer Duty Audits the Wrong Unit](/2026/03/31/profit-fairness-market-equilibria-consumer-duty/) — the market-level fair value problem that firm-level Consumer Duty compliance cannot capture

@@ -257,7 +257,7 @@ The key technical contribution is the finite-sample coverage guarantee. Conforma
 
 ## Related posts
 
-- [Insurance Model Monitoring in Python: Beyond Generic Data Drift](/monitoring/model-risk/libraries/tutorials/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — `insurance-monitoring` library overview
-- [Alibi Detect vs insurance-monitoring: What Each Is Actually For](/monitoring/model-risk/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/) — comparison with the generic drift detection ecosystem
-- [PITMonitor: Continuous Calibration Monitoring With E-Processes](/monitoring/model-risk/2026/03/14/pitmonitor-calibration-monitoring-e-processes/) — the complementary calibration monitoring tool
-- [Conformalized Quantile Regression for Insurance Prediction Intervals](/techniques/pricing/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — conformal coverage guarantees applied to prediction intervals rather than monitoring
+- [Insurance Model Monitoring in Python: Beyond Generic Data Drift](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) — `insurance-monitoring` library overview
+- [Alibi Detect vs insurance-monitoring: What Each Is Actually For](/2026/03/18/alibi-detect-vs-insurance-monitoring-drift-detection/) — comparison with the generic drift detection ecosystem
+- [PITMonitor: Continuous Calibration Monitoring With E-Processes](/2026/03/14/pitmonitor-calibration-monitoring-e-processes/) — the complementary calibration monitoring tool
+- [Conformalized Quantile Regression for Insurance Prediction Intervals](/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — conformal coverage guarantees applied to prediction intervals rather than monitoring

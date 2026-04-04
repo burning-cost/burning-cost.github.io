@@ -248,6 +248,6 @@ The paper is cleanly written and the theorem statements are precise. The proof o
 
 ## Related posts
 
-- [insurance-quantile: Tail Risk Quantile and Expectile Regression for Insurance](https://burning-cost.github.io/techniques/pricing/2026/03/07/insurance-quantile/) — the library overview
-- [Conformalized Quantile Regression for Insurance Prediction Intervals](https://burning-cost.github.io/techniques/pricing/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — CQR coverage guarantees on top of any quantile model
-- [Transfer Learning for Thin Portfolios: What Works, What Doesn't](https://burning-cost.github.io/machine-learning/pricing/2026/03/31/transfer-learning-thin-portfolios-what-works-what-doesnt/) — borrowing from related portfolios when your segment is too small to model standalone
+- [insurance-quantile: Tail Risk Quantile and Expectile Regression for Insurance](https://burning-cost.github.io/2026/03/07/insurance-quantile/) — the library overview
+- [Conformalized Quantile Regression for Insurance Prediction Intervals](https://burning-cost.github.io/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — CQR coverage guarantees on top of any quantile model
+- [Transfer Learning for Thin Portfolios: What Works, What Doesn't](https://burning-cost.github.io/2026/03/31/transfer-learning-thin-portfolios-what-works-what-doesnt/) — borrowing from related portfolios when your segment is too small to model standalone

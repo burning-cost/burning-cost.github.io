@@ -133,7 +133,7 @@ Code: [github.com/ElSacho/Multivariate_Standardized_Residuals](https://github.co
 
 ## Related
 
-- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/libraries/pricing/uncertainty/2026/03/13/insurance-multivariate-conformal/) — the `insurance-conformal` multivariate module, Fan and Sesia LWC, and joint coverage for $d = 2$
-- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/techniques/pricing/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI and group-conditional calibration for Tweedie models
-- [Two Ways to Control Risk in Automated Underwriting: Conditional vs Marginal](/techniques/underwriting/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — SCoRE and SelectiveConformalRC for STP triage
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/techniques/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control and the full `insurance-conformal` library
+- [Frequency and Severity Are Two Outputs. You Have One Prediction Interval.](/2026/03/13/insurance-multivariate-conformal/) — the `insurance-conformal` multivariate module, Fan and Sesia LWC, and joint coverage for $d = 2$
+- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI and group-conditional calibration for Tweedie models
+- [Two Ways to Control Risk in Automated Underwriting: Conditional vs Marginal](/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — SCoRE and SelectiveConformalRC for STP triage
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control and the full `insurance-conformal` library

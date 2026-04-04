@@ -257,5 +257,5 @@ Franck, Carter T., Shawn J. Driscoll, Zoe Szajnfarber, and William H. Woodall. "
 
 ## Related posts
 
-- [Model Validation Under PRA SS1/23](/techniques/2025/07/13/model-validation-pra-ss123/) — the governance context for annual model review requirements
-- [Your GLM Confidence Intervals Are Wrong After Lasso](/techniques/pricing/2026/04/01/penalized-glm-inference-bias-corrected-confidence-intervals-lasso/) — formal inference for model fitting, complementing formal inference for model monitoring
+- [Model Validation Under PRA SS1/23](/2025/07/13/model-validation-pra-ss123/) — the governance context for annual model review requirements
+- [Your GLM Confidence Intervals Are Wrong After Lasso](/2026/04/01/penalized-glm-inference-bias-corrected-confidence-intervals-lasso/) — formal inference for model fitting, complementing formal inference for model monitoring

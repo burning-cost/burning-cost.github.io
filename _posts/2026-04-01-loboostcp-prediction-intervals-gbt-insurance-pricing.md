@@ -151,8 +151,8 @@ Santos, Bernardo Augusto Rodrigues dos, Rafael Izbicki, Rafael Bassi Stern, and 
 
 ## Related posts
 
-- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/techniques/pricing/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI calibration for group-conditional coverage with masked protected characteristics
-- [CRPS-Optimal Conformal Binning: When Actuarial Scoring Drives the Interval](/techniques/pricing/2026/04/01/crps-optimal-conformal-binning-prediction-intervals-insurance/) — calibrating bin thresholds to minimise CRPS rather than achieve coverage
-- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/techniques/pricing/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
-- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/techniques/pricing/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — checking whether your conformal guarantees hold conditionally, not just marginally
-- [Conformal Prediction vs Bootstrap Intervals for Insurance Pricing](/techniques/pricing/2026/03/26/conformal-prediction-vs-bootstrap-intervals-insurance-pricing/) — a direct comparison with the main alternative
+- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/2026/04/01/shape-adaptive-conformal-prediction/) — MOPI calibration for group-conditional coverage with masked protected characteristics
+- [CRPS-Optimal Conformal Binning: When Actuarial Scoring Drives the Interval](/2026/04/01/crps-optimal-conformal-binning-prediction-intervals-insurance/) — calibrating bin thresholds to minimise CRPS rather than achieve coverage
+- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
+- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — checking whether your conformal guarantees hold conditionally, not just marginally
+- [Conformal Prediction vs Bootstrap Intervals for Insurance Pricing](/2026/03/26/conformal-prediction-vs-bootstrap-intervals-insurance-pricing/) — a direct comparison with the main alternative

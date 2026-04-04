@@ -280,5 +280,5 @@ The Hu-Ratz-Charpentier paper is at arXiv:2309.06627. The original EquiPy Python
 
 ## Related posts
 
-- [Discrimination-Free Insurance Pricing: The Lindholm Approach](https://burning-cost.github.io/fairness/2026/03/28/discrimination-free-insurance-pricing-lindholm/) — the Lindholm marginalisation that should precede OT correction in any UK pipeline
-- [Proxy Discrimination in Motor Pricing: What FCA PS25/21 Requires](https://burning-cost.github.io/regulation/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the regulatory framing for indirect discrimination
+- [Discrimination-Free Insurance Pricing: The Lindholm Approach](https://burning-cost.github.io/2026/03/31/discrimination-free-pricing-privatised-attributes-insurance/) — the Lindholm marginalisation that should precede OT correction in any UK pipeline
+- [Proxy Discrimination in Motor Pricing: What FCA PS25/21 Requires](https://burning-cost.github.io/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the regulatory framing for indirect discrimination

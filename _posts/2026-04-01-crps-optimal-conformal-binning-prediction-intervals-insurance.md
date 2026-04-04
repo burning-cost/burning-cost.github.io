@@ -236,7 +236,7 @@ Toccaceli, Paolo. "CRPS-Optimal Binning for Conformal Regression." arXiv:2603.22
 
 ## Related posts
 
-- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/techniques/pricing/2026/04/01/shape-adaptive-conformal-prediction/) — ShapeAdaptiveCP (MOPI) for conditional coverage by group, with the masked-Z feature for GDPR-constrained UK pricing
-- [Conformalised Quantile Regression: Prediction Intervals That Actually Adapt to Risk](/techniques/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — CQR in insurance-conformal, including zero-inflation handling for motor claims
-- [Two Ways to Control Risk in Automated Underwriting: Conditional vs Marginal](/techniques/underwriting/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — SCRC and SCoRE for STP triage
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/techniques/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control and the insurance-conformal library overview
+- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/2026/04/01/shape-adaptive-conformal-prediction/) — ShapeAdaptiveCP (MOPI) for conditional coverage by group, with the masked-Z feature for GDPR-constrained UK pricing
+- [Conformalised Quantile Regression: Prediction Intervals That Actually Adapt to Risk](/2026/03/24/conformalised-quantile-regression-insurance-prediction-intervals/) — CQR in insurance-conformal, including zero-inflation handling for motor claims
+- [Two Ways to Control Risk in Automated Underwriting: Conditional vs Marginal](/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — SCRC and SCoRE for STP triage
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control and the insurance-conformal library overview

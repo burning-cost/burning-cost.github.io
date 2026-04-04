@@ -194,7 +194,7 @@ Bai, Tian, and Ying Jin. "Conformal Selective Prediction with General Risk Contr
 
 ## Related posts
 
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/techniques/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control and the `insurance-conformal` library overview
-- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/techniques/pricing/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
-- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/techniques/pricing/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — how to check whether your conformal guarantees hold conditionally, not just marginally
-- [KMM Conformal Prediction under Covariate Shift in Insurance Pricing](/techniques/pricing/2026/03/31/kmm-conformal-prediction-covariate-shift-insurance-pricing/) — when your calibration and deployment distributions differ
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control and the `insurance-conformal` library overview
+- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
+- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — how to check whether your conformal guarantees hold conditionally, not just marginally
+- [KMM Conformal Prediction under Covariate Shift in Insurance Pricing](/2026/03/31/kmm-conformal-prediction-covariate-shift-insurance-pricing/) — when your calibration and deployment distributions differ

@@ -32,7 +32,7 @@ The paper positions itself as automating what practitioners do manually — GAM 
 
 EBM does not require manual knot placement at all. The boosting procedure iteratively fits one-dimensional shape functions, implicitly determining where curvature is needed by following the gradient. The FAST algorithm detects candidate interaction pairs by measuring the residual signal between variables after univariate fitting. You do not specify knots; you specify the number of boosting rounds and the maximum number of interaction terms. The result is a model with the same additive + interaction structure as a GAM, fully interpretable, without a chromosome in sight.
 
-Our [insurance-gam library](/2026/01/15/insurance-gam-library-actuarial-additive-models/) wraps EBM with `EBMInsuranceWrapper`, adding Poisson and Gamma objectives with exposure offsets, monotonicity constraints for regulatory explainability, and calibration diagnostics. For a UK motor pricing team, this is the baseline that any automated GAM configuration method must beat. The genetic paper does not attempt this comparison seriously.
+Our [insurance-gam library](/insurance-gam/) wraps EBM with `EBMInsuranceWrapper`, adding Poisson and Gamma objectives with exposure offsets, monotonicity constraints for regulatory explainability, and calibration diagnostics. For a UK motor pricing team, this is the baseline that any automated GAM configuration method must beat. The genetic paper does not attempt this comparison seriously.
 
 ---
 
@@ -66,7 +66,7 @@ We do not think evolutionary GAM search will beat EBM on speed or accuracy in in
 
 ## What this means for our stack
 
-Nothing changes for now. [`insurance-gam`](/2025/12/01/insurance-gam-interpretable-additive-models-pricing/) already has:
+Nothing changes for now. [`insurance-gam`](/insurance-gam/) already has:
 
 - `EBMInsuranceWrapper` — automated shape functions with Poisson/Gamma objectives and exposure offsets
 - `ActuarialNAM` — neural additive model variant with the same actuarial loss functions

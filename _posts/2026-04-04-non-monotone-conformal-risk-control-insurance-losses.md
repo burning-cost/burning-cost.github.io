@@ -101,7 +101,7 @@ The preprint was submitted 2 April 2026. It has not been peer reviewed.
 
 ## What we take from it
 
-Standard conformal risk control is already the right framework for insurance model validation when the loss is monotone — we laid out the case in detail in [Coverage Is the Wrong Guarantee for Pricing Actuaries](/libraries/pricing/uncertainty/2026/03/13/insurance-conformal-risk/). This paper removes the restriction that was most likely to cause problems in practice.
+Standard conformal risk control is already the right framework for insurance model validation when the loss is monotone — we laid out the case in detail in [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/). This paper removes the restriction that was most likely to cause problems in practice.
 
 The Winkler score case matters most immediately. Interval scoring rules are the standard way to evaluate probabilistic forecasts in meteorology, macroeconomics, and increasingly in actuarial science. Using CRC with the Winkler score loss gives you a prediction interval that is calibrated not just to coverage probability but to the expected value of the interval-scoring-rule loss — a materially stronger claim about the quality of your uncertainty estimates than "this interval contains the true value 95% of the time".
 
@@ -117,7 +117,7 @@ Tareq Aldirawi, Yun Li and Wenge Guo, "Non-monotonicity in Conformal Risk Contro
 
 ## Related
 
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/libraries/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control foundations and `insurance-conformal.risk`
-- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/blog/2026/04/04/conformal-prediction-insurance-python/) — the practical frequency-severity conformal model whose risk-control properties this paper extends
-- [Conformal Prediction Works on Average — But Does It Work for Your Riskiest Customers?](/conformal-prediction/insurance-pricing/2026/04/04/conditional-validity-index-conformal-model-selection/) — conditional coverage and the CVI
-- [Your Joint Prediction Sets Are 20–40% Too Wide](/conformal-prediction/insurance-pricing/2026/04/03/multivariate-conformal-prediction-mahalanobis-insurance/) — Mahalanobis non-conformity scores
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control foundations and `insurance-conformal.risk`
+- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/2026/04/04/conformal-prediction-insurance-python/) — the practical frequency-severity conformal model whose risk-control properties this paper extends
+- [Conformal Prediction Works on Average — But Does It Work for Your Riskiest Customers?](/2026/04/04/conditional-validity-index-conformal-model-selection/) — conditional coverage and the CVI
+- [Your Joint Prediction Sets Are 20–40% Too Wide](/2026/04/03/multivariate-conformal-prediction-mahalanobis-insurance/) — Mahalanobis non-conformity scores

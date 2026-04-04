@@ -50,7 +50,7 @@ For the MNAR case, additional structural assumptions are required (essentially, 
 
 ## Where this sits relative to our existing fairness work
 
-Our [insurance-fairness library](/2025/11/15/insurance-fairness-ldp-randomised-response-audit/) implements `PrivatizedFairnessAudit` (v0.3.8), which handles the *noise* regime: the insurer collects a privatised, locally differentially private version of the protected attribute via randomised response. You get a noisy signal; the audit is still valid.
+Our [insurance-fairness library](/insurance-fairness/) implements `PrivatizedFairnessAudit` (v0.3.8), which handles the *noise* regime: the insurer collects a privatised, locally differentially private version of the protected attribute via randomised response. You get a noisy signal; the audit is still valid.
 
 That is a different problem from the one this paper addresses.
 
@@ -74,7 +74,7 @@ The practical consequence for fairness auditors: before you reach for any method
 
 ## What this means for insurance-conformal
 
-The mask-conditional validity approach extends split conformal, which is already in [`insurance-conformal`](/2025/12/15/insurance-conformal-prediction-intervals-pricing/). The nonexchangeable method is closest to our `locally_weighted.py` and `covariate_shift.py` modules, which already handle distributional shift between calibration and deployment.
+The mask-conditional validity approach extends split conformal, which is already in [`insurance-conformal`](/insurance-conformal/). The nonexchangeable method is closest to our `locally_weighted.py` and `covariate_shift.py` modules, which already handle distributional shift between calibration and deployment.
 
 A future `MissingnessAwareConformalPredictor` class would need to: accept a missingness mask at test time, route to the appropriate kernel-weighted calibration set, and apply the nonexchangeable score. The theoretical machinery from Kong/Liu/Yang is the foundation. There is no released code from the authors as of April 2026, so implementation would require working directly from the paper.
 

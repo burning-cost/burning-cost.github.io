@@ -130,5 +130,5 @@ Consumer Duty's five-year review will ask. The firms that have been asking the q
 
 ## Further reading
 
-- [Sequential Optimal Transport for Multi-Attribute Fairness in Insurance Pricing](/fairness/machine-learning/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — firm-level fairness correction in the insurance-fairness library
-- [Your Policyholders Are Playing a Game with Your NCD Ladder](/techniques/pricing/2026/03/31/ncd-game-theory-bms-calibration-underreporting/) — the hunger-for-bonus framework and game-theoretic NCD pricing
+- [Sequential Optimal Transport for Multi-Attribute Fairness in Insurance Pricing](/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — firm-level fairness correction in the insurance-fairness library
+- [Your Policyholders Are Playing a Game with Your NCD Ladder](/2026/03/31/ncd-game-theory-bms-calibration-underreporting/) — the hunger-for-bonus framework and game-theoretic NCD pricing

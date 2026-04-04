@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-[A previous post](/techniques/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) covered why naive confidence intervals are wrong after Lasso variable selection: the selection event and the coefficient estimates are computed from the same data, which inflates the estimates for variables near the noise boundary and produces CIs that cover at 70–80% rather than 95%.
+[A previous post](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) covered why naive confidence intervals are wrong after Lasso variable selection: the selection event and the coefficient estimates are computed from the same data, which inflates the estimates for variables near the noise boundary and produces CIs that cover at 70–80% rather than 95%.
 
 That post ended on a gap: the parametric programming fix (`PostSelectionGLM`) handles Poisson frequency models but not Gamma severity models. Severity is where the hardest inference problems in motor and property pricing live — large losses, heavy tails, strong but irregular rating factor effects.
 
@@ -208,5 +208,5 @@ The theory is in Manna, A., Huang, B., Dey, D. K., Gu, C., & He, X. (2025). 'Int
 
 ## Related posts
 
-- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/techniques/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the problem this solves; also covers `PostSelectionGLM` for Poisson conditional inference
-- [Two Things Random Splits and Pearson Correlation Get Wrong in Insurance Data](/machine-learning/model-validation/2026/04/01/insurance-cv-v0-3-0-support-point-split-chatterjee-xi-feature-screening/) — `insurance-cv` v0.3.0; pairs with `DebiasedGLM` for clean train/inference splits
+- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/2026/04/01/post-selection-inference-glm-confidence-intervals-lasso-insurance-pricing/) — the problem this solves; also covers `PostSelectionGLM` for Poisson conditional inference
+- [Two Things Random Splits and Pearson Correlation Get Wrong in Insurance Data](/2026/04/01/insurance-cv-v0-3-0-support-point-split-chatterjee-xi-feature-screening/) — `insurance-cv` v0.3.0; pairs with `DebiasedGLM` for clean train/inference splits

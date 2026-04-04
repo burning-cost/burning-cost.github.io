@@ -160,6 +160,6 @@ The paper: Hultberg, E., Bates, S. & Candès, E.J. — "Anytime-Valid Conformal 
 ---
 
 Related:
-- [Conformal Risk Control for Premium Sufficiency: PremiumSufficiencyController](/2026/03/01/conformal-risk-control-premium-sufficiency/) — the baseline CRC implementation this post extends
+- [Conformal Risk Control for Premium Sufficiency: PremiumSufficiencyController](/2026/03/13/insurance-conformal-risk/) — the baseline CRC implementation this post extends
 - [ModelMonitor: Calibration Testing That Actually Tells You What To Do](/2026/04/02/model-monitor-gmcb-lmcb-insurance-monitoring-v100/) — post-deployment calibration monitoring using PITMonitor and GMCB/LMCB
 - [Beyond Coverage: Commitment, Deferral, and Error Exposure in Conformal Pricing](/2026/04/02/conformal-tradeoffs-commitment-deferral-error-exposure/) — operational deployment metrics beyond the coverage guarantee

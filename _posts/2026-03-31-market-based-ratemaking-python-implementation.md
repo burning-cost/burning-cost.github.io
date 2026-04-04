@@ -291,7 +291,7 @@ Consumer Intelligence provides automated market data under a data-sharing agreem
 
 ## Plugging the ABC posterior into insurance-credibility
 
-The ABC posterior is not an end-state. It is the starting point for a credibility blending sequence. Once your book produces claims, the MAP estimate becomes the market prior mu_0 in [Bühlmann-Straub](/libraries/insurance-credibility/):
+The ABC posterior is not an end-state. It is the starting point for a credibility blending sequence. Once your book produces claims, the MAP estimate becomes the market prior mu_0 in [Bühlmann-Straub](/insurance-credibility/):
 
 ```
 E[lambda_i | Y_i] = Z_i * Y_i_bar + (1 - Z_i) * mu_0
@@ -316,7 +316,7 @@ model = BuhlmannStraub(
 )
 ```
 
-See the [`insurance-credibility` library](/libraries/insurance-credibility/) for the full API. The key point is that the ABC output plugs directly into the credibility prior with no additional transformation.
+See the [`insurance-credibility` library](/insurance-credibility/) for the full API. The key point is that the ABC output plugs directly into the credibility prior with no additional transformation.
 
 ---
 
@@ -324,7 +324,7 @@ See the [`insurance-credibility` library](/libraries/insurance-credibility/) for
 
 By the end of Year 1, you have internal claims data - but it is selection-biased. Customers who bought your product at launch prices are not a random sample of the market. You attracted the risks where your price was competitive, which means your observed claim frequency is correlated with your pricing structure in ways that a naive GLM cannot untangle.
 
-[`insurance-causal`](/libraries/insurance-causal/) handles this via Double Machine Learning. The treatment is your relative price position (how far you were from the market median for that risk class at the time of sale). The outcome is claim frequency. DML partials out the price-risk confounding before estimating the causal frequency.
+[`insurance-causal`](/insurance-causal/) handles this via Double Machine Learning. The treatment is your relative price position (how far you were from the market median for that risk class at the time of sale). The outcome is claim frequency. DML partials out the price-risk confounding before estimating the causal frequency.
 
 This correction matters most for lines where your launch price varied significantly by risk class - which it will, since the ABC posterior gives you a distribution over lambda, not a flat rate. If your French Bulldog rate was 15% above market and your Labrador rate was 3% below, the dogs you actually wrote are systematically different from the dogs that quoted. By Year 2, your Labrador claims experience is more credible than your French Bulldog claims experience for exactly this reason.
 
@@ -367,7 +367,7 @@ If there is enough interest from readers we will build this as a proper library.
 
 The FCA angle is real and it should drive adoption more than the statistical elegance. Documented, quantitative risk basis at launch is not optional for Consumer Duty compliance. The ABC posterior provides that. "We matched competitors" does not.
 
-The method is a starting point, not a pricing model. Use it for launch and the first 12 months. Feed the posterior into [`insurance-credibility`](/libraries/insurance-credibility/) as your market prior. Apply causal correction via [`insurance-causal`](/libraries/insurance-causal/) when your own data becomes selection-biased at Year 2. Monitor for market mix drift with [`insurance-thin-data`](/libraries/insurance-thin-data/) quarterly, because the ABC assumption that competitor quotes represent your target risk population breaks down if you are writing a niche segment.
+The method is a starting point, not a pricing model. Use it for launch and the first 12 months. Feed the posterior into [`insurance-credibility`](/insurance-credibility/) as your market prior. Apply causal correction via [`insurance-causal`](/insurance-causal/) when your own data becomes selection-biased at Year 2. Monitor for market mix drift with [`insurance-thin-data`](/tools/) quarterly, because the ABC assumption that competitor quotes represent your target risk population breaks down if you are writing a niche segment.
 
 Four stages. The ABC implementation in this post covers Stage 1. The libraries handle the rest.
 

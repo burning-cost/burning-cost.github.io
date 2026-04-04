@@ -9,7 +9,7 @@ description: "Bühlmann-Straub pulls every segment toward the same grand mean. W
 author: burning-cost
 ---
 
-Bühlmann-Straub credibility does one thing that pure MLE does not: it acknowledges that a segment with limited data should not be trusted on its own terms. The credibility factor Z shrinks the segment's observed rate toward a prior, weighted by how much data you have. The mechanics are [well-established](/2026-02-19-buhlmann-straub-credibility-in-python/) and, for most UK personal lines applications, adequate.
+Bühlmann-Straub credibility does one thing that pure MLE does not: it acknowledges that a segment with limited data should not be trusted on its own terms. The credibility factor Z shrinks the segment's observed rate toward a prior, weighted by how much data you have. The mechanics are [well-established](/2026/02/19/buhlmann-straub-credibility-in-python/) and, for most UK personal lines applications, adequate.
 
 But B-S has a specific structural property that causes real problems in a specific class of situations: the complement of credibility — the 1 − Z weight — is always applied to the grand mean of the portfolio. There is no mechanism to say "this segment belongs to a fundamentally different population." If your grand mean is wrong for the segment in question, B-S does not shrink toward the right target. It shrinks toward the wrong one, and does so with mathematical confidence.
 
@@ -19,7 +19,7 @@ This post covers three things: exactly when B-S breaks down, what Poisson-Gamma 
 
 ## The specific failure modes
 
-We [catalogued six structural limits of B-S](/2026-03-23-does-buhlmann-straub-credibility-work-insurance-pricing/) in detail. Three of them come up repeatedly in UK pricing work.
+We [catalogued six structural limits of B-S](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) in detail. Three of them come up repeatedly in UK pricing work.
 
 **Hyperparameter uncertainty at small group counts.** B-S treats its estimated parameters — the expected process variance `v` and the variance of hypothetical means `a` — as if they were exact. For portfolios with 20 or more groups this approximation is defensible. For a commercial lines portfolio with 10–15 schemes, the sampling variance around `a_hat` is large enough that the resulting credibility factors carry false precision. A Bayesian posterior correctly propagates that uncertainty into wider credible intervals. B-S gives you a precise-looking number; the true uncertainty is 1.5 to 2 times wider.
 

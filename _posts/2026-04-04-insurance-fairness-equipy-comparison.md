@@ -218,4 +218,4 @@ Related on Burning Cost:
 - [Fairness in the Tail: Why Mean Demographic Parity Is the Wrong Test](/2026/04/04/demographic-parity-tails-regression-insurance-fairness/) — Le et al. tail parity framework
 - [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — `FairnessAudit` and proxy detection in practice
 - [Per-Policyholder Proxy Discrimination Scores](/2026/04/03/sensitivity-proxy-discrimination/) — instance-level vulnerability scores for Consumer Duty evidence
-- [NSGA-II Multi-Objective Fairness for Insurance Pricing](/blog/2026/04/04/nsga2-multi-objective-fairness-pareto-boonen-2512-24747/) — the Boonen et al. Pareto-front approach that uses EquiPy-style mitigation as one objective alongside accuracy
+- [NSGA-II Multi-Objective Fairness for Insurance Pricing](/2026/04/04/nsga2-multi-objective-fairness-pareto-boonen-2512-24747/) — the Boonen et al. Pareto-front approach that uses EquiPy-style mitigation as one objective alongside accuracy

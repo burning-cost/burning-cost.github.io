@@ -219,6 +219,6 @@ The two papers: Zhang, Liu & Shi (2025) at arXiv:2504.11775, and Ghoukasian & As
 
 ## Related posts
 
-- [Discrimination-Free Insurance Pricing: The Lindholm Approach](/fairness/2026/03/28/discrimination-free-insurance-pricing-lindholm/) — the oracle approach that LDP enables when the attribute is unavailable
-- [Sequential Optimal Transport for Multi-Attribute Fairness](/fairness/machine-learning/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — for when you have proxy attribute data and need joint fairness across multiple characteristics
-- [Proxy Discrimination in Motor Pricing: What FCA PS25/21 Requires](/regulation/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the regulatory framing
+- [Discrimination-Free Insurance Pricing: The Lindholm Approach](/2026/03/31/discrimination-free-pricing-privatised-attributes-insurance/) — the oracle approach that LDP enables when the attribute is unavailable
+- [Sequential Optimal Transport for Multi-Attribute Fairness](/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — for when you have proxy attribute data and need joint fairness across multiple characteristics
+- [Proxy Discrimination in Motor Pricing: What FCA PS25/21 Requires](/2026/03/28/fca-ps2521-proxy-discrimination-motor-pricing/) — the regulatory framing

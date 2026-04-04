@@ -135,7 +135,7 @@ Fine-tuned LLMs making claims recommendations sit at the intersection of three r
 
 ## How this connects to the embeddings work
 
-We covered text embeddings on claims data in a [March 2026 post](/2026/03/26/nlp-text-embeddings-insurance-claims-pricing.html). The relationship between that work and this paper is a natural progression.
+We covered text embeddings on claims data in a [March 2026 post](/2026/03/26/nlp-text-embeddings-insurance-claims-pricing/). The relationship between that work and this paper is a natural progression.
 
 The embeddings approach takes claims text and produces dense vectors — opaque, continuous, useful as features in a pricing model or for similarity search. The claim automation approach goes further: it produces structured categorical output (correction type, parts category, repair procedure) from claims text. The structured output is more interpretable for reserving, more directly actionable for claims operations, and more auditable under Consumer Duty than an opaque embedding vector.
 

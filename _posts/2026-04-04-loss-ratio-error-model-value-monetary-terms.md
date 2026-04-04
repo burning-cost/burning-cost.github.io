@@ -235,5 +235,5 @@ Related on Burning Cost:
 - [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/02/28/recalibrate-or-refit/) — discrimination and calibration are separate failure modes; LRE measures discrimination value only
 - [Calibration Testing That Goes Beyond the Residual Plot](/2026/03/09/insurance-calibration/) — balance property, auto-calibration, Murphy decomposition
 - [Three-Layer Drift Detection: What PSI and A/E Ratios Miss](/2026/03/03/your-pricing-model-is-drifting/) — monitoring after deployment
-- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the baseline GLM whose Pearson correlation feeds directly into the LRE formula
-- [Insurance Model Monitoring in Python: A Practitioner's Guide](/blog/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) — the ongoing measurement that detects ρ degradation in production
+- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the baseline GLM whose Pearson correlation feeds directly into the LRE formula
+- [Insurance Model Monitoring in Python: A Practitioner's Guide](/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) — the ongoing measurement that detects ρ degradation in production

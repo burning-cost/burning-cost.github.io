@@ -103,4 +103,4 @@ Tab-TRM's current benchmark position is genuinely impressive. The linearisation 
 ## Further reading
 
 - [insurance-gam on GitHub](https://github.com/burning-cost/insurance-gam) — EBM, ANAM, and PIN for insurance pricing
-- [Tree-like Pairwise Interaction Networks for Insurance Pricing](/machine-learning/pricing/2026/03/31/pin-pairwise-interaction-networks-insurance/) — the PIN architecture that Tab-TRM beats by 0.3%
+- [Tree-like Pairwise Interaction Networks for Insurance Pricing](/2026/03/13/insurance-pin/) — the PIN architecture that Tab-TRM beats by 0.3%

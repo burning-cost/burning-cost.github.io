@@ -232,7 +232,7 @@ with open("motor_freq_q1_2026_monitoring.json", "w") as f:
     json.dump(result_dict, f, indent=2)
 ```
 
-Feed this JSON into your model risk register. Under PRA CP6/24, insurers need to evidence that pricing models are being monitored with defined quantitative thresholds and documented pass/fail outcomes — not narrative assertions. A quarterly JSON file with the three test results and the decision is the minimum viable governance artefact. Better still, pair it with [`insurance-governance`](/insurance-governance/) to ingest the monitoring output directly into the model risk committee pack — the [actuarial model validation guide](/blog/2026/04/04/actuarial-model-validation-python/) documents how validation and monitoring connect in the same governance chain.
+Feed this JSON into your model risk register. Under PRA CP6/24, insurers need to evidence that pricing models are being monitored with defined quantitative thresholds and documented pass/fail outcomes — not narrative assertions. A quarterly JSON file with the three test results and the decision is the minimum viable governance artefact. Better still, pair it with [`insurance-governance`](/insurance-governance/) to ingest the monitoring output directly into the model risk committee pack — the [actuarial model validation guide](/2026/04/04/actuarial-model-validation-python/) documents how validation and monitoring connect in the same governance chain.
 
 [`insurance-monitoring`](/insurance-monitoring/) also integrates with MLflow if your team uses that for experiment tracking:
 
@@ -275,6 +275,6 @@ For the full worked example including feature CSI, champion/challenger A/B testi
 ---
 
 *Related:*
-- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/blog/2026/04/04/actuarial-model-validation-python/) — the point-in-time validation that produces the thresholds monitoring should fire against
-- [glum Insurance Pricing in Python: Fitting, Intervals, Monitoring, Fairness, Governance](/blog/2026/04/04/glum-insurance-pricing-python-workflow/) — the complete workflow showing how monitoring sits alongside model fitting and governance
-- [Does PSI Model Monitoring Actually Catch Pricing Model Drift?](/blog/2026/03/28/does-psi-model-monitoring-actually-catch-pricing-model-drift/) — benchmark results showing when PSI is a weak signal and A/E CI is the more sensitive test
+- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/2026/04/04/actuarial-model-validation-python/) — the point-in-time validation that produces the thresholds monitoring should fire against
+- [glum Insurance Pricing in Python: Fitting, Intervals, Monitoring, Fairness, Governance](/2026/04/04/glum-insurance-pricing-python-workflow/) — the complete workflow showing how monitoring sits alongside model fitting and governance
+- [Does PSI Model Monitoring Actually Catch Pricing Model Drift?](/2026/03/28/does-psi-model-monitoring-actually-catch-pricing-model-drift/) — benchmark results showing when PSI is a weak signal and A/E CI is the more sensitive test

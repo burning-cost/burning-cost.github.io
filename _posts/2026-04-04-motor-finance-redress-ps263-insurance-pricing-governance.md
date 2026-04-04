@@ -125,4 +125,4 @@ Related on Burning Cost:
 - [Consumer Duty Fair Value Evidencing: A 12-Step Technical Checklist](/2026/03/25/consumer-duty-fair-value-evidencing-12-step-checklist-pricing-actuaries/)
 - [FCA SMCR Rollback: What It Actually Means for Pricing Governance](/2026/03/26/fca-smcr-rollback-consumer-duty-disapply-pricing-governance/)
 - [Mean Parity Is Not Tail Parity](/2026/04/04/demographic-parity-tails-regression-insurance-fairness/) — why aggregate fairness checks miss the exposure
-- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/blog/2026/04/04/actuarial-model-validation-python/) — the automated audit trail that provides the documentation the FCA is looking for
+- [Actuarial Model Validation in Python: Automated Reports for UK Insurance Pricing](/2026/04/04/actuarial-model-validation-python/) — the automated audit trail that provides the documentation the FCA is looking for

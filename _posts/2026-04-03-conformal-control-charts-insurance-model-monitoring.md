@@ -176,5 +176,5 @@ PSI > 0.2 had a good run. It is time to retire it.
 
 ## Related
 
-- [Formal Statistical Tests for Insurance Pricing Model Drift](/model-monitoring/insurance-pricing/2026/04/01/formal-statistical-monitoring-insurance-pricing-models-drift-cusum/) — `CalibrationCUSUM` for sequential monitoring with ARL guarantees
+- [Formal Statistical Tests for Insurance Pricing Model Drift](/2026/04/01/formal-statistical-monitoring-insurance-pricing-models-drift-cusum/) — `CalibrationCUSUM` for sequential monitoring with ARL guarantees
 - [Does Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — empirical comparison of monitoring methods on FreMTPL2

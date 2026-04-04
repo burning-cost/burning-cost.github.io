@@ -82,7 +82,7 @@ print(rel.to_polars("DrivAge"))
 
 The output is a Polars DataFrame with bin boundaries and multiplicative relativities — what you would hand to a rating team to load into a system. A 20-year-old driver might show a relativity of 2.1x relative to the base; a 45-year-old shows 0.85x. These numbers come from the data, not from actuarial judgement applied to binned counts, but they are expressed in a form that actuaries can audit, challenge, and adjust using `MonotonicityEditor` if the business needs a smooth age curve.
 
-One thing to be honest about: the EBM above uses freMTPL2, which is a real dataset, but it is French. The implied relativities will not match a UK motor book. The pipeline structure is what matters. If you want a GLM-first approach using the same dataset — with step-by-step coverage of exposure offsets, deviance residuals, and factor relativity extraction — the [GLM frequency model tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) is the right starting point.
+One thing to be honest about: the EBM above uses freMTPL2, which is a real dataset, but it is French. The implied relativities will not match a UK motor book. The pipeline structure is what matters. If you want a GLM-first approach using the same dataset — with step-by-step coverage of exposure offsets, deviance residuals, and factor relativity extraction — the [GLM frequency model tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) is the right starting point.
 
 ---
 
@@ -180,7 +180,7 @@ report = MonitoringReport(
 print(report.summary())
 ```
 
-The `MonitoringReport.summary()` produces a traffic-light output: GREEN / AMBER / RED for each check. The [insurance model monitoring practitioner's guide](/blog/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) covers the three-scenario decision logic in detail: when to redeploy, recalibrate, or refit. If the Gini drops more than two standard deviations from the training estimate (the default alpha=0.32 threshold from Brauer, Menzel & Wüthrich 2025), the report recommends RECALIBRATE or REFIT.
+The `MonitoringReport.summary()` produces a traffic-light output: GREEN / AMBER / RED for each check. The [insurance model monitoring practitioner's guide](/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) covers the three-scenario decision logic in detail: when to redeploy, recalibrate, or refit. If the Gini drops more than two standard deviations from the training estimate (the default alpha=0.32 threshold from Brauer, Menzel & Wüthrich 2025), the report recommends RECALIBRATE or REFIT.
 
 For production use, you schedule this monthly. The `PITMonitor` (anytime-valid calibration test) gives you the same protection without the repeated-testing inflation that monthly Hosmer-Lemeshow checks suffer. It works at the individual policy level: for each new claim observation, you compute the Poisson CDF at the observed count, then feed that PIT value to the monitor:
 
@@ -347,6 +347,6 @@ The code in this post shows the real APIs with realistic parameters. For a worke
 ---
 
 *Related:*
-- [Building a GLM Frequency Model in Python](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the Poisson GLM equivalent of Step 1, with deviance residuals and relativity extraction
-- [Actuarial Model Validation in Python](/blog/2026/04/04/actuarial-model-validation-python/) — deeper treatment of the Step 5 governance layer: the five-test suite, MRM model cards, and CI/CD integration
-- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/blog/2026/04/04/conformal-prediction-insurance-python/) — Step 2 in detail for two-stage models, including the calibration subtlety that breaks naive implementations
+- [Building a GLM Frequency Model in Python](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the Poisson GLM equivalent of Step 1, with deviance residuals and relativity extraction
+- [Actuarial Model Validation in Python](/2026/04/04/actuarial-model-validation-python/) — deeper treatment of the Step 5 governance layer: the five-test suite, MRM model cards, and CI/CD integration
+- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/2026/04/04/conformal-prediction-insurance-python/) — Step 2 in detail for two-stage models, including the calibration subtlety that breaks naive implementations

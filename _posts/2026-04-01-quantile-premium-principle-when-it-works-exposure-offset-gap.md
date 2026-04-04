@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-[We covered the QPP formula and the Zanzouri 2025 benchmark in a previous post.](https://burning-cost.github.io/pricing/machine-learning/2026/03/31/quantile-premium-pricing-neural-networks/) This post is the harder question: when does pricing at the $\tau$-th percentile actually change what you charge, relative to the expected value premium principle — and when is it window-dressing?
+[We covered the QPP formula and the Zanzouri 2025 benchmark in a previous post.](https://burning-cost.github.io/2026/03/31/quantile-premium-pricing-neural-networks/) This post is the harder question: when does pricing at the $\tau$-th percentile actually change what you charge, relative to the expected value premium principle — and when is it window-dressing?
 
 The short answer: QPP adds genuine value when the severity distribution is skewed enough that the adjusted severity quantile $\tilde{Q}_{\tau_i}(x_i)$ sits materially above the conditional mean. For a near-symmetric severity distribution, the quantile and the mean are close, the loading is modest, and QPP converges toward the expected value premium principle with a small upward nudge. For a heavy-tailed line — flood property, motor bodily injury, professional indemnity — the quantile can be two or three times the mean, and the per-risk loading is substantial. That difference is where the framework earns its complexity.
 
@@ -160,7 +160,7 @@ Our default in `insurance-quantile` is CatBoost via `QuantileGBM`. The QPP formu
 
 ## The implementation
 
-`TwoPartQuantilePremium` is in [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile), v0.3.1+. Full usage in the [earlier post](https://burning-cost.github.io/pricing/machine-learning/2026/03/31/quantile-premium-pricing-neural-networks/).
+`TwoPartQuantilePremium` is in [`insurance-quantile`](https://github.com/burning-cost/insurance-quantile), v0.3.1+. Full usage in the [earlier post](https://burning-cost.github.io/2026/03/31/quantile-premium-pricing-neural-networks/).
 
 ```bash
 uv add "insurance-quantile>=0.3.1"
@@ -170,7 +170,7 @@ uv add "insurance-quantile>=0.3.1"
 from insurance_quantile import QuantileGBM, TwoPartQuantilePremium
 ```
 
-For thin segments — commercial, high-net-worth, agricultural — where per-rating-cell claim counts fall below a few hundred, `WassersteinRobustQR` (v0.4.0) handles the severity quantile directly. It does not drop into `TwoPartQuantilePremium` as a `sev_model` replacement: `TwoPartQuantilePremium` expects a `QuantileGBM` with a full multi-level quantile grid, and interpolates across that grid per policy. `WassersteinRobustQR` is a linear model that estimates a single quantile level with a finite-sample robustness guarantee. The two tools address different problems. For a thin commercial segment, use `WassersteinRobustQR` to estimate the severity quantile for your chosen $\tau_i$, then apply the QPP formula manually. See the [WassersteinRobustQR post](https://burning-cost.github.io/techniques/pricing/2026/04/01/wasserstein-robust-quantile-regression-thin-insurance-portfolios/) for the detail.
+For thin segments — commercial, high-net-worth, agricultural — where per-rating-cell claim counts fall below a few hundred, `WassersteinRobustQR` (v0.4.0) handles the severity quantile directly. It does not drop into `TwoPartQuantilePremium` as a `sev_model` replacement: `TwoPartQuantilePremium` expects a `QuantileGBM` with a full multi-level quantile grid, and interpolates across that grid per policy. `WassersteinRobustQR` is a linear model that estimates a single quantile level with a finite-sample robustness guarantee. The two tools address different problems. For a thin commercial segment, use `WassersteinRobustQR` to estimate the severity quantile for your chosen $\tau_i$, then apply the QPP formula manually. See the [WassersteinRobustQR post](https://burning-cost.github.io/2026/04/01/wasserstein-robust-quantile-regression-thin-insurance-portfolios/) for the detail.
 
 ---
 
@@ -190,6 +190,6 @@ Yang, L. (2020). Using expectile regression for classification ratemaking. arXiv
 
 ## Related posts
 
-- [Setting premiums at the 85th percentile: quantile premium pricing with neural networks](https://burning-cost.github.io/pricing/machine-learning/2026/03/31/quantile-premium-pricing-neural-networks/) — QPP formula, Zanzouri benchmark, full API
-- [The 99th Percentile From 200 Claims: Wasserstein Robust Quantile Regression for Thin Portfolios](https://burning-cost.github.io/techniques/pricing/2026/04/01/wasserstein-robust-quantile-regression-thin-insurance-portfolios/) — `WassersteinRobustQR` as the severity estimator in thin segments
-- [insurance-quantile: Tail Risk Quantile and Expectile Regression for Insurance](https://burning-cost.github.io/techniques/pricing/2026/03/07/insurance-quantile/) — library overview
+- [Setting premiums at the 85th percentile: quantile premium pricing with neural networks](https://burning-cost.github.io/2026/03/31/quantile-premium-pricing-neural-networks/) — QPP formula, Zanzouri benchmark, full API
+- [The 99th Percentile From 200 Claims: Wasserstein Robust Quantile Regression for Thin Portfolios](https://burning-cost.github.io/2026/04/01/wasserstein-robust-quantile-regression-thin-insurance-portfolios/) — `WassersteinRobustQR` as the severity estimator in thin segments
+- [insurance-quantile: Tail Risk Quantile and Expectile Regression for Insurance](https://burning-cost.github.io/2026/03/07/insurance-quantile/) — library overview

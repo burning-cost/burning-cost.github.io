@@ -138,5 +138,5 @@ FCA (2025). Discussion Paper EP25/2: Equality of Access to Financial Services.
 
 ## Related posts
 
-- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/07/your-pricing-model-might-be-discriminating/) — proxy detection and the FCA Consumer Duty evidence problem
+- [Your Pricing Model Might Be Discriminating](https://burning-cost.github.io/2026/03/03/your-pricing-model-might-be-discriminating/) — proxy detection and the FCA Consumer Duty evidence problem
 - [insurance-fairness](https://github.com/burning-cost/insurance-fairness) — the full library, v1.2.0

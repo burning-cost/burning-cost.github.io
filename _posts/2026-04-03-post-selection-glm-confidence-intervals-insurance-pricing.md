@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-Two days ago we published a post explaining why [GLM confidence intervals are wrong after Lasso variable selection](/techniques/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/). The short version: any pipeline that runs Lasso to select rating factors and then reports standard Wald intervals is producing 70–80% coverage at nominal 95%, in exactly the moderate-signal regime that UK motor and property pricing models inhabit.
+Two days ago we published a post explaining why [GLM confidence intervals are wrong after Lasso variable selection](/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/). The short version: any pipeline that runs Lasso to select rating factors and then reports standard Wald intervals is producing 70–80% coverage at nominal 95%, in exactly the moderate-signal regime that UK motor and property pricing models inhabit.
 
 We shipped the fix in `insurance-gam` v0.3.0. This post covers what is in the implementation, how to use it, and what the output looks like on simulated data that mirrors a frequency model.
 
@@ -184,4 +184,4 @@ The original paper is Shen, K., Gregory, K.B., and Huang, S. (2026), "Post-selec
 
 ## Related
 
-- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/techniques/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/) — the theory post: why naive Wald CIs fail, how the Fisher scoring linearisation works, and what the simulation evidence looks like
+- [Your GLM Confidence Intervals Are Wrong After Variable Selection](/2026/04/01/your-glm-confidence-intervals-are-wrong-after-variable-selection/) — the theory post: why naive Wald CIs fail, how the Fisher scoring linearisation works, and what the simulation evidence looks like

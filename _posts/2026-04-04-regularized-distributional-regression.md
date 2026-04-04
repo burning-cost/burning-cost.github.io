@@ -123,5 +123,5 @@ Kadhem, S.K. (2026). Regularized Regression by Composition for Distributional Mo
 Related on Burning Cost:
 
 - [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — insurance-distributional, distributional GBM for insurance pricing
-- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/blog/2026/04/04/conformal-prediction-insurance-python/) — distribution-free alternative to parametric severity intervals, for when the distributional assumptions are uncertain
+- [Conformal Prediction for Insurance Python: A Frequency-Severity Tutorial](/2026/04/04/conformal-prediction-insurance-python/) — distribution-free alternative to parametric severity intervals, for when the distributional assumptions are uncertain
 - [Validating GAMLSS Sigma Models: What the Diagnostics Miss](/2026/03/08/validating-gamlss-sigma-models/) — coefficient instability in GAMLSS and practical diagnostics

@@ -51,7 +51,7 @@ At launch, nᵢ = 0, Z = 0, and your price is the ABC MAP estimate — the marke
 
 The key relationship between the ABC output and the credibility prior: the *spread* of the ABC posterior determines how quickly Z rises. A tight posterior — you collected 400 quotes, they were consistent, the ABC converged cleanly — means K is small and Z rises fast. Your own experience takes over quickly. A wide posterior — few quotes, heterogeneous coverage structures, the tolerance did not close far — means K is large, the market prior is uncertain, and you stay close to that prior for longer. This is exactly right: uncertainty in the starting estimate should translate into more data-hungry credibility blending.
 
-The [`insurance-credibility`](/libraries/insurance-credibility/) library handles the blending:
+The [`insurance-credibility`](/insurance-credibility/) library handles the blending:
 
 ```python
 from insurance_credibility import BuhlmannStraub
@@ -78,7 +78,7 @@ If your ABC posterior put your French Bulldog rate 15% above the market median a
 
 Double Machine Learning corrects this. The treatment variable is your relative price position for each risk class at the time of sale (your price minus the market median for that profile). The outcome is claim frequency. DML estimates the causal effect of risk characteristics on frequency by partialling out the price-risk confounding in two residualisation steps: predict the treatment from risk covariates (to get residual pricing), predict the outcome from risk covariates (to get residual frequency), then regress residual frequency on residual pricing. The result is a frequency estimate that is not contaminated by the pricing selection effect.
 
-The [`insurance-causal`](/libraries/insurance-causal/) library implements DML for this use case. It requires the market price at the time of sale for each policy — which you will have if you collected a PCW quote grid at launch and track your own price relative to that grid. Without the market price reference, the confounding cannot be separated.
+The [`insurance-causal`](/insurance-causal/) library implements DML for this use case. It requires the market price at the time of sale for each policy — which you will have if you collected a PCW quote grid at launch and track your own price relative to that grid. Without the market price reference, the confounding cannot be separated.
 
 This is the stage where the data collection protocol at Stage 1 pays dividends. If you recorded your price and the market prices at the time of writing each policy, you have the treatment variable. If you only recorded your own price and not the market context, you cannot do the correction cleanly.
 
@@ -90,7 +90,7 @@ The ABC assumption is that competitor quotes represent the same risk population 
 
 The test is straightforward: compare the distribution of risk characteristics in your quote population (the synthetic grid you used to collect market data at Stage 1) against the distribution in your actual written business. If the distributions diverge materially — your written business is skewed towards certain ages, territories, or vehicle groups relative to the quote grid — your ABC prior is extrapolating to the wrong risk mix.
 
-The [`insurance-thin-data`](/libraries/insurance-thin-data/) library provides a `CovariateShiftTest` class using Maximum Mean Discrepancy with a permutation test. Run it quarterly against the Stage 1 quote grid as your reference. A significant MMD test result means your written book has drifted from the population the ABC was calibrated on, and the credibility prior should be updated to reflect that.
+The [`insurance-thin-data`](/tools/) library provides a `CovariateShiftTest` class using Maximum Mean Discrepancy with a permutation test. Run it quarterly against the Stage 1 quote grid as your reference. A significant MMD test result means your written book has drifted from the population the ABC was calibrated on, and the credibility prior should be updated to reflect that.
 
 Practically, this matters most in the first 12 months when Z is still low and your prices are heavily influenced by the ABC prior. If your book composition has drifted and you have not corrected the prior, you are mispricing the drift segment using the wrong expected frequency. By Year 2 when your credibility weight is 0.4-0.5, the drift effect is partially absorbed by your own data — but it is still worth monitoring, particularly if the drift is into a segment with materially different loss experience.
 
@@ -149,7 +149,7 @@ For a UK MGA launching on a PCW in the next six months, the minimum viable versi
 
 1. Collect 200 PCW quotes manually across a synthetic risk grid (two-three weeks, 15-20 hours).
 2. Run the ABC loop from our [Python implementation post](/2026/03/31/market-based-ratemaking-python-implementation/) with a UK-calibrated loss ratio corridor.
-3. Load the MAP estimates into [`insurance-credibility`](/libraries/insurance-credibility/) as your Bühlmann-Straub prior.
+3. Load the MAP estimates into [`insurance-credibility`](/insurance-credibility/) as your Bühlmann-Straub prior.
 4. Document the full chain for the FCA: quotes collected, methodology, posterior, rates.
 
 Stages 3 and 4 are Year 2 problems. Stage 1 and 2 are solvable in the six weeks before launch. The documentation alone is worth more than the rate itself under Consumer Duty — the FCA cannot audit a rate without a methodology, but it can audit a methodology without a perfect rate.

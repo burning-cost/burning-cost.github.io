@@ -237,6 +237,6 @@ Zhang, Y., Guillen, M., Li, J., Li, G. & Chen, S. (2025). 'Use ADAS Data to Pred
 
 ## Related posts
 
-- [Applying Bonus-Malus to Driving Behaviour, Not Just Claims](/telematics/techniques/2026/04/01/weekly-dynamic-telematics-bms-bonus-malus-driving-behaviour/) — the ASTIN 2025 paper that applies credibility-weighted state machines to weekly telematics signals; the weekly panel structure there is the same input format the ZIP model uses
-- [Scoring a Trip as a Function, Not a Feature Vector](/telematics/techniques/2026/03/31/telematics-trip-scoring-functional-data-wavelets/) — the within-trip HMM layer that produces event features the ZIP model aggregates to weekly counts
-- [SafeDriver-IQ: Telematics Scoring via Inverse Crash Probability](/telematics/pricing/2026/04/01/safedriver-iq-inverse-crash-probability-telematics-scoring/) — a different approach to the same problem: grounding telematics scores in crash probability rather than event count distributions
+- [Applying Bonus-Malus to Driving Behaviour, Not Just Claims](/2026/04/01/weekly-dynamic-telematics-bms-bonus-malus-driving-behaviour/) — the ASTIN 2025 paper that applies credibility-weighted state machines to weekly telematics signals; the weekly panel structure there is the same input format the ZIP model uses
+- [Scoring a Trip as a Function, Not a Feature Vector](/2026/03/31/telematics-trip-scoring-functional-data-wavelets/) — the within-trip HMM layer that produces event features the ZIP model aggregates to weekly counts
+- [SafeDriver-IQ: Telematics Scoring via Inverse Crash Probability](/2026/04/01/safedriver-iq-inverse-crash-probability-telematics-scoring/) — a different approach to the same problem: grounding telematics scores in crash probability rather than event count distributions

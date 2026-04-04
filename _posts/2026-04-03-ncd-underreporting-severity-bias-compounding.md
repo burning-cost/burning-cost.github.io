@@ -141,7 +141,7 @@ The clean version of the correction applies separately to own-damage and third-p
 
 ## What this changes about the four-step correction
 
-In our [earlier piece on correcting NCD relativities](/pricing/motor/techniques/2026/04/02/your-ncd-relativities-are-wrong/), we outlined a four-step correction: estimate retention thresholds, compute censoring probability per class, re-estimate the frequency model, iterate. That corrects the frequency model.
+In our [earlier piece on correcting NCD relativities](/2026/04/02/your-ncd-relativities-are-wrong/), we outlined a four-step correction: estimate retention thresholds, compute censoring probability per class, re-estimate the frequency model, iterate. That corrects the frequency model.
 
 The severity correction adds a fifth consideration: do not use your NCD-segmented severity model to set severity relativities by NCD class. The NCD coefficient in your severity GLM is contaminated by truncation geometry. The corrected severity at each NCD class, for a homogeneous loss distribution, is the same unconditional mean regardless of NCD band. NCD should not appear as a factor in your severity model at all — the apparent variation is a data artefact, not a genuine risk signal.
 
@@ -161,8 +161,8 @@ That the two errors substantially offset is not a reason to ignore either. The p
 
 ## Further reading
 
-- [Your NCD Relativities Are Wrong, and the Maths Now Tells You How Wrong](/pricing/motor/techniques/2026/04/02/your-ncd-relativities-are-wrong/) — the frequency correction in detail
-- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/pricing/techniques/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment with the Liang et al. paper
+- [Your NCD Relativities Are Wrong, and the Maths Now Tells You How Wrong](/2026/04/02/your-ncd-relativities-are-wrong/) — the frequency correction in detail
+- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment with the Liang et al. paper
 - Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." [arXiv:2601.12655](https://arxiv.org/abs/2601.12655)
 - Lemaire, J. (1977). "La Soif du Bonus." *ASTIN Bulletin* 9(1-2):181–190
 - Norberg, R. (1976). "A credibility theory for automobile bonus systems." *Scandinavian Actuarial Journal*, 2:92–107

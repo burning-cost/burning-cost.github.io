@@ -167,8 +167,8 @@ Code: [github.com/rizbicki/tabDensityComparisons](https://github.com/rizbicki/ta
 
 ## Related posts
 
-- [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/libraries/pricing/foundation-models/2026/03/13/insurance-tabpfn/) — the `insurance-tabpfn` library overview
-- [TabPFN vs CatBoost vs GLM on freMTPL2: Why Exposure Offset Matters](/libraries/pricing/2026/03/28/tabpfn-catboost-glm-fremtpl2-exposure-offset/) — TabPFN failure mode on frequency data without offset
-- [GLMs Predict Means. DRN Predicts Everything Else.](/techniques/libraries/2026/03/10/distributional-refinement-network-insurance/) — the DRN for full conditional density in production
-- [insurance-distributional: TweedieGBM, GammaGBM and the Full Distributional Toolkit](/techniques/libraries/2026/03/05/insurance-distributional/) — the production distributional modelling library
-- [Mixture Density Networks for Insurance Severity: When the Gamma Isn't Enough](/techniques/pricing/2026/03/28/mixture-density-networks-insurance-severity/) — MDN as the right non-parametric CDE at larger n
+- [Foundation Models for Thin Segments: TabPFN and TabICLv2 in Insurance Pricing](/2026/03/13/insurance-tabpfn/) — the `insurance-tabpfn` library overview
+- [TabPFN vs CatBoost vs GLM on freMTPL2: Why Exposure Offset Matters](/2026/03/28/tabpfn-catboost-glm-fremtpl2-exposure-offset/) — TabPFN failure mode on frequency data without offset
+- [GLMs Predict Means. DRN Predicts Everything Else.](/2026/03/10/distributional-refinement-network-insurance/) — the DRN for full conditional density in production
+- [insurance-distributional: TweedieGBM, GammaGBM and the Full Distributional Toolkit](/2026/03/05/insurance-distributional/) — the production distributional modelling library
+- [Mixture Density Networks for Insurance Severity: When the Gamma Isn't Enough](/2026/03/28/mixture-density-networks-insurance-severity/) — MDN as the right non-parametric CDE at larger n

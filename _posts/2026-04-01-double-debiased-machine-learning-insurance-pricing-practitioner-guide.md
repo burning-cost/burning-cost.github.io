@@ -318,6 +318,6 @@ Source: [github.com/burning-cost/insurance-causal](https://github.com/burning-co
 
 ## Related posts
 
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/libraries/pricing/causal-inference/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the foundational post on why GLM elasticity is biased in UK motor renewal
-- [Heterogeneous Price Elasticity via Causal Forests](/techniques/causal-inference/2026/03/25/heterogeneous-price-elasticity-causal-forests-insurance-pricing/) — per-customer CATE estimation and the ENBP optimiser
-- [Does DML Causal Inference Actually Work on Insurance Data?](/techniques/causal-inference/2026/03/25/does-dml-causal-inference-actually-work/) — our benchmark results on synthetic and FrEMTPL2 data
+- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the foundational post on why GLM elasticity is biased in UK motor renewal
+- [Heterogeneous Price Elasticity via Causal Forests](/2026/03/25/heterogeneous-price-elasticity-causal-forests-insurance-pricing/) — per-customer CATE estimation and the ENBP optimiser
+- [Does DML Causal Inference Actually Work on Insurance Data?](/2026/03/25/does-dml-causal-inference-actually-work/) — our benchmark results on synthetic and FrEMTPL2 data

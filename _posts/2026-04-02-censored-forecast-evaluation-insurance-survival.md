@@ -172,5 +172,5 @@ Taggart, R. J., Loveday, N., and Louis, S. (2026). 'On the evaluation of time-to
 
 ## Related posts
 
-- [The Survival Treatment Effect Your Retention Model Is Not Computing](/techniques/causal-inference/libraries/2026/04/02/surv-itmle-heterogeneous-survival-treatment-effects/) — IPCW and causal survival forests for censored renewal data
-- [insurance-survival: Survival Modelling for Insurance Pricing](/libraries/pricing/insurance-survival/) — library overview, left truncation support, competing risks
+- [The Survival Treatment Effect Your Retention Model Is Not Computing](/2026/04/02/surv-itmle-heterogeneous-survival-treatment-effects/) — IPCW and causal survival forests for censored renewal data
+- [insurance-survival: Survival Modelling for Insurance Pricing](https://github.com/burning-cost/insurance-survival) — library overview, left truncation support, competing risks

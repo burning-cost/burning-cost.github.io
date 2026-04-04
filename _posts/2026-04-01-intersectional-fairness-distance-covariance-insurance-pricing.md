@@ -200,7 +200,7 @@ Consumer Duty outcome monitoring under PS22/9 requires firms to demonstrate that
 
 The Equality Act 2010 angle is subtler. Section 19 (indirect discrimination) requires showing that a provision, criterion, or practice puts a group with a protected characteristic at a particular disadvantage. The key phrase is "a group" — which the FCA interprets as potentially intersectional. A 17-year-old woman is not the same protected group as a 17-year-old man or a 65-year-old woman. The Act does not prevent them from having different premiums; it requires that the difference is justified by legitimate risk factors, not by the protected characteristic. CCdCov tests for the latter.
 
-One important distinction: CCdCov targets demographic parity ($\hat{y} \perp S$), meaning the distribution of predictions is the same across intersectional subgroups. The Equality Act standard is closer to conditional fairness — equal prices for equal risks, regardless of protected attribute. Demographic parity and conditional fairness are different objectives. For UK regulatory compliance, [Lindholm marginalisation](https://burning-cost.github.io/fairness/2026/03/28/discrimination-free-insurance-pricing-lindholm/) targets conditional fairness and should be your primary correction tool. CCdCov then serves as a complementary training-time regulariser and intersectional audit mechanism.
+One important distinction: CCdCov targets demographic parity ($\hat{y} \perp S$), meaning the distribution of predictions is the same across intersectional subgroups. The Equality Act standard is closer to conditional fairness — equal prices for equal risks, regardless of protected attribute. Demographic parity and conditional fairness are different objectives. For UK regulatory compliance, [Lindholm marginalisation](https://burning-cost.github.io/2026/03/31/discrimination-free-pricing-privatised-attributes-insurance/) targets conditional fairness and should be your primary correction tool. CCdCov then serves as a complementary training-time regulariser and intersectional audit mechanism.
 
 ---
 
@@ -241,5 +241,5 @@ Source: [github.com/burning-cost/insurance-fairness](https://github.com/burning-
 
 ## Related posts
 
-- [Discrimination-Free Insurance Pricing: The Lindholm Approach](https://burning-cost.github.io/fairness/2026/03/28/discrimination-free-insurance-pricing-lindholm/) — conditional fairness via marginalisation; the correct primary correction for UK regulatory compliance
-- [Sequential Optimal Transport for Multi-Attribute Fairness](https://burning-cost.github.io/fairness/machine-learning/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — distributional corrections for joint demographic parity across multiple protected attributes
+- [Discrimination-Free Insurance Pricing: The Lindholm Approach](https://burning-cost.github.io/2026/03/31/discrimination-free-pricing-privatised-attributes-insurance/) — conditional fairness via marginalisation; the correct primary correction for UK regulatory compliance
+- [Sequential Optimal Transport for Multi-Attribute Fairness](https://burning-cost.github.io/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — distributional corrections for joint demographic parity across multiple protected attributes

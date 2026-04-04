@@ -111,5 +111,5 @@ The earlier Fan & Sesia paper (arXiv:2512.15383), which is the basis for the `gw
 
 ## Related
 
-- [Conformal Prediction for Joint Frequency-Severity Models](/conformal-prediction/insurance-pricing/2026/03/20/conformal-prediction-joint-frequency-severity-models/) — the baseline `JointConformalPredictor` using Bonferroni and LWC
-- [Your Monitoring Thresholds Are Made Up](/model-monitoring/insurance-pricing/2026/04/03/your-monitoring-thresholds-are-made-up/) — conformal SPC for model monitoring
+- [Conformal Prediction for Joint Frequency-Severity Models](/2026/03/20/conformal-prediction-joint-frequency-severity-models/) — the baseline `JointConformalPredictor` using Bonferroni and LWC
+- [Your Monitoring Thresholds Are Made Up](/2026/04/03/your-monitoring-thresholds-are-made-up/) — conformal SPC for model monitoring

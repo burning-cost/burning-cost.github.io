@@ -213,6 +213,6 @@ Vadlamani, A.T., Srinivasan, A., Maneriker, P., Payani, A. & Parthasarathy, S. (
 
 ## Related posts
 
-- [Conformal Prediction for Premium Uncertainty Bands: Locally Weighted Calibration](/techniques/pricing/2026/03/31/locally-weighted-conformal-prediction-insurance-premium-intervals/) — the LWC method that improves conditional coverage efficiency; orthogonal to GCF, composable with it
-- [Proxy Discrimination in Insurance Pricing: What the Fairness Audit Actually Tests](/fairness/pricing/2026/04/01/insurance-fairness-proxy-discrimination-audit/) — the point-estimate audit that GCF complements, not replaces
-- [Selective Conformal Prediction for Automated Underwriting](/techniques/pricing/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — conditional vs. marginal coverage in underwriting triage; the coverage distinction that motivates the GCF framework
+- [Conformal Prediction for Premium Uncertainty Bands: Locally Weighted Calibration](/2026/03/31/locally-weighted-conformal-prediction-insurance-premium-intervals/) — the LWC method that improves conditional coverage efficiency; orthogonal to GCF, composable with it
+- [Proxy Discrimination in Insurance Pricing: What the Fairness Audit Actually Tests](/insurance-fairness/) — the point-estimate audit that GCF complements, not replaces
+- [Selective Conformal Prediction for Automated Underwriting](/2026/04/01/selective-conformal-prediction-automated-underwriting-conditional-vs-marginal-risk/) — conditional vs. marginal coverage in underwriting triage; the coverage distinction that motivates the GCF framework

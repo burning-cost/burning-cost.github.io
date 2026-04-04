@@ -246,5 +246,5 @@ Source: [github.com/burning-cost/insurance-cv](https://github.com/burning-cost/i
 
 ## Related posts
 
-- [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/machine-learning/2026/03/31/conformal-prediction-intervals-insurance-pricing-python/) — distribution-free uncertainty quantification for Tweedie models; uses `insurance-conformal`, which pairs naturally with `SupportPointSplit` for the train/calibrate/test split
-- [Conditional Coverage and Conformal Prediction in Model Selection](https://burning-cost.github.io/machine-learning/model-validation/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — using conformal prediction diagnostics in model validation workflows
+- [Conformal Prediction Intervals for Insurance Pricing Models](https://burning-cost.github.io/2026/03/31/conformal-prediction-intervals-insurance-pricing-python/) — distribution-free uncertainty quantification for Tweedie models; uses `insurance-conformal`, which pairs naturally with `SupportPointSplit` for the train/calibrate/test split
+- [Conditional Coverage and Conformal Prediction in Model Selection](https://burning-cost.github.io/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — using conformal prediction diagnostics in model validation workflows

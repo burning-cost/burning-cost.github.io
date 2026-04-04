@@ -241,7 +241,7 @@ Source: `src/insurance_conformal_ts/methods.py`. Tests: `tests/test_methods.py`.
 
 ## Related posts
 
-- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/techniques/pricing/2026/04/01/shape-adaptive-conformal-prediction/) — ShapeAdaptiveCP (MOPI) for conditional coverage across rating cells
-- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/techniques/pricing/uncertainty/2026/03/13/insurance-conformal-risk/) — conformal risk control and the `insurance-conformal` library overview
-- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/techniques/pricing/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
-- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/techniques/pricing/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — checking whether your conformal guarantees hold conditionally, not just marginally
+- [Shape-Adaptive Conformal Prediction: Why Your Intervals Are Wrong for Skewed Claims](/2026/04/01/shape-adaptive-conformal-prediction/) — ShapeAdaptiveCP (MOPI) for conditional coverage across rating cells
+- [Coverage Is the Wrong Guarantee for Pricing Actuaries](/2026/03/13/insurance-conformal-risk/) — conformal risk control and the `insurance-conformal` library overview
+- [Conformal Prediction for Insurance Pricing: Intervals, Risk Control, and the Practical Toolkit](/2026/03/23/does-conformal-prediction-work-insurance-pricing/) — when conformal prediction works, when it does not, and what calibration data you actually need
+- [Conditional Coverage in Conformal Prediction: Model Selection with CVI](/2026/03/31/conditional-coverage-conformal-prediction-model-selection-cvi/) — checking whether your conformal guarantees hold conditionally, not just marginally

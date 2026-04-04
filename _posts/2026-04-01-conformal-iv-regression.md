@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-[Our post on Panel IV DML](/pricing/causal-inference/rate-change/2026/03/26/panel-dml-instrumental-variables-when-did-isnt-enough/) ended in a familiar place: you have the causal point estimate, extracted via instrumental variables, and you want to know what surrounds it. The DML estimator gives you an average structural function $\hat{h}(X)$ — the causal effect of endogenous usage on claim cost, say, or causal demand response to price. But for a new risk at test time, the point estimate alone is not enough. You want a prediction interval. And if your estimate came from an IV model, your prediction interval needs to know that.
+[Our post on Panel IV DML](/2026/03/26/panel-dml-instrumental-variables-when-did-isnt-enough/) ended in a familiar place: you have the causal point estimate, extracted via instrumental variables, and you want to know what surrounds it. The DML estimator gives you an average structural function $\hat{h}(X)$ — the causal effect of endogenous usage on claim cost, say, or causal demand response to price. But for a new risk at test time, the point estimate alone is not enough. You want a prediction interval. And if your estimate came from an IV model, your prediction interval needs to know that.
 
 The natural instinct is to reach for split conformal prediction. Fit the IV model on a training set, compute residuals on a calibration set, take the appropriate quantile, use it as the half-width for new predictions. This is exactly how our [`insurance-conformal`](/insurance-conformal/) library handles standard regression. It provides finite-sample, distribution-free coverage guarantees — provided the calibration and test data are exchangeable.
 
@@ -169,4 +169,4 @@ The causal/conformal intersection is where serious uncertainty quantification in
 
 ---
 
-*arXiv:2603.25509 — Kato, M. (2026). Conformal Prediction for Nonparametric Instrumental Regression. Related libraries: [insurance-conformal](/insurance-conformal/), [insurance-causal-policy](/insurance-causal-policy/). Related post: [Panel DML with Instrumental Variables](/pricing/causal-inference/rate-change/2026/03/26/panel-dml-instrumental-variables-when-did-isnt-enough/).*
+*arXiv:2603.25509 — Kato, M. (2026). Conformal Prediction for Nonparametric Instrumental Regression. Related libraries: [insurance-conformal](/insurance-conformal/), [insurance-causal-policy](/insurance-causal-policy/). Related post: [Panel DML with Instrumental Variables](/2026/03/26/panel-dml-instrumental-variables-when-did-isnt-enough/).*

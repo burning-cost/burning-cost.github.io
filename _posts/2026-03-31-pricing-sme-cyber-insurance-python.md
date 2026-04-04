@@ -54,7 +54,7 @@ The market splits into two buckets with a void between them.
 
 **Security posture tools:** BitSight and SecurityScorecard scan external IP footprint, patch cadence, and vulnerability exposure. They produce scores (A-F or 0-900, depending on vendor). Hiscox, Beazley, and Aviva use them for SME cyber questionnaire augmentation. They cost in the £15-50k/year range for insurer use. They are not actuarial models and have not been calibrated to insurance losses at published precision. They are a credit score for cyber hygiene, not a loss distribution.
 
-**The void:** A reproducible, actuarially-grounded, entity-level frequency-severity model for SME cyber that a pricing actuary can inspect, validate, and adapt. Something that clearly separates the frequency mechanism from the severity mechanism, uses a proper zero-inflated count model, and runs on open data. This is what we are building with [insurance-distributional](/libraries/insurance-distributional/), [insurance-severity](/libraries/insurance-severity/), and [insurance-frequency-severity](/libraries/insurance-frequency-severity/).
+**The void:** A reproducible, actuarially-grounded, entity-level frequency-severity model for SME cyber that a pricing actuary can inspect, validate, and adapt. Something that clearly separates the frequency mechanism from the severity mechanism, uses a proper zero-inflated count model, and runs on open data. This is what we are building with [insurance-distributional](/insurance-distributional/), [insurance-severity](/tools/), and [insurance-frequency-severity](/insurance-frequency-severity/).
 
 ---
 
@@ -69,7 +69,7 @@ Stage 1: P(incident > 0 | firm features) - binary classifier
 Stage 2: E[count | count > 0, firm features]  - Poisson or NegBin regression
 ```
 
-[insurance-distributional](/libraries/insurance-distributional/) already has `zip.py` (zero-inflated Poisson) and `ZeroInflatedTweedieGBM` from So and Valdez (arXiv:2406.16206, 2024). These map directly to cyber incident frequency. The conditional independence finding from Guo et al. means you fit one ZI-Poisson per incident type independently - five models, not one joint model.
+[insurance-distributional](/insurance-distributional/) already has `zip.py` (zero-inflated Poisson) and `ZeroInflatedTweedieGBM` from So and Valdez (arXiv:2406.16206, 2024). These map directly to cyber incident frequency. The conditional independence finding from Guo et al. means you fit one ZI-Poisson per incident type independently - five models, not one joint model.
 
 What you cannot do with open data is UK calibration. The frequency parameters you estimate from PRC+VCDB are US-data estimates. They can serve as priors if you have any UK portfolio data, but they are not directly applicable to UK SME pricing without adjustment.
 
@@ -83,7 +83,7 @@ Eling, Ibragimov, and Ning (Insurance: Mathematics and Economics, 2025, DOI: 10.
 
 The consensus on distribution shape: log-normal fits small-to-medium losses well; GPD fits the tail; a composite lognormal-GPD splice outperforms either alone. Bee (arXiv:2505.22507, 2025) develops a lognormal-GPD bridge via exponential transition with four free parameters identifiable by iterative MLE.
 
-[insurance-severity](/libraries/insurance-severity/) already has `TruncatedGPD` (GPD with policy-limit truncation correction, directly relevant to cyber), a composite distributions module with lognormal-GPD splice, and `TailVariableImportance` for identifying which firm characteristics drive extreme losses.
+[insurance-severity](/tools/) already has `TruncatedGPD` (GPD with policy-limit truncation correction, directly relevant to cyber), a composite distributions module with lognormal-GPD splice, and `TailVariableImportance` for identifying which firm characteristics drive extreme losses.
 
 The severity tooling is essentially ready. The binding constraint is data: with no financial loss amounts in PRC or VCDB, we use records-exposed as a proxy. That gives you a severity model that is directionally correct and clearly caveated. If you have Advisen access, substitute it - the API is designed for that.
 
@@ -93,9 +93,9 @@ One additional constraint worth naming: entity-level severity models cannot pric
 
 ## The joint model and fairness audit
 
-The frequency-severity join is handled in [insurance-frequency-severity](/libraries/insurance-frequency-severity/) via `joint.py` and `copula.py`. For cyber, the frequency and severity of a given incident type are plausibly correlated (larger, more-targeted firms have both more incidents and higher losses per incident), which warrants explicit dependence modelling rather than naive multiplication of marginals.
+The frequency-severity join is handled in [insurance-frequency-severity](/insurance-frequency-severity/) via `joint.py` and `copula.py`. For cyber, the frequency and severity of a given incident type are plausibly correlated (larger, more-targeted firms have both more incidents and higher losses per incident), which warrants explicit dependence modelling rather than naive multiplication of marginals.
 
-The fairness question matters specifically for SME cyber because industry sector is the most predictive firmographic variable after firm size. Sector as a predictor is likely to produce adverse outcomes for SMEs in hospitality, retail, and social care relative to financial services - even controlling for actual security posture. Under FCA Consumer Duty, algorithmic underwriting outcomes need to be tested for proxy discrimination. [insurance-fairness](/libraries/insurance-fairness/) provides `proxy_detection.py` (which will flag sector as a proxy for variables correlated with protected characteristics) and `audit.py` for the full outcome audit workflow.
+The fairness question matters specifically for SME cyber because industry sector is the most predictive firmographic variable after firm size. Sector as a predictor is likely to produce adverse outcomes for SMEs in hospitality, retail, and social care relative to financial services - even controlling for actual security posture. Under FCA Consumer Duty, algorithmic underwriting outcomes need to be tested for proxy discrimination. [insurance-fairness](/insurance-fairness/) provides `proxy_detection.py` (which will flag sector as a proxy for variables correlated with protected characteristics) and `audit.py` for the full outcome audit workflow.
 
 This is not hypothetical. If you are underwriting SME cyber and using a GBM model trained on US data with sector as a feature, you should run the fairness audit before you deploy.
 

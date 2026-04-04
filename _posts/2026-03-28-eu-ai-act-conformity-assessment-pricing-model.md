@@ -7,7 +7,7 @@ tags: [eu-ai-act, conformity-assessment, article-11, article-14, article-15, tec
 description: "A step-by-step guide to building an EU AI Act conformity assessment for an insurance pricing model. Covers risk classification, Article 11 technical documentation, Article 14 human oversight, and Article 15 accuracy requirements — with Python code using insurance-governance."
 ---
 
-In [the previous post](https://burning-cost.github.io/regulation/2026/03/28/eu-ai-act-insurance-pricing-what-you-need-to-know/) we established the scope: life and health individual pricing is high-risk AI under Annex III paragraph 5(c); motor and property pricing is not. Self-assessment only — no notified body. The deadline is 2 August 2026.
+In [the previous post](https://burning-cost.github.io/2026/03/28/eu-ai-act-insurance-pricing-what-you-need-to-know/) we established the scope: life and health individual pricing is high-risk AI under Annex III paragraph 5(c); motor and property pricing is not. Self-assessment only — no notified body. The deadline is 2 August 2026.
 
 This post is the practical follow-up: what does a conformity assessment for a pricing model actually contain, how do you build it, and where does the insurance-governance library already do most of the work?
 
@@ -414,7 +414,7 @@ The library is at [github.com/burning-cost/insurance-governance](https://github.
 
 ## Related reading
 
-- [EU AI Act and Insurance Pricing — What You Actually Need to Know](https://burning-cost.github.io/regulation/2026/03/28/eu-ai-act-insurance-pricing-what-you-need-to-know/) — scope, classification, and the four-step decision sequence
-- [What Real-Data Validation Actually Looks Like: freMTPL2 and PRA SS1/23](https://burning-cost.github.io/model-governance/2026/03/28/model-validation-fremtpl2-real-data-governance/) — calibrating Article 15 thresholds to real data
+- [EU AI Act and Insurance Pricing — What You Actually Need to Know](https://burning-cost.github.io/2026/03/28/eu-ai-act-insurance-pricing-what-you-need-to-know/) — scope, classification, and the four-step decision sequence
+- [What Real-Data Validation Actually Looks Like: freMTPL2 and PRA SS1/23](https://burning-cost.github.io/2026/03/28/model-validation-fremtpl2-real-data-governance/) — calibrating Article 15 thresholds to real data
 - FPF Conformity Assessment Guide (April 2025): fpf.org — the most practical public guide to Annex VI procedure; not insurance-specific but the procedural framework is sound
 - EU AI Act full text: EUR-Lex, Regulation (EU) 2024/1689, OJ 12.7.2024

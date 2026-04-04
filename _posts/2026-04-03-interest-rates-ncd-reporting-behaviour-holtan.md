@@ -117,7 +117,7 @@ Whether this is material depends on the magnitude of further rate cuts and the s
 
 ## The practical recommendation
 
-If you have already implemented Lemaire's dynamic programming algorithm for your NCD ladder — as we outlined in our [earlier piece on correcting NCD relativities](/pricing/motor/techniques/2026/04/02/your-ncd-relativities-are-wrong/) — the Holtan rate sensitivity is trivially computed. The discount factor $\delta = 1/(1+r)$ is a direct input to the threshold formula. Replace the constant $\delta$ with a time-varying $\delta_t$ derived from the risk-free rate at each valuation date, and the threshold table becomes a matrix $\{b^*_{j,t}\}$ rather than a vector $\{b^*_j\}$.
+If you have already implemented Lemaire's dynamic programming algorithm for your NCD ladder — as we outlined in our [earlier piece on correcting NCD relativities](/2026/04/02/your-ncd-relativities-are-wrong/) — the Holtan rate sensitivity is trivially computed. The discount factor $\delta = 1/(1+r)$ is a direct input to the threshold formula. Replace the constant $\delta$ with a time-varying $\delta_t$ derived from the risk-free rate at each valuation date, and the threshold table becomes a matrix $\{b^*_{j,t}\}$ rather than a vector $\{b^*_j\}$.
 
 The additional computational cost is minimal. The practical benefit is a more defensible trend decomposition when presenting to reserving committees or pricing governance forums. "The 2022 frequency increase was partly a Holtan reporting shift, not purely a claims inflation effect" is a specific, testable assertion — more useful than the generic "behavioural factors may have contributed."
 
@@ -141,5 +141,5 @@ Neither answer is currently published.
 - Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." [arXiv:2601.12655](https://arxiv.org/abs/2601.12655)
 - Lemaire, J. (1977). "La Soif du Bonus." *ASTIN Bulletin* 9(1-2):181–190
 - FCA EP25/2 (2025). Evaluation Paper: Our GIPP Remedies
-- [Your NCD Relativities Are Wrong, and the Maths Now Tells You How Wrong](/pricing/motor/techniques/2026/04/02/your-ncd-relativities-are-wrong/) — the frequency correction in detail
-- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/pricing/techniques/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment
+- [Your NCD Relativities Are Wrong, and the Maths Now Tells You How Wrong](/2026/04/02/your-ncd-relativities-are-wrong/) — the frequency correction in detail
+- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment

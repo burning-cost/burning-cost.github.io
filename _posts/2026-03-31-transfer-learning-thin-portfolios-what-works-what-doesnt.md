@@ -135,6 +135,6 @@ The methods we describe above — the case for Tian-Feng debiasing over DANN, th
 
 ## Related posts
 
-- [Bayesian Hierarchical Models for Thin-Data Pricing](https://burning-cost.github.io/machine-learning/pricing/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — the credibility theory side of the thin-data problem
-- [When Credibility Meets CatBoost](https://burning-cost.github.io/machine-learning/pricing/2026/02/28/when-credibility-meets-catboost/) — combining credibility shrinkage with gradient boosting for sparse segments
-- [Your Book Has Shifted and Your Model Doesn't Know](https://burning-cost.github.io/machine-learning/pricing/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — covariate shift in production pricing models and how to detect it
+- [Bayesian Hierarchical Models for Thin-Data Pricing](https://burning-cost.github.io/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/) — the credibility theory side of the thin-data problem
+- [When Credibility Meets CatBoost](https://burning-cost.github.io/2026/02/28/when-credibility-meets-catboost/) — combining credibility shrinkage with gradient boosting for sparse segments
+- [Your Book Has Shifted and Your Model Doesn't Know](https://burning-cost.github.io/2026/03/02/your-book-has-shifted-and-your-model-doesnt-know/) — covariate shift in production pricing models and how to detect it

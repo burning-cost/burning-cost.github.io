@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-We [wrote about arXiv:2602.04791 in March](https://burning-cost.github.io/fairness/regulation/life-insurance/2026/03/25/fair-pricing-long-term-insurance/) when the paper by Lim, Xu, and Zhou first surfaced. That post made the high-level argument: multi-state products have a fairness problem that annual GI tools cannot address, and this paper provides a framework. We want to go deeper now, because the implementation detail matters — and the naive approach (apply Lindholm to the final premium) is wrong in a specific, fixable way.
+We [wrote about arXiv:2602.04791 in March](https://burning-cost.github.io/2026/03/25/fair-pricing-long-term-insurance/) when the paper by Lim, Xu, and Zhou first surfaced. That post made the high-level argument: multi-state products have a fairness problem that annual GI tools cannot address, and this paper provides a framework. We want to go deeper now, because the implementation detail matters — and the naive approach (apply Lindholm to the final premium) is wrong in a specific, fixable way.
 
 ---
 
@@ -117,6 +117,6 @@ If you are working on IP or critical illness fairness and want to implement this
 
 ## Related posts
 
-- [Fair Pricing in Long-Term Insurance: What arXiv:2602.04791 Means for UK Actuaries](https://burning-cost.github.io/fairness/regulation/life-insurance/2026/03/25/fair-pricing-long-term-insurance/) — the broader argument for why long-term fairness is structurally different
-- [Claims Lifecycle Modelling: The Python Gap and How to Bridge It with Poisson GLMs](https://burning-cost.github.io/techniques/reserving/pricing/2026/03/26/multi-state-claims-lifecycle-poisson-glm-substitution/) — the Poisson GLM substitution for multi-state models in Python
-- [Sequential Optimal Transport for Multi-Attribute Fairness in Insurance Pricing](https://burning-cost.github.io/fairness/machine-learning/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — the Hu-Ratz-Charpentier algorithm for multi-attribute OT correction, which applies at each transition after Lindholm
+- [Fair Pricing in Long-Term Insurance: What arXiv:2602.04791 Means for UK Actuaries](https://burning-cost.github.io/2026/03/25/fair-pricing-long-term-insurance/) — the broader argument for why long-term fairness is structurally different
+- [Claims Lifecycle Modelling: The Python Gap and How to Bridge It with Poisson GLMs](https://burning-cost.github.io/2026/03/26/multi-state-claims-lifecycle-poisson-glm-substitution/) — the Poisson GLM substitution for multi-state models in Python
+- [Sequential Optimal Transport for Multi-Attribute Fairness in Insurance Pricing](https://burning-cost.github.io/2026/03/31/sequential-ot-fairness-multi-attribute-insurance-pricing/) — the Hu-Ratz-Charpentier algorithm for multi-attribute OT correction, which applies at each transition after Lindholm
