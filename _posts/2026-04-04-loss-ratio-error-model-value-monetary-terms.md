@@ -83,8 +83,8 @@ $$\text{improvement} = \text{claims cost} \times \left(1 - \frac{1 + E_\text{LR}
 
 The result depends heavily on $\eta$. Running the formula at three plausible values:
 
-| $\eta$ | Description | $E_\text{LR}(0.65)$ | $E_\text{LR}(0.70)$ | Improvement (pp) | Monetary (£m) |
-|--------|-------------|---------------------|---------------------|-----------------|---------------|
+| $\eta$ | Description | $E_\text{LR}(0.65)$ | $E_\text{LR}(0.70)$ | Claims cost reduction (%) | Monetary (£m) |
+|--------|-------------|---------------------|---------------------|--------------------------|---------------|
 | 0.8 | Sticky book, broker channel | 0.26 | 0.21 | 3.2pp | £1.6m |
 | 1.4 | Mid-elasticity, direct | 1.02 | 0.78 | 9.1pp | £4.6m |
 | 2.0 | High elasticity, price comparison | 2.22 | 1.61 | 14.6pp | £7.3m |
@@ -93,8 +93,8 @@ The range — £1.6m to £7.3m from the same 5-point $\rho$ improvement — is n
 
 The diminishing returns effect shows in the absolute numbers too. Running the same calculation for a book starting at $\rho = 0.75$ improving to $\rho = 0.80$ (same 5-point gain, higher starting point):
 
-| $\eta$ | Improvement (pp) | Monetary (£m) |
-|--------|-----------------|---------------|
+| $\eta$ | Claims cost reduction (%) | Monetary (£m) |
+|--------|--------------------------|---------------|
 | 0.8 | 2.7pp | £1.4m |
 | 1.4 | 7.8pp | £3.9m |
 | 2.0 | 12.6pp | £6.3m |

@@ -128,7 +128,7 @@ The Python ecosystem does not yet have a complete individual-level reserving sol
 
 - Richman and Wüthrich, "One-Shot Individual Claims Reserving" (March 2026), [arXiv:2603.11660](https://arxiv.org/abs/2603.11660)
 - Richman and Wüthrich, "From Chain-Ladder to Individual Claims Reserving" (February 2026), [arXiv:2602.15385](https://arxiv.org/abs/2602.15385v2)
-- Avanzi, Lambrianidis, Taylor and Wong, "On the use of case estimates and transactional payment data" (December 2025), arXiv:2601.05274
+- Avanzi, Lambrianidis, Taylor and Wong, "On the use of case estimates and transactional payment data" (January 2026), [arXiv:2601.05274](https://arxiv.org/abs/2601.05274)
 - Delong, Lindholm and Wüthrich, *Scandinavian Actuarial Journal* 2022/1 — joint RBNS/IBNR six-network architecture
 - Hiabu, Hofman and Pittarello, "ReSurv" (CAS E-Forum 2025) — individual IBNR via survival analysis, R only
 - `chainladder-python` — [github.com/casact/chainladder-python](https://github.com/casact/chainladder-python)
