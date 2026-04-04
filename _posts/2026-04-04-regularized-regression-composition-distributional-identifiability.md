@@ -63,7 +63,7 @@ The Kadhem framework is the logical next step for two situations where parametri
 
 **Telematics severity.** Trip-level features (hard braking, cornering speed) that predict a large claim may have entirely different effects at the small-claim end of the distribution. A flow for each segment, with per-flow feature selection, is the right structure.
 
-In both cases, Kadhem's result means you can write down a principled regularisation strategy with formal backing. The alternative — applying ad hoc shrinkage and hoping the estimates stabilise — will not survive PRA CP6/24 model governance scrutiny, which requires coefficient-level justification for significant model components.
+In both cases, Kadhem's result means you can write down a principled regularisation strategy with formal backing. The alternative — applying ad hoc shrinkage and hoping the estimates stabilise — will not survive model governance scrutiny: Solvency II Article 121 requires coefficient-level justification for significant internal model components.
 
 ---
 

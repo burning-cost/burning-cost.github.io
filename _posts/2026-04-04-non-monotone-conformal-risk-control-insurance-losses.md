@@ -43,7 +43,7 @@ The Winkler score is used in the Makridakis M-competitions and is increasingly u
 
 **Two-sided regulatory tests.** Solvency II requires that reserve estimates be adequate — not too low. That is the standard one-sided constraint that monotone CRC handles straightforwardly: make the interval upper bound high enough.
 
-But internal model validation under PRA CP6/24 involves two-sided criteria in practice. A model that consistently over-reserves by a large margin is not passing the CP6/24 challenge any more than one that under-reserves — a pricing model that doubles the SCR is not acceptable any more than one that halves it. Formally, you might define a loss that penalises both under-estimation (regulatory risk) and over-estimation (capital inefficiency):
+But internal model validation under Solvency II Article 121 involves two-sided criteria in practice. A model that consistently over-reserves by a large margin is no more defensible than one that under-reserves — a pricing model that doubles the SCR is not acceptable any more than one that halves it. Formally, you might define a loss that penalises both under-estimation (regulatory risk) and over-estimation (capital inefficiency):
 
 $$L(\lambda) = \max\left(\frac{\alpha_{\text{target}} - \hat{r}(\lambda)}{\alpha_{\text{target}}}, 0\right) + \beta \cdot \max\left(\frac{\hat{r}(\lambda) - \alpha_{\text{target}}}{\alpha_{\text{target}}}, 0\right)$$
 
@@ -105,7 +105,7 @@ Standard conformal risk control is already the right framework for insurance mod
 
 The Winkler score case matters most immediately. Interval scoring rules are the standard way to evaluate probabilistic forecasts in meteorology, macroeconomics, and increasingly in actuarial science. Using CRC with the Winkler score loss gives you a prediction interval that is calibrated not just to coverage probability but to the expected value of the interval-scoring-rule loss — a materially stronger claim about the quality of your uncertainty estimates than "this interval contains the true value 95% of the time".
 
-The two-sided regulatory test case has longer-term relevance. PRA CP6/24 model risk guidance for insurance is still relatively new and model validation practice under it is not settled. As validation frameworks mature, we expect two-sided performance criteria to become more common — "the model should neither significantly under-estimate nor significantly over-estimate" is a natural requirement that has no one-sided expression. Non-monotone CRC is the tool for that.
+The two-sided regulatory test case has longer-term relevance. Solvency II Article 121 internal model requirements are well-established but validation practice continues to evolve. As validation frameworks mature, we expect two-sided performance criteria to become more common — "the model should neither significantly under-estimate nor significantly over-estimate" is a natural requirement that has no one-sided expression. Non-monotone CRC is the tool for that.
 
 ---
 

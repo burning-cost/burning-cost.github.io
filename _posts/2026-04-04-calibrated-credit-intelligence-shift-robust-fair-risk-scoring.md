@@ -11,7 +11,7 @@ math: true
 
 Most pricing model papers optimise for one thing. Nayak's Calibrated Credit Intelligence (CCI) framework — arXiv:2603.06733, March 2026 — optimises for three at once: calibrated uncertainty, group fairness, and temporal stability. That is unusual, and it matters.
 
-The paper is from credit risk. The architecture transfers directly to insurance. UK insurers are currently trying to satisfy Solvency II calibration requirements, Consumer Duty fairness obligations, and model stability expectations under PRA SoP3/24 — simultaneously, with the same model. CCI is the closest thing we have seen to a blueprint for doing that.
+The paper is from credit risk. The architecture transfers directly to insurance. UK insurers are currently trying to satisfy Solvency II calibration requirements, Consumer Duty fairness obligations, and model stability expectations — simultaneously, with the same model. CCI is the closest thing we have seen to a blueprint for doing that.
 
 ---
 
@@ -35,7 +35,7 @@ The framework has three components stacked together.
 
 **Bayesian neural scorer.** The base scorer is a Bayesian neural network trained to output a distribution over predicted default probability, not a point estimate. Epistemic uncertainty — the model's ignorance about risks unlike its training data — is quantified explicitly. On the Home Credit Risk Model Stability benchmark, this achieves AUC-ROC 0.912 with a Brier score of 0.087 and an Expected Calibration Error of 0.015.
 
-That ECE figure deserves attention. ECE measures the gap between predicted probability and observed frequency. 0.015 is tight. For comparison, a well-tuned GBM on insurance data typically sits in the 0.03–0.08 range before post-hoc calibration. Getting there at the base model level, before any Platt scaling or isotonic regression, simplifies the calibration chain considerably.
+That ECE figure deserves attention. ECE measures the gap between predicted probability and observed frequency. 0.015 is tight. For comparison, in published benchmarks a well-tuned GBM on credit and insurance data typically sits in the 0.03–0.08 range before post-hoc calibration. Getting there at the base model level, before any Platt scaling or isotonic regression, simplifies the calibration chain considerably. We would want to see replication on UK insurance data before drawing strong conclusions.
 
 **Fairness-constrained gradient boosting.** The GBM layer sits above the neural scorer and is trained with explicit constraints on demographic parity gap and equal opportunity gap. Nayak reports a demographic parity gap of 0.046 and an equal opportunity gap of 0.037 on the benchmark — meaningfully below unconstrained baselines.
 
@@ -57,9 +57,9 @@ The regulatory stack UK insurers are managing right now is unusual in combining 
 
 Solvency II Articles 120–126 require that internal models — including pricing models used as inputs to capital and reserving — are appropriately validated and that parameter uncertainty is quantified. A Bayesian scorer with a documented ECE of 0.015 is a more defensible position than a point-estimate GBM with post-hoc calibration added as an afterthought.
 
-Consumer Duty (FCA PS22/9) and the Equality Act 2010 require that pricing does not produce systematically worse outcomes for customers sharing protected characteristics. FCA EP25/2 on proxy discrimination requires firms to actively monitor for proxy relationships between rating factors and protected characteristics. Fairness-constrained training does not replace that monitoring, but it does mean the model has an explicit fairness objective rather than relying entirely on post-hoc adjustment.
+Consumer Duty (FCA PS22/9, the Consumer Duty policy statement) and the Equality Act 2010 require that pricing does not produce systematically worse outcomes for customers sharing protected characteristics. FCA EP25/2 on proxy discrimination requires firms to actively monitor for proxy relationships between rating factors and protected characteristics. Fairness-constrained training does not replace that monitoring, but it does mean the model has an explicit fairness objective rather than relying entirely on post-hoc adjustment.
 
-PRA SoP3/24 on insurance model risk management emphasises stability and performance monitoring through the model lifecycle. An architecture with built-in shift detection and threshold management is a materially easier story to tell under SoP3/24 than a model with quarterly manual recalibration.
+Solvency II Article 121 on internal model requirements, and the broader model risk governance expectations the PRA has articulated for insurers, emphasise stability and performance monitoring through the model lifecycle. An architecture with built-in shift detection and threshold management is a materially easier story to tell than a model with quarterly manual recalibration.
 
 The point is not that CCI is a compliance product. It is that the design choices made for technical reasons — Bayesian uncertainty, constrained training, shift-aware calibration — happen to align cleanly with what the regulatory framework is asking for.
 
@@ -73,7 +73,7 @@ The performance numbers need replication on UK insurance data before they mean a
 
 The computational cost of Bayesian neural networks is real. Inference is slower than a GBM. For high-frequency pricing decisions — real-time motor quotes — the latency implications need to be assessed.
 
-We also note that stacking three components increases the model complexity and the number of hyperparameters that need governance oversight under SoP3/24. The framework is cleaner conceptually than running three separate models, but it is not simpler to validate.
+We also note that stacking three components increases the model complexity and the number of hyperparameters that need governance oversight. The framework is cleaner conceptually than running three separate models, but it is not simpler to validate.
 
 ---
 
@@ -81,7 +81,7 @@ We also note that stacking three components increases the model complexity and t
 
 The architecture is worth serious attention as a design pattern, not as a production system to be deployed as-is.
 
-The core insight — that calibration, fairness, and shift-robustness should be designed in from the start rather than bolted on sequentially — is correct and underappreciated in insurance pricing practice. Most teams we are aware of still treat these as separate workstreams: model development, then fairness audit, then calibration, then monitoring. CCI proposes integrating them architecturally.
+The core insight — that calibration, fairness, and shift-robustness should be designed in from the start rather than bolted on sequentially — is correct and underappreciated in insurance pricing practice. Teams we are aware of still treat these as separate workstreams: model development, then fairness audit, then calibration, then monitoring. CCI proposes integrating them architecturally.
 
 That integration has governance advantages that are independent of the specific performance numbers. A model that quantifies its own uncertainty, has a documented fairness objective, and maintains calibration through monitored shift is a simpler model governance story than three separate systems trying to achieve the same thing through coordination.
 
@@ -93,9 +93,8 @@ The paper is worth reading. Replicate the architecture on your own data before d
 
 - Srikumar Nayak, "Calibrated Credit Intelligence: Shift-Robust and Fair Risk Scoring with Bayesian Uncertainty and Gradient Boosting", arXiv:2603.06733, March 2026 — [arxiv.org/abs/2603.06733](https://arxiv.org/abs/2603.06733)
 - Solvency II Directive, Articles 120–126 (internal model requirements)
-- FCA PS22/9: General Insurance Pricing Practices — fair value, effective 1 January 2022
+- FCA PS22/9: A new Consumer Duty — policy statement, July 2022
 - FCA EP25/2: Evaluation of General Insurance Pricing Practices — proxy discrimination, July 2025
-- PRA SoP3/24: Model Risk Management — supervisory expectations for insurers, September 2024
 - Equality Act 2010, protected characteristics in pricing
 
 Related on Burning Cost:

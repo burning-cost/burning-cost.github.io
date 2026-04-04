@@ -63,7 +63,7 @@ For insurance, the highest-risk period is **2021–2024**:
 
 A pricing team that built a new model in 2022 to comply with PS21/5, deployed it in 2023, and did not run demographic fairness testing at deployment is now carrying undocumented model history during the Consumer Duty implementation period. The model is live, the testing was not done, and the records do not exist.
 
-If the FCA were to use s404 — or equivalent Solvency II supervisory tools under CP6/24 — to mandate a fairness review of pricing models operated during 2021–2024, firms without contemporaneous documentation would be in the same position as motor lenders without DCA disclosure records.
+If the FCA were to use s404 — or equivalent Solvency II supervisory tools — to mandate a fairness review of pricing models operated during 2021–2024, firms without contemporaneous documentation would be in the same position as motor lenders without DCA disclosure records.
 
 ---
 
