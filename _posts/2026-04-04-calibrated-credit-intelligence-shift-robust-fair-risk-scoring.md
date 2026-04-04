@@ -100,6 +100,7 @@ The paper is worth reading. Replicate the architecture on your own data before d
 Related on Burning Cost:
 
 - [Mean Parity Is Not Tail Parity](/2026/04/04/demographic-parity-tails-regression-insurance-fairness/) — why aggregate fairness checks miss the exposure
+- [Insurance Model Monitoring in Python: A Practitioner's Guide](/blog/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) — the recalibrate-vs-refit decision framework that the CCI shift-aware layer is automating
 - [Does Model Monitoring Actually Work?](/2026/03/27/does-automated-model-monitoring-actually-work/) — empirical evidence on detection performance
 - [Recalibrate or Refit?](/2026/02/28/recalibrate-or-refit/) — when shift warrants a new model vs. adjusted thresholds
 - [Fairness-Accuracy Pareto Front in Insurance Pricing](/2026/03/28/fairness-accuracy-pareto-nsga2-insurance-pricing/) — quantifying the accuracy cost of constraints

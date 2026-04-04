@@ -250,3 +250,10 @@ pip install insurance-conformal
 ```
 
 The `FrequencySeverityConformal` class is in `insurance_conformal.claims`. The worked example above runs without CatBoost or LightGBM — it uses sklearn's `PoissonRegressor` and `GammaRegressor` throughout.
+
+---
+
+*Related:*
+- [Conformal Prediction Intervals for Insurance Pricing in Python](/blog/2026/03/31/conformal-prediction-intervals-insurance-pricing-python/) — the Tweedie pure premium version using the Pearson nonconformity score
+- [Does Conformal Prediction Actually Work for Insurance Claims?](/blog/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/) — benchmark results on freMTPL2: coverage, width, and where the intervals fail
+- [When Does Your Conformal Model Break? Monitoring Coverage Without False Alarms](/blog/2026/04/04/anytime-valid-conformal-monitoring-coverage-sequential-testing/) — the sequential testing problem that invalidates monthly coverage checks

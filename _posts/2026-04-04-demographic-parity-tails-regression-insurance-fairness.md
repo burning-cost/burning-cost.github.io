@@ -142,6 +142,7 @@ Le, N.S., Denis, C. and Hebiri, M. (2026). Demographic Parity Tails for Regressi
 
 Related on Burning Cost:
 
-- [Your GLM Passes Mean Fairness. Does It Pass the Tier Test?](/2026/04/02/localized-demographic-parity-pricing-tiers-insurance-fairness-v080/) — Charpentier et al. tier-boundary parity, `insurance-fairness` v0.8.0
+- [Your GLM Passes Mean Fairness. Does It Pass the Tier Test?](/2026/04/02/localized-demographic-parity-pricing-tiers-insurance-fairness-v080/)
+- [Detection vs Mitigation: insurance-fairness and EquiPy Are Not Competing](/blog/2026/04/04/insurance-fairness-equipy-comparison/) — the EquiPy tail correction that implements exactly the kind of post-processing this paper calls for — Charpentier et al. tier-boundary parity, `insurance-fairness` v0.8.0
 - [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the LRTW framework and `FairnessAudit`
 - [Per-Policyholder Proxy Discrimination Scores](/2026/04/03/sensitivity-proxy-discrimination/) — instance-level PD scores for Consumer Duty evidence

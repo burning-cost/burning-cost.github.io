@@ -31,7 +31,7 @@ It is worth being precise about what we mean. "Model validation" is used loosely
 
 **Model risk management (MRM)** — the governance layer. Documenting what the model does, what assumptions it rests on, what its limitations are, who approved it, when it is next due for review, and what tier of oversight it requires based on its materiality and complexity. This is what the PRA means when it says "model risk management".
 
-**Monitoring** — ongoing tracking after deployment. PSI on the in-force book, A/E ratios at quarterly intervals, Gini drift tests. This is not validation — it is surveillance. It answers whether the model that passed validation twelve months ago is still fit for purpose today. We cover monitoring separately with [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring).
+**Monitoring** — ongoing tracking after deployment. PSI on the in-force book, A/E ratios at quarterly intervals, Gini drift tests. This is not validation — it is surveillance. It answers whether the model that passed validation twelve months ago is still fit for purpose today. We cover monitoring separately with [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — the [practitioner's guide to insurance model monitoring](/blog/2026/04/04/insurance-model-monitoring-python-practitioner-guide/) has the full three-scenario walkthrough.
 
 All three are required. Most pricing teams have ad hoc versions of statistical validation. Very few have systematic MRM. Almost none have consistent documentation across both.
 
@@ -288,7 +288,7 @@ Be clear about the limits:
 
 `insurance-governance` sits at the governance layer of a broader Python stack for UK insurance pricing. The libraries that feed into it:
 
-- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, Gini drift, A/E ratios on deployed models. The drift signals that trigger a governance review.
+- [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, Gini drift, A/E ratios on deployed models. The drift signals that trigger a governance review. See the [glum workflow post](/blog/2026/04/04/glum-insurance-pricing-python-workflow/) for how monitoring integrates with the broader fitting and governance pipeline.
 - [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — EP25/2 proxy discrimination audit. The fairness evidence that goes into the governance pack.
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free prediction intervals. The uncertainty quantification that belongs in the validation report for any model used in reserving or capital.
 

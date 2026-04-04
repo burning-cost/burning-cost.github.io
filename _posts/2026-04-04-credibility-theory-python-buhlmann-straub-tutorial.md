@@ -282,7 +282,7 @@ No black box. Every number in the output is traceable to the formula.
 
 Credibility estimates do not replace a GLM - they sit alongside it. The typical workflow in UK motor pricing is:
 
-1. Fit a Poisson frequency GLM on the full book (all policies, all rating factors).
+1. Fit a Poisson frequency GLM on the full book (all policies, all rating factors) — we cover that build step-by-step in our [GLM frequency model tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/).
 2. For each scheme, use the GLM to produce a predicted frequency for that scheme's mix of risks.
 3. Apply a credibility-weighted experience adjustment to the GLM prediction.
 
@@ -573,3 +573,10 @@ This post covers the two core group-level models. The library also includes:
 - **`HierarchicalBuhlmannStraub`**: arbitrary-depth nested structures, including the postcode-sector-district-area geography common in UK personal lines.
 
 See the [insurance-credibility library page](/insurance-credibility/) for the full API reference.
+
+---
+
+*Related:*
+- [Does Bühlmann-Straub Credibility Actually Work in Insurance Pricing?](/blog/2026/03/28/does-buhlmann-straub-credibility-actually-work/) — benchmark results on synthetic portfolios: when k converges reliably and when it does not
+- [Amortized Bayesian Credibility: Neural Posteriors Without the MCMC Wait](/blog/2026/04/04/amortized-bayesian-credibility-neural-posterior-insurance-pricing/) — for when conjugacy is not enough and you need a full posterior at production latency
+- [Credibility vs GBM: Which Wins on Thin Segments?](/blog/2026/03/26/credibility-vs-gbm-thin-segments-insurance-pricing/) — head-to-head on commercial lines scheme data with exposures from 200 to 20,000 car years

@@ -149,6 +149,7 @@ Boonen, T.J., Fan, X. and Quan, Z. (2025). Fairness-Aware Insurance Pricing: A M
 
 Related on Burning Cost:
 
-- [Multi-Objective Insurance Pricing: Finding the Pareto Front of Accuracy, Fairness, and Profit](/2026/03/25/multi-objective-pareto-insurance-pricing-nsga2/) — full practitioner workflow with worked UK motor example
+- [Multi-Objective Insurance Pricing: Finding the Pareto Front of Accuracy, Fairness, and Profit](/2026/03/25/multi-objective-pareto-insurance-pricing-nsga2/)
+- [Detection vs Mitigation: insurance-fairness and EquiPy Are Not Competing](/blog/2026/04/04/insurance-fairness-equipy-comparison/) — the distinction between fairness auditing (what we need for the FCA) and fairness correction (what NSGA-II is doing) — full practitioner workflow with worked UK motor example
 - [Fairness-Accuracy Tradeoffs in Insurance Pricing — Pareto Frontiers with NSGA-II](/2026/03/28/fairness-accuracy-pareto-nsga2-insurance-pricing/) — `NSGA2FairnessOptimiser` API and three-objective implementation detail
 - [The Mills Review: What the FCA's Long-Term AI Inquiry Means for Pricing Teams](/2026/03/26/fca-long-term-ai-review/) — summer 2026 reporting context

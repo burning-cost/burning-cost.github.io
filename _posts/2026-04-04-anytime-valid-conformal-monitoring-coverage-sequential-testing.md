@@ -9,7 +9,7 @@ math: true
 author: burning-cost
 ---
 
-You deploy a conformal prediction model in January. The calibration set gave you 90% coverage on held-out data — the intervals contain the true loss at least 90% of the time, finite-sample guarantee, no distributional assumptions. You review coverage every month. In October, the empirical coverage for that month dips to 84%. You raise an action, convene a governance meeting, and start a refitting exercise.
+You deploy a conformal prediction model — like the frequency-severity model we built in the [conformal prediction tutorial for insurance Python](/blog/2026/04/04/conformal-prediction-insurance-python/) — in January. The calibration set gave you 90% coverage on held-out data — the intervals contain the true loss at least 90% of the time, finite-sample guarantee, no distributional assumptions. You review coverage every month. In October, the empirical coverage for that month dips to 84%. You raise an action, convene a governance meeting, and start a refitting exercise.
 
 Was the model actually broken? Or did you just run ten tests and get one that looked bad?
 

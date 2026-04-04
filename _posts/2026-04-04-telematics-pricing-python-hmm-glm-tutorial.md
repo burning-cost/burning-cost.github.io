@@ -159,7 +159,7 @@ driver_risk = aggregate_to_driver(features, credibility_threshold=30)
 # via Bühlmann-Straub: z = n_trips / (n_trips + 30)
 ```
 
-A driver with 8 trips gets weight 8/38 = 0.21. Their score is 79% portfolio mean, 21% their own observed behaviour. This is not exotic — it is [Bühlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) applied to telematics, following Gao, Wang and Wüthrich (2021, *Machine Learning* 111). The threshold of 30 is a sensible default; it is parameterised if your trip length distribution is unusually short or long.
+A driver with 8 trips gets weight 8/38 = 0.21. Their score is 79% portfolio mean, 21% their own observed behaviour. This is not exotic — it is [Bühlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) — implemented in the [insurance-credibility library](/blog/2026/04/04/credibility-theory-python-buhlmann-straub-tutorial/) — applied to telematics, following Gao, Wang and Wüthrich (2021, *Machine Learning* 111). The threshold of 30 is a sensible default; it is parameterised if your trip length distribution is unusually short or long.
 
 ---
 
@@ -272,3 +272,4 @@ Library: [github.com/burning-cost/insurance-telematics](https://github.com/burni
 - [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/28/does-hmm-telematics-risk-scoring-actually-work/) — the benchmark: Gini improvement numbers on a 5,000-driver synthetic fleet
 - [UBI Adverse Selection: Telematics Discounts Drive Away Your Best Risks](/2026/03/25/ubi-adverse-selection-telematics-discounts-drive-away-best-risks/) — the selection problem that can undermine telematics pricing even when the model is accurate
 - [Portfolio-Anchored Telematics Risk Scoring with Wavelets](/2026/03/26/wavelet-telematics-risk-index-lee-badescu-lin-2026/) — the Lee-Badescu-Lin (2026) wavelet-based alternative to HMM state fractions
+- [Building a GLM Frequency Model in Python: A Step-by-Step Tutorial](/blog/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — the Poisson frequency GLM into which telematics state features feed as rating factors
