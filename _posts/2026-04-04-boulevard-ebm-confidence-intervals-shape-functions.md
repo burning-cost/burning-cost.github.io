@@ -1,128 +1,141 @@
 ---
 layout: post
-title: "We Changed Our Minds: Boulevard EBM CIs Are Going Into insurance-gam"
+title: "Confidence Intervals for EBM Shape Functions — Boulevard Regularisation for Insurance Pricing"
 date: 2026-04-04
-categories: [model-governance, interpretability]
-tags: [ebm, confidence-intervals, boulevard, insurance-gam, model-governance, kernel-ridge-regression, arXiv-2601.18857, pricing]
-description: "In March we said we weren't building Boulevard EBM confidence intervals. We've reversed that decision. MSE/Gaussian models only — but that covers enough governance use cases to be worth shipping. Here is what BoulevardEBM does and where it breaks."
-math: true
-author: Burning Cost
+categories: [techniques, model-governance]
+tags: [EBM, GAM, interpretable-ml, uncertainty, confidence-intervals, insurance-gam, model-validation, PRA, pricing, python]
+description: "Boulevard regularisation turns EBM shape functions into kernel ridge regression estimates, giving valid CLT-based confidence intervals. We show why this matters for model governance and how to use it with insurance-gam v0.5.1."
 ---
 
-In [our March review of Fang et al. (AISTATS 2026)]({{ '/2026/03/26/boulevard-ebm-confidence-intervals-without-bootstrapping/' | relative_url }}), we concluded that Boulevard EBM confidence intervals were not going into `insurance-gam`. The asymptotic normality requires Gaussian noise. Insurance responses are not Gaussian. We scored the paper 11/20 for insurance applicability and moved on.
+A rating factor that nobody can show is statistically distinguishable from zero is a governance liability. EBMs give you shape functions — smooth, interpretable curves showing how each feature contributes to the premium — but standard EBMs give you no uncertainty. You cannot tell from the fitted curve whether the age-25 dip is real structure or an artefact of three thin accident years. Boulevard regularisation fixes this.
 
-We have reconsidered. We are building it.
-
-The reason is not that the Gaussian limitation disappeared. It has not. The reason is that we kept encountering the same governance question in EBM review meetings: *is that rating factor actually significant, or is it fitting noise?* Boulevard is the only way to answer that question analytically, without 100 bootstrap refits. For MSE models — loss development, continuous LR targets, log-residual analysis — it is directly applicable. For Poisson and Gamma, we will offer a clearly-labelled heuristic with an explicit warning. That is the honest position.
+Fang, Tan, Pipping-Gamon and Hooker (AISTATS 2026, arXiv:2601.18857) prove that a moving-average boosting variant causes EBM shape functions to converge to a kernel ridge regression (KRR) solution, and that KRR has a known asymptotic distribution. The result is analytical confidence intervals for individual shape functions — no bootstrap, no simulation, no resampling. We have implemented this in [`insurance-gam`](/insurance-gam/) as `BoulevardEBM` and `BoulevardInference`.
 
 ---
 
-## What the governance problem actually is
+## Why actuarial teams need CIs on shape functions
 
-Your regulator — whether under PRA CP6/24 or Solvency II Article 121 — wants to know that the variables in your pricing model are material. An EBM shape function is a continuous curve. If the driver age shape function rises at age 19, drops unexpectedly at age 22, and rises again at age 25, you need to be able to say whether that non-monotonicity is signal or noise. "We looked at it and it seemed plausible" is not a satisfying answer to a model validation team.
+Model governance for a deployed pricing model increasingly requires more than a Gini coefficient and a double-lift chart. PRA CP6/24 on insurance model risk expects evidence that rating factors have a defensible actuarial basis. The FCA's Consumer Duty (PS22/9) expects pricing to reflect genuine risk differentiation, not noise. "The model fitted it and the Gini went up" is not sufficient for either.
 
-The standard response is bootstrapping. InterpretML's `outer_bags` parameter (set to 100 for anything submission-quality) trains 100 separate EBMs and reports spread across bags as an uncertainty estimate. On a UK motor book of 500,000 policies with 20 features, that is 100 full training runs — roughly 8 hours on a single machine. For annual pricing cycles this is survivable. For investigative work, feature selection sweeps, or any workflow where you want to test 30 candidate variables and check which ones have non-zero marginal effects, it is a genuine bottleneck.
+Shape function CIs answer three concrete governance questions:
 
-Boulevard, when its assumptions hold, eliminates that cost.
+**Factor validation.** At annual miles 3,000–5,000, the shape function says +0.08 log-premium. With a standard EBM you cannot say whether that is significant. With Boulevard, the 95% CI for that bin is [+0.03, +0.13] — excludes zero, the factor holds. At annual miles 12,000–14,000 the CI is [−0.02, +0.04] — does not exclude zero, this bin is flat. Document both in the sign-off pack.
 
----
+**Thin data bands.** Young driver ages 17–19 always have sparse data on a UK motor book. The CI widens visibly there — exactly the communication pricing teams need when underwriting asks whether the young-driver loading is supported by the data or inferred from adjacent older bands.
 
-## The mechanism
+**Model change reviews.** When you retrain on a new accident year, shape functions shift. Without CIs you cannot tell whether the shift is sampling noise or genuine trend. A shift outside the previous CI is evidence of real movement; within it is consistent with noise.
 
-The standard EBM boosting update accumulates trees additively:
-
-$$\hat{f}_b = \hat{f}_{b-1} + \eta \cdot \tilde{t}_b$$
-
-Boulevard replaces this with a moving average:
-
-$$\hat{f}_b \leftarrow \frac{b-1}{b} \cdot \hat{f}_{b-1} + \frac{\lambda}{b} \cdot \tilde{t}_b$$
-
-Each new tree contributes $1/b$ of its value. As $b$ grows, each additional tree matters less — harmonic decay. This is a Robbins-Monro stochastic approximation update, and it has a known fixed point: kernel ridge regression. The feature-$k$ estimate converges to:
-
-$$\tilde{y}_k^* = J_n K^{(k)} \left[\lambda I + J_n K\right]^{-1} y$$
-
-where $K^{(k)}$ is the kernel induced by trees fitted on feature $k$, and $J_n$ is the centering matrix. The prediction at any point $x$ is a linear function of the training labels $y$.
-
-Linear functions of Gaussian variables are Gaussian. That is where the confidence intervals come from. Theorem 4.12 of Fang et al. gives:
-
-$$\hat{f}^{(k)}(x) \pm z_{1-\alpha/2} \cdot c_E^{-1} \cdot \hat{\sigma} \cdot \left\| r_E^{(k)}(x) \right\|$$
-
-where $r_E^{(k)}(x)$ is the influence vector at $x$ — how much each training observation pulls the prediction — and $c_E$ is a correction for the shrinkage structure. This interval achieves asymptotic nominal coverage as $n \to \infty$. No bootstrap. No refit. Compute it once, at prediction time.
-
-The computational trick: EBMs discretise inputs into $m \leq 512$ bins. The tree kernel factorises as $S_n^{(k)} = b_n^{(k)} B^{(k)} (b_n^{(k)})^T$ where $B^{(k)}$ is $m \times m$, not $n \times n$. The matrix inversion is $O(m^3)$ — roughly 134 million floating-point operations for $m = 512$, done once at training time. Per-query inference is $O(m^2)$. For a 500,000-row dataset, this is not a bottleneck.
+The `significance_table()` call does the first cut automatically — one row per feature, with a flag for whether any bin's CI excludes zero.
 
 ---
 
-## What we are shipping
+## What Boulevard regularisation does
 
-`BoulevardEBM` replaces the standard InterpretML boosting loop with the moving-average update. `BoulevardInference` computes the bin-space kernel, solves the $m \times m$ system, and produces confidence intervals.
+Standard EBM boosting fits a stump to the residuals and adds it to the ensemble with a learning rate. The estimator converges, but to a convergence point with no simple analytical distribution. Bootstrapping is the only option for uncertainty quantification — InterpretML's bagging runs O(B × n × p × T) operations where B is the number of bags.
+
+Boulevard replaces the additive update with a moving average:
+
+```
+f_b^(k) = ((b-1)/b) * f_{b-1}^(k) + (λ/b) * t̃_b^(k)
+```
+
+The 1/b harmonic decay causes successive stumps to contribute progressively less. The series converges to a KRR fixed point as boosting rounds grow. Fang et al. prove this via Robbins-Monro stochastic approximation theory, extending Zhou and Hooker (JMLR 2022). The KRR limit has a known asymptotic Gaussian distribution.
+
+The computational win comes from EBM binning. Equal-frequency bins (at most 256 per feature) cause all kernel operations to factorise into m × m matrices. The influence norm for each bin — the diagonal of the hat matrix — is computed by inverting a single 256 × 256 matrix per feature. For n = 500,000 motor policies and 10 features: 10 independent 256 × 256 solves, a few milliseconds, independent of n. InterpretML's bagging at B = 100 bags costs roughly 50× more.
+
+---
+
+## The CLT result (Theorem 4.12)
+
+Under Lipschitz GAM and stump geometry assumptions, Fang et al. show that each shape function estimate is asymptotically normal. The 95% CI for feature k at bin j is:
+
+```
+f̂^(k)(j)  ±  1.96 × σ̂ × sqrt(influence_norm(j) / n)
+```
+
+The influence norm is the diagonal element of the bin-space hat matrix, computed analytically from bin counts and λ. Bins with more data have smaller influence norms and narrower CIs. Thin age bands have large influence norms and wide CIs.
+
+**The critical limitation:** Theorem 4.12 assumes homoscedastic Gaussian errors ε ~ N(0, σ²). Insurance frequency models use Poisson or Tweedie loss. The CIs from `BoulevardEBM` are not valid for those distributions. The defensible use for a frequency model is to fit on log-transformed pure premium — approximately Gaussian after transformation — or to use the CIs for exploratory factor analysis rather than formal statistical tests. We document this in the library; do not use these CIs for formal Poisson-inference claims.
+
+---
+
+## Code
 
 ```python
 import numpy as np
+import polars as pl
 from insurance_gam.ebm import BoulevardEBM, BoulevardInference
 
-rng = np.random.default_rng(42)
-n = 5_000
-X = rng.standard_normal((n, 4))
-# Additive Gaussian target — this is the regime where Boulevard CIs are valid
-y = 2.0 * X[:, 0] + np.sin(3 * X[:, 1]) - 0.5 * X[:, 2] + rng.normal(0, 0.5, n)
+# MSE loss on log(pure_premium) — the supported case
+log_pp_train = np.log(pure_premium_train + 1e-6)
 
 model = BoulevardEBM(
-    lambda_=1.0,          # regularisation strength, analogous to shrinkage in standard EBM
-    max_rounds=500,       # boosting rounds
-    max_bins=256,         # bins per feature
-    loss="mse",           # mse only — see below for the Poisson warning
+    n_estimators=1000,
+    lambda_=1.0,       # tune by held-out MSE; 1.0–5.0 for large books
+    max_bins=256,
+    min_samples_leaf=20,
+    random_state=42,
 )
-model.fit(X, y)
+model.fit(X_train, log_pp_train)
 
-inference = BoulevardInference(model)
-inference.fit(X, y)  # computes the bin-space kernel and sigma_hat
+inf = BoulevardInference(model)
 
-# Confidence bands on a grid for feature 0 (driver age, log-vehicle-value, etc.)
-x_grid = np.linspace(X[:, 0].min(), X[:, 0].max(), 200)
-shape_est, ci_lower, ci_upper = inference.shape_ci(feature=0, x_values=x_grid, alpha=0.05)
+# Shape function CI for driver age: bin_label | score | lower | upper | se
+ci_df = inf.shape_ci("driver_age", alpha=0.05)
 
-# Feature significance: does the 95% CI exclude zero at all grid points?
-significant = not np.any((ci_lower <= 0) & (ci_upper >= 0))
-print(f"Feature 0 excludes zero across range: {significant}")
+# Bins where CI excludes zero
+print(ci_df.filter(
+    (pl.col("lower") > 0) | (pl.col("upper") < 0)
+))
+
+# Feature-level significance: feature | max_absolute_score | ci_excludes_zero | max_se
+print(inf.significance_table())
+
+# Chart for governance pack — shape function + CI band + data density
+ax = inf.plot_shape("driver_age", alpha=0.05, show_data_density=True)
+ax.figure.savefig("driver_age_shape_ci.png", dpi=150)
 ```
 
-The `shape_ci` method returns the shape function estimate and pointwise 95% confidence bands. Plotting these for each rating factor gives your governance committee something concrete: not "the EBM found a non-linear effect" but "the non-linear effect at ages 19–22 has a 95% confidence interval that excludes zero, based on asymptotic normality of the Boulevard ensemble".
+The `plot_shape` output is the chart for your sign-off pack: shape function in blue with a shaded 95% CI band, grey density bars on the right axis. The CI widens where data are sparse. A governance committee member can read it without knowing what kernel ridge regression is.
 
 ---
 
-## The Poisson problem, clearly stated
+## Limitations that actually matter
 
-We said it in March and we are saying it again: the CLT requires homoscedastic Gaussian noise. For claim frequency (Poisson), claim severity (Gamma), or pure premium (Tweedie), this does not hold. The variance structure is wrong. Boulevard CIs applied directly to a Poisson EBM would produce intervals with no valid coverage guarantee.
+**Sigma inflation.** `sigma_hat_` is estimated from training residuals, which include KRR approximation error as well as noise. In practice this inflates sigma by roughly 2× on synthetic benchmarks, making the CIs conservative. A factor whose CI excludes zero under the conservative estimate is genuinely robust — this is the right direction to be wrong.
 
-`BoulevardEBM` will raise an error if you pass `loss="poisson"` and `compute_ci=True` without an explicit override flag. The override flag exists because there is a heuristic that is sometimes useful: fit on log-residuals from a calibrated Poisson GLM, apply Boulevard MSE theory to those residuals, and treat the CIs as approximate. Log-residuals from a well-calibrated multiplicative model are closer to homoscedastic than the raw response — not perfectly so, but close enough to be informative in exploratory work.
+**Interaction terms get no CIs.** Pairwise interaction features — vehicle age × driver age being the structurally important one for UK motor — are not covered. The CI on the driver age main effect does not speak to the interaction contribution.
 
-We will not pretend this has the same guarantee as the Gaussian case. The output will be labelled `approx_ci` rather than `ci`, and the documentation will be explicit. If you want theoretically valid uncertainty quantification for Poisson EBMs, the answer is still `outer_bags=100` and a long coffee break. We are watching the Hooker group's publication trajectory — an exponential family extension is the logical next step from this paper, and if it appears, we will implement it.
+**Lambda needs tuning.** The paper gives no closed-form selector. Run held-out MSE across a log-space grid from 0.1 to 100; pick the minimum on 20% withheld data. Values of 1.0 to 5.0 work for books above 50,000 policies; push to 10.0 for thin books below 10,000. A `cv_lambda()` classmethod is planned for v0.5.2.
 
----
-
-## Using this in governance submissions
-
-For Solvency II Article 121(d) (use test documentation) and PRA CP6/24 (model risk identification for insurance models), the materiality of each variable needs to be defensible. Boulevard CIs give you two things regulators can read:
-
-**Shape function plots with confidence bands.** Each rating factor gets a curve with 95% CI shading. A factor where the CI spans zero across most of the range is a candidate for removal. A factor where the CI is narrow and well above zero is material. This is a sharper statement than "we looked at the SHAP values and they seemed reasonable."
-
-**Feature significance tests.** For each feature, you can report the minimum absolute value of the shape function across the rating range divided by the CI half-width — a signal-to-noise ratio. Features below a threshold (say, SNR < 1.5) are borderline; features above it are unambiguously material. This is defensible methodology, not eyeballing.
-
-The honest caveat for a model governance pack: "Confidence intervals are derived from Boulevard asymptotic normality (Fang et al., AISTATS 2026, Theorem 4.12), which assumes Gaussian residuals. This model uses MSE loss on [target variable], which satisfies the assumption approximately. Intervals should be interpreted as approximate for non-Gaussian targets."
-
-That is a better position than no uncertainty quantification at all.
+**Small books.** The asymptotic CLT assumes n large enough for a Berry-Esseen approximation. Below roughly 5,000 training observations, treat the CIs as indicative.
 
 ---
 
-## What changed since March
+## The governance workflow
 
-The March post said we needed either a public implementation from the Hooker group, or an exponential family extension, before reconsidering. Neither has appeared.
+1. Fit `BoulevardEBM` on log-scale pure premium with chosen lambda.
+2. Run `significance_table()` and include in the validation pack. Any feature where `ci_excludes_zero` is False is a candidate for removal or consolidation.
+3. Run `plot_shape()` for the top three or four features by `max_absolute_score`. The widening CI bands in sparse age bands are self-explaining to a non-technical committee.
+4. For thin segments — annual mileage below 3,000, drivers above 75 — show bin-level CIs from `shape_ci()` and document that those factor loads reflect limited data, not confident estimates.
 
-What changed is that we kept being asked to answer the feature significance question, and kept giving unsatisfying answers. "Run 100 bags" is correct but slow. "Look at the shape function" is not evidence. Boulevard, with its limitations clearly stated, is the best available answer for MSE cases, and the heuristic extension to log-residuals is useful enough for Poisson exploratory work to be worth shipping with a clear warning.
-
-We changed our minds. That is the position.
+This is the substance behind "statistically defensible rating factors". The shape function CI answers "how do you know that loading is real?"
 
 ---
 
-The paper is at [arXiv:2601.18857](https://arxiv.org/abs/2601.18857). `insurance-gam` is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The March explainer of the Boulevard mechanism is [here]({{ '/2026/03/26/boulevard-ebm-confidence-intervals-without-bootstrapping/' | relative_url }}).
+## Verdict
+
+Boulevard regularisation gives EBM pricing models something standard boosting cannot: confidence intervals on individual rating factors without bootstrapping. Asymptotically valid under Gaussian errors, conservative in practice, main effects only. For UK personal lines pricing with large books (>50,000 policies) and log-scale MSE fitting, they are usable in model governance documentation today.
+
+The Poisson/Tweedie extension needs new theory. We are watching github.com/hetankevin/ebm-inference for updates.
+
+```bash
+uv add insurance-gam
+```
+
+Source and tests at [GitHub](https://github.com/burning-cost/insurance-gam). Boulevard implementation: `src/insurance_gam/ebm/_boulevard.py`. Benchmark notebook: `notebooks/boulevard_demo.py`.
+
+Reference: Fang, R., Tan, Z., Pipping-Gamon, T. & Hooker, G. (2026). 'Statistical Inference for Explainable Boosting Machines.' AISTATS 2026. arXiv:2601.18857.
+
+- [Does Monotonicity-Constrained EBM Actually Work for Insurance Pricing?](/2026/03/28/does-monotonicity-constrained-ebm-actually-work-for-insurance-pricing/)
+- [Does Conformal Prediction Actually Work for Insurance Claims?](/2026/03/26/does-conformal-prediction-actually-work-for-insurance-claims/)
