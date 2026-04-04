@@ -2,11 +2,11 @@
 layout: post
 title: "When Your Distributional Regression Has Too Many Parameters"
 date: 2026-04-04
-categories: [techniques]
+categories: [techniques, insurance-distributional]
 tags: [distributional-regression, gamlss, normalizing-flows, regularization, identifiability, severity, elastic-net, lasso, arXiv-2603.25919, pricing]
 description: "Regression by composition — the framework that generalises GAMLSS and transformation models — suffers from a subtle non-identifiability when you stack multiple flows. Kadhem (2026) derives flow-specific L1 and elastic-net penalties that restore uniqueness, with oracle properties and asymptotic guarantees. Here is what that means for heavy-tailed severity modelling."
 math: true
-author: burning-cost
+author: Burning Cost
 ---
 
 There is a failure mode in distributional regression that does not announce itself loudly. Your model converges, your log-likelihood is high, your diagnostics look fine. But your coefficients are large and opposite in sign across distribution parameters. You add a variable and an existing coefficient flips sign. You tighten convergence tolerances and the estimates drift rather than settle. The predictions are stable. The parameters are fiction.
@@ -104,10 +104,23 @@ For pricing actuaries already using GAMLSS (directly or via packages like `gamls
 
 ## Caveats
 
-This is a single-author preprint submitted March 2026 and not yet peer reviewed. The empirical results come from one health outcomes application; there is no insurance dataset in the paper. Computational feasibility at insurance scale — 200,000+ claims with $K = 3$ flows — is not benchmarked. The proximal gradient algorithm is $O(K)$ per iteration, which is encouraging, but the number of outer iterations required for convergence on high-dimensional insurance data is unknown.
+This is a single-author preprint submitted March 2026 and not yet peer reviewed. The empirical results come from one health outcomes application; there is no insurance dataset in the paper.
 
-The claim to oracle property requires that the initial estimator for the adaptive weights is consistent — which it is, under the paper's conditions. But the conditions include a correct model assumption: the true data-generating process is within the composition class. For insurance severity, we are always approximating, so the oracle result is guidance about asymptotic behaviour rather than a finite-sample guarantee.
+**Computational cost unbenchmarked at scale.** Whether the proximal gradient algorithm converges in acceptable time on 200,000+ claims with $K = 3$ flows is not established. The $O(K)$ per-iteration cost is encouraging; the number of outer iterations required on high-dimensional insurance data is unknown.
+
+**Hyperparameter selection.** Flow-specific $\lambda_k$ require tuning, presumably by cross-validation. With $K$ flows the grid expands multiplicatively — three flows and five candidate values each gives 125 combinations before you have added an elastic-net mixing parameter. The paper does not address this; it is a practical barrier to deployment that needs a worked solution.
+
+**Oracle property conditions.** The oracle result requires the true data-generating process to be within the composition class. For insurance severity, we are always approximating. The oracle result is guidance about asymptotic behaviour rather than a finite-sample guarantee.
 
 ---
 
-The paper is Kadhem, S.K., "Regularized Regression by Composition for Distributional Models," arXiv:2603.25919, March 2026. For pricing actuaries who have noticed that GAMLSS parameter estimates sometimes feel unstable without a precise account of why, this paper provides the diagnosis and the cure.
+## Reference
+
+Kadhem, S.K. (2026). Regularized Regression by Composition for Distributional Models. arXiv:2603.25919. Submitted March 26, 2026.
+
+---
+
+Related on Burning Cost:
+
+- [Distributional GBMs for Insurance: Pricing Variance, Not Just the Mean](/2026/03/05/insurance-distributional/) — insurance-distributional, distributional GBM for insurance pricing
+- [Validating GAMLSS Sigma Models: What the Diagnostics Miss](/2026/03/20/validating-gamlss-sigma-models/) — coefficient instability in GAMLSS and practical diagnostics
