@@ -1,0 +1,67 @@
+{% comment %}
+  json-ld.html
+  ------------
+  Emits a Schema.org Article JSON-LD block for individual blog posts.
+  Included from _layouts/post.html inside <head>.
+
+  We use both BlogPosting and TechArticle @type values. Google accepts arrays
+  here and TechArticle is appropriate for the technical audience. Using both
+  maximises signal without any downside.
+
+  All string values pass through | jsonify to handle apostrophes, quotes, and
+  other characters that would otherwise break JSON. Date fields use
+  date_to_xmlschema to produce ISO 8601 format as required by Schema.org.
+
+  articleSection: first category if set (e.g. "pricing", "tutorials").
+  keywords:       all tags joined as a comma-separated string.
+{% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["BlogPosting", "TechArticle"],
+  "headline": {{ page.seo_title | default: page.title | jsonify }},
+  "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ site.url }}/assets/og-image.png{% endif %}",
+    "width": 1200,
+    "height": 630
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.url }}/assets/og-image.png",
+      "width": 1200,
+      "height": 630
+    }
+  },
+  "url": {{ page.url | absolute_url | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ page.url | absolute_url | jsonify }}
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "@id": "{{ site.url }}/blog/",
+    "name": "{{ site.title }} Blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Burning Cost",
+      "url": "{{ site.url }}"
+    }
+  }{% if page.categories and page.categories.size > 0 %},
+  "articleSection": {{ page.categories | first | jsonify }}{% endif %}{% if page.tags and page.tags.size > 0 %},
+  "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
+}
+</script>

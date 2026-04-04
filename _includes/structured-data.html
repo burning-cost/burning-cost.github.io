@@ -270,3 +270,22 @@
 }
 </script>
 {% endif %}
+
+{% if page.url == "/blog/" or page.layout == "blog" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "{{ site.url }}/blog/",
+  "name": "{{ site.title }} Blog",
+  "description": "Practitioner articles on insurance pricing methodology, machine learning, and open-source tooling for UK personal lines teams.",
+  "url": "{{ site.url }}/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Burning Cost",
+    "url": "{{ site.url }}"
+  },
+  "inLanguage": "en-GB"
+}
+</script>
+{% endif %}
