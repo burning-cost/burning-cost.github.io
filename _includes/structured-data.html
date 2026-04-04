@@ -8,10 +8,13 @@
                        SearchAction sitelinks and anchors the site entity.
   SoftwareApplication: rendered on individual library pages that set
                        `schema: SoftwareApplication` in their front matter.
+  ItemList:            rendered on /libraries/ — lists all flagship libraries
+                       as SoftwareApplication items so Google surfaces them in
+                       knowledge panels and rich results.
 
-  BlogPosting schema lives in _layouts/post.html <head> (where it can access
-  page.date, page.tags, etc. directly). WebPage schema lives in page.html.
-  This include handles the site-level entities and opt-in page types.
+  BlogPosting/TechArticle schema lives in _layouts/post.html <head> (where it
+  can access page.date, page.tags, etc. directly). WebPage schema lives in
+  page.html. This include handles the site-level entities and opt-in page types.
 {% endcomment %}
 
 <script type="application/ld+json">
@@ -79,6 +82,191 @@
   }{% if page.github_repo %},
   "codeRepository": {{ page.github_repo | jsonify }}{% endif %}{% if page.pypi_package %},
   "downloadUrl": {{ page.pypi_package | prepend: "https://pypi.org/project/" | append: "/" | jsonify }}{% endif %}
+}
+</script>
+{% endif %}
+
+{% if page.url == "/libraries/" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Burning Cost Library Catalogue",
+  "description": "Open-source Python libraries for UK non-life insurance pricing teams",
+  "url": "{{ site.url }}/libraries/",
+  "numberOfItems": 10,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-fairness",
+        "description": "Proxy discrimination auditing for UK insurance pricing models. FCA Consumer Duty compliance and Equality Act 2010 evidence.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-fairness/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-fairness",
+        "downloadUrl": "https://pypi.org/project/insurance-fairness/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-governance",
+        "description": "Model validation and MRM governance packs for insurance pricing models. Automated quantitative pass/fail test suites with auditable HTML reports.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-governance/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-governance",
+        "downloadUrl": "https://pypi.org/project/insurance-governance/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-causal",
+        "description": "Double machine learning for insurance pricing. Remove confounding bias from rating factors using causal inference.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-causal/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-causal",
+        "downloadUrl": "https://pypi.org/project/insurance-causal/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-conformal",
+        "description": "Distribution-free prediction intervals for insurance pricing with finite-sample coverage guarantees via conformal prediction.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-conformal/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-conformal",
+        "downloadUrl": "https://pypi.org/project/insurance-conformal/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-monitoring",
+        "description": "Model drift detection, calibration monitoring, and champion/challenger A/B testing for deployed insurance pricing models.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-monitoring/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-monitoring",
+        "downloadUrl": "https://pypi.org/project/insurance-monitoring/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-whittaker",
+        "description": "Whittaker-Henderson smoothing for insurance experience rating tables. 2D smoothing of age/duration mortality and morbidity surfaces.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-whittaker/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-whittaker",
+        "downloadUrl": "https://pypi.org/project/insurance-whittaker/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-telematics",
+        "description": "Raw telematics trip data to GLM-ready risk scores via Hidden Markov Models for UK motor insurance pricing.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-telematics/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-telematics",
+        "downloadUrl": "https://pypi.org/project/insurance-telematics/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-credibility",
+        "description": "Bühlmann-Straub group credibility and Bayesian experience rating for UK insurance pricing.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-credibility/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-credibility",
+        "downloadUrl": "https://pypi.org/project/insurance-credibility/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-frequency-severity",
+        "description": "Sarmanov copula joint frequency-severity modelling for non-life insurance pricing. Handles dependence between claim count and claim size.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-frequency-severity/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-frequency-severity",
+        "downloadUrl": "https://pypi.org/project/insurance-frequency-severity/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "insurance-gam",
+        "description": "Interpretable GAMs for insurance pricing — Explainable Boosting Machines, Neural Additive Models, and Pairwise Interaction Networks.",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Any",
+        "programmingLanguage": "Python",
+        "url": "{{ site.url }}/insurance-gam/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "codeRepository": "https://github.com/burning-cost/insurance-gam",
+        "downloadUrl": "https://pypi.org/project/insurance-gam/",
+        "author": { "@type": "Organization", "name": "Burning Cost", "url": "{{ site.url }}" }
+      }
+    }
+  ]
 }
 </script>
 {% endif %}

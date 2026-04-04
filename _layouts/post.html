@@ -19,12 +19,17 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": ["BlogPosting", "TechArticle"],
     "headline": {{ page.seo_title | default: page.title | jsonify }},
     "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }},
     "datePublished": "{{ page.date | date_to_xmlschema }}",
     "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
-    "image": "{{ site.url }}/assets/og-image.png",
+    "image": {
+      "@type": "ImageObject",
+      "url": "{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ site.url }}/assets/og-image.png{% endif %}",
+      "width": 1200,
+      "height": 630
+    },
     "author": {
       "@type": "Organization",
       "name": "Burning Cost",
@@ -36,14 +41,27 @@
       "url": "{{ site.url }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "{{ site.url }}/assets/og-image.png"
+        "url": "{{ site.url }}/assets/og-image.png",
+        "width": 1200,
+        "height": 630
       }
     },
     "url": {{ page.url | absolute_url | jsonify }},
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": {{ page.url | absolute_url | jsonify }}
-    }{% if page.tags and page.tags.size > 0 %},
+    },
+    "isPartOf": {
+      "@type": "Blog",
+      "@id": "{{ site.url }}/blog/",
+      "name": "{{ site.title }} Blog",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Burning Cost",
+        "url": "{{ site.url }}"
+      }
+    }{% if page.categories and page.categories.size > 0 %},
+    "articleSection": {{ page.categories | first | jsonify }}{% endif %}{% if page.tags and page.tags.size > 0 %},
     "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
   }
   </script>
@@ -703,7 +721,6 @@
       {% include related-posts.html %}
 
 
-      {% if page.previous or page.next %}
       {% if page.previous or page.next %}
       <nav class="post-prevnext" aria-label="Previous and next articles">
         {% if page.previous %}
