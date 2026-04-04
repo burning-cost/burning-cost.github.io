@@ -1,141 +1,147 @@
 ---
 layout: post
-title: "Your Fairness Metric Passes. Your High-Risk Customers Are Still Being Discriminated Against."
+title: "Fairness in the Tail: Why Mean Demographic Parity Is the Wrong Test"
 date: 2026-04-04
-categories: [research, fairness, insurance-fairness]
-tags: [demographic-parity, tail-parity, optimal-transport, wasserstein, fairness, fca-consumer-duty, equality-act, arXiv-2604.02017, le-denis-hebiri, insurance-fairness, pricing]
-description: "Le, Denis and Hebiri (arXiv:2604.02017, April 2026) prove that mean demographic parity is not tail parity. A model can satisfy full-distribution DP whilst concentrating discriminatory outcomes precisely at the high-premium end — exactly where Equality Act indirect discrimination risk is most acute. Their optimal transport approach offers a theoretically sounder remedy than correcting the entire distribution."
-author: Burning Cost
+categories: [fairness, insurance-fairness]
+tags: [demographic-parity, tails, optimal-transport, fca-consumer-duty, equality-act, proxy-discrimination, arXiv-2604.02017, insurance-fairness, fair-value, FCA-EP25-2, wasserstein]
+description: "Le, Denis and Hebiri (arXiv:2604.02017, April 2026) show that enforcing demographic parity over the full prediction distribution is both accuracy-costly and unnecessary. The right target is the tail. For UK insurers, this is where Consumer Duty exposure actually lives."
+author: burning-cost
 math: true
 ---
 
-We have been writing about the gap between mean demographic parity and where regulatory risk actually sits. [Mean parity](/2026/04/02/localized-demographic-parity-pricing-tiers-insurance-fairness-v080/) is Level 1 — necessary, not sufficient, and what most fairness reporting currently measures. Tier-boundary parity is Level 2 — where a portfolio-average ratio can mask systematically different tier placement across groups. This post is about Level 3: the tail.
+Your demographic parity test passes. Mean predicted premium for group A: £618. Mean predicted premium for group B: £621. Ratio: 1.005. Amber threshold is 0.80. You are well inside it. The Consumer Duty evidence pack gets its fairness metric.
 
-Le, Denis and Hebiri (arXiv:2604.02017, April 2026) make a deceptively simple observation: enforcing demographic parity over the full predicted distribution is both accuracy-costly and, in many cases, unnecessary. Fairness complaints — legal, regulatory, and practical — cluster at the high end of the premium distribution. A protected group customer paying a mid-market premium is unlikely to bring an indirect discrimination claim. A protected group customer in the top decile paying materially more than an equivalent non-protected-group peer has the basis for one.
+Now look at the upper tail — the top 5% of the premium distribution, above £1,400. Group A has 3.8% of policies there. Group B has 9.1%. The disparity is not in the average; it is concentrated exactly where it causes the most harm.
 
-The paper formalises this intuition with optimal transport theory, proves risk bounds and fairness guarantees, and produces an interpretable algorithm. There are no insurance experiments in the paper. But the theoretical contribution is one of the clearest arguments we have seen for a targeted — rather than blanket — approach to DP enforcement in pricing.
-
----
-
-## What full-distribution demographic parity actually does
-
-Standard demographic parity for regression enforces:
-
-$$P(\hat{Y} \leq t \mid A = 0) = P(\hat{Y} \leq t \mid A = 1) \quad \forall\, t$$
-
-In words: the entire predicted distribution must be identical across groups defined by the sensitive attribute $A$. Every quantile of predicted premiums for group 0 must equal the corresponding quantile for group 1.
-
-The standard approach to achieving this uses optimal transport: find a transport map that minimises the Wasserstein distance between group distributions while enforcing distributional equality. The EquiPy library (UQAM/SCOR, 2025) implements exactly this. Our `WassersteinCorrector` in insurance-fairness does the same.
-
-The problem is that full-distribution DP correction applies a remapping everywhere — including at premium levels where discriminatory harm is not plausibly occurring and where accuracy is being sacrificed for no regulatory benefit.
-
-Le et al. formalise the cost. Their setting: a regression model $\hat{\mu}(x)$ that estimates expected loss. The sensitive attribute $A \in \{0, 1\}$ may be a proxy (postcodes correlated with ethnicity, for instance). Full-distribution DP requires the entire predicted distribution to match across groups. The accuracy cost of this constraint — measured by mean squared error increase — applies uniformly across all risk levels, including the low-premium majority where the distributions may already overlap substantially.
-
-The paper's argument: this is not the right constraint. It is too strong where fairness is not at issue and too blunt an instrument to address where it is.
+This is not a contrived criticism. It is the central observation of Le, Denis and Hebiri ([arXiv:2604.02017](https://arxiv.org/abs/2604.02017), April 2026): mean demographic parity can be satisfied simultaneously with severe tail discrimination, because the averages can cancel even when the distributional shapes are very different. Their proposed fix — enforce parity only in the tails, not across the full distribution — turns out to be both more regulatorily relevant and less accuracy-costly than the current standard.
 
 ---
 
-## Tail demographic parity
+## Why full-distribution parity is an overcorrection
 
-The authors propose enforcing DP only over a tail region: predicted values above a threshold $\tau_\alpha$, where $\alpha$ is a tail probability parameter.
+The standard demographic parity criterion in regression requires that the full conditional distributions of predictions are identical across groups:
 
-Define:
+$$F_{\hat{Y}|S=s}(t) = F_{\hat{Y}|S=s'}(t) \quad \text{for all } t \in \mathbb{R} \text{ and all groups } s, s'$$
 
-$$T_\alpha(A) = \{x : \hat{\mu}(x) > Q_\alpha(\hat{\mu} \mid A)\}$$
+This is a strong constraint. Satisfying it globally forces the entire prediction distribution — including the bulk of the book, where discriminatory harm is not contested — to be identical across groups. A motor book where young drivers in group A genuinely have higher accident rates than young drivers in group B will have different claim severity distributions. Constraining the full premium distribution to be identical sacrifices accuracy everywhere in order to achieve fairness everywhere, including in the region where differential pricing is actuarially justified.
 
-where $Q_\alpha(\hat{\mu} \mid A)$ is the $\alpha$-quantile of predicted premiums within group $A$. Tail parity then requires:
+The accuracy cost of global distributional DP is not negligible. The prior work by Chzhen et al. (2020) — whose optimal transport approach this paper extends — shows that the MSE penalty from full-distribution DP scales with the Wasserstein distance between the group-conditional prediction distributions. For books with genuinely different risk profiles across demographic groups, that penalty is not small.
 
-$$P(\hat{Y} \leq t \mid A = 0,\, \hat{Y} > \tau_\alpha) = P(\hat{Y} \leq t \mid A = 1,\, \hat{Y} > \tau_\alpha) \quad \forall\, t > \tau_\alpha$$
-
-The distributions in the tail must match. Below $\tau_\alpha$, the correction is not applied. The model's original predictions are preserved for low- and mid-premium policyholders.
-
-The correction itself is constructed via optimal transport on the tail sub-distribution. The geometric structure of OT means the resulting algorithm is interpretable: premiums in the tail are remapped monotonically, and the correction can be expressed as a Wasserstein-minimal adjustment to the tail of each group's predicted distribution.
-
-The paper proves:
-1. The tail-corrected predictor satisfies the tail DP constraint exactly (under the empirical distributions used for calibration).
-2. Risk bounds: the excess prediction error introduced by the correction is bounded as a function of $\alpha$ and the sample sizes used to estimate the tail distributions. The bound degrades as $\alpha \to 1$ (very thin tails, few calibration points), which is an honest and important limitation.
-3. The Wasserstein distance between the corrected distributions is minimised subject to the fairness constraint — so no accuracy is sacrificed beyond the minimum required to achieve parity.
-
-The algorithm: estimate group-specific tail distributions from held-out data; compute the OT map between them; apply the map to in-scope predictions. The OT computation on the tail is cheaper than full-distribution OT because it operates on a subset of the data, but it is still non-trivial at production scale with large protected-group sub-samples.
+The Le et al. argument is that most of this cost is unnecessary. Fairness concerns in regulated insurance pricing are concentrated at the extremes: high-premium policyholders facing renewal unaffordability, customers in the upper tail who pay materially more than a discrimination-free model would charge, and — at the other end — the question of whether low-risk customers in a protected group are being priced more expensively than they should be. The middle of the distribution, where competing risk effects are small and pricing differentials are modest, is not where discrimination claims originate.
 
 ---
 
-## Why this maps directly onto the UK regulatory concern
+## The DP-tails definition
 
-The FCA and Equality Act 2010 indirect discrimination test ask whether a provision, criterion or practice puts persons sharing a protected characteristic at a particular disadvantage. The operative word is *disadvantage*. For insurance pricing, disadvantage has a specific shape: it is concentrated in the upper tail.
+Le et al. formalise this as follows. Fix a threshold $\alpha \in \mathbb{R}$ and an unfairness proportion $p \in [0,1]$. A regressor $g$ is $(\alpha, p)$-DP-tails fair if, for all groups $s, s'$:
 
-A female driver who pays a premium in line with her actuarial risk estimate, within a competitive range of what a male driver with the same profile pays — she is not disadvantaged in any meaningful legal or regulatory sense. A female driver who pays materially more than an identical male driver because a GBM has learned to exploit a proxy correlated with gender, at the high-risk end of the book where premiums are largest and cross-subsidies most impactful — that is a concrete, actionable disadvantage.
+$$F_{g|s}(t) = F_{g|s'}(t) \quad \text{for all } t \geq \alpha$$
 
-The FCA's Consumer Duty Outcome 4 (fair value for all groups) and the EP25/2 proxy discrimination guidance (July 2025) are both most legally exposed at exactly this point. A regulatory investigation triggered by a complaint about discriminatory pricing will not, in practice, centre on whether mid-market premiums are equally distributed across gender groups. It will examine whether the most expensive policies disproportionately fall on one group.
+and additionally $F_{g|s}(\alpha) = p$ for all $s$.
 
-Full-distribution DP addresses this concern, but it does so by correcting parts of the distribution that are not under regulatory scrutiny. It imposes an accuracy cost on low-premium policyholders in order to achieve a fairness property that nobody is actually contesting at that premium level. The accuracy cost is real: GBM predictions that are optimally calibrated for the bulk of the book will be remapped even where they are already fair.
+Reading this: above the threshold $\alpha$, the conditional CDFs of predictions must be identical across groups. Below $\alpha$, predictions are unconstrained. The second condition fixes the probability mass below the threshold to $p$ for every group — this is what makes the optimisation tractable and the OT connection explicit.
 
-Tail DP is a Pareto improvement in principle. It concentrates the correction where the regulatory risk sits and leaves the rest of the distribution alone. The accuracy sacrifice is smaller. The fairness protection where it matters is the same.
-
----
-
-## The three-level DP framework
-
-With this paper, we now have a complete theoretical foundation for three distinct levels of demographic parity enforcement in insurance pricing:
-
-**Level 1: Mean parity.** $E[\hat{Y} \mid A = 0] = E[\hat{Y} \mid A = 1]$. The portfolio average is the same across groups. This is what most fairness reporting currently measures. It is necessary but not sufficient: a model can satisfy mean parity while concentrating disparity in tiers or in the tail.
-
-**Level 2: Tier-boundary parity.** The distribution of predicted premiums across pricing tiers is similar across groups. `LocalizedParityCorrector` (insurance-fairness v0.8.0, from arXiv:2603.25224) addresses this layer. It catches cases where mean parity masks systematically different tier placement across groups.
-
-**Level 3: Tail parity.** The premium distributions in the upper tail match across groups. Le et al. (arXiv:2604.02017) provide the theoretical basis for this layer. No implementation exists in insurance-fairness yet — we flag this as an explicit gap.
-
-A governance evidence pack that demonstrates all three layers is materially stronger than one demonstrating mean parity alone. The Equality Act s.19 test and Consumer Duty Outcome 4 are both more naturally expressed at Levels 2 and 3 than Level 1.
+The full-distribution DP case is recovered as a special case by taking $\alpha \to -\infty$ and $p = 0$. Choosing $\alpha$ at the 90th percentile of predictions — so the top 10% of the premium distribution — gives a constraint that enforces distributional parity exactly where the regulator's attention is focused, while leaving the bulk of the book undisturbed.
 
 ---
 
-## What is not in the paper
+## How the optimal transport correction works
 
-The theoretical results are clean. The practical limits are worth being explicit about.
+The paper's central result is that finding the optimal $(\alpha, p)$-DP-tails fair predictor is equivalent to a Wasserstein barycenter problem, but restricted to the tail region.
 
-**No insurance experiments.** Le et al. mention insurance and credit in their motivation. Their empirical work does not include an insurance dataset. The numerical results — on the risk bound tightness as $\alpha$ varies, on the OT computation — are generic. Whether the risk bounds are tight enough to be usable for UK motor or home portfolios with typical protected-group sub-sample sizes is unknown. Our expectation, based on the calibration sample requirements we see with `WassersteinCorrector`, is that thin tail estimates on minority sub-groups will be the binding constraint. Confidence intervals on the tail OT map will need to be part of any production implementation.
+Concretely: the solution $g^*_{\alpha,p}$ applies the quantile function of the Wasserstein barycenter distribution above $\alpha$, and leaves predictions unchanged below $\alpha$. In the tail, predictions for each group are remapped via a monotone quantile transport to a common target distribution. Below the threshold, the original predictions are preserved.
 
-**No exposure weighting.** The paper treats all observations equally. Insurance predictions have varying exposure periods; a policy with 0.25 years of exposure should not carry the same weight as an annual policy in any parity calculation. Any implementation will need to extend the tail distribution estimation to handle exposure-weighted CDFs.
+The data-driven estimator $\hat{g}^{\xi}_{\alpha,p}$ is constructed using:
+1. A base predictor $\hat{f}$ trained on labelled data in the usual way.
+2. An unlabelled calibration set used to estimate the conditional CDFs and quantile functions per group.
+3. The tail correction applied as a post-processing step.
 
-**No monotonicity constraint.** The OT remapping in the tail does not guarantee that the corrected predictions preserve monotonicity in underlying risk factors. A high-mileage driver whose predicted premium is remapped downwards to achieve parity could end up with a premium below a lower-mileage driver in the same risk segment. Monotonicity constraints on the OT map are not discussed. This is relevant for insurance where rating factor monotonicity is both actuarially necessary and sometimes a regulatory expectation.
+The key practical point: this is post-processing, not retraining. Any existing model — GBM, GLM, neural network — can have the tail correction applied on top, using only unlabelled calibration data. The base model does not need to change.
 
-**OT at scale is non-trivial.** The computational cost of OT on the tail sub-distribution scales with sample size in a way that Wasserstein-based corrections on quantile-discretised distributions avoid. For a UK motor portfolio with 500,000 policies, tail OT on raw premium predictions is materially more expensive than the parametric `SequentialOTCorrector` approach currently in insurance-fairness. The paper's algorithm is correct; whether it is fast enough for production refresh cycles is a separate question.
-
----
-
-## What this means for insurance-fairness
-
-Current state in insurance-fairness:
-
-- `WassersteinCorrector`: full-distribution OT correction. Implements mean and distributional DP across one or more sensitive attributes. Accurate, expensive, over-corrects in the bulk.
-- `SequentialOTCorrector`: sequential Wasserstein correction for multiple attributes. More efficient than joint OT for multi-attribute settings.
-- `LindholmCorrector`: DP correction via regression residualisation (from Lindholm, Richman, Tsanakas, Wüthrich, 2024).
-- `DiscriminationFreePrice`: orthogonal projection correction, fast, less theoretically tight than OT.
-- `LocalizedParityCorrector`: tier-boundary parity (new in v0.8.0).
-
-What is missing: a `TailParityCorrector` implementing the Le et al. framework — tail-only OT correction with exposure weighting, monotonicity enforcement, and confidence intervals on the tail map. We intend to build this. The practical design questions are: how to set $\alpha$ (the tail probability cutoff) for a given regulatory context; how to handle instability in minority-group tail estimates; and whether to implement monotonicity as a post-correction step or as a constraint on the OT problem itself.
-
-The tail probability $\alpha$ is not purely a statistical choice. Setting $\alpha = 0.90$ means correcting the top decile of premiums. Setting $\alpha = 0.75$ means correcting the top quartile. The right value depends on where the portfolio's regulatory exposure actually sits — which requires looking at the complaint and claims experience, not just the premium distribution.
+The fairness guarantee (Theorem 3.1 in the paper) shows that tail unfairness decays at rate $O(1/\sqrt{N})$ where $N$ is the calibration sample size — distribution-free, independent of the quality of the base predictor. The accuracy penalty relative to the unconstrained base model decreases as $\alpha$ increases (i.e., as the constrained region narrows).
 
 ---
 
-## Our assessment
+## What the experiments actually show
 
-Le et al. (arXiv:2604.02017) make one genuinely useful theoretical contribution: they prove that full-distribution demographic parity is not necessary for regulatory compliance, that the relevant constraint is a tail constraint, and that this can be formalised and enforced with the same OT machinery that full-distribution DP uses.
+The paper validates against three datasets: Law School GPA prediction (race as sensitive attribute), Communities and Crime (race-related features), and California Housing (geography as sensitive attribute). In all three cases:
 
-We think they are right on the main argument. Blanket full-distribution DP correction is the wrong target. It wastes accuracy in the bulk and does not specifically protect where protection is needed. The UK regulatory framework — Equality Act s.19, Consumer Duty Outcome 4, FCA EP25/2 proxy guidance — is most naturally read as requiring tail-level protection, not distributional identity across the whole predicted range.
+- The tail-corrected predictor achieves lower MSE than the full-distribution OT corrector, at the cost of higher global Kolmogorov–Smirnov distance (expected — it is only correcting the tail).
+- The reduction in tail unfairness $U_\alpha(g)$ matches the theoretical rate.
+- The optimised variant $\hat{g}^\xi_\alpha$ — which selects $p$ to minimise the accuracy cost — consistently outperforms fixed-$p$ approaches.
 
-The gap between the paper and a production UK insurance implementation is real. No insurance experiments, no exposure weighting, no monotonicity, OT scaling questions unresolved. These are solvable problems, not theoretical objections. We will report back when we have built it.
+Specifically: as the threshold $\alpha$ moves from left to right (constraining an increasingly narrow tail region), MSE falls toward the unconstrained level and KS distance rises toward the unconstrained level, with the tail unfairness measure $U_\alpha$ falling toward zero throughout. This is the empirical confirmation that DP-tails is a genuine Pareto improvement: you can trade global unfairness for accuracy without sacrificing local fairness where it matters.
 
-For now: if your fairness governance evidence pack only demonstrates mean DP, you have addressed the easiest layer. The Equality Act and Consumer Duty obligations sit higher up the distribution. Check the tail.
+---
+
+## Why this is the right abstraction for UK insurance
+
+The FCA's EP25/2 guidance on proxy discrimination (published July 2025) makes the regulatory focus explicit: outcomes in the upper tail of the premium distribution — high-premium segments, renewal cliff edges — are the scenarios most likely to constitute actual consumer harm. A customer paying £1,900 for motor insurance who faces a premium that is materially inflated by demographic correlation is a qualitatively different situation from a customer paying £700 facing the same percentage differential.
+
+The Equality Act 2010, section 19 indirect discrimination test asks whether a provision, criterion or practice puts people sharing a protected characteristic at a *particular disadvantage*. The word particular matters. The legal test is about concrete disadvantage, not statistical mean shifts. High premiums with no actuarial justification are concrete. Small mean-level discrepancies are much harder to argue as disadvantage.
+
+Consumer Duty (PRIN 2A.3) requires firms to demonstrate good outcomes across groups sharing protected characteristics. The outcomes that will attract regulatory attention — and that could support an indirect discrimination claim — are concentrated at the top of the premium distribution.
+
+A firm that demonstrates mean parity has satisfied the most basic diagnostic. It has not demonstrated that the outcomes in its upper premium tail are fair. These are different things, and Le et al. give the statistical framework to distinguish them.
+
+---
+
+## The three-level fairness hierarchy this creates
+
+We now have three levels of demographic parity evidence a UK pricing team should be able to produce:
+
+**Level 1 — Mean parity.** $\mathbb{E}[\hat{Y} | S=0] \approx \mathbb{E}[\hat{Y} | S=1]$. The standard portfolio-level check. Necessary but not sufficient. An adversarial model can satisfy this while concentrating discriminatory premiums at the top end.
+
+**Level 2 — Tier-boundary parity** (Charpentier et al., arXiv:2603.25224): enforce equal probability mass at pre-specified price tier boundaries — the governance bands you already report against. This is the right tool when you have a defined rate-band structure and want to audit parity at those bands.
+
+**Level 3 — Tail parity** (Le et al., this paper): enforce distributional parity above a quantile threshold, where discrimination risk is highest. Does not require pre-specifying bands; targets the continuous upper tail above $\alpha$.
+
+These are complements. Level 1 is the claim that the averages are broadly similar. Level 2 is the claim that no single governance tier has a disproportionate demographic composition. Level 3 is the claim that the high-premium end of the distribution is demographically balanced.
+
+A Consumer Duty evidence pack that can speak to all three levels is substantially stronger than one that only addresses Level 1.
+
+---
+
+## What `insurance-fairness` does today and what is missing
+
+The library's `demographic_parity_ratio` in `metrics.py` is a Level 1 check — exposure-weighted group means with bootstrap confidence intervals. `LocalizedParityCorrector` (v0.8.0) implements Level 2, following the Charpentier et al. framework.
+
+Level 3 is not yet in the library. The Le et al. correction would live in a `TailParityAudit` class: accepts predictions, a sensitive attribute vector, and a quantile threshold $\alpha$; returns the tail unfairness statistic $U_\alpha(g)$ and the OT correction maps for each group. Implementation would follow the same post-processing architecture as `LocalizedParityCorrector`.
+
+Several gaps need addressing before this is production-ready for UK personal lines:
+
+**Exposure weighting.** The paper's OT construction assumes equal-weight observations. Insurance pricing models are not equal-weight — earned exposure must enter the calibration. A tail correction estimated on unweighted policy counts will be miscalibrated for any frequency model that uses earned car years as an offset.
+
+**Continuous sensitive attributes.** UK proxy discrimination analysis typically uses continuous proxies — postcode-level deprivation indices, ONS ethnicity proportions at LSOA level — rather than binary group indicators. The paper addresses categorical $S$. Extension is not treated and is non-trivial.
+
+**Sample size in the minority group tail.** The $O(1/\sqrt{N})$ fairness guarantee depends on $N$ being the size of the calibration set within each group. For a UK motor book with 60,000 policies and a protected group at 15% prevalence, the tail (top 10%) of the minority group has around 900 policies. Feasible, but small standard errors require careful handling.
+
+**Monotonicity.** The within-group OT map is monotone (it is a quantile transform), so within-group risk ordering is preserved. Cross-group ordering is not guaranteed. In a Solvency II internal model context, you need a worked example confirming that actuarial risk ordering is not disturbed by the correction before deploying this in a validated model.
+
+---
+
+## Our view
+
+The conceptual case is correct and important. Mean demographic parity is not an adequate fairness audit for UK insurance, and Le et al. provide the formal framework for saying precisely what a better audit looks like.
+
+The theoretical machinery is sound: the Wasserstein barycenter connection is clean, the convergence results are in the expected form, and the post-processing architecture is well-suited to insurance deployment (you do not need to retrain your GBM). The empirical results across three datasets confirm the MSE-fairness tradeoff behaves as the theory predicts.
+
+What this is not: a drop-in solution for a UK personal lines book this quarter. The missing exposure weighting is fundamental, not peripheral. Until there is a worked example on an insurance dataset — freMTPL2freq or AusPrivauto being the natural candidates — the gap between the regression setting in the paper and a production frequency-severity GLM stack remains for the practitioner to bridge.
+
+We have `TailParityAudit` on the `insurance-fairness` roadmap, with exposure weighting and an insurance-specific worked example. We will cover it here when it ships.
+
+For now: read the paper. Understand that your current fairness audit is a Level 1 test. Add tail parity monitoring to your Consumer Duty checklist. The FCA's attention is on the upper end of the premium distribution — that is where EP25/2 focuses, that is where section 19 claims originate, and that is where the Le et al. framework is designed to give you rigorous evidence.
 
 ---
 
 ## Reference
 
-Le, N.S., Denis, C. and Hebiri, M. (2026). Demographic Parity Tails for Regression. arXiv:2604.02017. Submitted April 2, 2026.
+Le, N.S., Denis, C. and Hebiri, M. (2026). Demographic Parity Tails for Regression. arXiv:2604.02017. Submitted 2 April 2026.
+
+---
 
 Related on Burning Cost:
 
-- [Your GLM Passes Mean Fairness. Does It Pass the Tier Test?](/2026/04/02/localized-demographic-parity-pricing-tiers-insurance-fairness-v080/) — LocalizedParityCorrector and the tier-boundary layer
-- [The Fairness Impossibility You Cannot Optimise Away](/2026/04/04/nsga2-multi-objective-fairness-pareto-boonen-2512-24747/) — multi-objective trade-offs and why "passing fairness checks" is not enough
-- [FCA EP25/2: Proxy Discrimination Guidance for Insurance Pricing](/2026/03/29/fca-ep25-2-proxy-discrimination-insurance-pricing/) — regulatory context for tail-level fairness
+- [Your GLM Passes Mean Fairness. Does It Pass the Tier Test?](/2026/04/02/localized-demographic-parity-pricing-tiers-insurance-fairness-v080/) — Charpentier et al. tier-boundary parity, `insurance-fairness` v0.8.0
+- [Proxy Discrimination in UK Motor Pricing: Detection and Correction](/2026/03/03/your-pricing-model-might-be-discriminating/) — the LRTW framework and `FairnessAudit`
+- [Per-Policyholder Proxy Discrimination Scores](/2026/04/03/sensitivity-proxy-discrimination/) — instance-level PD scores for Consumer Duty evidence
