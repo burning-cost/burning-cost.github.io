@@ -4,7 +4,7 @@ title: "NCD Underreporting Has a Second Problem You Are Probably Missing"
 date: 2026-04-03
 categories: [pricing, techniques]
 tags: [ncd, bonus-malus, bms, underreporting, severity-bias, truncation, hunger-for-bonus, uk-motor, frequency-severity, glm, motor-pricing, cross-subsidy, arXiv-2601.12655, lemaire, claim-suppression, severity-distribution, combined-ratio, personal-lines]
-description: "The hunger-for-bonus effect biases your NCD frequency relativities. It also biases your severity model. The two errors partially offset each other — but the combined underpricing is still around 24% at mid-ladder NCD classes, and the severity contamination means removing NCD from your severity model entirely is the correct fix."
+description: "The hunger-for-bonus effect biases your NCD frequency relativities. It also biases your severity model. The two errors partially offset each other — but the combined underpricing is still around 13% at mid-ladder NCD classes, and the severity contamination means removing NCD from your severity model entirely is the correct fix."
 math: true
 author: burning-cost
 ---
@@ -19,7 +19,7 @@ That is the frequency side of the problem. There is a severity side too, and it 
 
 When a policyholder in NCD class $n$ suppresses all claims below threshold $b^*_n$, two things happen to your data simultaneously.
 
-The first is the frequency effect you already know about. Observed frequency $\lambda^{\text{obs}}_n = \lambda_n \cdot P(Y > b^*_n)$. At 5-year NCD with $b^*_5 \approx £280$ and a Gamma severity distribution with mean ~£1,500, $P(Y > £280) \approx 0.65$. Observed frequency runs at 65% of true.
+The first is the frequency effect you already know about. Observed frequency $\lambda^{\text{obs}}_n = \lambda_n \cdot P(Y > b^*_n)$. At 5-year NCD with $b^*_5 \approx £280$ and a Gamma severity distribution with mean ~£450 (broadly calibrated to a UK own-damage gross claim, before the policy excess is netted off), $P(Y > £280) \approx 0.65$. Observed frequency runs at 65% of true.
 
 The second is a severity effect. The claims that do get reported in NCD class $n$ are not a random sample of the loss distribution — they are the claims that cleared the threshold. Your observed severity distribution at NCD class $n$ is **left-truncated at $b^*_n$**, not the full unconditional distribution.
 
@@ -27,11 +27,11 @@ If the true loss distribution is Gamma$(\alpha, \beta)$ with mean $\mu = \alpha/
 
 $$Y \mid Y > b^*_n \sim \text{Gamma}(\alpha, \beta) \text{ truncated from below at } b^*_n$$
 
-The conditional mean of a left-truncated Gamma is strictly greater than $\mu$. For Gamma(2, 0.0013) — broadly calibrated to a UK own-damage severity of around £1,500 mean — the conditional mean given $Y > £280$ is approximately £1,750 rather than £1,500. That is an 17% upward distortion in observed mean severity at 5-year NCD relative to what a severity GLM fitted to the full (unsuppressed) data would give.
+The conditional mean of a left-truncated Gamma is strictly greater than $\mu$. For Gamma(2, 0.0044) — broadly calibrated to a UK own-damage gross severity of around £450 mean — the conditional mean given $Y > £280$ is approximately £609 rather than £450. That is a 34% upward distortion in observed mean severity at 5-year NCD relative to what a severity GLM fitted to the full (unsuppressed) data would give.
 
-At 3-year NCD, where $b^*_3 \approx £370$, the conditional mean is approximately £1,900 — a 27% upward distortion.
+At 3-year NCD, where $b^*_3 \approx £370$, the conditional mean is approximately £683 — a 51% upward distortion.
 
-At 9-year NCD, where $b^*_9 \approx £90$, the conditional mean is approximately £1,530 — a 2% distortion, essentially negligible.
+At 9-year NCD, where $b^*_9 \approx £90$, the conditional mean is approximately £480 — a 6% distortion, essentially negligible.
 
 ---
 
@@ -51,11 +51,11 @@ Work through the numbers for a 5-year NCD class on a £1,000 base, with a true e
 
 | Component | True value | Observed (suppressed) | Error |
 |-----------|------------|----------------------|-------|
-| Frequency $\lambda$ | 0.0667 claims/yr | 0.0433 claims/yr | −35% |
-| Mean severity $\mu$ | £1,500 | £1,750 | +17% |
-| Pure premium | £100 | £75.77 | −**24%** |
+| Frequency $\lambda$ | 0.2203 claims/yr | 0.1433 claims/yr | −35% |
+| Mean severity $\mu$ | £454 | £609 | +34% |
+| Pure premium | £100 | £87.21 | −**13%** |
 
-Frequency underestimated by 35%, severity overestimated by 17%. The product is $0.65 \times 1.17 = 0.76$. The pure premium is 24% below true — not 35% as the frequency-only calculation suggests. The severity bias partially mitigates the combined error.
+Frequency underestimated by 35%, severity overestimated by 34%. The product is $0.65 \times 1.34 = 0.87$. The pure premium is 13% below true — not 35% as the frequency-only calculation suggests. The severity bias substantially mitigates the combined error.
 
 The severity partial offset depends on the distribution shape. For a heavy-tailed severity distribution (high coefficient of variation), the conditional mean given $Y > b^*_n$ rises sharply with $b^*_n$ — the offset is larger. For a lighter-tailed distribution, the offset is smaller. The offset is always less than the frequency error at reasonable UK severity distributions, so the combined error remains a systematic underpricing of mid-ladder NCD classes.
 
@@ -151,18 +151,18 @@ If you are running frequency and severity models independently and multiplying o
 
 ## The bottom line
 
-The hunger-for-bonus frequency bias is roughly 24% underpricing at the pure premium level for a 5-year NCD class, once the severity partial offset is accounted for. This is smaller than the raw frequency error of 35%, because the severity model overstates claim amounts for the same reason the frequency model understates claim counts.
+The hunger-for-bonus frequency bias is roughly 13% underpricing at the pure premium level for a 5-year NCD class, once the severity partial offset is accounted for. This is smaller than the raw frequency error of 35%, because the severity model overstates claim amounts for the same reason the frequency model understates claim counts — the truncation geometry inflates the observed severity mean by approximately 34% at 5-year NCD.
 
 The combined error is systematic and class-specific. It peaks at mid-ladder NCD (3–6 years), is smaller at the top of the ladder (9+ years), and approaches zero at the bottom. Applying a flat combined-ratio loading uniformly across NCD classes will miss the pattern. The correction needs to be class-by-class, cover-type-specific, and derived from your actual NCD ladder structure and severity distribution.
 
-That the two errors partially offset is not a reason to ignore either. The partial offset does not make the underpricing acceptable — it reduces a 35% frequency error to a 24% combined error, which is still a meaningful systematic mispricing of the most exposure-concentrated NCD bands in your portfolio.
+That the two errors substantially offset is not a reason to ignore either. The partial offset does not make the underpricing acceptable — it reduces a 35% frequency error to a 13% combined error. But the structural misspecification of the severity model — attributing truncation geometry to genuine risk heterogeneity — remains a problem regardless of the net pricing error. The severity GLM is learning the wrong thing, and that has consequences when the NCD ladder changes.
 
 ---
 
 ## Further reading
 
 - [Your NCD Relativities Are Wrong, and the Maths Now Tells You How Wrong](/pricing/motor/techniques/2026/04/02/your-ncd-relativities-are-wrong/) — the frequency correction in detail
-- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/pricing/techniques/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment with the Liang et al. and arXiv:2601.07655 papers
+- [The Hunger for Bonus: How UK Motor NCD Pricing Gets the Frequency Wrong](/pricing/techniques/2026/04/01/the-hunger-for-bonus-how-uk-motor-ncd-pricing-gets-the-frequency-wrong/) — the full theoretical treatment with the Liang et al. paper
 - Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." [arXiv:2601.12655](https://arxiv.org/abs/2601.12655)
 - Lemaire, J. (1977). "La Soif du Bonus." *ASTIN Bulletin* 9(1-2):181–190
 - Norberg, R. (1976). "A credibility theory for automobile bonus systems." *Scandinavian Actuarial Journal*, 2:92–107

@@ -27,7 +27,7 @@ A formal monitoring test is one that:
 
 The decision rule matters as much as the test statistic. Without it, you are back to a judgement call, now decorated with a number.
 
-For annual model governance — the SR 11/7 and PRA SS1/23 world where you are justifying model changes to a validation committee — you need the former. For continuous production monitoring where you want to catch a calibration shift inside the model year, you need the latter. The two new classes cover both.
+For annual model governance — the SR 11/7 (Fed) and PRA SS1/23 (banks) world, or for insurers the Solvency II model governance equivalent, where you are justifying model changes to a validation committee — you need the former. For continuous production monitoring where you want to catch a calibration shift inside the model year, you need the latter. The two new classes cover both.
 
 ---
 

@@ -206,7 +206,7 @@ def generate_feature_record(name: str, definition: str,
 
 The risk is that the LLM generates plausible but inaccurate documentation — particularly on data lineage if the feature definition is ambiguous. Human review before sign-off is essential. This is AI-assisted documentation, not automated documentation. The regulatory value is in the structured output and consistent coverage across all features, not in removing the actuary from the loop.
 
-PRA SS1/23 adds a further requirement: LLMs used during model development — including for feature generation or documentation — must appear in the model inventory with their own documentation and vendor dependency chain. If you use GPT-4 to generate interaction candidates, that usage needs to be recorded, even if the LLM never enters the live scoring path.
+PRA SS1/23 applies to banks, not insurers — but many large UK insurers have adopted its principles voluntarily as model governance best practice. For teams that follow the SS1/23 framework, that means: LLMs used during model development — including for feature generation or documentation — must appear in the model inventory with their own documentation and vendor dependency chain. If you use GPT-4 to generate interaction candidates, that usage needs to be recorded, even if the LLM never enters the live scoring path.
 
 ---
 

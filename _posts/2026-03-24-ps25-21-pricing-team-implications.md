@@ -56,7 +56,7 @@ Point 3 is where most teams will find this hardest. The 12-month default was con
 
 ## How insurance-governance helps
 
-The [`insurance-governance`](/insurance-governance/) library was built around PRA SS1/23 principles, but the same framework maps directly to what PS25/21 now requires. Specifically, the `ModelInventory` and `GovernanceReport` components address points 1–3 above.
+The [`insurance-governance`](/insurance-governance/) library was built around PRA SS1/23 model governance principles (SS1/23 applies to banks; insurers follow equivalent principles under Solvency II Articles 120–126), and the same framework maps directly to what PS25/21 now requires. Specifically, the `ModelInventory` and `GovernanceReport` components address points 1–3 above.
 
 `ModelInventory` is a JSON-backed registry of your production models. Each entry carries a `next_review_date` and a validation run history. The important addition under the PS25/21 framework is that next review date should now be set by your risk classification policy, not by a calendar default.
 

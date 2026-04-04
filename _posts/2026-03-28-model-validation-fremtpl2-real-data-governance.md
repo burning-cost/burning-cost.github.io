@@ -84,7 +84,7 @@ y_pred_gbm_val = gbm.predict(df_val[all_features]) * df_val["Exposure"]
 
 ## The validation API
 
-`ModelValidationReport` runs the same five-test suite regardless of model type. The model card records the metadata that SS1/23 requires: purpose, methodology, limitations, owner, monitoring frequency, and monitoring triggers. None of this is optional in a PRA-regulated environment.
+`ModelValidationReport` runs the same five-test suite regardless of model type. The model card records the metadata the SS1/23 framework specifies: purpose, methodology, limitations, owner, monitoring frequency, and monitoring triggers. SS1/23 applies formally to banks; for insurers, the equivalent expectation flows from Solvency II Articles 120–126. Either way, none of this metadata is optional in a well-governed pricing function.
 
 ```python
 from insurance_governance import ModelValidationReport, ValidationModelCard

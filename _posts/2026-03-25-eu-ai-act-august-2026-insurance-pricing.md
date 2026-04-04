@@ -142,7 +142,7 @@ The JSON sidecar matters: it allows the documentation to be ingested by governan
 
 ### Article 12: Record-keeping and logging
 
-High-risk AI systems must automatically log events throughout their operational lifetime, with logs retained for the period specified by national authority (the FCA has not yet published guidance, but PRA SS1/23's five-year expectation is the working assumption). Logs must be sufficient to enable tracing of the system's operation back through each prediction cycle.
+High-risk AI systems must automatically log events throughout their operational lifetime, with logs retained for the period specified by national authority (the FCA has not yet published guidance; PRA SS1/23 specifies five years for banks, and this is typically used as the working assumption by insurers too). Logs must be sufficient to enable tracing of the system's operation back through each prediction cycle.
 
 For pricing, this means recording every model version change, every production score run, every monitoring alert, and every consequent action. The `ModelInventory.log_event()` method is the mechanism:
 
@@ -264,7 +264,7 @@ It does not require model-free pricing. The Act specifically accommodates risk-b
 
 ---
 
-The compliance burden is real, but it is not a new kind of burden for insurers who already comply with PRA SS1/23. It is the same governance discipline — model cards, validation reports, monitoring plans, MRC sign-off — made mandatory by law. Teams that have built these practices already are finishing a project. Teams that have not are starting one.
+The compliance burden is real, but it is not a new kind of burden for firms already following strong model governance practice. SS1/23 formally applies to banks; for insurers the equivalent framework is Solvency II Articles 120–26. Either way, it is the same governance discipline — model cards, validation reports, monitoring plans, MRC sign-off — made mandatory by law. Teams that have built these practices already are finishing a project. Teams that have not are starting one.
 
 Five months is enough time. But only just.
 

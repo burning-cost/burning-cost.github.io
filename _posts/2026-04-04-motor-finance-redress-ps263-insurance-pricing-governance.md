@@ -8,7 +8,7 @@ description: "The FCA confirmed its motor finance redress scheme on 30 March 202
 author: Burning Cost
 ---
 
-On 30 March 2026 the FCA published Policy Statement PS26/3, confirming an industry-wide consumer redress scheme for motor finance customers. The scheme covers approximately 12.1 million regulated credit agreements entered between 6 April 2007 and 1 November 2024. Total estimated lender costs: £9.1 billion, of which £7.5 billion is direct consumer redress at an average of £829 per agreement.
+On 30 March 2026 the FCA published Policy Statement PS26/3, confirming an industry-wide consumer redress scheme for motor finance customers. The scheme covers approximately 12.1 million regulated credit agreements entered between 6 April 2007 and 1 November 2024. Total estimated lender costs: £9.1 billion, of which £7.5 billion is direct consumer redress at an average of £620 per agreement.
 
 The motor finance story has been running since the Court of Appeal ruling in October 2024. The Supreme Court's August 2025 judgment narrowed the scope — it rejected the broader "secret commission" framing and upheld only the Johnson case, where commission was 55% of total credit charges and documentation was actively misleading. The FCA nonetheless proceeded with a mandatory industry scheme, using its powers under section 404 of the Financial Services and Markets Act 2000 and the unfair relationship provisions in section 140A of the Consumer Credit Act 1974.
 
@@ -52,7 +52,7 @@ That is the motor finance pattern. DCAs were not unlawful because every individu
 
 ## The specific exposure period
 
-The FCA has now confirmed, in writing and in enforcement action, that it will use Consumer Duty retrospectively. PS26/3 explicitly notes that "firms should ensure that communications with consumers are aligned with relevant Consumer Duty requirements" — applying Consumer Duty norms to a scheme covering conduct going back to 2007, predating Consumer Duty by sixteen years.
+PS26/3 applies Consumer Duty communication standards to current correspondence about a historical scheme — pricing teams should note the direction of travel. The FCA explicitly notes that "firms should ensure that communications with consumers are aligned with relevant Consumer Duty requirements," and this framing applies to a scheme covering conduct going back to 2007, predating Consumer Duty by sixteen years.
 
 For insurance, the highest-risk period is **2021–2024**:
 
@@ -85,9 +85,9 @@ The `insurance-governance` library covers model inventory and version-tagged dep
 
 ---
 
-## The six Consumer Duty investigations
+## Consumer Duty enforcement is already running
 
-As of March 2026, the FCA has six active Consumer Duty investigations open. These are not disclosed investigations — the FCA does not publish individual firm names at investigation stage. But the FCA confirmed the number in its own communications. Consumer Duty enforcement is running. It is not hypothetical, and it is not future tense.
+As of March 2026, the FCA has multiple reported active Consumer Duty investigations open. These are not disclosed investigations — the FCA does not publish individual firm names at investigation stage. Consumer Duty enforcement is running. It is not hypothetical, and it is not future tense.
 
 PS26/3 is not a Consumer Duty instrument. It uses Consumer Credit Act and FSMA powers. But the FCA cited Consumer Duty norms as the standard against which the motor finance communications must be measured. The regulatory direction of travel is clear: Consumer Duty outcomes are the baseline, the evidential bar is rising, and retrospective application is confirmed precedent.
 
@@ -121,7 +121,7 @@ Most firms currently cannot. That is the exposure.
 
 Related on Burning Cost:
 
-- [FCA 2026 Insurance Priorities: A Pricing Actuary Checklist](/2026/04/01/fca-2026-insurance-priorities-pricing-actuary-checklist/) — including the six open Consumer Duty investigations
+- [FCA 2026 Insurance Priorities: A Pricing Actuary Checklist](/2026/04/01/fca-2026-insurance-priorities-pricing-actuary-checklist/) — including reported active Consumer Duty investigations
 - [Consumer Duty Fair Value Evidencing: A 12-Step Technical Checklist](/2026/03/25/consumer-duty-fair-value-evidencing-12-step-checklist-pricing-actuaries/)
 - [FCA SMCR Rollback: What It Actually Means for Pricing Governance](/2026/03/26/fca-smcr-rollback-consumer-duty-disapply-pricing-governance/)
 - [Mean Parity Is Not Tail Parity](/2026/04/04/demographic-parity-tails-regression-insurance-fairness/) — why aggregate fairness checks miss the exposure

@@ -3,7 +3,7 @@ layout: post
 title: "Your Historical Loss Ratios Have a Reserving Problem"
 date: 2026-04-04
 categories: [reserving, pricing, actuarial]
-tags: [micro-level-reserving, individual-claims, chain-ladder, loss-ratios, pricing-data-quality, rbns, ibnr, ptu-factors, richman, wüthrich, arXiv-2603.11660, arXiv-2602.15385, motor-bi, bodily-injury, liability, python, chainladder-python, insurance-reserving-neural, uk-personal-lines, solvency-ii, ss8-24]
+tags: [micro-level-reserving, individual-claims, chain-ladder, loss-ratios, pricing-data-quality, rbns, ibnr, ptu-factors, richman, wüthrich, arXiv-2603.11660, arXiv-2602.15385, motor-bi, bodily-injury, liability, python, chainladder-python, insurance-reserving-neural, uk-personal-lines, solvency-ii]
 description: "Richman and Wüthrich's March 2026 paper (arXiv:2603.11660) proves that aggregate chain-ladder produces materially biased ultimate estimates on liability lines. For UK personal lines pricing teams, this is not a reserving problem — it is a data quality problem that sits upstream of your loss ratio calibration."
 author: Burning Cost
 math: true
@@ -70,7 +70,7 @@ Every step in this chain inherits the bias of the underlying reserve estimates. 
 
 This is not a model error. It is a systematic bias in the training data, propagated through the pricing workflow. The pricing actuary did everything correctly and still produced a rate that is potentially insufficient.
 
-The magnitude is not trivial. Richman and Wüthrich's liability result shows a bias of −4,204 on an aggregate reserve where the RMSEP is 1,977. That is directionally consistent with empirical findings from the PRA's 2023 thematic review on claims reserving, which found that many UK insurers were failing to capture heterogeneous claims inflation — bodily injury and property damage inflating at different rates within the same triangle.
+The magnitude is not trivial. Richman and Wüthrich's liability result shows a bias of −4,204 on an aggregate reserve where the RMSEP is 1,977. That is directionally consistent with empirical findings from PRA thematic reviews on reserving quality, which have identified concerns about UK insurers failing to capture heterogeneous claims inflation — bodily injury and property damage inflating at different rates within the same triangle.
 
 ---
 

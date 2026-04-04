@@ -198,7 +198,7 @@ The spread between estimates tells you something useful. Wide disagreement betwe
 
 ## The UK regulatory angle
 
-Under Solvency II (and Solvency UK as now implemented by the PRA), the best estimate liability must be the mean of the distribution of future cash flows, with explicit assumptions about reporting delays for IBNR claims. PRA SS1/23 on model validation requires that the assumptions underlying any reserving model be documented, testable, and subject to sensitivity analysis.
+Under Solvency II (and Solvency UK as now implemented by the PRA), the best estimate liability must be the mean of the distribution of future cash flows, with explicit assumptions about reporting delays for IBNR claims. The Solvency II best estimate requirements (and PRA model governance expectations under Solvency II Articles 120–126) require that the assumptions underlying any reserving model be documented, testable, and subject to sensitivity analysis. SS1/23 establishes equivalent principles for banks; it does not directly apply to insurers, but its documentation standards are widely adopted as best practice.
 
 Chain-ladder satisfies this in practice because it is familiar and its assumptions are implicitly accepted by convention. But "familiar" is not the same as "defensible". The AIPW framework offers two regulatory advantages:
 

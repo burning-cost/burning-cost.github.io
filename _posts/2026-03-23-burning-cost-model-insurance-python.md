@@ -29,7 +29,7 @@ Frequency and severity respond differently to rating factors. Vehicle group affe
 
 Frequency and severity also have different data requirements. Severity data is noisy - a single large claim can move the mean materially. Frequency data is much more stable. Separating them lets you apply different credibility loadings, use different regularisation strengths, and make different decisions about how much historical data to include.
 
-Finally, it makes governance easier. When you present a rate change to underwriting, being able to say "frequency is up 3% and severity is flat" is far more interpretable than "pure premium is up 3%." The PRA's SS1/23 requirements on model explanation are easier to satisfy when your model has components that correspond to business intuitions.
+Finally, it makes governance easier. When you present a rate change to underwriting, being able to say "frequency is up 3% and severity is flat" is far more interpretable than "pure premium is up 3%." Good model governance practice — whether you follow SS1/23 (formally a banking supervisory statement) or Solvency II Article 120 equivalents for insurers — is easier to satisfy when your model has components that correspond to business intuitions.
 
 ---
 
@@ -224,7 +224,7 @@ A production burning cost model needs several things we have not covered here:
 
 **Rating factor extraction.** If you need to deploy into Radar or Emblem as a factor table, you cannot use the Python GLM predictions directly. You need to extract multiplicative relativities from the model. We cover this in [extracting rating relativities from GBMs with SHAP](/2026/03/02/how-to-extract-rating-factors-from-catboost/) and with our [`shap-relativities`](https://github.com/burning-cost/shap-relativities) library.
 
-**Model validation.** Before you present burning cost estimates to pricing leadership or use them to set rates, you need a formal validation against holdout data: Gini coefficient, double lift chart, and calibration by decile at minimum. The PRA's SS1/23 sets out expectations for model validation; we cover what that looks like in practice in [model validation under PRA SS1/23](/2025/07/13/model-validation-pra-ss123/).
+**Model validation.** Before you present burning cost estimates to pricing leadership or use them to set rates, you need a formal validation against holdout data: Gini coefficient, double lift chart, and calibration by decile at minimum. The SS1/23 framework (formally applying to banks) sets out best-practice expectations for model validation that many insurers adopt voluntarily; we cover what that looks like in practice in [model validation under PRA SS1/23](/2025/07/13/model-validation-pra-ss123/).
 
 **Credibility weighting.** Where a rating cell has thin data, the pure GLM estimates are unreliable. Blending with a market prior or a higher-level estimate using credibility weights is standard practice. We cover the Bühlmann-Straub approach in [our post on credibility models in Python](/2026/02/19/buhlmann-straub-credibility-in-python/).
 

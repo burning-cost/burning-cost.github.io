@@ -51,7 +51,7 @@ Every module uses real APIs from our open-source libraries. Nothing is invented 
 
 9. **Demand elasticity and rate optimisation** - Constrained SLSQP optimisation hitting a loss ratio target while respecting movement caps and FCA ENBP limits. Efficient frontier between loss ratio and volume. Uses `insurance-optimise`.
 
-10. **Model governance** - What a model risk management framework looks like for a pricing model in a UK regulated insurer. PRA SS1/23 obligations, model owner documentation, and producing a governance record that survives review. Uses `insurance-governance`.
+10. **Model governance** - What a model risk management framework looks like for a pricing model in a UK regulated insurer. Model governance best practice — following SS1/23 principles (formally applying to banks; widely adopted by insurers) — model owner documentation, and producing a governance record that survives review. Uses `insurance-governance`.
 
 11. **Model deployment monitoring** - Post-deployment monitoring beyond training-time validation: production drift detection, alert thresholds, and the governance loop that connects a live model back to its validation record.
 

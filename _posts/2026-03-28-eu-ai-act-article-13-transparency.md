@@ -123,7 +123,7 @@ The EIOPA Annex I record-keeping template from the Final Opinion is a useful ref
 
 ## How PRA SS1/23 maps to Article 13
 
-UK pricing teams operating under PRA SS1/23 already have documentation obligations that cover substantial Article 13 ground. The mapping is close enough that most of what an Article 13 document requires can be assembled from existing SS1/23 artefacts, with targeted additions.
+PRA SS1/23 applies to banks, not insurers — but many UK pricing teams have adopted equivalent SS1/23-aligned governance practices voluntarily. Those teams already have documentation obligations that cover substantial Article 13 ground. The mapping is close enough that most of what an Article 13 document requires can be assembled from existing SS1/23 artefacts, with targeted additions.
 
 | Article 13 requirement | SS1/23 equivalent | Gap |
 |---|---|---|
@@ -619,7 +619,7 @@ The EU AI Act's Article 13 requirements apply from 2 August 2026 for high-risk A
 
 For UK teams, the position depends on exposure:
 
-**UK-only life insurer, no EU policyholders:** EU AI Act does not apply. But PRA SS1/23 requires model documentation that covers much of the same ground. The sub-population performance disclosure (Article 13(3)(b)(v)) and the explicit explanation capability statement (Article 13(3)(b)(iv)) are gaps in most SS1/23 packs. Worth closing regardless.
+**UK-only life insurer, no EU policyholders:** EU AI Act does not apply. But good model governance practice — and for banks, PRA SS1/23 specifically — requires model documentation that covers much of the same ground. Insurers are not subject to SS1/23 directly; the Solvency II Articles 120–126 documentation requirements produce substantially similar artefacts. The sub-population performance disclosure (Article 13(3)(b)(v)) and the explicit explanation capability statement (Article 13(3)(b)(iv)) are gaps in most SS1/23 packs. Worth closing regardless.
 
 **UK insurer with EEA subsidiary or cross-border EU business:** Article 13 documentation is a legal requirement for the models feeding EU policyholder decisions. Four months to deadline. Start with the gap analysis against existing validation reports. The `flag_gaps()` output from the code above is a reasonable starting checklist.
 

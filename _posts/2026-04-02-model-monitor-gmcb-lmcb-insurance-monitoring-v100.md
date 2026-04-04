@@ -98,7 +98,7 @@ The decision logic follows Section 3.1 of the paper precisely:
 - If only GMCB is significant (Gini and LMCB are not): **RECALIBRATE**. Global level shift only; apply balance correction, no refit needed.
 - If Gini or LMCB is significant: **REFIT**. Structural drift. Balance correction is not enough.
 
-The `result.summary()` string produces a governance-ready paragraph with all p-values, z-statistics, and the decision reason — suitable for pasting into a PRA SS1/23 model validation report without further editing.
+The `result.summary()` string produces a governance-ready paragraph with all p-values, z-statistics, and the decision reason — suitable for pasting into a model validation report — whether that is structured to SS1/23 (banks) or Solvency II Article 121 (insurers) — without further editing.
 
 ---
 
