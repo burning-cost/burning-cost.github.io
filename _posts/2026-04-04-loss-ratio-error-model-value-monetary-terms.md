@@ -47,6 +47,8 @@ At $\rho = 1$ (perfect model), $E_\text{LR} = 0$. As $\rho$ falls, $E_\text{LR}$
 
 The key thing to understand about $E_\text{LR}$ is what it is measuring. The framework models a competitive market where customers with elastic demand respond to relative prices. When your model is wrong, you systematically overprice good risks (they leave) and underprice bad risks (they stay) — adverse selection. $E_\text{LR}$ is not an additive adjustment to your observed loss ratio; it is a multiplicative factor capturing how much the adverse selection from model imperfection inflates the equilibrium loss ratio above what a perfect model would achieve. The ratio $(1 + E_\text{LR,new}) / (1 + E_\text{LR,old})$ is what you apply to your current claims cost to project the improvement from going from $\rho_\text{old}$ to $\rho_\text{new}$.
 
+One valid parameter range note: LRE produces negative values when $\eta < 0.5$, implying a worse model improves the loss ratio — in practice, $\eta$ below 0.5 indicates the model adds no value over random assignment, and results in that regime should not be used for prioritisation decisions.
+
 ---
 
 ## What each parameter means in practice
@@ -85,9 +87,9 @@ The result depends heavily on $\eta$. Running the formula at three plausible val
 
 | $\eta$ | Description | $E_\text{LR}(0.65)$ | $E_\text{LR}(0.70)$ | Claims cost reduction (%) | Monetary (£m) |
 |--------|-------------|---------------------|---------------------|--------------------------|---------------|
-| 0.8 | Sticky book, broker channel | 0.26 | 0.21 | 3.2pp | £1.6m |
-| 1.4 | Mid-elasticity, direct | 1.02 | 0.78 | 9.1pp | £4.6m |
-| 2.0 | High elasticity, price comparison | 2.22 | 1.61 | 14.6pp | £7.3m |
+| 0.8 | Sticky book, broker channel | 0.26 | 0.21 | 4.1pp | £1.6m |
+| 1.4 | Mid-elasticity, direct | 1.02 | 0.78 | 11.7pp | £4.6m |
+| 2.0 | High elasticity, price comparison | 2.22 | 1.61 | 18.7pp | £7.3m |
 
 The range — £1.6m to £7.3m from the same 5-point $\rho$ improvement — is not a sign of a poorly constructed model. It reflects real variation in how much a model improvement translates into improved selection depending on how elastic your customers are. The same improvement on a captive-renewal book (low $\eta$) is genuinely worth less than on a pure price-comparison writer.
 
