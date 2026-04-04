@@ -87,7 +87,7 @@ If the model is a traditional GLM with a pre-specified structural form and no au
 
 **Step 2: Does the EU AI Act apply to you?**
 
-The Act applies to: (a) providers placing AI systems on the EU market; (b) providers or deployers in third countries where the AI output is *used* in the EU. If you are a purely domestic UK insurer with no EU-domiciled policyholders, no EU subsidiaries, and no Lloyd's European operations, the Act does not apply to you as a matter of direct obligation. FCA and PRA stated in April 2024 they will not introduce equivalent domestic AI-specific rules in the near term — existing SS1/23 model risk management expectations apply instead.
+The Act applies to: (a) providers placing AI systems on the EU market; (b) providers or deployers in third countries where the AI output is *used* in the EU. If you are a purely domestic UK insurer with no EU-domiciled policyholders, no EU subsidiaries, and no Lloyd's European operations, the Act does not apply to you as a matter of direct obligation. FCA and PRA stated in April 2024 they will not introduce equivalent domestic AI-specific rules in the near term — existing model governance expectations apply instead (SS1/23 for banks; Solvency II Articles 120–126 and PRA CP6/24 for insurers).
 
 If you have EU-domiciled policyholders, an EEA subsidiary, Lloyd's Brussels operations, or cross-border service arrangements, the Act applies to the pricing systems used for those customers.
 
@@ -97,7 +97,7 @@ High-risk means: the system is an AI system (Step 1), and it is used for risk as
 
 If yes to both: Articles 9–15 apply in full. Self-assessment conformity assessment under Annex VI.
 
-If no: the system is not high-risk AI. No Articles 9–15 obligations. The EIOPA governance opinion still applies (data quality, documentation, human oversight, explainability) — but these are Solvency II-based expectations, not AI Act obligations, and most already map onto SS1/23.
+If no: the system is not high-risk AI. No Articles 9–15 obligations. The EIOPA governance opinion still applies (data quality, documentation, human oversight, explainability) — but these are Solvency II-based expectations, not AI Act obligations, and most already map onto good model governance practice — whether codified as SS1/23 (for banks) or Solvency II Articles 120–126 (for insurers).
 
 ---
 
@@ -119,7 +119,7 @@ The governance opinion is more conservative than the Act in one important respec
 
 The EU AI Act does not apply as domestic UK law. The FCA and PRA have said they will not replicate it. But the extraterritorial reach of Article 2 is real: any UK insurer pricing EU-domiciled policyholders is a provider subject to the Act for those systems. Lloyd's managing agents with Brussels-written business and UK parents of EEA insurance subsidiaries are in scope.
 
-For purely domestic UK firms, the relevant governance framework remains SS1/23 (model risk management), the SMCR (accountable SMF), and FCA Principles — particularly consumer outcomes. The obligations these create are substantively similar to EU AI Act Articles 9–12. Firms building governance to the EU AI Act standard are simultaneously satisfying UK expectations; the converse is largely true as well.
+For purely domestic UK firms, the relevant governance framework is: for insurers, Solvency II Articles 120–126 and PRA CP6/24; for banks and investment firms, SS1/23. All firms are subject to the SMCR (accountable SMF) and FCA Principles — particularly consumer outcomes. The obligations these create are substantively similar to EU AI Act Articles 9–12. Firms building governance to the EU AI Act standard are simultaneously satisfying UK expectations; the converse is largely true as well.
 
 The UK AI Regulation Bill (re-introduced to the House of Lords in March 2025) would create an AI Authority and codify governance principles into binding duties. As of March 2026 it remains a Private Member's Bill without government backing. We would not plan compliance architecture around it.
 
@@ -144,4 +144,4 @@ The error in the original post came from relying on secondary analysis rather th
 
 If you are a life or health pricing actuary using GBMs or neural networks for individual-level pricing, and you have EU policyholders or operate under an EEA structure: the August 2026 deadline applies to you and the requirements are substantial. The original post's practical guidance on Articles 9–15 remains accurate for your situation.
 
-If you run motor or property pricing models: the EU AI Act high-risk obligations almost certainly do not apply to your work. Your governance obligations flow from SS1/23 and FCA Principles, not from the Act. That is not a reason to do less — it is a reason to be clear about *why* you are doing it.
+If you run motor or property pricing models: the EU AI Act high-risk obligations almost certainly do not apply to your work. Your governance obligations flow from Solvency II Articles 120–126 (insurers) or SS1/23 (banks), together with FCA Principles — not from the EU AI Act. That is not a reason to do less — it is a reason to be clear about *why* you are doing it.

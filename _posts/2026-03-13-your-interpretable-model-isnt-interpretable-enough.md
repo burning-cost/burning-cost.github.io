@@ -133,7 +133,7 @@ print(cat_tables["occupation"])
 
 The shape function for a continuous feature is directly analogous to a GLM smooth term or a manual age-band relativity table, except it is continuous and can capture nonlinear effects within each feature's range without requiring manual bucketing decisions.
 
-For model validation under PRA SS1/23, the shape function is the primary documentation artefact: it shows exactly what the model is doing for each feature, the monotonicity constraint is visually verifiable, and the smoothness regularisation means the curve does not have the artificial step-changes that come from fine-grained bucketing.
+For model validation under SS1/23-aligned governance (SS1/23 formally applies to banks; insurers follow equivalent Solvency II Article 120 standards in practice), the shape function is the primary documentation artefact: it shows exactly what the model is doing for each feature, the monotonicity constraint is visually verifiable, and the smoothness regularisation means the curve does not have the artificial step-changes that come from fine-grained bucketing.
 
 ---
 

@@ -156,7 +156,7 @@ The EU AI Act does not apply as domestic UK law. The FCA and PRA stated in April
 
 The extraterritorial reach of Article 2 is real and cannot be ignored: the Act applies to providers and deployers in third countries where the AI output is *used* in the EU. For UK insurers, this means:
 
-- **Pure domestic insurer, no EU-domiciled policyholders:** EU AI Act does not apply. SS1/23 and FCA Principles govern.
+- **Pure domestic insurer, no EU-domiciled policyholders:** EU AI Act does not apply. For insurers, the relevant model governance framework is Solvency II Articles 120–126 and FCA Principles. SS1/23 applies to banks, not insurers, though many insurers adopt its principles voluntarily.
 - **UK insurer with EEA subsidiary:** The subsidiary is within EU jurisdiction. Pricing models used for the subsidiary's policyholders are in scope.
 - **UK parent running the model, EU subsidiary using the output:** UK parent is the provider under Article 2. The EU AI Act applies to those systems.
 - **Lloyd's managing agents:** Brussels-written business and European syndicate operations are within EU jurisdiction. Pricing that feeds Brussels is in scope.

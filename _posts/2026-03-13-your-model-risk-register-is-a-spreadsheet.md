@@ -4,7 +4,7 @@ title: "Model Risk Governance for UK Insurers: Beyond the Excel Register"
 date: 2026-03-13
 categories: [libraries, regulation]
 tags: [model-risk-management, mrm, pra-ss123, fca-consumer-duty, model-inventory, model-governance, python, insurance-governance, insurance-monitoring]
-description: "PRA SS1/23 model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. insurance-governance - one uv add."
+description: "Model risk governance for UK insurers: model inventory, risk tier scoring, exec committee reports. Built on SS1/23 principles (formally a banking standard, widely adopted by insurers). insurance-governance - one uv add."
 ---
 
 *This post covers the governance workflow: model inventory, risk tier scoring, and executive committee reporting via `insurance-governance`. For the release note explaining why we merged `insurance-validation` and `insurance-mrm` into a single package, see [One Package, One Install](/2026/03/14/insurance-governance-unified-pra-ss123-validation/).*
@@ -281,7 +281,7 @@ The gap this fills is not statistical. The gap is institutional. The reason most
 
 ## Our view
 
-The PRA SS1/23 extension to insurers will happen. The FCA Consumer Duty documentation obligations are already live. Emerging regulatory attention to AI accountability under SM&CR signals further tightening. None of this is speculative.
+A formal extension of SS1/23 — or an equivalent supervisory statement — to insurers is widely expected. No date has been confirmed as of April 2026, but the direction of travel is clear. The FCA Consumer Duty documentation obligations are already live. Emerging regulatory attention to AI accountability under SM&CR signals further tightening. None of this is speculative.
 
 The firms that will handle the regulatory transition smoothly are the ones that can answer the following questions with a query, not a conversation:
 

@@ -121,7 +121,7 @@ PSI RED flags on demographic or geographic features require human triage before 
 Use automated monitoring if:
 - You are running monthly or quarterly model health checks and currently relying on aggregate A/E as the primary signal — you need at minimum PSI per rating factor and a Gini drift test alongside the A/E
 - You run champion/challenger experiments with interim looks — mSPRT is essential; fixed-horizon tests with monthly reviews are running at five times the stated false positive rate
-- You need PRA SS1/23 model risk audit trail documentation
+- You need structured model risk audit trail documentation (aligned to SS1/23 principles for banks, or Solvency II Article 120 governance expectations for insurers)
 
 Do not expect it to:
 - Replace the judgement call about whether an observed shift is worth acting on — that requires understanding the book and the claims environment

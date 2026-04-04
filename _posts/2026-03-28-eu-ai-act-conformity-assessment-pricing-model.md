@@ -62,7 +62,7 @@ Article 17 requires your QMS to cover:
 | Accuracy monitoring | Performance metrics, monitoring cadence, drift alerts (Article 15) |
 | Post-market monitoring | Ongoing review plan per Article 72 |
 
-Most insurers doing SS1/23 governance have most of this. The gaps are usually the Article 12 logging (automated operational logs are a specific EU AI Act requirement, not just general model monitoring) and the formal Article 13 document (which is a deployer-facing instructions document, not just internal technical documentation).
+Most insurers following SS1/23-aligned model governance (SS1/23 formally applies to banks, but many insurers adopt equivalent practices voluntarily) have most of this. The gaps are usually the Article 12 logging (automated operational logs are a specific EU AI Act requirement, not just general model monitoring) and the formal Article 13 document (which is a deployer-facing instructions document, not just internal technical documentation).
 
 ---
 

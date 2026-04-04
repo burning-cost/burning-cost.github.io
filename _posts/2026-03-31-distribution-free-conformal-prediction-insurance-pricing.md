@@ -61,7 +61,7 @@ intervals = hc.predict_interval(X_test, alpha=0.05)
 # intervals.shape == (n_test, 2); lower bound is always 0
 ```
 
-For SCR estimation, set `alpha=0.005` to get a finite-sample valid 99.5% upper bound directly citable in PRA model reviews under SS1/23.
+For SCR estimation, set `alpha=0.005` to get a finite-sample valid 99.5% upper bound directly citable in PRA model reviews (under SS1/23 for banks, or Solvency II internal model governance for insurers).
 
 ### 2. The h-transformation (Hong, arXiv:2601.21153)
 
@@ -146,7 +146,7 @@ For capital modelling and rate adequacy, marginal coverage is the right concept 
 
 ### Capital modelling — SCR
 
-Setting α = 0.005 gives a finite-sample valid 99.5% upper bound on individual claims. This is stronger than the parametric Tweedie SCR in common use. The conformal bound holds regardless of distributional assumption, and is directly auditable: "we computed this on a held-out calibration set and the coverage guarantee is finite-sample." That is citable in PRA model reviews under SS1/23.
+Setting α = 0.005 gives a finite-sample valid 99.5% upper bound on individual claims. This is stronger than the parametric Tweedie SCR in common use. The conformal bound holds regardless of distributional assumption, and is directly auditable: "we computed this on a held-out calibration set and the coverage guarantee is finite-sample." That is citable in PRA model reviews — whether structured under SS1/23 (banks) or Solvency II internal model requirements (insurers).
 
 **Important caveat:** the sum of individual conformal bounds is not itself a conformal interval. Aggregation violates exchangeability. For aggregate portfolio SCR you need a portfolio-level conformal framework, not the sum of per-policy bounds.
 

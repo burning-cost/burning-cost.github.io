@@ -4,7 +4,7 @@ title: "Conformal Prediction Intervals for Insurance Pricing Models"
 date: 2026-03-31
 categories: [machine-learning]
 tags: [conformal-prediction, prediction-intervals, Tweedie, GLM, GBM, uncertainty-quantification, PRA-SS1/23, insurance-pricing, insurance-conformal, Hong-2025, Graziadei-2023, Manna-2025]
-description: "Parametric Tweedie intervals over-cover low-risk policies and under-cover the high-risk tail. Conformal prediction fixes this with a finite-sample guarantee that does not rely on your distributional assumptions being correct. Here is how to apply it in practice, why naive residual scores are wrong for insurance data, and what it means for PRA SS1/23 validation packs."
+description: "Parametric Tweedie intervals over-cover low-risk policies and under-cover the high-risk tail. Conformal prediction fixes this with a finite-sample guarantee that does not rely on your distributional assumptions being correct. Here is how to apply it in practice, why naive residual scores are wrong for insurance data, and what it means for model validation packs (SS1/23 for banks; Solvency II Article 120 for insurers)."
 author: burning-cost
 ---
 
@@ -241,9 +241,11 @@ The underlying theory is in Graziadei, Janett, Embrechts & Bucher (arXiv:2307.13
 
 ---
 
-## PRA SS1/23 and the regulatory case for conformal intervals
+## The regulatory case for conformal intervals
 
-PRA Supervisory Statement SS1/23 requires firms to demonstrate that their internal models produce predictions with appropriate uncertainty quantification, and that model limitations are documented and understood by users. The standard parametric bootstrap interval is difficult to defend under this framework: the interval width depends on the distributional assumption being correct, and you cannot write a finite-sample guarantee that is independent of model specification.
+*(PRA SS1/23 applies to banks, not directly to insurers. For insurers, the equivalent requirements flow from Solvency II Articles 120–126. Many insurers adopt SS1/23's validation principles voluntarily. The framing below applies to both.)*
+
+The SS1/23 model validation framework requires firms to demonstrate that their internal models produce predictions with appropriate uncertainty quantification, and that model limitations are documented and understood by users. The standard parametric bootstrap interval is difficult to defend under this framework: the interval width depends on the distributional assumption being correct, and you cannot write a finite-sample guarantee that is independent of model specification.
 
 Conformal prediction changes this. The formal statement — `P(y_test in interval) >= 1 - alpha`, finite-sample valid, no distributional assumptions, holds regardless of model misspecification — is a stronger claim than any parametric interval can make. You can include it verbatim in a validation pack.
 
@@ -263,7 +265,7 @@ print(scr.to_markdown())
 
 One caveat that belongs in the validation pack alongside the output: `SCRReport` is an internal stress-testing tool. Solvency II SCR calculations for regulatory purposes require sign-off under an approved internal model or the standard formula. The conformal bounds are a sound complement to that process — a distribution-free check on whether your parametric SCR estimates are plausible — not a substitute for it.
 
-For the PRA SS1/23 documentation specifically, the defensible framing is:
+For the model validation pack specifically — whether structured under SS1/23 (banks) or Solvency II Article 120 (insurers) — the defensible framing is:
 
 1. The conformal coverage guarantee holds finite-sample, without distributional assumptions.
 2. Per-decile coverage diagnostics are shown — aggregate coverage meeting the target is a necessary but not sufficient check.
@@ -301,4 +303,4 @@ uv add "insurance-conformal[all]"
 
 Source and documentation: [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal).
 
-The library takes any fitted model — Tweedie GBM, GAM, GLM, or the output of [insurance-gam](https://github.com/burning-cost/insurance-gam) — and feeds distribution-free intervals into downstream tools including [insurance-governance](https://github.com/burning-cost/insurance-governance) for PRA SS1/23 validation packs.
+The library takes any fitted model — Tweedie GBM, GAM, GLM, or the output of [insurance-gam](https://github.com/burning-cost/insurance-gam) — and feeds distribution-free intervals into downstream tools including [insurance-governance](https://github.com/burning-cost/insurance-governance) for model governance validation packs (SS1/23-aligned for banks; Solvency II Article 120 for insurers).

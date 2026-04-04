@@ -280,7 +280,7 @@ Beyond CBPE, a few NannyML capabilities are worth naming explicitly.
 - You need Murphy decomposition to distinguish RECALIBRATE (multiplier fix) from REFIT (model rebuild)
 - You need `PITMonitor` for calibration change detection that does not false-alarm under repeated monthly testing
 - You need `SequentialTest` for champion/challenger experiments that are checked monthly without FPR inflation
-- You need `MonitoringReport` producing a structured output for PRA SS1/23 model risk documentation
+- You need `MonitoringReport` producing a structured output for model risk documentation aligned to SS1/23 (banks) or Solvency II Article 120 (insurers)
 
 The two tools are not alternatives for the same problem. NannyML is excellent for general ML monitoring with strong performance estimation and visualisation. `insurance-monitoring` is purpose-built for the actuarial monitoring workflow: exposure-weighted distributions, A/E by segment, Gini drift significance testing, and the RECALIBRATE-or-REFIT decision. A pricing team in a larger organisation might run both - NannyML for engineering-facing dashboards, `insurance-monitoring` for the actuarial outputs that feed model governance.
 

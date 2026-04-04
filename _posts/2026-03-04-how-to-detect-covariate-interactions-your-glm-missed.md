@@ -267,7 +267,7 @@ The maximum A/E deviation by decile drops from 14.3% to 6.1%. The young-driver/h
 
 ## The governance note
 
-PRA SS1/23 (effective May 2024) requires that model changes be documented, justified, and independently reviewed before deployment. Two of the most relevant requirements for interaction additions are:
+Good model governance practice requires that model changes be documented, justified, and independently reviewed before deployment. PRA SS1/23 (effective May 2024) codifies this for banks; for insurers, the equivalent expectation flows from Solvency II Article 120 and the PRA's internal model governance requirements. Two of the most relevant requirements for interaction additions are:
 
 - **Documentation of rationale**: why was this interaction added? What evidence supported it?
 - **Testing of significance**: was the improvement statistically validated, or asserted on theoretical grounds alone?

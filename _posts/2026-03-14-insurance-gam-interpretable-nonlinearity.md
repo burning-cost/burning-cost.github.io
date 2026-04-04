@@ -214,7 +214,7 @@ The diagnostics work identically whether `preds` came from `InsuranceEBM`, `ANAM
 
 ## The regulatory argument, stated directly
 
-The FCA has not introduced AI-specific pricing rules, relying on Consumer Duty and the existing principle-based framework. The PRA's SS1/23 (effective May 2024) requires model validators to understand decision boundaries and test behaviour at margins — the [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) automates the statistical validation suite that SS1/23 mandates. Neither document mandates a specific architecture.
+The FCA has not introduced AI-specific pricing rules, relying on Consumer Duty and the existing principle-based framework. PRA SS1/23 (effective May 2024, applying to banks) requires model validators to understand decision boundaries and test behaviour at margins — and many insurers follow the same standard voluntarily. The [insurance-governance library](/2026/03/14/insurance-governance-unified-pra-ss123-validation/) automates the statistical validation suite that SS1/23 specifies. Neither document mandates a specific architecture.
 
 What they do create is a practical difference in the quality of evidence you can produce. A SHAP waterfall chart on a GBM answers "which features drove this prediction" approximately. An EBM factor table, an ANAM shape function, or a PIN interaction surface answers the same question exactly - and answers additional questions a SHAP chart cannot, such as "what does the model predict if only this one feature changes, across its full range?"
 

@@ -76,7 +76,7 @@ The `exposure` parameter handles policies with different term lengths — a 6-mo
 
 This is the application we find most compelling commercially, and it comes from Retzlaff et al. (ICML 2025), which proves formal equivalence between conformal coverage tests and standard VaR backtests — specifically the Kupiec (1995) and Christoffersen (1998) tests that market risk practitioners have used for decades.
 
-PRA SS1/23 requires statistical testing of probability distribution forecasts. The standard Solvency II internal model validation tests include backtesting of the predicted loss distribution, but actuarial practice is inconsistent about which tests to apply and at what significance level. The Kupiec unconditional coverage test — which checks whether the observed exceedance rate matches the target — is equivalent to a conformal coverage test at the same alpha.
+Good model governance practice — and PRA SS1/23 specifically for banks — requires statistical testing of probability distribution forecasts. The standard Solvency II internal model validation tests include backtesting of the predicted loss distribution, but actuarial practice is inconsistent about which tests to apply and at what significance level. The Kupiec unconditional coverage test — which checks whether the observed exceedance rate matches the target — is equivalent to a conformal coverage test at the same alpha.
 
 This matters because it provides a bridge to regulatory acceptance. A PRA validation team that understands Kupiec immediately understands what a conformal coverage table is telling them:
 
@@ -103,7 +103,7 @@ coverage_by_vehicle_age = subgroup_coverage(
 )
 ```
 
-Conformal coverage is a marginal guarantee — 99.5% on average across all policies. If your young-driver cohort achieves only 97% empirical coverage, the marginal guarantee is being met but the subgroup guarantee is not. SS1/23 requires testing at appropriate levels of granularity; this is how you do it.
+Conformal coverage is a marginal guarantee — 99.5% on average across all policies. If your young-driver cohort achieves only 97% empirical coverage, the marginal guarantee is being met but the subgroup guarantee is not. Good model governance — whether you follow SS1/23 principles (for banks) or Solvency II internal model requirements (for insurers) — requires testing at appropriate levels of granularity; this is how you do it.
 
 ---
 

@@ -239,7 +239,7 @@ For use cases where the base model is already trained and production-deployed, c
 
 ### 6. Regulatory acceptability
 
-This is context-dependent, but our assessment: GAMLSS is more straightforward to validate under PRA SS1/23 model validation requirements. The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
+This is context-dependent, but our assessment: GAMLSS is more straightforward to validate against SS1/23-style model validation requirements (SS1/23 applies to banks; insurers follow equivalent Solvency II Article 120 standards, but the validation tests are the same in practice). The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
 
 Conformal's finite-sample guarantee is mathematically rigorous and does not depend on distributional assumptions, which is arguably a stronger foundation. But it is less familiar to UK model validators in 2026, and the absence of distributional parameters means standard actuarial diagnostics (residual plots, P-P plots, worm plots) do not apply directly.
 

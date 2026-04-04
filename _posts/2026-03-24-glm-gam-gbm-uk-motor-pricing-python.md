@@ -303,7 +303,7 @@ The `validate()` step is not optional. If the reconstruction check fails, the SH
 
 **Gini comparison.** CatBoost with native categoricals and early stopping typically lands 3-8 Gini points above the GLM on freMTPL2, and somewhat higher above a naively specified GLM. The shap-relativities benchmarks (measured on Databricks, 2026-03-21, 25,000 synthetic policies) show CatBoost Gini of approximately 0.411 versus 0.393 for a linear GLM. The magnitude depends on how well the GLM was specified.
 
-**The governance question.** A 5-point Gini improvement is worth roughly 5% improvement in risk discrimination. For a book writing £200m GWP, that is a meaningful number. The additional governance burden is real: sign-off from a pricing committee, explanation to the FCA, documentation under PRA SS1/23. Whether that burden is worth carrying depends on the book and the team. Our view is that the GBM should be in the arsenal but should go to production via the distillation path described in the next section, not as a raw model in a rating engine.
+**The governance question.** A 5-point Gini improvement is worth roughly 5% improvement in risk discrimination. For a book writing £200m GWP, that is a meaningful number. The additional governance burden is real: sign-off from a pricing committee, explanation to the FCA, documentation under your model governance framework (SS1/23 for banks; Solvency II Article 120 for insurers). Whether that burden is worth carrying depends on the book and the team. Our view is that the GBM should be in the arsenal but should go to production via the distillation path described in the next section, not as a raw model in a rating engine.
 
 ---
 
