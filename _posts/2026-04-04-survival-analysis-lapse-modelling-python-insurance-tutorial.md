@@ -237,7 +237,7 @@ print(fitter.summary())
 
 The summary table shows two sets of parameters:
 
-1. **Incidence model** (logistic on π): the coefficients on `ncd_years` and `channel_direct`. A negative coefficient means higher values of that variable increase the probability of being immune. We expect both to be negative — more NCD and direct debit both increase the immune probability.
+1. **Incidence model** (logistic on π): the coefficients on `ncd_years` and `channel_direct`. The library parameterises the cure fraction directly as `sigmoid(intercept + x'γ)` — so a **positive** coefficient on a covariate increases P(immune). We expect both `ncd_years` and `channel_direct` to have positive coefficients: more NCD years and direct debit both increase the probability of being a structural non-lapser.
 
 2. **Latency model** (Weibull AFT on time-to-lapse for susceptibles): the coefficients on `ncd_years` and `age`. A positive coefficient in AFT parameterisation means longer time-to-lapse (lower lapse hazard).
 
@@ -252,7 +252,7 @@ print(f"Portfolio mean cure fraction: {cure_probs.mean():.3f}")
 print(f"Top decile cure probability: {cure_probs.quantile(0.9):.3f}")
 ```
 
-On the synthetic data constructed above, the model should recover the 30% cure fraction to within 1-2 percentage points. The incidence coefficients should have the correct signs: `ncd_years` negative (more NCD → more likely immune), `channel_direct` negative (direct debit → more likely immune).
+On the synthetic data constructed above, the model should recover the 30% cure fraction to within 1-2 percentage points. The incidence coefficients should have the correct signs: `ncd_years` positive (more NCD → more likely immune), `channel_direct` positive (direct debit → more likely immune).
 
 ### The full mixture cure suite
 
@@ -400,7 +400,7 @@ agg_profile = pl.DataFrame({
 })
 
 # Survival curves for each profile
-t_years = np.linspace(0, 10, 200)
+t_years = np.linspace(0, 5, 100)
 s_direct = fitter.predict_survival_function(direct_profile, times=t_years)
 s_agg    = fitter.predict_survival_function(agg_profile,    times=t_years)
 

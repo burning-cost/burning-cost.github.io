@@ -312,7 +312,7 @@ Raw experience data
 
 The Polars output from `result.to_polars()` is a clean table with named columns. Writing it to Parquet or CSV for your tariff system is one line. If you are tracking model drift post-launch, the smoothed curve and its CI bands are the baseline that `insurance-monitoring` PSI metrics compare against.
 
-For documenting the methodology under Solvency II Article 121 or PRA SS3/18, the REML-selected lambda and the credible intervals are the artefacts that should appear in your model validation report: they demonstrate that the smoothing parameter is data-driven rather than analyst-selected, and that the uncertainty in sparse bands is quantified rather than ignored.
+For documenting the methodology under Solvency II Articles 120–126 (internal model standards), the REML-selected lambda and the credible intervals are the artefacts that should appear in your model validation report: they demonstrate that the smoothing parameter is data-driven rather than analyst-selected, and that the uncertainty in sparse bands is quantified rather than ignored.
 
 ---
 

@@ -145,7 +145,7 @@ model = InsuranceEBM(
 model.fit(X_train, y_train, exposure=exp_train)
 ```
 
-The `interactions="3x"` argument tells the EBM to detect and fit the top 3 pairwise feature interactions, chosen automatically by the model using a FAST (Forward And Stepwise) test. You can also specify them explicitly: `interactions=[("driver_age", "ncd_years"), ("vehicle_age", "area")]`.
+The `interactions="3x"` argument tells the EBM to detect and fit the top 3 pairwise feature interactions, chosen automatically by the model using a FAST (Fast and Accurate interaction and Shape detection Test; Lou, Caruana, Gehrke, KDD 2013) procedure. You can also specify them explicitly: `interactions=[("driver_age", "ncd_years"), ("vehicle_age", "area")]`.
 
 Fit time on a single CPU: 60–120 seconds for 40,000 observations.
 
@@ -257,7 +257,7 @@ glm_pred = glm.predict(X_te_glm, offset=np.log(exp_test))
 # Poisson deviance
 def poisson_deviance(y, mu):
     mu = np.maximum(mu, 1e-12)
-    term = np.where(y > 0, y * np.log(y / mu) - (y - mu), -(mu - y))
+    term = np.where(y > 0, y * np.log(y / mu) - (y - mu), mu - y)
     return 2.0 * np.mean(term)
 
 # Gini coefficient (risk-ordering quality)
@@ -269,7 +269,7 @@ def gini(y, pred, exposure):
     exp_sorted = exposure[order]
     cum_exp = np.cumsum(exp_sorted) / exp_sorted.sum()
     cum_claims = np.cumsum(y_sorted * exp_sorted) / (y_sorted * exp_sorted).sum()
-    return 1 - 2 * np.trapz(cum_claims, cum_exp)
+    return 1 - 2 * np.trapezoid(cum_claims, cum_exp)
 
 ebm_mu = ebm_pred * exp_test
 glm_mu = glm_pred * exp_test
@@ -368,9 +368,9 @@ area            0.0712
 vehicle_age     0.0403
 ```
 
-`annual_miles` is the most important variable — consistent with the widest spread in the relativity summary. Crucially, these Shapley values are exact, not approximations from SHAP's TreeExplainer or KernelExplainer. For an additive model, the attribution is clean.
+`annual_miles` is the most important variable — consistent with the widest spread in the relativity summary. For the main-effects-only components of the model, these Shapley values are exact — no sampling, no approximation. Note that when interactions are present (as here, with ), the interaction term attribution involves allocating a joint effect across the feature pair; the result is still well-defined but is not as simple as reading off the main-effect shape function. For most governance purposes the main-effect Shapley values are what matter.
 
-For a GBM, SHAP values are approximate (TreeSHAP is fast but introduces bias from the uniform distribution assumption) and depend on the choice of background dataset. For an EBM, they are exact by construction. This matters in a regulatory context where attribution needs to be defensible.
+For a GBM, SHAP values via TreeSHAP are exact for the tree ensemble but rest on a feature independence assumption — intervening on one feature while holding others fixed at background values does not account for correlations between features. The values also depend on the choice of background dataset. For an EBM, they are exact by construction. This matters in a regulatory context where attribution needs to be defensible.
 
 ---
 
@@ -394,11 +394,11 @@ One caution from the README: enforcing monotonicity on a factor that genuinely h
 
 ## FCA and PRA regulatory context
 
-**PRA SS3/18** (Model Risk Management) expects firms to demonstrate that models are interpretable and that outputs can be challenged by subject matter experts. A GBM producing thousands of trees does not meet this standard for a primary pricing model without extensive post-hoc explainability infrastructure. An EBM's per-feature shape functions are the actuarial equivalent of the factor curves a pricing committee signs off in a GLM tariff review.
+**Solvency II Articles 120–126** (internal model standards) require that models used in capital and pricing processes are interpretable and can be challenged by subject matter experts. A GBM producing thousands of trees does not meet this standard for a primary pricing model without extensive post-hoc explainability infrastructure. An EBM's per-feature shape functions are the actuarial equivalent of the factor curves a pricing committee signs off in a GLM tariff review.
 
-**FCA Consumer Duty** (PS22/9, effective July 2023) requires that price differences between customers are attributable to legitimate risk differentiation. The FCA's proxy discrimination work (EP25/2, March 2025) extends this: where a pricing factor correlates with a protected characteristic, the firm needs to demonstrate that the factor is measuring genuine risk rather than acting as a proxy. An EBM shape function makes the non-linear relationship transparent and auditable — it is much easier to inspect whether the vehicle age curve is picking up a genuine claims effect or a socioeconomic proxy when the curve is explicit.
+**FCA Consumer Duty** (PS22/9, effective July 2023) requires that price differences between customers are attributable to legitimate risk differentiation. Where a pricing factor correlates with a protected characteristic, the firm needs to demonstrate that the factor is measuring genuine risk rather than acting as a proxy. An EBM shape function makes the non-linear relationship transparent and auditable — it is much easier to inspect whether the vehicle age curve is picking up a genuine claims effect or a socioeconomic proxy when the curve is explicit.
 
-**PRA CP6/24** (insurance model risk, consultation paper) raises expectations for model validation governance of internal models. Interpretable shape functions make validation easier: a validator can read the NCD curve, challenge whether the shape is actuarially reasonable, and compare it against portfolio experience without unpacking a GBM.
+**PRA insurance model risk governance** — the PRA's expectations for insurance firms are set out separately from its banking model risk papers; the relevant standards for a UK personal lines insurer are the Solvency II internal model requirements and PRA supervisory expectations on model validation. Interpretable shape functions make validation easier: a validator can read the NCD curve, challenge whether the shape is actuarially reasonable, and compare it against portfolio experience without unpacking a GBM.
 
 We think the regulatory direction of travel is clear: black-box GBMs as primary pricing models are becoming harder to defend. GAMs are the natural upgrade path — you retain the non-linear fitting capability while preserving the interpretability that model governance requires.
 
@@ -418,7 +418,7 @@ anam = ANAM(
     monotone_increasing=["vehicle_age"],
     n_epochs=100,
 )
-anam.fit(df, y_train, sample_weight=exp_train)
+anam.fit(X_train, y_train, sample_weight=exp_train)
 shapes = anam.shape_functions()
 shapes["driver_age"].plot()
 ```

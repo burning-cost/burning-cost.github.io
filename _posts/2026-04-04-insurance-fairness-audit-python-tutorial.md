@@ -8,7 +8,7 @@ tags: [insurance-fairness, python, proxy-discrimination, fca, consumer-duty, equ
 description: "Step-by-step Python tutorial for running an insurance fairness audit. Covers proxy discrimination detection, exposure-weighted bias metrics, FCA Consumer Duty mapping, and generating an audit report your pricing committee can sign off. Uses the insurance-fairness library (2,152 downloads/month)."
 ---
 
-Your postcode rating factor probably correlates with ethnicity. That is not a hypothesis — Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m annually, driven entirely through proxy factors. The question is not whether your model might be doing this. The question is whether you can demonstrate it is not, in terms that satisfy the FCA's Consumer Duty requirements and would survive an FCA file review.
+Your postcode rating factor probably correlates with ethnicity. That is not a hypothesis — Citizens Advice (2020) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m annually, driven entirely through proxy factors. The question is not whether your model might be doing this. The question is whether you can demonstrate it is not, in terms that satisfy the FCA's Consumer Duty requirements and would survive an FCA file review.
 
 This tutorial walks through a complete insurance fairness audit in Python using [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), our most-downloaded library at 2,152 downloads/month. By the end you will have run proxy detection across your rating factors, computed exposure-weighted bias metrics, and produced a Markdown audit report mapped to FCA PRIN 2A, FG22/5, and Equality Act s.19. The whole workflow takes under 15 minutes on a 50,000-policy book.
 
@@ -67,7 +67,7 @@ A fairness audit requires three things beyond your existing modelling dataset:
 
 Most UK insurers do not hold individual-level ethnicity data. The practical alternative is to join ONS 2021 Census LSOA ethnicity proportions to your postcode data and use the area-level diversity proportion as a proxy. This is an area-level proxy, not individual-level — correlations with this proxy are correlations with area demographics, not individual ethnicity. That limitation should be stated explicitly in your audit report. It is still materially better than no proxy at all.
 
-For gender, most insurers have the data directly (even if they cannot use it as a rating factor post-Equality Act s.11). For age, the data is typically available and s.13 direct discrimination by age in insurance is subject to a sector-specific exemption under Schedule 3 paragraph 20 — but indirect discrimination through age-correlated factors still applies.
+For gender, most insurers have the data directly (even if they cannot use it as a rating factor following the ECJ Test-Achats ruling, Case C-236/09, which led to the removal of the gender exemption; the prohibition on gender rating in insurance services is implemented through Equality Act s.29 and Schedule 3). For age, the data is typically available and s.13 direct discrimination by age in insurance is subject to a sector-specific exemption under Schedule 3 paragraph 20 — but indirect discrimination through age-correlated factors still applies.
 
 **2. Your model's predictions at policy level.**
 
@@ -192,7 +192,7 @@ print(f"Log-ratio: {dp.log_ratio:+.4f} (ratio: {dp.ratio:.4f}) [{dp.rag}]")
 # Log-ratio: +0.0820 (ratio: 1.0854) [AMBER]
 ```
 
-A ratio of 1.085 means the high-diversity group is charged approximately 8.5% more per car-year on average than the low-diversity group, after weighting by exposure. For context: the Citizens Advice (2022) estimate of the ethnicity penalty in UK motor was approximately 6–9% of annual premium, so this synthetic result is consistent with the order of magnitude of the real finding.
+A ratio of 1.085 means the high-diversity group is charged approximately 8.5% more per car-year on average than the low-diversity group, after weighting by exposure. For context: the Citizens Advice (2020) estimate of the ethnicity penalty in UK motor was approximately 6–9% of annual premium, so this synthetic result is consistent with the order of magnitude of the real finding.
 
 ### Proxy detection (the distinctive metric)
 
@@ -436,7 +436,7 @@ Library: [github.com/burning-cost/insurance-fairness](https://github.com/burning
 ---
 
 **Related:**
-- [Your Pricing Model Might Be Discriminating](/2026/03/07/your-pricing-model-might-be-discriminating/) — the founding post: Citizens Advice £213m estimate, Section 19 Equality Act mechanics, and what "proxy discrimination" actually means in insurance
+- [Your Pricing Model Might Be Discriminating](/2026/03/03/your-pricing-model-might-be-discriminating/) — the founding post: Citizens Advice £213m estimate, Section 19 Equality Act mechanics, and what "proxy discrimination" actually means in insurance
 - [The Fairness Impossibility You Cannot Optimise Away](/2026/04/04/nsga2-multi-objective-fairness-pareto-boonen-2512-24747/) — Chouldechova's theorem made operational: you cannot satisfy demographic parity, equalised odds, and calibration simultaneously; Pareto optimisation is the right response
 - [Detection vs Mitigation: insurance-fairness and EquiPy Are Not Competing](/2026/04/04/insurance-fairness-equipy-comparison/) — auditing (what you need for the FCA) versus correction (what you need after the audit finds a problem)
 - [The Mills Review: What the FCA's Long-Term AI Inquiry Means for Pricing Teams](/2026/03/26/fca-long-term-ai-review/) — the regulatory environment in which all of this sits

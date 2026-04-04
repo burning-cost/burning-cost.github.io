@@ -160,6 +160,16 @@ model = CausalPricingModel(
     random_state=42,
 )
 
+# Note on outcome_type="binary": PLR is designed for continuous outcomes. With
+# outcome_type="binary", the library fits the outcome nuisance model using a
+# classifier (CatBoost with log-loss) and interprets the final regression as a
+# linear probability model — the ATE is an additive effect on the renewal
+# probability, not a log-odds. This is consistent across treatment and outcome
+# nuisance stages. If your renewal probability is extreme (below 0.2 or above
+# 0.9 at the segment level), the linear probability interpretation breaks down
+# and you should use IRM (Interactive Regression Model) instead, which the library
+# exposes as outcome_type="binary_irm".
+
 model.fit(df)   # accepts polars or pandas; CatBoost nuisance models fit internally
 
 ate = model.average_treatment_effect()
@@ -232,7 +242,7 @@ latent_risk = (
 # PCW channel: higher-risk customers are more likely to shop via aggregator
 pcw_logit = -0.5 + 1.2 * latent_risk
 pcw_prob  = 1 / (1 + np.exp(-pcw_logit))
-is_pcw    = (RNG.uniform(N) < pcw_prob).astype(int)
+is_pcw    = (RNG.uniform(size=N) < pcw_prob).astype(int)
 
 # Outcome: claim frequency
 # (a) latent risk drives frequency regardless of channel
@@ -342,7 +352,7 @@ One limitation to be explicit about: DML assumes all confounders are observed. I
 
 ## FCA context
 
-The FCA's Consumer Duty (PS22/9, effective July 2023) requires that pricing practices deliver fair value and that price differences between customers are attributable to legitimate risk differentiation. The FCA's work on proxy discrimination (EP25/2, published March 2025) extends this: a pricing factor that is correlated with a protected characteristic must have a causal justification, not just a predictive one.
+The FCA's Consumer Duty (PS22/9, effective July 2023) requires that pricing practices deliver fair value and that price differences between customers are attributable to legitimate risk differentiation. The FCA's position on proxy discrimination extends this: a pricing factor that is correlated with a protected characteristic must have a causal justification, not just a predictive one. The Consumer Duty framework and Equality Act s.19 (indirect discrimination) both require that pricing differentials are proportionately justified — causal evidence is materially stronger than a predictive coefficient.
 
 DML is the most defensible tool currently available for producing that causal justification from observational data. It does not require a randomised experiment. It does require honest documentation of the confounders you controlled for and a sensitivity analysis on residual unobserved confounding.
 
@@ -369,4 +379,4 @@ Full examples are in [`examples/quickstart.py`](https://github.com/burning-cost/
 *Related:*
 - [Causal Price Elasticity for UK Renewal Pricing](/2026/03/14/causal-price-elasticity-for-uk-renewal-pricing/) — the commercial case for DML in renewal pricing, with freMTPL2 benchmark results
 - [GLM Frequency Model in Python: freMTPL2 Tutorial](/2026/04/04/glm-frequency-model-python-insurance-pricing-fremtpl2/) — when GLM is the right tool
-- [Insurance Fairness: Proxy Discrimination and Causal Methods](/2026/04/04/insurance-fairness-equipy-comparison/) — the connection between causal inference and FCA EP25/2
+- [Insurance Fairness: Proxy Discrimination and Causal Methods](/2026/04/04/insurance-fairness-equipy-comparison/) — the connection between causal inference and proxy discrimination
