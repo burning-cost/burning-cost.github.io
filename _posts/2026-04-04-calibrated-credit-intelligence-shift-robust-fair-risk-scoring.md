@@ -11,7 +11,7 @@ math: true
 
 Most pricing model papers optimise for one thing. Nayak's Calibrated Credit Intelligence (CCI) framework — arXiv:2603.06733, March 2026 — optimises for three at once: calibrated uncertainty, group fairness, and temporal stability. That is unusual, and it matters.
 
-The paper is from credit risk. The architecture transfers directly to insurance. UK insurers are currently trying to satisfy Solvency II calibration requirements, Consumer Duty fairness obligations, and model stability expectations under PRA CP6/24 — simultaneously, with the same model. CCI is the closest thing we have seen to a blueprint for doing that.
+The paper is from credit risk. The architecture transfers directly to insurance. UK insurers are currently trying to satisfy Solvency II calibration requirements, Consumer Duty fairness obligations, and model stability expectations under PRA SoP3/24 — simultaneously, with the same model. CCI is the closest thing we have seen to a blueprint for doing that.
 
 ---
 
@@ -59,7 +59,7 @@ Solvency II Articles 120–126 require that internal models — including pricin
 
 Consumer Duty (FCA PS22/9) and the Equality Act 2010 require that pricing does not produce systematically worse outcomes for customers sharing protected characteristics. FCA EP25/2 on proxy discrimination requires firms to actively monitor for proxy relationships between rating factors and protected characteristics. Fairness-constrained training does not replace that monitoring, but it does mean the model has an explicit fairness objective rather than relying entirely on post-hoc adjustment.
 
-PRA CP6/24 on insurance model risk management emphasises stability and performance monitoring through the model lifecycle. An architecture with built-in shift detection and threshold management is a materially easier story to tell under CP6/24 than a model with quarterly manual recalibration.
+PRA SoP3/24 on insurance model risk management emphasises stability and performance monitoring through the model lifecycle. An architecture with built-in shift detection and threshold management is a materially easier story to tell under SoP3/24 than a model with quarterly manual recalibration.
 
 The point is not that CCI is a compliance product. It is that the design choices made for technical reasons — Bayesian uncertainty, constrained training, shift-aware calibration — happen to align cleanly with what the regulatory framework is asking for.
 
@@ -73,7 +73,7 @@ The performance numbers need replication on UK insurance data before they mean a
 
 The computational cost of Bayesian neural networks is real. Inference is slower than a GBM. For high-frequency pricing decisions — real-time motor quotes — the latency implications need to be assessed.
 
-We also note that stacking three components increases the model complexity and the number of hyperparameters that need governance oversight under CP6/24. The framework is cleaner conceptually than running three separate models, but it is not simpler to validate.
+We also note that stacking three components increases the model complexity and the number of hyperparameters that need governance oversight under SoP3/24. The framework is cleaner conceptually than running three separate models, but it is not simpler to validate.
 
 ---
 
@@ -95,7 +95,7 @@ The paper is worth reading. Replicate the architecture on your own data before d
 - Solvency II Directive, Articles 120–126 (internal model requirements)
 - FCA PS22/9: General Insurance Pricing Practices — fair value, effective 1 January 2022
 - FCA EP25/2: Evaluation of General Insurance Pricing Practices — proxy discrimination, July 2025
-- PRA CP6/24: Model Risk Management Principles for Banks (insurance model risk guidance)
+- PRA SoP3/24: Model Risk Management — supervisory expectations for insurers, September 2024
 - Equality Act 2010, protected characteristics in pricing
 
 Related on Burning Cost:
