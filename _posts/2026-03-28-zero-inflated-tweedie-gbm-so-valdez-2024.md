@@ -9,7 +9,7 @@ description: "The first pip-installable implementation we know of for So & Valde
 
 The [previous post on zero-inflated models](/2026/03/24/zero-inflated-and-hurdle-models-for-insurance-claims/) covered the count side: ZIP for frequency, the structural-vs-sampling-zero distinction, and when Tweedie's implicit zero handling breaks down. That post deliberately sidestepped the continuous aggregate cost version.
 
-This post covers the continuous version. Specifically: `ZeroInflatedTweedieGBM`, the first pip-installable implementation of Scenario 2 that we are aware of from So & Valdez's ASTIN 2024 Best Paper (*Boosted trees for zero-inflated counts with an offset for insurance ratemaking*, arXiv 2406.16206). If you are modelling aggregate losses — not claim counts — on a book where 85–95% of policies have zero outgo, this is the model that fits the problem.
+This post covers the continuous version. Specifically: `ZeroInflatedTweedieGBM`, the first pip-installable implementation of Scenario 2 that we are aware of from So & Valdez (*Boosted trees for zero-inflated counts with an offset for insurance ratemaking*, Applied Soft Computing, arXiv 2406.16206). If you are modelling aggregate losses — not claim counts — on a book where 85–95% of policies have zero outgo, this is the model that fits the problem.
 
 ---
 
@@ -207,9 +207,9 @@ A concrete diagnostic before you decide: compute the Tweedie-implied zero rate f
 
 ---
 
-## The ASTIN context
+## The paper
 
-So & Valdez (2024) won the ASTIN Best Paper precisely because it addressed a real problem that every pricing team with a zero-heavy book has, and it addressed it rigorously. The paper covers Scenario 1 (joint ZI-Tweedie likelihood with gradient boosting) and Scenario 2 (the two-stage model here). Scenario 1 produces marginally better likelihood scores on the paper's datasets. Scenario 2 is substantially easier to implement cleanly, is more stable on small non-zero subsets, and produces diagnostics that practitioners can act on.
+So & Valdez (2024) addressed a real problem that every pricing team with a zero-heavy book has, and did it addressed a real problem that every pricing team with a zero-heavy book has, and it addressed it rigorously. The paper covers Scenario 1 (joint ZI-Tweedie likelihood with gradient boosting) and Scenario 2 (the two-stage model here). Scenario 1 produces marginally better likelihood scores on the paper's datasets. Scenario 2 is substantially easier to implement cleanly, is more stable on small non-zero subsets, and produces diagnostics that practitioners can act on.
 
 We implement Scenario 2. We think this is the right choice for a library aimed at production use. If you need Scenario 1's joint gradient, the paper gives you enough to implement it on top of a custom CatBoost objective — the mathematical formulation is clear. We are not aware of another pip-installable Python implementation of either scenario.
 
@@ -219,7 +219,7 @@ The [distributional GBMs overview post](/2026/03/05/insurance-distributional/) g
 
 ## References
 
-- So, B. & Valdez, E.A. (2024). 'Boosted trees for zero-inflated counts with an offset for insurance ratemaking.' *Applied Soft Computing*. DOI: [10.1016/j.asoc.2025.113226](https://doi.org/10.1016/j.asoc.2025.113226). arXiv: [2406.16206](https://arxiv.org/abs/2406.16206). ASTIN Best Paper 2024.
+- So, B. & Valdez, E.A. (2024). 'Boosted trees for zero-inflated counts with an offset for insurance ratemaking.' *Applied Soft Computing*. DOI: [10.1016/j.asoc.2025.113226](https://doi.org/10.1016/j.asoc.2025.113226). arXiv: [2406.16206](https://arxiv.org/abs/2406.16206).
 - Cragg, J.G. (1971). 'Some statistical models for limited dependent variables with application to the demand for durable goods.' *Econometrica* 39(5):829–844.
 - Duan, N., Manning, W.G., Morris, C.N. & Newhouse, J.P. (1983). 'A comparison of alternative models for the demand for medical care.' *Journal of Business & Economic Statistics* 1(2):115–126.
 

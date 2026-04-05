@@ -114,7 +114,7 @@ The deliverable is a per-sector factor table feeding directly into a GLM or rati
 
 **Use CCHA when:**
 
-You need a bounded set of contiguous zones for a specific regulatory or operational purpose. UK examples where this is live: Flood Re zone construction (Flood Re uses five flood zones; the zone boundaries must be contiguous and defensible), commercial property territory banding for scheme pricing, or any situation where a third party (broker, MGA, Lloyd's syndicate) requires a categorical territory factor rather than a continuous relativity surface. The US and Canadian regulatory frameworks have explicit territory cardinality requirements (typically 5-50 territories per state/province) that make CCHA-style algorithms a compliance requirement; UK lines currently do not, but FCA scrutiny of geographic rating has increased since the pricing practices market study.
+You need a bounded set of contiguous zones for a specific regulatory or operational purpose. UK examples where this is live: Flood Re zone construction (Flood Re uses five flood zones; the zone boundaries must be contiguous and defensible), commercial property territory banding for scheme pricing, or any situation where a third party (broker, MGA, Lloyd's syndicate) requires a categorical territory factor rather than a continuous relativity surface. US and Canadian regulatory frameworks typically impose cardinality constraints on territory zones that make CCHA-style algorithms a compliance requirement; UK lines currently do not, but FCA scrutiny of geographic rating has increased since the pricing practices market study.
 
 **Use BYM2 then CCHA when:**
 

@@ -49,7 +49,7 @@ Each subnetwork is independent. Feature 1's parameters are never updated by grad
 
 The key novelty over a generic NAM. For a ReLU network with weight matrices `W_1, W_2, W_3`, if every weight in every matrix is non-negative, the composition `W_3 * ReLU(W_2 * ReLU(W_1 * x))` is non-decreasing in `x`. ReLU is non-decreasing, and multiplying by non-negative matrices preserves that property — so the whole composition is non-decreasing. No further argument needed.
 
-ANAM enforces this via a Dykstra projection step after every gradient update — clamping all weights in the subnetwork to `>= 0` (or `<= 0` for decreasing constraints). This is a hard constraint. The shape function for `ncd_years` set to `monotonicity="decreasing"` cannot produce an uptick at 7 years, no matter what the training data suggests. No tuning required, no penalty weight to calibrate.
+ANAM enforces this via a projected gradient step after every update — clamping all weights in the subnetwork to `>= 0` (or `<= 0` for decreasing constraints). This is a hard constraint. The shape function for `ncd_years` set to `monotonicity="decreasing"` cannot produce an uptick at 7 years, no matter what the training data suggests. No tuning required, no penalty weight to calibrate.
 
 This matters for UK motor pricing specifically. The Age Discrimination provisions of the Equality Act 2010 require that any age-based rating differential can be justified. An ANAM age curve with a hard monotonicity constraint (younger drivers pay at least as much as middle-aged drivers) is defensible in a way that an EBM curve with a soft `monotone_constraints` hint is not — the EBM may produce a small non-monotone bump and your documentation has to explain why you left it in.
 

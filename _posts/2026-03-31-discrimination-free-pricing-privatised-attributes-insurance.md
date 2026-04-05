@@ -3,7 +3,7 @@ layout: post
 title: "Discrimination-Free Pricing When You Don't Have the Protected Attribute"
 date: 2026-03-31
 categories: [fairness]
-tags: [fairness, gender, GIC, Test-Achats, local-differential-privacy, LDP, discrimination-free-pricing, LRTW, correction-matrices, insurance-fairness, PrivatizedFairnessAudit, Equality-Act, FCA, proxy-discrimination, python, math]
+tags: [fairness, gender, GIC, Test-Achats, local-differential-privacy, LDP, discrimination-free-pricing, LRTW, correction-matrices, insurance-fairness, PrivatizedFairnessAudit, Equality-Act, FCA, proxy-discrimination, consumer-duty, PRIN-2A4, python, math]
 description: "Zhang, Liu and Shi (arXiv:2504.11775, 2025) extend discrimination-free pricing to the case where you only have a noisy privatised version of the protected attribute. The correction is algebraically exact. The UK application — auditing post-2012 gender proxy discrimination without gender data — is immediately practical."
 math: true
 ---
@@ -26,7 +26,7 @@ The UK implemented this via the Equality Act 2010 (Amendment) Regulations 2012 (
 
 What remained lawful after December 2012 is worth noting: individual risk factors that happen to correlate with gender — mileage, occupation, engine capacity, vehicle type — are still permitted, provided actuarially justified. Which is, of course, exactly the proxy discrimination problem. A model that has never seen gender can still effectively price by gender if it uses features whose distribution differs materially between male and female drivers. Young males in high-cc vehicles are not penalised for being male; they are penalised for being young, for driving a powerful car, and for covering high mileage — but those three features collectively explain most of the gender gap in motor claims. The LRTW 2022 paper formalised why this constitutes proxy discrimination. The Zhang-Liu-Shi paper provides the audit mechanism to measure it without gender data.
 
-The ethnicity case is structurally similar but worse. UK P&C insurers do not collect individual ethnicity. The FCA's December 2025 Research Note on motor insurance pricing and local area ethnicity identified a £307 raw annual premium gap between high-minority-concentration and white-majority postcodes for motor insurance, with a residual £28 gap unexplained after risk adjustment. No insurer can demonstrate this residual is zero because no insurer holds individual ethnicity data against which to run the test.
+The ethnicity case is structurally similar but worse. UK P&C insurers do not collect individual ethnicity. The FCA's December 2025 Research Note on motor insurance pricing and local area ethnicity identified a significant raw annual premium gap between high-minority-concentration and white-majority postcodes for motor insurance, with a residual gap unexplained after risk adjustment. No insurer can demonstrate this residual is zero because no insurer holds individual ethnicity data against which to run the test.
 
 ---
 
@@ -43,6 +43,32 @@ For a binary attribute ($K = 2$) and privacy parameter $\varepsilon$:
 $$\pi = \frac{e^\varepsilon}{1 + e^\varepsilon}, \qquad \bar{\pi} = \frac{1}{1 + e^\varepsilon}$$
 
 This satisfies $\varepsilon$-local differential privacy: an observer who sees S cannot distinguish whether D = 0 or D = 1 with probability better than $e^\varepsilon$. The "local" part matters — each respondent applies the noise to their own data before any central collection. The insurer receives S, not D. The LDP guarantee holds even if the insurer is the adversary.
+
+In code, the mechanism for a single respondent is three lines:
+
+```python
+import random, math
+
+def randomised_response(d: int, epsilon: float, k: int = 2) -> int:
+    """Apply k-RR locally differential privacy to a categorical attribute.
+
+    Args:
+        d:       True attribute value, integer in {0, ..., k-1}.
+        epsilon: Privacy budget. Higher = less noise = weaker privacy.
+        k:       Number of categories (2 for binary gender/disability).
+
+    Returns:
+        Privatised label s, drawn from the LDP mechanism.
+    """
+    pi = math.exp(epsilon) / (math.exp(epsilon) + k - 1)   # prob of truthful report
+    if random.random() < pi:
+        return d                                             # report truthfully
+    else:
+        others = [v for v in range(k) if v != d]
+        return random.choice(others)                        # report a random wrong value
+```
+
+At `epsilon=2` (a reasonable operational choice), `pi ≈ 0.88`: the respondent reports their true group 88% of the time and a random wrong value 12% of the time. At `epsilon=1`, `pi ≈ 0.73`. The insurer who receives 10,000 of these privatised labels cannot identify any individual's true group, but the aggregate signal is strong enough to recover the correction matrices needed for discrimination-free pricing.
 
 The standard LRTW training objective — the one that requires individual D labels — is:
 
@@ -138,7 +164,7 @@ For ethnicity, where no historical individual data exists, the anchor-point path
 
 The Zhang-Liu-Shi paper proposes a two-party architecture that is more ambitious than the audit use case. The insurer transmits transformed features $(X_\text{tilde}, Y)$ to a trusted third party (TTP). The TTP holds privatised attributes $S_i$ collected directly from policyholders via randomised response, trains the correction-matrix-weighted group models $f_k$, and returns the fair premium predictions $h^*(X_\text{tilde})$ to the insurer. The insurer never sees D; the TTP never sees the final premium. Privacy is formally guaranteed in both directions.
 
-For UK motor insurance this would require: a GDPR Article 9 legal basis for the TTP to collect gender or ethnicity from policyholders; a designated TTP (regulator, industry bureau, or auditor); and insurers willing to share claims data commercially. None of these conditions currently holds. The closest analogy would be the FCA mandating a centralised industry bureau — comparable in function to the Motor Insurers' Bureau — with statutory powers to process sensitive attribute data for discrimination testing. This is a plausible regulatory direction given EP25/2 and the Consumer Duty fair value obligations, but it is hypothetical as of today.
+For UK motor insurance this would require: a GDPR Article 9 legal basis for the TTP to collect gender or ethnicity from policyholders; a designated TTP (regulator, industry bureau, or auditor); and insurers willing to share claims data commercially. None of these conditions currently holds. The closest analogy would be the FCA mandating a centralised industry bureau — comparable in function to the Motor Insurers' Bureau — with statutory powers to process sensitive attribute data for discrimination testing. This is a plausible regulatory direction given the FCA's ongoing pricing fairness programme and Consumer Duty fair value obligations, but it is hypothetical as of today.
 
 The implementation correctly documents that it supports only single-party operation. The multi-party architecture is absent, and this is the right choice for a library that can actually be deployed.
 
@@ -155,6 +181,18 @@ The implementation correctly documents that it supports only single-party operat
 **GDPR status of S.** Does receiving a privatised label S — D passed through randomised response — constitute processing of special category data under GDPR Article 9? The answer is legally contested. The ICO's March 2025 anonymisation guidance does not classify LDP-protected data as automatically anonymised. Until the ICO provides explicit guidance, there is legal risk in treating S as freely processable. For audit purposes using synthetic S generated from historical D that the insurer already holds, this risk is lower.
 
 **Multi-K scaling.** For $K > 2$ — ethnicity coded to five groups, say — the noise amplification $C_1$ at $\varepsilon = 1$ is approximately 3.7, and the statistical bound scales $O(K^2)$. Sample requirements become demanding. The practical limit for this correction approach is $K = 2$ or $K = 3$ on UK portfolio sizes.
+
+---
+
+## Consumer Duty and fair value evidence
+
+Consumer Duty introduced a specific evidentiary problem for pricing teams. PRIN 2A.4 (Price and Value) requires firms to assess whether the price paid for a product is reasonable relative to its overall benefits — and to document that assessment. The FCA's expectation, set out in its finalised guidance, is that fair value assessments consider whether particular groups of customers systematically receive worse value than others.
+
+For a pricing team without access to individual protected characteristics, that requirement has been practically unanswerable for certain protected groups. You cannot measure whether ethnicity-correlated proxies produce systematically worse value for minority customers if you do not have individual ethnicity data. "We don't collect it" is not an acceptable response to a supervisory review under Consumer Duty — it describes an evidentiary gap, not the absence of a problem.
+
+The LDP audit addresses this directly. The output of `PrivatizedFairnessAudit` — the gap between the current premium and the discrimination-free premium $h^*(X)$ — is a quantified estimate of proxy-driven price dispersion across protected groups. That number can go into a fair value assessment: "our analysis using privatised attribute signals estimates that the current motor premium embeds a [£X] annual gender proxy premium for the affected segment, compared to the discrimination-free benchmark." This is the kind of specific, model-supported evidence the FCA expects to see under PRIN 2A.4, rather than a qualitative assurance that the firm believes its pricing is fair.
+
+Two caveats apply. First, the ICO's position on whether collecting privatised S constitutes processing special category data remains unresolved (see GDPR status of S, above) — so the evidential route based on live LDP data collection is not yet clean. The post-hoc audit using simulated S from historical data, or from anchor-point estimation, carries lower legal risk and is sufficient to populate a fair value assessment. Second, PRIN 2A.4 requires the assessment to be repeated at appropriate intervals; a one-time audit on pre-2012 gender data is a starting point, not a permanent answer. The FCA's supervisory focus on motor pricing and ethnicity, following its December 2025 Research Note, makes the ethnicity case the more pressing near-term obligation.
 
 ---
 

@@ -182,10 +182,13 @@ synthetic_features = synth.sample(len(df))
 # --- Handle frequency-exposure separately ---
 import numpy as np
 
-# Estimate lambda from DP count query
+# Estimate lambda from DP count query — Laplace mechanism (pure epsilon-DP, sensitivity=1)
+# Correct noise scale for Laplace mechanism is sensitivity / epsilon = 1 / epsilon_lambda.
+# Do not use np.random.normal here: Gaussian mechanism requires a larger sigma of
+# sqrt(2 * ln(1.25/delta)) / epsilon and provides (epsilon, delta)-DP, not pure DP.
 epsilon_lambda = 0.2  # budget for this query (from remaining budget)
-n_claims_noisy = df["claim_count"].sum() + np.random.normal(0, 1.0 / epsilon_lambda)
-total_exposure_noisy = df["exposure"].sum() + np.random.normal(0, 1.0 / epsilon_lambda)
+n_claims_noisy = df["claim_count"].sum() + np.random.laplace(0, 1.0 / epsilon_lambda)
+total_exposure_noisy = df["exposure"].sum() + np.random.laplace(0, 1.0 / epsilon_lambda)
 lambda_dp = max(0, n_claims_noisy / total_exposure_noisy)
 
 # Generate exposures (resample from real distribution — treat as non-sensitive)

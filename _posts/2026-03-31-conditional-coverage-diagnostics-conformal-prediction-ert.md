@@ -129,7 +129,7 @@ Here is the full diagnostic workflow using `insurance-conformal` for the conform
 ```python
 import numpy as np
 import polars as pl
-from insurance_conformal import ConformalPredictor
+from insurance_conformal import InsuranceConformalPredictor
 from insurance_conformal.diagnostics import CoverageDiagnostics
 from insurance_conformal.diagnostics_ext import ert_coverage_gap, subgroup_coverage
 from covmetrics import ERT

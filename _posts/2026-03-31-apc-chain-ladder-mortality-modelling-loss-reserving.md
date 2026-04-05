@@ -19,7 +19,7 @@ This post explains the framework, works through the identifiability problem that
 
 Chain ladder assumes that the development pattern — the sequence of factors that transforms each diagonal into the next — is stable across accident years and calendar years. In a mature, well-behaved line like motor own damage, that assumption is close enough to true that it does not cause serious problems.
 
-Motor bodily injury is not that line. Since 2012, UK motor BI reserving has absorbed LASPO (reducing recoverable costs in 2013), a series of Ogden rate changes (dropping to -0.75% in 2017, then +0.25% in July 2019, then reset to +0.5% in December 2024), whiplash reforms under the Civil Liability Act 2018 that came into force in May 2021, and a COVID-induced claims freeze followed by a post-COVID surge in large PI claims. Every one of these is a calendar-year shock: it hits every accident year's open claims simultaneously at the moment it arrives on a specific diagonal.
+Motor bodily injury is not that line. Since 2012, UK motor BI reserving has absorbed LASPO (reducing recoverable costs in 2013), a series of Ogden rate changes (dropping to -0.75% in 2017, then -0.25% in July 2019, then reset to -0.25% in December 2024), whiplash reforms under the Civil Liability Act 2018 that came into force in May 2021, and a COVID-induced claims freeze followed by a post-COVID surge in large PI claims. Every one of these is a calendar-year shock: it hits every accident year's open claims simultaneously at the moment it arrives on a specific diagonal.
 
 Chain ladder has no vocabulary for this. An Ogden rate change in 2017 shows up as a step change in the development factor from the 2016-to-2017 diagonal — and the method dutifully averages that anomalous factor into the weighted mean with everything else, distorting the development pattern for all future projections.
 
@@ -168,9 +168,14 @@ def build_apc_design_matrix(mu, exposure, model='ap'):
         parts.append(cohort_dummies)
 
     X = pd.concat(parts, axis=1).astype(float)
-    # Note: identification constraints (zero-sum, zero linear trend on
-    # period/cohort) should be applied here via linear constraint matrix.
-    # Omitted for brevity — use patsy or manual column transformations.
+    # WARNING: this design matrix is rank-deficient as written. The APC model
+    # is unidentified without three additional constraints: sum-to-zero on period
+    # effects, sum-to-zero on cohort effects, and zero linear trend on cohort effects.
+    # Without them, statsmodels will raise PerfectSeparationError or produce
+    # non-unique parameter estimates. This is not a minor shortcut — the code
+    # below will not run correctly without implementing these constraints.
+    # For a working Python implementation, see the Harnau apc package (PyPI: apc).
+    # For R, see clmplus::fitapc.
 
     y = df['mu'] * df['exposure']   # incremental payments as response
     weights = df['exposure']

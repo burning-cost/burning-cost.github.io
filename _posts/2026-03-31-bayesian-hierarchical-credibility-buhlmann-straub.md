@@ -213,7 +213,7 @@ For standard UK motor work with 50–200 territories and three to five years of 
 
 ## Prior elicitation
 
-For the PyMC path, prior specification is the main decision that requires judgement. The default priors in Bambi (`HalfNormal(2.5)` for random effect standard deviations on log scale) are too wide for insurance — they imply a 95% range of roughly tenfold rate variation across groups, which is not a realistic prior for territory effects in UK motor.
+For the PyMC path, prior specification is the main decision that requires judgement. The default priors in Bambi (`HalfNormal(2.5)` for random effect standard deviations on log scale) are too wide for insurance — they imply plausible territory effect standard deviations above 2 on the log scale, corresponding to rate multiples of 100× or more — not a realistic prior for territory effects in UK motor.
 
 Our recommended starting point for the between-group log-scale standard deviation σ is `HalfNormal(0.3)`. This places 95% of the prior mass below 0.6 log units, corresponding to roughly an 80% relative rate range — consistent with observed territory coefficient distributions in UK motor. For highly homogeneous portfolios (large fleet, affinity schemes) you might tighten this to `HalfNormal(0.15)`. For specialty lines with genuine structural diversity, `HalfNormal(0.5)` is more appropriate.
 

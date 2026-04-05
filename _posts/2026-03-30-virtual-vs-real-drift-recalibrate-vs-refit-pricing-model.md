@@ -201,7 +201,7 @@ After: "The Gini test shows no significant ranking degradation (z = -0.8, p = 0.
 
 Or: "The Gini test shows significant ranking degradation (z = -2.4, p = 0.016). LMCB > GMCB. The model's structural accuracy has changed. This is real concept drift. A refit is required. Escalating to Model Committee."
 
-The first statement tells the committee exactly why recalibration is safe. The second tells them exactly why it is not. Both are defensible under internal model risk management policy, with documentation aligned to model risk management best practice (the PRA's SS1/23 principles for banks provide a useful reference framework, though the direct regulatory obligation for insurers flows through Solvency II Article 124 and PRA Supervisory Statement SS4/16).
+The first statement tells the committee exactly why recalibration is safe. The second tells them exactly why it is not. Both are defensible under internal model risk management policy, with documentation aligned to model risk management best practice (the PRA's SS1/23 principles for banks provide a useful reference framework, though the direct regulatory obligation for insurers flows through Solvency II Article 124 and PRA Supervisory Statement SS4/16 — noting that SS4/16 applies to firms with approved internal models; for standard formula firms the primary obligations arise from SMCR documentation requirements and Consumer Duty outcomes monitoring).
 
 ---
 

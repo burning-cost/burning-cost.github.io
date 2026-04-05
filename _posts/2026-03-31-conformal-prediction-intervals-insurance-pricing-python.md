@@ -213,7 +213,7 @@ model.fit(X_train, y_train)
 tcp.calibrate(X_cal, y_cal)
 ```
 
-For books with active inflation or following a discrete shock (Ogden rate revision, CAT event), the `RetroAdj` online conformal adaptor recovers coverage within 15–30 steps rather than the 80–150 steps required by standard adaptive conformal inference.
+For books with active inflation or following a discrete shock (Ogden rate revision, CAT event), the `RetroAdj` online conformal adaptor recovers coverage within 1–3 steps versus ~200 steps for standard adaptive conformal inference at gamma=0.005.
 
 One underappreciated calibration problem specific to insurance: IBNR. Calibrating on development-year 0 or 1 data means your non-conformity scores are computed against understated claim totals. The result is intervals that appear tight on calibration but will miss at test time on fully-developed years. Use only accident years with at least three years of development, or apply chain-ladder development factors to `y_cal` before calibration. This is not a conformal prediction problem — it is a data preparation problem that conformal prediction makes more visible.
 

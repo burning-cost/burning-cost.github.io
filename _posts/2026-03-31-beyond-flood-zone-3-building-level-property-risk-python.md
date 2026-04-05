@@ -194,7 +194,7 @@ The important caveat from Moriah et al. is that severity is more sensitive to ra
 
 Building a carefully engineered building-level flood model for your UK home insurance portfolio makes a lot of actuarial sense. It makes almost no commercial sense for most of the properties that most need it.
 
-Flood Re is the reason. Established in 2016 under the Water Act 2014, Flood Re operates as a reinsurance pool: UK personal lines home insurers cede the flood element of eligible policies to the pool at a fixed premium set by Council Tax band rather than actual flood risk. The 2024 fixed premiums run from £210/yr (Band A) to £1,200/yr (Band H). An insurer with a Band D property in EA Flood Zone 3 that carries a modelled expected flood cost of £800/yr pays £320/yr to Flood Re — and cedes the flood risk entirely. The incentive to price that property at building level is eliminated by the cession mechanics.
+Flood Re is the reason. Established in 2016 under the Water Act 2014, Flood Re operates as a reinsurance pool: UK personal lines home insurers cede the flood element of eligible policies to the pool at a fixed premium set by Council Tax band rather than actual flood risk. The 2024 fixed premiums run from £210/yr (Band A) to £1,200/yr (Band H) (source: Flood Re published premium schedule). An insurer with a Band D property in EA Flood Zone 3 that carries a modelled expected flood cost of £800/yr pays £320/yr to Flood Re — and cedes the flood risk entirely. The incentive to price that property at building level is eliminated by the cession mechanics.
 
 For the ~250,000 policies currently ceded to Flood Re, granular flood modelling affects only the decision to accept or decline the risk before cession. Once the policy is written and ceded, the insurer is indifferent to whether the property's modelled flood cost is £300/yr or £3,000/yr — they pay the same Council Tax band premium either way.
 
@@ -202,7 +202,7 @@ There are eligibility exclusions that matter for pricing teams. New builds after
 
 Flood Re's Transition Plan (published 2024) requires risk-reflective pricing by 2039. The explicit goal is that Council Tax band pricing ends and insurers price on actual flood risk. Three enabling conditions: flood defence investment, property-level flood resilience improvements, and better modelling. On the current trajectory, Flood Re itself acknowledges the 2039 deadline requires faster risk reduction to remain achievable.
 
-The implication for pricing teams is a 13-year runway. Building-level flood models built and validated over the next five years will be the foundation for competitive underwriting when Flood Re eligibility expires. The 2024 data is already stark: UK flood claims hit £650M in 2024, a record, and average flood claim payouts reached £30,000 in Q1 2025, up 60% year-on-year. Waiting until 2038 to develop the modelling capability is not a viable strategy.
+The implication for pricing teams is a 13-year runway. Building-level flood models built and validated over the next five years will be the foundation for competitive underwriting when Flood Re eligibility expires. The 2024 data is already stark: UK flood claims hit £650M in 2024, a record, and average flood claim payouts reached £30,000 in Q1 2025, up 60% year-on-year (source: ABI weather-related claims data). Waiting until 2038 to develop the modelling capability is not a viable strategy.
 
 ---
 
