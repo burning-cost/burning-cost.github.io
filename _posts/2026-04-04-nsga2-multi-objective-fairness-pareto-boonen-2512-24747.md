@@ -4,12 +4,12 @@ title: "The Fairness Impossibility You Cannot Optimise Away — and What Boonen 
 date: 2026-04-04
 categories: [fairness, insurance-fairness, regulatory]
 tags: [nsga2, pareto, multi-objective, fairness, consumer-duty, fca, mills-review, arXiv-2512.24747, counterfactual-fairness, group-fairness, individual-fairness, boonen, impossibility-theorem, pricing]
-description: "Chouldechova (2017) proved you cannot satisfy demographic parity, equalised odds, and calibration simultaneously when base rates differ by group. Boonen, Fan & Quan (arXiv:2512.24747) have now put a price tag on the trade-off in insurance. That price tag is what the FCA's summer 2026 AI review is going to ask for."
+description: "Chouldechova (2017) proved that when group base rates differ, no classifier can simultaneously achieve calibration within groups, equal false positive rates, and equal false negative rates — a constraint every insurance pricing model must navigate. Boonen, Fan & Quan (arXiv:2512.24747) have now put a price tag on the trade-off in insurance. That price tag is what the FCA's summer 2026 AI review is going to ask for."
 author: Burning Cost
 math: true
 ---
 
-Chouldechova (2017) proved that demographic parity, equalised odds, and predictive rate parity are pairwise incompatible when base rates differ across groups. Kleinberg, Mullainathan & Raghavan (2017) proved the same result from a different direction. Together they established what the fairness literature calls the impossibility theorem: if two groups have different underlying claim rates, no pricing model can simultaneously satisfy all mainstream fairness criteria.
+Chouldechova (2017) proved that when group base rates differ, calibration within groups, equal false positive rates, and equal false negative rates cannot simultaneously hold. Kleinberg, Mullainathan & Raghavan (2017) proved a related result: calibration and equalised odds are mutually incompatible under unequal base rates. Together they established what the fairness literature calls the impossibility theorem: if two groups have different underlying claim rates, no pricing model can simultaneously satisfy all mainstream fairness criteria.
 
 This is not a technical problem awaiting a better algorithm. It is a mathematical constraint. A pricing model that appears to satisfy all fairness criteria simultaneously either operates in a degenerate case where group base rates are equal, or it is measuring the criteria badly.
 
@@ -75,6 +75,20 @@ We do not know what the Mills Review will recommend. We are confident it will no
 **NSGA-II does not find the exact Pareto front.** It finds a good approximation. For governance purposes, the key question is whether the approximation is stable: does a different random seed produce meaningfully different TOPSIS-selected operating points? The paper does not report seed stability. Our implementation in `insurance-fairness` addresses this explicitly: run at least three seeds and treat materially different TOPSIS selections as a signal to increase `pop_size` and `n_gen` until the front stabilises.
 
 **Individual Lipschitz fairness is included as a Pareto objective but the distance function is unspecified.** The Lipschitz constant depends critically on the distance metric chosen to measure "similarity" between policyholders. The paper does not specify what distance function was used. This is not a minor methodological gap — the Lipschitz constant under a Euclidean distance on raw feature values is essentially uninterpretable for heterogeneous insurance features such as vehicle age (integer), annual mileage (continuous), and no-claims discount years (ordinal). Any results citing individual Lipschitz fairness from this paper should be treated as illustrative only until the distance function is specified and defended.
+
+---
+
+## A note on UK data availability
+
+Most UK personal lines insurers do not hold self-declared protected characteristic data for their policyholders. Gender, ethnicity, disability status — these are not collected at point of sale, and in most cases cannot be collected without creating adverse selection and legal risks under the Equality Act 2010.
+
+The `protected_col` parameter in the library example below assumes this is resolved: it takes a column name that holds the protected attribute value for each policyholder. In practice, UK teams face two situations.
+
+**If only a proxy is available** (e.g., a name-based gender inference or a postcode-level deprivation score as a proxy for socioeconomic status): the group fairness and demographic parity calculations still run, but the results measure proxy discrimination, not direct discrimination against the protected characteristic. This is both useful (proxy discrimination is actionable under FCA EP25/2 and Consumer Duty) and limited (a model that scores well on proxy fairness may still discriminate against the underlying protected group if the proxy is imperfect).
+
+**The counterfactual fairness flip is not well-defined for a proxy attribute.** Counterfactual fairness asks: would the premium change if the protected characteristic were different? For a genuine protected attribute, this is interpretable (with caveats about causal structure). For a proxy, it is not — flipping the proxy value does not correspond to a coherent counterfactual about the underlying characteristic. The `cf_tolerance` objective should be disabled or used only as a diagnostic when `protected_col` is a proxy.
+
+Until insurers routinely collect verified protected characteristic data — which the regulatory direction of travel under Consumer Duty and EP25/2 may eventually require — the most defensible approach is to run the group fairness and accuracy objectives, report the proxy results transparently, and document the limitation explicitly in the governance record.
 
 ---
 

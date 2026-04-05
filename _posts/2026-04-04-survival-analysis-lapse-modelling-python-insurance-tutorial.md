@@ -45,7 +45,7 @@ The logistic model treats lapse modelling as a binary classification problem: ea
 
 **Problem two: the "not lapsed yet" group is not homogeneous.** On a typical UK motor book, a meaningful fraction of policyholders — somewhere between 20% and 40% depending on channel mix and NCD distribution — are structural non-lapsers. Direct debit payers with eight or more years' NCD who have been with the same insurer since 2008. They are not "not lapsed yet." They are effectively never going to lapse at any realistic premium. A logistic model (and a standard Cox model) cannot represent this structure. They assume every policyholder is susceptible and will eventually lapse given enough time. Fitting them on a book with a genuine immune subgroup produces survival curves that converge asymptotically toward zero when they should plateau.
 
-**Problem three: you cannot get CLV from it.** Consumer Duty (PS22/9, effective July 2023) requires insurers to demonstrate fair value across the customer lifecycle. The FCA's September 2024 good and poor practice review makes clear that a single-year renewal probability does not constitute that analysis. You need expected tenure and expected net contribution over a multi-year horizon. That requires a proper survival model, not a chained sequence of one-year logistic predictions.
+**Problem three: you cannot get CLV from it.** Consumer Duty (PS22/9, effective July 2023) requires insurers to demonstrate fair value across the customer lifecycle. The FCA's October 2024 good and poor practice review makes clear that a single-year renewal probability does not constitute that analysis. You need expected tenure and expected net contribution over a multi-year horizon. That requires a proper survival model, not a chained sequence of one-year logistic predictions.
 
 ---
 
@@ -258,6 +258,8 @@ On the synthetic data constructed above, the model should recover the 30% cure f
 
 The `insurance_survival.cure` subpackage provides four mixture cure model variants. The choice depends on your distributional assumptions:
 
+Note: `WeibullMixtureCureFitter` (used in Section 5 above) and `WeibullMixtureCure` (used here) are different classes with different APIs. `WeibullMixtureCureFitter` follows the lifelines-style fit interface and is the quicker entry point. `WeibullMixtureCure` uses a formula-based API and provides additional diagnostics. Both fit the same underlying mixture cure model.
+
 ```python
 from insurance_survival.cure import WeibullMixtureCure, LogNormalMixtureCure, CoxMixtureCure
 from insurance_survival.cure.simulate import simulate_motor_panel
@@ -299,7 +301,7 @@ model_cox = CoxMixtureCure(
 model_cox.fit(df_cure, duration_col="tenure_months", event_col="claimed")
 ```
 
-For motor personal lines, `WeibullMixtureCure` is the usual starting point. The Weibull family fits most lapse latency distributions well (Weibull shape > 1 implies increasing hazard over time — policyholders who survived multiple renewals have increasing rather than decreasing lapse risk, which is not always true but is a reasonable default). For home insurance, where lapses can occur after long dormant periods, `LogNormalMixtureCure` often fits better because the log-normal allows non-monotone hazard.
+For motor personal lines, `WeibullMixtureCure` is the usual starting point. The Weibull family fits most lapse latency distributions well, but the shape parameter is book-dependent. Shape < 1 (decreasing hazard) is typical for motor books where the highest-risk policyholders lapse early; shape > 1 (increasing hazard) may apply to aggregator-heavy books where surviving the first renewal does not reduce lapse risk. Check your fitted shape parameter against the KM curve — if KM shows a rapid early drop with a long flat tail, expect shape < 1. For home insurance, where lapses can occur after long dormant periods, `LogNormalMixtureCure` often fits better because the log-normal allows non-monotone hazard.
 
 ---
 
@@ -307,7 +309,7 @@ For motor personal lines, `WeibullMixtureCure` is the usual starting point. The 
 
 Not all departures from a policy are the same. A policyholder who does not renew at anniversary is a lapse. A policyholder who cancels mid-term is a different event with different economics, different regulatory implications, and different risk characteristics.
 
-If you model time-to-departure with a single event indicator, you are implicitly assuming that lapse and mid-term cancellation are competing events and you need only care about the time to the first one. That is the right framing, but the wrong statistical method. Standard survival models treat competing events as independent — in practice, the policyholders most likely to cancel mid-term are not a random draw from the book, and ignoring the competing risk produces biased estimates of both cause-specific incidence.
+If you model time-to-departure with a single event indicator, you are implicitly assuming that lapse and mid-term cancellation are competing events and you need only care about the time to the first one. That is the right framing, but the wrong statistical method. Standard survival models treat competing events as censored — the independence assumption is that censoring is uninformative about the event time. In practice, the policyholders most likely to cancel mid-term are not a random draw from the book, so this assumption fails: mid-term cancellation is informative about the latent lapse hazard. Ignoring the competing risk structure produces biased estimates of cause-specific incidence.
 
 The correct tool is Fine-Gray subdistribution hazard regression:
 
@@ -452,7 +454,7 @@ The `cure_prob` column is the immune probability for each policy — the most ac
 
 ### The CLV bias in Cox PH and Kaplan-Meier
 
-The benchmark in the [`insurance-survival` README](https://github.com/burning-cost/insurance-survival) quantifies the CLV underestimation from using Cox PH or Kaplan-Meier on a book with a 30% cure fraction: approximately £40-80 per policy at a five-year horizon, with a £600 annual premium and a 5% discount rate. At 50,000 policies, that is a £2m-£4m misvaluation of the renewal book.
+The benchmark in the [`insurance-survival` README](https://github.com/burning-cost/insurance-survival) quantifies the CLV underestimation from using Cox PH or Kaplan-Meier on a book with a 30% cure fraction: approximately £40-80 per policy at a five-year horizon, based on our validation with the parameters described above (£600 annual premium, 5% discount rate, 30% cure fraction). At 50,000 policies, that is a £2m-£4m misvaluation of the renewal book.
 
 The bias is upward within the observation window (KM over-weights retained policies during the window) and downward in extrapolation beyond it (KM must eventually reach zero; the cure model plateaus). For CLV models with a horizon that extends beyond your retention data history — which is always the case for new customers — the cure model produces meaningfully better estimates.
 

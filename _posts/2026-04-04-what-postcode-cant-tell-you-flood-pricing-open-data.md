@@ -19,11 +19,11 @@ You do not need to buy the expensive product to build a substantially better mod
 
 ## What the EA flood zone map actually tells you
 
-The EA Flood Map for Planning classifies English addresses into Zone 1 (less than 0.1% annual probability), Zone 2 (0.1–1%), Zone 3a (greater than 1%), and Zone 3b (functional floodplain). The January 2025 NaFRA2 update added surface water depth bands down to roughly 2m resolution.
+The EA Flood Map for Planning classifies English addresses into Zone 1 (less than 0.1% annual probability), Zone 2 (0.1–1%), Zone 3a (greater than 1%), and Zone 3b (functional floodplain). The NaFRA2 update, published in 2023, added surface water depth bands down to roughly 2m resolution.
 
 These are planning tools that happen to be used in insurance pricing because they are the most structured publicly available flood hazard data we have. The EA's own documentation says they are "not suitable for showing whether an individual property is at risk." This is accurate: the zone boundaries come from hydraulic modelling at 50–100m resolution and say nothing about the specific building's floor level, basement configuration, proximity to a drainage channel, or whether the local drain was upgraded since the model was last run.
 
-More practically: in the Moriah et al. study, official flood zones cover about 5% of the insured portfolio. That 5% generates 11% of flood events — so the zones work as a screen. But **89% of flood events occur outside the flood zones entirely**. Whatever model you build on zone classification alone is pricing the wrong 95% of your portfolio based on postcode and sum insured with no flood signal at all.
+More practically: in the Moriah et al. study, official flood zones cover about 5% of the insured portfolio. That 5% generates 11% of flood events — so the zones work as a screen. But **89% of flood events occur outside the flood zones entirely** (in the Moriah et al. French study). Whatever model you build on zone classification alone is pricing the wrong 95% of your portfolio based on postcode and sum insured with no flood signal at all.
 
 The same pattern holds in UK claims experience. Surface water flooding — blocked drains, flash run-off, groundwater emergence — does not correlate with fluvial zone mapping. This is not a modelling subtlety. It is routine, large-volume claims experience that every home insurer with a few years of data can see.
 
@@ -56,7 +56,7 @@ The output is a number in [0, 1]. A MILRE of 0.97 means the most intense local p
 
 Two properties in different climatic regions with identical raw millimetre accumulations will have different MILRE values, which is correct: 40mm in three days is routine in the Scottish Highlands and extraordinary in East Anglia. The CDF normalisation makes the indicator locally calibrated rather than globally scaled.
 
-For UK pricing, the right data source is **HadUK-Grid** rather than ERA5-Land. Met Office produces HadUK-Grid via CEDA Archive: daily gridded precipitation at 1km resolution, back to 1836 for precipitation, in NetCDF format. Commercial licence applications to CEDA are straightforward and the cost is well below any commercial flood data product. At 1km versus ERA5-Land's 9km, HadUK-Grid provides substantially better spatial resolution for the convective rainfall events that drive UK surface water flooding.
+For UK pricing, the right data source is **HadUK-Grid** rather than ERA5-Land. Met Office produces HadUK-Grid via CEDA Archive: daily gridded precipitation at 1km resolution, daily from 1891 for precipitation, in NetCDF format. Commercial licence applications to CEDA are straightforward and the cost is well below any commercial flood data product. At 1km versus ERA5-Land's 9km, HadUK-Grid provides substantially better spatial resolution for the convective rainfall events that drive UK surface water flooding.
 
 The annual variant, ann_MILRE, is the annual maximum MILRE across all days in the year. It is the version used for frequency modelling when you do not have exact event dates on each policy. This is the variant most pricing teams would compute first: extract HadUK-Grid for each year, compute maximum CDF rank per property location, join to policy data by year-in-force.
 
@@ -67,7 +67,7 @@ The annual variant, ann_MILRE, is the annual maximum MILRE across all days in th
 These are the sources a team can use without commercial licences, and what each contributes to the Moriah et al. framework:
 
 **HadUK-Grid v1.3.1 (Met Office / CEDA Archive)**
-Replaces ERA5-Land for MILRE computation. CEDA registration required; the research licence is free, commercial access is low cost. Daily precipitation grids, 1km, covering the UK from the 1960s. Format: NetCDF via xarray. This is Layer 3 in the framework — the rainfall intensity layer that outperforms static zone classification on marginal contribution.
+Replaces ERA5-Land for MILRE computation. The research licence via CEDA is free; commercial use of HadUK-Grid requires a separate licence from the Met Office — contact the Met Office directly. Daily precipitation grids, 1km, daily precipitation from 1891. Format: NetCDF via xarray. This is Layer 3 in the framework — the rainfall intensity layer that outperforms static zone classification on marginal contribution.
 
 **EA Flood Map for Planning + NaFRA2 (DEFRA Data Services Platform)**
 Flood zone polygons and the 2025 surface water depth bands. OGL v3. Downloadable as shapefiles or accessible via WFS API at `environment.data.gov.uk`. This is Layer 2 — the static hazard layer. It is necessary but not sufficient.
@@ -89,7 +89,7 @@ The data gap versus the French study is PPRI — France's municipal flood preven
 
 Flood Re ends in 2039. We have written about this before, and we will not rehearse the arithmetic again. The point for a smaller insurer or MGA is more immediate.
 
-The FCA's 2026 access to insurance priorities explicitly name high-risk properties — including flood-risk properties — as a concern. The Flood Pricing Certificate pilot, expected in 2026, will require participating insurers to document the basis of their flood pricing. "We apply an EA Zone 3 loading" is a defensible answer but a weak one. "We apply an EA Zone 3 loading plus a rainfall intensity component derived from HadUK-Grid, calibrated on our own claims experience" is substantially stronger — and the second answer requires about six weeks of data engineering work using free sources.
+The FCA's 2026 access to insurance priorities explicitly name high-risk properties — including flood-risk properties — as a concern. The Flood Pricing Certificate pilot, anticipated under the Flood Re Transition Plan, will require participating insurers to document the basis of their flood pricing. "We apply an EA Zone 3 loading" is a defensible answer but a weak one. "We apply an EA Zone 3 loading plus a rainfall intensity component derived from HadUK-Grid, calibrated on our own claims experience" is substantially stronger — and the second answer requires about six weeks of data engineering work using free sources.
 
 The reinsurance market is also moving. Post-Storm Darragh (December 2024) and the 2025 Somerset and Yorkshire events, cat programme renewals for UK property have come with increasing scrutiny of flood modelling methodology. Underwriters at Lloyd's and the London market are asking for more granular flood exposure analysis. An MGA that can demonstrate a building-level frequency-severity model — even one built on open data — is in a better position in those conversations than one relying on postcode zone classification.
 

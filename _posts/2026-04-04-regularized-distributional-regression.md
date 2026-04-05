@@ -25,7 +25,7 @@ $$Y \mid x \sim (T_K \circ T_{K-1} \circ \cdots \circ T_1)(Z), \quad Z \sim N(0,
 
 where each flow $T_k$ has parameters that depend on covariates through $\beta_k^\top x$.
 
-When $K = 1$, this is a transformation model — a generalised linear model for a transformation of $Y$. When $K = 2$ with location and scale flows, you recover GAMLSS: the two flows separately model the location and dispersion parameters. When $K \geq 2$ with more flexible flow architectures, you get a fully nonparametric conditional distribution estimator. The same framework.
+When $K = 1$, this is a transformation model — a generalised linear model for a transformation of $Y$. When $K = 2$ with location and scale flows, you recover the structure of a two-parameter GAMLSS model (e.g., with separate mu and sigma equations): the two flows separately model the location and dispersion parameters. GAMLSS itself is more general — it supports arbitrary numbers of distributional parameters and flexible basis functions — but the two-flow composition captures its core structure. When $K \geq 2$ with more flexible flow architectures, you get a fully nonparametric conditional distribution estimator. The same framework.
 
 The appeal for severity modelling is direct. A single flow constrains you to a fixed distributional family (lognormal, gamma, Pareto). Two flows let you separately model how covariates affect the body of the distribution and how they affect the tail. Three flows could add a shape parameter that controls the transition between body and tail — useful for claims that are lognormal in the middle and Pareto in the extreme. Each incremental flow adds flexibility at the cost of additional parameters.
 
