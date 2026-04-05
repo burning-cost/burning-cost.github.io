@@ -95,7 +95,7 @@ The problem GAMformer is trying to solve — slow GAM fitting, inaccessible shap
 The `insurance-gam` library provides an `EBMInsuranceWrapper` built on InterpretML's EBM. You get:
 
 - Poisson and Gamma loss functions for frequency and severity
-- sklearn-compatible API: `fit()`, `predict()`, `explain_global()`
+- sklearn-compatible API: `fit()`, `predict()`; global explanations via `wrapper.model_.explain_global()` on the underlying InterpretML EBM object
 - Shape function plots via InterpretML's visualisation
 - Feature importance from the boosting weights
 - Works on full UK personal lines portfolios (tested to 1M+ rows)

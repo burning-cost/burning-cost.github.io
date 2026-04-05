@@ -75,7 +75,7 @@ The result is a framework that bridges aggregate chain-ladder and individual reg
 
 ## The UK regulatory position
 
-PRA SS8/24, which took effect on 31 December 2024 and supersedes SS5/14, is explicit: relying solely on triangle extrapolation "is unlikely to satisfy the Directive requirement for a probability-weighted average of future cash-flows, since not all possible future cash-flows may be represented in the data." This is not a prohibition on chain-ladder, but it creates deliberate regulatory space for individual-data approaches.
+PRA SS8/24, which took effect on 31 December 2024, is explicit: relying solely on triangle extrapolation "is unlikely to satisfy the Directive requirement for a probability-weighted average of future cash-flows, since not all possible future cash-flows may be represented in the data." This is not a prohibition on chain-ladder, but it creates deliberate regulatory space for individual-data approaches.
 
 The 2023 PRA thematic review on claims reserving found that many insurers' aggregate methods failed to capture heterogeneous claims inflation — bodily injury and property damage inflating at different rates in the same triangle. Individual reserving models separate these components naturally by conditioning on claim type. That is a direct response to the specific concern the PRA raised.
 
@@ -91,7 +91,7 @@ Chain-ladder needs 30 to 60 numbers — aggregate cumulative paid totals by acci
 
 Most UK insurers store this data, but assembling it in the right form requires dealing with system migrations, policy administration handoffs, claims system changes, and data quality issues at the transaction level that do not surface in aggregate triangles. The aggregate triangle hides data quality problems. The individual model exposes them.
 
-Neural networks need approximately 50,000 claim-period observations for stable training (based on Avanzi, Lambrianidis, Taylor and Wong, arXiv:2601.05274, December 2025). Linear regression is viable with around 2,000 claims. For a team starting out, the right first step is a weighted linear regression with case reserve and claim status as features — not a neural network — and the data pipeline needed for linear regression is a fraction of the complexity.
+Neural networks need approximately 50,000 claim-period observations for stable training (based on Avanzi, Lambrianidis, Taylor and Wong, arXiv:2601.05274, January 2026). Linear regression is viable with around 2,000 claims. For a team starting out, the right first step is a weighted linear regression with case reserve and claim status as features — not a neural network — and the data pipeline needed for linear regression is a fraction of the complexity.
 
 The Richman and Wüthrich result says this is fine. Linear regression with the right features is the answer for most portfolios at most scales. The neural network is for when you have the data, the scale, and the evidence from the linear regression that non-linear terms add something.
 
@@ -119,6 +119,6 @@ The literature has moved further than most UK reserving teams realise. The chain
 
 - Richman and Wüthrich, "One-Shot Individual Claims Reserving" (March 2026), arXiv:2603.11660
 - Richman and Wüthrich, "Projection-to-Ultimate Factors" (February 2026), arXiv:2602.15385
-- Avanzi, Lambrianidis, Taylor and Wong (December 2025), arXiv:2601.05274
+- Avanzi, Lambrianidis, Taylor and Wong (January 2026), arXiv:2601.05274
 - Delong, Lindholm and Wüthrich, *Scandinavian Actuarial Journal* 2022/1
 - Hiabu, Hofman and Pittarello, "ReSurv" (CAS E-Forum 2025)

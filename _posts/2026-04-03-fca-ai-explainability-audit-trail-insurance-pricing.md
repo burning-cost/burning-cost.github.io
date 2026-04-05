@@ -52,7 +52,7 @@ Note what is not on that list: "a model development document." Artefacts 1 and 2
 
 ## Where insurance-governance already covers this
 
-[`insurance-governance`](https://github.com/burning-cost/insurance-governance) (v0.2.0, 7,164 LOC across 19 source files) covers three of the five artefacts directly:
+[`insurance-governance`](https://github.com/burning-cost/insurance-governance) (v0.3.1, ~10,470 LOC across 32 source files) covers three of the five artefacts directly:
 
 **Artefact 1 — System Design and Architecture Protocol:** `Article13Document` implements EU AI Act Article 13(3) in full, with fields for intended purpose, input specification, output interpretation, training data provenance, and planned change notification. For life and health models within EU AI Act scope, this is the Article 13 compliance document. For motor and property models — which are not high-risk under Annex III and not subject to Articles 12-14 — it serves as the equivalent UK governance document.
 
@@ -64,11 +64,11 @@ Artefacts 4 and 5 are partially covered: `MRMModelCard` has monitoring fields an
 
 ---
 
-## The gap: runtime audit trails
+## The gap that v0.3.1 fills: runtime audit trails
 
-The package has a significant gap on artefacts 4 and 5, and a more fundamental gap underneath them: there is no runtime audit capability at all.
+The v0.2.0 package covered what you document before deployment. It did not record what happens during deployment — nothing logged what occurred at prediction time for a specific customer: which feature values were present, what the SHAP decomposition looked like, what the model output was, what premium was charged, whether a human reviewed or overrode the output, and who was the responsible SMF.
 
-`insurance-governance` covers what you document before deployment. It does not record what happens during deployment. Nothing in the current package logs what occurred at prediction time for a specific customer: which feature values were present, what the SHAP decomposition looked like, what the model output was, what premium was charged, whether a human reviewed or overrode the output, and who was the responsible SMF.
+That gap is closed in v0.3.1. But it is worth understanding why the gap mattered — because firms still running on v0.2.0 have exactly this exposure.
 
 This matters for three specific scenarios:
 
@@ -78,19 +78,19 @@ A **consumer complaint** arrives: "My renewal premium increased by £180 and nob
 
 A **data subject access request** arrives. The right to a meaningful explanation of automated decisions — even with the GDPR Article 22 relaxations under the Data Use Act — requires per-decision records.
 
-The current SHAP stub in `ModelValidationReport._try_shap()` returns an empty list. `Article13Document.explanation_tools` is a free-text field. There is no class that runs SHAP at prediction time and records the result against a policy identifier.
+`Article13Document.explanation_tools` was a free-text field in the static documentation layer. There was no class that logged what occurred at prediction time for a specific customer — which features were present, what the SHAP decomposition looked like, what the model output was, and who was the responsible SMF. V0.3.1 changes this.
 
 ---
 
-## What we are building for v0.3.0
+## What the audit subpackage covers
 
-The gap has five components:
+The audit subpackage in v0.3.1 has five components:
 
-**`ExplainabilityAuditEntry`** — a dataclass capturing, per prediction: input features, signed SHAP values, model output, final premium, whether a human reviewed it, the reviewer's SM&CR identifier if so, whether an override was applied, and the basis for the decision. Each entry carries a SHA-256 hash computed from its own content, so post-hoc modification is detectable.
+**`ExplainabilityAuditEntry`** — a dataclass that captures, per prediction: input features, signed SHAP values, model output, final premium, whether a human reviewed it, the reviewer's SM&CR identifier if so, whether an override was applied, and the basis for the decision. Each entry carries a SHA-256 hash computed from its own content, so post-hoc modification is detectable.
 
 **`ExplainabilityAuditLog`** — an append-only JSONL backend. One line per decision. `verify_chain()` recomputes all hashes and reports integrity failures — that is your Section 166 evidence that the log has not been tampered with. `export_period()` extracts a date range for regulatory submission.
 
-**`SHAPExplainer`** — a proper implementation replacing the existing stub. Uses `TreeExplainer` for gradient boosting models, `LinearExplainer` for GLM, `KernelExplainer` otherwise. Returns per-prediction dicts mapping feature names to SHAP values. Populates `Article13Document.explanation_tools` with a structured description of the method used. Optional dependency on `shap`; graceful fallback if not installed.
+**`SHAPExplainer`** — uses `TreeExplainer` for gradient boosting models, `LinearExplainer` for GLM, `KernelExplainer` otherwise. Returns per-prediction dicts mapping feature names to SHAP values. Populates `Article13Document.explanation_tools` with a structured description of the method used. Optional dependency on `shap`; graceful fallback if not installed.
 
 **`PlainLanguageExplainer`** — converts signed SHAP values (model units) to pound-denominated factor attributions:
 
@@ -129,8 +129,8 @@ SHAP has real limitations. The BIS FSI 2024 paper on AI explainability is direct
 uv add insurance-governance
 ```
 
-The audit subpackage is in development for v0.3.0. The existing v0.2.0 classes — `Article13Document`, `ModelValidationReport`, `DiscriminationReport`, `MRMModelCard`, `GovernanceReport` — are available now and cover the static documentation artefacts.
+The audit subpackage shipped in v0.3.1. `ExplainabilityAuditEntry`, `ExplainabilityAuditLog`, `SHAPExplainer`, `PlainLanguageExplainer`, and `AuditSummaryReport` are all available now. The static documentation classes — `Article13Document`, `ModelValidationReport`, `DiscriminationReport`, `MRMModelCard`, `GovernanceReport` — remain in place and cover artefacts 1 through 3.
 
-If your model risk committee is asking whether you can respond to the FCA's Q2 evaluation with something more than a model development document, the answer is probably: not yet, but you are closer than you think on the documentation side. The runtime audit gap is the piece that will take the most work.
+If your model risk committee is asking whether you can respond to the FCA's Q2 evaluation with something more than a model development document, the answer on the runtime audit side is: v0.3.1 has it. The documentation artefacts have been there since v0.2.0. The per-decision audit trail is the piece that takes the most effort to integrate into a live pricing stack — that is the implementation work ahead, not the library work.
 
-We will publish the `ExplainabilityAuditTrail` classes with worked examples on the FréMTPL2 dataset when v0.3.0 ships.
+Worked examples on the FréMTPL2 dataset are available in the repository.

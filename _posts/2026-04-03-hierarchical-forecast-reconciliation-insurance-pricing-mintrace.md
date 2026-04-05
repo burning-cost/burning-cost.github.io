@@ -147,7 +147,7 @@ MinTrace is a linear method. It finds the optimal blend of your existing models 
 
 **Bootstrapped versus credibility estimates.** If some of your peril cells are credibility-blended to the class mean rather than fully graduated, they will have lower apparent variance (the credibility shrinkage suppressed it). MinTrace will treat them as more reliable than they are. Apply credibility before reconciliation, not after.
 
-We think the 3–8% discrepancy that most UK pricing teams carry silently in their hierarchies is worth fixing. It creates inconsistencies between pricing, reserving, and planning that compound over time, and it represents a straightforward FCA coherence exposure under PS21/5 geographic pricing rules. MinTrace does not require you to rebuild your models. It resolves the disagreement between the models you have.
+We think the 3–8% discrepancy that most UK pricing teams carry silently in their hierarchies is worth fixing. It creates inconsistencies between pricing, reserving, and planning that compound over time, and incoherence between peril-level and cover-level models is the kind of inconsistency that Consumer Duty (PRIN 2A) fair value assessments are expected to surface — if your perils say one thing and your cover model says another, that gap needs an owner. MinTrace does not require you to rebuild your models. It resolves the disagreement between the models you have.
 
 ---
 
