@@ -127,7 +127,7 @@ Our rule of thumb for UK motor:
 |---|---|
 | Pricing rule change, expected 2–3% frequency lift | 0.010 |
 | Pricing rule change, expected 4–5% frequency lift | 0.015 |
-| New telematics scoring model, expected 5–10% lift | 0.03 |
+| New telematics scoring model, expected 5–10% lift | 0.015 |
 | Major rating factor restructure, expected >10% lift | 0.05 |
 | Fraud detection model (frequency proxy) | 0.03 |
 | Severity-focused change (repair network, excess) | 0.03 on severity metric |

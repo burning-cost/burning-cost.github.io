@@ -188,7 +188,7 @@ For a dataset of 678,000 rows with 11 columns and `n_estimators=100`, expect rou
 
 ## Where this fits against the alternatives
 
-MICE-RF is not the only option. Our own [`insurance-synthetic`](/insurance-distributional/) library uses vine copulas with AIC-selected marginals, which preserves tail dependence better and enforces actuarial structure (exposure/frequency relationship, hard constraints on driver age etc.) that MICE-RF ignores. The tradeoff is that vine copulas require more domain-specific setup and do not naturally handle the amputation-imputation use case.
+MICE-RF is not the only option. Our own [`insurance-synthetic`](/insurance-synthetic/) library uses vine copulas with AIC-selected marginals, which preserves tail dependence better and enforces actuarial structure (exposure/frequency relationship, hard constraints on driver age etc.) that MICE-RF ignores. The tradeoff is that vine copulas require more domain-specific setup and do not naturally handle the amputation-imputation use case.
 
 The practical choice depends on what you are trying to do:
 
