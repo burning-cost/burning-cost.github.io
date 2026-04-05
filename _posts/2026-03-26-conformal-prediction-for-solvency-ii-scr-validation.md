@@ -58,7 +58,7 @@ If you want the lightest-touch version — no secondary spread model, no assumpt
 ```python
 from insurance_conformal import HongTransformConformal
 
-ht = HongTransformConformal(model=fitted_glm)
+ht = HongTransformConformal(h=fitted_glm.predict)
 ht.calibrate(X_cal, y_cal)
 
 from insurance_conformal import solvency_capital_range

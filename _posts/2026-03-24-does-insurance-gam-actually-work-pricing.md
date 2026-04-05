@@ -4,7 +4,7 @@ title: "Does insurance-gam actually work for insurance pricing?"
 date: 2026-03-24
 categories: [libraries, validation]
 tags: [gam, ebm, nam, anam, pin, interpretability, poisson, tweedie, gini, shapley, monotonicity, relativities, validation, pricing]
-description: "Benchmark results on a known-DGP synthetic UK motor book. EBM beats the GLM by 35 Gini points. But the deviance number is misleading. We explain why, and when you should care."
+description: "Benchmark results on a known-DGP synthetic UK motor book. EBM beats the GLM by 12.6 Gini points (0.455 vs 0.329). But the deviance number is misleading. We explain why, and when you should care."
 ---
 
 The claim for interpretable GAMs is ambitious: the accuracy of a gradient booster, the auditability of a GLM. That is the kind of assertion that deserves a hard look at the numbers. So we ran the benchmark. Known data-generating process, synthetic UK motor book, non-linear effects the GLM structurally cannot represent. We measured Poisson deviance and Gini, produced calibration tables, and read out the shape functions.
@@ -202,7 +202,7 @@ We think `InsuranceEBM` should replace the GLM for any team that has features wi
 
 ANAM is the right choice when you need a combined frequency-severity Tweedie model with provably monotone constraints. Once any of these models is in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/)'s Gini drift test will tell you when the shape functions are going stale and a refit is warranted. PIN is the right choice when the interaction surface itself needs to be auditable. All three are in the same install.
 
-The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark is in , runnable on Databricks serverless Free Edition in under three minutes.
+The library is at [github.com/burning-cost/insurance-gam](https://github.com/burning-cost/insurance-gam). The benchmark notebook is runnable on Databricks serverless Free Edition in under three minutes.
 
 ---
 

@@ -143,26 +143,29 @@ df = pd.DataFrame({
 
 Libraries for specific modelling challenges that the standard GLM/GBM toolchain does not cover well.
 
-### bayesian-pricing - thin segments
+### insurance-credibility - thin segments
 
 A representative UK motor rating model has roughly 4.5 million theoretical cells. A mid-sized insurer with one million policies covers perhaps 3% of them with more than 30 observations. The thin-data problem is worse at interaction level: "age 17-21 × ABI group 40+ × London" may have 8 claims across five years. That is not enough to estimate frequency to within 30%.
 
-`bayesian-pricing` uses partial pooling via PyMC hierarchical models. Thin segments borrow strength from related segments. The degree of borrowing is determined by the data, not a hyperparameter you tune by hand.
+`insurance-credibility` provides `PoissonGammaCredibility`: the exact closed-form Bayesian credibility model for claim frequency. No MCMC, no sampler configuration. Each group has a Gamma prior on its Poisson rate; after observing the group's own experience the posterior is another Gamma. The credibility estimate — posterior mean — is a weighted blend of the group's observed rate and the portfolio mean, with the weight determined analytically from the group's exposure relative to the prior's effective exposure. Thin segments get pulled hard toward the portfolio mean. Thick segments get little pooling. The degree of borrowing is in the data, not a hyperparameter.
 
 ```python
-from bayesian_pricing import HierarchicalFrequency
+from insurance_credibility import PoissonGammaCredibility
 
-model = HierarchicalFrequency(
-    group_cols=["driver_age_band", "vehicle_group"],
+model = PoissonGammaCredibility()
+model.fit(
+    df,
+    group_col="segment",   # e.g. "age_band_x_vehicle_group"
+    claims_col="claim_count",
     exposure_col="exposure",
 )
-model.fit(df)
-print(model.relativities())  # posterior means + 95% credible intervals
+print(model.summary())            # posterior mean, credibility factor, 95% CI per group
+print(model.credibility_intervals(0.95))
 ```
 
-For the full partial-pooling methodology, see [Bayesian Hierarchical Models for Thin-Data Pricing](/2026/02/17/bayesian-hierarchical-models-for-thin-data-pricing/).
+For scheme and fleet pricing with a two-level hierarchy (scheme → book), use `HierarchicalBuhlmannStraub` from the same library. Full treatment in [Bühlmann-Straub Credibility in Python](/2026/02/19/buhlmann-straub-credibility-in-python/).
 
-[github.com/burning-cost/bayesian-pricing](https://github.com/burning-cost/bayesian-pricing)
+[github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility)
 
 ---
 
@@ -249,8 +252,8 @@ Explainable Boosting Machines (EBMs, Lou et al. 2013) are additive models with i
 # uv add insurance-gam  # github.com/burning-cost/insurance-gam
 from interpret.glassbox import ExplainableBoostingRegressor
 
-ebm = ExplainableBoostingRegressor(interactions=5, objective="poisson")
-ebm.fit(X_train, y_train, sample_weight=exposure)
+ebm = ExplainableBoostingRegressor(interactions=5, objective="poisson_deviance")
+ebm.fit(X_train, y_train, init_score=np.log(exposure))
 ebm.explain_local(X_train[:5])  # shows per-prediction shape contributions
 ```
 
@@ -585,6 +588,6 @@ If you are installing for the first time, the order matters:
 4. `insurance-fairness` - run the proxy discrimination audit before the model goes to pricing committee
 5. `insurance-governance` - generate the PRA SS1/23 validation report in parallel with the model build, not after
 
-Everything else is additive depending on your specific problem. Thin segments? Add `bayesian-pricing`. Territory banding? Add `insurance-spatial`. Going to production with a challenger? Add `insurance-deploy`.
+Everything else is additive depending on your specific problem. Thin segments? Add `insurance-credibility`. Territory banding? Add `insurance-spatial`. Going to production with a challenger? Add `insurance-deploy`.
 
 All 35 libraries are MIT-licensed, installable via `pip` or `uv`, and maintained under [github.com/burning-cost](https://github.com/burning-cost). Each ships with synthetic data generators so you can run the examples without needing a live portfolio.

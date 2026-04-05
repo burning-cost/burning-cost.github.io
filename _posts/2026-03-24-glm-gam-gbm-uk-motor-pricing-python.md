@@ -317,7 +317,7 @@ The GLM, GAM, and GBM are not three separate approaches to choose between. They 
 |-------|----------------------|------------------|------------------------|-------------------|
 | Poisson GLM (banded) | Baseline | Full factor tables | Direct | Standard |
 | EBM (insurance-gam) | +5-15pp | Shape functions | Via distillation | Moderate |
-| CatBoost + SHAP | +3-8pp | SHAP relativities | Via distillation | Higher |
+| CatBoost + SHAP | +1-8pp (benchmark: +1.8pp) | SHAP relativities | Via distillation | Higher |
 
 The Gini ranges assume freMTPL2-scale data with a non-linear DGP. On a book where the true DGP is already well-approximated by a linear GLM, the gaps narrow. Conversely, on a book with confirmed interactions (young drivers in dense urban areas, for instance), the GBM advantage grows.
 
