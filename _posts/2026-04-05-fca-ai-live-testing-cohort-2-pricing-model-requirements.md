@@ -81,7 +81,7 @@ Explainability in the Live Testing context means:
 - **Consumer-accessible explanations**: not SHAP values, but the narrative version of what drove the premium. "Your vehicle is in a higher-risk group" is an explanation. A feature importance chart is not.
 - **Counterfactual recourse**: if a consumer is declined or loaded, can you tell them what would need to change for the outcome to be different? The FCA's algorithmic recourse work (Consumer Duty Outcome 4) makes this expectation explicit.
 
-The `insurance-governance` library's `ExplainabilityAuditTrail` class handles per-decision SHAP logging to a structured store, with SMF-tagged accountability mapping at each decision point. The explainability audit trail post from April 2026 walks through the implementation in detail if you need it.
+The `insurance-governance` library's `ExplainabilityAuditLog` class handles per-decision SHAP logging to a structured store, with SMF-tagged accountability mapping at each decision point. The explainability audit trail post from April 2026 walks through the implementation in detail if you need it.
 
 ---
 
