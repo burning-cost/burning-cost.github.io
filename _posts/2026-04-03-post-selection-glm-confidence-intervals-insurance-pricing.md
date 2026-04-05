@@ -152,7 +152,7 @@ Data-split intervals will be somewhat wider than PSI intervals for the same data
 
 **Gamma severity.** The paper covers Poisson, logistic, and Beta regression. Gamma with log link has $b''(\eta) = e^{2\eta}$, which is differentiable and the Fisher scoring linearisation is derivable — but deriving it is not the same as validating it. We have not run the simulation study needed to confirm coverage for Gamma, and we will not ship it until we have. If you raise a `ValueError` with `family='gamma'`, that is intentional.
 
-**Elastic net.** The L2 penalty component changes the active set geometry in ways that the Le Duy-Takeuchi path-tracing does not handle. Elastic net selection followed by PSI is a separate research problem.
+**Elastic net.** The L2 penalty component changes the active set geometry in ways that the Le Duy and Takeuchi path-tracing does not handle. Elastic net selection followed by PSI is a separate research problem.
 
 **Stepwise selection.** The conditioning event for stepwise is structurally different from the Lasso conditioning event. No open-source implementation handles this correctly. If you are using stepwise, data splitting is the only currently available valid approach.
 

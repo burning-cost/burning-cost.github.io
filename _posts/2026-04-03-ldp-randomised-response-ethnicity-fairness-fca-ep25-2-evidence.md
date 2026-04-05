@@ -86,10 +86,10 @@ import numpy as np
 # K=2 binary attribute, epsilon=1.5, 95% confidence, target bound 0.05
 audit_sizing = PrivatizedFairnessAudit(n_groups=2, epsilon=1.5)
 # After fitting: audit_sizing.minimum_n_recommended(delta=0.05, target_bound=0.05)
-# Returns approximately 3,500–5,000 for these parameters
+# Returns numbers in the hundreds of thousands for these parameters
 ```
 
-At $\varepsilon = 1.5$ with $K = 2$ groups, the sample requirement for a bound of 0.05 at 95% confidence is in the 3,500–5,000 range. For a UK motor book with 100,000 policies, this is a roughly 4% opt-in rate — achievable via a voluntary data collection exercise at renewal if framed correctly.
+At $\varepsilon = 1.5$ with $K = 2$ groups, the sample requirement for a bound of 0.05 at 95% confidence runs into the hundreds of thousands. The LDP noise correction demands far more data than intuition suggests: the statistical amplification factor at $\varepsilon = 1.5$ ($C_1 \approx 1.30$) means you need roughly 30% more labelled observations than a clean-label audit — but the sample sizes required for useful statistical bounds remain in the hundreds of thousands. For most UK motor books, this means the method is viable only at portfolio scale, not via a small opt-in exercise.
 
 The policyholder themselves applies the k-RR noise before submission. This means the insurer never processes the clean response. In practice this requires either: a client-side implementation in the customer portal (a few lines of JavaScript), or a trusted third party that holds the clean responses and returns only the noised $S$ values to the insurer.
 
@@ -124,7 +124,7 @@ Inspect the correction quality immediately after fitting:
 mats = audit.correction_matrices()
 print(f"pi estimate: {mats['pi']:.3f}")      # should match your epsilon input
 print(f"C1: {mats['C1']:.3f}")               # noise amplification factor
-print(f"Negative weight fraction: {mats['negative_weight_frac']:.2%}")
+print(f"Negative weight fraction: {audit.negative_weight_frac_:.2%}")
 # Red flag if above 5%
 ```
 

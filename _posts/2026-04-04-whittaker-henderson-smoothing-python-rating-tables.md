@@ -3,7 +3,6 @@ layout: post
 title: "Whittaker-Henderson Smoothing in Python: A Step-by-Step Tutorial for Insurance Rating Tables"
 date: 2026-04-04
 author: Burning Cost
-published: false
 categories: [tutorials, pricing, libraries]
 tags: [whittaker-henderson, smoothing, python, rating-tables, age-curves, experience-rating, loss-ratio, graduation, reml, credible-intervals, insurance-whittaker, motor, uk-pricing, sas-replacement]
 description: "A complete Python tutorial for Whittaker-Henderson smoothing of insurance rating tables. Replace your Excel moving average or SAS graduation with automatic REML lambda selection and Bayesian credible intervals. Includes a full worked example on a noisy age-band loss ratio table."

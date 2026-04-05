@@ -25,7 +25,7 @@ The exchange argument underlying this is simple: if the calibration and test dat
 
 With right-censored data, this fails immediately. For a censored calibration point with $e_i = 0$, you observe $\tilde{T}_i = C_i$, not $T_i$. If you use $\tilde{T}_i$ in the nonconformity score, you are scoring against the censoring time, not the event time. The score $\hat{q}_\alpha(x_i) - \tilde{T}_i = \hat{q}_\alpha(x_i) - C_i$ overstates the model error for policies with long in-force times — those policyholders may still be alive or lapsed-free, but you counted them as early events. The calibration threshold $\hat{q}$ is therefore deflated, and the LPB undershoots the true event distribution.
 
-The magnitude of this bias depends on the censoring fraction. UK protection books typically have death rates of roughly 0.15–0.3 per 1,000 per year for a 40–60 year old insured population. In a five-year calibration window, you might observe deaths in only 1–2% of policies. The remaining 98% are censored at policy expiry or observation close. Standard conformal applied to this data is effectively calibrating on noise.
+The magnitude of this bias depends on the censoring fraction. UK protection books typically have death rates of roughly 3–8 per 1,000 per year for a 40–60 year old insured population in a mixed protection book. In a five-year calibration window, you might observe deaths in only 1–4% of policies. The remaining 98% are censored at policy expiry or observation close. Standard conformal applied to this data is effectively calibrating on noise.
 
 ---
 
@@ -92,7 +92,7 @@ class RSFSurvivalAdapter:
     def __init__(self, model): self.model = model
     def predict_quantile(self, X, alpha):
         # sksurv predict_quantile takes percentile in [0,1]; returns (n, 1) array
-        return self.model.predict_quantile(X, percentiles=alpha).ravel()
+        return self.model.predict_quantile(X, percentiles=[alpha]).ravel()
 
 survival_model = RSFSurvivalAdapter(rsf)
 
@@ -200,7 +200,7 @@ cs_solvency = ConformalisedSurvival(
 cs_solvency.calibrate(X_cal, t_cal, e_cal)
 ```
 
-The calibration summary will show a smaller `effective_n` because the IPCW-weighted quantile at 0.5% is estimated from fewer effective calibration points. The paper's experiments suggest $n_{\text{cal}} \geq 500$ filtered points for reasonable asymptotic coverage at $\alpha = 0.10$. At $\alpha = 0.005$, you need more. For a UK protection book with 20,000 policies and 0.2% annual mortality, a five-year calibration window gives roughly 200 deaths — well below the paper's recommended threshold. The bound will be noisy. The KB entry for DR-COSARC limitations (ID 5222) has worked numbers on this, and it is worth reading before using `ConformalisedSurvival` for regulatory capital work.
+The calibration summary will show a smaller `effective_n` because the IPCW-weighted quantile at 0.5% is estimated from fewer effective calibration points. The paper's experiments suggest $n_{\text{cal}} \geq 500$ filtered points for reasonable asymptotic coverage at $\alpha = 0.10$. At $\alpha = 0.005$, you need more. For a UK protection book with 20,000 policies and 0.2% annual mortality, a five-year calibration window gives roughly 200 deaths — well below the paper's recommended threshold. The bound will be noisy. Run `cs.calibration_summary()` and verify `effective_n` before using `ConformalisedSurvival` for regulatory capital work.
 
 ---
 

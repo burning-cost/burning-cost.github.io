@@ -29,10 +29,11 @@ $$h^*(X) = \sum_k f_k(X) \cdot P^*(D = k)$$
 
 What is new in Zhang et al. is that the group-specific models $f_k$ are fitted using **privatised** labels, not the true ones. The paper proves (Theorem 4.3) that the excess risk of this estimator over the oracle is bounded by a factor $C_1$, which amplifies with noise:
 
-- At $\varepsilon = 2.0$: $C_1 \approx 1.07$ — near-oracle performance
-- At $\varepsilon = 1.0$: $C_1 \approx 1.16$ — 16% excess risk amplification
-- At $\varepsilon = 0.5$: $C_1 \approx 1.58$ — needs 2.5× the data for the same bound
-- At $\varepsilon = 0.1$: $C_1 \approx 2.54$ — needs 6.5× the data
+- At $\varepsilon = 5.0$: $C_1 \approx 1.01$ — near-oracle performance
+- At $\varepsilon = 2.0$: $C_1 \approx 1.16$ — 16% excess risk amplification
+- At $\varepsilon = 1.0$: $C_1 \approx 1.58$ — needs ~2.5× the data for the same bound
+- At $\varepsilon = 0.5$: $C_1 \approx 2.54$ — needs ~6.5× the data
+- At $\varepsilon = 0.1$: $C_1 \approx 10.51$ — needs ~110× the data
 
 This is the number that will sting in practice.
 
@@ -64,7 +65,7 @@ pricer.fit(X_train, y_train, S_train, exposure=exposure_train)
 fair_premium = pricer.predict(X_new)
 
 # Check the statistical bound (95% confidence)
-bound = pricer.statistical_bound(delta=0.05)
+bound = pricer.excess_risk_bound(delta=0.05)
 print(f"Excess risk bound: {bound:.4f}")
 
 # How much data do you need for a given precision?
