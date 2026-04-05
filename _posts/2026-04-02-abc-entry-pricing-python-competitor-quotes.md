@@ -241,6 +241,11 @@ def run_abc_smc(p_obs, coverage_params, lr_low, lr_high,
         cov += 1e-8 * np.eye(2)   # numerical stability
         perturbations = rng.multivariate_normal([0.0, 0.0], cov, size=J)
         particles = new_particles + perturbations
+        # NOTE: Del Moral et al. (2006) update weights proportionally via
+        # w_i ∝ prior(x_i) / K(x_i | x_{i-1}), where K is the perturbation kernel.
+        # We reset to uniform (1/J) here — a simplification that sacrifices some
+        # statistical efficiency but is adequate for the low-dimensional (lambda, mu)
+        # parameter space and the accuracy requirements of a market-entry prior.
         weights = np.ones(J) / J
 
     return particles, weights

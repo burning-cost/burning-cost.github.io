@@ -30,7 +30,7 @@ The key word is *single draw*. The guarantee is valid exactly once: at the momen
 
 When you recalibrate repeatedly on a growing set — quarter 1 at n=800, quarter 2 at n=1,100, quarter 3 at n=1,400 — you are running a sequential test. At each step, you check whether the expanded dataset still supports your claimed alpha. This is not a single-draw guarantee any more. This is multiple testing, and multiple testing requires correction.
 
-Without correction, the probability that at least one of your recalibrations produces a false "guarantee achieved" result grows with the number of recalibrations. Run ten quarterly recalibrations at nominal alpha=0.05 and your true error rate across the testing sequence is substantially higher than 5%. For independent sequential tests at per-test alpha=0.05, the compounded family-wise error rate across ten recalibrations is approximately 40% — the standard binomial calculation. With the strong dependence between successive calibration sets (each augments the last), the true inflation is lower, but the direction is unambiguous: the effective error rate is substantially above 5%.
+Without correction, the probability that at least one of your recalibrations produces a false "guarantee achieved" result grows with the number of recalibrations. Run ten quarterly recalibrations at nominal alpha=0.05 and your true error rate across the testing sequence is substantially higher than 5%. For independent sequential tests at per-test alpha=0.05, the compounded family-wise error rate across ten recalibrations reaches approximately 40% — the standard binomial worst-case under independence. With the strong dependence between successive calibration sets (each augments the last), the actual inflation is lower than this bound; successive sets are highly correlated, which reduces the effective number of independent tests. But the direction is unambiguous: the effective error rate is above 5%, and the 40% figure is the ceiling, not an operative estimate.
 
 ---
 
@@ -71,7 +71,7 @@ Three situations where the sequential multiple-testing problem is practically ma
 
 **Quarterly governance cycles.** Most UK personal lines pricing teams recalibrate conformal thresholds on a quarterly cycle, coinciding with pricing reviews. Four recalibrations per year, three-year model lifetime: twelve sequential tests. At nominal alpha=0.05, the uncorrected sequential error rate is uncomfortably above 5%.
 
-**Regulatory reporting.** FCA Consumer Duty and PRA SS3/17 both require that risk management frameworks perform as described. If you report "our conformal premium sufficiency controller targets 5% expected shortfall" in a Solvency II internal model validation and the actual sequential error rate is higher, that is a documentation problem. The LIL correction gives you a number you can stand behind across the model's lifetime.
+**Regulatory reporting.** FCA Consumer Duty and PRA CP6/24 (model risk management for insurers) both require that risk management frameworks perform as described. If you report "our conformal premium sufficiency controller targets 5% expected shortfall" in a Solvency II internal model validation and the actual sequential error rate is higher, that is a documentation problem. The LIL correction gives you a number you can stand behind across the model's lifetime.
 
 **Growing books.** A new MGA or parametric product that adds 50–100 policies per month will naturally trigger recalibration when n crosses thresholds that make additional lambda grid points reachable. Each crossing is a sequential test.
 

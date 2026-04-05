@@ -37,15 +37,15 @@ $$\text{PV(penalty)} \approx B \cdot (D_j - D_{j-k}) \cdot \sum_{t=1}^{T} \delta
 
 The policyholder should suppress the claim if the loss $Y$ satisfies $Y < \text{PV(penalty)}$.
 
-Three illustrative calculations on a £1,000 base premium, standard UK discount schedule, 2-year step-back, and a discount rate of 5%:
+Three illustrative calculations on a £1,000 base premium, standard UK discount schedule, 2-year step-back, discount rate of 5%, and a rebuild horizon of T=2 years:
 
 | NCD class | Discount | Premium | Step-back to | Post-claim premium | Annual increase | PV(penalty) |
 |-----------|----------|---------|--------------|-------------------|-----------------|-------------|
 | 9-yr | 70% | £300 | 7-yr (65%) | £350 | £50/yr | ~£93 |
-| 5-yr | 65% | £350 | 3-yr (50%) | £500 | £150/yr | ~£278 |
+| 5-yr | 60% | £400 | 3-yr (50%) | £500 | £100/yr | ~£272 |
 | 3-yr | 50% | £500 | 1-yr (30%) | £700 | £200/yr | ~£370 |
 
-The 3-year and 5-year holders have the highest rational retention thresholds in absolute pound terms. If, say, 35% of claims in those NCD classes fall below £278–370 — plausible for a portfolio with a typical mix of small own-damage and third-party property claims — then observed frequency is running at 65% of true frequency. That is material.
+The 3-year and 5-year holders have the highest rational retention thresholds in absolute pound terms. If, say, 35% of claims in those NCD classes fall below £272–370 — plausible for a portfolio with a typical mix of small own-damage and third-party property claims — then observed frequency is running at 65% of true frequency. That is material.
 
 These are simplified single-period calculations. Lemaire's full dynamic programming algorithm, calibrated to the actual ladder structure and the severity distribution, produces somewhat different numbers. The direction is unambiguous.
 

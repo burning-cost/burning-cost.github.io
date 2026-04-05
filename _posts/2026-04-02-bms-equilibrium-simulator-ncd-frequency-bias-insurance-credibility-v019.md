@@ -63,7 +63,7 @@ print(sim.thresholds_)
 # Reporting threshold at each NCD class in £
 
 print(sim.reporting_probs_)
-# [1.000  0.413  0.317  0.220  0.178  0.153]
+# [1.000  0.897  0.841  0.760  0.714  0.677]
 # Fraction of claims that will be reported at each class
 
 print(sim.stationary_dist_)
@@ -76,11 +76,11 @@ The frequency correction uses the reporting probabilities directly:
 ```python
 observed_frequencies = np.array([0.12, 0.09, 0.07, 0.055, 0.045, 0.038])
 corrected = sim.corrected_freq_(observed_frequencies)
-# corrected[4] ≈ 0.045 / 0.178 ≈ 0.253
-# True frequency is ~5× higher than observed at NCD level 4
+# corrected[4] ≈ 0.045 / 0.714 ≈ 0.063
+# True frequency is ~40% higher than observed at NCD level 4
 ```
 
-The `frequency_bias_()` method returns the relative bias `(observed - true) / true` per class — a vector of negative numbers. At NCD level 4–5, the bias is typically in the range −70% to −85% once you account for the full severity distribution. The observed frequency for your longest-tenure, most loyal customers is a severe underestimate of their true accident rate.
+The `frequency_bias_()` method returns the relative bias `(observed - true) / true` per class — a vector of negative numbers. At NCD level 4–5, the bias is typically in the range −29% to −33% once you account for the full severity distribution. The observed frequency for your longest-tenure, most loyal customers is a meaningful underestimate of their true accident rate.
 
 ---
 
