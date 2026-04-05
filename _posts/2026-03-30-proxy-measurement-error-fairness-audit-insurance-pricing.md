@@ -95,7 +95,7 @@ for row in bounds:
     print(row)
 ```
 
-A disparity ratio of 1.08 — which most governance committees would read as borderline and acceptable — implies a true ratio of 1.15–1.24 if the proxy accuracy is in the 55–75% range. That is no longer borderline. Whether it clears the substantive threshold for indirect discrimination under Equality Act 2010 section 19 is a legal question, but the committee is now making that judgement with the right numbers.
+A disparity ratio of 1.08 — which most governance committees would read as borderline and acceptable — implies a true ratio of 1.11–1.15 if the proxy accuracy is in the 55–75% range. Note the direction: lower proxy accuracy gives a higher corrected disparity, not lower. At 55% accuracy, the implied true ratio is (1.08 − 0.45)/0.55 ≈ 1.15; at 75% accuracy, it is (1.08 − 0.25)/0.75 ≈ 1.11. That is no longer borderline. Whether it clears the substantive threshold for indirect discrimination under Equality Act 2010 section 19 is a legal question, but the committee is now making that judgement with the right numbers.
 
 ---
 

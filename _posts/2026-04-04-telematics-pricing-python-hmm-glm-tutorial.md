@@ -61,7 +61,7 @@ trips_df, claims_df = sim.simulate(n_drivers=200, trips_per_driver=40)
 # trips_df: one row per second
 # columns: trip_id, driver_id, timestamp, latitude, longitude,
 #          speed_kmh, acceleration_ms2, heading_deg
-print(trips_df.shape)  # (200 drivers × 40 trips × ~8 min avg) ≈ 3.8M rows
+print(trips_df.shape)  # (200 drivers × 40 trips × ~32.5 min avg) ≈ 15.6M rows
 ```
 
 For real data, replace the simulator with `load_trips()`. The expected schema is one row per second with `trip_id`, `timestamp`, `latitude`, `longitude`, `speed_kmh`. Everything else is optional or derivable. If your column names differ, pass a `schema` mapping:

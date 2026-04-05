@@ -94,9 +94,9 @@ We are not dismissing the paper. The correlated-feature attribution problem is r
 
 ## The implementation gap
 
-The `fast-causal-shap` package (v0.3.0, January 2026, MIT licence) is a research codebase. The repository is 98.5% Jupyter Notebooks. The README usage section says "// To be added". The package requires a pre-specified causal graph as a JSON dictionary — the PC/IDA discovery described in the paper is not run internally. Model support is scikit-learn estimators only; CatBoost, LightGBM, and XGBoost are not supported natively.
+The `fast-causal-shap` package (v0.3.0, January 2026, MIT licence) is a research codebase. The repository is 98.5% Jupyter Notebooks. The README usage section says "// To be added". The package requires a pre-specified causal graph as a JSON file path — the PC/IDA discovery described in the paper is not run internally. Model support is scikit-learn estimators only; CatBoost, LightGBM, and XGBoost are not supported natively.
 
-The method name `compute_modified_shap_proba()` suggests the implementation targets classification tasks only. For insurance frequency-severity modelling — Poisson or Tweedie GBMs with log-link — there is no supported path.
+The method name `compute_modified_shap_proba()` is misleading: the function has `is_classifier=False` as its default and supports regression tasks. However, the API is built around sklearn estimators, and there is no documented path for Poisson or Tweedie GBMs with a log-link and offset — the types of models central to insurance frequency-severity modelling.
 
 We are not planning to integrate Causal SHAP into `shap-relativities` in its current form. The methodological objections above are the main reason. The implementation gap is secondary.
 

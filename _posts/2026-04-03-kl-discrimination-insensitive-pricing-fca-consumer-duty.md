@@ -158,7 +158,7 @@ For a UK personal lines pricing team addressing EP25/2 or preparing Consumer Dut
 
 1. **Multicalibration audit** to identify which groups and quantile bands are over- or under-priced relative to actual experience. `insurance-fairness` `MulticalibrationAudit` does this.
 
-2. **`DiscriminationFreePrice`** (Lindholm marginalisation) where you have a clear causal story: this postcode variable is proxying ethnicity via the mechanism ONS Census 2021 -> LSOA -> ethnicity distribution. Document the causal path.
+2. **`LindholmCorrector`** (Lindholm marginalisation) where you have a clear causal story: this postcode variable is proxying ethnicity via the mechanism ONS Census 2021 -> LSOA -> ethnicity distribution. Document the causal path.
 
 3. **`DiscriminationInsensitiveReweighter`** where the causal story is unclear or contested. This is the propensity approximation to Theorem 3.1 — grounded in Miao & Pesenti even if it is not the full solution.
 
@@ -176,15 +176,16 @@ from insurance_fairness import (
 )
 
 # Step 1: audit
-audit = MulticalibrationAudit(protected_cols=["gender", "age_band"])
-audit.fit(X_train, y_train, y_pred_train)
-audit.report()  # identifies which groups × quantile bands need correction
+audit = MulticalibrationAudit(n_bins=10, alpha=0.05)
+report = audit.audit(y_train, y_pred_train, protected_train, exposure=exposure_train)
+print(report.summary())  # identifies which groups × quantile bands need correction
 
 # Step 2/3: training-time reweighting
 rw = DiscriminationInsensitiveReweighter(protected_col="gender")
 weights = rw.fit_transform(X_train)
 # inspect diagnostics before training
-print(rw.diagnostics_.mean_propensity_by_group)
+diag = rw.diagnostics(X_train)
+print(diag.mean_propensity_by_group)
 
 # Fit model with reweighted data
 model.fit(X_train.drop("gender", axis=1), y_train, sample_weight=weights)
@@ -195,9 +196,9 @@ mfp.fit(Y_train, D_train, X_train, model=model, protected_indices=[0])
 rho_fair = mfp.transform(Y_test, D_test, X_test)
 
 # Step 5: post-correction audit
-post_audit = MulticalibrationAudit(protected_cols=["gender", "age_band"])
-post_audit.fit(X_test, y_test, rho_fair)
-post_audit.report()
+post_audit = MulticalibrationAudit(n_bins=10, alpha=0.05)
+post_report = post_audit.audit(y_test, rho_fair, protected_test, exposure=exposure_test)
+print(post_report.summary())
 ```
 
 ---
