@@ -3,7 +3,7 @@ layout: post
 title: "Conformal Prediction for Lapse Timing When Your Book Has Shifted"
 date: 2026-03-31
 categories: [techniques]
-tags: [conformal-prediction, survival-analysis, covariate-shift, lapse, time-to-event, IPCW, censoring, insurance-conformal, insurance-survival, CLV, Consumer-Duty, PS21/11, fair-value, uncertainty-quantification, python, arXiv-2512-03738]
+tags: [conformal-prediction, survival-analysis, covariate-shift, lapse, time-to-event, IPCW, censoring, insurance-conformal, insurance-survival, CLV, Consumer-Duty, PS21/5, fair-value, uncertainty-quantification, python, arXiv-2512-03738]
 description: "Shin, Lee and Kang (arXiv:2512.03738, Dec 2025) provide the first finite-sample coverage guarantee for time-to-event prediction under covariate shift. Here is what it means for lapse timing models deployed on portfolios that no longer match their training data."
 author: burning-cost
 ---

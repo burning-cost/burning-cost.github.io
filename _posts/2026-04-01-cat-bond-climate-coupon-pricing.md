@@ -22,13 +22,13 @@ It is a narrow, tractable research question. The answer turns out to matter.
 
 This is not a balanced dataset, and the authors do not pretend it is. The US domination reflects the actual structure of the CAT bond market since its inception in the late 1990s. European perils are systematically underrepresented, which has direct implications for how usable these results are in a UK flood or European windstorm context. More on that below.
 
-The dependent variable is the coupon spread — the yield above LIBOR (or equivalent risk-free rate) that the bond pays to investors in exchange for bearing catastrophe risk. This is the market's pricing of that risk. When a major hurricane season raises projected losses, spreads widen. When capital floods into ILS markets hunting yield, spreads compress. The paper treats this spread as the signal to predict.
+The dependent variable is the coupon spread — the yield above LIBOR (the benchmark for bonds in this dataset; the dataset covers 1997–2020, before LIBOR's replacement by risk-free rates — SOFR for USD, SONIA for GBP — from 2022 onwards) that the bond pays to investors in exchange for bearing catastrophe risk. This is the market's pricing of that risk. When a major hurricane season raises projected losses, spreads widen. When capital floods into ILS markets hunting yield, spreads compress. The paper treats this spread as the signal to predict.
 
 ---
 
 ## The models
 
-Five ML approaches against OLS as baseline:
+Seven ML approaches against OLS as baseline:
 
 - Ordinary least squares (baseline)
 - Random forest

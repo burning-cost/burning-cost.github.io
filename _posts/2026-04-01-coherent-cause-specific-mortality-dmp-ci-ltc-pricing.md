@@ -221,7 +221,7 @@ for cause, frac in zip(model.cause_names_, fractions):
 
 Independent Lee-Carter per cause is, frankly, a modelling error dressed up as a simplifying assumption. It has persisted because coherent alternatives required either bespoke Stan implementations or access to commercial platforms. The DMP framework from Nigri et al. is elegant, the coherence guarantee is mathematically clean, and the NumPyro implementation in `insurance-survival` makes it accessible without a C++ toolchain.
 
-The paper's out-of-sample results show DMP-LC achieving the lowest RMSE for total mortality forecasting on both US and French data — beating the best available CoDa alternatives. That is a meaningful result. Our implementation passes 37 tests covering the RW2 reconstruction, coherence check, and forecast shape validation. The MCMC integration tests require NumPyro and are pending Databricks re-enabling of the Jobs API; the model structure itself is validated.
+The paper's out-of-sample results show DMP-LC achieving the lowest RMSE for total mortality forecasting on both US and French data — beating the best available CoDa alternatives. That is a meaningful result. Our implementation passes 37 tests covering the RW2 reconstruction, coherence check, and forecast shape validation. Sampling-based integration tests require a GPU environment; the model structure itself is validated against synthetic data on CPU.
 
 We think this is the right way to model cause-specific mortality for CI and LTC pricing. We would be cautious about using it for individual-condition pricing below chapter level until we have more experience with the UK data, but at chapter level the framework is ready to use.
 
