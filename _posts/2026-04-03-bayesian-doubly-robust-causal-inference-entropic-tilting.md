@@ -158,7 +158,7 @@ The case for Bayesian DR credible intervals is strongest in three specific insur
 
 We are not building a `BayesianCausalPricingModel` class from this paper. Here is the actual reasoning.
 
-**No CATE.** The paper estimates a scalar ATE. For pricing decisions, we need segment-level heterogeneous treatment effects. Bayesian Causal Forests ([`insurance-causal`](/insurance-causal/), wrapping stochtree) already provide Bayesian posteriors over *policy-level* treatment effects. The BCF posterior is strictly more useful than the Orihara et al. ATE posterior for most pricing decisions, and BCF is implemented, tested, and in production use.
+**No CATE.** The paper estimates a scalar ATE. For pricing decisions, we need segment-level heterogeneous treatment effects. `HeterogeneousElasticityEstimator` in [`insurance-causal`](/insurance-causal/) already provides frequentist confidence intervals on policy-level CATEs via `cate_interval()`. The CausalForestDML CATE estimate is strictly more useful than the Orihara et al. ATE posterior for most pricing decisions.
 
 **No panel extension.** Our most important causal inference use case is evaluating rate changes that happened at a specific point in time across multiple segments over multiple periods — a panel DiD problem handled by [`insurance-causal-policy`](/insurance-causal-policy/)'s SDID and DRSC estimators. The Orihara et al. DR moment condition is cross-sectional. The DR augmentation term B_n does not extend to the panel ATT without substantial theoretical work that the paper does not do.
 
@@ -178,34 +178,42 @@ We would reconsider if any of the following happen.
 
 **A panel extension is published.** Extending the entropic tilting approach to the panel DiD setting — where the DR moment condition needs to accommodate the ATT over multiple treated periods and a synthetic control weight structure — would directly address our most acute need. This is a non-trivial theoretical contribution. If it appears, this goes straight to reconsideration.
 
-**FCA guidance on uncertainty quantification.** If the FCA or PRA issues guidance that specifically requires probabilistic uncertainty quantification in pricing causal analyses — not just confidence intervals, but posterior-style probability statements — the demand case for Bayesian DR strengthens materially. Nothing in PS22/9, EP25/2, or PRA SS1/23 currently requires this, but the direction of travel on model governance is towards stronger quantification requirements.
+**FCA guidance on uncertainty quantification.** If the FCA or PRA issues guidance that specifically requires probabilistic uncertainty quantification in pricing causal analyses — not just confidence intervals, but posterior-style probability statements — the demand case for Bayesian DR strengthens materially. Nothing in PS22/9 (fair value), Consumer Duty (PRIN 2A), or Solvency II Article 120-126 currently requires posterior-style uncertainty quantification, but the direction of travel on model governance is towards stronger quantification requirements.
 
 ---
 
 ## The relationship to our existing Bayesian causal tools
 
-If you want Bayesian posterior uncertainty on causal effects in insurance pricing, the current recommendation is BCF via [`insurance-causal`](https://github.com/burning-cost/insurance-causal):
+If you want segment-level CATE estimates with confidence intervals in insurance pricing, the current tool is `HeterogeneousElasticityEstimator` from [`insurance-causal`](https://github.com/burning-cost/insurance-causal):
 
 ```python
-from insurance_causal import BayesianCausalForest
+from insurance_causal.causal_forest import (
+    HeterogeneousElasticityEstimator,
+    make_hte_renewal_data,
+)
 
-model = BayesianCausalForest(outcome='binary', num_mcmc=500, random_seed=42)
-model.fit(X=rating_factors, treatment=rate_increase_applied, outcome=renewed)
+df = make_hte_renewal_data(n=10_000)
+confounders = ["age", "ncd_years", "vehicle_group", "channel"]
 
-# Policy-level CATE with posterior credible intervals
-cate_df = model.cate(rating_factors)
-# cate_mean  cate_lower  cate_upper  cate_std
-#    -0.061      -0.074      -0.048     0.007
+est = HeterogeneousElasticityEstimator(n_estimators=200)
+est.fit(df, outcome="renewed", treatment="log_price_change",
+        confounders=confounders)
 
-# P(treatment effect < -0.05) for a specific segment
-import numpy as np
-samples = model.cate_samples(rating_factors.iloc[[0]])   # shape: (n_mcmc,)
-print(f"P(effect < -5pp): {np.mean(samples < -0.05):.2f}")
+# Policy-level CATE point estimates
+cates = est.cate(df)  # shape (n,)
+
+# 95% confidence intervals on policy-level CATEs
+lb, ub = est.cate_interval(df, alpha=0.05)
+# lb and ub are arrays, shape (n,)
+
+# Population-average treatment effect
+ate, ate_lb, ate_ub = est.ate()
+print(f"ATE: {ate:.3f} [{ate_lb:.3f}, {ate_ub:.3f}]")
 ```
 
-BCF gives you the posterior at the *policy level*, handles regularisation-induced confounding correctly via the RIC prior separation, and is already implemented on top of stochtree 0.4.0 which ships C++ compiled wheels. It is the right tool for "what is the Bayesian posterior on the causal effect of this rate change for this type of customer?"
+This is a frequentist CausalForestDML estimator — confidence intervals come from the forest's half-sample variance estimator, not a Bayesian posterior. It gives policy-level heterogeneous effects, handles regularisation-induced confounding, and works with Databricks serverless without additional dependencies.
 
-The Orihara et al. method would, if implemented, give you a posterior on the *population-average* effect with formal DR guarantees. The two tools would be complementary — BCF for segment-level heterogeneity with Bayesian uncertainty, Bayesian DR for ATE-level formal robustness guarantees. But BCF comes first, and BCF is already built.
+The Orihara et al. method would give you a true Bayesian posterior on the population-average effect with formal DR guarantees — a different and complementary capability. Neither is yet built. The CausalForest HTE estimator is built first because it addresses the more common need: heterogeneous effects with honest CIs, not a posterior over the ATE.
 
 ---
 

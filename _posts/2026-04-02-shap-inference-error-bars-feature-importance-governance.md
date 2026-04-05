@@ -44,8 +44,15 @@ For p=1, there is an additional complication. The function |x|^p is not twice di
 from shap_relativities import SHAPRelativities, SHAPInference
 
 # Fit your model and get interventional SHAP values
-sr = SHAPRelativities(model, background_data, feature_perturbation="interventional")
-shap_vals = sr.shap_values(X_test)  # shape (n_obs, n_features)
+# X_test is the feature matrix; background_data goes in background_data kwarg
+sr = SHAPRelativities(
+    model,
+    X_test,
+    background_data=background_data,
+    feature_perturbation="interventional",
+)
+sr.fit()
+shap_vals = sr.shap_values()  # shape (n_obs, n_features)
 
 # Compute CIs on global importance
 inf = SHAPInference(
