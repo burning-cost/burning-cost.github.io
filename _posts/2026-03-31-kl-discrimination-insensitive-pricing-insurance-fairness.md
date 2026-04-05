@@ -251,7 +251,10 @@ model.fit(X_train[feature_cols], y_train, sample_weight=weights)
 # Use age or another observable protected attribute for ongoing monitoring
 audit = MulticalibrationAudit(n_bins=10, alpha=0.05)
 report = audit.audit(y_true_val, y_pred_val, protected_val, exposure=exposure_val)
-print(report.summary())
+print(f"Is multicalibrated: {report.is_multicalibrated}")
+print(f"Overall calibration p-value: {report.overall_calibration_pvalue:.4f}")
+for g, pval in report.group_calibration.items():
+    print(f"  {g}: p={pval:.4f}")
 ```
 
 The reweighter does the heavy lifting at training time. The multicalibration audit at step 3 catches anything that slips through — a model can pass the reweighting step and still be miscalibrated within specific age-band or occupation cells. The two corrections address different things: the reweighter prevents the model from learning discriminatory patterns; multicalibration corrects residual within-cell bias after the fact.

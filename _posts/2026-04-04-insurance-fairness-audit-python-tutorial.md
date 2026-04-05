@@ -285,10 +285,15 @@ mc_report = mc_audit.audit(
 # If cells are failing, apply iterative correction
 from insurance_fairness import IterativeMulticalibrationCorrector
 corrector = IterativeMulticalibrationCorrector()
-y_pred_corrected = corrector.correct(
+corrector.fit(
+    y_true=df["claim_amount"].to_numpy(),
+    y_pred=df["predicted_rate"].to_numpy(),
+    protected=df["ethnicity_proxy"].to_numpy(),
+    exposure=df["exposure"].to_numpy(),
+)
+y_pred_corrected = corrector.transform(
     df["predicted_rate"].to_numpy(),
     df["ethnicity_proxy"].to_numpy(),
-    mc_report,
     df["exposure"].to_numpy(),
 )
 ```

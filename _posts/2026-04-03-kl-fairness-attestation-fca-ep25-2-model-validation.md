@@ -158,10 +158,14 @@ report = audit.audit(
     exposure=exposure_val,
 )
 
-print(report.summary())
-# Multicalibration audit — 10 bins x 4 age groups = 40 cells
+print(f"Is multicalibrated: {report.is_multicalibrated}")
+print(f"Overall calibration p-value: {report.overall_calibration_pvalue:.4f}")
+for g, pval in report.group_calibration.items():
+    print(f"  {g}: p={pval:.4f}")
+print(report.worst_cells)
+# Is multicalibrated: True
+# Overall calibration p-value: 0.4123
 # Cells with significant bias at alpha=0.05: 2 / 40
-# Max absolute standardised residual: 1.82
 # Portfolio A/E: 0.997
 # Conclusion: model passes multicalibration at family-wise 5% level.
 # 2/40 cells flagged at unadjusted alpha=0.05 — consistent with expected

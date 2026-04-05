@@ -178,7 +178,10 @@ from insurance_fairness import (
 # Step 1: audit
 audit = MulticalibrationAudit(n_bins=10, alpha=0.05)
 report = audit.audit(y_train, y_pred_train, protected_train, exposure=exposure_train)
-print(report.summary())  # identifies which groups × quantile bands need correction
+print(f"Is multicalibrated: {report.is_multicalibrated}")
+print(f"Overall calibration p-value: {report.overall_calibration_pvalue:.4f}")
+for g, pval in report.group_calibration.items():
+    print(f"  {g}: p={pval:.4f}")  # identifies which groups x quantile bands need correction
 
 # Step 2/3: training-time reweighting
 rw = DiscriminationInsensitiveReweighter(protected_col="gender")
@@ -198,7 +201,10 @@ rho_fair = mfp.transform(Y_test, D_test, X_test)
 # Step 5: post-correction audit
 post_audit = MulticalibrationAudit(n_bins=10, alpha=0.05)
 post_report = post_audit.audit(y_test, rho_fair, protected_test, exposure=exposure_test)
-print(post_report.summary())
+print(f"Is multicalibrated: {post_report.is_multicalibrated}")
+print(f"Overall calibration p-value: {post_report.overall_calibration_pvalue:.4f}")
+for g, pval in post_report.group_calibration.items():
+    print(f"  {g}: p={pval:.4f}")
 ```
 
 ---
