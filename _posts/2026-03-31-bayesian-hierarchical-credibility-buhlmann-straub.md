@@ -89,17 +89,17 @@ model.fit(
 print(model.summary())
 ```
 
-The summary shows the posterior mean (the credibility premium), the credibility factor Z, and the effective prior exposure β₀:
+The summary shows the credibility rate (posterior mean), the credibility factor Z, and the observed rate:
 
 ```
-┌───────┬────────────┬──────────┬──────────────┬──────────────┐
-│ group ┆ prior_mean ┆ Z        ┆ posterior_mean ┆ beta_0      │
-│ str   ┆ f64        ┆ f64      ┆ f64          ┆ f64          │
-╞═══════╪════════════╪══════════╪══════════════╪══════════════╡
-│ A     ┆ 0.01087    ┆ 0.713    ┆ 0.01198      ┆ 968.2        │
-│ B     ┆ 0.01087    ┆ 0.381    ┆ 0.01039      ┆ 968.2        │
-│ C     ┆ 0.01087    ┆ 0.929    ┆ 0.01082      ┆ 968.2        │
-└───────┴────────────┴──────────┴──────────────┴──────────────┘
+┌───────┬──────────┬──────────┬──────────────┬────────────┐
+│ group ┆ Exposure ┆ Obs. Rate ┆ Cred. Rate  ┆ Prior Mean │
+│ str   ┆ f64      ┆ f64      ┆ f64          ┆ f64        │
+╞═══════╪══════════╪══════════╪══════════════╪════════════╡
+│ A     ┆ 2450.0   ┆ 0.01429  ┆ 0.01317      ┆ 0.01087    │
+│ B     ┆ 600.0    ┆ 0.01333  ┆ 0.01231      ┆ 0.01087    │
+│ C     ┆ 12800.0  ┆ 0.01133  ┆ 0.01126      ┆ 0.01087    │
+└───────┴──────────┴──────────┴──────────────┴────────────┘
 ```
 
 Group B (600 earned car years total, 8 observed claims) has Z = 0.38 — the model is appropriately sceptical. Group C has 12,800 car years and the credibility weight is 0.93.
@@ -107,18 +107,19 @@ Group B (600 earned car years total, 8 observed claims) has Z = 0.38 — the mod
 **Posterior credible intervals** are exact Gamma quantiles:
 
 ```python
-intervals = model.credibility_intervals(width=0.90)
+intervals = model.credibility_intervals(credibility_interval=0.90)
 print(intervals)
 ```
 
 ```
-┌───────┬──────────────┬───────────┬───────────┐
-│ group ┆ posterior_mean ┆ lower_5  ┆ upper_95  │
-╞═══════╪══════════════╪═══════════╪═══════════╡
-│ A     ┆ 0.01198      ┆ 0.00938   ┆ 0.01493   │
-│ B     ┆ 0.01039      ┆ 0.00631   ┆ 0.01556   │
-│ C     ┆ 0.01082      ┆ 0.00989   ┆ 0.01178   │
-└───────┴──────────────┴───────────┴───────────┘
+┌───────┬──────────────────┬──────────┬──────────┬──────────┐
+│ group ┆ credibility_rate ┆ lower    ┆ upper    ┆ Z        │
+│ str   ┆ f64              ┆ f64      ┆ f64      ┆ f64      │
+╞═══════╪══════════════════╪══════════╪══════════╪══════════╡
+│ A     ┆ 0.01317          ┆ 0.01033  ┆ 0.01645  ┆ 0.717    │
+│ B     ┆ 0.01231          ┆ 0.00747  ┆ 0.01843  ┆ 0.383    │
+│ C     ┆ 0.01126          ┆ 0.01029  ┆ 0.01228  ┆ 0.930    │
+└───────┴──────────────────┴──────────┴──────────┴──────────┘
 ```
 
 Group B's 90% posterior interval spans 0.006 to 0.016 — nearly a 2.5× range. B-S would give you a single number without the interval. This is the information that matters for stop-loss pricing, reinsurance structure, or regulatory sign-off.
@@ -126,13 +127,8 @@ Group B's 90% posterior interval spans 0.006 to 0.016 — nearly a 2.5× range. 
 **Scoring new groups** uses the prior directly, with an optional partial credibility update:
 
 ```python
-new_groups = pl.DataFrame({
-    "group":    ["D"],
-    "claims":   [5],
-    "exposure": [300],
-})
-print(model.predict(new_groups, group_col="group",
-                    claims_col="claims", exposure_col="exposure"))
+result = model.predict(claims=5, exposure=300)
+print(result)
 ```
 
 ---

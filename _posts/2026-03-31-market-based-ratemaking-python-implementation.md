@@ -304,16 +304,25 @@ The posterior spread from the ABC loop gives you the prior variance, which sets 
 
 ```python
 from insurance_credibility import BuhlmannStraub
+import polars as pl
 
-# ABC posterior variance on lambda
-lambda_posterior = particles[:, 0]
-lambda_var = lambda_posterior.var()   # sigma^2 in the credibility formula
+# The ABC posterior gives you lam_hat (the collective mean) and lambda_var
+# (the between-group variance). Use these to interpret BuhlmannStraub's
+# structural parameters once you have claims data to fit:
+#   mu_hat  -> converges toward lam_hat as data accumulates
+#   a_hat   -> the between-group variance (VHM), informed by the ABC posterior spread
+#
+# At launch (no internal data), price using lam_hat directly.
+# As claims accumulate, fit BuhlmannStraub on the growing panel:
 
-# Set up credibility blending
-model = BuhlmannStraub(
-    collective_mean=lam_hat,          # mu_0: ABC MAP estimate
-    within_variance=lambda_var,       # estimated from ABC posterior
-)
+# panel: one row per (breed_group, period) with claims and exposure
+bs = BuhlmannStraub()
+bs.fit(panel, group_col="breed_group", period_col="period",
+       loss_col="claim_rate", weight_col="exposure")
+
+# Z_i rises as exposure grows. At 18-24 months on a pet book with
+# reasonable volume, Z is typically 0.3-0.5.
+print(bs.summary())
 ```
 
 See the [`insurance-credibility` library](/insurance-credibility/) for the full API. The key point is that the ABC output plugs directly into the credibility prior with no additional transformation.

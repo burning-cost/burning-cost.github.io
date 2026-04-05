@@ -68,7 +68,15 @@ card = MRMModelCard(
 )
 
 scorer = RiskTierScorer()
-tier = scorer.score(card)  # Returns TierResult with tier 1/2/3 and rationale
+tier = scorer.score(
+    gwp_impacted=85_000_000,       # £85m GWP from card
+    model_complexity="high",        # CatBoost gradient boosting
+    deployment_status="champion",   # live production model
+    regulatory_use=True,            # feeds Solvency II capital model
+    external_data=False,
+    customer_facing=True,           # directly sets prices
+)
+# tier.tier -> 1 (Critical); tier.score -> composite 0-100; tier.rationale -> audit string
 
 inventory = ModelInventory("mrm_registry.json")
 inventory.register(card, tier)

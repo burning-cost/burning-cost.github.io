@@ -154,7 +154,7 @@ tech_spec = {
     "depth": model.get_param("depth"),
     "learning_rate": model.get_param("learning_rate"),
     "loss_function": model.get_param("loss_function"),
-    "feature_count": model.feature_count_,
+    "feature_count": len(model.feature_names_),
     "feature_names": model.feature_names_,
 }
 
@@ -306,15 +306,13 @@ val_card = ValidationModelCard(
 )
 
 report = ModelValidationReport(
-    card=val_card,
-    y_actual=y_test,
-    y_predicted=y_pred,
-    exposure=exposure_test,
-    thresholds={
+    model_card=val_card,
+    y_val=y_test,
+    y_pred_val=y_pred,
+    exposure_val=exposure_test,
+    monitoring_triggers={
         "gini_green": 0.30,      # below overall 0.38; triggers review
         "gini_amber": 0.25,      # materially degraded; escalation required
-        "ae_green": (0.92, 1.08),
-        "ae_amber": (0.85, 1.15),
         "psi_green": 0.10,
         "psi_amber": 0.20,
     },
