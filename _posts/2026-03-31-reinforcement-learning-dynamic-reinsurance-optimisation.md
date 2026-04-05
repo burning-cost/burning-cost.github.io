@@ -4,7 +4,7 @@ title: "Reinforcement Learning for Dynamic Reinsurance Optimisation: What the Re
 date: 2026-03-31
 categories: [reinsurance]
 tags: [reinforcement-learning, PPO, VAE, reinsurance, XL, quota-share, solvency-ii, SCR, capital-modelling, Dong-Finlay-2025, deep-learning, tail-risk, python, stable-baselines3]
-description: "A January 2025 paper by Dong & Finlay (arXiv:2501.06404) combines a Variational Autoencoder with Proximal Policy Optimisation to dynamically adjust excess of loss and quota share treaty parameters. 14% better surplus than classical benchmarks. Ruin probability zero. VAE tail fit: KS 0.6. We work through what the architecture actually does, where it breaks, and what a real UK implementation would need."
+description: "A January 2025 paper by Dong & Finlay (arXiv:2501.06404) combines a Variational Autoencoder with Proximal Policy Optimisation to dynamically adjust excess of loss and quota share treaty parameters. 11.5% better surplus than next-best benchmark (Monte Carlo). Ruin probability zero. VAE tail fit: KS 0.6. We work through what the architecture actually does, where it breaks, and what a real UK implementation would need."
 author: burning-cost
 ---
 
@@ -99,7 +99,7 @@ The VAE's tail-weighted loss function is a reasonable idea, but the KS statistic
 
 A KS statistic of 0.6 indicates substantial distributional mismatch. For context, a well-fitted copula model on insurance data would typically achieve KS below 0.1 on validation data. The authors acknowledge this directly — the VAE "systematically underestimates large claims" because the β regularisation compresses extreme values to maintain bulk reconstruction accuracy. This is the fundamental tension in VAEs applied to heavy-tailed data: the latent space has finite capacity, and the KL penalty pushes the model toward smoother, more Gaussian representations.
 
-The consequence the authors also acknowledge: "capital requirements estimated using such a model may be biased downward, potentially leading to solvency shortfalls." A generative model that systematically underestimates the tail is training the PPO agent to be too aggressive. The 14% surplus outperformance might partly reflect the agent taking risks the VAE fails to simulate accurately.
+The consequence the authors also acknowledge: "capital requirements estimated using such a model may be biased downward, potentially leading to solvency shortfalls." A generative model that systematically underestimates the tail is training the PPO agent to be too aggressive. The 11.5% surplus outperformance over Monte Carlo might partly reflect the agent taking risks the VAE fails to simulate accurately.
 
 ### Reward function weights are missing
 
@@ -172,7 +172,7 @@ Steps 1, 3, and 4 are tractable today. Step 2 is the gap.
 
 The Dong-Finlay paper is a genuine conceptual contribution. The problem setup is right: reinsurance optimisation is multi-period, the state space includes surplus dynamics and claim history, and PPO is a reasonable algorithm for continuous action spaces of this size. The tail-weighted VAE loss is a sensible idea, even if the implementation does not yet deliver adequate tail fit.
 
-But the KS=0.6 tail fit is not a minor technical debt. It is a fundamental problem for the specific application. Reinsurance protection exists to cover the tail. A generative model that systematically smooths the tail trains an agent that will behave incorrectly on the scenarios that matter most. The 14% surplus improvement is measured against classical benchmarks on a stylised single-line simulation with reward weights that are never disclosed. That is not a result a UK actuary can take to a board capital committee.
+But the KS=0.6 tail fit is not a minor technical debt. It is a fundamental problem for the specific application. Reinsurance protection exists to cover the tail. A generative model that systematically smooths the tail trains an agent that will behave incorrectly on the scenarios that matter most. The 11.5% surplus improvement over Monte Carlo is measured on a stylised single-line simulation with reward weights that are never disclosed. That is not a result a UK actuary can take to a board capital committee.
 
 Our view: this is a research direction worth watching, not a recipe to follow. The combination of RL and generative claim simulation is conceptually correct. The specific implementation is not production-ready. A credible UK deployment would need real loss data, a properly specified tail model (EVT augmentation of the VAE, or a separate GPD fit for the tail), publicly documented reward weights, and a regulatory integration that engages with the actual SCR calculation rather than a multi-year ruin surrogate.
 

@@ -40,7 +40,9 @@ $$\epsilon_i = \frac{\partial}{\partial P} P(\text{retain} \mid P, X_i)$$
 
 This is the individual price elasticity of demand for insurance, estimated non-parametrically. A large negative $\epsilon_i$ means a small price increase drives a large reduction in renewal probability. A near-zero $\epsilon_i$ means the customer is largely inelastic — they will probably renew regardless of moderate price changes.
 
-MOB trees are not yet available as a mature Python implementation. The `partykit` R package is the reference. For a UK pricing team that wants to avoid an R dependency, the Python approximation is a decision tree for the partitioning step combined with per-leaf logistic regression:
+MOB trees are not yet available as a mature Python implementation. The `partykit` R package is the reference. True MOB trees partition on *coefficient instability* — they test whether the logistic regression coefficients differ significantly across splits, using structural change tests (M-fluctuation tests in the `strucchange` R package). A decision tree on the outcome variable partitions on base rate differences, not coefficient instability, which is not the same thing.
+
+For a UK pricing team that wants to avoid an R dependency, the practical approximation is a segmented tree: a decision tree on the covariate space to define homogeneous segments, combined with per-leaf logistic regression on price change. This is simpler than MOB and lacks the structural change test that MOB uses to guide splits, but it produces individual-level price sensitivity estimates through the same per-leaf regression mechanism. We call this `SegmentedRetentionTree` rather than a MOB approximation to be precise about what it does:
 
 ```python
 import numpy as np
@@ -48,10 +50,17 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 
-class MOBApproximation:
+class SegmentedRetentionTree:
     """
-    Approximate MOB tree: recursive partitioning via decision tree,
-    per-leaf logistic regression for retention probability.
+    Segmented retention tree: recursive partitioning via decision tree on
+    covariates, per-leaf logistic regression for retention probability.
+
+    This is NOT a true MOB tree. MOB (Model-Based recursive partitioning)
+    partitions on coefficient instability via structural change tests; this
+    class partitions on outcome base rate via a standard DecisionTree. The
+    per-leaf logistic regression on price_change is equivalent, but the
+    splitting criterion differs. For a true MOB implementation, use the
+    partykit R package.
     """
 
     def __init__(self, max_depth: int = 4, min_leaf_size: int = 100):
@@ -65,13 +74,16 @@ class MOBApproximation:
         X: np.ndarray,
         price_change: np.ndarray,
         retained: np.ndarray,
-    ) -> "MOBApproximation":
+    ) -> "SegmentedRetentionTree":
         """
         X: driver covariates (ncd, age, tenure, vehicle_age, ...)
         price_change: delta premium vs prior year, in £
         retained: 1 if renewed, 0 if lapsed
         """
-        # Step 1: partition on X only (not price) — determines segments
+        # Step 1: partition on X only (not price) — determines segments.
+        # The tree splits on outcome base rate (not coefficient instability as
+        # in true MOB), but the resulting segments each get their own per-leaf
+        # logistic regression on price_change, which is the key mechanism.
         self.partition_tree = DecisionTreeClassifier(
             max_depth=self.max_depth,
             min_samples_leaf=self.min_leaf_size,
@@ -132,7 +144,7 @@ The greedy knapsack approximation works well in practice: rank policyholders by 
 def greedy_discount_allocator(
     technical_premiums: np.ndarray,
     expected_costs: np.ndarray,
-    retention_model: MOBApproximation,
+    retention_model: SegmentedRetentionTree,
     X: np.ndarray,
     budget: float,
     price_floor: np.ndarray,
@@ -164,12 +176,16 @@ def greedy_discount_allocator(
         margin = technical_premiums - discounts - expected_costs
         marginal_gain = delta_p * margin - p_retain * increment
 
-        # Feasibility: cannot exceed floor or PS21/5 ENBP cap
-        headroom = np.minimum(
-            technical_premiums - discounts - price_floor,
-            technical_premiums - discounts - new_business_equivalent,  # PS21/5
-        )
-        feasible = (headroom >= increment) & (marginal_gain > 0)
+        # Feasibility: quoted price after discount must stay above price_floor.
+        # PS21/5 ENBP is a ceiling (max renewal price), not a floor. It constrains
+        # the starting price (enforced before this loop), not the downward discount.
+        # The discount headroom is therefore determined solely by the floor.
+        current_price = technical_premiums - discounts
+        headroom = current_price - price_floor
+        # Also skip policies already priced above ENBP ceiling (should have been
+        # clipped before calling this function, but guard here too)
+        above_enbp = current_price > new_business_equivalent
+        feasible = (headroom >= increment) & (marginal_gain > 0) & (~above_enbp)
 
         if not feasible.any():
             break
@@ -222,7 +238,7 @@ clv = SurvivalCLV(survival_model=cure, discount_rate=0.08)
 for discount_level in [0, 50, 100, 150]:
     policy_df["quoted_premium"] = (
         policy_df["technical_premium"] - discount_level
-    ).clip(lower=policy_df["enbp"])  # PS21/5 clip
+    ).clip(upper=policy_df["enbp"])  # PS21/5 ceiling: quoted price cannot exceed ENBP
     clv_values = clv.compute(
         policy_df,
         premium_col="quoted_premium",
@@ -231,7 +247,7 @@ for discount_level in [0, 50, 100, 150]:
     print(f"Discount £{discount_level}: mean CLV = £{clv_values.mean():.0f}")
 ```
 
-What is genuinely missing from the stack is the middle stage — the price sensitivity estimator and discount allocator. These do not exist anywhere in `insurance-telematics`, `insurance-survival`, or `insurance-optimise`. The MOBApproximation and `greedy_discount_allocator` code above is self-contained and could be extracted into `insurance-telematics.retention` with modest additional work.
+What is genuinely missing from the stack is the middle stage — the price sensitivity estimator and discount allocator. These do not exist anywhere in `insurance-telematics`, `insurance-survival`, or `insurance-optimise`. The `SegmentedRetentionTree` and `greedy_discount_allocator` code above is self-contained and could be extracted into `insurance-telematics.retention` with modest additional work.
 
 ---
 

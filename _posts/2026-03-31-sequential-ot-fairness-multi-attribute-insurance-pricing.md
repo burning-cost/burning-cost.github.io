@@ -245,7 +245,7 @@ If Lindholm marginalisation is working correctly, the Wasserstein distances befo
 
 The practical constraint that undermines most of this: you often do not hold the protected attribute data at all.
 
-Gender: under the EU Gender Directive (2012), UK motor insurers cannot use gender as a direct rating factor. Most insurers stopped collecting it at point of sale. What you have are proxy signals — vehicle type, NCD profile, telematics behaviour — that correlate with gender. The Wasserstein distance you are correcting is the gap in the prediction distribution induced by those proxies, not by gender directly.
+Gender: following the ECJ Test-Achats ruling (C-236/09, March 2011), which invalidated Article 5(2) of Directive 2004/113/EC, UK motor insurers cannot use gender as a direct rating factor. The ruling took effect from 21 December 2012. Most insurers stopped collecting it at point of sale. What you have are proxy signals — vehicle type, NCD profile, telematics behaviour — that correlate with gender. The Wasserstein distance you are correcting is the gap in the prediction distribution induced by those proxies, not by gender directly.
 
 Ethnicity: UK general insurance firms hold ethnicity data for a small fraction of their portfolios. What you have is postcode-based geodemographic clusters (MOSAIC, Acorn, CACI) that are correlated with ethnicity at the group level. The proxy relationship is noisy: a postcode cluster is not an individual ethnicity. Correcting for the cluster is a reasonable proxy for correcting for ethnicity but does not guarantee equality at the individual level.
 

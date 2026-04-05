@@ -36,7 +36,7 @@ phi_lambda(x) = (x^(lambda+1) - x + lambda*(1-x)) / (lambda*(lambda+1))   for la
 
 Each special value of lambda corresponds to a named divergence. KL divergence (lambda = 0) and reverse KL (lambda = -1) give particular copulas. Lambda = 1 is the chi-squared divergence. Lambda = -0.5 is the Hellinger distance. The full family interpolates continuously between them.
 
-The generator satisfies phi_lambda(1) = 0, phi_lambda'(1) = 0, and phi_lambda''(1) > 0. The last two conditions — zero slope and positive curvature at x = 1 — are what ensure the copula lies strictly inside the Frechet-Hoeffding bounds at interior points. They are not obvious requirements and they hold across the entire lambda range, which is why the construction works.
+The generator satisfies phi_lambda(1) = 0, phi_lambda'(1) = 0, and phi_lambda''(1) > 0. The normalisation phi_lambda'(1) = 0 is a regularity condition that simplifies the family: it ensures the generator has a consistent scale across all lambda values, which is what makes the parameter range comparable. It is not a necessary condition for staying strictly inside the Frechet-Hoeffding bounds — Clayton's generator has phi'(1) ≠ 0 and Clayton copulas also lie strictly inside those bounds. What matters for the Frechet-Hoeffding property is that the generator is strictly convex and equals zero at x = 1, both of which hold for phi_lambda across the entire lambda range.
 
 ---
 
@@ -155,8 +155,19 @@ def phi_inv(t, lam):
     """Pseudo-inverse via root-finding. Returns 0 beyond the zero curve."""
     if t >= phi(1e-12, lam):   # t >= phi(0+): point is in zero set
         return 0.0
-    f = lambda x: x**(lam + 1) - (lam + 1) * x + lam - lam * (lam + 1) * t
-    return brentq(f, 1e-12, 1.0)
+    if lam == 0:
+        # phi(x) = 1 - x + x*log(x); solve 1 - x + x*log(x) = t
+        # The general formula degenerates at lam=0, so root-find directly.
+        f = lambda x: 1.0 - x + x * np.log(x) - t
+        return brentq(f, 1e-12, 1.0)
+    elif lam == -1:
+        # phi(x) = x - 1 - log(x); solve x - 1 - log(x) = t
+        # Equivalent to Lambert W: x - log(x) = 1 + t, but brentq is simpler.
+        f = lambda x: x - 1.0 - np.log(x) - t
+        return brentq(f, 1e-12, 1.0)
+    else:
+        f = lambda x: x**(lam + 1) - (lam + 1) * x + lam - lam * (lam + 1) * t
+        return brentq(f, 1e-12, 1.0)
 
 def pd_copula(u1, u2, lam):
     """Bivariate power-divergence copula C_lambda(u1, u2)."""

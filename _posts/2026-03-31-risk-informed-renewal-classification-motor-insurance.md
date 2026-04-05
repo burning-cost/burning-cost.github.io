@@ -70,7 +70,7 @@ $$\text{enbp\_proximity} = \frac{\text{quoted\_renewal\_premium}}{\text{enbp\_pr
 
 A value close to 1.0 means the insurer has already offered the maximum permissible premium. There is no room to reprice upward. A value of 0.85 means there is headroom. This feature encodes both competitive position (relative to the insurer's own new business rate) and regulatory constraint.
 
-FCA EP25/2 (December 2025), which reviewed the impact of GIPP remedies, confirmed £1.6bn in motor consumer savings but noted that opaque techniques within ENBP constraints remain a residual concern. A renewal classifier stratified by loading ratio directly surfaces whether certain risk profiles are being priced to the ENBP ceiling while others are retained at below-technical prices. That is both a Consumer Duty fair value question and a commercially useful segmentation.
+FCA EP25/2 (July 2025), which reviewed the impact of GIPP remedies, confirmed £1.6bn in motor consumer savings but noted that opaque techniques within ENBP constraints remain a residual concern. A renewal classifier stratified by loading ratio directly surfaces whether certain risk profiles are being priced to the ENBP ceiling while others are retained at below-technical prices. That is both a Consumer Duty fair value question and a commercially useful segmentation.
 
 Beyond the loading structure, UK motor has two features absent from the Thai paper that any actuary would insist on including:
 
