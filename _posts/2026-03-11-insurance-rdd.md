@@ -273,10 +273,7 @@ Run them together on the same threshold.
 
 ---
 
-
----
-
 **Related reading:**
 - [When exp(beta) Lies: Confounding in GLM Rating Factors](/2026/03/01/your-demand-model-is-confounded/) - the broader confounding problem in GLM rating factors; RDD is the tool when there is a sharp threshold in the running variable
-- [How Much of Your GLM Coefficient Is Actually Causal?](/2026/03/01/your-demand-model-is-confounded/) - DML as the alternative causal method when no threshold discontinuity exists
+- [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) - DML as the alternative causal method when no threshold discontinuity exists
 - [Synthetic Difference-in-Differences for Rate Change Evaluation](/2026/03/13/your-rate-change-didnt-prove-anything/) - SDID for evaluating rate changes when RDD is not applicable; the prospective complement to RDD's retrospective diagnosis

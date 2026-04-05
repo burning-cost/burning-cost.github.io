@@ -37,7 +37,7 @@ The ICML paper used a complementary error function (erfc) construction for this 
 
 ## The API
 
-The library is built on [zuko](https://github.com/probabilists/zuko) (v1.6.0, March 2026 - the only actively maintained Python normalizing flow library), wrapped behind an actuarial interface that hides PyTorch entirely. All inputs and outputs are numpy arrays.
+The library is built on [zuko](https://github.com/probabilists/zuko) (v1.6.0, March 2026), wrapped behind an actuarial interface that hides PyTorch entirely. All inputs and outputs are numpy arrays.
 
 ### Unconditional severity
 

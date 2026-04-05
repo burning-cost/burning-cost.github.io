@@ -14,7 +14,7 @@ description: "Bayesian Causal Forests for heterogeneous lapse effects in UK insu
 
 Your motor book took an 8% rate increase last October. Aggregate lapse rose 1.8 percentage points. The GLM returned an elasticity of −0.22. The pricing team noted it in the experience review and moved on.
 
-That number is probably wrong for most of your book - and wrong in ways that are costing you margin. If young price comparison website customers are lapsing at three times the rate of mature direct customers under the same increase, the average elasticity tells you nothing useful about where to push rates and where to hold back. The segments with high lapse sensitivity need a softer increase. The segments that barely noticed need more. Pricing to the average means you are simultaneously leaving margin on the table and over-lapsin the customers you most want to keep.
+That number is probably wrong for most of your book - and wrong in ways that are costing you margin. If young price comparison website customers are lapsing at three times the rate of mature direct customers under the same increase, the average elasticity tells you nothing useful about where to push rates and where to hold back. The segments with high lapse sensitivity need a softer increase. The segments that barely noticed need more. Pricing to the average means you are simultaneously leaving margin on the table and over-lapsing the customers you most want to keep.
 
 The GLM cannot tell you this. It is built to estimate population-averaged effects. Segment interactions help, but they require you to specify in advance which interactions matter - and in a UK personal lines book with dozens of rating factors, you will miss the ones that matter most.
 

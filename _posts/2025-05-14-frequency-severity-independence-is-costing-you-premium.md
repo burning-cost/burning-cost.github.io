@@ -241,7 +241,7 @@ Third, check that the correction factor distribution is sensible. Values outside
 
 ---
 
-## We think the independence assumption is a free lunch that most teams are leaving on the table
+## The independence assumption is a systematic bias, not a modelling choice
 
 Copula modelling for frequency-severity dependence has been in the actuarial literature since Garrido, Genest, and Schulz (2016). The reason most UK pricing teams have not adopted it is not scepticism about the theory. It is that the implementation path through standard statistical software was painful: getting a discrete-continuous Sarmanov distribution fitted with IFM estimation into a production pricing pipeline required bespoke code that most actuarial teams do not have bandwidth to write.
 
