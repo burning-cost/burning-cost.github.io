@@ -152,10 +152,10 @@ RECOMMENDATION: Importance weighting correction is appropriate. Consider
 flagging to model risk for review at next validation cycle. Under FCA Consumer
 Duty (PS22/9), verify that pricing outcomes remain fair across affected
 segments. A SEVERE verdict would require model risk review under
-FCA PS21/5 and FG22/5 (Consumer Duty).
+FCA PS22/9 and FG22/5 (Consumer Duty).
 ```
 
-A MODERATE verdict does not by itself trigger escalation, but it should appear in the model risk log and the next annual model validation. A SEVERE verdict (ESS ≤ 0.30 or KL ≥ 0.50) is a different matter: that is the level of shift where a model trained on the original distribution is materially misspecified for the current book. Under FCA PS21/5 and FG22/5 (Consumer Duty), a firm that knowingly continues pricing from a materially stale model has a question to answer; FCA Principle 11 (relations with regulators) also comes into play.
+A MODERATE verdict does not by itself trigger escalation, but it should appear in the model risk log and the next annual model validation. A SEVERE verdict (ESS ≤ 0.30 or KL ≥ 0.50) is a different matter: that is the level of shift where a model trained on the original distribution is materially misspecified for the current book. Under FCA PS22/9 and FG22/5 (Consumer Duty), a firm that knowingly continues pricing from a materially stale model has a question to answer; FCA Principle 11 (relations with regulators) also comes into play.
 
 ---
 

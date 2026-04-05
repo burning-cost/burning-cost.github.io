@@ -160,7 +160,7 @@ model = CatBoostRegressor(
     verbose=0,
     random_seed=42,
 )
-model.fit(X, y / exposure, sample_weight=exposure)
+model.fit(X, y / exposure, sample_weight=exposure)  # Approximation — holds when exposure variance is low. See the Databricks workflow post for exact treatment.
 ```
 
 `state_2_fraction` enters the model as a continuous feature - no need to discretise it into bands before fitting. CatBoost handles the non-linearity. If you are using a GLM rather than a GBM, bin it into quintiles or use a spline in statsmodels; the library does not force you toward either approach.

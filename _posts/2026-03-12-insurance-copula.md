@@ -39,7 +39,7 @@ For UK home insurance, the relevant dependence structure is roughly:
 - **Fire and flood**: near-independent (tau ~ 0.02). Different physical drivers; slightly negative correlation at the margin because flood-damaged properties are less likely to have the dry conditions that cause fires.
 - **Theft and any weather peril**: effectively independent (tau < 0.05).
 
-A vine copula captures all of these simultaneously. The vine decomposes the multivariate distribution into a cascade of bivariate copulas - one per pair of perils, arranged in a tree structure. Each bivariate copula can be a different family: a Gumbel copula for flood-storm (upper tail dependence, joint large losses), a Clayton for flood-subsidence (lower tail, simultaneous small-to-medium losses), a Gaussian for near-independent pairs. Bedford and Cooke (2002) showed that this vine decomposition is not an approximation: any multivariate distribution has such a representation, and with enough trees it is exact.
+A vine copula captures all of these simultaneously. The vine decomposes the multivariate distribution into a cascade of bivariate copulas - one per pair of perils, arranged in a tree structure. Each bivariate copula can be a different family: a Gumbel copula for flood-storm (upper tail dependence, joint large losses), a Gumbel for flood-subsidence (upper tail, simultaneous large losses from the same weather event), a Gaussian for near-independent pairs. Bedford and Cooke (2002) showed that this vine decomposition is not an approximation: any multivariate distribution has such a representation, and with enough trees it is exact.
 
 The practical gain is not from modelling the average case more precisely - the average-case additive premium is approximately right. The gain is from correctly pricing the tail: the policies where two or three correlated perils hit together. Those policies are the ones your additive model underprices relative to what a well-specified joint model would charge.
 
@@ -70,7 +70,7 @@ The `fit()` call does three things:
 
 3. **Family selection**: pyvinecopulib tests each bivariate copula family (Gaussian, Student-t, Clayton, Gumbel, Frank, Joe) for each pair and selects by BIC. The Gumbel family captures upper tail dependence (both perils having large losses simultaneously); Clayton captures lower tail dependence. The final vine structure tells you which family governs each pair, which is itself diagnostic.
 
-Six perils is four trees, fifteen pair-copulas. The BIC selection process handles all of this automatically.
+Six perils is five trees, fifteen pair-copulas. The BIC selection process handles all of this automatically.
 
 ---
 

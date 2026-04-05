@@ -434,7 +434,7 @@ For an MGA acquisition, SEVERE verdict likely requires FCA SUP 15.3 notification
 ```bash
 uv add insurance-covariate-shift
 # or
-uv add insurance-covariate-shift
+pip install insurance-covariate-shift
 ```
 
 Source and notebooks at [github.com/burning-cost/insurance-covariate-shift](https://github.com/burning-cost/insurance-covariate-shift). The repository includes:

@@ -152,7 +152,7 @@ opt = OptimalPrice(
 )
 ```
 
-For portfolio-level optimisation with factor-structure constraints, `insurance-optimise` feeds its demand curves into `insurance-optimise`. The demand library's job is to supply the price-to-probability functions; the rate optimiser's job is to find the factor-level adjustments that satisfy LR, volume, and ENBP constraints simultaneously.
+For portfolio-level optimisation with factor-structure constraints, `insurance-optimise` feeds its demand curves into the rate optimisation engine. The demand library's job is to supply the price-to-probability functions; the rate optimiser's job is to find the factor-level adjustments that satisfy LR, volume, and ENBP constraints simultaneously.
 
 ---
 
@@ -227,7 +227,6 @@ Source and issue tracker on [GitHub](https://github.com/burning-cost/insurance-o
 
 - [DML for Insurance: Practical Benchmarks and Pitfalls](/2026/03/09/dml-insurance-benchmarks/) - benchmark results across simulated and real insurance datasets; where DML outperforms OLS and where it does not
 - [Continuous Treatment Causal Inference for Insurance Pricing](/2026/03/12/insurance-autodml/) - the `insurance-causal` library that implements the DML pipeline described here, with automatic nuisance model selection
-- [OLS Elasticity in a Formula-Rated Book Measures the Wrong Thing](/2026/03/15/causal-price-elasticity-tutorial/) - why the confounding problem in renewal pricing is structural, not a data quality issue
 - [Your Elasticity Estimate Is Biased and You Already Know Why](/2026/03/15/causal-price-elasticity-tutorial/) - a step-by-step tutorial applying DML to a UK renewal book, with all the data engineering and validation steps
 - [Does DML Causal Inference Actually Work for Insurance Pricing?](/2026/03/25/does-dml-causal-inference-actually-work/) — benchmark: DML reduces elasticity bias from −4.2 to −2.1 on confounded motor data; when it works and when it does not
 - [Does Constrained Rate Optimisation Actually Work?](/2026/03/28/does-constrained-rate-optimisation-actually-work/) — benchmark: the PortfolioOptimiser achieves the same GWP target with £4-8k higher expected profit on 2,000-policy books

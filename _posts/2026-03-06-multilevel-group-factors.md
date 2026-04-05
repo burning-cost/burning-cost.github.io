@@ -155,7 +155,7 @@ A broker-scheme cell with 80 policies and a mean residual of +0.22 after account
 
 ## High-cardinality limits: postcode sector at scale
 
-Postcode sector in UK personal lines is the obvious case where the numbers break down. England and Wales have approximately 11,000 postcode sectors (the SW1A part of a postcode; ONS April 2022 gives 11,232 across the UK). A motor book of 200,000 policies might have a median of 22 policies per sector, with a heavy tail: 50 sectors covering the major conurbations with 500+ policies, and thousands of rural sectors with fewer than five.
+Postcode sector in UK personal lines is the obvious case where the numbers break down. England and Wales have approximately 11,000 postcode sectors (the SW1A 1 part of a postcode, where SW1A is the district; ONS April 2022 gives 11,232 across the UK). A motor book of 200,000 policies might have a median of 22 policies per sector, with a heavy tail: 50 sectors covering the major conurbations with 500+ policies, and thousands of rural sectors with fewer than five.
 
 The REML model with `min_group_size=5` will exclude a large fraction of these sectors from variance estimation. The τ² estimate will be dominated by the well-populated urban sectors. The resulting Bühlmann k will reflect the behaviour of those sectors, which may not be representative of the rural tail.
 

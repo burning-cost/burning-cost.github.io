@@ -107,11 +107,11 @@ glm_result = smpickle.load_pickle("models/glm_freq_2026q1.pkl")
 alpha = 0.35  # GLM weight from CV
 
 def score_blend(df: pl.DataFrame) -> pl.Series:
-    glm_log_pred = glm_result.predict(df.to_pandas())
-    gbm_log_pred = gbm.predict(df.to_pandas())
+    glm_pred = glm_result.predict(df.to_pandas())  # response-space predictions — np.log applied below
+    gbm_pred = gbm.predict(df.to_pandas())  # response-space predictions — np.log applied below
 
     # blend in log space, then exponentiate
-    blended_log = alpha * np.log(glm_log_pred) + (1 - alpha) * np.log(gbm_log_pred)
+    blended_log = alpha * np.log(glm_pred) + (1 - alpha) * np.log(gbm_pred)
     return pl.Series("blended_freq", np.exp(blended_log))
 ```
 

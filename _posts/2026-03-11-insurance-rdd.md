@@ -153,7 +153,7 @@ print(placebo.summary())
 # No significant effects at any placebo cutoff
 ```
 
-The McCrary test will pass cleanly for driver age (date of birth is externally verified and biologically impossible to manipulate). For NCD level at the maximum step, the test will fail. Artis et al. (2002) documented claim withholding to preserve NCD, and the library knows this. The `NCD_MAX` preset flags the expected density failure and instructs you to interpret the estimate as a lower bound on the true causal effect, for non-manipulators only.
+The Cattaneo-Jansson-Ma density test (rddensity) will pass cleanly for driver age (date of birth is externally verified and biologically impossible to manipulate). For NCD level at the maximum step, the test will fail. Artis et al. (2002) documented claim withholding to preserve NCD, and the library knows this. The `NCD_MAX` preset flags the expected density failure and instructs you to interpret the estimate as a lower bound on the true causal effect, for non-manipulators only.
 
 ---
 

@@ -76,7 +76,7 @@ u_age_k    =  z_age_k × σ_age
 
 The `σ` parameters are the variance components - they control how much each rating factor is allowed to vary across the book. If `σ_veh` turns out to be 0.1, vehicle group explains little frequency variation and all vehicle segments get pulled strongly toward the portfolio mean. If `σ_veh` is 0.4, vehicle group is a meaningful driver and dense cells get relativities well away from 1.0.
 
-The non-centered parameterisation - expressing group effects as `z × σ` rather than directly as `u ~ Normal(0, σ)` - is mandatory for hierarchical models. The centered version creates a funnel geometry in the posterior when `σ` is small: HMC's step size cannot simultaneously work in the wide mouth and the narrow neck. The non-centered version eliminates this. Every practitioner who has had NUTS produce thousands of divergent transitions in a hierarchical model and didn't know why should read Twiecki's 2017 blog post on this.
+The non-centered parameterisation - expressing group effects as `z × σ` rather than directly as `u ~ Normal(0, σ)` - is mandatory for hierarchical models. The centered version creates a funnel geometry in the posterior when `σ` is small: HMC's step size cannot simultaneously work in the wide mouth and the narrow neck. The non-centered version eliminates this. Every practitioner who has had NUTS produce thousands of divergent transitions in a hierarchical model and didn't know why should read Betancourt's 2017 paper on hierarchical modelling first; Wiecki's 2017 blog post is a useful practical complement.
 
 ---
 
