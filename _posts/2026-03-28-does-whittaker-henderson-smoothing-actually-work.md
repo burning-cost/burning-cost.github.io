@@ -68,7 +68,7 @@ The four methods on the standard lambda comparison benchmark (63-band age curve,
 
 | Method | Lambda | Effective df |
 |---|---|---|
-| REML | 847.3 | 4.23 |
+| REML | 55,539 | 7.7 |
 | BIC | 634.7 | 5.12 |
 | GCV | 412.1 | 6.81 |
 | AIC | 291.8 | 8.54 |

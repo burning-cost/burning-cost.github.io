@@ -14,8 +14,6 @@ This tutorial builds a working Tweedie GLM from scratch: we generate synthetic m
 
 ```bash
 uv add statsmodels numpy scipy matplotlib
-# or with uv:
-uv add statsmodels numpy scipy matplotlib
 ```
 
 ---

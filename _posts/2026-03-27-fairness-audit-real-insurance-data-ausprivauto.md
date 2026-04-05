@@ -196,7 +196,7 @@ We think pricing teams should be running these checks as part of the standard mo
 
 ## Running it yourself
 
-The library and notebook are at [github.com/pricing-frontier/insurance-fairness](https://github.com/pricing-frontier/insurance-fairness). The benchmark notebook (`notebooks/ausprivauto_fairness_databricks.py`) is Databricks-compatible and downloads the dataset directly from the CASdatasets GitHub repository.
+The library and notebook are at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). The benchmark notebook (`notebooks/ausprivauto_fairness_databricks.py`) is Databricks-compatible and downloads the dataset directly from the CASdatasets GitHub repository.
 
 ```
 uv add insurance-fairness rdata requests catboost

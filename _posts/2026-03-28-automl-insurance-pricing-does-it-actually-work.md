@@ -52,7 +52,7 @@ What you cannot do without that subclass: use Poisson deviance as the optimisati
 
 AutoGluon dominates the AutoML Benchmark (AMLB) 2024-2025 results, with a statistically significant advantage over all other AutoML systems in Nemenyi post-hoc tests across all time constraints. The model zoo in v1.5 is impressive: LightGBM, XGBoost, CatBoost, Random Forest, Extra Trees, TabNet, FastAI, EBM, TabPFN-2.5, TabDPT, RealTabPFN-2, TabM, RealMLP, Mitra, and stacked ensembles.
 
-The addition of EBM (Explainable Boosting Machine) in v1.5 is worth noting — EBMs are inherently interpretable and support monotonicity constraints, which matters for UK regulatory submissions.
+EBM (Explainable Boosting Machine) support, added in v1.5, is the standout addition — EBMs are inherently interpretable and support monotonicity constraints, which matters for UK regulatory submissions.
 
 What AutoGluon does not have: Poisson or Tweedie problem types, Poisson deviance as an evaluation metric, or `offset_column` support at any level of the API. The problem types are binary, multiclass, regression, and quantile. There is no documented workaround for exposure offsets — not even a bad one. AutoGluon will produce regression output using RMSE, and it will look like it is working.
 

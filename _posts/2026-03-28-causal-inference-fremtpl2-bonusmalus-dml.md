@@ -21,7 +21,7 @@ A naive GLM that includes BonusMalus as a covariate does not estimate the causal
 
 This matters if you are using BM as a rating factor for prospective pricing decisions. The question you want to answer is: conditional on everything else I know about this driver, what does their BM score tell me about their *next* year's claims? The naive coefficient overstates the answer because it includes the historical latent risk that already showed up in past years' claims.
 
-Double Machine Learning (Chernozhukov et al., 2018, *Econometrica*) separates these signals. It residualises both the treatment (BonusMalus) and the outcome (ClaimNb) against the observed confounders using any flexible learner, then regresses the outcome residual on the treatment residual. The confounders' influence is subtracted before the causal estimate is computed.
+Double Machine Learning (Chernozhukov et al., 2018, *The Econometrics Journal*) separates these signals. It residualises both the treatment (BonusMalus) and the outcome (ClaimNb) against the observed confounders using any flexible learner, then regresses the outcome residual on the treatment residual. The confounders' influence is subtracted before the causal estimate is computed.
 
 ---
 

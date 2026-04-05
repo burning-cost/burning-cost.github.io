@@ -157,7 +157,7 @@ Post 2 shows the implementation using `doubleml` and our [`insurance-causal`](/i
 
 ---
 
-- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-optimise` library that implements the DML fix described in this post, with full renewal pricing pipeline
+- [Double Machine Learning for Insurance Price Elasticity](/2026/03/01/your-demand-model-is-confounded/) — the `insurance-causal` library that implements the DML fix described in this post, with full renewal pricing pipeline
 - [Estimating PCW Conversion Elasticity with Double Machine Learning](/2026/03/26/estimating-pcw-conversion-elasticity-with-double-machine-learning/) — part 2: the Python implementation of the IV-DML pipeline
 
 ---

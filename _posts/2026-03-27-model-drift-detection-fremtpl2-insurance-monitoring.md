@@ -212,7 +212,7 @@ print(report.to_polars())
 
 For the full benchmark with segmented A/E and explicit PSI per feature, assemble the pieces as we have done above — `MonitoringReport` gives you the aggregate view; the individual functions give you the diagnostic depth.
 
-The notebook is at [github.com/pricing-frontier/insurance-monitoring](https://github.com/pricing-frontier/insurance-monitoring) (`notebooks/benchmark_fremtpl2_drift.py`), Databricks-compatible. The dataset downloads automatically from OpenML if the cluster has network access; if not, there is a synthetic fallback that matches the freMTPL2 schema exactly and runs the same code.
+The notebook is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring) (`notebooks/benchmark_fremtpl2_drift.py`), Databricks-compatible. The dataset downloads automatically from OpenML if the cluster has network access; if not, there is a synthetic fallback that matches the freMTPL2 schema exactly and runs the same code.
 
 ```
 uv add insurance-monitoring scikit-learn

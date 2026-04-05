@@ -100,7 +100,7 @@ The correction modifies only the cells that failed. Everything else is left unch
 
 ## The regulatory connection
 
-The FCA's GIPP pricing attestation multi-firm review (December 2022) found that only 11 of the 66 firms reviewed produced records that met the FCA's expectations for attestation. The review covered 70% of the UK home and motor markets. The FCA's concern was with whether firms could demonstrate - not just assert - that their pricing complied with the rules.
+The FCA's GIPP pricing attestation multi-firm review (January 2023) found that only 11 of the 66 firms reviewed produced records that met the FCA's expectations for attestation. The review covered 70% of the UK home and motor markets. The FCA's concern was with whether firms could demonstrate - not just assert - that their pricing complied with the rules.
 
 The multicalibration test provides exactly the kind of structured, reproducible evidence that attestation requires. "We ran the multicalibration audit across 12 protected characteristics, 10 premium deciles, and 24 months of data. The model passes for 11 of 12 characteristics. Age band fails in the £400-£500 decile for 18-21 year olds, AE ratio 1.28 (n=1,847, p=0.003). We have applied a credibility correction reducing that cell's premium by 18%. Post-correction, all cells pass." That is an attestation-ready finding.
 

@@ -146,7 +146,7 @@ agg_losses  = np.array([chunk.sum() for chunk in np.split(all_severities, splits
 
 ## SCR calculation
 
-The Solvency II SCR is the VaR at 99.5% — the loss level exceeded in only 1 of our 200 simulated years (or equivalently, the 99,750th value in a sorted array of 200,000 draws).
+The Solvency II SCR is the VaR at 99.5% — the 99.5th percentile of 50,000 simulated aggregate losses, meaning 250 simulated years produce a worse outcome than this figure.
 
 ```python
 mean_loss  = agg_losses.mean()
