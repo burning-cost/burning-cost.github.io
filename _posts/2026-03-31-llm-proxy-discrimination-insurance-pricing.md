@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Proxy Discrimination Risk When LLM-Generated Features Enter Insurance Pricing Models"
-seo_title: "LLM-Generated Features and Proxy Discrimination in Insurance Pricing: EP25/2, EIOPA-BoS-25-360, and the Audit Protocol"
+seo_title: "LLM-Generated Features and Proxy Discrimination in Insurance Pricing: EIOPA-BoS-25-360 and the Audit Protocol"
 date: 2026-03-31
 author: burning-cost
 categories: [fairness, machine-learning]
-tags: [proxy-discrimination, LLM, feature-engineering, FCA, EP25/2, EIOPA, EIOPA-BoS-25-360, insurance-fairness, GPT-4, fairness-audit, SM&CR, PRA-SS1/23, indirect-discrimination, Equality-Act, python, insurance-pricing]
+tags: [proxy-discrimination, LLM, feature-engineering, FCA, EIOPA, EIOPA-BoS-25-360, insurance-fairness, GPT-4, fairness-audit, SM&CR, PRA-SS1/23, indirect-discrimination, Equality-Act, python, insurance-pricing]
 description: "LLMs encode societal stereotypes. When you use one to generate rating features, those stereotypes enter your pricing model. The insurer is responsible. Here is the testing protocol that makes this manageable."
 ---
 
@@ -88,6 +88,7 @@ def audit_feature_delta(
     new_feature_col: str,
     protected_cols: list[str],
     prediction_col: str,
+    outcome_col: str,
     factor_cols_base: list[str],
     exposure_col: str = "exposure",
     proxy_r2_threshold: float = 0.01,
@@ -116,6 +117,8 @@ def audit_feature_delta(
         name-ethnicity probability).
     prediction_col : str
         Column containing predicted premiums from model_with.
+    outcome_col : str
+        Column containing the actual outcome (e.g., loss_ratio, claim_amount).
     factor_cols_base : list[str]
         Rating factor columns present in the base model (without LLM feature).
     exposure_col : str
@@ -138,6 +141,7 @@ def audit_feature_delta(
         data=df_base,
         protected_cols=protected_cols,
         prediction_col="_pred_base",
+        outcome_col=outcome_col,
         exposure_col=exposure_col,
         factor_cols=factor_cols_base,
     )
@@ -149,6 +153,7 @@ def audit_feature_delta(
         data=df,
         protected_cols=protected_cols,
         prediction_col=prediction_col,
+        outcome_col=outcome_col,
         exposure_col=exposure_col,
         factor_cols=factor_cols_with,
     )
@@ -159,12 +164,12 @@ def audit_feature_delta(
     for prot in protected_cols:
         base_scores = {
             s.factor: s.proxy_r2
-            for s in report_base.proxy_detection[prot].scores
+            for s in report_base.results[prot].proxy_detection.scores
             if s.proxy_r2 is not None
         }
         with_scores = {
             s.factor: s.proxy_r2
-            for s in report_with.proxy_detection[prot].scores
+            for s in report_with.results[prot].proxy_detection.scores
             if s.proxy_r2 is not None
         }
         for factor, r2_with in with_scores.items():
@@ -185,7 +190,7 @@ def audit_feature_delta(
     for prot in protected_cols:
         scores_dict = {
             s.factor: s
-            for s in report_with.proxy_detection[prot].scores
+            for s in report_with.results[prot].proxy_detection.scores
         }
         if new_feature_col in scores_dict:
             s = scores_dict[new_feature_col]
@@ -212,6 +217,7 @@ result = audit_feature_delta(
     new_feature_col="llm_vehicle_risk_score",
     protected_cols=["postcode_deprivation_decile", "name_ethnicity_prob"],
     prediction_col="predicted_premium",
+    outcome_col="loss_ratio",
     factor_cols_base=["driver_age", "vehicle_group", "ncd_years",
                       "annual_mileage_band", "region"],
     exposure_col="exposure",

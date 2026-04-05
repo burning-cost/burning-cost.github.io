@@ -188,5 +188,5 @@ This is not a theoretical refinement. If your book's selection is moderate — p
 - Rosenbaum, P.R. & Rubin, D.B. (1983). The Central Role of the Propensity Score in Observational Studies for Causal Effects. *Biometrika*, 70(1), 41–55.
 - Jacobson, T. & Roszbach, K. (2003). Bank Lending Policy, Credit Scoring and Value at Risk. *Journal of Banking & Finance*, 27, 615–633.
 - Dolgikh, A. & Potanin, M. (2025). Causal Effect Estimation Under Multivariate Ordinal Selection. arXiv:2511.12640.
-- FCA (2025). Evaluation Paper 25/2: An evaluation of our General Insurance Pricing Practices (GIPP) remedies. Financial Conduct Authority, February 2025.
+- FCA (2025). Evaluation Paper 25/2: An evaluation of our General Insurance Pricing Practices (GIPP) remedies. Financial Conduct Authority, July 2025.
 - Burning Cost [insurance-causal](https://github.com/burning-cost/insurance-causal): SelectionCorrectedElasticity and DualSelectionDML for selection bias correction in insurance pricing.

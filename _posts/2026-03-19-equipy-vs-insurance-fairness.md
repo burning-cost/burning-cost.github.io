@@ -5,7 +5,7 @@ date: 2026-03-19
 author: Burning Cost
 categories: [fairness, model-risk, libraries, regulation]
 description: "EquiPy is a technically excellent fairness correction tool built on optimal transport theory, from Arthur Charpentier's group at UQAM. insurance-fairness is an FCA-focused proxy discrimination auditor. They are not competing — they address different stages of the same compliance problem."
-tags: [equipy, insurance-fairness, FCA, proxy-discrimination, EP25/2, Consumer-Duty, pricing, fairness, python, uk-insurance, optimal-transport, Wasserstein, demographic-parity, Charpentier]
+tags: [equipy, insurance-fairness, FCA, proxy-discrimination, Consumer-Duty, pricing, fairness, python, uk-insurance, optimal-transport, Wasserstein, demographic-parity, Charpentier]
 ---
 
 A Python fairness library published on arXiv in March 2025: [EquiPy](https://arxiv.org/abs/2503.09866), from Agathe Fernandes Machado, Suzie Grondin, Philipp Ratz, Arthur Charpentier, and François Hu. Charpentier is at UQAM and is one of the most credible actuarial academics working on fairness — his group has published several papers on Wasserstein-based discrimination correction in insurance contexts, and the theoretical foundations here are strong.
@@ -75,7 +75,7 @@ report = audit.run()
 report.to_markdown("audit_q4_2024.md")   # FCA-ready Markdown with regulatory mapping
 ```
 
-This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to FCA EP25/2 and Consumer Duty Outcome 2 (Price and Value). It is designed to sit in a pricing committee pack and survive FCA file review.
+This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to PS22/9, FCA FG22/5, and Equality Act 2010 s.19. It is designed to sit in a pricing committee pack and survive FCA file review.
 
 ---
 
@@ -146,7 +146,7 @@ Charpentier's group has also produced a companion paper specifically on Wasserst
 | Multiple sensitive attributes | Yes — sequential, order-invariant | Yes |
 | Exposure weighting | No | Throughout |
 | Insurance model structure (Poisson/Gamma) | No | Yes |
-| FCA regulatory mapping | No | EP25/2, Consumer Duty PRIN 2A, Equality Act s.19 |
+| FCA regulatory mapping | No | PS22/9, FCA FG22/5, Equality Act 2010 s.19 |
 | Assumes sensitive attribute available at correction time | Yes | Tests whether non-protected factors proxy for protected ones |
 | Financial impact quantification | No | ProxyVulnerabilityScore, parity cost per policyholder |
 | Theoretical guarantees | Wasserstein-2 optimality | Monte Carlo significance testing, DML asymptotics |
@@ -163,7 +163,7 @@ We would not use it as a replacement for `insurance-fairness` in a UK regulatory
 
 The first is the detection gap. UK insurers need to *explain* their fairness position to the FCA, not just satisfy a mathematical criterion. That requires knowing which factors are causing which effects and through what mechanism. EquiPy tells you what the corrected predictions look like. It does not tell you why the uncorrected predictions were unfair or which rating factors were responsible.
 
-The second is the demographic parity standard. The FCA does not require premium equality across protected groups. It requires that non-protected rating factors not act as conduits for prohibited characteristics in ways the insurer cannot justify. Correcting to full demographic parity goes beyond what EP25/2 asks for, and it will degrade actuarial calibration by removing risk-differentiated pricing that correlates with protected characteristics for legitimate reasons.
+The second is the demographic parity standard. The FCA does not require premium equality across protected groups. It requires that non-protected rating factors not act as conduits for prohibited characteristics in ways the insurer cannot justify. Correcting to full demographic parity goes beyond what PS22/9 and Equality Act 2010 s.19 ask for, and it will degrade actuarial calibration by removing risk-differentiated pricing that correlates with protected characteristics for legitimate reasons.
 
 For a UK insurer, the right order is: audit first with `insurance-fairness`, characterise the proxy effects, take those findings to the pricing committee, document the decision, and consider whether any correction is warranted. If correction is warranted, EquiPy is a better-grounded tool for the post-processing step than writing your own quantile-matching correction.
 
