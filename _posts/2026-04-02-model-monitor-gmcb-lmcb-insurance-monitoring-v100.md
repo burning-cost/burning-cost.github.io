@@ -3,7 +3,7 @@ layout: post
 title: "ModelMonitor: Calibration Testing That Actually Tells You What To Do"
 date: 2026-04-02
 categories: [model-monitoring, insurance-pricing]
-tags: [model-monitoring, calibration, gini, drift, murphy-decomposition, insurance-monitoring, actuarial, arXiv-2510.04556, pra-ss123]
+tags: [model-monitoring, calibration, gini, drift, murphy-decomposition, insurance-monitoring, actuarial, arXiv-2510.04556, solvency-ii]
 description: "insurance-monitoring v1.0.0 adds ModelMonitor with check_gmcb and check_lmcb — separate tests for global and local calibration drift, wired into a three-way REDEPLOY/RECALIBRATE/REFIT decision."
 author: burning-cost
 ---
@@ -98,7 +98,7 @@ The decision logic follows Section 3.1 of the paper precisely:
 - If only GMCB is significant (Gini and LMCB are not): **RECALIBRATE**. Global level shift only; apply balance correction, no refit needed.
 - If Gini or LMCB is significant: **REFIT**. Structural drift. Balance correction is not enough.
 
-The `result.summary()` string produces a governance-ready paragraph with all p-values, z-statistics, and the decision reason — suitable for pasting into a model validation report — whether that is structured to SS1/23 (banks) or Solvency II Article 121 (insurers) — without further editing.
+The `result.summary()` string produces a governance-ready paragraph with all p-values, z-statistics, and the decision reason — suitable for pasting into a model validation report, structured to Solvency II Article 121, without further editing.
 
 ---
 

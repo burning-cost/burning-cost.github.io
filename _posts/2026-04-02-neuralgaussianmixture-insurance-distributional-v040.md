@@ -5,6 +5,8 @@ date: 2026-04-02
 categories: [techniques, libraries]
 tags: [insurance-distributional, neural-network, gaussian-mixture, energy-score, severity, distributional-regression, multimodal, motor, property, NE-GMM, Yang-Ji-Li-Deng-2026, arXiv, reserve-quantiles, UK-insurance, python]
 description: "insurance-distributional v0.4.0 adds NeuralGaussianMixture: hybrid NLL + analytic Energy Score training for multimodal claim severity. No Monte Carlo at training time. Drop-in alongside GammaGBM."
+# Unpublished: API fabricated — class does not exist in library
+published: false
 ---
 
 UK motor claim severity is not unimodal. Attritional claims — minor whiplash, third-party property, windscreen — cluster between £500 and £2,000. Fault accident claims with vehicle damage and minor injury sit around £4,000–£8,000. Serious injury with rehabilitation and potential PPO exposure starts around £50,000 and has no practical ceiling. A Gamma GBM fits one mode to this data. It fits it somewhere in the middle. It misrepresents every segment.

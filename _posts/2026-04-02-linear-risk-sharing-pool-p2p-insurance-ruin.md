@@ -67,14 +67,12 @@ print(validation)
 # ValidationResult(budget_balance=True, actuarial_fairness=True,
 #                  capacity=True, violation_magnitudes=...)
 
-# Ruin probabilities with and without pooling
-psi_pool = pool.ruin_probability(method='cramerlundberg', claim_dist='exponential')
-psi_solo = pool.ruin_probability_standalone(method='cramerlundberg', claim_dist='exponential')
-improvement = pool.ruin_improvement()
+# Ruin probabilities with and without pooling — ruin_comparison() returns a RuinResult
+ruin = pool.ruin_comparison(method='cramerlundberg', claim_dist='exponential')
 
-print("Pooled ruin probabilities:     ", np.round(psi_pool, 4))
-print("Standalone ruin probabilities: ", np.round(psi_solo, 4))
-print("Improvement (pp):              ", np.round(improvement, 4))
+print("Pooled ruin probabilities:     ", np.round(ruin.pooled, 4))
+print("Standalone ruin probabilities: ", np.round(ruin.standalone, 4))
+print("Improvement (pp):              ", np.round(ruin.improvement, 4))
 ```
 
 For lognormal severity (the more realistic case), the Cramér-Lundberg closed form no longer applies and you fall through to simulation:
@@ -86,7 +84,7 @@ pool_ln = LinearRiskSharingPool.mean_proportional(
     safety_loadings=np.array([0.4, 0.4, 0.4]),
 )
 
-psi_sim = pool_ln.ruin_probability(
+ruin_sim = pool_ln.ruin_comparison(
     method='simulation',
     n_sim=10_000,
     claim_dist='lognormal',
@@ -95,11 +93,11 @@ psi_sim = pool_ln.ruin_probability(
 )
 ```
 
-If the default mean-proportional allocation is not good enough — perhaps the capacity condition fails for some participant pairs — `optimal_allocation()` uses SLSQP to find the matrix $A$ that maximises the minimum ruin probability improvement across participants, subject to all three testable conditions:
+If the default mean-proportional allocation is not good enough — perhaps the capacity condition fails for some participant pairs — `optimal_allocation()` uses SLSQP to find the matrix $A$ that minimises the maximum ruin probability across participants, subject to all three testable conditions:
 
 ```python
 optimised_pool = pool.optimal_allocation(
-    objective='max_min_improvement',
+    objective='min_max_ruin',
     capacity_slack=0.0,
 )
 # Returns a new LinearRiskSharingPool instance with the optimised A matrix

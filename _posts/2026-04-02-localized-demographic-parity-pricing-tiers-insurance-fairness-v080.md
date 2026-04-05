@@ -109,19 +109,19 @@ Marginal mode learns separate per-group transformations during calibration, then
 
 ## Lagrange multipliers as an FCA evidence pack
 
-The correction's dual variables — `corrector.lagrange_multipliers_` — tell you which tiers required the largest adjustment and for which groups. These are a direct answer to the question any reviewer will ask: "Where was the model unfair, and how much did you change it?"
+The correction's dual variables — `corrector.lagrange_multipliers` — tell you which tiers required the largest adjustment and for which groups. These are a direct answer to the question any reviewer will ask: "Where was the model unfair, and how much did you change it?"
 
 ```python
 import numpy as np
 
-lm = corrector.lagrange_multipliers_  # shape (n_groups, M)
-groups = corrector.groups_
-thresholds = corrector.thresholds_
+lm = corrector.lagrange_multipliers  # shape (n_groups, M)
+# Groups are tracked internally; iterate by index using the thresholds list
+thresholds = corrector.thresholds
 
-for g, group in enumerate(groups):
+for g in range(lm.shape[0]):
     for m, thresh in enumerate(thresholds):
         if abs(lm[g, m]) > 0.1:
-            print(f"Group {group}, tier ≤£{thresh:.0f}: λ = {lm[g,m]:.3f}")
+            print(f"Group {g}, tier ≤£{thresh:.0f}: λ = {lm[g,m]:.3f}")
 ```
 
 A large positive lambda at a particular (group, tier) means that group was significantly underrepresented below that tier boundary — and a meaningful correction was applied. Near-zero lambda means that constraint was essentially satisfied by the base model and the correction there was free. This is the narrative structure a pricing actuary needs when writing a regulatory submission.
