@@ -145,7 +145,7 @@ We think HMM state fractions should replace raw trip averages as the primary tel
 
 The main caveat: validate on real data before committing to HMM features in production. Run the DGP check — if your fitted model's state emission distributions substantially overlap, the regime structure is not in your data and the lift will be smaller than in the benchmark.
 
-The library is at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics). The full validation notebook is at , runnable on Databricks serverless.
+The library is at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics). The full validation notebook is in the library repository at [github.com/burning-cost/insurance-telematics](https://github.com/burning-cost/insurance-telematics), runnable on Databricks serverless.
 
 ---
 

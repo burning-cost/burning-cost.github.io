@@ -177,7 +177,7 @@ Where it does not earn its keep automatically: the young-driver and elderly-driv
 
 We use this library for all our 1-D and 2-D rating table graduation work. The raw-rates alternative is not a valid baseline once you have seen the MSE numbers. The honest caveat is the tails: if your book has meaningful young-driver or elderly-driver exposure, do not let a single accident year's W-H curve govern your pricing in those segments without a credibility blend or multi-year average.
 
-The library is at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker). The benchmark used in this post is in .
+The library is at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker). The benchmark used in this post is in the library repository at [github.com/burning-cost/insurance-whittaker](https://github.com/burning-cost/insurance-whittaker).
 
 ---
 

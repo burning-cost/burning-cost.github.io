@@ -84,6 +84,7 @@ Emblem's default for claim frequency is Poisson with a log link and exposure as 
 
 ```python
 import statsmodels.formula.api as smf
+import statsmodels.api as sm
 import pandas as pd
 import numpy as np
 
@@ -117,7 +118,7 @@ freq_formula = (
 freq_model = smf.glm(
     formula = freq_formula,
     data    = df_pd,
-    family  = smf.families.Poisson(link=smf.families.links.Log()),
+    family  = sm.families.Poisson(link=sm.families.links.Log()),
     offset  = df_pd["log_exposure"],
 ).fit()
 
@@ -148,7 +149,7 @@ sev_formula = (
 sev_model = smf.glm(
     formula      = sev_formula,
     data         = claims_pd,
-    family       = smf.families.Gamma(link=smf.families.links.Log()),
+    family       = sm.families.Gamma(link=sm.families.links.Log()),
     freq_weights = claims_pd["claim_count"],  # weight by claim count
 ).fit()
 

@@ -113,7 +113,7 @@ Conformal prediction produces prediction intervals for individual risks. It is n
 Use conformal prediction if:
 - You are producing per-risk uncertainty estimates for reserving, treaty pricing, or capital modelling and you need a guarantee that does not depend on the Tweedie dispersion assumption
 - Your high-risk tail is heterogeneous enough that parametric intervals are likely to undercover it (which is most real motor books)
-- You need a defensible coverage statement for PRA SS1/23 model validation documentation
+- You need a defensible coverage statement for model validation documentation under Solvency II Arts 120-126 (GI firms) or PRA SS1/23 (CRR banks only — SS1/23 does not apply to general insurers)
 
 Do not bother if:
 - Your DGP is well-matched to Tweedie — parametric intervals work fine, as the simpler benchmark.py scenario demonstrates

@@ -155,7 +155,7 @@ The exchangeability assumption is the most important limitation in practice. It 
 
 We think Bühlmann-Straub credibility should be the default for any team pricing schemes with 2+ years of history on a book with 30+ schemes in the same risk class. The formula is established, the parameter estimation is fast (under a second on any portfolio that fits in memory), and the credibility factors are auditable to underwriters and clients in a way that no model-based blend is. Once credibility premiums are in production, [insurance-monitoring](/2026/03/21/insurance-model-monitoring-beyond-generic-drift/) can track A/E by scheme to flag when the credibility assumptions are no longer holding. The limitations are real but well-characterised. Use it where it works, know where it does not.
 
-The full benchmark code is at  in the repository, runnable locally in under a minute.
+The full benchmark code is in the library repository at [github.com/burning-cost/insurance-credibility](https://github.com/burning-cost/insurance-credibility), runnable locally in under a minute.
 
 ---
 

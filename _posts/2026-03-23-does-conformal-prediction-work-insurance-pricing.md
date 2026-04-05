@@ -198,7 +198,7 @@ The limitations are real — marginal coverage, exchangeability requirement, IBN
 
 We think LW conformal should be the default for any team that is currently using parametric Tweedie intervals and working with heterogeneous motor data. Standard conformal is the right starting point for simpler books or when you do not want a second model in the stack.
 
-The library is at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal). The full benchmark is in , runnable on Databricks serverless in under five minutes.
+The library is at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal). The full benchmark is in the library repository at [github.com/burning-cost/insurance-conformal](https://github.com/burning-cost/insurance-conformal), runnable on Databricks serverless in under five minutes.
 
 ---
 

@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Truncation-Corrected GPD Fitting for Capped Claims: Unbiased Tail Index Estimation Under Policy Limits"
+title: "Censoring-Corrected GPD Fitting for Capped Claims: Unbiased Tail Index Estimation Under Policy Limits"
 date: 2026-03-20
 author: Burning Cost
 categories: [pricing, severity, libraries, tutorials]
 description: "Standard GPD fitting is biased when claims are capped by policy limits. Most actuaries know this and do it anyway. insurance-severity v0.2.0 fixes it."
-tags: [EVT, extreme-value-theory, GPD, TruncatedGPD, CensoredHillEstimator, WeibullTemperedPareto, policy-limits, truncation, censoring, severity, tail-index, insurance-severity, v0.2.0, python, motor-bi, uk-insurance, reinsurance]
+tags: [EVT, extreme-value-theory, GPD, CensoredGPD, CensoredHillEstimator, WeibullTemperedPareto, policy-limits, censoring, severity, tail-index, insurance-severity, v0.2.0, python, motor-bi, uk-insurance, reinsurance]
 ---
 
 There is a flaw in how most UK actuaries fit severity models to claims data, and it is not subtle. The flaw is this: we fit a Generalised Pareto Distribution to exceedances above a threshold, we report a tail index, we use that tail index to price reinsurance layers and set large loss loadings - and the entire time, the data we fitted to was not the actual claim sizes. It was the actual claim sizes capped at policy limits.
@@ -26,11 +26,11 @@ The Pickands-Balkema-de Haan theorem says that exceedances above a high enough t
 
 The effect is asymmetric. The bias is in the tail index xi, which controls how heavy the tail is. Policy limits pull xi downward. You fit a thinner tail than the data actually has. You price reinsurance too cheaply. You set capital too low.
 
-The magnitude is not trivial. On a synthetic UK motor BI dataset with a policy limit of £1m and 20% of ground-up losses truncated (which is realistic for a £500k–£1m limit band), a standard GPD fit shows 10.3% error at the 99th percentile compared to the true ground-up distribution. `TruncatedGPD` reduces that to 1.2%. That is not a marginal improvement - it changes the pricing conclusion.
+The magnitude is not trivial. On a synthetic UK motor BI dataset with a policy limit of £1m and 20% of ground-up losses censored by the limit (which is realistic for a £500k–£1m limit band), a standard GPD fit shows 10.3% error at the 99th percentile compared to the true ground-up distribution. `CensoredGPD` reduces that to 1.2%. That is not a marginal improvement - it changes the pricing conclusion.
 
 ---
 
-## What TruncatedGPD does differently
+## What CensoredGPD does differently
 
 The standard GPD maximum likelihood estimator maximises:
 
@@ -40,13 +40,13 @@ L(xi, sigma) = sum_i log f_GPD(x_i; xi, sigma)
 
 over the observations above the threshold, treating each observation as a genuine draw from the tail.
 
-`TruncatedGPD` replaces this with a likelihood that accounts for the fact that some observations are not genuine draws - they are truncated at a policy limit. For observations where the claim equals the policy limit, the contribution to the likelihood is the log-survival function `log(1 - F_GPD(limit; xi, sigma))`, not the log-density. For observations below the limit, it contributes normally.
+`CensoredGPD` replaces this with a likelihood that accounts for the fact that some observations are not genuine draws - they are censored at a policy limit. For observations where the claim equals the policy limit, the contribution to the likelihood is the log-survival function `log(1 - F_GPD(limit; xi, sigma))`, not the log-density. For observations below the limit, it contributes normally.
 
-The intuition: a claim settled at the policy limit tells you that the ground-up loss was *at least* that large. It is a lower bound on the true loss, not a point observation. The truncated likelihood uses it as a lower bound. Standard GPD uses it as a point observation. That distinction is why standard GPD is biased.
+The intuition: a claim settled at the policy limit tells you that the ground-up loss was *at least* that large. It is a lower bound on the true loss, not a point observation. The censored likelihood uses it as a lower bound. Standard GPD uses it as a point observation. That distinction is why standard GPD is biased.
 
 ```python
 import numpy as np
-from insurance_severity import TruncatedGPD
+from insurance_severity import CensoredGPD
 
 rng = np.random.default_rng(2029)
 n = 2_000
@@ -64,9 +64,9 @@ ground_up = threshold + sigma_true / xi_true * (u ** (-xi_true) - 1)
 
 # Apply policy limit: what we actually observe in the claims register
 observed = np.minimum(ground_up, policy_limit)
-truncated = (ground_up >= policy_limit)
+censored = (ground_up >= policy_limit)
 
-print(f"Ground-up claims above £1m (not seen): {truncated.sum()} ({100*truncated.mean():.1f}%)")
+print(f"Ground-up claims above £1m (not seen): {censored.sum()} ({100*censored.mean():.1f}%)")
 ```
 
 ```
@@ -80,43 +80,43 @@ from scipy.stats import genpareto
 std_params = genpareto.fit(observed - threshold, floc=0)
 xi_std = std_params[0]
 
-# TruncatedGPD: accounts for the policy limit
-# TruncatedGPD takes only threshold; policy limits go into fit() as a per-observation array
-model = TruncatedGPD(threshold=threshold)
+# CensoredGPD: accounts for the policy limit
+# CensoredGPD takes only threshold; policy limits go into fit() as a per-observation array
+model = CensoredGPD(threshold=threshold)
 model.fit(observed - threshold, np.full(len(observed), policy_limit))
 
-print(f"True xi:          {xi_true:.3f}")
-print(f"Standard GPD xi:  {xi_std:.3f}  (bias: {xi_std - xi_true:+.3f})")
-print(f"TruncatedGPD xi:  {model.xi:.3f}  (bias: {model.xi - xi_true:+.3f})")
+print(f"True xi:         {xi_true:.3f}")
+print(f"Standard GPD xi: {xi_std:.3f}  (bias: {xi_std - xi_true:+.3f})")
+print(f"CensoredGPD xi:  {model.xi:.3f}  (bias: {model.xi - xi_true:+.3f})")
 ```
 
 ```
-True xi:          0.400
-Standard GPD xi:  0.284  (bias: -0.116)
-TruncatedGPD xi:  0.396  (bias: -0.004)
+True xi:         0.400
+Standard GPD xi: 0.284  (bias: -0.116)
+CensoredGPD xi:  0.396  (bias: -0.004)
 ```
 
-The standard GPD has pulled xi from 0.40 down to 0.28. That is a 29% underestimate of the tail index on data with 9% truncation. In pricing terms, a GPD with xi=0.28 is a materially different distribution from one with xi=0.40 above a high threshold. The reinsurance layer costs implied by the two distributions diverge sharply as you move up the tower.
+The standard GPD has pulled xi from 0.40 down to 0.28. That is a 29% underestimate of the tail index on data with 9% censoring. In pricing terms, a GPD with xi=0.28 is a materially different distribution from one with xi=0.40 above a high threshold. The reinsurance layer costs implied by the two distributions diverge sharply as you move up the tower.
 
 ---
 
 ## The benchmark numbers
 
-Our Databricks benchmarks ran this across 500 synthetic datasets with xi varying from 0.20 to 0.60 and truncation rates from 5% to 25%, covering the range of real UK motor BI and casualty portfolios.
+Our Databricks benchmarks ran this across 500 synthetic datasets with xi varying from 0.20 to 0.60 and censoring rates from 5% to 25%, covering the range of real UK motor BI and casualty portfolios.
 
 **Q99 error (mean absolute percentage error at 99th percentile):**
 
 | Model | Q99 error |
 |---|---|
 | Standard GPD | 10.3% |
-| TruncatedGPD | 1.2% |
+| CensoredGPD | 1.2% |
 
 **Bias in xi (mean signed error):**
 
 | Model | xi bias |
 |---|---|
 | Standard GPD | -0.094 |
-| TruncatedGPD | -0.008 |
+| CensoredGPD | -0.008 |
 
 Standard GPD is 5× more biased in xi and 8.6× more biased at Q99. This is not a small-sample fluke - it is a structural consequence of the misspecified likelihood. The bias does not disappear with more data; it gets worse as sample size increases, because you are consistently fitting the wrong thing more precisely.
 
@@ -126,7 +126,7 @@ The practical implication for reinsurance pricing: if you are attaching at the 9
 
 ## CensoredHillEstimator
 
-The Hill estimator is the workhorse quick check on tail index - plot it against k (number of order statistics) and look for a stable plateau. The standard Hill estimator has the same truncation problem as standard GPD: it treats all observations as genuine tail draws.
+The Hill estimator is the workhorse quick check on tail index - plot it against k (number of order statistics) and look for a stable plateau. The standard Hill estimator has the same censoring problem as standard GPD: it treats all observations as genuine tail draws.
 
 `CensoredHillEstimator` applies the correction derived in Einmahl, Fils-Villetard and Guillou (2008) for right-censored observations. For each order statistic, it weights the contribution by the inverse of the censoring survival function - observations that were more likely to be censored contribute less to the tail index estimate.
 
@@ -135,7 +135,7 @@ from insurance_severity import CensoredHillEstimator
 
 # Constructor takes no arguments; data goes into fit()
 hill = CensoredHillEstimator()
-hill.fit(observed, truncated)   # fit(claims, censored) — returns self; access results via properties
+hill.fit(observed, censored)   # fit(claims, censored) — returns self; access results via properties
 
 print(f"Censored Hill xi: {hill.xi:.3f} (plateau at k={hill.k_opt})")
 
@@ -147,7 +147,7 @@ hill.hill_plot()
 Censored Hill xi: 0.388 (plateau at k=340)
 ```
 
-The Hill plot is more stable for the censored estimator. The uncorrected Hill estimate on this data comes in around 0.27 - a 30% underestimate - because the truncated claims at £1m pile up and suppress the tail. That downward trend at higher k is exactly the shape you should be suspicious of when you see it on real data and know you have policy limits.
+The Hill plot is more stable for the censored estimator. The uncorrected Hill estimate on this data comes in around 0.27 - a 30% underestimate - because the censored claims at £1m pile up and suppress the tail. That downward trend at higher k is exactly the shape you should be suspicious of when you see it on real data and know you have policy limits.
 
 ---
 
@@ -192,44 +192,44 @@ A +31.3 log-likelihood improvement over standard Pareto on the same data, penali
 
 ## When to use each class
 
-**Use `TruncatedGPD` when:**
+**Use `CensoredGPD` when:**
 - Your claims data comes from a policy with a per-risk limit
 - Any material fraction (say, above 3%) of large claims are at the policy limit
 - You are pricing reinsurance layers, setting large loss loadings, or estimating tail index for capital purposes
 - You are fitting above a threshold where policy limits are binding
 
 **Use `CensoredHillEstimator` when:**
-- You want a quick diagnostic check on tail index and you have truncated observations
-- The standard Hill plot shows a persistent downward trend at higher k that you suspect is truncation-driven
-- You need to verify `TruncatedGPD` results with a non-parametric estimator
+- You want a quick diagnostic check on tail index and you have censored observations
+- The standard Hill plot shows a persistent downward trend at higher k that you suspect is censoring-driven
+- You need to verify `CensoredGPD` results with a non-parametric estimator
 
 **Use `WeibullTemperedPareto` when:**
 - You have ground-up losses (or can recover them) and want to fit the full severity distribution
 - Your mean excess plot is non-monotone in the body-to-tail transition zone
 - You need better calibration at the 90th–97th percentile for moderate reinsurance attachment pricing
 
-**Do not use `TruncatedGPD` when:**
+**Do not use `CensoredGPD` when:**
 - Your claims are ground-up (no policy limits binding in the range you are fitting)
 - You cannot identify which claims hit the policy limit - the method requires the censoring indicator
-- Sample size above the threshold is below about 50. The truncated likelihood is more complex and needs more data to converge stably.
+- Sample size above the threshold is below about 50. The censored likelihood is more complex and needs more data to converge stably.
 
 **Do not use `WeibullTemperedPareto` when:**
-- Your data is truncated at a policy limit - WTP has no built-in censoring correction; use `TruncatedGPD` for truncated data and WTP only when the ground-up distribution is observed
+- Your data is censored at a policy limit - WTP has no built-in censoring correction; use `CensoredGPD` for censored data and WTP only when the ground-up distribution is observed
 - You need a distribution with a closed-form survival function for reinsurance layer pricing formulas. WTP requires numerical integration; `insurance-evt`'s `ExcessLayerCalculator` is faster for XL layer tables
 
 ---
 
 ## A note on the underlying data problem
 
-The broader issue is data quality. Most actuaries are aware that claims data from a primary book is truncated at policy limits. Most proceed anyway, because the alternative - recovering ground-up losses from reinsurance claims or large loss bordereaux - is operationally awkward.
+The broader issue is data quality. Most actuaries are aware that claims data from a primary book is censored at policy limits. Most proceed anyway, because the alternative - recovering ground-up losses from reinsurance claims or large loss bordereaux - is operationally awkward.
 
-`TruncatedGPD` does not require you to recover the ground-up losses. It requires only the observed amounts and the censoring flag (which claims hit the policy limit). That information is usually in the claims register. The policy limit is usually in the exposure data. The join is straightforward. There is no good reason not to do this for any tail fitting exercise where limits are binding.
+`CensoredGPD` does not require you to recover the ground-up losses. It requires only the observed amounts and the censoring flag (which claims hit the policy limit). That information is usually in the claims register. The policy limit is usually in the exposure data. The join is straightforward. There is no good reason not to do this for any tail fitting exercise where limits are binding.
 
 The 10.3% to 1.2% Q99 error reduction is free in the sense that it requires no additional data collection - only correct use of the data you already have.
 
 ---
 
-`insurance-severity` v0.2.0 is at [github.com/burning-cost/insurance-severity](https://github.com/burning-cost/insurance-severity). `TruncatedGPD`, `CensoredHillEstimator`, and `WeibullTemperedPareto` are all available in this release. Python 3.10+.
+`insurance-severity` v0.2.0 is at [github.com/burning-cost/insurance-severity](https://github.com/burning-cost/insurance-severity). `CensoredGPD`, `CensoredHillEstimator`, and `WeibullTemperedPareto` are all available in this release. Python 3.10+.
 
 ---
 

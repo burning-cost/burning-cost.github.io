@@ -112,7 +112,7 @@ We think the central argument in the library's README is correct: aggregate A/E 
 
 The Murphy decomposition's REFIT vs RECALIBRATE distinction is the piece of the library that is hardest to replicate with a manual spreadsheet approach, and it is the decision that has the most operational consequence. Getting it wrong costs weeks.
 
-The library is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The full benchmark is in . The Databricks notebook is at [burning-cost-examples](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py).
+The library is at [github.com/burning-cost/insurance-monitoring](https://github.com/burning-cost/insurance-monitoring). The full benchmark is in the library repository. The Databricks notebook is at [burning-cost-examples](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/monitoring_drift_detection.py).
 
 ---
 
