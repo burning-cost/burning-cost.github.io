@@ -41,7 +41,7 @@ Raw 1Hz trip data (CSV or Parquet)
   → clean_trips()            GPS jump removal, acceleration derivation, road type
   → extract_trip_features()  trip-level scalars: harsh braking, speeding, night fraction
   → DrivingStateHMM          classify each trip into a latent driving regime
-  → aggregate_to_driver()    Bühlmann-Straub credibility weighting to driver level
+  → aggregate_to_driver()    credibility weighting to driver level
 ```
 
 The output is a Polars DataFrame: one row per driver, ready to join to your existing rating factors and feed into a GLM. Each stage is callable independently if you want to inspect intermediate results, or wrap the whole thing in `TelematicsScoringPipeline` for a single fit/predict call.
@@ -155,11 +155,12 @@ from insurance_telematics import aggregate_to_driver
 
 driver_risk = aggregate_to_driver(features, credibility_threshold=30)
 # One row per driver_id. Distance-weighted feature means.
-# Drivers with < 30 trips are shrunk toward the portfolio mean
-# via Bühlmann-Straub: z = n_trips / (n_trips + 30)
+# Drivers with fewer trips are shrunk toward the portfolio mean
+# via the Bühlmann credibility formula: z = n_trips / (n_trips + k)
+# where k is the fixed credibility_threshold parameter (default: 30)
 ```
 
-A driver with 8 trips gets weight 8/38 = 0.21. Their score is 79% portfolio mean, 21% their own observed behaviour. This is not exotic — it is [Bühlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) — implemented in the [insurance-credibility library](/2026/04/04/credibility-theory-python-buhlmann-straub-tutorial/) — applied to telematics, following Gao, Wang and Wüthrich (2021, *Machine Learning* 111). The threshold of 30 is a sensible default; it is parameterised if your trip length distribution is unusually short or long.
+A driver with 8 trips gets weight 8/38 = 0.21. Their score is 79% portfolio mean, 21% their own observed behaviour. This uses the Bühlmann credibility formula z = n/(n+k), following Gao, Wang and Wüthrich (2021, *Machine Learning* 111). **Important implementation note:** k is a fixed parameter set at call time, not estimated from variance components in the data. This differs from a full [Bühlmann-Straub fit](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) — as implemented in the [insurance-credibility library](/2026/04/04/credibility-theory-python-buhlmann-straub-tutorial/) — which estimates k from the portfolio by computing k = v/a (within-group process variance divided by between-group variance of hypothetical means). Using a fixed k is a deliberate design choice here: it avoids the instability that data-estimated k can produce on short-observation portfolios (fewer than ~50 drivers), and the formula remains interpretable as "a driver needs 30 trips to earn half-weight". The default of 30 is sensible for typical UBI portfolios; adjust it if your trip length distribution is unusually short or long.
 
 ---
 
