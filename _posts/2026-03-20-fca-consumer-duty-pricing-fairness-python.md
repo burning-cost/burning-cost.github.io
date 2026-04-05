@@ -9,9 +9,9 @@ description: "The FCA expects pricing teams to demonstrate their models don't pr
 tags: [FCA, Consumer-Duty, fairness, proxy-discrimination, insurance-fairness, FairnessAudit, ProxyDetection, calibration, disparate-impact, Equality-Act, PRIN-2A, python, uk-insurance, tutorial]
 ---
 
-There is a specific obligation in PRIN 2A.9 that most UK pricing teams are not meeting, and the FCA has been explicit about this in its Consumer Duty guidance and supervisory work. The obligation is to monitor whether your pricing model produces systematically different outcomes for customers with different protected characteristics - age, gender, disability, ethnicity - and to produce quantitative evidence of that monitoring on a regular basis.
+Under PRIN 2A.4 (the Price and Value outcome) firms must demonstrate that products offer fair value across customer groups. Under PRIN 2A.9 (the general monitoring obligation) firms must monitor outcomes on an ongoing basis and produce quantitative evidence that monitoring is happening. Most UK pricing teams are not meeting either standard to the level the FCA now expects, and the FCA has been explicit about this in its Consumer Duty guidance and supervisory work.
 
-Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA looked at what firms were producing and called it "high-level summaries with little substance." The FCA's multi-firm review of Consumer Duty implementation (2024) found that most firms were producing "high-level summaries with little substance" — a finding that preceded the enforcement actions following the Citizens Advice 2022 ethnicity penalty report, two of which named insurers specifically on fair value grounds.
+Most teams know about this obligation. What they do not have is a reliable way to discharge it. The typical approach is some combination of: an Excel workbook with A/E ratios by age band, a paragraph in the fair value assessment explaining why the model is actuarially justified, and possibly an R script somebody wrote in 2023 that no longer runs cleanly. The FCA's multi-firm review of Consumer Duty implementation (2024) found that most firms were producing "high-level summaries with little substance" — a finding the FCA cited in its thematic work on Consumer Duty implementation.
 
 This post shows how to run a proper proxy discrimination audit in Python using `insurance-fairness`. The API is built around the specific evidence the FCA needs, not around generic ML fairness benchmarks.
 
@@ -23,7 +23,7 @@ Before the code: what does a defensible Consumer Duty fair value assessment need
 
 The FCA has not issued a prescriptive checklist. What it has said, in FG22/5 and its subsequent supervisory work, is that monitoring must be ongoing, segmented by customer group, and backed by quantitative evidence. The two distinct obligations that are easy to conflate:
 
-**PRIN 2A.9 (fair value monitoring)** requires evidence that pricing outcomes - not just pricing processes - are fair across groups. An A/E ratio of 1.0 for females and 0.95 for males does not mean your model is discriminating. It might mean males are less profitable because of genuine risk differences. But you need to know the number, have a view on whether it is acceptable, and document that view.
+**PRIN 2A.4 (Price and Value outcome)** requires that products offer fair value to customers. For a pricing model, this means demonstrating that outcomes — not just processes — are fair across groups. An A/E ratio of 1.0 for females and 0.95 for males does not mean your model is discriminating. It might mean males are less profitable because of genuine risk differences. But you need to know the number, have a view on whether it is acceptable, and document that view. **PRIN 2A.9 (monitoring obligation)** requires that the monitoring itself is ongoing, systematic, and evidenced — not a one-off exercise.
 
 **Equality Act 2010, Section 19 (indirect discrimination)** requires that no rating factor puts persons sharing a protected characteristic at a particular disadvantage without justification. Postcode is the canonical case in UK insurance. Citizens Advice estimated a £280/year ethnicity penalty in motor insurance in 2022, driven by postcodes that encode group identity. The postcode factor in your tariff may be actuarially clean and still constitute indirect discrimination under Section 19.
 
@@ -145,7 +145,7 @@ The console output gives you the headline RAG status and per-characteristic metr
 report.to_markdown("fair_value_evidence_2026q2.md")
 ```
 
-This file contains: proxy detection results for all five rating factors, calibration by group with exposure-weighted A/E ratios across ten premium deciles, demographic parity ratio in log-space, disparate impact ratio, and a regulatory mapping section linking each finding to PRIN 2A.9 and Equality Act Section 19. There is a sign-off table at the end for the certifying actuary.
+This file contains: proxy detection results for all five rating factors, calibration by group with exposure-weighted A/E ratios across ten premium deciles, demographic parity ratio in log-space, disparate impact ratio, and a regulatory mapping section linking fair value findings to PRIN 2A.4 (Price and Value), monitoring obligations to PRIN 2A.9, and indirect discrimination risks to Equality Act Section 19. There is a sign-off table at the end for the certifying actuary.
 
 ---
 
@@ -156,6 +156,9 @@ If you want to inspect the proxy detection results without running the full audi
 ```python
 from insurance_fairness import detect_proxies
 
+# We run proxy detection across the full rating factor set, not just model inputs —
+# indirect discrimination can arise from tariff factors even when the ML model does
+# not use them directly.
 proxy_result = detect_proxies(
     df,
     protected_col="gender",
@@ -189,7 +192,7 @@ The Spearman correlation check that most teams currently run will return nothing
 
 ## Calibration by group
 
-The most defensible evidence format for a PRIN 2A.9 compliance file is calibration by group - whether the model is equally well-calibrated across protected groups at each premium level. A model with A/E = 0.95 overall for females might look acceptable, but if the under-prediction is concentrated at high predicted premiums, that is a systematic overcharge of high-risk female policyholders.
+The most defensible evidence format for a PRIN 2A.4 (Price and Value) compliance file is calibration by group - whether the model is equally well-calibrated across protected groups at each premium level. A model with A/E = 0.95 overall for females might look acceptable, but if the under-prediction is concentrated at high predicted premiums, that is a systematic overcharge of high-risk female policyholders.
 
 ```python
 from insurance_fairness import calibration_by_group

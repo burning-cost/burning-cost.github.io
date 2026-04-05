@@ -19,7 +19,7 @@ The headline finding — that the pure protection market "generally offers good 
 
 The specifics that matter for pricing teams:
 
-**Income protection claims ratios are low.** The FCA flagged that income protection products show claims ratios around 40%, materially below the 50%+ seen across other product lines. That gap is flagged explicitly as a fair value concern requiring further examination before the final report. If you write income protection and your claims ratio looks like this, you should have a documented explanation ready.
+**Income protection claims ratios are low.** The FCA flagged that income protection products show claims ratios that it considers materially low. That level is flagged explicitly as a fair value concern requiring further examination before the final report. If you write income protection and your claims ratio looks like this, you should have a documented explanation ready.
 
 **Premium dispersion is high and the FCA cannot explain it.** The regulator found significant price dispersion across providers for comparable risks — and acknowledged it lacks sufficient data to determine how much of that dispersion reflects legitimate underwriting differences versus something else. The phrase used in the interim report is "broad premium dispersion can indicate a certain level of price discrimination but that the FCA could not assess this based on available data." That is a regulator saying "we want better data". Expect the final report to ask for it.
 
@@ -49,7 +49,7 @@ None of this is new in principle. What changes is the evidentiary standard. The 
 
 The protection gap focus on pre-existing medical conditions, combined with the general premium dispersion concern, creates a straightforward inference: the FCA will want to understand whether pricing models for term, CI and IP products are using proxies for protected characteristics. Postcode is the obvious one — it correlates with income, ethnicity, and disability prevalence. Occupation codes are another.
 
-The [`insurance-fairness`](/insurance-fairness/) library has the tooling for this — for a worked example of how to detect and document proxy discrimination under Consumer Duty, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/). The `IndirectDiscriminationAudit` is the right entry point — it computes the five benchmark premiums from Côté, Côté & Charpentier (2025) and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
+The [`insurance-fairness`](/insurance-fairness/) library has the tooling for this — for a worked example of how to detect and document proxy discrimination under Consumer Duty, see [FCA proxy discrimination testing in Python](/2026/03/22/fca-proxy-discrimination-python-testing-guide/). The `IndirectDiscriminationAudit` is the right entry point — it computes five benchmark premiums and quantifies proxy vulnerability as the mean absolute difference between the unaware and aware models:
 
 ```python
 from insurance_fairness import IndirectDiscriminationAudit
@@ -84,7 +84,7 @@ report = audit.run()
 report.to_markdown("protection_fairness_audit_2026Q1.md")
 ```
 
-The `DoubleFairnessAudit` is worth running alongside this. Its key finding — from Bian et al. (2026) — is that equalising premiums across groups (action fairness) does not equalise loss ratios (outcome fairness). The FCA's Consumer Duty Outcome 2 (Price and Value) requires the latter. A firm that has only run action fairness checks may still fail a Consumer Duty review:
+The `DoubleFairnessAudit` is worth running alongside this. Its key finding is that equalising premiums across groups (action fairness) does not equalise loss ratios (outcome fairness). The FCA's Consumer Duty Outcome 2 (Price and Value) requires the latter. A firm that has only run action fairness checks may still fail a Consumer Duty review:
 
 ```python
 from insurance_fairness import DoubleFairnessAudit
@@ -124,7 +124,7 @@ for segment in ["standard_lives", "substandard_lives", "over50s"]:
     print(f"{segment}: A/E = {result.ratio:.3f}, p = {result.p_value:.4f}")
 ```
 
-For ongoing production monitoring without repeated-testing inflation — which is the right framework for monthly monitoring cycles — `PITMonitor` provides anytime-valid calibration change detection (Henzi, Murph & Ziegel, 2025):
+For ongoing production monitoring without repeated-testing inflation — which is the right framework for monthly monitoring cycles — `PITMonitor` provides anytime-valid calibration change detection:
 
 ```python
 from insurance_monitoring import PITMonitor
@@ -141,6 +141,8 @@ if alarm.triggered:
 ```
 
 The point is to build a documented trail that shows segment-level claims ratios are being tracked in something close to real time, not reconstructed after a regulatory request.
+
+A practical limitation worth documenting: IP books typically accumulate fewer claims events per year than motor or home, and deferred period policies mean claims can take months to materialise. Segment-level monitoring on thin data will produce wide confidence intervals. The A/E ratio and PITMonitor alarm framework above remains the right approach, but calibration tests on segments with fewer than 200 developed claims should be flagged as indicative rather than conclusive in your governance documentation.
 
 ---
 
@@ -263,4 +265,4 @@ The fairness audit, governance documentation, and monitoring framework work toge
 
 ---
 
-*The FCA's interim report (MS24/1.4) is available at [fca.org.uk](https://www.fca.org.uk/publications/market-studies/ms24-1-1-market-distribution-pure-protection). The feedback deadline is 31 March 2026. Final report expected Q3 2026.*
+*The FCA's interim report (MS24/1.3) is available at [fca.org.uk](https://www.fca.org.uk/publications/market-studies/ms24-1-market-distribution-pure-protection-products). The feedback deadline is 31 March 2026. Final report expected Q3 2026.*

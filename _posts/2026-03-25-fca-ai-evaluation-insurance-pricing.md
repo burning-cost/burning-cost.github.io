@@ -19,7 +19,7 @@ This post covers what the FCA is looking at, why existing frameworks already rea
 
 The FCA's 2026 insurance priorities letter set out four focus areas. AI sits under the third — growth and innovation — but it reaches across all four. The specific commitment is to "evaluate the risks and opportunities of AI for insurance, assess how firms are using AI in their operations, and identify barriers to adoption."
 
-That framing matters. The FCA is running an evaluation, not an enforcement sweep. They want to understand the landscape — who is using AI for what, how it is governed, what the consumer outcomes look like. The output will shape future supervisory expectations, which is precisely why it is worth taking seriously now.
+That framing matters. The FCA is running an evaluation, not an enforcement sweep. They want a working picture of who is using AI for what, how it is governed, what the consumer outcomes look like. The output will shape future supervisory expectations, which is precisely why it is worth taking seriously now.
 
 The AI Live Testing programme, for which the second cohort opened in January 2026, gives context. FS25/5 — the feedback statement on AI Live Testing published in September 2025 — received 67 responses. The FCA's stated objective is to give firms "confidence to deploy AI systems in a way that drives growth and delivers positive outcomes for UK consumers and markets." The emphasis on positive outcomes is not accidental.
 

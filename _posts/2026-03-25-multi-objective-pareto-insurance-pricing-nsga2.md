@@ -448,7 +448,7 @@ The governance decision — which of those three to choose — belongs with the 
 
 The FCA's current posture makes this urgent rather than optional.
 
-Consumer Duty Outcome 2 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
+Consumer Duty Outcome 2 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance." The FCA has made clear in its supervisory correspondence and multi-firm review findings that fair value evidence gaps are an active focus. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
 
 `insurance-fairness` v0.6.0 ships `DoubleFairnessAudit`, which computes the Pareto front across action fairness (pricing equality at quoting time) and outcome fairness (claims ratio equality post-sale) simultaneously. This directly addresses the FCA's finding that firms were auditing at quoting time and missing the post-sale obligation. The audit JSON from `DoubleFairnessAudit` is structured for inclusion in the FCA evidence pack alongside the NSGA-II and optimise outputs above.
 
@@ -458,7 +458,7 @@ A firm that can show the Pareto surface — the set of non-dominated trade-offs 
 
 ## What this is not
 
-The NSGA-II approach works over model blending weights, not per-policy decisions. It will not find every point on the true Pareto front — it finds good approximations. For the insurance-optimise side, the `ParetoFrontier` uses SLSQP with analytical gradients on price multipliers, which is exact at each grid point but covers a pre-specified grid rather than a continuous surface.
+The NSGA-II approach works over model blending weights, not per-policy decisions. It will not find every point on the true Pareto front — it finds good approximations. For the insurance-optimise side, the `ParetoFrontier` uses SLSQP with analytical gradients on price multipliers, which finds a local optimum at each grid point but covers a pre-specified grid rather than a continuous surface.
 
 Neither approach eliminates the need for governance judgment. The Pareto front shows you the feasible trade-offs; it does not tell you which trade-off to make. That is a decision for pricing governance, and the weights passed to TOPSIS are where that judgment lives. Get the weights wrong and you select a defensible but wrong operating point. The workflow makes the judgment explicit and auditable, which is the goal.
 

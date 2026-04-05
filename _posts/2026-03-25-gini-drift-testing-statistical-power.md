@@ -78,8 +78,8 @@ act_ref  = rng.poisson(pred_ref).astype(float)
 # Monitoring period: 18 months later, mix has shifted
 # Model still centred correctly, but relativities are stale
 pred_mon = rng.uniform(0.05, 0.20, 12_000)
-noise    = rng.uniform(0.0, 0.5, 12_000)          # staleness: random displacement
-act_mon  = rng.poisson(pred_ref[:12_000] * 0.5 + noise).astype(float)
+noise    = rng.uniform(-0.05, 0.05, 12_000)       # staleness: symmetric noise around pred_mon
+act_mon  = rng.poisson(np.clip(pred_mon + noise, 0.01, 1.0)).astype(float)
 
 test = GiniDriftTest(
     reference_actual=act_ref,
@@ -218,6 +218,8 @@ Wüthrich, Merz and Noll recommend the one-sigma rule — p < 0.32 — as the se
 Under that asymmetric loss function, a test calibrated at p < 0.05 is too conservative for monitoring. You want more false positives in exchange for fewer misses.
 
 This does not mean every one-sigma alert requires a refit. It means every one-sigma alert requires an investigation. Is the delta real, or is it sampling noise at the boundary? Is the monitoring period representative? Has there been a major tariff change mid-period that confounds the comparison?
+
+On that last point: tariff changes are a genuine confound for Gini comparisons. If you introduce a new rating factor or materially change relativities between the reference period and the monitoring period, the Gini test is comparing two different models against each other — not the same model before and after drift. A material mid-period tariff change should trigger a new reference baseline, not an investigation of drift on the old one. Document any tariff change date in your model event log and treat it as a monitoring period boundary.
 
 Set `alpha=0.32` for monthly monitoring dashboards. Set `alpha=0.05` for governance escalation and refit decisions.
 
