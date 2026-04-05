@@ -52,7 +52,7 @@ This is not a minor inconvenience. Pricing model infrastructure in UK insurers t
 
 - A security surface: you cannot update TF without breaking the lattice layer
 - A reproducibility risk: the keypoint constraint code is not maintained
-- A governance problem: SS1/23 (PRA model risk management) requires documented, testable model components — an unmaintained external library with no current support is difficult to defend in a model validation
+- A governance problem: Solvency II model governance requirements (Articles 120-126) require documented, testable model components — an unmaintained external library with no current support is difficult to defend in a model validation
 
 The paper's results cannot be reproduced without resolving the TF Lattice dependency issue. We tried. It is not straightforward.
 
