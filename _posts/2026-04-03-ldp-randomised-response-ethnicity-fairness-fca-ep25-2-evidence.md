@@ -62,11 +62,11 @@ For $K = 2$ (binary protected attribute):
 | 2.0 | 0.881 | 1.16 | 1.0× baseline |
 | 1.0 | 0.731 | 1.58 | 1.9× |
 | 0.5 | 0.622 | 2.54 | 4.8× |
-| 0.1 | 0.525 | 10.5 | 163× |
+| 0.1 | 0.525 | 10.5 | 82× |
 
 The practical floor is $\varepsilon \geq 1.0$. Below 0.5 the correction matrices produce negative sample weights for a material fraction of observations — the library clips these to zero and the corrected estimate becomes biased. Above $\varepsilon = 2.0$ the privacy guarantee weakens to the point where the formal LDP argument is less compelling (at $\varepsilon = 2.0$, an observer can still distinguish true-group responses with likelihood ratio $e^2 \approx 7.4$).
 
-For most UK personal lines motor books — call it 100,000 training policies — operating at $\varepsilon = 1.5$ is achievable: $C_1 \approx 1.30$, meaning you need 30% more data than if you had clean labels, and at 100,000 policies the generalisation bound is still well inside a practically useful range.
+For most UK personal lines motor books — call it 100,000 training policies — operating at $\varepsilon = 1.5$ is achievable: $C_1 \approx 1.30$, meaning you need 66% more data than if you had clean labels, and at 100,000 policies the generalisation bound is still well inside a practically useful range.
 
 ---
 
@@ -89,7 +89,7 @@ audit_sizing = PrivatizedFairnessAudit(n_groups=2, epsilon=1.5)
 # Returns numbers in the hundreds of thousands for these parameters
 ```
 
-At $\varepsilon = 1.5$ with $K = 2$ groups, the sample requirement for a bound of 0.05 at 95% confidence runs into the hundreds of thousands. The LDP noise correction demands far more data than intuition suggests: the statistical amplification factor at $\varepsilon = 1.5$ ($C_1 \approx 1.30$) means you need roughly 30% more labelled observations than a clean-label audit — but the sample sizes required for useful statistical bounds remain in the hundreds of thousands. For most UK motor books, this means the method is viable only at portfolio scale, not via a small opt-in exercise.
+At $\varepsilon = 1.5$ with $K = 2$ groups, the sample requirement for a bound of 0.05 at 95% confidence runs into the hundreds of thousands. The LDP noise correction demands far more data than intuition suggests: the statistical amplification factor at $\varepsilon = 1.5$ ($C_1 \approx 1.30$) means you need roughly 66% more labelled observations than a clean-label audit — but the sample sizes required for useful statistical bounds remain in the hundreds of thousands. For most UK motor books, this means the method is viable only at portfolio scale, not via a small opt-in exercise.
 
 The policyholder themselves applies the k-RR noise before submission. This means the insurer never processes the clean response. In practice this requires either: a client-side implementation in the customer portal (a few lines of JavaScript), or a trusted third party that holds the clean responses and returns only the noised $S$ values to the insurer.
 

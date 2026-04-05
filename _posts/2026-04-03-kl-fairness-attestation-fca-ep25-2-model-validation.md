@@ -242,7 +242,7 @@ That version is defensible because it specifies what was tested, what was found,
 ## Getting started
 
 ```bash
-pip install insurance-fairness
+uv add insurance-fairness
 ```
 
 `DiscriminationInsensitiveReweighter` and `MulticalibrationAudit` are in the top-level namespace. The propensity model defaults to logistic regression; use `method="forest"` when you expect nonlinear proxy relationships — which you should assume for postcode and occupation in UK motor.

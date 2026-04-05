@@ -247,7 +247,7 @@ def abc_smc(
 
 if __name__ == "__main__":
     print("Running ABC-SMC...")
-    posterior = abc_smc(market_quotes, n_particles=500, n_sim=1_000, n_generations=6)
+    posterior = abc_smc(market_quotes, n_particles=500, n_sim=1_000, n_generations=7)
 
     lam_map = np.median(posterior[:, 0])
     mu_map  = np.median(posterior[:, 1])

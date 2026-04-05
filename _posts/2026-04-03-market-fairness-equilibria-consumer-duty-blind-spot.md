@@ -12,7 +12,7 @@ Here is a scenario worth working through carefully. Three firms collude. They se
 
 Equal exclusion. Perfect score.
 
-This is the central result from Thibodeau, Nekoei, Taïk, Rajendran and Farnadi (arXiv:2506.00140, May 2025). They build MarketSim, a multi-firm market simulator, and demonstrate formally that the pathology above is not a degenerate edge case. It is a predictable property of any fairness metric defined over relative demographic gaps rather than absolute access levels.
+This is the central result from Thibodeau, Nekoei, Taïk, Rajendran and Farnadi (arXiv:2506.00140, June 2025). They build MarketSim, a multi-firm market simulator, and demonstrate formally that the pathology above is not a degenerate edge case. It is a predictable property of any fairness metric defined over relative demographic gaps rather than absolute access levels.
 
 ---
 
@@ -115,6 +115,6 @@ These are genuine contributions to how a regulator should think about market-lev
 
 Thibodeau, C., Nekoei, A., Taïk, A., Rajendran, G. and Farnadi, G. (2025). Profit, Fairness, and Market Equilibria: A Reinforcement Learning Approach. arXiv:2506.00140. [arxiv.org](https://arxiv.org/abs/2506.00140)
 
-Citizens Advice (2022). *Priced out: the true cost of car insurance.* [citizensadvice.org.uk](https://www.citizensadvice.org.uk/about-us/our-work/policy/policy-research-topics/consumer-policy-research/consumer-policy-research/priced-out-the-true-cost-of-car-insurance/)
+Citizens Advice (2022). *Paying Over the Odds: Ethnicity and Car Insurance Pricing.* [citizensadvice.org.uk](https://www.citizensadvice.org.uk)
 
 FCA (2025). EP25/2: Evaluation of the General Insurance Pricing Practices Remedies. July 2025. [fca.org.uk](https://www.fca.org.uk)
