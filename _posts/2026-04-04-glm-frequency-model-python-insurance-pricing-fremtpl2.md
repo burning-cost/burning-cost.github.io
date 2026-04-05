@@ -29,7 +29,7 @@ Or with pip:
 pip install glum scikit-learn pandas numpy matplotlib scipy
 ```
 
-glum requires Python 3.9 or later.
+glum requires Python 3.10 or later (as of glum 3.x; earlier versions supported 3.9).
 
 ---
 
@@ -412,6 +412,8 @@ Area_Area_F       0.2624       1.2998
 ```
 
 This rebasing is a constant shift in log-space — it does not change the model's predictions, only the presentation. Area A (the original dropped reference) is now implicit: its relativity is `1 / (Area_B_raw_relative_to_A / Area_B_relative_to_C)`. If you need Area A explicit in the output, add it back as a row with the appropriate coefficient.
+
+**Recovering the dropped reference level.** When `drop="first"` is used, the dropped level absorbs into the intercept. Its relativity is 1.0 relative to itself by definition — but after rebasing to a different level, you need to compute it explicitly. The coefficient for the dropped level is `-base_coef` (the negative of whatever you subtracted). For audit purposes, it is good practice to add the reference level back as a row with coefficient 0.0 before rebasing, compute relativities for all levels including the reference, and only then rebase to your chosen base level.
 
 ### Standard errors and confidence intervals
 

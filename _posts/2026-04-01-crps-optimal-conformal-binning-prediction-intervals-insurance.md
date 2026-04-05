@@ -39,7 +39,7 @@ When $\hat{F}$ is the within-bin empirical CDF with one observation left out (le
 
 $$\text{cost}(S) = \frac{m}{(m-1)^2} \sum_{l < r} |y_l - y_r|$$
 
-The sum of pairwise absolute differences $W = \sum_{l < r} |y_l - y_r|$ is the only quantity that matters. This is computable for any sub-interval of the sorted sequence using Fenwick trees in $O(n^2 \log n)$ time, producing a cost matrix $c(i, j)$ for every contiguous subsequence.
+The sum of pairwise absolute differences $W = \sum_{l < r} |y_l - y_r|$ is the only quantity that matters. The full cost matrix $c(i, j)$ for every contiguous sub-sequence can be computed in $O(n^2)$ time using the recurrence in the code sketch below; using Fenwick trees to maintain prefix sums brings each entry from $O(n)$ to $O(\log n)$, giving $O(n^2 \log n)$ overall — an improvement over the $O(n^3)$ naive approach when $n$ is large.
 
 With that cost matrix precomputed, dynamic programming recovers the globally optimal $K$-partition in $O(n^2 K)$ time:
 
@@ -182,7 +182,7 @@ import numpy as np
 def compute_w_matrix(y_sorted):
     """Pairwise dispersion W[i,j] = sum_{i<=l<r<=j} (y_r - y_l)
     for every contiguous sub-sequence of sorted y. O(n^2) time and space.
-    (Production implementation uses Fenwick trees for O(n^2 log n).)
+    (Production version uses Fenwick trees for prefix sums, O(n^2 log n) vs O(n^3) naive.)
     """
     n = len(y_sorted)
     W = np.zeros((n, n))

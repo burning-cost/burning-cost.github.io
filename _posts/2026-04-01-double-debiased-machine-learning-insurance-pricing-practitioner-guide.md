@@ -19,7 +19,7 @@ We implemented DML in `insurance-causal` before this tutorial appeared. This pos
 
 You have a portfolio of UK motor renewals. You want to know: if we increase a customer's premium by 1%, how does their claim frequency change? You fit a Poisson GLM with log-premium as a covariate alongside the usual rating factors — age, NCB, vehicle group, region. The coefficient on log-premium is your elasticity estimate.
 
-That estimate is biased. Not slightly — in our benchmarks on synthetic UK motor data with realistic confounding structure, OLS/GLM bias relative to the true elasticity is 20–80%.
+That estimate is biased. Not slightly — on synthetic data with realistic confounding structure, OLS/GLM bias relative to the true elasticity is typically large — simulation studies in the DML literature report biases of 20–80% depending on the degree of confounding. See [Does DML Causal Inference Actually Work on Insurance Data?](/2026/03/25/does-dml-causal-inference-actually-work/) for our own benchmark results.
 
 The reason is structural. Your pricing model generates the premium as a function of rating factors: higher-risk vehicles get higher premiums, lower-NCB drivers pay more. When you then regress claim frequency on premium, you are partially measuring the premium effect and partially measuring the rating factor effects that drove the premium in the first place. The correlation between premium and claims has two sources — causal price effect, and shared risk factor variation — and the GLM coefficient confounds them.
 
@@ -292,7 +292,7 @@ The `insurance-causal` defaults — CatBoost nuisance with adaptive regularisati
 
 ## The reference
 
-Ahrens, A., Chernozhukov, V., Hansen, C., Kozbur, D., Schaffer, M. E., & Wiemann, T. (2025). 'An Introduction to Double/Debiased Machine Learning.' arXiv:2504.08324.
+Ahrens, A., Chernozhukov, V., Hansen, C., Kozbur, D., Schaffer, M. E., & Wiemann, T. (2026). 'An Introduction to Double/Debiased Machine Learning.' arXiv:2504.08324. Revised February 2026.
 
 The original DML paper: Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J. (2018). 'Double/Debiased Machine Learning for Treatment and Structural Parameters.' *The Econometrics Journal*, 21(1): C1–C68.
 

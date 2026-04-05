@@ -122,6 +122,7 @@ class CoverageMonitor:
                 (self.nominal_coverage - beta_hat) / denom,
                 1.0 / self.nominal_coverage - 1e-6,  # stay in valid range
             )
+        lam = max(lam, 0.0)  # clip: when beta_hat > nominal, bet is negative; clamp to zero
 
         # Martingale update
         increment = 1 + lam * (z - self.nominal_coverage)
@@ -142,7 +143,7 @@ class CoverageMonitor:
         self.n_covered = 0
 ```
 
-Usage is straightforward. After each policy reaches its maturity date and the coverage indicator can be computed:
+Usage is straightforward. After each policy reaches its maturity date and the coverage indicator can be computed. For annual policies, there is an inherent maturity lag: you cannot compute the coverage indicator for a policy written in January until at least January of the following year. This means coverage monitoring for annual lines runs 12+ months behind the writing date; for shorter-tail products (monthly or quarterly policies) the lag is proportionally smaller and the monitor accumulates evidence faster.
 
 ```python
 monitor = CoverageMonitor(alpha=0.10, delta=0.05)

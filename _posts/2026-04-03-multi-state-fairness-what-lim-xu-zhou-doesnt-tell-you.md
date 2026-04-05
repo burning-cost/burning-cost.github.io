@@ -60,6 +60,7 @@ Equalised odds requires that the model's error rates are equal across sensitive 
 The practical test: run Lindholm per-transition correction and then check within-group A/E ratios on a holdout. If the corrected rates are still miscalibrated for specific groups — A/E materially different from 1.0 — you have a calibration problem layered on top of the discrimination problem, and demographic parity alone has not resolved it.
 
 ```python
+import polars as pl
 from insurance_fairness.multi_state import MultiStateTransitionFitter
 from insurance_fairness import calibration_by_group
 
@@ -131,7 +132,7 @@ The FCA pure protection market study final report is expected Q3 2026. The quest
 The per-transition Lindholm correction in `insurance-fairness` v1.1.0 gives you the technical means to answer that question. You need:
 
 1. Panel data from your claims history with enough duration to fit per-transition Poisson GLMs — this is a data availability question, not a modelling question.
-2. A proxy for the sensitive attribute. UK IP insurers rarely hold ethnicity data; the practical proxy is occupation class mapped to a socioeconomic or deprivation score, or MOSAIC/Acorn segment linked to postcode. The choice of proxy is the most consequential methodological decision you will make.
+2. A proxy for the sensitive attribute. UK IP insurers rarely hold ethnicity data; the practical proxy is occupation class mapped to a socioeconomic or deprivation score, or MOSAIC/Acorn segment linked to postcode. The choice of proxy is the most consequential methodological decision you will make. MOSAIC and Acorn geodemographic segments are frequently used because they are widely available and link easily to postcode, but both have documented correlations with ethnicity — Acorn's deprivation bands and MOSAIC's lifestyle segments reflect residential segregation patterns that are partly an ethnicity proxy. Using them as the sensitive attribute for a fairness correction therefore simultaneously corrects for and potentially embeds the proxy discrimination that FCA EP25/2 is concerned with. Document the proxy choice, its known limitations, and the sensitivity of the correction to alternative proxies in your model validation record.
 3. The `MultiStateTransitionFairness` pipeline, documented in the [multi-state notebook](https://github.com/burning-cost/insurance-fairness/blob/main/notebooks/multi_state_income_protection.ipynb).
 4. Per-transition deviance before and after correction, and the balance check. Both go in the model validation document.
 

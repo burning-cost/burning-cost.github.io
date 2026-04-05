@@ -30,7 +30,7 @@ The key word is *single draw*. The guarantee is valid exactly once: at the momen
 
 When you recalibrate repeatedly on a growing set — quarter 1 at n=800, quarter 2 at n=1,100, quarter 3 at n=1,400 — you are running a sequential test. At each step, you check whether the expanded dataset still supports your claimed alpha. This is not a single-draw guarantee any more. This is multiple testing, and multiple testing requires correction.
 
-Without correction, the probability that at least one of your recalibrations produces a false "guarantee achieved" result grows with the number of recalibrations. Run ten quarterly recalibrations at nominal alpha=0.05 and your true error rate across the testing sequence is substantially higher than 5%. Hultberg et al. put a number on this through simulation: after ten recalibrations, the sequential false coverage rate is roughly 12–18%, depending on the book's correlation structure. You have been filing a 5% guarantee with a number that is actually 12–18%.
+Without correction, the probability that at least one of your recalibrations produces a false "guarantee achieved" result grows with the number of recalibrations. Run ten quarterly recalibrations at nominal alpha=0.05 and your true error rate across the testing sequence is substantially higher than 5%. For independent sequential tests at per-test alpha=0.05, the compounded family-wise error rate across ten recalibrations is approximately 40% — the standard binomial calculation. With the strong dependence between successive calibration sets (each augments the last), the true inflation is lower, but the direction is unambiguous: the effective error rate is substantially above 5%.
 
 ---
 
@@ -44,7 +44,7 @@ alpha_t = alpha - C * sqrt(log(log(n_t)) / n_t)
 
 where n_t is the calibration set size at stage t and C is a constant derived from the LIL boundary. This is the Law of the Iterated Logarithm applied to the empirical risk process.
 
-The correction is small. At n=1,000 and alpha=0.05, the adjustment is typically 0.01–0.03 percentage points — you calibrate at roughly alpha=0.048 rather than alpha=0.050. This produces a slightly more conservative lambda_hat: your loading multiplier increases by a small fraction, your intervals widen marginally. On a commercial book pricing at £100–200 million gross written premium, "marginally wider intervals" translates to a few basis points of additional loading. That is not free, but it is not commercially prohibitive either.
+The size of the correction depends strongly on calibration set size. At n=1,000 and C=1.7, the raw formula gives `1.7 * sqrt(log(log(1000))/1000) = 0.075` — a 7.5 percentage point tightening of alpha. The implementation floors at alpha/2, so alpha falls from 0.05 to 0.025 (the floor) at small-to-medium calibration sets. At n=100,000, the correction is approximately 0.8 pp (alpha goes to 0.042). On large commercial books with calibration sets in the hundreds of thousands, the correction becomes small — a few basis points of additional loading. On quarterly-recalibrating portfolios with n in the low thousands, the floor at alpha/2 is the binding constraint: the correction is substantial, not marginal.
 
 The important result is the guarantee you recover: the sequential family-wise error rate is now controlled at alpha across the entire recalibration sequence, not just at a single snapshot.
 
@@ -141,7 +141,7 @@ In practice, the sequential lambda_hat is 0.5–2% larger than the naive one. On
 
 Two limitations worth naming.
 
-The LIL correction assumes the calibration set grows by augmentation — new data is added, old data is not removed. If you recalibrate on a rolling window (dropping policies older than three years as you add new ones), the analysis changes. The paper provides a separate result for this case (their Proposition 4.1), but the correction formula is more complex and we have not validated it against our typical window sizes. Rolling-window recalibration is common for motor books with significant trend; do not apply the simple formula above to a rolling window.
+The LIL correction assumes the calibration set grows by augmentation — new data is added, old data is not removed. If you recalibrate on a rolling window (dropping policies older than three years as you add new ones), the analysis changes. The paper references a rolling-window extension, but the correction formula is more complex and we have not validated it against our typical window sizes; treat it as unverified for production use. Rolling-window recalibration is common for motor books with significant trend; do not apply the simple formula above to a rolling window.
 
 The paper's simulation experiments use synthetic data with light-tailed loss distributions. Insurance claim losses are heavy-tailed. The constant C=1.7 may be conservative for heavy-tailed bounded losses — heavy tails make the empirical risk process more variable, which could require a larger C. This is worth testing against your own data before filing the corrected guarantee in a formal document.
 
@@ -149,7 +149,7 @@ The paper's simulation experiments use synthetic data with light-tailed loss dis
 
 ## Summary
 
-Standard conformal risk control gives a one-shot guarantee: valid at the moment of calibration, on the specific calibration set used. Repeated recalibration on a growing book is sequential testing, and the uncorrected guarantee erodes with each recalibration — roughly 12–18% effective error rate after ten recalibrations at nominal 5%.
+Standard conformal risk control gives a one-shot guarantee: valid at the moment of calibration, on the specific calibration set used. Repeated recalibration on a growing book is sequential testing, and the uncorrected guarantee erodes with each recalibration — a substantially inflated effective error rate after ten recalibrations at nominal 5%, driven by the multiple-testing structure of the sequential calibration loop.
 
 The Hultberg et al. LIL correction is a single formula applied to alpha before each recalibration. The practical impact on lambda_hat is small (0.5–2% larger), but the guarantee it restores is the one you want to be able to report: expected shortfall at most alpha across all past and future recalibrations, not just the most recent one.
 
