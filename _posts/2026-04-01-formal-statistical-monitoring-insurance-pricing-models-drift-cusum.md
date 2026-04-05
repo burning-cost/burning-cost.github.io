@@ -33,7 +33,7 @@ For annual model governance — the SR 11/7 (Fed) and PRA SS1/23 (banks) world, 
 
 ## Annual review: PricingDriftMonitor
 
-`PricingDriftMonitor` implements the two-step monitoring framework from Brauer, Menzel and Wüthrich (arXiv:2510.04556, December 2025). The framework asks two questions in sequence: has the model's ranking ability degraded, and has its calibration shifted?
+`PricingDriftMonitor` implements the two-step monitoring framework from Brauer, Menzel and Wüthrich (arXiv:2510.04556, October 2025). The framework asks two questions in sequence: has the model's ranking ability degraded, and has its calibration shifted?
 
 ### The Murphy decomposition
 
@@ -249,7 +249,7 @@ from insurance_monitoring.cusum import CalibrationCUSUM
 
 ## The papers
 
-Brauer, Jan, Benjamin Menzel, and Mario V. Wüthrich. "Monitoring Insurance Pricing Models." arXiv:2510.04556, December 2025. The source for the Murphy decomposition framework, the GMCB/LMCB split, and Algorithms 1–4.
+Brauer, Jan, Benjamin Menzel, and Mario V. Wüthrich. "Monitoring Insurance Pricing Models." arXiv:2510.04556, October 2025. The source for the Murphy decomposition framework, the GMCB/LMCB split, and Algorithms 1–4.
 
 Franck, Carter T., Shawn J. Driscoll, Zoe Szajnfarber, and William H. Woodall. "A Calibration Monitoring Approach for Probability Predictions." arXiv:2510.25573, 2025. The source for the DPCL CUSUM, LLO alternative hypothesis, and the ARL simulation results in Table 1.
 

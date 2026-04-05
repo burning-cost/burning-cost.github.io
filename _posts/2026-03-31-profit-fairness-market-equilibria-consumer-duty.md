@@ -10,7 +10,7 @@ author: burning-cost
 
 Here is a fairness audit scenario worth sitting with. Three insurers collude. They set prices high enough that low-income customers cannot afford cover. Every income group opts out at the same rate. Your fairness metric — the one that checks whether uptake rates differ across income groups — passes them all with flying colours. The exclusion is equal, therefore the market is fair.
 
-This is not a hypothetical constructed to embarrass fairness researchers. It is a formal result from Thibodeau, Nekoei, Taïk, Rajendran and Farnadi (arXiv:2506.00140, May 2025), demonstrated in a calibrated multi-firm market simulation. And it identifies a genuine blind spot in how UK regulators currently think about pricing fairness.
+This is not a hypothetical constructed to embarrass fairness researchers. It is a formal result from Thibodeau, Nekoei, Taïk, Rajendran and Farnadi (arXiv:2506.00140, June 2025), demonstrated in a calibrated multi-firm market simulation. And it identifies a genuine blind spot in how UK regulators currently think about pricing fairness.
 
 ---
 

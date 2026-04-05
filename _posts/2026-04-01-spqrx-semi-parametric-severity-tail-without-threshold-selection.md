@@ -200,6 +200,6 @@ The paper is technically careful and the mathematical derivation of the blended 
 ## Related posts
 
 - [insurance-severity: The Full Severity Modelling Toolkit](https://github.com/burning-cost/insurance-severity) — library overview
-- [EQRN: Covariate-Conditional GPD Tail Modelling for XL Pricing](/2026/03/27/eqrn-covariate-conditional-gpd-xl-pricing/) — the alternative tail approach
-- [ILF Curves from First Principles: What Your Composite Model Gets Wrong](/2026/02/28/ilf-curves-composite-severity-models/) — ILF methodology and failure modes
+- [EQRN: Covariate-Dependent Extreme Value Modelling for XL Pricing and Tail Reserving](/2026/03/12/insurance-eqrn/) — the alternative tail approach
+- ILF Curves from First Principles: What Your Composite Model Gets Wrong — ILF methodology and failure modes (post forthcoming)
 - [Mixture Density Networks for Insurance Severity: When the Gamma Isn't Enough](/2026/03/28/mixture-density-networks-insurance-severity/) — MDN as the bulk density alternative
