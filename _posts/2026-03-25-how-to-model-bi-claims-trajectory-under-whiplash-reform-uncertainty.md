@@ -223,15 +223,23 @@ weights = np.array([0.45, 0.25, 0.30])
 scenario_lrs = np.array([lr_a, lr_b, lr_c])
 
 expected_lr = np.dot(weights, scenario_lrs)
-# expected_lr = 0.714
+# expected_lr = 0.703
 
-# Stress: 90th percentile across scenarios (weighted)
-# Use the spread, not just the weighted mean
-spread = np.dot(weights, (scenario_lrs - expected_lr) ** 2) ** 0.5
-margin_90 = expected_lr + 1.28 * spread
-# margin_90 ~ 0.748 under these illustrative numbers
+# Stress: 90th percentile across scenarios (discrete quantile, not normal approximation).
+# Sort scenarios by outcome severity, cumulate weights, find the crossing point.
+# For a 3-point discrete distribution, the normal approximation (1.28 * sigma) is wrong
+# — it understates the tail when the distribution is skewed or heavy-tailed relative
+# to a Gaussian. Use the exact discrete quantile instead.
+sort_idx = np.argsort(scenario_lrs)
+sorted_lrs = scenario_lrs[sort_idx]
+sorted_weights = weights[sort_idx]
+cumulative_weights = np.cumsum(sorted_weights)
+# 90th percentile: smallest outcome where cumulative weight >= 0.90
+margin_90 = sorted_lrs[np.searchsorted(cumulative_weights, 0.90)]
+# margin_90 = 0.79 (Scenario C) — P(LR <= 0.79) = 1.00, P(LR <= 0.68) = 0.70
+# The exact 90th percentile is 0.79, not 0.748 from the normal approximation.
 ```
 
-The margin of 3.4 percentage points over the central estimate is not a buffer for catastrophe — it is the cost of the MoJ review being unresolved. Once the review concludes, one of the scenarios collapses to probability 1 and the spread disappears. The margin releases.
+The margin of 8.7 percentage points over the central estimate is not a buffer for catastrophe — it is the cost of the MoJ review being unresolved. Once the review concludes, one of the scenarios collapses to probability 1 and the spread disappears. The margin releases.
 
 That is the honest way to hold it: not as a permanent loading, but as a time-limited uncertainty reserve that has a defined trigger for release.

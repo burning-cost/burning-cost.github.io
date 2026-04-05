@@ -180,8 +180,9 @@ def fit_pliv(df: pl.DataFrame) -> dml.DoubleMLPLIV:
         iterations=500, depth=6, learning_rate=0.05,
         verbose=0, random_seed=42,
     )
-    # ml_r: E[Z|X] — reduced form (instrument model)
-    # With two instruments, doubleml fits one model per instrument column
+    # ml_r: E[D|X] — treatment model for the IV score (reduced form denominator).
+    # doubleml fits the instrument-to-X regressions separately as ml_m_z1, ml_m_z2.
+    # A single ml_r instance is correct regardless of the number of instruments.
     ml_r = CatBoostRegressor(
         iterations=500, depth=6, learning_rate=0.05,
         verbose=0, random_seed=42,
@@ -228,13 +229,16 @@ def check_instrument_strength(pliv: dml.DoubleMLPLIV) -> None:
     residuals (after partialling out X). DoubleML does not report this
     directly, but you can compute it from the stored residuals.
     """
-    # Extract residuals from the fitted model
-    # pliv._models contains the cross-fitted nuisance models
-    # pliv.predictions contains out-of-fold predictions
+    # Extract residuals from the fitted model.
+    # In doubleml PLIV, predictions are stored as numpy arrays (shape n x 1 x 1):
+    #   "ml_r"     — out-of-fold predictions of E[D|X] (treatment model)
+    #   "ml_m_z1"  — out-of-fold predictions of E[Z1|X] (first instrument model)
+    # Residuals = actuals minus nuisance predictions.
+    D_pred = pliv.predictions["ml_r"][:, 0, 0]
+    Z1_pred = pliv.predictions["ml_m_z1"][:, 0, 0]
 
-    # Simplified F-stat from partial correlation of IV residuals and D residuals
-    D_resid = pliv.predictions["ml_m"]["d"].flatten()
-    Z_resid = pliv.predictions["ml_r"]["IV1"].flatten()
+    D_resid = (pliv.data.d - D_pred).flatten()
+    Z_resid = (pliv.data.z[:, 0] - Z1_pred).flatten()
 
     n = len(D_resid)
     k_z = 1  # number of instruments used (simplify to first)

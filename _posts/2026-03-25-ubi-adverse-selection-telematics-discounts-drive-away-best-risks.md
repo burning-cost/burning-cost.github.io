@@ -250,7 +250,7 @@ With `credibility_threshold=50`, a driver with 10 trips gets a Bühlmann weight 
 
 Regardless of which structure you use, run a persistent split-book monitor: telematics cohort, non-telematics cohort, and combined. Alert on A/E divergence above 1.05 in the non-telematics book. Alert on the spread between the two A/E ratios widening beyond 20 percentage points. Both of those thresholds are leading indicators that the selection is accelerating.
 
-The academic reference here is the EJOR 2025 paper by Shi et al., "A usage-based insurance (UBI) pricing model considering customer retention" (Insurance: Mathematics and Economics, 2025, doi:10.1016/j.insmatheco.2025.01.008). It formulates the joint optimisation problem directly: maximise underwriting profit subject to retention constraints on both the telematics and non-telematics cohorts simultaneously. Their empirical work on Chinese motor data finds that ignoring the retention feedback in the non-telematics cohort leads to a 3-5% understatement of the true adverse selection cost. In the UK market, with a higher proportion of price-sensitive renewal customers (driven by the PS21/11 ENBP constraint), we suspect the understatement is larger.
+The academic reference here is the EJOR 2025 paper by Shi et al., "A usage-based insurance (UBI) pricing model considering customer retention" (Insurance: Mathematics and Economics, 2025, doi:10.1016/j.insmatheco.2025.01.008). It formulates the joint optimisation problem directly: maximise underwriting profit subject to retention constraints on both the telematics and non-telematics cohorts simultaneously. Their empirical work on Chinese motor data finds that ignoring the retention feedback in the non-telematics cohort leads to a 3-5% understatement of the true adverse selection cost. In the UK market, with a higher proportion of price-sensitive renewal customers (driven by the PS21/5 ENBP constraint), we suspect the understatement is larger.
 
 ---
 
@@ -269,7 +269,7 @@ Run the monitoring. Set the alerts. Do not wait for the loss ratio to tell you w
 ---
 
 - [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) — HMM scoring pipeline for driver risk from raw trip data
-- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — constrained portfolio optimisation with FCA PS21/11 compliance
+- [`insurance-optimise`](https://github.com/burning-cost/insurance-optimise) — constrained portfolio optimisation with FCA PS21/5 compliance
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — A/E monitoring, Gini drift, and calibration checks for production pricing models
 - [HMM-Based Telematics Risk Scoring for Insurance Pricing](/2026/03/13/insurance-telematics/) — the `insurance-telematics` library: CTHMM fitting, state feature extraction, and GLM-ready driver risk features
 - [Does HMM Telematics Risk Scoring Actually Work?](/2026/03/28/does-hmm-telematics-risk-scoring-actually-work/) — the benchmark post for the telematics scoring pipeline

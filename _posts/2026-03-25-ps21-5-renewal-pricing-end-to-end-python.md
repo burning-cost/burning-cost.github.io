@@ -271,7 +271,7 @@ report.save_html("renewal_optimiser_governance_pack.html")
 
 The HTML report is print-to-PDF ready. The two assumptions marked `HIGH` and `MEDIUM` risk are the ones the Model Risk Committee should be asking about. In practice, ENBP quality is the weak point of most PS21/5 implementations: the regulatory constraint is only as tight as your ability to accurately estimate what you would charge the same customer as new business through the same channel. If that estimate is noisy, the constraint is noisy.
 
-For the full governance workflow, see [One Package, One Install: PRA SS1/23 Model Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). PRA SS1/23 model risk management requirements apply to pricing models at UK insurers — SS1/23 formally applies to banks, but the FCA applies the same standard to insurer pricing governance.
+For the full governance workflow, see [One Package, One Install: Model Validation and MRM Governance Unified](/2026/03/14/insurance-governance-unified-pra-ss123-validation/). For UK insurers, the applicable model governance framework is Solvency II Article 120 (internal model validation) and Supervisory Statement SS4/17 (ORSA). PRA SS1/23 is the analogous standard for banks; the underlying principles overlap but SS1/23 does not apply to insurers.
 
 ---
 
