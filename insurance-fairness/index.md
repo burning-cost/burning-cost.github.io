@@ -130,7 +130,7 @@ from insurance_fairness.optimal_transport import (
 
 ### Advanced: double fairness (v0.6.0)
 
-Addresses the Consumer Duty Outcome 4 obligation — action fairness (equal premiums) and outcome fairness (equal loss ratios) are not the same thing and can conflict.
+Addresses the Consumer Duty Outcome 2 (Price and Value) obligation — action fairness (equal premiums) and outcome fairness (equal loss ratios) are not the same thing and can conflict.
 
 ```python
 from insurance_fairness import DoubleFairnessAudit

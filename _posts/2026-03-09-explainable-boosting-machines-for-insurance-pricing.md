@@ -256,13 +256,13 @@ residual_plot(model, X_test, y_test['claim_count'],
 
 We should be direct about what the EBM advantage actually is and what it is not.
 
-The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. Solvency II Article 121 and PRA SS3/18 (model risk management for Solvency II firms) require validators to understand model decision boundaries and test behaviour at margins - but neither specifies architectures.
+The case is not primarily about regulatory compliance. The FCA confirmed in December 2025 that it will not introduce AI-specific rules for pricing, continuing to rely on Consumer Duty and the principle-based framework. PRA SS1/23 model risk management requirements require validators to understand model decision boundaries and test behaviour at margins — but none of these rules specify architectures.
 
 The case is about the quality of evidence you can produce when asked to demonstrate that your model does what you think it does.
 
 SHAP values on a GBM satisfy the Shapley axioms and are internally consistent. They tell you which features drove a particular prediction, averaged over all feature orderings. What they do not tell you is the model's shape function - what the GBM would predict if only this one feature changed, continuously, across its full range. The EBM shape function does tell you that, exactly, because the additive structure is the architecture. The shape function is not derived from the model. It is the model.
 
-This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under Solvency II Article 121 and PRA SS3/18, the shape function table is a cleaner primary artefact than a SHAP summary.
+This distinction matters for three things. First, validation: an EBM model is easier to test at margins because the behaviour of any single factor in isolation is directly readable. Second, business sign-off: the pricing committee can review and challenge the shape functions in the same way they review and challenge GLM factors. Third, documentation: for model validation under PRA SS1/23 model risk management requirements, the shape function table is a cleaner primary artefact than a SHAP summary.
 
 The honest trade-off: a well-tuned GBM will outperform an EBM on most high-volume datasets with complex interactions. The EBM is not always the best-predicting model. It is the model with the best trade-off between predictive performance and intrinsic interpretability on typical UK personal lines data (10-30 features, hundreds of thousands of policies, Poisson or Tweedie target).
 

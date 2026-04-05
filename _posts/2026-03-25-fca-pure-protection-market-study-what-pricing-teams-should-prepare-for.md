@@ -33,9 +33,9 @@ The specifics that matter for pricing teams:
 
 ## The Consumer Duty framing changes what evidence you need
 
-The FCA is running this market study under the Consumer Duty lens (PRIN 2A, live July 2023). Outcome 4 — Price and Value — requires firms to demonstrate that products offer fair value, not just that premiums are competitive at point of sale.
+The FCA is running this market study under the Consumer Duty lens (PRIN 2A, live July 2023). Outcome 2 (Price and Value) requires firms to demonstrate that products offer fair value, not just that premiums are competitive at point of sale.
 
-This distinction is critical. A pricing team that can produce a competitive pricing analysis against the market has satisfied the pre-Consumer Duty test. Under Outcome 4, you also need to show that:
+This distinction is critical. A pricing team that can produce a competitive pricing analysis against the market has satisfied the pre-Consumer Duty test. Under Outcome 2 (Price and Value), you also need to show that:
 
 1. Claims ratios by segment are being monitored and are within a defensible range
 2. The pricing model does not systematically disadvantage groups with protected characteristics through proxies
@@ -84,7 +84,7 @@ report = audit.run()
 report.to_markdown("protection_fairness_audit_2026Q1.md")
 ```
 
-The `DoubleFairnessAudit` is worth running alongside this. Its key finding — from Bian et al. (2026) — is that equalising premiums across groups (action fairness) does not equalise loss ratios (outcome fairness). The FCA's Consumer Duty Outcome 4 requires the latter. A firm that has only run action fairness checks may still fail a Consumer Duty review:
+The `DoubleFairnessAudit` is worth running alongside this. Its key finding — from Bian et al. (2026) — is that equalising premiums across groups (action fairness) does not equalise loss ratios (outcome fairness). The FCA's Consumer Duty Outcome 2 (Price and Value) requires the latter. A firm that has only run action fairness checks may still fail a Consumer Duty review:
 
 ```python
 from insurance_fairness import DoubleFairnessAudit
@@ -93,7 +93,7 @@ audit = DoubleFairnessAudit(n_alphas=20)
 audit.fit(
     X_train,
     y_premium,
-    y_loss_ratio,   # Consumer Duty Outcome 4 is about this
+    y_loss_ratio,   # Consumer Duty Outcome 2 (Price and Value) is about this
     S_disability,
 )
 result = audit.audit()
@@ -168,7 +168,7 @@ card = MRMModelCard(
             risk="HIGH",
             mitigation=(
                 "Annual IndirectDiscriminationAudit. proxy_vulnerability threshold: 0.05. "
-                "FCA Consumer Duty Outcome 4 fair value assessment included in annual model review."
+                "FCA Consumer Duty Outcome 2 (Price and Value) fair value assessment included in annual model review."
             ),
         ),
     ],

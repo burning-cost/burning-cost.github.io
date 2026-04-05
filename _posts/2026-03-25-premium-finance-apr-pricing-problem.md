@@ -33,7 +33,7 @@ MS24/2 confirmed this dual role is not theoretical. The FCA found no evidence of
 
 ## What Consumer Duty actually requires
 
-Consumer Duty (PRIN 2A, which came into force July 2023) requires firms to demonstrate that their products deliver fair value at segment level — not just in aggregate. Outcome 4 (Price and Value) is not satisfied by showing the average APR fell by 4.1 percentage points. It requires firms to demonstrate that no identifiable group of customers is systematically receiving poor value.
+Consumer Duty (PRIN 2A, which came into force July 2023) requires firms to demonstrate that their products deliver fair value at segment level — not just in aggregate. Outcome 2 (Price and Value) is not satisfied by showing the average APR fell by 4.1 percentage points. It requires firms to demonstrate that no identifiable group of customers is systematically receiving poor value.
 
 The FCA's multi-firm review under Consumer Duty (published 2024) was explicit that firms cannot hide behind portfolio averages. If a specific segment — say, lower-income policyholders who cannot pay the full annual premium and therefore must use instalments — is consistently offered APRs above 30%, that is a fair value failure regardless of what the average looks like.
 
@@ -94,7 +94,7 @@ for decile, group_ae in result.actual_to_expected.items():
 
 The `CalibrationResult.actual_to_expected` dict gives the A/E ratio for each segment-by-decile cell. An A/E above 1.0 means customers in that segment are charged more than the cost model justifies. `result.max_disparity` is the headline figure: the worst overcharge across all cells. This is the audit output a supervisory engagement will ask for.
 
-For the full Consumer Duty evidence pack, `DoubleFairnessAudit` (introduced in v0.6.0) is more appropriate. It distinguishes between action fairness — are prices the same at the point of quoting? — and outcome fairness — does the product deliver equivalent value after the policy is live? Under Consumer Duty Outcome 4, outcome fairness is what the FCA is actually measuring.
+For the full Consumer Duty evidence pack, `DoubleFairnessAudit` (introduced in v0.6.0) is more appropriate. It distinguishes between action fairness — are prices the same at the point of quoting? — and outcome fairness — does the product deliver equivalent value after the policy is live? Under Consumer Duty Outcome 2 (Price and Value), outcome fairness is what the FCA is actually measuring.
 
 ```python
 from insurance_fairness import DoubleFairnessAudit

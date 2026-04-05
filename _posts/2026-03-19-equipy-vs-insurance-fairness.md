@@ -75,7 +75,7 @@ report = audit.run()
 report.to_markdown("audit_q4_2024.md")   # FCA-ready Markdown with regulatory mapping
 ```
 
-This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to Consumer Duty Outcome 4. It is designed to sit in a pricing committee pack and survive FCA file review.
+This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to FCA EP25/2 and Consumer Duty Outcome 2 (Price and Value). It is designed to sit in a pricing committee pack and survive FCA file review.
 
 ---
 

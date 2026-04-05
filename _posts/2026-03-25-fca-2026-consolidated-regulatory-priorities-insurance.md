@@ -41,7 +41,7 @@ This is the pillar that contains the two most watched sub-sectors for 2026.
 
 **Premium finance.** The market study concluded with an estimated £157m annual saving to consumers since 2022, driven by average APR reductions of 4.1% (up to 8% where the FCA intervened directly). 23 million policies use premium finance. The FCA will continue monitoring APRs and act where fair value concerns persist. If your pricing process does not explicitly model the APR burden on monthly-pay customers as part of Fair Value Assessment, that is the gap.
 
-**Social renters and mental health conditions.** The FCA will work with Fair4All Finance on home contents insurance for social renters (Q1 2026, findings by end of 2027), and with the ABI and Money and Mental Health Policy Institute on travel insurance underwriting for consumers with pre-existing mental health conditions (Q1 2026). Neither of these is a Pricing team lead item, but underwriting rating decisions that systematically exclude these groups will be in scope for Consumer Duty Outcome 4 (Price and Value).
+**Social renters and mental health conditions.** The FCA will work with Fair4All Finance on home contents insurance for social renters (Q1 2026, findings by end of 2027), and with the ABI and Money and Mental Health Policy Institute on travel insurance underwriting for consumers with pre-existing mental health conditions (Q1 2026). Neither of these is a Pricing team lead item, but underwriting rating decisions that systematically exclude these groups will be in scope for Consumer Duty Outcome 2 (Price and Value).
 
 **Pure protection.** The final report from the pure protection market study lands Q3 2026. The FCA wants to "reduce the protection gap, and improve consumer awareness and claims experiences." Closing the protection gap is an access story, not just a product design one.
 
@@ -109,7 +109,7 @@ for claim_i, lambda_hat_i, exposure_i in zip(new_claims, new_predictions, new_ex
         break
 ```
 
-**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [`insurance-fairness`](/insurance-fairness/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 4 question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 4.
+**Second: proxy discrimination auditing for pet and PMI.** The FCA's pet and PMI watch-list entry is not yet enforcement, but the December 2025 Research Note on Motor Insurance Pricing and Local Area Ethnicity shows the direction. If your pet or PMI tariff contains geographic or demographic features, you need documented proxy discrimination monitoring before the FCA arrives. [`insurance-fairness`](/insurance-fairness/) v0.6.0's `DoubleFairnessAudit` is designed for exactly the Consumer Duty Outcome 2 (Price and Value) question — it tests both action fairness (are you charging different amounts?) and outcome fairness (are loss ratios equivalent across groups?). Equalising premiums across protected groups does not automatically satisfy Outcome 2 (Price and Value).
 
 ```python
 from insurance_fairness import DoubleFairnessAudit

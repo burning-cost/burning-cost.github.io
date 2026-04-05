@@ -202,7 +202,7 @@ card = MRMModelCard(
 
 The `monitoring_triggers` dict is machine-readable. Your monitoring pipeline reads it, runs the metrics, and compares each metric to its threshold. If a threshold is breached, the corresponding `trigger_actions` entry dictates the escalation path. This is not a sophisticated system — it is a standardised contract between the model card and the monitoring run, which means the compliance team can audit it without reading Python code.
 
-### DoubleFairnessAudit as the annual Outcome 4 evidence pack
+### DoubleFairnessAudit as the annual Outcome 2 (Price and Value) evidence pack
 
 The conceptual insight that Consumer Duty forces on pricing is the distinction between action fairness and outcome fairness. Your pricing model might be entirely gender-blind at the point of quoting — action fairness — yet still produce loss ratios that differ significantly between men and women because the risk factors you use are correlated with gender in ways that translate into differential product value.
 

@@ -150,7 +150,7 @@ The verdict logic is:
 - `GMCB >= LMCB`: **RECALIBRATE**: the dominant error is a global scale shift. Multiply predictions by the balance ratio and redeploy. Model structure is sound.
 - `LMCB > GMCB`: **REFIT**: the error is in the model's shape, not its level. A scalar correction will not fix it. The model needs rebuilding or isotonic recalibration on a large holdout sample.
 
-This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive. The post [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/02/28/recalibrate-or-refit/) goes deeper on the operational use of this split: what it looks like in practice when GMCB dominates versus LMCB, common team mistakes when using A/E alone, and the governance documentation pattern for Solvency II Article 121 and PRA SS3/18.
+This is the decision the decomposition is designed for. "RECALIBRATE" costs an afternoon. "REFIT" costs weeks and a governance cycle. Getting the diagnosis wrong in either direction is expensive. The post [Recalibrate or Refit? The Murphy Decomposition Makes it a Data Question](/2026/02/28/recalibrate-or-refit/) goes deeper on the operational use of this split: what it looks like in practice when GMCB dominates versus LMCB, common team mistakes when using A/E alone, and the governance documentation pattern for PRA SS1/23 model risk management requirements.
 
 ---
 
@@ -253,7 +253,7 @@ Python 3.10+. Dependencies: numpy, scipy >= 1.12, polars, matplotlib. No scikit-
 
 [`insurance-monitoring` on GitHub](https://github.com/burning-cost/insurance-monitoring) - MIT licence. 99 tests, 7 modules.
 
-Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-governance) for the discrimination side: Gini, double lift, Lorenz curve, Solvency II Article 121 / PRA SS3/18 model governance report generation. The two libraries answer different questions. Validation tells you whether the model ranks risks correctly. Calibration tells you whether it prices them at the right level. You need both.
+Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-governance) for the discrimination side: Gini, double lift, Lorenz curve, PRA SS1/23 model risk management report generation. The two libraries answer different questions. Validation tells you whether the model ranks risks correctly. Calibration tells you whether it prices them at the right level. You need both.
 
 ---
 
@@ -263,6 +263,6 @@ Pairs with [`insurance-governance`](https://github.com/burning-cost/insurance-go
 2. Brauer, A., Menzel, P., and Wüthrich, M.V. (2025). "Model Monitoring: A General Framework with an Application to Non-life Insurance Pricing." arXiv:2510.04556
 3. Wüthrich, M.V. and Ziegel, J. (2024). "Isotonic Recalibration under a Low Signal-to-Noise Ratio." *Scandinavian Actuarial Journal*, 2024(3), 279–299.
 
-- [Solvency II Article 121 / PRA SS3/18-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
+- [PRA SS1/23-Compliant Model Validation in Python](/2026/03/14/insurance-governance-unified-pra-ss123-validation/)
 - [Three-Layer Drift Detection for Deployed Pricing Models](/2026/03/03/your-pricing-model-is-drifting/)
 - [Champion/Challenger Testing with ICOBS 6B.2.51R Compliance](/2026/03/13/your-champion-challenger-test-has-no-audit-trail/)

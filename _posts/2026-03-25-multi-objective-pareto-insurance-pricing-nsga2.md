@@ -182,7 +182,7 @@ TOPSIS-selected solution (equal weights): index 23
 
 TOPSIS (Technique for Order of Preference by Similarity to Ideal Solution) selects the Pareto point closest to the ideal solution and furthest from the anti-ideal. The weights express the relative importance of each objective to the pricing team.
 
-For a standard UK motor book where the regulator is focused on Consumer Duty Outcome 4 (price and value), a reasonable starting position weights accuracy highest — it is the foundation of technical pricing — with meaningful but lower weights on the two fairness objectives:
+For a standard UK motor book where the regulator is focused on Consumer Duty Outcome 2 (Price and Value), a reasonable starting position weights accuracy highest — it is the foundation of technical pricing — with meaningful but lower weights on the two fairness objectives:
 
 ```python
 # Weights: [accuracy, group_fairness, counterfactual_fairness]
@@ -448,7 +448,7 @@ The governance decision — which of those three to choose — belongs with the 
 
 The FCA's current posture makes this urgent rather than optional.
 
-Consumer Duty Outcome 4 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
+Consumer Duty Outcome 2 (Price and Value) requires firms to demonstrate that products provide fair value — not just that premiums were set without using protected characteristics at quoting time. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance." The six open Consumer Duty investigations as of Q1 2026 include two on fair value grounds in personal lines. The firms under scrutiny are not there because they ignored fairness. They are there because they could not demonstrate a considered decision about where on the trade-off they chose to operate.
 
 `insurance-fairness` v0.6.0 ships `DoubleFairnessAudit`, which computes the Pareto front across action fairness (pricing equality at quoting time) and outcome fairness (claims ratio equality post-sale) simultaneously. This directly addresses the FCA's finding that firms were auditing at quoting time and missing the post-sale obligation. The audit JSON from `DoubleFairnessAudit` is structured for inclusion in the FCA evidence pack alongside the NSGA-II and optimise outputs above.
 

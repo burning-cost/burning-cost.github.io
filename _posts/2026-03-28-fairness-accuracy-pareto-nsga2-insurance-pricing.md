@@ -186,7 +186,7 @@ FCA Consumer Duty (PRIN 2A, FG22/5) requires firms to demonstrate that pricing a
 
 The Pareto front approach answers the Consumer Duty requirement directly: it produces a documented, dated record that the accuracy-fairness tradeoff was examined, the preference ordering was stated explicitly, and the selected model was approved at the appropriate governance level (SM&CR accountability falls to the senior manager responsible for the pricing algorithm). A regulator reviewing an s166 report can see the front, the TOPSIS weights, and the rationale — not just the outcome.
 
-What the Pareto approach does not replace: you still need `calibration_by_group()` to verify the selected model is not mispricing risk for any group, and `DoubleFairnessAudit` to check Consumer Duty Outcome 4 (equal value, not just equal premiums). The Pareto front is the governance record; the audit metrics are the ongoing monitoring.
+What the Pareto approach does not replace: you still need `calibration_by_group()` to verify the selected model is not mispricing risk for any group, and `DoubleFairnessAudit` to check Consumer Duty Outcome 2 (Price and Value) — equal value, not just equal premiums. The Pareto front is the governance record; the audit metrics are the ongoing monitoring.
 
 ---
 

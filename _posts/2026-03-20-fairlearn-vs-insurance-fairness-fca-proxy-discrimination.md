@@ -141,7 +141,7 @@ The demographic parity ratio is computed in log-space because insurance pricing 
 
 ### The double fairness problem Fairlearn cannot see
 
-A subtler issue documented by the FCA: action fairness (premium parity) and outcome fairness (loss ratio parity) can conflict, and firms that audit only at the point of quoting miss the Consumer Duty Outcome 4 obligation.
+A subtler issue documented by the FCA: action fairness (premium parity) and outcome fairness (loss ratio parity) can conflict, and firms that audit only at the point of quoting miss the Consumer Duty Outcome 2 (Price and Value) obligation.
 
 On a synthetic UK motor TPLI portfolio of 20,000 policies, minimising premium disparity (Delta_1) worsens loss ratio disparity (Delta_2) substantially. The two cannot both be zeroed without abandoning risk differentiation. The FCA does not require you to achieve both simultaneously - but it does expect you to have considered the trade-off and documented it.
 
@@ -162,7 +162,7 @@ double_audit = DoubleFairnessAudit(n_alphas=20)
 double_audit.fit(X, y_primary, y_fairness, S, exposure=exposure)
 result = double_audit.audit()   # returns DoubleFairnessResult with full Pareto front
 print(result.summary())         # plain-text Pareto front table
-print(double_audit.report())    # FCA-ready report mapping to PRIN 2A Outcome 4 and Consumer Duty
+print(double_audit.report())    # FCA-ready report mapping to PRIN 2A Outcome 2 (Price and Value) and Consumer Duty
 ```
 
 Fairlearn's mitigation tools optimise for a single fairness criterion at a time. They will not show you the trade-off surface, and they cannot tell you the revenue cost of each operating point. For a UK insurer documenting their Consumer Duty assessment, the Pareto front is the auditable evidence.

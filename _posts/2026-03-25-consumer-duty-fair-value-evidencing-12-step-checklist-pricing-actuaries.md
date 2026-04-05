@@ -335,7 +335,7 @@ A proxy vulnerability above 0.05 (5% mean absolute gap between aware and unaware
 
 ## Step 9: Run double fairness audit — action fairness vs outcome fairness
 
-**Requirement:** Distinguish between pricing-time fairness (equal treatment at point of quote) and outcome fairness (equivalent value delivered over the policy lifetime). PRIN 2A Outcome 4 requires the latter. These can diverge significantly.
+**Requirement:** Distinguish between pricing-time fairness (equal treatment at point of quote) and outcome fairness (equivalent value delivered over the policy lifetime). PRIN 2A Outcome 2 (Price and Value) requires the latter. These can diverge significantly.
 
 **Why it matters:** The empirical finding from Bian, Wang, Shi & Qi (2026, arXiv:2601.19186) is that equalising premiums across gender groups (action fairness) does not equalise loss ratios (outcome fairness). A firm auditing only action fairness may still fail Consumer Duty. `DoubleFairnessAudit` recovers the Pareto front across both dimensions so you can document the trade-off and justify where on the frontier your current pricing sits.
 

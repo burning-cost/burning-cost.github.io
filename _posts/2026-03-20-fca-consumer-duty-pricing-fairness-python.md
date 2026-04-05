@@ -214,7 +214,7 @@ The `max_disparity` compares the female and male A/E ratios within each predicte
 
 ## Three things most teams get wrong
 
-**Testing on the wrong outcome metric.** The Consumer Duty obligation under Outcome 4 is about fair value: whether the product delivers equivalent financial outcomes to different groups. Testing calibration of a frequency model tells you whether the model is unbiased at predicting claims, not whether policyholders are getting fair value. Run the calibration check on total premium relative to total claims, with exposure weighting, not on model output alone.
+**Testing on the wrong outcome metric.** The Consumer Duty obligation under Outcome 2 (Price and Value) is about fair value: whether the product delivers equivalent financial outcomes to different groups. Testing calibration of a frequency model tells you whether the model is unbiased at predicting claims, not whether policyholders are getting fair value. Run the calibration check on total premium relative to total claims, with exposure weighting, not on model output alone.
 
 **Ignoring intersectional groups.** The Equality Act 2010 prohibits discrimination on the basis of individual protected characteristics. PRIN 2A.9 requires monitoring of groups. These are not the same thing. A model that is well-calibrated for females overall may be poorly calibrated for young female drivers specifically, and the aggregate A/E check will not surface it. If you have sufficient exposure, run `calibration_by_group` on cross-products of your protected characteristics - not just gender and age separately, but (gender × age band) jointly. The library supports this via the `protected_col` argument accepting a pre-constructed interaction column.
 
@@ -230,7 +230,7 @@ The honest framing for a pricing committee paper: "Our proxy discrimination audi
 
 ---
 
-[`insurance-fairness`](/insurance-fairness/) v0.6.0 is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Python 3.10+. The full API - including `MulticalibrationAudit`, `DoubleFairnessAudit` for Consumer Duty Outcome 4, and `PrivatizedFairnessAudit` for books where you lack protected attribute data - is in the README.
+[`insurance-fairness`](/insurance-fairness/) v0.6.0 is at [github.com/burning-cost/insurance-fairness](https://github.com/burning-cost/insurance-fairness). Python 3.10+. The full API - including `MulticalibrationAudit`, `DoubleFairnessAudit` for Consumer Duty Outcome 2 (Price and Value), and `PrivatizedFairnessAudit` for books where you lack protected attribute data - is in the README.
 
 ---
 
