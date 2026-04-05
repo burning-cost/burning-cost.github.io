@@ -75,7 +75,7 @@ The weights pi_i are a governance decision: how much relative priority does each
 
 ## Why this matters for FCA Consumer Duty and the Equality Act
 
-**FCA EP25/2 (July 2025)** asks firms to demonstrate that pricing models do not disadvantage protected groups disproportionately. Most firms currently answer this with SHAP importance plots and demographic parity checks. These are defensible but imprecise: they show that the protected attribute is not highly ranked as a feature, not that the model does not respond to it.
+**Consumer Duty (PS22/9, PRIN 2A)** requires firms to demonstrate that pricing models do not disadvantage protected groups disproportionately. Most firms currently answer this with SHAP importance plots and demographic parity checks. These are defensible but imprecise: they show that the protected attribute is not highly ranked as a feature, not that the model does not respond to it.
 
 The Gateaux sensitivity criterion is more direct. If you can demonstrate that `∂_{D_i} rho(Y|x) = 0` at every rating cell — i.e., that Q* has been applied — you have shown the pricing function does not respond to marginal changes in the protected attribute at any point in the portfolio. This is a stronger statement than demographic parity and more aligned with what the **Equality Act 2010** actually prohibits: differential treatment on the basis of a protected characteristic, rather than differential outcomes.
 

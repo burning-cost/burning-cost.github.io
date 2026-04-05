@@ -4,7 +4,7 @@ title: "glum Insurance Pricing in Python: Fitting, Intervals, Monitoring, Fairne
 date: 2026-04-04
 categories: [techniques, libraries]
 tags: [glum, GLM, tweedie, conformal-prediction, model-monitoring, fairness, governance, python, insurance-conformal, insurance-monitoring, insurance-fairness, insurance-governance, freMTPL2, motor, uk-pricing, CatBoost, PSI, CSI, FCA, Consumer-Duty]
-description: "glum fits the Tweedie GLM in seconds. Here is how our libraries handle everything around it: distribution-free prediction intervals, PSI/CSI drift monitoring, proxy discrimination auditing under FCA EP25/2, and a governance pack for the Model Risk Committee."
+description: "glum fits the Tweedie GLM in seconds. Here is how our libraries handle everything around it: distribution-free prediction intervals, PSI/CSI drift monitoring, Consumer Duty proxy discrimination auditing, and a governance pack for the Model Risk Committee."
 author: Burning Cost
 ---
 
@@ -202,7 +202,7 @@ The `recommendation` field implements the Brauer, Menzel & Wuthrich (2025) two-s
 
 ## 4. Audit for proxy discrimination
 
-FCA Evaluation Paper EP25/2 (published January 2025) formally set out the regulator's approach to proxy discrimination in insurance pricing. The concern is not that your model uses gender directly - that is restricted under the Test-Achats ruling for most personal lines products. The concern is that combinations of variables you do use (postcode, vehicle make, occupation, payment method) functionally reproduce a protected characteristic, resulting in systematically different outcomes for protected groups.
+The FCA's Consumer Duty supervisory work and the December 2025 Research Note on motor insurance pricing and local area ethnicity have progressively sharpened the regulator's expectations around proxy discrimination. The concern is not that your model uses gender directly — that is restricted under the Test-Achats ruling for most personal lines products. The concern is that combinations of variables you do use (postcode, vehicle make, occupation, payment method) functionally reproduce a protected characteristic, resulting in systematically different outcomes for protected groups.
 
 `insurance-fairness` implements the proxy detection and fairness audit that Consumer Duty ongoing monitoring requires.
 
@@ -249,7 +249,7 @@ fairness_report.to_markdown("fairness_audit_freMTPL2.md")
 
 The `FairnessReport` covers: demographic parity ratio (predicted premium disparity by group), calibration by group (A/E per protected group), Gini by group (discrimination quality within each group), and Theil index. `to_markdown()` produces the evidence record the FCA expects to see in a Consumer Duty review.
 
-One thing worth being explicit about: `detect_proxies` reports on statistical association, not causation. A high mutual information between `vehicle_brand` and `region` in French motor data reflects genuine risk correlations (rural areas have a different vehicle mix from urban ones) as well as potential proxy effects. EP25/2 asks you to investigate and document, not automatically remove. The proxy score gives you the quantified starting point for that conversation with your underwriting team.
+One thing worth being explicit about: `detect_proxies` reports on statistical association, not causation. A high mutual information between `vehicle_brand` and `region` in French motor data reflects genuine risk correlations (rural areas have a different vehicle mix from urban ones) as well as potential proxy effects. The Consumer Duty fair value expectations ask you to investigate and document, not automatically remove. The proxy score gives you the quantified starting point for that conversation with your underwriting team.
 
 ---
 
@@ -334,7 +334,7 @@ The pipeline above fits naturally into two layers.
 
 - `insurance-conformal`: distribution-free prediction intervals with a coverage guarantee that does not depend on the model being correctly specified. The Pearson nonconformity score exploits Tweedie variance structure to produce narrower intervals than naive residual methods.
 - `insurance-monitoring`: exposure-weighted PSI/CSI plus the Brauer-Menzel-Wuthrich two-step decision rule to distinguish a recalibration problem from a refit problem. The `MonitoringReport` replaces a collection of ad-hoc scripts with one reproducible pass.
-- `insurance-fairness`: proxy detection and FCA EP25/2-aligned fairness auditing. Produces the evidence record that Consumer Duty ongoing monitoring requires.
+- `insurance-fairness`: proxy detection and Consumer Duty-aligned fairness auditing. Produces the evidence record that Consumer Duty ongoing monitoring requires.
 - `insurance-governance`: MRM model cards, risk tier scoring, and HTML governance reports for the Model Risk Committee.
 
 None of these replace glum. They extend it. If you are fitting GLMs with glum (or statsmodels, or sklearn) and then doing the surrounding analysis in ad-hoc scripts, the integration points shown above are the things to standardise first.

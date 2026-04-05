@@ -101,7 +101,7 @@ $$a_t \leq a_{\text{ENBP}}(x_t) \quad \forall \; \text{renewal customers}$$
 
 The mechanical fix — clip the action space before selecting $$a_t$$ — is straightforward. The subtlety is that $$a_{\text{ENBP}}(x_t)$$ is endogenous to your own new business pricing strategy. If the bandit lowers your NB prices in a segment to win more business, it tightens the renewal ceiling for those customers in subsequent years. A naive implementation ignores this feedback loop; a correct one treats the NB and renewal action spaces jointly.
 
-A second subtlety: FCA EP25/2 (published February 2025) confirmed GIPP largely achieved its objectives. Motor premiums fell 5.9% in Q1 2022, home 6.6%, and PCW share rose from 60% to 66% of sales. The post-GIPP market is structurally more competitive on PCW than the pre-2022 market from which most demand models are calibrated. A market simulator trained on pre-2022 data is misspecified for the current environment.
+A second subtlety: FCA EP25/2 (published July 2025) evaluated the GIPP remedies. PCW share rose from 60% to 66% of motor sales post-GIPP. The post-GIPP market is structurally more competitive on PCW than the pre-2022 market from which most demand models are calibrated. A market simulator trained on pre-2022 data is misspecified for the current environment.
 
 ### 4. Adverse selection in the reward function
 

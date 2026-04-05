@@ -206,7 +206,7 @@ This guarantees P(ever alarm | model calibrated) <= 0.05 across any monitoring h
 
 ## Step 4: audit for proxy discrimination with `insurance-fairness`
 
-Driver age is a legitimate rating factor for UK motor. The loss data supports it and Equality Act 2010 Schedule 3 paragraph 25 provides a specific exception for age-based motor insurance pricing where the use is actuarially justified. This matters because `DrivAge` is also a strong proxy for characteristics that are protected without a pricing exception — and the FCA's guidance on proxy discrimination (EP25/2) requires firms to understand the proxy structure of their rating plan.
+Driver age is a legitimate rating factor for UK motor. The loss data supports it and Equality Act 2010 Schedule 3 paragraph 25 provides a specific exception for age-based motor insurance pricing where the use is actuarially justified. This matters because `DrivAge` is also a strong proxy for characteristics that are protected without a pricing exception — and the FCA's Consumer Duty fair value expectations require firms to understand the proxy structure of their rating plan.
 
 We run `IndirectDiscriminationAudit` to quantify how much of the age signal passes through the other features versus how much is a direct age effect. This does not say the model is discriminatory — it says where to look:
 

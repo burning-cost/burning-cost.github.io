@@ -125,7 +125,7 @@ A fairness audit section that uses proxy ethnicity data should contain language 
 
 > Ethnicity is approximated using LSOA-level ethnic group proportions from Census 2021. This is a geographic proxy, not individual-level data. All disparity estimates reported below are lower bounds on true group-level disparity under the assumption that the proxy introduces classical attenuation bias. Using published estimates of LSOA-proxy accuracy (55–75% at individual level), the implied true disparity ratios range from [X] to [Y] against the reported point estimate of [Z]. These bounds are reported in the sensitivity table in Annex B.
 
-This language is defensible under FCA Consumer Duty (PRIN 2A) and is consistent with the principle in Evaluation Paper EP25/2 that firms should be transparent about the limitations of their monitoring methods. It is also what an FCA reviewer or Equality Act litigant would expect to see.
+This language is defensible under FCA Consumer Duty (PRIN 2A) and is consistent with the FCA Consumer Duty expectation that firms should be transparent about the limitations of their monitoring methods. It is also what an FCA reviewer or Equality Act litigant would expect to see.
 
 What it is not is sufficient on its own. Reporting honest uncertainty is the floor, not the ceiling. The medium-term work is to build better data infrastructure: voluntary ethnicity disclosure with appropriate incentives, industry consortium approaches to linked-data validation, and engagement with the FCA on what a credible ground-truth programme looks like. But those are multi-year efforts. The sensitivity bound is something every team running a fairness audit can implement before the next governance cycle.
 
@@ -133,7 +133,7 @@ What it is not is sufficient on its own. Reporting honest uncertainty is the flo
 
 ## The regulatory backdrop
 
-FCA Evaluation Paper EP25/2 (February 2025) noted explicitly that firms' approaches to monitoring differential outcomes for groups with protected characteristics remain immature. Several firms reviewed were using proxy methods without any quantification of proxy quality or its effect on disparity estimates. The FCA has not yet mandated a specific approach, but the direction of travel is clear: qualitative acknowledgement of proxy limitations is no longer sufficient. Quantified uncertainty is expected.
+FCA Consumer Duty multi-firm review outputs (2024) noted that firms' approaches to monitoring differential outcomes for groups with protected characteristics remain immature. Several firms reviewed were using proxy methods without any quantification of proxy quality or its effect on disparity estimates. The FCA has not yet mandated a specific approach, but the direction of travel is clear: qualitative acknowledgement of proxy limitations is no longer sufficient. Quantified uncertainty is expected.
 
 The Equality Act 2010 section 19 indirect discrimination test applies to insurance pricing. A provision, criterion, or practice that puts persons sharing a protected characteristic at a particular disadvantage is unlawful unless it is a proportionate means of achieving a legitimate aim. That test is applied to actual group outcomes, not to proxy-estimated ones. A firm that demonstrates its pricing has no measurable disparity against a noisy proxy has not demonstrated compliance. It has demonstrated that it has not measured the problem properly.
 

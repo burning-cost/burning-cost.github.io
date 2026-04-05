@@ -76,7 +76,7 @@ Specifically: as the threshold $\alpha$ moves from left to right (constraining a
 
 ## Why this is the right abstraction for UK insurance
 
-The FCA's EP25/2 guidance on proxy discrimination (published July 2025) makes the regulatory focus explicit: outcomes in the upper tail of the premium distribution — high-premium segments, renewal cliff edges — are the scenarios most likely to constitute actual consumer harm. A customer paying £1,900 for motor insurance who faces a premium that is materially inflated by demographic correlation is a qualitatively different situation from a customer paying £700 facing the same percentage differential.
+The FCA's Consumer Duty supervisory focus and the December 2025 Research Note on motor insurance pricing and local area ethnicity make the regulatory concern explicit: outcomes in the upper tail of the premium distribution — high-premium segments, renewal cliff edges — are the scenarios most likely to constitute actual consumer harm. A customer paying £1,900 for motor insurance who faces a premium that is materially inflated by demographic correlation is a qualitatively different situation from a customer paying £700 facing the same percentage differential.
 
 The Equality Act 2010, section 19 indirect discrimination test asks whether a provision, criterion or practice puts people sharing a protected characteristic at a *particular disadvantage*. The word particular matters. The legal test is about concrete disadvantage, not statistical mean shifts. High premiums with no actuarial justification are concrete. Small mean-level discrepancies are much harder to argue as disadvantage.
 
@@ -130,7 +130,7 @@ What this is not: a drop-in solution for a UK personal lines book this quarter. 
 
 We have `TailParityAudit` on the `insurance-fairness` roadmap, with exposure weighting and an insurance-specific worked example. We will cover it here when it ships.
 
-For now: read the paper. Understand that your current fairness audit is a Level 1 test. Add tail parity monitoring to your Consumer Duty checklist. The FCA's attention is on the upper end of the premium distribution — that is where EP25/2 focuses, that is where section 19 claims originate, and that is where the Le et al. framework is designed to give you rigorous evidence.
+For now: read the paper. Understand that your current fairness audit is a Level 1 test. Add tail parity monitoring to your Consumer Duty checklist. The FCA's attention is on the upper end of the premium distribution — that is where Consumer Duty fair value scrutiny focuses, that is where section 19 Equality Act claims originate, and that is where the Le et al. framework is designed to give you rigorous evidence.
 
 ---
 

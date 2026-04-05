@@ -45,7 +45,7 @@ Before the code: the rules that make this non-optional.
 
 **FCA Consumer Duty (PS22/9, August 2022)** requires that pricing models produce fair value outcomes. A model you cannot validate is a model you cannot demonstrate is fair. The FCA has been explicit that "black box" is not an acceptable answer to a Consumer Duty question.
 
-**FCA EP25/2 (proxy discrimination guidance, March 2025)** adds a validation requirement specific to fairness: if a pricing model uses variables that correlate with protected characteristics, you must test for and document disparate impact. This is a validation step that most teams do not currently run.
+**Consumer Duty and FCA ethnicity pricing research (December 2025)** add a validation expectation specific to fairness: if a pricing model uses variables that correlate with protected characteristics, you should test for and document disparate impact. The FCA's Research Note on motor insurance pricing and local area ethnicity found a residual ethnicity-postcode correlation after risk adjustment; Consumer Duty PRIN 2A requires firms to be able to evidence fair outcomes. This is a validation step that most teams do not currently run.
 
 **PRA CP6/24 (insurance model risk, 2024)** sets expectations for model inventory, validation independence, tiered review frequency, and governance sign-off. It does not mandate a specific report format, but it does expect that documentation exists and is consistent across the model estate.
 
@@ -280,7 +280,7 @@ Be clear about the limits:
 
 **It is for pricing models.** The library does not cover reserving models, capital models, or credit risk models. The statistical assumptions (Poisson frequency, GLM/GBM scoring) are calibrated to UK personal lines pricing.
 
-**It does not assess proxy discrimination directly.** The `fairness_group_col` argument flags A/E disparities by group. It does not run the full EP25/2 proxy discrimination test — for that, use [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), which feeds its output directly into the governance pack.
+**It does not assess proxy discrimination directly.** The `fairness_group_col` argument flags A/E disparities by group. It does not run a full proxy discrimination audit — for that, use [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), which feeds its output directly into the governance pack.
 
 ---
 
@@ -289,7 +289,7 @@ Be clear about the limits:
 `insurance-governance` sits at the governance layer of a broader Python stack for UK insurance pricing. The libraries that feed into it:
 
 - [`insurance-monitoring`](https://github.com/burning-cost/insurance-monitoring) — PSI, Gini drift, A/E ratios on deployed models. The drift signals that trigger a governance review. See the [glum workflow post](/2026/04/04/glum-insurance-pricing-python-workflow/) for how monitoring integrates with the broader fitting and governance pipeline.
-- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — EP25/2 proxy discrimination audit. The fairness evidence that goes into the governance pack.
+- [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) — Consumer Duty proxy discrimination audit. The fairness evidence that goes into the governance pack.
 - [`insurance-conformal`](https://github.com/burning-cost/insurance-conformal) — distribution-free prediction intervals. The uncertainty quantification that belongs in the validation report for any model used in reserving or capital.
 
 The five-library end-to-end pipeline is documented in [Five Libraries, One Pipeline](/2026/04/04/five-libraries-one-pipeline-end-to-end-motor-pricing/).

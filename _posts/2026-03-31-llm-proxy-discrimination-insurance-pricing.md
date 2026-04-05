@@ -272,7 +272,7 @@ The payoff is that the workflow we described in the earlier post — LLM-assiste
 
 ---
 
-*FCA Evaluation Paper EP25/2: Supervisory Approach to AI in Insurance. Financial Conduct Authority, February 2025.*
+*FCA Research Note: Motor insurance pricing and local area ethnicity in England and Wales. Financial Conduct Authority, December 2025.*
 
 *EIOPA Supervisory Statement on Artificial Intelligence (2025). EIOPA-BoS-25-360. August 2025.*
 

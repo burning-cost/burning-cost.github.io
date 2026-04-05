@@ -4,26 +4,26 @@ title: "Building an FCA Ethnicity Fairness Evidence Pack Without Holding Ethnici
 date: 2026-04-03
 categories: [fairness, regulation]
 tags: [fairness, local-differential-privacy, randomised-response, fca, consumer-duty, ep25-2, equality-act, gdpr-article-9, ethnicity, proxy-discrimination, insurance-fairness, PrivatizedFairnessAudit, PrivatizedFairPricer, discrimination-free-pricing, zhang-liu-shi-2025, lindholm-2022, correction-matrices, python, uk-insurance]
-description: "FCA EP25/2 found a £28 unexplained ethnicity residual. Your pricing team cannot measure it because you do not hold ethnicity. Local differential privacy via randomised response gives you a formal mechanism to collect noised ethnicity labels and build a defensible evidence trail — without processing special category data in clean form."
+description: "An FCA Research Note (December 2025) found a £28 unexplained ethnicity residual across six million motor policies. Your pricing team cannot measure it because you do not hold ethnicity. Local differential privacy via randomised response gives you a formal mechanism to collect noised ethnicity labels and build a defensible evidence trail — without processing special category data in clean form."
 math: true
 author: burning-cost
 ---
 
-The FCA's discussion paper EP25/2, published in 2025, analysed six million motor insurance policies. After risk-adjusting for all observable covariates, it found a £28 residual annual premium differential associated with high-minority-concentration postcodes. The FCA's characterisation was cautious — the residual is "likely attributable to unmeasured risk variables" rather than direct discrimination. But that framing contains an implicit challenge: if you believe the residual reflects risk, demonstrate it. Show us the fairness test.
+An FCA Research Note published in December 2025 — "Motor insurance pricing and local area ethnicity in England and Wales" — analysed six million motor insurance policies, covering more than half the UK market by insurer. After risk-adjusting for all observable covariates, it found a £28 residual annual premium differential in Luton (where 43% of residents are from minority ethnic backgrounds), on a total mean premium of £627. The FCA's characterisation was cautious — the residual is "likely attributable to unmeasured risk variables" rather than direct discrimination. But that framing contains an implicit challenge: if you believe the residual reflects risk, demonstrate it. Show us the fairness test.
 
 Most UK motor pricing teams cannot run that test. They do not hold individual ethnicity data. The Equality Act 2010 does not require them to collect it, GDPR Article 9 creates friction around collecting it, and until recently there was no practical framework for auditing ethnicity fairness without the attribute.
 
-This post describes what that framework looks like in practice, using Zhang, Liu & Shi (arXiv:2504.11775, 2025) and the `insurance-fairness` library. We are not describing a deployed production system. We are describing what a pricing team should build as a governance artefact — something you can hand to an FCA supervision team if EP25/2 turns from a discussion paper into a data request.
+This post describes what that framework looks like in practice, using Zhang, Liu & Shi (arXiv:2504.11775, 2025) and the `insurance-fairness` library. We are not describing a deployed production system. We are describing what a pricing team should build as a governance artefact — something you can hand to an FCA supervision team if the FCA's ethnicity monitoring work turns into a formal data request.
 
 ---
 
 ## What you are actually trying to demonstrate
 
-The Consumer Duty (PRIN 2A) requires that pricing delivers fair value to all customers. The Equality Act 2010 section 19 prohibits indirect discrimination: applying a provision, criterion, or practice that puts a protected group at a particular disadvantage. For motor insurance, postcode rating is the obvious candidate. FCA EP25/2 measured that disadvantage at £28/year for policies in high-minority-concentration postcodes.
+The Consumer Duty (PRIN 2A) requires that pricing delivers fair value to all customers. The Equality Act 2010 section 19 prohibits indirect discrimination: applying a provision, criterion, or practice that puts a protected group at a particular disadvantage. For motor insurance, postcode rating is the obvious candidate. The FCA's December 2025 Research Note measured a £28/year residual in Luton for policies in high-minority-concentration postcodes after full risk adjustment.
 
 The standard response to a fairness question is: run a group-level A/E test, compare observed outcomes against expected for each demographic group, report the ratio. This requires individual group labels. If you do not have ethnicity on your policy records, you cannot run this test.
 
-The proxy-based alternative — joining ONS Census 2021 LSOA ethnicity estimates to postcode and treating area composition as an individual attribute — is the approach most firms have taken where they have addressed this at all. It is the methodology behind the Citizens Advice £280/year figure from 2022 and the FCA's own EP25/2 analysis. It is useful and it is auditable. Its limitation is that it conflates area with individual. A postcode in a high-BME area contains people of all ethnicities.
+The proxy-based alternative — joining ONS Census 2021 LSOA ethnicity estimates to postcode and treating area composition as an individual attribute — is the approach most firms have taken where they have addressed this at all. It is the methodology behind the Citizens Advice £280/year figure from 2022 and the FCA's own December 2025 Research Note analysis. It is useful and it is auditable. Its limitation is that it conflates area with individual. A postcode in a high-BME area contains people of all ethnicities.
 
 What local differential privacy (LDP) provides is a path to first-party evidence: an individual-level fairness test with formal statistical guarantees, obtained without the insurer ever processing clean ethnicity data.
 
@@ -156,7 +156,7 @@ print(df.groupby('postcode_bme_decile')['ratio'].agg(['mean', 'std', 'count']))
 
 This gives you two things. First, the population-level answer to the FCA's question: do your premiums systematically diverge from the discrimination-free benchmark in high-BME postcodes? If the ratio is near 1.0 across deciles, you have quantitative evidence of fairness. If the ratio climbs in high-BME deciles, you have identified the proxy and can quantify its scale.
 
-Second, it tells you whether the postcode factor in your current model encodes something the discrimination-free model would not price — which is exactly what EP25/2 is asking about.
+Second, it tells you whether the postcode factor in your current model encodes something the discrimination-free model would not price — which is exactly the question the FCA's ethnicity pricing research is asking.
 
 ### Step 4: Produce the governance artefact
 
@@ -231,9 +231,9 @@ Be precise about the boundaries.
 
 ## Where this fits in the regulatory timeline
 
-EP25/2 is a discussion paper. It does not require action today. The FCA explicitly said the £28 residual is "likely" explained by unmeasured risk rather than discrimination. But:
+The FCA Research Note does not require action today. The FCA explicitly said the £28 residual is "likely" explained by unmeasured risk rather than discrimination. But:
 
-- EP25/2 reviewed six million policies — more than 50% of the UK motor market — and the residual persists after full risk adjustment
+- The Research Note reviewed six million policies — more than 50% of the UK motor market — and the residual persists after full risk adjustment
 - The FCA said it will continue to monitor pricing outcomes by ethnicity and postcode composition
 - Consumer Duty Outcome 4 (Price and Value) and PRIN 2A require firms to be able to demonstrate fair outcomes, not merely assert them
 - The Colorado SB21-169 proxy-discrimination prohibition (in force January 2023) and the EU AI Act fairness provisions show the direction of international regulatory travel
@@ -252,7 +252,7 @@ Lindholm, M., Richman, R., Tsanakas, A. and Wüthrich, M.V. (2022). Discriminati
 
 Warner, S.L. (1965). Randomized Response: A Survey Technique for Eliminating Evasive Answer Bias. *Journal of the American Statistical Association*, 60(309), 63–69.
 
-FCA (2025). Discussion Paper EP25/2: Equality of Access to Financial Services.
+FCA (2025). Research Note: Motor insurance pricing and local area ethnicity in England and Wales. December 2025. Available at fca.org.uk/publications/research-notes/motor-insurance-pricing-local-area-ethnicity-england-wales
 
 Citizens Advice (2022). Paying Over the Odds: Ethnicity and Car Insurance Pricing.
 

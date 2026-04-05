@@ -175,7 +175,7 @@ The full Theorem 3.1 implementation — root-finding for η* per rating cell, in
 
 ## The regulatory angle
 
-The paper's theoretical contribution has practical value for FCA attestation under Consumer Duty (PS22/9, PRIN 2A) and EP25/2.
+The paper's theoretical contribution has practical value for FCA attestation under Consumer Duty (PS22/9, PRIN 2A).
 
 **The existence and uniqueness result (Theorem 3.2)** establishes that Q* is the *nearest* fair measure to P under KL divergence. In a supervisory submission, this translates cleanly: we have applied the minimum necessary correction; we are not over-correcting or artificially compressing risk differentials. The correction is uniquely determined by the data and the fairness criterion — there is no degree of freedom that would allow us to have applied a lighter touch while still satisfying sensitivity-zero.
 
@@ -183,7 +183,7 @@ The paper's theoretical contribution has practical value for FCA attestation und
 
 **The "nearest fair measure" framing** matters for the Equality Act 2010 section 19 proportionality test. An insurer asserting that its pricing is not indirectly discriminatory needs to demonstrate not just that it has made some correction, but that the correction is the least restrictive means available. The KL barycentre result provides a formal proof that Q* achieves sensitivity-zero with the minimum divergence from the actuarially correct measure P. You cannot do less and still satisfy the criterion.
 
-EP25/2 (FCA, July 2025) specifically asks for evidence that pricing models do not disadvantage protected groups disproportionately. The sensitivity-zero criterion — that the premium does not *respond to* marginal changes in the protected attribute at any rating cell — is more defensible than a portfolio-level group mean comparison. It is a statement about the pricing mechanism, not just about outcomes.
+The Consumer Duty (FCA, PRIN 2A) requires that firms can evidence pricing models do not disadvantage protected groups disproportionately. The FCA's December 2025 Research Note on motor insurance pricing and local area ethnicity makes the practical challenge concrete. The sensitivity-zero criterion — that the premium does not *respond to* marginal changes in the protected attribute at any rating cell — is more defensible than a portfolio-level group mean comparison. It is a statement about the pricing mechanism, not just about outcomes.
 
 ---
 

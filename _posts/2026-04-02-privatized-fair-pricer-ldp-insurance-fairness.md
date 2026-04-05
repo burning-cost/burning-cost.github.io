@@ -92,7 +92,7 @@ For gender, young male drivers (<22) and older female drivers (>65) might serve 
 
 The FCA does not require LDP. Colorado SB21-169, in force since January 2023, prohibits insurers from using race, colour, national origin, religion, sex, sexual orientation, disability, or gender identity in pricing — and, crucially, prohibits using **proxy variables** for those characteristics. Colorado has enforcement teeth; the UK has principles.
 
-But the direction of travel is clear. The FCA's Discussion Paper EP25/2 (2025) on equality of access explicitly raised the question of whether firms should collect disaggregated ethnicity data to demonstrate Consumer Duty compliance. The FCA did not require it. What it did say is that firms should be able to demonstrate their pricing does not produce differential outcomes by protected characteristic — and that "we are not aware of a standard way to do this without the data."
+But the direction of travel is clear. The FCA's December 2025 Research Note on motor insurance pricing and local area ethnicity found a £28 residual premium differential in high-minority-concentration postcodes after full risk adjustment, and noted that firms should be able to demonstrate their pricing does not produce differential outcomes by protected characteristic. The FCA did not impose a data-collection requirement, but the implicit challenge is the same: if you believe the residual reflects risk, demonstrate it.
 
 LDP is one answer to that impasse. The policyholder discloses, under formal privacy guarantees, a noisy version of their protected characteristic. The insurer never sees the true label, satisfies UK GDPR Article 9 data minimisation under Article 5(1)(c), and can still audit and correct for group-based disparities. The ICO has not published guidance on LDP in insurance specifically; the framework is novel enough that firms using it would be setting a precedent.
 
@@ -132,7 +132,7 @@ Lindholm, M., Richman, R., Tsanakas, A., and Wüthrich, M. V. (2022). 'Discrimin
 
 Citizens Advice (2022). 'Paying over the odds: ethnicity and car insurance pricing.' Citizens Advice Research Report.
 
-FCA (2025). Discussion Paper EP25/2: Equality of Access to Financial Services.
+FCA (2025). Research Note: Motor insurance pricing and local area ethnicity in England and Wales. December 2025. Available at fca.org.uk/publications/research-notes/motor-insurance-pricing-local-area-ethnicity-england-wales
 
 ---
 

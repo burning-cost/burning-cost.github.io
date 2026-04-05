@@ -242,7 +242,7 @@ If you have road type annotations from HERE or OpenStreetMap, pass them to `load
 
 ## A note on the FCA and auditability
 
-The FCA's fair value expectations and Consumer Duty requirements mean "the vendor gave us a score" is no longer a satisfying answer when the regulator asks how a pricing variable is constructed. FCA EP25/2 on proxy discrimination is directly relevant here: a telematics score derived from raw GPS data can proxy for protected characteristics — urban-heavy driving correlates with ethnicity; night driving correlates with occupation and sometimes religion.
+The FCA's fair value expectations and Consumer Duty requirements mean "the vendor gave us a score" is no longer a satisfying answer when the regulator asks how a pricing variable is constructed. The FCA's Consumer Duty fair value expectations and the December 2025 Research Note on motor insurance pricing and local area ethnicity are directly relevant here: a telematics score derived from raw GPS data can proxy for protected characteristics — urban-heavy driving correlates with ethnicity; night driving correlates with occupation and sometimes religion.
 
 The `insurance-telematics` pipeline is auditable at every stage. You can show exactly which trip-level features drive the HMM state assignments, and you can run the output features through [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness) to check for proxy discrimination before the model goes live. A vendor black-box score gives you neither capability.
 

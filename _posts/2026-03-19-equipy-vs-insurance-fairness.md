@@ -75,7 +75,7 @@ report = audit.run()
 report.to_markdown("audit_q4_2024.md")   # FCA-ready Markdown with regulatory mapping
 ```
 
-This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to FCA EP25/2 and Consumer Duty Outcome 4. It is designed to sit in a pricing committee pack and survive FCA file review.
+This produces a structured report with RAG statuses, proxy R-squared per factor, mutual information scores, counterfactual premium impacts, and an explicit mapping to Consumer Duty Outcome 4. It is designed to sit in a pricing committee pack and survive FCA file review.
 
 ---
 
@@ -87,7 +87,7 @@ This is the core reason the tools are not substitutes.
 
 EquiPy answers: **given a model with unfair outputs, how do I produce fairer outputs?** It is a correction tool. It tells you nothing about why the unfairness is happening or which inputs are responsible.
 
-A UK insurer working under FCA Consumer Duty should run detection first, for two reasons. First, the FCA's EP25/2 framework explicitly asks firms to *measure and understand* proxy effects — not just remove them. A firm that applies EquiPy corrections without a detection audit cannot explain to the FCA what they found and why they intervened. Second, detection may reveal that no material proxy effect exists, in which case applying post-processing corrections is unnecessary and will likely worsen calibration without regulatory benefit.
+A UK insurer working under FCA Consumer Duty should run detection first, for two reasons. First, the Consumer Duty fair value framework explicitly asks firms to *measure and understand* proxy effects — not just remove them. A firm that applies EquiPy corrections without a detection audit cannot explain to the FCA what they found and why they intervened. Second, detection may reveal that no material proxy effect exists, in which case applying post-processing corrections is unnecessary and will likely worsen calibration without regulatory benefit.
 
 The correct workflow is: audit with `insurance-fairness`, characterise the proxy effects, decide whether intervention is warranted, then consider correction. EquiPy is a reasonable tool for the correction step.
 
@@ -101,7 +101,7 @@ EquiPy enforces demographic parity: the corrected predictions have the same dist
 
 Demographic parity is probably too aggressive for insurance pricing, and the FCA does not require it.
 
-The FCA's concern, as articulated in EP25/2 and Consumer Duty PS22/9, is proxy discrimination: protected characteristics transmitting into prices through non-protected rating factors. An insurer that eliminates all premium variation correlated with gender would satisfy demographic parity — but it would also eliminate legitimate risk-based differentiation that correlates with gender for actuarially justifiable reasons. The Gender Directive (2012) banned the *direct* use of gender as a rating factor, not the existence of gender-correlated pricing differences arising from risk-differentiated rating.
+The FCA's concern, as articulated in Consumer Duty PS22/9 and supervisory outputs, is proxy discrimination: protected characteristics transmitting into prices through non-protected rating factors. An insurer that eliminates all premium variation correlated with gender would satisfy demographic parity — but it would also eliminate legitimate risk-based differentiation that correlates with gender for actuarially justifiable reasons. The Gender Directive (2012) banned the *direct* use of gender as a rating factor, not the existence of gender-correlated pricing differences arising from risk-differentiated rating.
 
 Wasserstein barycenter corrections remove *all* correlation between predictions and protected attributes, including the portion driven by genuine risk differences. This is more than Equality Act 2010 Section 19 requires. Section 19 prohibits *unjustified* indirect discrimination — a provision that explicitly permits employers and service providers to apply conditions that produce group disparities if those conditions are proportionate to a legitimate aim. Risk-based pricing is a legitimate aim. The actuarial exemption (Schedule 3 Part 5, EA2010) provides additional cover for insurers using actuarially justified factors.
 

@@ -9,7 +9,7 @@ description: "EP25/2 (the FCA's evaluation of GIPP price-walking remedies) flags
 tags: [FCA, Consumer-Duty, PS24-1, EP25-2, PRIN-2A, fair-value, fairness, monitoring, calibration, proxy-discrimination, insurance-monitoring, insurance-fairness, insurance-conformal, pricing-actuary, compliance, uk-insurance, tutorial]
 ---
 
-EP25/2 is the FCA's backward-looking evaluation of the GIPP price-walking remedies (PS21/5), published February 2025. It explicitly names ongoing fair value supervision across motor and home as a standing priority. The FCA's 2024 multi-firm review of Consumer Duty implementation described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
+EP25/2 is the FCA's backward-looking evaluation of the GIPP price-walking remedies (PS21/5), published July 2025. It explicitly names ongoing fair value supervision across motor and home as a standing priority. The FCA's 2024 multi-firm review of Consumer Duty implementation described the evidence most firms were producing for their annual fair value assessments as "high-level summaries with little substance."
 
 That gap between what firms are submitting and what the FCA expects has not closed. What is missing is not intent — it is a concrete technical process that a pricing actuary can execute, document, and defend. This post provides one.
 

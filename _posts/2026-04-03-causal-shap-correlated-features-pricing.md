@@ -88,7 +88,7 @@ We are not dismissing the paper. The correlated-feature attribution problem is r
 
 **Telematics feature selection.** Telematics data has genuine causal structure that practitioners understand reasonably well: trip distance causes exposure to claims; hard braking indicates driving style; night driving is partly a proxy for occupation type. With a defensible domain-knowledge DAG over 8-12 telematics features, the hidden-confounder problem is smaller than for a full rating dataset. Causal SHAP could help decide which telematics features are measuring genuinely independent risk dimensions and which are redundant.
 
-**FCA proxy discrimination evidence.** Under FCA EP25/2 (November 2025, in force February 2026), firms must demonstrate they have investigated proxy discrimination and taken corrective action where found. If you want to argue that postcode has no direct discriminatory effect after conditioning on socioeconomic features, you need a causal argument. Causal SHAP provides the framework — but the argument only holds if you have an independently validated causal DAG, not one estimated from the very data you are explaining.
+**FCA proxy discrimination evidence.** Under the Consumer Duty (PRIN 2A, PS22/9) and informed by the FCA's December 2025 Research Note on motor insurance pricing and local area ethnicity, firms should be able to demonstrate they have investigated proxy discrimination and taken corrective action where found. If you want to argue that postcode has no direct discriminatory effect after conditioning on socioeconomic features, you need a causal argument. Causal SHAP provides the framework — but the argument only holds if you have an independently validated causal DAG, not one estimated from the very data you are explaining.
 
 ---
 

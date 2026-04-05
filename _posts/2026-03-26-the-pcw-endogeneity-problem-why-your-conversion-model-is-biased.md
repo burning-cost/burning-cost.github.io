@@ -127,7 +127,7 @@ We think the practical consequence for UK insurers is that naive demand models s
 
 ## The regulatory angle is real
 
-FCA Evaluation Paper 25/2 (July 2025) flagged explicitly that elasticity-based pricing requires controls to prevent charging less price-sensitive customers higher prices, including as a proxy for protected characteristics. Separately, LexisNexis Risk Solutions reported that 1 in 4 motor consumers switched insurer in 2024, up from 1 in 5 in 2023. EP25/2 itself found that the PCW channel accounts for 66% of motor policies sold (up from 60% pre-GIPP remedies).
+FCA Evaluation Paper EP25/2 (July 2025) found that the PCW channel accounts for a majority of motor policies sold. The Consumer Duty (PRIN 2A) and the FCA's broader fair value expectations create an obligation to ensure that elasticity-based pricing does not result in less price-sensitive customers being systematically charged more for non-risk reasons, including as an indirect function of protected characteristics. Separately, LexisNexis Risk Solutions reported that 1 in 4 motor consumers switched insurer in 2024, up from 1 in 5 in 2023.
 
 The regulator is looking at how elasticity estimates are constructed and what they correlate with. A biased demand model that produces segment-level CATE estimates correlated with demographic proxies (NCD band, area code, vehicle group are all proxy-correlated with age and income) creates regulatory exposure that the team probably does not realise exists. You cannot audit a demand model for proxy discrimination if you do not first know whether the elasticity estimates are correct.
 

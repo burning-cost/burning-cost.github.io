@@ -90,7 +90,7 @@ What we do not implement: the full KL barycentre. The constrained barycentre req
 
 ## What this means for UK pricing teams
 
-EP25/2 (FCA, July 2025) raised the bar on demonstrating absence of proxy discrimination — not asserting it. The FCA has not specified which methodology firms must use, which creates space for evidence-based approaches but also regulatory risk if the chosen method is challenged.
+Consumer Duty (FCA, July 2022, PS22/9) raised the bar on demonstrating absence of proxy discrimination — not asserting it. The FCA has not specified which methodology firms must use, which creates space for evidence-based approaches but also regulatory risk if the chosen method is challenged.
 
 The Miao-Pesenti framework has one property that helps in this context: it produces the **nearest** fair price, not an arbitrary fair price. If your Lindholm-corrected and KL-minimised premiums diverge substantially, that divergence is diagnostic — it tells you something about the discrimination structure in your model that the correction alone cannot reveal.
 
