@@ -3,7 +3,7 @@ layout: post
 title: "The Adjuster Knows More Than Your Triangle"
 date: 2026-04-03
 categories: [reserving, individual-claims]
-tags: [individual-claims-reserving, chain-ladder, linear-regression, neural-networks, rbns, ibnr, ptu-factors, mack, solvency-ii, pra-ss8-24, long-tail, bodily-injury, liability, wüthrich, richman, avanzi, splice, insurance-reserving-neural, arXiv-2603.11660, arXiv-2602.15385, arXiv-2601.05274, data-engineering, python]
+tags: [individual-claims-reserving, chain-ladder, linear-regression, neural-networks, rbns, ibnr, ptu-factors, mack, solvency-ii, solvency-ii-articles-120-126, long-tail, bodily-injury, liability, wüthrich, richman, avanzi, splice, insurance-reserving-neural, arXiv-2603.11660, arXiv-2602.15385, arXiv-2601.05274, data-engineering, python]
 description: "A new empirical paper from Richman and Wüthrich shows that individual claims models cut Mack RMSEP by 44% on accident data and correct severe bias on liability — but the gain comes from linear regression, not neural networks. The real blocker is data engineering."
 author: burning-cost
 math: true
@@ -75,7 +75,7 @@ The result is a framework that bridges aggregate chain-ladder and individual reg
 
 ## The UK regulatory position
 
-PRA SS8/24, which took effect on 31 December 2024, is explicit: relying solely on triangle extrapolation "is unlikely to satisfy the Directive requirement for a probability-weighted average of future cash-flows, since not all possible future cash-flows may be represented in the data." This is not a prohibition on chain-ladder, but it creates deliberate regulatory space for individual-data approaches.
+Solvency II Articles 120-126 require that internal model validation assess whether models capture all material risks and that the probability distribution forecast represents a realistic assessment of future cash flows. Relying solely on triangle extrapolation may not satisfy this requirement where material heterogeneity exists in the underlying claims — which is the PRA's position as reflected in its 2023 thematic reserving review. This creates deliberate regulatory space for individual-data approaches.
 
 The 2023 PRA thematic review on claims reserving found that many insurers' aggregate methods failed to capture heterogeneous claims inflation — bodily injury and property damage inflating at different rates in the same triangle. Individual reserving models separate these components naturally by conditioning on claim type. That is a direct response to the specific concern the PRA raised.
 
@@ -105,7 +105,7 @@ For a UK EL or motor BI book where chain-ladder is suspected to be biased, we wo
 
 2. Run Richman and Wüthrich's weighted linear regression (Listing 1 in arXiv:2603.11660). This is not complex code — it is a weighted OLS on log-transformed features. Compare total reserve to chain-ladder. If the individual model is materially lower with better-conditioned residuals, you have found the bias.
 
-3. Add a chain-ladder comparison baseline so the validation documentation satisfies IFoA TAS M and SS8/24 requirements. Our `insurance-reserving-neural` package produces this as a standard output.
+3. Add a chain-ladder comparison baseline so the validation documentation satisfies IFoA TAS M and Solvency II Article 121 validation requirements. Our `insurance-reserving-neural` package produces this as a standard output.
 
 4. Decide whether a neural network is warranted. With fewer than 50,000 claim-period observations, the honest answer is probably not. With a large book and evidence that the linear residuals have structure, try an FNN and test whether it improves on held-out accident years.
 

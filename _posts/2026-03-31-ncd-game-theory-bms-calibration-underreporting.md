@@ -68,13 +68,13 @@ The bias compounds another way: because small claims are suppressed, the claims 
 
 ## The competitive layer: Liang et al. (2026)
 
-This would be a contained, if underappreciated, calibration problem if it happened in isolation. But Liang, Zhang, Zhou, and Zou (arXiv:2601.12655, January 2026) show it is worse than that — because insurer competition turns it into a game with an equilibrium that most pricing teams are not solving for.
+This would be a contained, if underappreciated, calibration problem if it happened in isolation. But Liang, Zhang, Zhou, and Zou (recent preprint, January 2026) show it is worse than that — because insurer competition turns it into a game with an equilibrium that most pricing teams are not solving for.
 
-Their paper is the first analysis of strategic underreporting under oligopolistic competition. Prior work (including Lemaire's) assumed a single insurer. Liang et al. add a second insurer and a policyholders' switching choice, and show that the system has a Nash equilibrium with three interlocking conditions: each insurer's premiums are profit-maximising given the other's premiums; policyholders' reporting strategy is optimal given both insurers' premiums; and the stationary distribution of policyholders across NCD classes is consistent with the reporting strategy.
+Their paper — which we treat as a recent preprint and have not independently verified against the arxiv version — is the first analysis of strategic underreporting under oligopolistic competition. Prior work (including Lemaire's) assumed a single insurer. Liang et al. add a second insurer and a policyholders' switching choice, and show that the system has a Nash equilibrium with three interlocking conditions: each insurer's premiums are profit-maximising given the other's premiums; policyholders' reporting strategy is optimal given both insurers' premiums; and the stationary distribution of policyholders across NCD classes is consistent with the reporting strategy.
 
-The key theorem (Theorem 3.1) establishes that the optimal reporting threshold is insurer-independent — it depends on the policyholder's NCD class and the premium levels, but not on which specific insurer they are with. A 5-year NCD holder faces the same rational threshold at Insurer A as at Insurer B, as long as both charge similar premiums at that class. This simplifies the equilibrium considerably.
+A key result establishes that the optimal reporting threshold is insurer-independent — it depends on the policyholder's NCD class and the premium levels, but not on which specific insurer they are with. A 5-year NCD holder faces the same rational threshold at Insurer A as at Insurer B, as long as both charge similar premiums at that class. This simplifies the equilibrium considerably.
 
-In their two-class numerical example (p₀ = 0.9, loss ~ Gamma(1.2, 0.0085), penalty ratio κ = 1.25, discount factor δ = 0.97), the Nash equilibrium has the more attractive insurer charging approximately 7% more than its competitor: θ*₁ ≈ 35.83, θ*₂ ≈ 33.45. The preferred insurer can exploit its competitive position in exactly the way you would expect: brand loyalty creates pricing power, and price-sensitivity governs how far premiums can diverge before the gap closes.
+The numerical examples in the paper show that the more attractive insurer can charge a meaningful premium above its competitor — somewhere in the 5–10% range in the two-class case — before the gap closes. The preferred insurer can exploit its competitive position in exactly the way you would expect: brand loyalty creates pricing power, and price-sensitivity governs how far premiums can diverge.
 
 The practical implication is harder to digest. The standard UK workflow — fit GLM on reported claims, update relativities, repeat — does not converge to the Nash equilibrium. It converges to whatever fixed point the iterative refit finds, which is not the same thing. If you are not explicitly solving the three-way fixed point (premiums → reporting threshold → stationary distribution → expected profit → best-response premiums), your NCD rates are not in equilibrium. They are, in Liang et al.'s framework, a locally stable approximation to the wrong answer.
 
@@ -82,9 +82,9 @@ There is also an adverse selection dynamic. If one insurer corrects for the supp
 
 ---
 
-## When the contract nears its end: arXiv:2601.07655
+## When the contract nears its end
 
-A companion paper from a different author group (arXiv:2601.07655, January 2026) approaches the same problem from a continuous-time angle and adds a result that Liang et al. do not cover: how the reporting threshold changes *over the life of the policy*, not just at steady state.
+A companion paper from a different author group (January 2026 preprint — we cite this with the caveat that the specific arxiv reference has not been independently verified) approaches the same problem from a continuous-time angle and adds a result that Liang et al. do not cover: how the reporting threshold changes *over the life of the policy*, not just at steady state.
 
 The model uses Piecewise Deterministic Markov Processes and solves the Hamilton-Jacobi-Bellman system to find the optimal barrier b(t) as a function of remaining contract time. The core result: the retention threshold decreases as the policy approaches its expiry date. Near renewal, even small claims become worth reporting, because the NCD disadvantage lasts less time before the policyholder is repriced anyway. The paper proves the value function is the unique viscosity solution to the HJB system — technically the strongest result available for this class of problem.
 

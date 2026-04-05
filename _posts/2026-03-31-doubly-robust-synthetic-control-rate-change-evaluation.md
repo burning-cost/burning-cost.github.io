@@ -132,7 +132,7 @@ The FCA's Consumer Duty (PRIN 2A, July 2023) requires firms to evidence that pri
 
 The GIPP remedies (PS21/5, January 2022) created natural experiments: segments where renewal pricing was constrained versus segments where it was not. The FCA ran its own evaluation of those remedies using DiD methods (EP25/2, July 2025). When the regulator's own methodology is DiD-class, it is difficult for a firm to argue a naive before-after comparison in its Consumer Duty outcome monitoring report.
 
-PRA supervisory statement SS3/19 on model risk management adds another hook. Rate change models are subject to post-implementation validation. DRSC can serve as that validation tool: did the model produce the predicted effect? The doubly robust property is directly relevant to model risk — it reduces the probability of a spurious null result when one of the two identification assumptions turns out to be wrong.
+Solvency II Articles 120-126 (internal model validation requirements) add another hook. Rate change models are subject to post-implementation validation. DRSC can serve as that validation tool: did the model produce the predicted effect? The doubly robust property is directly relevant to model risk — it reduces the probability of a spurious null result when one of the two identification assumptions turns out to be wrong.
 
 The key outputs for a regulatory evidence pack are: the ATT estimate with confidence interval, the pre-treatment falsification test, the SC weights (showing the synthetic control construction was plausible), and a plain-English interpretation. All of these come out of `result.summary()`.
 

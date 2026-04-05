@@ -245,7 +245,7 @@ Run this before and after every LLM-generated feature enters the model. It is no
 
 For completeness, since this is a question we get asked: the pricing model does not inherit the LLM's classification under the EU AI Act.
 
-GPT-4 and Claude are GPAI models under Chapter V of Regulation (EU) 2024/1689. The pricing model itself is classified by what it *does*, not by what built it. For UK motor and property pricing, the Annex III high-risk classification applies only to AI systems used for individual risk assessment in life and health insurance — motor and property are excluded, confirmed in EU Commission Guidelines C/2025/3554, paragraph 42.
+GPT-4 and Claude are GPAI models under Chapter V of Regulation (EU) 2024/1689. The pricing model itself is classified by what it *does*, not by what built it. For UK motor and property pricing, the Annex III high-risk classification is generally understood to apply only to AI systems used for individual risk assessment in life and health insurance — whether motor and property pricing falls within scope is not fully settled and firms should monitor EU Commission guidance as delegated acts develop.
 
 There is an arguable case that a life/health insurer using an LLM for feature generation brings it within Article 6(3) as a "preparatory task" for an Annex III system. No Commission guidance has directly addressed this yet, and it is an open legal question. The practical response is to inventory the LLM as a model component and document the dependency chain, which you should be doing under your model governance framework regardless — PRA SS1/23 if you are a bank, or equivalent principles under Solvency II Article 120 if you are an insurer.
 
@@ -278,13 +278,13 @@ The payoff is that the workflow we described in the earlier post — LLM-assiste
 
 ---
 
-*FCA Research Note: Motor insurance pricing and local area ethnicity in England and Wales. Financial Conduct Authority, December 2025.*
+*FCA Research Note on Fairness and Machine Learning in Insurance Pricing. Financial Conduct Authority, December 2024. (This is the note cited in the body for SM&CR responsibility and Consumer Duty obligations on AI-driven decisions.)*
+
+*FCA Research Note: Motor insurance pricing and local area ethnicity in England and Wales. Financial Conduct Authority, December 2025. (This note explicitly states that postcode is a confirmed ethnicity proxy in UK motor pricing.)*
 
 *EIOPA Supervisory Statement on Artificial Intelligence (2025). EIOPA-BoS-25-360. August 2025.*
 
 *PRA Supervisory Statement SS1/23: Model Risk Management Principles for Banks. Bank of England, May 2023 (operative May 2024).*
-
-*FCA Research Note on Fairness and Machine Learning in Insurance Pricing. Financial Conduct Authority, December 2024.*
 
 *NY DFS Circular Letter 2024-7: Use of External Consumer Data and Information Sources in Underwriting for Life Insurance. New York Department of Financial Services, 2024.*
 

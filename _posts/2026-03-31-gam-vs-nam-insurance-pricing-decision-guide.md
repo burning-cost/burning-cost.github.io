@@ -92,7 +92,7 @@ There are also books where it is the right *final* model:
 
 ## The regulatory context
 
-The FCA Consumer Duty (PS22/9, July 2022) requires firms to be able to explain pricing outcomes to customers on request. The EU AI Act (Articles 13 and Annex III, high-risk obligations applying from 2 August 2026) imposes transparency requirements on high-risk AI systems - insurance pricing falls under Annex III. Glass-box models satisfy these requirements directly. XGBoost with SHAP post-hoc explanation satisfies them indirectly, and SHAP approximate values are not identical to the model's actual decision process.
+The FCA Consumer Duty (PS22/9, published July 2022, in force 31 July 2023) requires firms to be able to explain pricing outcomes to customers on request. The EU AI Act (Articles 13 and Annex III, high-risk obligations applying from 2 August 2026) imposes transparency requirements on high-risk AI systems — for P&C motor and home pricing, whether this falls within scope of Annex III is not settled law, but firms should proceed on the assumption that the obligations may apply. Glass-box models satisfy these requirements directly. XGBoost with SHAP post-hoc explanation satisfies them indirectly, and SHAP approximate values are not identical to the model's actual decision process.
 
 The ICC finding from arXiv:2510.24601 provides indirect support here. If the accuracy advantage of black-box models is not real — if it is primarily an artefact of who tuned the comparison — then there is no meaningful trade-off between accuracy and interpretability. You are not giving up 3% Gini for glass-box compliance. You are giving up researcher-dominated noise.
 

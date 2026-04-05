@@ -82,6 +82,7 @@ import openai
 import pandas as pd
 from scipy import stats
 import statsmodels.formula.api as smf
+import statsmodels.api as sm
 
 # --- Step 1: Describe the rating factors to the LLM ---
 
@@ -131,8 +132,8 @@ def test_interaction(df: pd.DataFrame, factor_a: str, factor_b: str,
     formula_base = f"{target} ~ {factor_a} + {factor_b} + offset(log({exposure}))"
     formula_inter = f"{target} ~ {factor_a} * {factor_b} + offset(log({exposure}))"
 
-    m0 = smf.glm(formula_base, data=df, family=smf.families.Poisson()).fit()
-    m1 = smf.glm(formula_inter, data=df, family=smf.families.Poisson()).fit()
+    m0 = smf.glm(formula_base, data=df, family=sm.families.Poisson()).fit()
+    m1 = smf.glm(formula_inter, data=df, family=sm.families.Poisson()).fit()
 
     deviance_reduction = m0.deviance - m1.deviance
     df_diff = m0.df_resid - m1.df_resid

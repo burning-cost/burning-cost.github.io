@@ -26,7 +26,7 @@ Any fraud classifier has to handle this imbalance. The question is how.
 
 ## What focal loss is, and where it came from
 
-Focal loss was introduced by Lin et al. in 2017 (RetinaNet, ICCV best student paper). The motivation was one-stage object detection in images, where a single forward pass over a 640×640 image might produce 100,000 candidate bounding boxes, of which perhaps 10 contain objects. The model drowns in easy negatives — background patches that are trivially not objects — and the gradient signal from the handful of hard positives gets swamped.
+Focal loss was introduced by Lin et al. in 2017 (RetinaNet, winner of the Marr Prize at ICCV 2017). The motivation was one-stage object detection in images, where a single forward pass over a 640×640 image might produce 100,000 candidate bounding boxes, of which perhaps 10 contain objects. The model drowns in easy negatives — background patches that are trivially not objects — and the gradient signal from the handful of hard positives gets swamped.
 
 The fix is elegant. Standard cross-entropy: `L = -log(p_t)`. Focal loss adds a modulating factor:
 
