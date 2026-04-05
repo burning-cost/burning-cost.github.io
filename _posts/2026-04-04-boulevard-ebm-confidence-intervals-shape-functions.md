@@ -15,7 +15,7 @@ Fang, Tan, Pipping-Gamon and Hooker (AISTATS 2026, arXiv:2601.18857) prove that 
 
 ## Why actuarial teams need CIs on shape functions
 
-Model governance for a deployed pricing model increasingly requires more than a Gini coefficient and a double-lift chart. PRA CP6/24 on insurance model risk expects evidence that rating factors have a defensible actuarial basis. The FCA's Consumer Duty (PS22/9) expects pricing to reflect genuine risk differentiation, not noise. "The model fitted it and the Gini went up" is not sufficient for either.
+Model governance for a deployed pricing model increasingly requires more than a Gini coefficient and a double-lift chart. PRA SS1/23 model risk management principles expect evidence that rating factors have a defensible actuarial basis. The FCA's Consumer Duty (PS22/9) expects pricing to reflect genuine risk differentiation, not noise. "The model fitted it and the Gini went up" is not sufficient for either.
 
 Shape function CIs answer three concrete governance questions:
 

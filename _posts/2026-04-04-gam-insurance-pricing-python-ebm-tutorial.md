@@ -269,7 +269,7 @@ def gini(y, pred, exposure):
     exp_sorted = exposure[order]
     cum_exp = np.cumsum(exp_sorted) / exp_sorted.sum()
     cum_claims = np.cumsum(y_sorted * exp_sorted) / (y_sorted * exp_sorted).sum()
-    return 1 - 2 * np.trapezoid(cum_claims, cum_exp)
+    return 1 - 2 * np.trapezoid(cum_claims, cum_exp)  # np.trapezoid requires NumPy >= 2.0; use np.trapz for NumPy 1.x
 
 ebm_mu = ebm_pred * exp_test
 glm_mu = glm_pred * exp_test
@@ -394,7 +394,9 @@ One caution from the README: enforcing monotonicity on a factor that genuinely h
 
 ## FCA and PRA regulatory context
 
-**Solvency II Articles 120–126** (internal model standards) require that models used in capital and pricing processes are interpretable and can be challenged by subject matter experts. A GBM producing thousands of trees does not meet this standard for a primary pricing model without extensive post-hoc explainability infrastructure. An EBM's per-feature shape functions are the actuarial equivalent of the factor curves a pricing committee signs off in a GLM tariff review.
+**FCA Consumer Duty fair value evidence and proxy discrimination auditing** — PS22/9 requires that price differences are attributable to legitimate risk differentiation. Where a rating factor correlates with a protected characteristic, the firm must demonstrate that the factor measures genuine risk rather than acting as a demographic proxy. An EBM shape function makes this case explicitly: you can show a pricing committee the vehicle age curve, explain why the threshold at 10 years is actuarially reasonable, and document that the effect is not picking up socioeconomic area characteristics. A GBM's 3,000 trees do not support that argument without extensive post-hoc explainability infrastructure — which then needs its own governance and validation.
+
+**Internal model risk governance** — PRA SS1/23 model risk management principles (applied proportionately to insurers) require that pricing models have documented, validated rating factor justifications. A model that a senior actuary cannot read and challenge in a committee does not meet that standard. EBM shape functions are the actuarial equivalent of the factor relativities a pricing committee signs off in a GLM tariff review.
 
 **FCA Consumer Duty** (PS22/9, effective July 2023) requires that price differences between customers are attributable to legitimate risk differentiation. Where a pricing factor correlates with a protected characteristic, the firm needs to demonstrate that the factor is measuring genuine risk rather than acting as a proxy. An EBM shape function makes the non-linear relationship transparent and auditable — it is much easier to inspect whether the vehicle age curve is picking up a genuine claims effect or a socioeconomic proxy when the curve is explicit.
 

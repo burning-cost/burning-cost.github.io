@@ -11,9 +11,9 @@ author: Burning Cost
 
 Most UK pricing teams validate their models the same way: one analyst, one notebook, the same five checks they ran last time, and a Word document that took three hours to format. When a new model goes to committee, the output looks different from the one reviewed six months ago because a different analyst ran it. The Hosmer-Lemeshow test appeared in last cycle's report but not this one. The Gini confidence interval was there in Q3 but not Q4. Nobody is sure whether the PSI threshold used for the motor model is the same as the one used for home.
 
-This matters for reasons beyond tidiness. Under Solvency II Article 120, the validation function must be independent and must produce *consistent* documentation across the model estate. Under the FCA's Consumer Duty (PS22/9), pricing models must be demonstrably fair, which requires auditable evidence — not a bespoke notebook that only one person can interpret. The PRA's CP6/24, published in 2024, set expectations for insurance model risk management that closely track the structure of SS1/23 for banks: model inventory, tiered oversight, documented assumptions, regular review cycles.
+This matters for reasons beyond tidiness. Under Solvency II Article 120, the validation function must be independent and must produce *consistent* documentation across the model estate. Under the FCA's Consumer Duty (PS22/9), pricing models must be demonstrably fair, which requires auditable evidence — not a bespoke notebook that only one person can interpret. PRA SS1/23 sets the model risk management expectations; the PRA expects insurers to follow equivalent principles proportionately: model inventory, tiered oversight, documented assumptions, regular review cycles.
 
-The practical problem is that none of this specifies *how* to produce consistent, auditable validation documentation. CP6/24 tells you what to have. It says nothing about the format or tooling.
+The practical problem is that none of this specifies *how* to produce consistent, auditable validation documentation. SS1/23 tells you what to have. It says nothing about the format or tooling.
 
 This post shows how to automate actuarial model validation in Python using the [`insurance-governance`](https://github.com/burning-cost/insurance-governance) library. The result: the same five-test validation suite for every model, every release, producing self-contained HTML reports that any reviewer can open without Python installed.
 
@@ -47,7 +47,7 @@ Before the code: the rules that make this non-optional.
 
 **Consumer Duty and FCA ethnicity pricing research (December 2025)** add a validation expectation specific to fairness: if a pricing model uses variables that correlate with protected characteristics, you should test for and document disparate impact. The FCA's Research Note on motor insurance pricing and local area ethnicity found a residual ethnicity-postcode correlation after risk adjustment; Consumer Duty PRIN 2A requires firms to be able to evidence fair outcomes. This is a validation step that most teams do not currently run.
 
-**PRA CP6/24 (insurance model risk, 2024)** sets expectations for model inventory, validation independence, tiered review frequency, and governance sign-off. It does not mandate a specific report format, but it does expect that documentation exists and is consistent across the model estate.
+**PRA SS1/23 (model risk management; applied proportionately to insurers)** sets expectations for model inventory, validation independence, tiered review frequency, and governance sign-off. It does not mandate a specific report format, but it does expect that documentation exists and is consistent across the model estate.
 
 The common thread: you need documentation that is reproducible, comparable across models, and auditable by people who did not produce it. This is a documentation engineering problem as much as a statistics problem.
 
@@ -132,7 +132,7 @@ report = ModelValidationReport(
 )
 ```
 
-The `fairness_group_col` argument adds a disparate impact section to the report: A/E ratios broken out by group, with flags where any group's CI excludes the portfolio average. This is the documentation step that CP6/24 and EP25/2 require if the model uses variables that proxy protected characteristics.
+The `fairness_group_col` argument adds a disparate impact section to the report: A/E ratios broken out by group, with flags where any group's CI excludes the portfolio average. This is the documentation step that SS1/23 model risk principles and EP25/2 require if the model uses variables that proxy protected characteristics.
 
 ---
 
@@ -156,7 +156,7 @@ Model C illustrates the limits of PSI. PSI at 0.189 is below the conventional 0.
 
 Statistical validation answers "is this model accurate?" MRM governance answers "does this model have the right oversight for its materiality?"
 
-CP6/24 expects insurers to classify models by risk tier: high-materiality models need annual review and board-level sign-off; lower-tier models can run on longer cycles with delegation to the Chief Actuary or Head of Pricing. The `RiskTierScorer` in `insurance-governance` makes this classification deterministic and auditable.
+SS1/23 expects firms to classify models by risk tier: high-materiality models need annual review and board-level sign-off; lower-tier models can run on longer cycles with delegation to the Chief Actuary or Head of Pricing. The `RiskTierScorer` in `insurance-governance` makes this classification deterministic and auditable.
 
 ```python
 from insurance_governance import MRMModelCard, RiskTierScorer, GovernanceReport, Assumption
@@ -276,7 +276,7 @@ Be clear about the limits:
 
 **It does not validate the features.** The tests tell you whether the model's predictions are good on the validation set. They do not tell you whether the features are well-specified, whether the training sample is representative, or whether the model will hold up under regulatory challenge of its underlying variables. That requires actuarial judgement.
 
-**It does not replace independent validation.** CP6/24 expects the validation function to be independent of model development. Running these tests yourself, on your own model, satisfies the documentation requirement but not the independence requirement. The HTML report is evidence for an independent validator to review — it is not a substitute for that review.
+**It does not replace independent validation.** SS1/23 expects the validation function to be independent of model development. Running these tests yourself, on your own model, satisfies the documentation requirement but not the independence requirement. The HTML report is evidence for an independent validator to review — it is not a substitute for that review.
 
 **It is for pricing models.** The library does not cover reserving models, capital models, or credit risk models. The statistical assumptions (Poisson frequency, GLM/GBM scoring) are calibrated to UK personal lines pricing.
 

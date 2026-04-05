@@ -178,7 +178,7 @@ We would reconsider if any of the following happen.
 
 **A panel extension is published.** Extending the entropic tilting approach to the panel DiD setting — where the DR moment condition needs to accommodate the ATT over multiple treated periods and a synthetic control weight structure — would directly address our most acute need. This is a non-trivial theoretical contribution. If it appears, this goes straight to reconsideration.
 
-**FCA guidance on uncertainty quantification.** If the FCA or PRA issues guidance that specifically requires probabilistic uncertainty quantification in pricing causal analyses — not just confidence intervals, but posterior-style probability statements — the demand case for Bayesian DR strengthens materially. Nothing in PS22/9, EP25/2, or PRA CP6/24 currently requires this, but the direction of travel on model governance is towards stronger quantification requirements.
+**FCA guidance on uncertainty quantification.** If the FCA or PRA issues guidance that specifically requires probabilistic uncertainty quantification in pricing causal analyses — not just confidence intervals, but posterior-style probability statements — the demand case for Bayesian DR strengthens materially. Nothing in PS22/9, EP25/2, or PRA SS1/23 currently requires this, but the direction of travel on model governance is towards stronger quantification requirements.
 
 ---
 

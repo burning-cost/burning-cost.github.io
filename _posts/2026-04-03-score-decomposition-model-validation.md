@@ -142,7 +142,7 @@ Solvency II Technical Provisions (Articles 76–86) require that technical provi
 
 The standard validation approach — plotting fan charts of model percentiles against actual development factors — is visual, not statistical. "The fan looks broadly right" is not a validation finding. A `ScoreDecompositionTest` result that says `MCB p=0.84, DSC p=0.002` is: the model is not significantly miscalibrated at the 80th percentile, and it does have statistically significant discrimination skill. That is a validation finding you can put in a model validation report.
 
-For firms with an internal model approved by the PRA, the validation framework is part of the regulatory capital calculation. PRA CP6/24 (insurance model risk guidance) expects quantitative validation evidence. A p-value from a formally grounded test is quantitative evidence. A fan chart is a picture.
+For firms with an internal model approved by the PRA, the validation framework is part of the regulatory capital calculation. PRA SS1/23 model risk management principles expect quantitative validation evidence. A p-value from a formally grounded test is quantitative evidence. A fan chart is a picture.
 
 The reference implementation is [insurance-monitoring on PyPI](https://pypi.org/project/insurance-monitoring/). `ScoreDecompositionTest` is at `insurance_monitoring.calibration.ScoreDecompositionTest`. Install with:
 

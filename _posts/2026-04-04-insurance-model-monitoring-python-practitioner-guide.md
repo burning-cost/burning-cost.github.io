@@ -212,7 +212,7 @@ The exposure-weighting in `csi()` is not cosmetic. A short-period policy contrib
 
 The 0.10 / 0.20 thresholds are the industry standard from the PSI literature (Siddiqi, 2006) and remain appropriate for insurance portfolios when applied to exposure-weighted distributions. They are not PRA or FCA-mandated thresholds — they are empirically grounded rules of thumb. Set your governance thresholds by reference to them, document the rationale, and revisit after your first annual validation cycle.
 
-For discrimination drift, there is no equivalent industry standard threshold. The `alpha=0.32` default in `ModelMonitor` is calibrated to the cost of false alarms in a quarterly review process. For a formal annual governance attestation (which PRA CP6/24 requires insurers to evidence), use a conventional significance level (`alpha=0.05`) and document the test methodology.
+For discrimination drift, there is no equivalent industry standard threshold. The `alpha=0.32` default in `ModelMonitor` is calibrated to the cost of false alarms in a quarterly review process. For a formal annual governance attestation (which PRA SS1/23 model risk principles require firms to evidence), use a conventional significance level (`alpha=0.05`) and document the test methodology.
 
 ---
 
@@ -232,7 +232,7 @@ with open("motor_freq_q1_2026_monitoring.json", "w") as f:
     json.dump(result_dict, f, indent=2)
 ```
 
-Feed this JSON into your model risk register. Under PRA CP6/24, insurers need to evidence that pricing models are being monitored with defined quantitative thresholds and documented pass/fail outcomes — not narrative assertions. A quarterly JSON file with the three test results and the decision is the minimum viable governance artefact. Better still, pair it with [`insurance-governance`](/insurance-governance/) to ingest the monitoring output directly into the model risk committee pack — the [actuarial model validation guide](/2026/04/04/actuarial-model-validation-python/) documents how validation and monitoring connect in the same governance chain.
+Feed this JSON into your model risk register. Under PRA SS1/23 principles, insurers need to evidence that pricing models are being monitored with defined quantitative thresholds and documented pass/fail outcomes — not narrative assertions. A quarterly JSON file with the three test results and the decision is the minimum viable governance artefact. Better still, pair it with [`insurance-governance`](/insurance-governance/) to ingest the monitoring output directly into the model risk committee pack — the [actuarial model validation guide](/2026/04/04/actuarial-model-validation-python/) documents how validation and monitoring connect in the same governance chain.
 
 [`insurance-monitoring`](/insurance-monitoring/) also integrates with MLflow if your team uses that for experiment tracking:
 

@@ -22,7 +22,7 @@ The AI Live Testing sandbox is a supervised environment in which the FCA works d
 
 Applications for cohort 2 closed in early 2026. Firms that got in are now running. The evaluation report the FCA publishes at year-end will, in effect, set the supervisory expectations for every firm in the market that did not participate. That is the mechanism: sandbox results become thematic guidance, thematic guidance becomes supervisory expectation, supervisory expectation becomes enforcement risk.
 
-The FCA has been clear that no new AI-specific rulebook is coming. The framework is Consumer Duty (PRIN 2A), the Equality Act 2010, FCA SYSC, and — for model governance — the principles emerging from CP6/24 (the PRA's model risk consultation, which applies to insurers under equivalent proportionality). The sandbox is how the FCA tests whether existing rules are sufficient or need supplementing. Which means firms in the sandbox are not just demonstrating compliance with current rules. They are shaping what the next set of rules will be.
+The FCA has been clear that no new AI-specific rulebook is coming. The framework is Consumer Duty (PRIN 2A), the Equality Act 2010, FCA SYSC, and — for model governance — PRA SS1/23 model risk management principles (applied proportionately to insurers). The sandbox is how the FCA tests whether existing rules are sufficient or need supplementing. Which means firms in the sandbox are not just demonstrating compliance with current rules. They are shaping what the next set of rules will be.
 
 ---
 
@@ -125,7 +125,7 @@ We do not know what the recommendations will say. What we do know is:
 
 - Firms in Live Testing cohort 2 will have shaped them. The FCA will use what it observed in the sandbox as evidence for what is achievable. If cohort 2 firms demonstrate working uncertainty quantification and per-decision audit trails, the Mills Review will cite them as proof of concept and set them as expectations for the rest of the market.
 - The timeline is tight. Summer 2026 recommendations plus the cohort 2 evaluation report at year-end means that by early 2027, any firm without the four pillars in place will be visibly out of step with a published supervisory framework.
-- CP6/24 (the PRA's insurance model risk consultation) is also live. The interaction between the Mills Review recommendations and CP6/24 final rules will determine exactly which AI governance requirements are formal regulatory obligations versus supervisory expectations. The difference matters for enforcement, not for what you need to build.
+- SS1/23 (the PRA's model risk supervisory statement) is the current framework. The interaction between the Mills Review recommendations and SS1/23 will determine exactly which AI governance requirements are formal regulatory obligations versus supervisory expectations. The difference matters for enforcement, not for what you need to build.
 
 The right response to that uncertainty is not to wait. The four requirements described above are not experimental. They are the minimum for a defensible position under current Consumer Duty obligations, regardless of what the Mills Review concludes. Building them now means you are ready for whatever framework lands in 2027, and you have the documentation history that shows you were operating appropriately during the 2025–2026 implementation period.
 
@@ -149,7 +149,7 @@ The FCA's direction of travel since 2021 has been consistent: it wants firms to 
 - FCA TR24/2: Multi-firm review of Consumer Duty implementation in product governance, August 2024
 - FCA EP25/2: Evaluation of General Insurance Pricing Practices remedies, July 2025
 - FCA Consumer Duty (PRIN 2A), effective 31 July 2023
-- PRA CP6/24: Model risk management principles for insurers (consultation)
+- PRA SS1/23: Model risk management supervisory statement (formally for banks; applied proportionately to insurers)
 - Equality Act 2010, Section 19 (indirect discrimination)
 - Mills Review: FCA inquiry into long-term AI impact on retail financial services, recommendations expected summer 2026
 

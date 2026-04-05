@@ -494,7 +494,7 @@ print(comparison)
 
 Lower twCRPS is better. The Weibull model should score lower than the exponential approximation because the exponential misspecifies the shape of the hazard function (it assumes constant hazard; Weibull with shape 1.2 implies mildly increasing hazard over time).
 
-Use this to compare cure models against standard Cox and Weibull alternatives on your own hold-out data. The proper scoring rule is the right metric for regulatory model validation documentation under Solvency II Article 120-126 and PRA CP6/24 requirements for insurance model governance.
+Use this to compare cure models against standard Cox and Weibull alternatives on your own hold-out data. The proper scoring rule is the right metric for regulatory model validation documentation under Solvency II Article 120-126 and PRA SS1/23 principles for insurance model governance.
 
 ---
 

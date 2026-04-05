@@ -65,8 +65,8 @@ features = ["DrivAge", "VehAge", "VehPower", "VehGas", "Region", "Density"]
 
 ebm = InsuranceEBM(
     feature_names=features,
-    objective="poisson",
-    interactions=3,       # up to 3 pairwise interaction terms
+    loss="poisson",
+    interactions="3x",    # detect up to 3 pairwise interactions automatically
     max_bins=256,
 )
 ebm.fit(
@@ -131,7 +131,9 @@ print(result)
 # ERTResult(ert=0.018, CI=[0.004, 0.033], p=0.041)
 ```
 
-An ERT above 0.05 with p < 0.05 means the intervals are conditionally thin in some region — worth investigating before deploying. The subgroup breakdown by feature is a one-liner:
+This result means: the test detected statistically significant conditional miscoverage (p=0.041 < 0.05), though the ERT magnitude (0.018) is small. The ERT score measures the expected shortfall in coverage conditional on the predicted interval width — 0.018 means the intervals are on average 1.8 percentage points too narrow in some subregion. The 95% CI of [0.004, 0.033] excludes zero, which is why p=0.041. In practice, a small ERT with p just below 0.05 is worth noting and investigating via subgroup breakdown, but does not necessarily mean the intervals are operationally unacceptable.
+
+An ERT above 0.05 with p < 0.05 means the intervals are conditionally thin in a materially problematic region — worth investigating before deploying. The subgroup breakdown by feature is a one-liner:
 
 ```python
 subgroups = ert.subgroup_coverage(
@@ -206,7 +208,7 @@ This guarantees P(ever alarm | model calibrated) <= 0.05 across any monitoring h
 
 ## Step 4: audit for proxy discrimination with `insurance-fairness`
 
-Driver age is a legitimate rating factor for UK motor. The loss data supports it and Equality Act 2010 Schedule 3 paragraph 25 provides a specific exception for age-based motor insurance pricing where the use is actuarially justified. This matters because `DrivAge` is also a strong proxy for characteristics that are protected without a pricing exception — and the FCA's Consumer Duty fair value expectations require firms to understand the proxy structure of their rating plan.
+Driver age is a legitimate rating factor for UK motor. The loss data supports it and Equality Act 2010 Schedule 3 paragraph 20A (inserted by the Equality Act 2010 (Age Exceptions) Order 2012) provides a specific exception for age-based insurance pricing where the use is actuarially justified. This matters because `DrivAge` is also a strong proxy for characteristics that are protected without a pricing exception — and the FCA's Consumer Duty fair value expectations require firms to understand the proxy structure of their rating plan.
 
 We run `IndirectDiscriminationAudit` to quantify how much of the age signal passes through the other features versus how much is a direct age effect. This does not say the model is discriminatory — it says where to look:
 
@@ -285,7 +287,7 @@ val_report.to_json("motor_freq_validation.json")
 
 The HTML report has a documented pass/fail outcome per test: Gini with bootstrap 95% CI, A/E ratio with Poisson confidence interval, Hosmer-Lemeshow statistic and p-value, PSI per feature. The JSON sidecar is machine-readable for ingestion into an MRM system.
 
-One regulatory note: `insurance-governance` aligns its statistical tests with PRA model risk management principles. PRA SS1/23 formally applies to banks; the insurance equivalent is PRA CP6/24. The library does not care which regime you operate in — the statistical tests are the same either way. What matters is that you have quantitative, auditable, reproducible pass/fail results rather than a narrative.
+One regulatory note: `insurance-governance` aligns its statistical tests with PRA model risk management principles. PRA SS1/23 formally applies to banks; the PRA expects insurers to follow equivalent principles. The library does not care which regime you operate in — the statistical tests are the same either way. What matters is that you have quantitative, auditable, reproducible pass/fail results rather than a narrative.
 
 For the model risk committee, add a `GovernanceReport`:
 
@@ -326,7 +328,7 @@ gov_report = GovernanceReport(card=mrm_card, tier=tier)
 gov_report.save_html("motor_freq_mrm_pack.html")
 ```
 
-The risk tier score (`tier.tier`) drives the model oversight requirements: a Tier 1 model needs annual independent validation; Tier 2 is biennial. The `GovernanceReport` HTML includes the model card, tier rationale, assumption register, and links to the validation evidence.
+The risk tier score (`tier.tier`) drives the model oversight requirements: Tier 1 requires annual independent validation with quarterly monitoring; Tier 2 is biennial validation with annual monitoring; Tier 3 is validated at-change only. The `GovernanceReport` HTML includes the model card, tier rationale, assumption register, and links to the validation evidence.
 
 ---
 

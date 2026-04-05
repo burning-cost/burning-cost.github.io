@@ -11,7 +11,7 @@ math: true
 
 Most UK pricing teams applying model governance corrections follow roughly the same pipeline: train a GLM or GBM, apply fairness constraints to satisfy Consumer Duty, run isotonic recalibration to tighten the expected calibration error, then set up PSI-triggered monitoring to catch drift and trigger a refit. Repeat annually, or when something breaks.
 
-This pipeline is common because its components are individually well-motivated. Fairness constraints are not optional under the FCA's Consumer Duty (PS22/9) and the Equality Act 2010. Calibration matters for reserving and pricing adequacy. Drift detection — flagged in PRA consultation CP6/24 on insurance model risk — is how you know when to refit. Each step corresponds to a genuine regulatory obligation or good practice standard.
+This pipeline is common because its components are individually well-motivated. Fairness constraints are not optional under the FCA's Consumer Duty (PS22/9) and the Equality Act 2010. Calibration matters for reserving and pricing adequacy. Drift detection — a core expectation of the PRA's model risk management framework — is how you know when to refit. Each step corresponds to a genuine regulatory obligation or good practice standard.
 
 The problem is that these steps interact. Applied sequentially as post-hoc corrections, they do not compose cleanly. Each adjustment changes the distribution the next one operates on. The result is a model that has been corrected three times but is not correctly corrected in any of them.
 
@@ -99,4 +99,4 @@ In the meantime, we are building towards better composition between our librarie
 
 ---
 
-*The libraries referenced — `insurance-fairness`, `insurance-monitoring`, `insurance-distributional-glm` — are open source and available on PyPI. The CCI paper is arXiv:2603.06733. The fairness correction approach EquiPy uses is arXiv:2503.09866 (Fernandes Machado, Grondin, Ratz, Charpentier, Hu). FCA PS22/9 and PRIN 2A (Consumer Duty) cover fair value and proxy discrimination expectations; FCA EP25/2 (July 2025) evaluates the GIPP price-walking remedies; PRA CP6/24 covers insurance model risk management.*
+*The libraries referenced — `insurance-fairness`, `insurance-monitoring`, `insurance-distributional-glm` — are open source and available on PyPI. The CCI paper is arXiv:2603.06733. The fairness correction approach EquiPy uses is arXiv:2503.09866 (Fernandes Machado, Grondin, Ratz, Charpentier, Hu). FCA PS22/9 and PRIN 2A (Consumer Duty) cover fair value and proxy discrimination expectations; FCA EP25/2 (July 2025) evaluates the GIPP price-walking remedies; PRA SS1/23 covers model risk management (formally for banks, but applied proportionately to insurers).*

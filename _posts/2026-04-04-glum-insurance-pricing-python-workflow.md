@@ -82,7 +82,7 @@ The GLM gives point predictions. A PRA-supervised internal model also needs unce
 
 `insurance-conformal` implements the Manna et al. (2025) Pearson nonconformity score for Tweedie data. The guarantee: for any test point drawn from the same distribution as the calibration set, the interval contains the true value at the nominal rate. No parametric assumptions required.
 
-glum's `predict()` requires an `offset` argument. The conformal predictor calls `model.predict(X)` internally, so we wrap glum in a thin callable that closes over the per-split exposures:
+glum's `predict()` requires an `offset` argument. The conformal predictor calls `model.predict(X)` internally, so we wrap glum in a thin callable that takes the offset explicitly as a parameter. Do not close over the stored training offset and slice it — after `train_test_split` the test rows are not contiguous rows of the training offset array:
 
 ```python
 from insurance_conformal import InsuranceConformalPredictor
@@ -95,13 +95,25 @@ X_cal, y_cal = X_train[cal_start:], y_train[cal_start:]
 exp_cal = exp_train[cal_start:]
 
 class GlumPredictor:
-    """Wraps glum so that predict(X) bakes in a stored log-exposure offset."""
+    """Wraps glum so that predict(X, offset) passes the offset explicitly.
+
+    Note: do NOT store the offset array and slice it inside predict(). After
+    train_test_split the test indices are not rows 0..N of any training array,
+    so self.log_offset[:X.shape[0]] would silently return wrong values.
+    Pass offset explicitly per call instead.
+    """
     def __init__(self, fitted_glm, log_offset: np.ndarray):
         self.glm = fitted_glm
-        self.log_offset = log_offset  # must be same length as X rows
+        self.log_offset = log_offset  # stored for convenience, must match X exactly
 
-    def predict(self, X):
-        return self.glm.predict(X, offset=self.log_offset[:X.shape[0]])
+    def predict(self, X, offset=None):
+        if offset is None:
+            offset = self.log_offset
+        assert len(offset) == X.shape[0], (
+            f"offset length {len(offset)} != X rows {X.shape[0]}. "
+            "Pass the offset that corresponds to this exact row set."
+        )
+        return self.glm.predict(X, offset=offset)
 
 
 # Calibrate on the held-out 30%
@@ -114,9 +126,9 @@ cp = InsuranceConformalPredictor(
 )
 cp.calibrate(X_cal, y_cal, exposure=exp_cal)
 
-# Predict intervals on test set
+# Predict intervals on test set — create a new wrapper with the test offset
 wrapped_glm_test = GlumPredictor(glm, np.log(exp_test))
-cp.model = wrapped_glm_test  # swap offset to match test exposure
+cp.model = wrapped_glm_test
 intervals = cp.predict_interval(X_test, alpha=0.10)
 
 # intervals is a Polars DataFrame with columns lower, point, upper
@@ -128,7 +140,7 @@ print(f"Mean interval width: {width.mean():.4f}")
 
 The key choice is `nonconformity="pearson_weighted"`. The Tweedie Pearson score is `|y - mu| / mu^{p/2}`, which normalises the residual by the expected standard deviation scale. This produces intervals roughly 30% narrower than raw residual scores at the same coverage level (Manna et al. 2025, ASMBI asmb.70045). For Solvency II 99.5% capital bounds, swap `alpha=0.005`.
 
-The wrapper pattern above is the right mental model for glum integration: the GLM handles the statistical fitting, the conformal layer wraps the predictions with distribution-free coverage. The offset complexity is a one-time engineering decision at the calibration boundary, not a recurring concern.
+The wrapper pattern above is the right mental model for glum integration: the GLM handles the statistical fitting, the conformal layer wraps the predictions with distribution-free coverage. The explicit offset-per-call design avoids the silent row-mismatch bug that arises when a stored offset array is sliced inside `predict()`.
 
 ---
 
@@ -202,7 +214,7 @@ The `recommendation` field implements the Brauer, Menzel & Wuthrich (2025) two-s
 
 ## 4. Audit for proxy discrimination
 
-The FCA's Consumer Duty supervisory work and the December 2025 Research Note on motor insurance pricing and local area ethnicity have progressively sharpened the regulator's expectations around proxy discrimination. The concern is not that your model uses gender directly — that is restricted under the Test-Achats ruling for most personal lines products. The concern is that combinations of variables you do use (postcode, vehicle make, occupation, payment method) functionally reproduce a protected characteristic, resulting in systematically different outcomes for protected groups.
+The FCA's Consumer Duty supervisory work and its ongoing research on motor insurance pricing and local area ethnicity have progressively sharpened the regulator's expectations around proxy discrimination. The concern is not that your model uses gender directly — that is restricted under the Test-Achats ruling for most personal lines products. The concern is that combinations of variables you do use (postcode, vehicle make, occupation, payment method) functionally reproduce a protected characteristic, resulting in systematically different outcomes for protected groups.
 
 `insurance-fairness` implements the proxy detection and fairness audit that Consumer Duty ongoing monitoring requires.
 
@@ -320,7 +332,7 @@ print(f"Tier {tier.tier} | RAG: GREEN | Next review: 2026-07-04")
 
 The `GovernanceReport` output is a self-contained HTML document that is print-to-PDF ready. It covers model identity, risk tier with rationale, last validation outcomes, monitoring summary, outstanding issues, and approval record - the structure a PRA supervisor or internal audit function expects.
 
-`RiskTierScorer` applies a weighted scorecard across customer-facing status, GWP impact, regulatory use, and model complexity. The freMTPL2 GLM scores Tier 2 (medium risk): customer-facing, material GWP, but a simple architecture. Tier 1 requires quarterly validation; Tier 2 gets annual validation with quarterly monitoring. The tier assignment is documented, reproducible, and not subject to the "we called it Tier 3 because validation was inconvenient" failure mode.
+`RiskTierScorer` applies a weighted scorecard across customer-facing status, GWP impact, regulatory use, and model complexity. The freMTPL2 GLM scores Tier 2 (medium risk): customer-facing, material GWP, but a simple architecture. Tier 1 requires annual independent validation with quarterly monitoring; Tier 2 is biennial validation with annual monitoring; Tier 3 is validated at-change only. The tier assignment is documented, reproducible, and not subject to the "we called it Tier 3 because validation was inconvenient" failure mode.
 
 ---
 

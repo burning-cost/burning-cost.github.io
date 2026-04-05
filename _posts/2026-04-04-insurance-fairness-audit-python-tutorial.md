@@ -8,7 +8,7 @@ tags: [insurance-fairness, python, proxy-discrimination, fca, consumer-duty, equ
 description: "Step-by-step Python tutorial for running an insurance fairness audit. Covers proxy discrimination detection, exposure-weighted bias metrics, FCA Consumer Duty mapping, and generating an audit report your pricing committee can sign off. Uses the insurance-fairness library (2,152 downloads/month)."
 ---
 
-Your postcode rating factor probably correlates with ethnicity. That is not a hypothesis — Citizens Advice (2020) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m annually, driven entirely through proxy factors. The question is not whether your model might be doing this. The question is whether you can demonstrate it is not, in terms that satisfy the FCA's Consumer Duty requirements and would survive an FCA file review.
+Your postcode rating factor probably correlates with ethnicity. That is not a hypothesis — Citizens Advice (2022) estimated a £280/year ethnicity penalty in UK motor insurance, totalling £213m annually, driven entirely through proxy factors. The question is not whether your model might be doing this. The question is whether you can demonstrate it is not, in terms that satisfy the FCA's Consumer Duty requirements and would survive an FCA file review.
 
 This tutorial walks through a complete insurance fairness audit in Python using [`insurance-fairness`](https://github.com/burning-cost/insurance-fairness), our most-downloaded library at 2,152 downloads/month. By the end you will have run proxy detection across your rating factors, computed exposure-weighted bias metrics, and produced a Markdown audit report mapped to FCA PRIN 2A, FG22/5, and Equality Act s.19. The whole workflow takes under 15 minutes on a 50,000-policy book.
 
@@ -26,7 +26,7 @@ The standard defence from pricing teams is: "We don't use gender, ethnicity, or 
 
 Section 19 defines indirect discrimination as applying a "provision, criterion or practice" that puts people with a protected characteristic at a particular disadvantage compared to others — *even if the protected characteristic is not directly used*. A postcode rating factor does not reference ethnicity. It does not need to: if policyholders in high-diversity postcode districts are systematically overcharged relative to their actual risk, because the postcode factor is picking up area demographics rather than (or in addition to) genuine risk variation, that is indirect discrimination.
 
-The FCA's position on this is not ambiguous. Consumer Duty PRIN 2A requires firms to demonstrate fair outcomes for all groups of customers. FCA FG22/5 (Consumer Duty guidance) states firms should consider how algorithmic tools could produce biased outcomes for different groups. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance" — the FCA's words, not ours.
+Consumer Duty PRIN 2A requires firms to demonstrate fair outcomes for all groups of customers. FCA FG22/5 (Consumer Duty guidance) states firms should consider how algorithmic tools could produce biased outcomes for different groups. The FCA's 2024 multi-firm review of Consumer Duty implementation found most Fair Value Assessments were "high-level summaries with little substance" — the FCA's words, not ours.
 
 The standard statistical approach to checking for proxy correlation — a Spearman correlation between postcode and an ethnicity proxy — misses the problem almost entirely. The postcode-ethnicity relationship is non-linear: London inner postcodes, outer postcodes, and rural postcodes cluster in ways that a linear correlation measure cannot detect. On a 20,000-policy synthetic UK motor portfolio replicating the Citizens Advice finding, Spearman returns |r| ≈ 0.10 and flags nothing. CatBoost proxy R² returns 0.62 — unambiguously RED.
 
@@ -67,7 +67,7 @@ A fairness audit requires three things beyond your existing modelling dataset:
 
 Most UK insurers do not hold individual-level ethnicity data. The practical alternative is to join ONS 2021 Census LSOA ethnicity proportions to your postcode data and use the area-level diversity proportion as a proxy. This is an area-level proxy, not individual-level — correlations with this proxy are correlations with area demographics, not individual ethnicity. That limitation should be stated explicitly in your audit report. It is still materially better than no proxy at all.
 
-For gender, most insurers have the data directly (even if they cannot use it as a rating factor following the ECJ Test-Achats ruling, Case C-236/09, which led to the removal of the gender exemption; the prohibition on gender rating in insurance services is implemented through Equality Act s.29 and Schedule 3). For age, the data is typically available and s.13 direct discrimination by age in insurance is subject to a sector-specific exemption under Schedule 3 paragraph 20 — but indirect discrimination through age-correlated factors still applies.
+For gender, most insurers have the data directly (even if they cannot use it as a rating factor following the ECJ Test-Achats ruling, Case C-236/09, which led to the removal of the gender exemption; the prohibition on gender rating in insurance services is implemented through Equality Act s.29 and Schedule 3). For age, the data is typically available and s.13 direct discrimination by age in insurance is subject to a sector-specific exemption under Schedule 3 paragraph 20A — but indirect discrimination through age-correlated factors still applies.
 
 **2. Your model's predictions at policy level.**
 
@@ -192,7 +192,7 @@ print(f"Log-ratio: {dp.log_ratio:+.4f} (ratio: {dp.ratio:.4f}) [{dp.rag}]")
 # Log-ratio: +0.0820 (ratio: 1.0854) [AMBER]
 ```
 
-A ratio of 1.085 means the high-diversity group is charged approximately 8.5% more per car-year on average than the low-diversity group, after weighting by exposure. For context: the Citizens Advice (2020) estimate of the ethnicity penalty in UK motor was approximately 6–9% of annual premium, so this synthetic result is consistent with the order of magnitude of the real finding.
+A ratio of 1.085 means the high-diversity group is charged approximately 8.5% more per car-year on average than the low-diversity group, after weighting by exposure. For context: the Citizens Advice (2022) estimate of the ethnicity penalty in UK motor was approximately 6–9% of annual premium, so this synthetic result is consistent with the order of magnitude of the real finding.
 
 ### Proxy detection (the distinctive metric)
 
@@ -246,7 +246,7 @@ print(f"Proxy vulnerability: {result.proxy_vulnerability:.2f}")
 print(result.segment_report)
 ```
 
-The proxy vulnerability score (Côté, Côté & Charpentier, 2025) is the mean absolute difference between the "unaware" premium — what the model charges not knowing the protected characteristic — and the "proxy-free" premium — what it would charge if the postcode factor were stripped of its ethnicity correlation. On this synthetic portfolio, 14% means some policyholders are paying materially more because of where they live in ways attributable to area demographics rather than genuine risk.
+The proxy vulnerability score (Côté, Côté & Charpentier, CAS Winter Meeting 2023; journal version 2025) is the mean absolute difference between the "unaware" premium — what the model charges not knowing the protected characteristic — and the "proxy-free" premium — what it would charge if the postcode factor were stripped of its ethnicity correlation. On this synthetic portfolio, 14% means some policyholders are paying materially more because of where they live in ways attributable to area demographics rather than genuine risk.
 
 ---
 
@@ -293,7 +293,7 @@ y_pred_corrected = corrector.correct(
 )
 ```
 
-Denuit, Michaelides & Trufin (2026) establish the theoretical basis for multicalibration in insurance pricing — a model that is multicalibrated cannot systematically overcharge any identifiable subgroup. It is a strictly stronger requirement than aggregate calibration by group, and it is the right target for Consumer Duty purposes.
+Denuit, Michaelides & Trufin (2026, arXiv:2603.16317) establish the theoretical basis for multicalibration in insurance pricing — a model that is multicalibrated cannot systematically overcharge any identifiable subgroup. It is a strictly stronger requirement than aggregate calibration by group, and it is the right target for Consumer Duty purposes.
 
 ---
 
@@ -307,7 +307,7 @@ This objection is common and partially valid. You genuinely cannot run `protecte
 
 **Gender** — you almost certainly hold this. Even if you do not rate on it, running the gender analysis costs you 30 seconds and gives you evidence for the Consumer Duty documentation.
 
-**Age** — the direct age factor is protected under the Equality Act but benefits from the Schedule 3, paragraph 20 actuarial exemption. Age *interactions* with other factors — where the postcode loading is different for young drivers than for older drivers — warrant scrutiny even where the direct age factor is justified.
+**Age** — the direct age factor is protected under the Equality Act but benefits from the Schedule 3 paragraph 20A actuarial exemption. Age *interactions* with other factors — where the postcode loading is different for young drivers than for older drivers — warrant scrutiny even where the direct age factor is justified.
 
 The audit report's limitations section is the right place to document which protected characteristics you could not audit directly and what proxy approach you used. This is better practice than not documenting it.
 
@@ -405,7 +405,7 @@ This library produces a documented audit trail. It does not:
 - Replace the proportionality assessment that only your legal counsel can make
 - Guarantee the FCA will find your approach satisfactory — no automated tool can
 
-The FCA's 2024 multi-firm review found that most firms' Consumer Duty documentation was inadequate. The Burning Cost position is that a well-evidenced, quantified audit — even one that flags problems — is a materially better regulatory position than no audit, or a superficial one. The FCA responds better to firms that have identified and addressed issues than to firms that claim everything is fine without evidence.
+The FCA's 2024 multi-firm review found that most firms' Consumer Duty documentation was inadequate. A well-evidenced, quantified audit — even one that flags problems — puts a firm in a materially stronger position than no audit, or a superficial one. The FCA has been explicit that it responds better to firms that identify and address issues than to firms that assert everything is fine without evidence.
 
 ---
 
