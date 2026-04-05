@@ -84,7 +84,7 @@ The `min_samples_leaf=20` default matters. EconML's default is 5. Insurance rati
 
 ## GATES: size of the spread across quintiles
 
-Once the diagnostic screen passes, the inference question is: how much does elasticity vary across the portfolio? GATES (Sorted Group Average Treatment Effects, Chernozhukov et al. 2020/2025 *Econometrica*) partitions the book into quintiles by predicted CATE and estimates the average effect within each. The key test is whether the spread across quintiles is statistically distinguishable from zero.
+Once the diagnostic screen passes, the inference question is: how much does elasticity vary across the portfolio? GATES (Sorted Group Average Treatment Effects, Chernozhukov et al. (2025) *Econometrica*) partitions the book into quintiles by predicted CATE and estimates the average effect within each. The key test is whether the spread across quintiles is statistically distinguishable from zero.
 
 ```python
 from insurance_causal.causal_forest import HeterogeneousInference

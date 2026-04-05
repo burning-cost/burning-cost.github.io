@@ -66,9 +66,9 @@ idx_tv, idx_test = train_test_split(idx, test_size=0.20, random_state=0)
 idx_train, idx_cal = train_test_split(idx_tv, test_size=0.25, random_state=1)
 # 60% train, 20% cal, 20% test
 
-X_train = df[idx_train]
-X_cal   = df[idx_cal]
-X_test  = df[idx_test]
+X_train = df[idx_train.tolist()]
+X_cal   = df[idx_cal.tolist()]
+X_test  = df[idx_test.tolist()]
 y_train, y_cal, y_test = y[idx_train], y[idx_cal], y[idx_test]
 ```
 
@@ -227,7 +227,7 @@ GAMLSS produces flatter conditional coverage — it is genuinely modelling the v
 
 GAMLSS wins clearly. The fitted sigma coefficients tell you something interpretable: young drivers (age_band=0) have a dispersion that is exp(0.40) ≈ 49% larger than the base. That is a number you can bring to an underwriting conversation. It appears in rating factor tables. The volatility score — `model_gamlss.volatility_score(X_test)` — gives a per-policy coefficient of variation that risk analysts can use directly.
 
-Conformal is a black box around your base model. It tells you where the interval boundaries are; it does not tell you why they are there. For regulatory purposes — PRA SS1/23, Solvency II internal model validation — the ability to explain why interval *width* varies by risk characteristic is valuable.
+Conformal is a black box around your base model. It tells you where the interval boundaries are; it does not tell you why they are there. For regulatory purposes — Solvency II Article 120 internal model validation (and equivalent banking requirements under PRA SS1/23) — the ability to explain why interval *width* varies by risk characteristic is valuable.
 
 ### 5. Computational cost
 
@@ -239,7 +239,7 @@ For use cases where the base model is already trained and production-deployed, c
 
 ### 6. Regulatory acceptability
 
-This is context-dependent, but our assessment: GAMLSS is more straightforward to validate against SS1/23-style model validation requirements (SS1/23 applies to banks; insurers follow equivalent Solvency II Article 120 standards, but the validation tests are the same in practice). The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
+This is context-dependent, but our assessment: GAMLSS is more straightforward to validate against Solvency II Article 120 model validation requirements. (PRA SS1/23 is the equivalent banking standard; the validation tests are structurally the same, but for insurance the applicable framework is Solvency II Article 120.) The parameters are interpretable, the log-likelihood provides a proper scoring rule for out-of-sample fit, and distribution selection via GAIC is a documented statistical procedure. Model risk committees recognise this framework from R actuarial practice.
 
 Conformal's finite-sample guarantee is mathematically rigorous and does not depend on distributional assumptions, which is arguably a stronger foundation. But it is less familiar to UK model validators in 2026, and the absence of distributional parameters means standard actuarial diagnostics (residual plots, P-P plots, worm plots) do not apply directly.
 

@@ -265,4 +265,4 @@ The fairness audit, governance documentation, and monitoring framework work toge
 
 ---
 
-*The FCA's interim report (MS24/1.3) is available at [fca.org.uk](https://www.fca.org.uk/publications/market-studies/ms24-1-market-distribution-pure-protection-products). The feedback deadline is 31 March 2026. Final report expected Q3 2026.*
+*The FCA's interim report (MS24/1.4) is available at [fca.org.uk](https://www.fca.org.uk/publications/market-studies/ms24-1-market-distribution-pure-protection-products). The feedback deadline is 31 March 2026. Final report expected Q3 2026.*

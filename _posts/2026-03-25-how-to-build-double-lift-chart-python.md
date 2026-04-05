@@ -81,6 +81,10 @@ def double_lift(
     """
     Double-lift chart: compare two models by sorting on their prediction ratio.
 
+    model_a and model_b are per-policy rate predictions (expected frequency or
+    pure premium per unit exposure). The function multiplies by exposure
+    internally to compute expected claim counts per decile.
+
     Decile 1 = policies where model_a predicts lowest relative to model_b.
     Decile 10 = policies where model_a predicts highest relative to model_b.
 
@@ -125,8 +129,8 @@ def double_lift(
 
 chart = double_lift(
     actual=actual_claims.astype(float),
-    model_a=glm_pred * exposure,   # expected claims for model A
-    model_b=gbm_pred * exposure,   # expected claims for model B
+    model_a=glm_pred,   # rate predictions; function applies exposure internally
+    model_b=gbm_pred,   # rate predictions; function applies exposure internally
     exposure=exposure,
     n_deciles=10,
 )

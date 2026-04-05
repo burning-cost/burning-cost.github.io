@@ -4,14 +4,14 @@ title: "Detecting Model Decay: Gini Drift Testing with Statistical Power"
 date: 2026-03-25
 categories: [monitoring, model-risk, libraries, tutorials]
 tags: [gini-drift, model-monitoring, hypothesis-testing, discrimination, insurance-monitoring, asymptotic-test, p-value, bootstrap, arXiv-2510.04556, python, polars, uk-insurance]
-description: "The first Python implementation of the asymptotic Gini drift test from Wüthrich et al. (2025). A proper z-test for ranking degradation — not a heuristic, not a threshold, a p-value."
+description: "The first Python implementation of the asymptotic Gini drift test from Brauer et al. (2025). A proper z-test for ranking degradation — not a heuristic, not a threshold, a p-value."
 ---
 
 Most UK pricing teams monitor Gini coefficients the same way. Compute it quarterly. Plot it over time. If the trend looks worrying, have a conversation about whether it is "meaningful". Nothing gets escalated because there is no framework for deciding what meaningful is.
 
 This is how adverse selection starts. Not with a dramatic collapse. With a slow drift that no one can prove is real.
 
-`GiniDriftTest` gives you a proper p-value. It is based on the asymptotic theory in Wüthrich, Merz and Noll (2025), arXiv:2510.04556, which establishes the asymptotic normality of the sample Gini coefficient and derives a bootstrap variance estimator. As far as we know, this is the first Python implementation of that test.
+`GiniDriftTest` gives you a proper p-value. It is based on the asymptotic theory in Brauer, Menzel and Wüthrich (2025), arXiv:2510.04556, which establishes the asymptotic normality of the sample Gini coefficient and derives a bootstrap variance estimator. As far as we know, this is the first Python implementation of that test.
 
 ```bash
 uv add insurance-monitoring
@@ -35,7 +35,7 @@ This is why Gini monitoring cannot wait for A/E to move. And it is why you need 
 
 ## The asymptotic theory (briefly)
 
-Wüthrich, Merz and Noll (2025) establish in Theorem 1 of arXiv:2510.04556 that:
+Brauer, Menzel and Wüthrich (2025) establish in Theorem 1 of arXiv:2510.04556 that:
 
 ```
 sqrt(n) * (G_hat - G) -> N(0, sigma^2)
@@ -157,7 +157,7 @@ statistically significant at alpha=0.32 (z=-17.14, p=0.0000). Investigate
 for model or population drift.
 ```
 
-This is the artefact you paste into your quarterly model monitoring report. It records what test was run, what data it ran on, what the result was, and what action is indicated. Under PRA SS1/23 model risk management requirements and Consumer Duty monitoring obligations, this is the structured evidence you want.
+This is the artefact you paste into your quarterly model monitoring report. It records what test was run, what data it ran on, what the result was, and what action is indicated. Under Solvency II Article 120 model governance requirements (and equivalent banking standards under PRA SS1/23) and Consumer Duty monitoring obligations, this is the structured evidence you want.
 
 ---
 
@@ -213,7 +213,7 @@ The `MonitoringReport` class assembles all three layers with a single actionable
 
 We are deliberately quoting the paper directly here because the threshold logic is important and frequently misapplied.
 
-Wüthrich, Merz and Noll recommend the one-sigma rule — p < 0.32 — as the sensitivity level for routine monitoring, not the conventional 5%. The argument is that the loss function is asymmetric. The cost of investigating a false positive is approximately two days of an actuary's time plus some management overhead. The cost of failing to detect a real Gini decline — which then compounds over 12–18 months of adverse selection into the book — is measurable in loss ratio points.
+Brauer, Menzel and Wüthrich recommend the one-sigma rule — p < 0.32 — as the sensitivity level for routine monitoring, not the conventional 5%. The argument is that the loss function is asymmetric. The cost of investigating a false positive is approximately two days of an actuary's time plus some management overhead. The cost of failing to detect a real Gini decline — which then compounds over 12–18 months of adverse selection into the book — is measurable in loss ratio points.
 
 Under that asymmetric loss function, a test calibrated at p < 0.05 is too conservative for monitoring. You want more false positives in exchange for fewer misses.
 

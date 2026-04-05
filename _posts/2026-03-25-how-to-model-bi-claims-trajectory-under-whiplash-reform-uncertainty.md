@@ -29,7 +29,7 @@ The combined effect was structural, not cyclical. MoJ data for the first year po
 
 For reserving, the premium impact matters: ABI estimated the reform saved £4 per policy in 2020–21, rising to £15 per policy by 2022–23 versus the counterfactual.
 
-What the reform did *not* change: injury severity above £5,000, the treatment of mixed injuries (whiplash plus other soft tissue), or the OIC portal's ability to handle genuinely contested liability. The Supreme Court's mixed-injury ruling in *ABI v Aviva* (2024) added further complexity to the tariff boundary — claims with both a whiplash and a non-whiplash component require careful apportionment.
+What the reform did *not* change: injury severity above £5,000, the treatment of mixed injuries (whiplash plus other soft tissue), or the OIC portal's ability to handle genuinely contested liability. The Supreme Court's mixed-injury ruling in *Hassam and another v Rabot and another* [2024] UKSC 11 added further complexity to the tariff boundary — claims with both a whiplash and a non-whiplash component require careful apportionment.
 
 ---
 
