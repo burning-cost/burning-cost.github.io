@@ -346,7 +346,7 @@ We think it is worth being direct about this.
 - You want segment-level CATEs for renewal optimisation, not just an average effect.
 - You are evaluating the causal effect of a historical rate change where the change was not randomly applied — the `RateChangeEvaluator` in `insurance_causal.rate_change` handles this with DiD or ITS designs.
 
-One limitation to be explicit about: DML assumes all confounders are observed. If there is a genuine unobserved confounder that you cannot proxy via your rating factors, DML is still biased — it just handles the observed confounders correctly. Sensitivity analysis via `model.sensitivity_analysis()` will tell you how large an unobserved confounder would need to be to overturn your conclusions. On most real books, the observed rating factors are rich enough that the residual unobserved confounding is small relative to the effect size.
+One limitation to be explicit about: DML assumes all confounders are observed. If there is a genuine unobserved confounder that you cannot proxy via your rating factors, DML is still biased — it just handles the observed confounders correctly. Sensitivity analysis via `insurance_causal.diagnostics.sensitivity_analysis(ate=ate.estimate, se=ate.se)` will tell you how large an unobserved confounder would need to be to overturn your conclusions. On most real books, the observed rating factors are rich enough that the residual unobserved confounding is small relative to the effect size.
 
 ---
 

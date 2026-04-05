@@ -545,7 +545,7 @@ On very thin portfolios, treat credibility factors as directional - the point es
 
 Credibility theory has three limits worth building into your governance sign-off.
 
-**Minimum portfolio size.** The method-of-moments estimates of v and a need at least 30-50 groups and 3+ years to be reliable. Below this, treat the fitted k as a rough guide and apply a floor on Z rather than using it raw.
+**Minimum portfolio size.** The method-of-moments estimates of v and a are most reliable with 30+ groups and 3+ years. With 10–30 groups, treat the fitted k as directional — apply a floor on Z (e.g. Z >= 0.1) and stress-test by perturbing a_hat ± 50%.
 
 **Homoscedasticity assumption.** `BuhlmannStraub` assumes that within-group variance scales with 1/w_{ij} uniformly. Large fleets with a few catastrophic claims violate this. For mixed portfolios with very large and very small schemes, consider segmenting by exposure tier before fitting.
 

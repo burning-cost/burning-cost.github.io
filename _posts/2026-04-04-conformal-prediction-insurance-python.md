@@ -192,8 +192,10 @@ To make the calibration problem concrete, here is what happens if you misuse obs
 # This is what a naive implementation would do
 
 freq_pred_cal  = fs.freq_model_.predict(X_cal)     # predicted frequency
-sev_input_wrong = np.column_stack([X_cal[d_cal > 0], d_cal[d_cal > 0]])   # observed d
-sev_input_right = np.column_stack([X_cal[d_cal > 0], freq_pred_cal[d_cal > 0]])  # predicted mu
+# Both have shape (n_claims, p+1) — severity model expects X with frequency appended.
+# The difference: observed count vs predicted frequency in the last column.
+sev_input_wrong = np.column_stack([X_cal[d_cal > 0], d_cal[d_cal > 0]])       # observed count — wrong
+sev_input_right = np.column_stack([X_cal[d_cal > 0], freq_pred_cal[d_cal > 0]])  # predicted freq — correct
 
 sev_pred_wrong = fs.sev_model_.predict(sev_input_wrong)
 sev_pred_right = fs.sev_model_.predict(sev_input_right)
