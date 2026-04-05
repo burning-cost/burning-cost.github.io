@@ -190,7 +190,7 @@ Whether that choice is defensible under Consumer Duty's fair value obligations i
 ## Further reading
 
 - Liang, Z., Zhang, J., Zhou, Z., Zou, B. (2026). "Optimal Underreporting and Competitive Equilibrium." [arXiv:2601.12655](https://arxiv.org/abs/2601.12655)
-- [Second group] (2026). "To report or not to report: Optimal claim reporting in a bonus-malus system." [arXiv:2601.07655](https://arxiv.org/abs/2601.07655)
+- Enzi, L., Thonhauser, S. (2026). "To report or not to report: Optimal claim reporting in a bonus-malus system." [arXiv:2601.07655](https://arxiv.org/abs/2601.07655)
 - Lemaire, J. (1977). "La Soif du Bonus." *ASTIN Bulletin* 9(1-2):181–190
 - Holtan, J. (2001). "Optimal Loss Financing Under Bonus-Malus Contracts." *ASTIN Bulletin* 31(1):161–173
 - Abbring, J.H., Chiappori, P-A., Zavadil, T. (2008). "Better Safe than Sorry? Ex Ante and Ex Post Moral Hazard in Dynamic Insurance Data." SSRN 1260168
