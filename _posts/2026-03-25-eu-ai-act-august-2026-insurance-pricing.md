@@ -21,7 +21,7 @@ General insurance pricing — motor, home, commercial — is less clear. The Act
 
 Prudent firms are treating their general insurance pricing models as though they are in scope: the governance requirements are reasonable practice regardless of the regulatory question, and a retrospective finding of non-compliance would be costly. But the legal picture is not settled. If you are preparing a conformity assessment, record the classification question explicitly and the basis on which you have concluded your system is or is not high-risk.
 
-The penalty for confirmed non-compliance is up to €35 million or 7% of global annual revenue — whichever is higher.
+The penalty for confirmed non-compliance with the high-risk AI obligations is up to €15 million or 3% of global annual turnover — whichever is higher (Article 99(3)).
 
 One note on timing: the European Commission's Digital Omnibus proposal from late 2025 floated a possible extension to December 2027 for some Annex III obligations. We would not plan around that. Nothing has been enacted, and prudent compliance planning means treating 2 August 2026 as binding.
 
