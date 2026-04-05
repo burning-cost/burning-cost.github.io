@@ -233,7 +233,7 @@ For a portfolio with an average loss cost of £450 at the mid-point of the exper
 
 ## The Ogden problem
 
-The Ogden rate changed from -0.75% to -0.25% in July 2019 (England, Wales, and Northern Ireland). This is a structural break in the severity series for liability-heavy lines: bodily injury claims settled close to the change date had materially different reserve values than those settled six months earlier. If you are fitting severity trend on a liability book that spans the 2019 boundary, the regression slope will absorb some of the level shift as a slope estimate, biasing both the pre-change and post-change trends.
+The Ogden rate changed from -0.75% to -0.25% in August 2019 (England, Wales, and Northern Ireland). This is a structural break in the severity series for liability-heavy lines: bodily injury claims settled close to the change date had materially different reserve values than those settled six months earlier. If you are fitting severity trend on a liability book that spans the 2019 boundary, the regression slope will absorb some of the level shift as a slope estimate, biasing both the pre-change and post-change trends.
 
 PELT will typically detect this as a structural break if the signal-to-noise ratio is adequate. The level change from the Ogden reform was substantial relative to within-period noise on most liability books. If it does not detect it automatically, pass `changepoints=[2]` (for a 2019Q1-indexed quarterly series) to force the break.
 

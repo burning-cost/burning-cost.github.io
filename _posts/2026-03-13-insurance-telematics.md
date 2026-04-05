@@ -9,7 +9,7 @@ description: "Continuous-time HMM for telematics risk scoring in UK motor pricin
 
 Most telematics scores are event counts. Harsh braking events per kilometre. Hard cornering rate. Night driving percentage. These are cheap to compute, easy to explain, and wrong in a specific way: they treat every kilometre of driving as exchangeable. A harsh braking event on an urban road at 30 km/h is not the same as one at 110 km/h on a motorway. The denominator matters. The driving context matters.
 
-The actuarial literature has known this for a while. Gao, Meng, and Wüthrich (ASTIN Bulletin, 2022) showed that model-based approaches substantially outperform naive event counting for claims frequency prediction. Hidden Markov Models on telematics sequences provide better risk discrimination than standard feature engineering, and crucially, the latent states have direct actuarial interpretation: a driver who spends a large fraction of miles in an "aggressive urban" state tends to have materially higher claims frequency than the portfolio average.
+The actuarial literature has known this for a while. Jiang and Shi (North American Actuarial Journal, 2024) showed that model-based approaches substantially outperform naive event counting for claims frequency prediction. Hidden Markov Models on telematics sequences provide better risk discrimination than standard feature engineering, and crucially, the latent states have direct actuarial interpretation: a driver who spends a large fraction of miles in an "aggressive urban" state tends to have materially higher claims frequency than the portfolio average.
 
 [`insurance-telematics`](https://github.com/burning-cost/insurance-telematics) implements this approach for UK pricing teams. Raw trip data in, GLM-ready driver risk features out. 84 tests, 12 modules, MIT-licensed, on PyPI.
 
@@ -38,33 +38,39 @@ The observation vector at each timestep is: `[speed_kmh, lon_accel, lat_accel, h
 ## Pipeline
 
 ```python
-from insurance_telematics import TripPreprocessor, CTHMMFitter, StateFeatureExtractor, TelematicsGLMPipeline
-
-# Step 1: clean raw trip CSVs
-preprocessor = TripPreprocessor(
-    min_trip_duration_s=60,
-    speed_cap_kmh=200,
-    impute_gaps=True
+from insurance_telematics import (
+    load_trips,
+    clean_trips,
+    extract_trip_features,
+    DrivingStateHMM,
+    aggregate_to_driver,
+    TelematicsScoringPipeline,
 )
-trips = preprocessor.fit_transform(raw_trips_df)
 
-# Step 2: fit CTHMM on the trip corpus
-fitter = CTHMMFitter(n_states=3, n_iter=100)
-fitter.fit(trips)
+# Step 1: load and clean raw trip CSVs
+trips_raw = load_trips("path/to/trips/*.csv")
+trips = clean_trips(trips_raw)
 
-# Step 3: extract per-driver state features
-extractor = StateFeatureExtractor(fitter)
-driver_features = extractor.transform(trips)
-# Columns: state_0_frac, state_1_frac, state_2_frac,
-#          mean_transition_rate, state_entropy,
-#          total_trip_seconds, n_trips
+# Step 2: extract trip-level features
+trip_features = extract_trip_features(trips)
 
-# Step 4: build GLM-ready feature matrix
-pipeline = TelematicsGLMPipeline(extractor)
-X_telematics = pipeline.fit_transform(trips)
+# Step 3: fit HMM on the trip corpus
+hmm = DrivingStateHMM(n_states=3, n_iter=100)
+hmm.fit(trip_features)
+
+# Step 4: aggregate to driver level
+driver_features = aggregate_to_driver(trip_features)
+# Columns: aggregated feature means, n_trips, total_km,
+#          credibility_weight, composite_risk_score, driver_id
+
+# Step 5: fit end-to-end pipeline (clean → extract → HMM → aggregate → GLM)
+# TelematicsScoringPipeline handles all stages internally
+pipeline = TelematicsScoringPipeline(n_hmm_states=3)
+pipeline.fit(trips_raw, claims_df)          # claims_df: driver_id, n_claims, exposure_years
+predictions = pipeline.predict(trips_raw)   # driver-level frequency predictions
 ```
 
-The output `X_telematics` is a standard pandas DataFrame with one row per policy. You merge it with your traditional rating factors and fit a Poisson frequency GLM exactly as normal. The telematics features are additive in log-space - they do not require any change to your GLM fitting procedure.
+The driver features from `aggregate_to_driver()` are a standard Polars DataFrame with one row per driver. You merge with your traditional rating factors and fit a Poisson frequency GLM exactly as normal. The telematics features are additive in log-space - they do not require any change to your GLM fitting procedure.
 
 ---
 
@@ -82,22 +88,7 @@ Two secondary features deserve attention:
 
 ## Calibration to premium relativities
 
-The state features are continuous. To produce multiplicative relativities compatible with a GLM rating engine, you need to bin and calibrate. The library includes a `RelativitiesCalibrator` that:
-
-1. Bins `state_2_frac` into deciles (or custom breakpoints)
-2. Fits a monotonically constrained relativities curve via isotonic regression on the GLM coefficient
-3. Outputs the relativity table in the same format as `shap-relativities` - ready for import into Radar or a rating engine
-
-```python
-from insurance_telematics import RelativitiesCalibrator
-
-calibrator = RelativitiesCalibrator(feature='state_2_frac', n_bins=10, monotone='increasing')
-calibrator.fit(X_telematics, claim_counts, exposures)
-rel_table = calibrator.relativity_table()
-# Returns DataFrame: bin_lower, bin_upper, relativity, credibility_weight
-```
-
-The credibility weights use [Buhlmann-Straub credibility](/2026/03/23/does-buhlmann-straub-credibility-work-insurance-pricing/) by default, so thin bins at the extremes of the distribution are blended toward the portfolio mean rather than taken at face value.
+The state features are continuous. To produce multiplicative relativities compatible with a GLM rating engine, bin the state occupancy fractions and include them in a Poisson GLM with monotone constraints. The driver-level features from `aggregate_to_driver()` feed directly into any Poisson GLM via `insurance-gam` or statsmodels, and [`shap-relativities`](/shap-relativities/) can extract the relativity table from the fitted model in the standard format ready for import into Radar or a rating engine.
 
 ---
 
@@ -105,7 +96,7 @@ The credibility weights use [Buhlmann-Straub credibility](/2026/03/23/does-buhlm
 
 There is a known confounding structure in telematics data that the library forces you to confront. Urban drivers generate more harsh events per kilometre regardless of driving quality - more stop-start, more tight corners, more cyclists and pedestrians requiring sharp responses. A driver with 80% urban mileage will score worse on naive event rates than a rural driver at similar true risk.
 
-The CTHMM partially addresses this by learning road-type-specific emission distributions - the "high-intensity" state has different speed and acceleration signatures in urban versus motorway context. But the confounding does not disappear; it is attenuated. The `TripPreprocessor` accepts road type annotations (from HERE or OpenStreetMap) and the `CTHMMFitter` supports conditional emissions by road type when that data is available.
+The `DrivingStateHMM` partially addresses this by learning road-type-specific emission distributions — the "high-intensity" state has different speed and acceleration signatures in urban versus motorway context. But the confounding does not disappear; it is attenuated. Pass road type annotations (from HERE or OpenStreetMap) as additional columns in the trip DataFrame when available.
 
 If you do not have road type data, the library flags the urban mileage fraction as a recommended control variable. Include it in the GLM alongside the telematics features to avoid attributing urban exposure to driving quality.
 
@@ -123,7 +114,7 @@ That regulatory trajectory is the main reason to build this capability now, even
 
 This library does not implement dynamic bonus-malus updating from telematics (updating the BM score weekly from trip data, as in Boucher et al.). That is a separate problem requiring a real-time scoring pipeline, not a batch GLM feature engineering step. It also does not handle image or video telematics - only GPS and accelerometer time series.
 
-The CTHMM assumes the latent states are stationary across drivers. In practice, a professional delivery driver and a new 17-year-old learner are not drawn from the same latent state distribution. If your book has very heterogeneous driver populations, consider fitting separate CTHMMs by segment and merging the state features at the GLM stage.
+The `DrivingStateHMM` assumes the latent states are stationary across drivers. In practice, a professional delivery driver and a new 17-year-old learner are not drawn from the same latent state distribution. If your book has very heterogeneous driver populations, consider fitting separate HMMs by segment and merging the state features at the GLM stage.
 
 ---
 

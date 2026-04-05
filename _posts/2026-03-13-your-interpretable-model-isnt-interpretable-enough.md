@@ -47,7 +47,7 @@ The problem with soft monotonicity penalties (including the approach used in mos
 
 This is a real problem for UK pricing, not a theoretical one. Small monotonicity violations in low-exposure regions are hard to catch in validation. They create pricing anomalies that only surface when a broker or an aggregator finds the rate inversion and exploits it.
 
-`insurance-gam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. This is applied every gradient step via `model.project_monotone_weights()`. The result is not "very few violations" but zero violations, provable by inspection of the shape function curve.
+`insurance-gam` uses Dykstra's projection algorithm to guarantee monotonicity exactly. The mechanism is architectural: for ReLU networks, clamping all linear layer weights to be non-negative (for increasing constraints) or non-positive (for decreasing constraints) is sufficient to guarantee monotone output at every point in the input space. The projection is applied automatically during training by the `ANAMTrainer` — there is no user-facing call required. The result is not "very few violations" but zero violations, provable by inspection of the shape function curve.
 
 ---
 
@@ -109,26 +109,25 @@ score = model.score(X_test, y_test, sample_weight=exposure_test)
 
 ## Shape functions for regulatory documentation
 
-The output that matters for model validation and regulatory documentation is the shape function table. Every feature's contribution curve is available as a Polars DataFrame:
+The output that matters for model validation and regulatory documentation is the shape function table. Every feature's contribution curve is available via `shape_functions()`, which returns `ShapeFunction` objects. Call `.to_polars()` on each to get a Polars DataFrame for export or inspection:
 
 ```python
 shapes = model.shape_functions()
-# Returns dict of Polars DataFrames, one per feature
+# Returns dict of ShapeFunction objects, one per feature
 
-# For a continuous feature:
-print(shapes["vehicle_age"])
-# shape: pl.DataFrame
-# columns: x (feature value), f_x (log-linear contribution), f_x_lower, f_x_upper
+# Convert to Polars DataFrame for inspection or export
+df_vehicle_age = shapes["vehicle_age"].to_polars()
+# columns: x (feature value), f_x (log-linear contribution), feature
+# Note: no confidence interval columns — ANAM does not produce per-point CIs
 
 # Export for regulatory documentation
-for feature, df in shapes.items():
-    df.write_json(f"shape_{feature}.json")
+for feature, sf in shapes.items():
+    sf.to_polars().write_json(f"shape_{feature}.json")
 
-# For categorical features, per-category contributions
-cat_tables = model.category_tables()
-print(cat_tables["occupation"])
-# shape: pl.DataFrame
-# columns: category, contribution, n_policies, exposure
+# Categorical features use the same shape_functions() API
+cat_df = shapes["occupation"].to_polars()
+# columns: category_index, category_label, f_x, feature
+# (policy count and exposure are not available from shape functions)
 ```
 
 The shape function for a continuous feature is directly analogous to a GLM smooth term or a manual age-band relativity table, except it is continuous and can capture nonlinear effects within each feature's range without requiring manual bucketing decisions.
@@ -142,7 +141,7 @@ For model validation under SS1/23-aligned governance (SS1/23 formally applies to
 One of the most practically useful features for a team migrating from a GLM is the GLM comparison overlay. The ANAM can show you where its shape functions agree with your existing GLM factors and where they diverge:
 
 ```python
-from insurance_gam.anam import GLMComparison
+from insurance_gam.ebm import GLMComparison
 
 # glm_params: dict of {feature_name: {level: log_relativity}}
 # in the format you'd get from statsmodels or a GLM fit
@@ -150,7 +149,7 @@ comparison = GLMComparison(model, glm_params)
 fig = comparison.plot_overlay("vehicle_age")
 ```
 
-The overlay plots the ANAM continuous shape function against the GLM step function on the same axes. Divergences are the model's discoveries: places where the GLM's bucketing decisions lost information or where the ANAM found nonlinear structure within a band. This is the same diagnostic the CatBoost-to-GLM distillation workflow produces via SHAP, except here the ANAM shape function is exact and directly comparable to the GLM parameters in log space.
+The overlay plots the ANAM continuous shape function against the GLM step function on the same axes. Note that `GLMComparison` lives in `insurance_gam.ebm` — it was designed for EBM-vs-GLM comparison but accepts any model with shape functions. Divergences are the model's discoveries: places where the GLM's bucketing decisions lost information or where the ANAM found nonlinear structure within a band.
 
 ---
 

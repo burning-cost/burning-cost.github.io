@@ -185,7 +185,7 @@ inventory.update_validation(
     validation_date='2025-03-15',
     overall_rag='GREEN',
     next_review_date='2026-03-15',
-    run_id='a3f7e2c1-...',   # UUID from insurance-governance JSON sidecar
+    run_id='a3f7e2c1-...',   # UUID from insurance-validation JSON sidecar
 )
 
 # Full inventory as a list of dicts
