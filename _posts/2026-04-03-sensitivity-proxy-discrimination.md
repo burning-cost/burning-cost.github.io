@@ -17,7 +17,7 @@ This post is about the part of the Lindholm, Richman, Tsanakas and Wüthrich pap
 
 ## The evidential gap Consumer Duty creates
 
-Consumer Duty does not tell pricing teams what to measure or how. What it does do — through PRIN 2A.3 and the fair value requirement — is create an obligation to monitor outcomes for groups of customers sharing protected characteristics, and to demonstrate that pricing produces fair value across those groups.
+Consumer Duty does not tell pricing teams what to measure or how. What it does do — through PRIN 2A.4 and the fair value requirement — is create an obligation to monitor outcomes for groups of customers sharing protected characteristics, and to demonstrate that pricing produces fair value across those groups.
 
 The standard response is distributional analysis: compute the mean premium for each D group, compare distributions, run a Kolmogorov-Smirnov test. This is fine for demographic parity in the aggregate. It is not sufficient for the question Consumer Duty is actually asking.
 

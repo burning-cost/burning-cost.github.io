@@ -41,11 +41,11 @@ All three are required. Most pricing teams have ad hoc versions of statistical v
 
 Before the code: the rules that make this non-optional.
 
-**Solvency II Articles 120–126** require that the internal model (where used for capital) is validated independently, with regular review cycles, and with documentation that the Board can interrogate. For pricing models outside the internal model, the obligation is less prescriptive but the logic of Article 120 — that you must understand what your model is doing, and test that it does it — flows directly into PS12/22 supervisory expectations.
+**Solvency II Articles 120–126** require that the internal model (where used for capital) is validated independently, with regular review cycles, and with documentation that the Board can interrogate. For pricing models outside the internal model, the obligation is less prescriptive but the logic of Article 120 — that you must understand what your model is doing, and test that it does it — flows directly into PRA CP6/24 supervisory expectations on model risk management.
 
-**FCA Consumer Duty (PS22/9, August 2022)** requires that pricing models produce fair value outcomes. A model you cannot validate is a model you cannot demonstrate is fair. The FCA has been explicit that "black box" is not an acceptable answer to a Consumer Duty question.
+**FCA Consumer Duty (PS22/9, July 2022)** requires that pricing models produce fair value outcomes. A model you cannot validate is a model you cannot demonstrate is fair. The FCA has been explicit that "black box" is not an acceptable answer to a Consumer Duty question.
 
-**Consumer Duty and FCA ethnicity pricing research (December 2025)** add a validation expectation specific to fairness: if a pricing model uses variables that correlate with protected characteristics, you should test for and document disparate impact. The FCA's Research Note on motor insurance pricing and local area ethnicity found a residual ethnicity-postcode correlation after risk adjustment; Consumer Duty PRIN 2A requires firms to be able to evidence fair outcomes. This is a validation step that most teams do not currently run.
+**Consumer Duty and FCA ethnicity pricing research (December 2024)** add a validation expectation specific to fairness: if a pricing model uses variables that correlate with protected characteristics, you should test for and document disparate impact. The FCA's Research Note on motor insurance pricing and local area ethnicity found a residual ethnicity-postcode correlation after risk adjustment; Consumer Duty PRIN 2A requires firms to be able to evidence fair outcomes. This is a validation step that most teams do not currently run.
 
 **PRA SS1/23 (model risk management; applied proportionately to insurers)** sets expectations for model inventory, validation independence, tiered review frequency, and governance sign-off. It does not mandate a specific report format, but it does expect that documentation exists and is consistent across the model estate.
 
@@ -126,7 +126,7 @@ report = ModelValidationReport(
     y_pred_val        = y_pred_val,
     exposure_val      = exposure,
     incumbent_pred_val = y_pred_incumbent,  # challenger vs champion
-    fairness_group_col = age_band,           # numpy array of group labels
+    fairness_group_col = "age_band",          # column name in X_val DataFrame
     monitoring_owner  = "Head of Pricing",
     monitoring_triggers = {"ae_ratio": 1.10, "psi": 0.25},
 )
@@ -193,7 +193,7 @@ tier = RiskTierScorer().score(
 GovernanceReport(card=card, tier=tier).save_html("motor_freq_mrm_pack.html")
 ```
 
-The `RiskTierScorer` scores six dimensions: GWP materiality, model complexity, external data reliance, validation recency, drift history, and whether the model is customer-facing (relevant under Consumer Duty). The composite 0–100 score maps to three tiers:
+The `RiskTierScorer` scores six dimensions: GWP materiality, model complexity, external data reliance, validation recency, drift history, and regulatory_exposure (composite of production status, regulatory use, and customer-facing flag). The composite 0–100 score maps to three tiers:
 
 - **Tier 1 (≥60):** Annual review, Model Risk Committee sign-off. This is where a £125m motor frequency model lands.
 - **Tier 2 (30–59):** 18-month review, Chief Actuary sign-off.
@@ -214,22 +214,28 @@ from insurance_governance import ModelInventory
 inv = ModelInventory("model_inventory.json")
 
 # Register a model after validation
-inv.register(
-    model_id       = "motor-freq-v3",
-    model_name     = "Motor TPPD Frequency v3.2",
-    tier           = 1,
-    last_validated = "2026-04-04",
-    rag_status     = "green",
-    next_review    = "2027-04-04",
+from insurance_governance import ModelCard, RiskTierScorer
+
+card = ModelCard(
+    model_id   = "motor-freq-v3",
+    model_name = "Motor TPPD Frequency v3.2",
+    version    = "3.2.0",
+    model_class = "pricing",
 )
+tier = RiskTierScorer().score(
+    gwp_impacted=125_000_000, model_complexity="high",
+    deployment_status="champion", regulatory_use=False,
+    external_data=False, customer_facing=True,
+)
+inv.register(card=card, tier=tier)
 
 # Surface models past their review date
-overdue = inv.list_overdue()
+overdue = inv.overdue()
 for m in overdue:
-    print(f"{m.model_name}: due {m.next_review}, currently {m.rag_status}")
+    print(f"{m['model_name']}: due {m['next_review_date']}, currently {m['overall_rag']}")
 ```
 
-The inventory is a plain JSON file. It checks into your pricing model repository. Every CI/CD run that regenerates validation reports updates the entry. `list_overdue()` can gate a CI job — models past their review date block deployment of new versions until the governance cycle is complete.
+The inventory is a plain JSON file. It checks into your pricing model repository. Every CI/CD run that regenerates validation reports updates the entry. `overdue()` can gate a CI job — models past their review date block deployment of new versions until the governance cycle is complete.
 
 ---
 

@@ -121,7 +121,7 @@ For motor BI and liability, we recommend expectile mode (`use_expectile=True` in
 
 For extreme tail estimation — the 99th percentile and above, relevant for Solvency UK's 99.5% SCR calculation — `EQRNModel` (Pasche & Engelke 2024, *Annals of Applied Statistics*, DOI: 10.1214/24-AOAS1907) provides a GPD-based neural network tail model that can be plugged into the same `TwoPartQuantilePremium` pipeline.
 
-One data note: the AutoClaims dataset includes `GENDER` as a feature. Under the UK Insurance Act 2012 (retaining the EU gender directive), gender cannot be used for insurance pricing. This is not a comment on the paper's methodology — the QPP framework itself is unaffected — but any UK implementation should exclude gender from the feature set from the outset.
+One data note: the AutoClaims dataset includes `GENDER` as a feature. Under the Equality Act 2010 as amended by SI 2012/2992 — implementing the EU Gender Directive following the Test-Achats ruling (Case C-236/09) — gender cannot be used for insurance pricing. This is not a comment on the paper's methodology — the QPP framework itself is unaffected — but any UK implementation should exclude gender from the feature set from the outset.
 
 ---
 

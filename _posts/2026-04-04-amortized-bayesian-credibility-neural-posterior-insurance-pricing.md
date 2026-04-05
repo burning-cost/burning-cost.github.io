@@ -87,7 +87,7 @@ We plan to build this as an extension to `insurance-credibility`. The architectu
 
 ## The broader direction
 
-Amortized inference is part of a wider shift in probabilistic machine learning toward *simulation-based inference* — learning posteriors from simulated data rather than deriving them analytically. The companion paper by Arruda et al. (arXiv:2505.14429, April 2025) extends this to compositional amortization, which scales to 100,000+ data points and 10,000+ parameters via diffusion-model-based score matching. For a spatial postcode-sector model with 9,500 UK sectors, that matters.
+Amortized inference is part of a wider shift in probabilistic machine learning toward *simulation-based inference* — learning posteriors from simulated data rather than deriving them analytically. The companion paper by Arruda et al. (arXiv:2505.14429, May 2025) extends this to compositional amortization, which scales to 100,000+ data points and 10,000+ parameters via diffusion-model-based score matching. For a spatial postcode-sector model with 9,500 UK sectors, that matters.
 
 The practical insurance application is not just renewal pricing. Capital models that quantify uncertainty in ultimate losses at segment level are also hierarchical Bayesian models. Today, those models either approximate credibility with B-S point estimates (fast but uncertain about their uncertainty) or run full MCMC and accept the compute cost. Amortized inference would allow capital models to run with full posterior uncertainty at production speed — which is a different quality of risk quantification.
 

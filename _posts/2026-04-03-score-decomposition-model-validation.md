@@ -100,10 +100,10 @@ The two-sample test matters when you are choosing between a chain-ladder bootstr
 
 comparison = sdt_80.fit_two(y_settled, y_pred_a_80, y_pred_b_80)
 
-print(f"Delta-MCB (B - A): {comparison.delta_mcb:.5f}  (p={comparison.delta_mcb_pvalue:.3f})")
-print(f"Delta-DSC (B - A): {comparison.delta_dsc:.5f}  (p={comparison.delta_dsc_pvalue:.3f})")
+print(f"Delta-MCB (A - B): {comparison.delta_mcb:.5f}  (p={comparison.delta_mcb_pvalue:.3f})")
+print(f"Delta-DSC (A - B): {comparison.delta_dsc:.5f}  (p={comparison.delta_dsc_pvalue:.3f})")
 print(f"DM overall:        {comparison.delta_score:.5f}  (p={comparison.delta_score_pvalue:.3f})")
-print(f"Combined IU:                                     (p={comparison.combined_pvalue:.3f})")
+print(f"Combined IU (intersection-union test):           (p={comparison.combined_pvalue:.3f})")
 ```
 
 If the GLM challenger posts lower pinball loss overall (DM significant) but delta-MCB explains the entire gap and delta-DSC is not significant, you are looking at a calibration advantage, not a structural one. The chain-ladder bootstrap with a recalibrated output layer recovers the same performance. That is a meaningful finding for an internal model validation committee.

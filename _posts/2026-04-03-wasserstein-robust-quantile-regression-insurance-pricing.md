@@ -115,7 +115,7 @@ The constant $c$ requires calibration — it captures how uncertain you are abou
 
 ## Where This Actually Matters for Pricing
 
-**Reserve segment quantiles.** The strongest use case. A commercial property segment with 150 historical claims needs a 99.5th percentile for IBNR reserves or capital allocation under Solvency II Articles 120–126. The empirical 99.5th is the largest observation. WDRQR gives a principled upward correction with an interpretable justification for the Appointed Actuary: "we are allowing for the possibility that the true severity distribution differs from historical by a Wasserstein distance of $\varepsilon$, which corresponds to a shift of approximately X% in average severity."
+**Reserve segment quantiles.** The strongest use case. A commercial property segment with 150 historical claims needs a 99.5th percentile for IBNR reserves or capital allocation under Solvency II Articles 76–86. The empirical 99.5th is the largest observation. WDRQR gives a principled upward correction with an interpretable justification for the Appointed Actuary: "we are allowing for the possibility that the true severity distribution differs from historical by a Wasserstein distance of $\varepsilon$, which corresponds to a shift of approximately X% in average severity."
 
 **Large loss loading.** Many UK actuaries currently use TVaR minus mean, fit from either a parametric distribution or a CatBoost quantile GBM, to derive large loss loading. On thin segments, the GBM is fitting noise at the 99th percentile. A linear WDRQR provides a robust floor estimate with a formal guarantee — useful as a sanity check or as the primary estimate when N is below 500.
 
